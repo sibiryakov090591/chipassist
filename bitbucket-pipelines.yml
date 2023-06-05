@@ -1,0 +1,9 @@
+image: atlassian/default-image:latest
+
+pipelines:
+  branches:
+    master:
+      - step:
+          script:
+            - echo "/opt/spaceone/be_spaceone/features/run.sh > output_fe.txt 2> error_fe.txt >/dev/null &" | ssh -p 2233 -tt  root@static.117.119.4.46.clients.your-server.de
+            - echo "Tests started on server"

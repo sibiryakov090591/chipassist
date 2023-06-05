@@ -1,0 +1,70 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest/globals": true
+  },
+  "globals": {
+    "COMMITHASH": true,
+    "BRANCH": true
+  },
+  "rules": {
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/camelcase": "off", // TODO Remove
+    "@typescript-eslint/no-var-requires": "off", // TODO Remove
+    "@typescript-eslint/no-use-before-define": "off", // TODO change to warning
+    "no-restricted-syntax": 0,
+    "import/extensions": "off",
+    "react/prop-types": [2, { "skipUndeclared": true }],
+    "no-console": "off", // TODO change to warning
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "no-alert": "off",
+    "radix": ["error", "as-needed"],
+    "import/no-cycle": "off", // TODO Remove
+    "no-loop-func": "off", // TODO Remove
+    "class-methods-use-this": "off",
+    "no-nested-ternary": "off",
+    "prettier/prettier": [
+      "warn",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "alias": {
+        "map": [["@src", "./src"]],
+        "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
+      }
+    }
+  },
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended"
+  ]
+}

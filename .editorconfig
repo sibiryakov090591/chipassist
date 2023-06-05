@@ -1,0 +1,8 @@
+# editorconfig.org
+.editorconfig
+[*]
+charset = utf-8
+indent_style = space
+
+[*.{js,ts,tsx,json,html,css,scss}]
+indent_size = 2

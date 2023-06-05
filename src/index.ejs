@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!--
+  **NOTE:** This is a template for index.html. It uses ejs and htmlWebpackPlugin to generate a different index.html for each environment. htmlWebpackPlugin will dynamically add references to the scripts and styles that it bundles to this file. The generated bundles have hash-based filenames, so it's necessary to add the references dynamically.
+  For more info on ejs, see http://www.embeddedjs.com/. For examples of using it with htmlWebpackPlugin, see https://github.com/jaketrent/html-webpack-template/blob/master/index.ejs
+  -->
+
+  <head>
+    <% var defaults = require("@src/constants/defaults") %>
+    <% if (defaults && defaults.GA && ["chpassist", "supplier_response"].includes(defaults.id)) { %>
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KTGHX86');</script>
+      <!-- End Google Tag Manager -->
+    <% } %>
+    <% if (defaults && defaults.GA && defaults.id === "elfaro") { %>
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;try{f.parentNode.insertBefore(j,f)}catch(e){alert(e)};
+        })(window,document,'script','dataLayer','GTM-NKNSR6G');</script>
+      <!-- End Google Tag Manager -->
+    <% } %>
+
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+
+    <% if (defaults && defaults.id === "chpassist") { %>
+<!--    <script>-->
+<!--      window.intercomSettings = {-->
+<!--        app_id: "y6r1xk6l",-->
+<!--      };-->
+<!--    </script>-->
+<!--    <script>-->
+<!--      // We pre-filled your app ID in the widget URL: ‘https://widget.intercom.io/widget/y6r1xk6l’-->
+<!--      (function () {-->
+<!--        var w = window;-->
+<!--        var ic = w.Intercom;-->
+<!--        if (typeof ic === "function") {-->
+<!--          ic("reattach_activator");-->
+<!--          ic("update", w.intercomSettings);-->
+<!--        } else {-->
+<!--          var d = document;-->
+<!--          var i = function () {-->
+<!--            i.c(arguments);-->
+<!--          };-->
+<!--          i.q = [];-->
+<!--          i.c = function (args) {-->
+<!--            i.q.push(args);-->
+<!--          };-->
+<!--          w.Intercom = i;-->
+<!--          var l = function () {-->
+<!--            var s = d.createElement("script");-->
+<!--            s.type = "text/javascript";-->
+<!--            s.async = true;-->
+<!--            s.src = "https://widget.intercom.io/widget/y6r1xk6l";-->
+<!--            var x = d.getElementsByTagName("script")[0];-->
+<!--            x.parentNode.insertBefore(s, x);-->
+<!--          };-->
+<!--          if (w.attachEvent) {-->
+<!--            w.attachEvent("onload", l);-->
+<!--          } else {-->
+<!--            w.addEventListener("load", l, false);-->
+<!--          }-->
+<!--        }-->
+<!--      })();-->
+<!--    </script>-->
+    <% } %><% if (defaults && defaults.jivoChat) { %>
+    <script src="//code-eu1.jivosite.com/widget/35TThUDBbN" async></script>
+    <% } %> <% if (defaults && defaults.YM) { %>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        (k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a);
+      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(84736483, "init", {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+      });
+    </script>
+    <noscript
+      ><div><img src="https://mc.yandex.ru/watch/84736483" style="position: absolute; left: -9999px" alt="" /></div
+    ></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <% } %> <% if (defaults && defaults.GA && defaults.id === "icsearch") { %>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQYNFHS2LP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-LQYNFHS2LP");
+    </script>
+    <% } %>
+  </head>
+
+  <body>
+  <% if (defaults && defaults.GA && ["chpassist", "supplier_response"].includes(defaults.id)) { %>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTGHX86"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <% } %>
+  <% if (defaults && defaults.GA && defaults.id === "elfaro") { %>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKNSR6G"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <% } %>
+    <div id="app"></div>
+  </body>
+</html>
