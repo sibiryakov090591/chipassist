@@ -167,7 +167,8 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           ...state.chatList,
           results: state.chatList.results.map((chat) => {
             if (chat.id === action.payload.chatId) {
-              return { ...chat, unread_messages: chat.unread_messages - action.payload.count };
+              const newCount = Number(chat.unread_messages) - action.payload.count;
+              return { ...chat, unread_messages: newCount > 0 ? newCount : 0 };
             }
             return chat;
           }),

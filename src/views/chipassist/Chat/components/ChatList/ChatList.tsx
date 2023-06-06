@@ -78,6 +78,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
               Date.now() - new Date(lastMessage.created).getTime() > 86400000
                 ? new Date(lastMessage.created).toLocaleDateString()
                 : new Date(lastMessage.created).toLocaleTimeString().slice(0, 5);
+            const unreadMessages = Number(item.unread_messages);
 
             return (
               <div
@@ -90,10 +91,8 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                 <Box display="flex" justifyContent="space-between">
                   <div className={classes.title}>
                     <div className={classes.sellerName}>{item.partner.name}</div>
-                    {!!item.unread_messages && (
-                      <div className={classes.unreadCount}>
-                        {item.unread_messages > 99 ? "99+" : item.unread_messages}
-                      </div>
+                    {!!unreadMessages && (
+                      <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
                     )}
                   </div>
                   <Box display="flex" alignItems="center">
