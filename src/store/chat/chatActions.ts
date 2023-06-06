@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { ApiClientInterface } from "@src/services/ApiClient";
 import constants from "@src/constants/constants";
 import * as actionTypes from "./chatTypes";
+import { ChatListMessage } from "./chatTypes";
 
 const isUser = constants.id !== "supplier_response";
 
@@ -44,7 +45,19 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
       promise: (client: ApiClientInterface) =>
         client
           .get(`/chats/${chatId}/messages/${params}`)
-          .then((res) => res.data)
+          .then((res) => {
+            // read messages
+            const promises: any = [];
+            res.data.results.forEach((message: ChatListMessage) => {
+              if (!message.read) {
+                promises.push(dispatch(readMessage(chatId, message.id)));
+              }
+            });
+            if (promises.length) {
+              Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
+            }
+            return res.data;
+          })
           .catch((e) => {
             console.log("***LOAD_MESSAGES_ERROR", e);
             throw e;

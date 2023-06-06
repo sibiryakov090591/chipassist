@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/components/MessageInput/MessageInput";
-import { deductReadMessages, downloadFile, getMessages, readMessage } from "@src/store/chat/chatActions";
+import { downloadFile, getMessages } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import InfiniteScroll from "react-infinite-scroller";
@@ -9,7 +9,6 @@ import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
-import { ChatListMessage } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 
@@ -41,21 +40,10 @@ const Messages: React.FC = () => {
     if (!messages.isLoading) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
       dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, page_size: pageSize }, true)).then(
-        (res: any) => {
+        () => {
           // stay scroll the right place
           const currentHeight = messagesWindowRef.current.scrollHeight;
           messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
-
-          // read messages
-          const promises: any = [];
-          res.results.forEach((message: ChatListMessage) => {
-            if (!message.read) {
-              promises.push(dispatch(readMessage(selectedChat.id, message.id)));
-            }
-          });
-          if (promises.length) {
-            Promise.all(promises).then(() => dispatch(deductReadMessages(selectedChat.id, promises.length)));
-          }
         },
       );
     }

@@ -99,7 +99,7 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
       if (files.length) {
         dispatch(sendFiles(chatId, files))
           .then(() => {
-            setFiles([]);
+            onCloseModal();
           })
           .finally(() => {
             setIsSending(false);
