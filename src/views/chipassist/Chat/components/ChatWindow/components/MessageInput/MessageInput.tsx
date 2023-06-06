@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { sendMessage } from "@src/store/chat/chatActions";
+import { sendMessage, sendFiles } from "@src/store/chat/chatActions";
 import ScrollToBottom from "@src/views/chipassist/Chat/components/ChatWindow/components/ScrollToBottom/ScrollToBottom";
 import useAppSelector from "@src/hooks/useAppSelector";
 import Box from "@material-ui/core/Box";
-import UploadFilesButton from "@src/views/chipassist/Chat/components/ChatWindow/components/UploadFilesButton/UploadFilesButton";
+import UploadFilesModal from "@src/views/chipassist/Chat/components/ChatWindow/components/UploadFilesModal/UploadFilesModal";
+import { useDropzone } from "react-dropzone";
+import { v1 } from "uuid";
+import AttachFileIcon from "@material-ui/icons/AttachFile";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -26,6 +29,22 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
+  const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState([]);
+
+  const { getRootProps, getInputProps, open: openDropzone } = useDropzone({
+    // accept: "image/*",
+    noDrag: true,
+    onDrop: (acceptedFiles: any[]) => {
+      acceptedFiles.map((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.id = v1();
+        return item;
+      });
+      setFiles((prevState: any[]) => [...prevState, ...acceptedFiles]);
+      setOpen(true);
+    },
+  });
 
   useEffect(() => {
     setError(errorMessage);
@@ -42,6 +61,21 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
     inputWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
   }, [message]);
 
+  const onCloseModal = () => {
+    setOpen(false);
+    setTimeout(() => setFiles([]), 500);
+  };
+
+  const onAddFiles = () => {
+    openDropzone();
+  };
+
+  const handleDeleteFile = (id: string) => {
+    if (files.length > 1) return setFiles(files.filter((i) => i.id !== id));
+    setOpen(false);
+    return setTimeout(() => setFiles([]), 500);
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     event.persist();
     setMessage(event.target.value);
@@ -49,15 +83,28 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
   };
 
   const handleSubmit = () => {
-    if (chatId && message.trim() && !isSending) {
+    if (chatId && !isSending) {
       setIsSending(true);
-      dispatch(sendMessage(chatId, message.trim()))
-        .then(() => {
-          setMessage("");
-        })
-        .finally(() => {
-          setIsSending(false);
-        });
+
+      if (message.trim()) {
+        dispatch(sendMessage(chatId, message.trim()))
+          .then(() => {
+            setMessage("");
+          })
+          .finally(() => {
+            setIsSending(false);
+          });
+      }
+
+      if (files.length) {
+        dispatch(sendFiles(chatId, files))
+          .then(() => {
+            setFiles([]);
+          })
+          .finally(() => {
+            setIsSending(false);
+          });
+      }
     }
   };
 
@@ -73,7 +120,10 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} />
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
-        <UploadFilesButton handleSubmit={handleSubmit} handleChange={handleChange} message={message} />
+        <Box display="flex" {...getRootProps()}>
+          <input {...getInputProps()} />
+          <AttachFileIcon className={classes.attachIcon} />
+        </Box>
         <div ref={inputWrapperRef} className={classes.input}>
           <textarea
             className={classes.textarea}
@@ -87,6 +137,18 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
           <ArrowUpwardRoundedIcon className={classes.sendIcon} onClick={handleSubmit} />
         </div>
       </Box>
+
+      <UploadFilesModal
+        open={open}
+        message={message}
+        files={files}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        onEnterHandler={onEnterHandler}
+        handleDeleteFile={handleDeleteFile}
+        onAddFiles={onAddFiles}
+        onCloseModal={onCloseModal}
+      />
     </div>
   );
 };
