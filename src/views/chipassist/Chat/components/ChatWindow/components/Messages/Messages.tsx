@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/components/MessageInput/MessageInput";
-import { deductReadMessages, getMessages, readMessage } from "@src/store/chat/chatActions";
+import { deductReadMessages, downloadFile, getMessages, readMessage } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import InfiniteScroll from "react-infinite-scroller";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
@@ -71,6 +72,15 @@ const Messages: React.FC = () => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight, behavior: "smooth" });
   }, []);
 
+  const onDownloadFile = (chatId: number, messageId: number) => () => {
+    dispatch(downloadFile(chatId, messageId)).then((blob: Blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+      }
+    });
+  };
+
   return (
     <div className={classes.container}>
       {!messages.results.length && (
@@ -127,6 +137,12 @@ const Messages: React.FC = () => {
                     </span>
                     <span className={classes.messageDate}>{time}</span>
                   </div>
+                  {!!item.attachment && (
+                    <div className={classes.file} onClick={onDownloadFile(selectedChat.id, item.id)}>
+                      <GetAppIcon />
+                      <div>{item.attachment}</div>
+                    </div>
+                  )}
                   <div className={classes.message}>{item.text}</div>
                 </div>
               </div>

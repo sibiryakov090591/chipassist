@@ -130,7 +130,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
   };
 };
 
-export const loadFilePreview = (chatId: number, messageId: number) => {
+export const downloadFile = (chatId: number, messageId: number) => {
   return (dispatch: Dispatch<any>) => {
     return dispatch({
       types: [false, false, false],
@@ -138,11 +138,10 @@ export const loadFilePreview = (chatId: number, messageId: number) => {
         client
           .get(`/chats/${chatId}/attachment/${messageId}/?user=${isUser}`)
           .then((res) => {
-            // dispatch(addMessage(chatId, message));
             return res.data;
           })
           .catch((e) => {
-            console.log("***SEND_CHAT_FILES_ERROR", e);
+            console.log("***LOAD_CHAT_FILE_ERROR", e);
             throw e;
           }),
     });

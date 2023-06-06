@@ -73,6 +73,9 @@ export interface ChatListMessage {
   read: boolean;
   text: string;
   created: string;
+  attachment: string;
+  starter: number;
+  representatives: any[];
 }
 
 interface LoadChatFiltersRequestAction {
