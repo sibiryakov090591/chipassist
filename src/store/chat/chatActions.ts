@@ -106,6 +106,49 @@ export const getFilters = () => {
   };
 };
 
+export const sendFiles = (chatId: number, files: File[]) => {
+  const formData = new FormData();
+  files.map((file, index) => formData.append(`attachment_${index + 1}`, file));
+
+  return (dispatch: Dispatch<any>) => {
+    return dispatch({
+      types: actionTypes.SEND_MESSAGE_ARRAY,
+      promise: (client: ApiClientInterface) =>
+        client
+          .post(`/chats/${chatId}/attachment/?user=${isUser}`, {
+            data: formData,
+          })
+          .then((res) => {
+            // dispatch(addMessage(chatId, message));
+            return res.data;
+          })
+          .catch((e) => {
+            console.log("***SEND_CHAT_FILES_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
+export const loadFilePreview = (chatId: number, messageId: number) => {
+  return (dispatch: Dispatch<any>) => {
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/chats/${chatId}/attachment/${messageId}/?user=${isUser}`)
+          .then((res) => {
+            // dispatch(addMessage(chatId, message));
+            return res.data;
+          })
+          .catch((e) => {
+            console.log("***SEND_CHAT_FILES_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
 export const selectChat = (item: any) => ({
   type: actionTypes.SELECT_CHAT,
   payload: item,
