@@ -63,6 +63,7 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
 
   const onEnterHandler = (event: any) => {
     if (event.keyCode === 13 && !event.shiftKey) {
+      event.preventDefault();
       handleSubmit();
     }
   };
