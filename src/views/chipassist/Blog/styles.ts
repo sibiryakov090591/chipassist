@@ -61,12 +61,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     link: {
-      fontStyle: "italic",
+      // fontStyle: "italic",
     },
     date: {
-      fontWeight: "bold",
       fontStyle: "italic",
-      fontSize: 14,
+      fontSize: 12,
     },
   }),
 );

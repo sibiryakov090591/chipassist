@@ -4,6 +4,9 @@ import { createStyles, makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles(() =>
   createStyles({
+    section: {
+      padding: "2em 0",
+    },
     container: {
       display: "flex",
       maxHeight: "80vh",

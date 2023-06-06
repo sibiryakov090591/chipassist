@@ -29,11 +29,15 @@ export interface Article {
   date: string;
   intro: string;
   body: JSX.Element;
+  intro_img: any;
+  title: any;
 }
 
 export interface SelectedArticle extends Article {
   next: number;
   previous: number;
+  previous_title: string;
+  next_title: string;
 }
 
 interface LoadBlogListRequestAction {

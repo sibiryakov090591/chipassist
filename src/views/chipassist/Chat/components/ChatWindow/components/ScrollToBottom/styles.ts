@@ -16,6 +16,7 @@ export const useStyles = makeStyles(() =>
       transition: "background 150ms ease, top 250ms ease, opacity 250ms ease",
       pointerEvents: "none",
       opacity: 0,
+      padding: 4,
       "&:hover": {
         background: "#323232",
       },

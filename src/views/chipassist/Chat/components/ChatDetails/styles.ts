@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       [theme.breakpoints.down("md")]: {
         width: "35vw",
       },
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down(800)]: {
         width: "100%",
         borderLeft: "none",
       },

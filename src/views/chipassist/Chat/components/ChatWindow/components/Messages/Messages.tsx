@@ -7,6 +7,8 @@ import Box from "@material-ui/core/Box";
 import InfiniteScroll from "react-infinite-scroller";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
 import { formatMoney } from "@src/utils/formatters";
+import { clsx } from "clsx";
+import { ChatListMessage } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 
@@ -14,7 +16,7 @@ const Messages: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const messagesWindowRef = useRef(null);
-  const pageSize = 10;
+  const pageSize = 15;
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const messages = useAppSelector((state) => state.chat.messages);
@@ -24,26 +26,11 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (selectedChat?.id) {
-      dispatch(getMessages(selectedChat.id, false, 1, pageSize)).then(() => {
+      dispatch(getMessages(selectedChat.id, { page: 1, page_size: pageSize })).then(() => {
         messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
       });
     }
   }, [selectedChat]);
-
-  useEffect(() => {
-    // read messages
-    if (messages.page) {
-      const promises: any = [];
-      messages.results.slice(pageSize * (messages.page - 1)).forEach((message) => {
-        if (!message.read) {
-          promises.push(dispatch(readMessage(selectedChat.id, message.id)));
-        }
-      });
-      if (promises.length) {
-        Promise.all(promises).then(() => dispatch(deductReadMessages(selectedChat.id, promises.length)));
-      }
-    }
-  }, [messages]);
 
   useEffect(() => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
@@ -52,10 +39,24 @@ const Messages: React.FC = () => {
   const onScrollLoading = () => {
     if (!messages.isLoading) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
-      dispatch(getMessages(selectedChat.id, true, messages.page + 1, pageSize)).then(() => {
-        const currentHeight = messagesWindowRef.current.scrollHeight;
-        messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
-      });
+      dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, page_size: pageSize }, true)).then(
+        (res: any) => {
+          // stay scroll the right place
+          const currentHeight = messagesWindowRef.current.scrollHeight;
+          messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
+
+          // read messages
+          const promises: any = [];
+          res.results.forEach((message: ChatListMessage) => {
+            if (!message.read) {
+              promises.push(dispatch(readMessage(selectedChat.id, message.id)));
+            }
+          });
+          if (promises.length) {
+            Promise.all(promises).then(() => dispatch(deductReadMessages(selectedChat.id, promises.length)));
+          }
+        },
+      );
     }
   };
 
@@ -72,12 +73,17 @@ const Messages: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      {!messages.results.length && messages.isLoading && !messages.loaded && (
+      {!messages.results.length && (
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-          <Preloader size={12} />
+          {!messages.isLoading && messages.loaded && <h5>You have no messages</h5>}
+          {messages.isLoading && !messages.loaded && <Preloader size={12} />}
         </Box>
       )}
-      <div ref={messagesWindowRef} onScroll={onScroll} className={classes.messagesWrapper}>
+      <div
+        ref={messagesWindowRef}
+        onScroll={onScroll}
+        className={clsx(classes.messagesWrapper, { hidden: !messages.results.length })}
+      >
         <InfiniteScroll
           className={classes.messages}
           isReverse={true}
@@ -101,11 +107,11 @@ const Messages: React.FC = () => {
                 {isShowDateLabel && (
                   <div className={classes.dateLabel}>{today === messageDate ? "Today" : messageDate}</div>
                 )}
-                {isFirstMessage && item.sender === "You" && selectedChat?.rfq && (
+                {isFirstMessage && selectedChat?.rfq && (
                   <div className={classes.requestItem}>
                     <ScheduleRoundedIcon className={classes.requestItemIcon} />
                     <div>
-                      <strong>{`You sent a new request for ${selectedChat.rfq.upc}.`}</strong>{" "}
+                      <strong>{`${item.sender} sent a new request for ${selectedChat.rfq.upc}.`}</strong>{" "}
                       {!!selectedChat.rfq.quantity && !!selectedChat.rfq.price && (
                         <span>{`${selectedChat.rfq.quantity} x ${formatMoney(selectedChat.rfq.price)} € = ${formatMoney(
                           selectedChat.rfq.quantity * selectedChat.rfq.price,

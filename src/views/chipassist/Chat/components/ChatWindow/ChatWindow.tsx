@@ -5,7 +5,6 @@ import Messages from "@src/views/chipassist/Chat/components/ChatWindow/component
 import clsx from "clsx";
 import useAppSelector from "@src/hooks/useAppSelector";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
-import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles } from "./styles";
@@ -42,9 +41,9 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
       <Box display="flex" flexDirection="column">
         <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
           <div className={classes.headerInfo}>
-            {isMdDown && (
+            {isMdDown && !showList && (
               <Box display="flex" alignItems="center" pr="16px" onClick={onShowChatListHandler}>
-                {showList ? <CloseRoundedIcon /> : <ArrowBackIosRoundedIcon />}
+                <ArrowBackIosRoundedIcon />
               </Box>
             )}
             <div>

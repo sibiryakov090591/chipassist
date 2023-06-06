@@ -65,6 +65,10 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           total_pages,
           results,
         },
+        messages: {
+          ...state.messages,
+          ...(!results?.length && { isLoading: false, loaded: true }),
+        },
       };
     }
     case actionTypes.LOAD_MORE_CHAT_LIST_S: {
@@ -82,7 +86,11 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
     case actionTypes.LOAD_CHAT_LIST_F:
-      return { ...state, chatList: { ...state.chatList, isLoading: false, loaded: true } };
+      return {
+        ...state,
+        chatList: { ...state.chatList, isLoading: false, loaded: true },
+        messages: { ...state.messages, isLoading: false, loaded: true },
+      };
 
     case actionTypes.LOAD_MESSAGES_R:
       return { ...state, messages: { ...state.messages, isLoading: true } };

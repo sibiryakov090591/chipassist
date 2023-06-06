@@ -19,17 +19,23 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
       [theme.breakpoints.down("md")]: {
         "&.chatListActive": {
-          transform: "translateX(35vw)",
+          paddingLeft: "35vw",
+        },
+        "&.detailsActive": {
+          paddingRight: "35vw",
         },
       },
       [theme.breakpoints.down("sm")]: {
         "&.chatListActive": {
-          transform: "translateX(48vw)",
+          paddingLeft: "335px",
         },
       },
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down(800)]: {
         "&.detailsActive": {
           transform: "translateX(-48vw)",
+        },
+        "&.chatListActive": {
+          transform: "translateX(48vw)",
         },
       },
     },

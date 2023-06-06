@@ -88,15 +88,16 @@ const Blog: React.FC = () => {
               return (
                 <div key={item.id} className={classes.article}>
                   <Box display="flex" mb="12px">
-                    <span className={classes.date}>{new Date(item.date).toDateString()}</span>
+                    <h1>{item.title}</h1>
                   </Box>
                   <div>
                     <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
-                    <div>
+                    <Box display="flex" justifyContent="space-between">
                       <Link to={`${item.id}/`} className={clsx(appTheme.hyperlink, classes.link)}>
                         Read more...
                       </Link>
-                    </div>
+                      <span className={classes.date}>{new Date(item.date).toDateString()}</span>
+                    </Box>
                   </div>
                 </div>
               );

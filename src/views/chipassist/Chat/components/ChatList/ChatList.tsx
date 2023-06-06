@@ -22,7 +22,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(800));
 
   const chatListRef = React.useRef(null);
 
@@ -30,13 +30,12 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   useEffect(() => {
-    if (isAuthenticated && !chatList.page) {
-      // first loading
+    if (isAuthenticated) {
       dispatch(getChatList(1, filters.values)).then((res: any) => {
         if (res.results?.length) dispatch(selectChat(res.results[0]));
       });
     }
-  }, [chatList.page, isAuthenticated]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });
@@ -44,7 +43,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
 
   const selectItemHandler = (item: any) => () => {
     if (item.id !== selectedChat?.id) dispatch(selectChat(item));
-    if (isMdDown) onShowList(false);
+    if (isXsDown) onShowList(false);
   };
 
   const onScrollLoading = () => {

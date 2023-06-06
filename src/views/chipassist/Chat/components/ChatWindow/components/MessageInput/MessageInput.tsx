@@ -4,6 +4,8 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendMessage } from "@src/store/chat/chatActions";
 import ScrollToBottom from "@src/views/chipassist/Chat/components/ChatWindow/components/ScrollToBottom/ScrollToBottom";
 import useAppSelector from "@src/hooks/useAppSelector";
+import Box from "@material-ui/core/Box";
+import UploadFilesButton from "@src/views/chipassist/Chat/components/ChatWindow/components/UploadFilesButton/UploadFilesButton";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -18,6 +20,7 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const textareaRef = useRef(null);
+  const inputWrapperRef = useRef(null);
 
   const errorMessage = useAppSelector((state) => state.chat.messages.error);
 
@@ -30,11 +33,13 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
 
   useEffect(() => {
     const textarea = textareaRef.current;
-    textarea.style.height = "18px"; // Reset the height before calculating the new height
+    const inputWrapper = inputWrapperRef.current;
+    textarea.style.height = "32px"; // Reset the height before calculating the new height
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to match the content
+    textarea.scrollTop = textarea.scrollHeight; // Scroll to the bottom of the textarea
 
-    // Scroll to the bottom of the textarea
-    textarea.scrollTop = textarea.scrollHeight;
+    textarea.style.overflowY = textarea.scrollHeight > 230 ? "auto" : "hidden";
+    inputWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
   }, [message]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -66,18 +71,21 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
     <div className={classes.root}>
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} />
       {!!error && <div className={classes.error}>{error}</div>}
-      <div className={classes.inputWrapper}>
-        <textarea
-          className={classes.textarea}
-          ref={textareaRef}
-          name="message"
-          onChange={handleChange}
-          onKeyDown={onEnterHandler}
-          value={message}
-          placeholder="Type a message"
-        />
-        <ArrowUpwardRoundedIcon className={classes.sendIcon} onClick={handleSubmit} />
-      </div>
+      <Box display="flex" alignItems="center">
+        <UploadFilesButton handleSubmit={handleSubmit} handleChange={handleChange} message={message} />
+        <div ref={inputWrapperRef} className={classes.input}>
+          <textarea
+            className={classes.textarea}
+            ref={textareaRef}
+            name="message"
+            onChange={handleChange}
+            onKeyDown={onEnterHandler}
+            value={message}
+            placeholder="Type a message"
+          />
+          <ArrowUpwardRoundedIcon className={classes.sendIcon} onClick={handleSubmit} />
+        </div>
+      </Box>
     </div>
   );
 };

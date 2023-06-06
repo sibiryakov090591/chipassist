@@ -106,7 +106,7 @@ const SupplierResponse: React.FC = () => {
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const [validationError, setValidationError] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState<Partner | false>(null);
-  const [stopCheckingItemsLength, setStopCheckingItemsLength] = useState(false);
+  // const [stopCheckingItemsLength, setStopCheckingItemsLength] = useState(false);
   const [fileUploadErrors, setFileUploadErrors] = useState<ImportErrorItem[]>([]);
   const [openPopper, setOpenPopper] = useState(false);
   const [openErrorsModal, setOpenErrorsModal] = useState(false);
@@ -223,7 +223,7 @@ const SupplierResponse: React.FC = () => {
         }
       });
       setItems(newData);
-      if (Object.keys(newData).length) setStopCheckingItemsLength(true);
+      // if (Object.keys(newData).length) setStopCheckingItemsLength(true);
     }
   }, [rfqs, currency]);
 
@@ -597,8 +597,8 @@ const SupplierResponse: React.FC = () => {
               />
             </FiltersContainer>
           </div>
-          {(isLoading || !stopCheckingItemsLength) && <Preloader title="Requests are loading..." />}
-          {!isLoading && stopCheckingItemsLength && items && !Object.keys(items).length && (
+          {isLoading && <Preloader title="Requests are loading..." />}
+          {!isLoading && items && !Object.keys(items).length && (
             <div className={classes.empty}>Nothing has been found</div>
           )}
           {!isLoading && items && !!Object.keys(items).length && (

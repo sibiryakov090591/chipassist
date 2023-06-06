@@ -40,13 +40,14 @@ const Article: React.FC = () => {
             )}
             {!isLoading && selected && (
               <>
-                <Box display="flex" mb="12px">
-                  <span className={blogClasses.date}>{new Date(selected.date).toDateString()}</span>
-                </Box>
+                <h1>{selected.title}</h1>
                 <div className={classes.intro}>
                   <p dangerouslySetInnerHTML={{ __html: selected.intro }} />
                 </div>
                 <p dangerouslySetInnerHTML={{ __html: selected.body }} />
+                <Box display="flex" mb="12px">
+                  <span className={blogClasses.date}>{new Date(selected.date).toDateString()}</span>
+                </Box>
               </>
             )}
           </div>
@@ -55,7 +56,7 @@ const Article: React.FC = () => {
               className={clsx(classes.paginationLink, { disabled: isDisabledPrevious })}
               to={!isDisabledPrevious && `/blog/${selected?.previous}`}
             >
-              Previous post
+              {selected?.previous_title}
             </Link>
             <Link className={classes.paginationLink} to={`/blog`}>
               Return to blog
@@ -64,7 +65,7 @@ const Article: React.FC = () => {
               className={clsx(classes.paginationLink, { disabled: isDisabledNext })}
               to={!isDisabledNext && `/blog/${selected?.next}`}
             >
-              Next post
+              {selected?.next_title}
             </Link>
           </Box>
         </Container>

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import PublishIcon from "@material-ui/icons/Publish";
+import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import constants from "@src/constants/constants";
 import { ID_MASTER } from "@src/constants/server_constants";
@@ -10,6 +11,7 @@ import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
+  const isShowChat = !!localStorage.getItem("isShowChat");
 
   const itemClasses = [classes.topMenuItem, isMobile ? classes.topMenuItemMobile : ""].join(" ");
 
@@ -32,6 +34,14 @@ const TopMenu = ({ isMobile }) => {
           <NavLink className={`${classes.topMenuItemLink}`} to={`/file-upload`}>
             {isMobile && <PublishIcon className={`${classes.topMenuItemIcon}`} />}
             Data File Upload
+          </NavLink>
+        </div>
+      )}
+      {isShowChat && (
+        <div className={itemClasses}>
+          <NavLink className={`${classes.topMenuItemLink}`} to={`/chat`}>
+            {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+            Chat
           </NavLink>
         </div>
       )}

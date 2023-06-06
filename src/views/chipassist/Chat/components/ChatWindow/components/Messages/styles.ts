@@ -12,7 +12,7 @@ export const useStyles = makeStyles(() =>
     },
     messagesWrapper: {
       overflowY: "auto",
-      height: 10,
+      height: 1,
       display: "grid",
       flexGrow: 1,
       "&::-webkit-scrollbar": {
@@ -20,6 +20,9 @@ export const useStyles = makeStyles(() =>
       },
       "&::-webkit-scrollbar-track": {
         background: "transparent",
+      },
+      "&.hidden": {
+        overflowY: "hidden",
       },
     },
     messages: {

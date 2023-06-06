@@ -21,9 +21,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         transform: "translateX(-100%)",
         transition: "transform 550ms cubic-bezier(0.25, 1, 0.5, 1)",
         [theme.breakpoints.down("sm")]: {
-          width: "48vw",
+          width: "335px",
         },
-        [theme.breakpoints.down("xs")]: {
+        [theme.breakpoints.down(800)]: {
           width: "100%",
           borderRight: "none",
         },
