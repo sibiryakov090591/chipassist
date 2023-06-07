@@ -134,22 +134,15 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
 
     case actionTypes.ADD_MESSAGE: {
-      const newMessage: any = {
-        id: uuidv4(),
-        text: action.payload.message,
-        sender: "You",
-        read: true,
-        created: new Date().toISOString(),
-      };
       const selectedChat = state.chatList.results.find((chat) => chat.id === action.payload.chatId);
-      const updatedChat = { ...selectedChat, messages: [newMessage, ...selectedChat.messages] };
+      const updatedChat = { ...selectedChat, messages: [action.payload.message, ...selectedChat.messages] };
       return {
         ...state,
         chatList: {
           ...state.chatList,
           results: [updatedChat, ...state.chatList.results.filter((i) => i.id !== action.payload.chatId)],
         },
-        messages: { ...state.messages, results: [...state.messages.results, newMessage] },
+        messages: { ...state.messages, results: [...state.messages.results, action.payload.message] },
       };
     }
 

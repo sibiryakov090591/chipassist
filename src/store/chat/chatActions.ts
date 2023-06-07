@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { ApiClientInterface } from "@src/services/ApiClient";
 import constants from "@src/constants/constants";
 import { RootState } from "@src/store";
+import { v4 as uuidv4 } from "uuid";
 import * as actionTypes from "./chatTypes";
 import { ChatListMessage } from "./chatTypes";
 
@@ -83,7 +84,14 @@ export const sendMessage = (chatId: number, message: string) => {
             data: { text: message },
           })
           .then((res) => {
-            dispatch(addMessage(chatId, message));
+            const newMessage = {
+              id: uuidv4(),
+              text: message,
+              sender: "You",
+              read: true,
+              created: new Date().toISOString(),
+            };
+            dispatch(addMessage(chatId, newMessage));
             return res.data;
           })
           .catch((e) => {
@@ -132,7 +140,7 @@ export const getFilters = () => {
 
 export const sendFiles = (chatId: number, files: File[]) => {
   const formData = new FormData();
-  files.map((file, index) => formData.append(`attachment_${index + 1}`, file));
+  files.map((file) => formData.append(`file[]`, file));
 
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
@@ -145,7 +153,15 @@ export const sendFiles = (chatId: number, files: File[]) => {
             data: formData,
           })
           .then((res) => {
-            // dispatch(addMessage(chatId, message));
+            const newMessage = {
+              id: uuidv4(),
+              text: "",
+              attachment: res.data.attachment,
+              sender: "You",
+              read: true,
+              created: new Date().toISOString(),
+            };
+            dispatch(addMessage(chatId, newMessage));
             return res.data;
           })
           .catch((e) => {
@@ -181,7 +197,7 @@ export const selectChat = (item: any) => ({
   payload: item,
 });
 
-export const addMessage = (chatId: number, message: string) => ({
+export const addMessage = (chatId: number, message: any) => ({
   type: actionTypes.ADD_MESSAGE,
   payload: { chatId, message },
 });
