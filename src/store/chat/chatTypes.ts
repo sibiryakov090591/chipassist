@@ -129,7 +129,7 @@ interface SelectChatAction {
 
 interface AddMessageAction {
   type: typeof ADD_MESSAGE;
-  payload: { chatId: number; message: string };
+  payload: { chatId: number; message: any };
 }
 
 interface SendMessageRequestAction {

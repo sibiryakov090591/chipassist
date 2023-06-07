@@ -334,7 +334,8 @@ const DistributorsDesktop: React.FC<Props> = ({
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
 
-            const isShowProductLink = !!val.url && sellersWithProductLink?.find((seller) => seller.id === val.partner);
+            const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
+            const isShowProductLink = !!val.url && !!seller;
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const MOQ = val.moq;
@@ -571,11 +572,11 @@ const DistributorsDesktop: React.FC<Props> = ({
                 <td className={classes.tdActions}>
                   {isShowProductLink ? (
                     <a
-                      href={val.url}
+                      href={val.url || seller.url}
                       target="_blank"
                       rel="noreferrer"
                       className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                      onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, val.url)}
+                      onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, val.url || seller.url)}
                     >
                       Visit site
                     </a>
