@@ -24,8 +24,8 @@ const Article: React.FC = () => {
     window.scrollTo({ top: 0 });
   }, [articleId]);
 
-  const isDisabledNext = isLoading || !selected || !selected.next || selected.next === +articleId;
-  const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous === +articleId;
+  const isDisabledNext = isLoading || !selected || !selected.next || selected.next.id === +articleId;
+  const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.id === +articleId;
 
   return (
     <Page title="Article" description={`${selected?.intro}`}>
@@ -54,18 +54,18 @@ const Article: React.FC = () => {
           <Box display="flex" justifyContent="space-around" p="42px 0 24px 0">
             <Link
               className={clsx(classes.paginationLink, { disabled: isDisabledPrevious })}
-              to={!isDisabledPrevious && `/blog/${selected?.previous}`}
+              to={!isDisabledPrevious && `/blog/${selected?.previous.id}`}
             >
-              {selected?.previous_title}
+              {selected?.previous?.title}
             </Link>
             <Link className={classes.paginationLink} to={`/blog`}>
               Return to blog
             </Link>
             <Link
               className={clsx(classes.paginationLink, { disabled: isDisabledNext })}
-              to={!isDisabledNext && `/blog/${selected?.next}`}
+              to={!isDisabledNext && `/blog/${selected?.next.id}`}
             >
-              {selected?.next_title}
+              {selected?.next?.title}
             </Link>
           </Box>
         </Container>

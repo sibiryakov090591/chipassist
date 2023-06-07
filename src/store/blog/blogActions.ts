@@ -14,7 +14,7 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
       types: join ? [false, actionTypes.LOAD_MORE_BLOG_LIST_S, false] : actionTypes.LOAD_BLOG_LIST_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`https://static.117.119.4.46.clients.your-server.de:9443/blog/${params}`, { noapi: true })
+          .get(`https://blog.master.chipassist.com/api/blogs/${params}`, { noapi: true })
           .then((res) => res.data)
           .catch((e) => {
             console.log("***LOAD_BLOG_LIST_ERROR", e);
@@ -32,7 +32,7 @@ export const getArticle = (articleId: number) => {
       types: actionTypes.LOAD_ARTICLE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`https://static.117.119.4.46.clients.your-server.de:9443/blog/${articleId}/${params}`)
+          .get(`https://blog.master.chipassist.com/api/blog/${articleId}/${params}`)
           .then((res) => res.data)
           .catch((e) => {
             console.log("***LOAD_ARTICLE_ERROR", e);

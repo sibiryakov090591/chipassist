@@ -33,12 +33,24 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: 16,
       padding: "1.5rem",
       "& img": {
-        width: 280,
-        height: 168,
+        width: 180,
+        height: "max-content",
+        float: "left",
+        marginRight: 8,
         borderRadius: 12,
         background: "#ffffff",
         objectFit: "cover",
-        margin: "0 12px 12px 0",
+        [theme.breakpoints.down(420)]: {
+          float: "none",
+          marginRight: 0,
+          marginBottom: 12,
+        },
+      },
+    },
+    content: {
+      [theme.breakpoints.down(420)]: {
+        display: "flex",
+        flexDirection: "column",
       },
     },
     searchInput: {
