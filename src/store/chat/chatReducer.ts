@@ -66,7 +66,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           results,
         },
         messages: {
-          ...state.messages,
+          ...initialState.messages,
           ...(!results?.length && { isLoading: false, loaded: true }),
         },
       };

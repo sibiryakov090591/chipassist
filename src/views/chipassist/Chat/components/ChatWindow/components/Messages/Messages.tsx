@@ -37,7 +37,7 @@ const Messages: React.FC = () => {
   }, [isSending]);
 
   const onScrollLoading = () => {
-    if (!messages.isLoading) {
+    if (!messages.isLoading && selectedChat.id) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
       dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, page_size: pageSize }, true)).then(
         () => {

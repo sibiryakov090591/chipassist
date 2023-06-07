@@ -30,7 +30,7 @@ const ChatPage: React.FC = () => {
       <section className={classes.section}>
         <Container maxWidth="xl">
           <Box display="flex" flexDirection="column" alignItems="flex-start">
-            <h1 className={requestsClasses.title}>Statistic of your responses</h1>
+            <h1 className={requestsClasses.title}>Communication with buyers</h1>
             {selectedPartner && (
               <div className={clsx(requestsClasses.supplier, { flexible: partners?.length > 1 })}>
                 You are logged in as{" "}
