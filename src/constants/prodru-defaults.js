@@ -3,7 +3,6 @@ const defaults = {
   id: "icsearch",
   apiPath: "/api",
   apiHost: "api.icsearch.ru",
-  // apiHost: "static.6.77.46.78.clients.your-server.de",
   schema: "https",
   locales: ["ru", "en"],
   localeDefault: "ru",

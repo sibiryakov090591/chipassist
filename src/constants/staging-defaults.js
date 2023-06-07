@@ -2,7 +2,7 @@ const defaults = {
   title: "Master",
   id: "master",
   apiPath: "/api",
-  apiHost: "static.117.119.4.46.clients.your-server.de",
+  apiHost: "api.master.chipassist.com",
   schema: "https",
   locales: ["en", "ru"],
   localeDefault: "en",
