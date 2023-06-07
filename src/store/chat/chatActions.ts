@@ -24,7 +24,7 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
       ],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/${params}`)
+          .get(`/chats/${params}`, { cancelId: "get_chat_list" })
           .then((res) => res.data)
           .catch((e) => {
             console.log("***LOAD_CHAT_LIST_ERROR", e);
@@ -49,7 +49,7 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
       ],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/${chatId}/messages/${params}`)
+          .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
           .then((res) => {
             // read messages
             const promises: any = [];
@@ -120,7 +120,7 @@ export const getFilters = () => {
       types: actionTypes.LOAD_CHAT_FILTERS_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/filter_info/${params}`)
+          .get(`/chats/filter_info/${params}`, { cancelId: "get_chat_filters" })
           .then((res) => res.data)
           .catch((e) => {
             console.log("***GET_CHAT_FILTERS_ERROR", e);
@@ -164,7 +164,7 @@ export const downloadFile = (chatId: number, messageId: number) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/${chatId}/attachment/${messageId}/${params}`)
+          .get(`/chats/${chatId}/attachment/${messageId}/${params}`, { cancelId: "get_chat_file" })
           .then((res) => {
             return res.data;
           })
