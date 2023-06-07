@@ -9,7 +9,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import Reset from "@src/views/chipassist/Reset/Reset.tsx";
 import Maintenance from "@src/views/chipassist/Maintenance";
 import checkIsAuthenticated from "@src/utils/auth";
-import { getGeolocation, loadProfileInfoThunk } from "@src/store/profile/profileActions";
+import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
 import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
 import { checkUserActivityStatus } from "@src/store/common/commonActions";
 import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
@@ -53,6 +53,7 @@ const SupplierResponseApp = () => {
 
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
+  const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
 
   // const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
   const selectedCurrency = "USD";
@@ -93,6 +94,17 @@ const SupplierResponseApp = () => {
     }
   }, [isAuthToken]);
 
+  useEffect(() => {
+    let partner = false;
+    if (isAuthenticated && partners?.length) {
+      partner =
+        partners.find((p) => p.name === "Test Demo Supplier") ||
+        partners.find((p) => p.name === localStorage.getItem("selected_partner")) ||
+        partners[0];
+    }
+    dispatch(onChangePartner(partner));
+  }, [partners, isAuthenticated]);
+
   if (maintenance.loaded && maintenance.status === "CRITICAL") {
     return <Maintenance />;
   }
@@ -106,7 +118,6 @@ const SupplierResponseApp = () => {
             <Route path="/supplier-response/*" element={<SupplierResponse />} />
             <Route path="/statistics" element={<Statistics />} />
             {isShowChat && <Route path="/chat" element={<ChatPage />} />}
-            <Route path="/chat" element={<Statistics />} />
             <Route path="/auth/login" element={<Login />} />
             <Route
               path="/logout"

@@ -4,6 +4,7 @@ import { Dispatch } from "redux";
 import axios from "@src/utils/axios";
 import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
 import * as actionTypes from "./profileTypes";
+import { Partner } from "./profileTypes";
 
 export const isLoadingProfile = (val: boolean) => {
   return {
@@ -90,6 +91,14 @@ export const updatePrevEmail = (value: string) => {
   return {
     type: actionTypes.UPDATE_PREV_EMAIL,
     payload: value,
+  };
+};
+
+export const onChangePartner = (partner: Partner | false) => {
+  if (partner) localStorage.setItem("selected_partner", partner.name);
+  return {
+    type: actionTypes.CHANGE_PARTNER,
+    payload: partner,
   };
 };
 

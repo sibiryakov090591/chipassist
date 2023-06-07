@@ -4,7 +4,6 @@ import { Button, Container, Box } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { loadSupplierStatistics } from "@src/store/supplierStatistics/statisticsActions";
-import { Partner } from "@src/store/profile/profileTypes";
 import Preloader from "@src/components/Preloader/Preloader";
 import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
@@ -15,12 +14,12 @@ import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
-import { clearSupplierResponseData } from "@src/store/rfq/rfqActions";
 import { ResponseItem as IResponseItem } from "@src/store/supplierStatistics/statisticsTypes";
 import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@src/components/FiltersBar";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { v4 as uuid } from "uuid";
 import { DataHeader, DataTable, DataRow, DataField, DataValue, DataBody } from "@src/components/DataTable/DataTable";
+import { onChangePartner } from "@src/store/profile/profileActions";
 import { useStyles } from "./statisticsStyles";
 import Paginate from "../../../components/Paginate";
 import StatisticItem from "./components/StatisticItem/StatisticItem";
@@ -42,10 +41,10 @@ const Statistics: React.FC = () => {
 
   const { isLoading, data } = useAppSelector((state) => state.supplierStatistics);
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
+  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const currency = useAppSelector((state) => state.currency.selected);
 
-  const [selectedPartner, setSelectedPartner] = useState<Partner | false>(null);
   const [filters, setFilters] = useState<Filters>(null);
   const [items, setItems] = useState<{ [key: string]: IResponseItem[] }>({});
 
@@ -63,21 +62,6 @@ const Statistics: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      let partner: Partner | boolean = false;
-      if (partners?.length) {
-        partner =
-          partners.find((p) => p.name === "Test Demo Supplier") ||
-          partners.find((p) => p.name === localStorage.getItem("selected_supplier")) ||
-          partners[0];
-      }
-      setSelectedPartner(partner);
-    } else {
-      setSelectedPartner(null);
-    }
-  }, [partners, isAuthenticated]);
-
-  useEffect(() => {
     if (selectedPartner && filters) {
       dispatch(loadSupplierStatistics(filters.page, filters.page_size, selectedPartner.id));
     }
@@ -93,12 +77,10 @@ const Statistics: React.FC = () => {
     }
   }, [data]);
 
-  const onChangePartner = (id: number) => {
+  const onChangePartnerHandler = (id: number) => {
     const partner = partners?.find((p) => p.id === id);
     if (partner) {
-      setSelectedPartner(partner);
-      localStorage.setItem("selected_supplier", partner.name);
-      dispatch(clearSupplierResponseData());
+      dispatch(onChangePartner(partner));
     }
   };
 
@@ -144,7 +126,7 @@ const Statistics: React.FC = () => {
                   <SupplierSelect
                     selectedPartner={selectedPartner}
                     partners={partners}
-                    onChangePartner={onChangePartner}
+                    onChangePartner={onChangePartnerHandler}
                   />
                 ) : (
                   <strong>{selectedPartner.name}</strong>
