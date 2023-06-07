@@ -38,7 +38,6 @@ import FiltersContainer, {
   FilterHasResponseBar,
 } from "@src/components/FiltersBar";
 import Alert from "@material-ui/lab/Alert";
-import { Partner } from "@src/store/profile/profileTypes";
 import importIcon from "@src/images/suppliers_response/import-icon-images.svg";
 import exportIcon from "@src/images/suppliers_response/export_data.svg";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
@@ -53,6 +52,7 @@ import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import constants from "@src/constants/constants";
+import { onChangePartner } from "@src/store/profile/profileActions";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 import SupplierSelect from "./SupplierSelect/SupplierSelect";
@@ -94,6 +94,7 @@ const SupplierResponse: React.FC = () => {
   // const all = useURLSearchParams("all", false, "true", false);
 
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
+  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const rfqs = useAppSelector((state) => state.rfq.rfqs);
   const rfqResponseData = useAppSelector((state) => state.rfq.rfqResponseData);
   const isLoading = useAppSelector((state) => state.rfq.rfqsLoading);
@@ -105,7 +106,6 @@ const SupplierResponse: React.FC = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const [validationError, setValidationError] = useState(false);
-  const [selectedPartner, setSelectedPartner] = useState<Partner | false>(null);
   // const [stopCheckingItemsLength, setStopCheckingItemsLength] = useState(false);
   const [fileUploadErrors, setFileUploadErrors] = useState<ImportErrorItem[]>([]);
   const [openPopper, setOpenPopper] = useState(false);
@@ -164,17 +164,6 @@ const SupplierResponse: React.FC = () => {
       });
     }
   }, [selectedPartner, page, pageSize, hasResponse, forceUpdate]);
-
-  useEffect(() => {
-    let partner: Partner | boolean = false;
-    if (isAuthenticated && partners?.length) {
-      partner =
-        partners.find((p) => p.name === "Test Demo Supplier") ||
-        partners.find((p) => p.name === localStorage.getItem("selected_supplier")) ||
-        partners[0];
-    }
-    setSelectedPartner(partner);
-  }, [partners, isAuthenticated]);
 
   useEffect(() => {
     if (rfqs.results) {
@@ -328,11 +317,10 @@ const SupplierResponse: React.FC = () => {
     }
   };
 
-  const onChangePartner = (id: number) => {
+  const onChangePartnerHandler = (id: number) => {
     const partner = partners?.find((p) => p.id === id);
     if (partner) {
-      setSelectedPartner(partner);
-      localStorage.setItem("selected_supplier", partner.name);
+      dispatch(onChangePartner(partner));
       dispatch(clearSupplierResponseData());
       setFileUploadErrors([]);
     }
@@ -380,7 +368,7 @@ const SupplierResponse: React.FC = () => {
                     <SupplierSelect
                       selectedPartner={selectedPartner}
                       partners={partners}
-                      onChangePartner={onChangePartner}
+                      onChangePartner={onChangePartnerHandler}
                     />
                   ) : (
                     <strong>{selectedPartner.name}</strong>

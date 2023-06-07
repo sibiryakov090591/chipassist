@@ -44,6 +44,7 @@ export const CLEAR_ADDRESS_ITEM = "CLEAR_ADDRESS_ITEM";
 
 export const SET_GEOLOCATION = "SET_GEOLOCATION";
 export const UPDATE_PREV_EMAIL = "UPDATE_PREV_EMAIL";
+export const CHANGE_PARTNER = "@profile/CHANGE_PARTNER";
 
 export interface ProfileState {
   profileInfo: {
@@ -57,6 +58,7 @@ export interface ProfileState {
     addressErrors: { [key: string]: string[] };
     addresses: any[];
   };
+  selectedPartner: Partner | false;
   prevEmail: string;
   isLoadingProfile: boolean;
   isUpdating: boolean;
@@ -221,6 +223,11 @@ export interface UpdatePrevEmail {
   payload: string;
 }
 
+export interface ChangePartner {
+  type: typeof CHANGE_PARTNER;
+  payload: Partner;
+}
+
 interface SetGeolocation {
   type: typeof SET_GEOLOCATION;
   payload: {
@@ -236,6 +243,7 @@ interface LogoutAction {
 }
 
 export type ProfileActionTypes =
+  | ChangePartner
   | LogoutAction
   | UpdatePrevEmail
   | SaveProfileInfoAction

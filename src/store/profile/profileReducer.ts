@@ -4,6 +4,7 @@ import * as authActionTypes from "../authentication/authTypes";
 
 const initialState: actionTypes.ProfileState = {
   profileInfo: null,
+  selectedPartner: null,
   prevEmail: localStorage.getItem("prev_user_email") || null,
   isLoadingProfile: false,
   isUpdating: false,
@@ -32,6 +33,8 @@ const updatePrevEmail = (state: actionTypes.ProfileState, action: actionTypes.Up
 
 export default function profile(state = initialState, action: actionTypes.ProfileActionTypes) {
   switch (action.type) {
+    case actionTypes.CHANGE_PARTNER:
+      return { ...state, selectedPartner: action.payload };
     case actionTypes.UPDATE_PREV_EMAIL:
       return updatePrevEmail(state, action);
     case actionTypes.SAVE_PROFILE_INFO:

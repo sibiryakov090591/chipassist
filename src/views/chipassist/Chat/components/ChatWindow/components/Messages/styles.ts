@@ -78,6 +78,20 @@ export const useStyles = makeStyles(() =>
       fontSize: 14,
       wordBreak: "break-word",
     },
+    file: {
+      cursor: "pointer",
+      background: "#eee",
+      borderRadius: 12,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "8px 12px",
+      color: "#345",
+      "& svg": {
+        color: "#878787",
+        marginRight: 8,
+      },
+    },
   }),
 );
 

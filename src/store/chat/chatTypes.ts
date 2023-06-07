@@ -73,6 +73,9 @@ export interface ChatListMessage {
   read: boolean;
   text: string;
   created: string;
+  attachment: string;
+  starter: number;
+  representatives: any[];
 }
 
 interface LoadChatFiltersRequestAction {
@@ -126,7 +129,7 @@ interface SelectChatAction {
 
 interface AddMessageAction {
   type: typeof ADD_MESSAGE;
-  payload: { chatId: number; message: string };
+  payload: { chatId: number; message: any };
 }
 
 interface SendMessageRequestAction {

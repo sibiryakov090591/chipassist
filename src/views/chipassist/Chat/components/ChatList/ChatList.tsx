@@ -10,6 +10,7 @@ import Filters from "@src/views/chipassist/Chat/components/ChatList/components/F
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
+import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -27,15 +28,16 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const chatListRef = React.useRef(null);
 
   const { chatList, selectedChat, filters } = useAppSelector((state) => state.chat);
+  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && (constants.id === "supplier_response" ? !!selectedPartner : true)) {
       dispatch(getChatList(1, filters.values)).then((res: any) => {
         if (res.results?.length) dispatch(selectChat(res.results[0]));
       });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, selectedPartner]);
 
   useEffect(() => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });
@@ -78,6 +80,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
               Date.now() - new Date(lastMessage.created).getTime() > 86400000
                 ? new Date(lastMessage.created).toLocaleDateString()
                 : new Date(lastMessage.created).toLocaleTimeString().slice(0, 5);
+            const unreadMessages = Number(item.unread_messages);
 
             return (
               <div
@@ -90,10 +93,8 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                 <Box display="flex" justifyContent="space-between">
                   <div className={classes.title}>
                     <div className={classes.sellerName}>{item.partner.name}</div>
-                    {!!item.unread_messages && (
-                      <div className={classes.unreadCount}>
-                        {item.unread_messages > 99 ? "99+" : item.unread_messages}
-                      </div>
+                    {!!unreadMessages && (
+                      <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
                     )}
                   </div>
                   <Box display="flex" alignItems="center">

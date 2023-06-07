@@ -40,12 +40,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       padding: 0,
       verticalAlign: "middle",
     },
-    attachIcon: {
-      cursor: "pointer",
-      transform: "rotate(-135deg)",
-      fontSize: 28,
-      marginRight: 8,
-    },
     thumbsContainer: {
       display: "flex",
       flexDirection: "row",

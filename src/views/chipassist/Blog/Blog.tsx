@@ -90,14 +90,17 @@ const Blog: React.FC = () => {
                   <Box display="flex" mb="12px">
                     <h1>{item.title}</h1>
                   </Box>
-                  <div>
+                  <div className={classes.content}>
+                    {!!item.img && <img src={item.img} alt="image of article" />}
                     <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
-                    <Box display="flex" justifyContent="space-between">
-                      <Link to={`${item.id}/`} className={clsx(appTheme.hyperlink, classes.link)}>
-                        Read more...
-                      </Link>
-                      <span className={classes.date}>{new Date(item.date).toDateString()}</span>
-                    </Box>
+                    <div>
+                      <Box display="flex" justifyContent="space-between">
+                        <Link to={`${item.id}/`} className={clsx(appTheme.hyperlink, classes.link)}>
+                          Read more...
+                        </Link>
+                        <span className={classes.date}>{new Date(item.date).toDateString()}</span>
+                      </Box>
+                    </div>
                   </div>
                 </div>
               );

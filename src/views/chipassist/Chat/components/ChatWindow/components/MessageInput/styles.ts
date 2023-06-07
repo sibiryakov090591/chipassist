@@ -51,6 +51,12 @@ export const useStyles = makeStyles(() =>
     error: {
       color: "red",
     },
+    attachIcon: {
+      cursor: "pointer",
+      transform: "rotate(-135deg)",
+      fontSize: 28,
+      marginRight: 8,
+    },
   }),
 );
 

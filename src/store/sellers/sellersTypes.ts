@@ -15,6 +15,7 @@ interface Items {
 export interface Seller {
   id: number;
   name: string;
+  url?: string;
 }
 
 // State

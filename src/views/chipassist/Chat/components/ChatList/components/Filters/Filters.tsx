@@ -82,7 +82,6 @@ const Filters: React.FC = () => {
               value={values.partner || ""}
               onChange={onChangeHandler}
             >
-              <MenuItem value="All">All</MenuItem>
               {filters.partners_list?.map((partner) => {
                 return (
                   <MenuItem key={partner.id} value={partner.id}>
