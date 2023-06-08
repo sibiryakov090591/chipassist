@@ -12,6 +12,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import InfiniteScroll from "react-infinite-scroller";
 import { clsx } from "clsx";
 import FallbackImage from "@src/components/FallbackImage/FallbackImage";
+import placeholderImg from "@src/images/no-article-image.png";
 import { useStyles } from "./styles";
 
 const Blog: React.FC = () => {
@@ -89,13 +90,13 @@ const Blog: React.FC = () => {
               return (
                 <Link key={item.id} to={`${item.id}/`}>
                   <div className={classes.article}>
-                    {!!item.img && <FallbackImage src={item.img} alt="image of article" />}
+                    {!!item.img && <FallbackImage src={item.img} fallbackSrc={placeholderImg} alt="image of article" />}
                     <div className={classes.content}>
                       <div>
                         <h1 className={classes.title}>{item.title}</h1>
                         <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
                       </div>
-                      <Box display="flex" justifyContent="space-between">
+                      <Box display="flex" justifyContent="space-between" mt="12px">
                         <span className={clsx(appTheme.hyperlink, classes.link)}>Read more...</span>
                         <span className={classes.date}>{new Date(item.date).toDateString()}</span>
                       </Box>

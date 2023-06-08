@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     wrapper: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
-      gridGap: "24px",
+      gridGap: "32px",
       paddingBottom: "36px",
       [theme.breakpoints.down("xs")]: {
         gridTemplateColumns: "1fr",
@@ -35,9 +35,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderRadius: "0.8rem",
       transition: "all 250ms ease",
       height: "100%",
+      display: "flex",
+      flexDirection: "column",
       "& img": {
         width: "100%",
-        maxHeight: 250,
         background: "#ffffff",
         objectFit: "cover",
       },
@@ -53,6 +54,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
+      flexGrow: 1,
     },
     searchInput: {
       borderRadius: "50ch",
