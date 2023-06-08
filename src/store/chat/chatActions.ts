@@ -182,7 +182,9 @@ export const downloadFile = (fileId: number, fileName: string) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/attachments/${fileId}/${params}`, { cancelId: "get_chat_file" })
+          .get(`/chats/attachments/${fileId}/${params}`, {
+            config: { responseType: "blob" },
+          })
           .then((res) => {
             FileDownload(res.data, fileName);
             return res.data;
