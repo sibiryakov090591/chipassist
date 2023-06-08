@@ -60,8 +60,8 @@ const Messages: React.FC = () => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight, behavior: "smooth" });
   }, []);
 
-  const onDownloadFile = (fileId: number) => () => {
-    dispatch(downloadFile(fileId)).then((blob: Blob) => {
+  const onDownloadFile = (fileId: number, fileName: string) => () => {
+    dispatch(downloadFile(fileId, fileName)).then((blob: Blob) => {
       if (blob) {
         const url = URL.createObjectURL(blob);
         window.open(url, "_blank");
@@ -128,7 +128,11 @@ const Messages: React.FC = () => {
                   <Box display="flex" flexWrap="wrap" gridGap="6px">
                     {item.message_attachments?.map((file) => {
                       return (
-                        <div key={`${file.id}`} className={classes.file} onClick={onDownloadFile(file.id)}>
+                        <div
+                          key={`${file.id}`}
+                          className={classes.file}
+                          onClick={onDownloadFile(file.id, file.file_name)}
+                        >
                           <CloudDownloadIcon />
                           <div>{file.file_name}</div>
                         </div>
