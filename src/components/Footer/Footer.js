@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
-import { Box, Container, Grid } from "@material-ui/core";
+import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { useStyles } from "./footerStyles";
 
@@ -42,9 +42,11 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/parts"}>
                       Products
                     </NavLink>
-                    <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                      BOM Tool
-                    </NavLink>
+                    <Hidden smDown>
+                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                        BOM Tool
+                      </NavLink>
+                    </Hidden>
                   </Box>
                   <Box className={classes.navGroup}>
                     <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
