@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import * as actionTypes from "./chatTypes";
 import { ChatListMessage } from "./chatTypes";
 
+const FileDownload = require("js-file-download");
+
 const isUser = constants.id !== "supplier_response";
 
 export const getChatList = (page = 1, filters: any = {}, join = false) => {
@@ -172,7 +174,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
   };
 };
 
-export const downloadFile = (fileId: number) => {
+export const downloadFile = (fileId: number, name: string) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -184,6 +186,7 @@ export const downloadFile = (fileId: number) => {
             config: { responseType: "blob" },
           })
           .then((res) => {
+            FileDownload(res.data, name);
             return res.data;
           })
           .catch((e) => {
