@@ -7,9 +7,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     wrapper: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
-      gridGap: "24px",
+      gridGap: "32px",
       paddingBottom: "36px",
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("xs")]: {
         gridTemplateColumns: "1fr",
       },
     },
@@ -27,32 +27,34 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     article: {
       backgroundColor: "#fff",
-      borderRadius: "0.25rem",
+      border: "1px solid #fafafa",
       boxShadow: "0 0.5em 1em -0.125em rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.02)",
       color: "#4a4a4a",
       fontSize: 16,
-      padding: "1.5rem",
+      overflow: "hidden",
+      borderRadius: "0.8rem",
+      transition: "all 250ms ease",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
       "& img": {
-        width: 180,
-        height: "max-content",
-        float: "left",
-        marginRight: 8,
-        borderRadius: 12,
+        width: "100%",
         background: "#ffffff",
         objectFit: "cover",
-        border: "1px solid #eee",
-        [theme.breakpoints.down(420)]: {
-          float: "none",
-          marginRight: 0,
-          marginBottom: 12,
-        },
+      },
+      "&:hover": {
+        borderColor: "#535353",
       },
     },
+    title: {
+      color: "#345",
+    },
     content: {
-      [theme.breakpoints.down(420)]: {
-        display: "flex",
-        flexDirection: "column",
-      },
+      padding: "1.4rem",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      flexGrow: 1,
     },
     searchInput: {
       borderRadius: "50ch",
