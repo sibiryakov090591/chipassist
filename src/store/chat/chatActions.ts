@@ -140,7 +140,7 @@ export const getFilters = () => {
 
 export const sendFiles = (chatId: number, files: File[]) => {
   const formData = new FormData();
-  files.map((file) => formData.append(`file[]`, file));
+  files.map((file) => formData.append(`files[]`, file));
 
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
@@ -149,14 +149,14 @@ export const sendFiles = (chatId: number, files: File[]) => {
       types: actionTypes.SEND_MESSAGE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .post(`/chats/${chatId}/attachment/${params}`, {
+          .post(`/chats/${chatId}/attachments/${params}`, {
             data: formData,
           })
           .then((res) => {
             const newMessage = {
               id: uuidv4(),
               text: "",
-              attachment: res.data.attachment,
+              message_attachments: res.data.message_attachments,
               sender: "You",
               read: true,
               created: new Date().toISOString(),
@@ -172,7 +172,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
   };
 };
 
-export const downloadFile = (chatId: number, messageId: number) => {
+export const downloadFile = (fileId: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -180,7 +180,7 @@ export const downloadFile = (chatId: number, messageId: number) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/${chatId}/attachment/${messageId}/${params}`, { cancelId: "get_chat_file" })
+          .get(`/chats/attachments/${fileId}/${params}`, { cancelId: "get_chat_file" })
           .then((res) => {
             return res.data;
           })
