@@ -6,7 +6,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import InfiniteScroll from "react-infinite-scroller";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
 import { useStyles } from "./styles";
@@ -60,8 +60,8 @@ const Messages: React.FC = () => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight, behavior: "smooth" });
   }, []);
 
-  const onDownloadFile = (chatId: number, messageId: number) => () => {
-    dispatch(downloadFile(chatId, messageId)).then((blob: Blob) => {
+  const onDownloadFile = (fileId: number) => () => {
+    dispatch(downloadFile(fileId)).then((blob: Blob) => {
       if (blob) {
         const url = URL.createObjectURL(blob);
         window.open(url, "_blank");
@@ -125,12 +125,16 @@ const Messages: React.FC = () => {
                     </span>
                     <span className={classes.messageDate}>{time}</span>
                   </div>
-                  {!!item.attachment && (
-                    <div className={classes.file} onClick={onDownloadFile(selectedChat.id, item.id)}>
-                      <GetAppIcon />
-                      <div>{item.attachment}</div>
-                    </div>
-                  )}
+                  <Box display="flex" flexWrap="wrap" gridGap="6px">
+                    {item.message_attachments?.map((file) => {
+                      return (
+                        <div key={`${file.id}`} className={classes.file} onClick={onDownloadFile(file.id)}>
+                          <CloudDownloadIcon />
+                          <div>{file.file_name}</div>
+                        </div>
+                      );
+                    })}
+                  </Box>
                   <div className={classes.message}>{item.text}</div>
                 </div>
               </div>

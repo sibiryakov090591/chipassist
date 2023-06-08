@@ -73,7 +73,7 @@ export interface ChatListMessage {
   read: boolean;
   text: string;
   created: string;
-  attachment: string;
+  message_attachments: Array<{ id: number; file_name: string }>;
   starter: number;
   representatives: any[];
 }

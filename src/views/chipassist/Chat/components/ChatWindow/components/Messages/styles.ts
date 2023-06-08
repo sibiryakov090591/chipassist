@@ -87,6 +87,15 @@ export const useStyles = makeStyles(() =>
       justifyContent: "space-between",
       padding: "8px 12px",
       color: "#345",
+      maxWidth: 200,
+      "&:hover": {
+        background: "#dedede",
+      },
+      "& > div": {
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      },
       "& svg": {
         color: "#878787",
         marginRight: 8,
