@@ -87,23 +87,21 @@ const Blog: React.FC = () => {
           {!isLoading &&
             list.results.map((item) => {
               return (
-                <div key={item.id} className={classes.article}>
-                  <Box display="flex" mb="12px">
-                    <h1>{item.title}</h1>
-                  </Box>
-                  <div className={classes.content}>
+                <Link key={item.id} to={`${item.id}/`}>
+                  <div className={classes.article}>
                     {!!item.img && <FallbackImage src={item.img} alt="image of article" />}
-                    <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
-                    <div>
+                    <div className={classes.content}>
+                      <div>
+                        <h1 className={classes.title}>{item.title}</h1>
+                        <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
+                      </div>
                       <Box display="flex" justifyContent="space-between">
-                        <Link to={`${item.id}/`} className={clsx(appTheme.hyperlink, classes.link)}>
-                          Read more...
-                        </Link>
+                        <span className={clsx(appTheme.hyperlink, classes.link)}>Read more...</span>
                         <span className={classes.date}>{new Date(item.date).toDateString()}</span>
                       </Box>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
         </InfiniteScroll>
