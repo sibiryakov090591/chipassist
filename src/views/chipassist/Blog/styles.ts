@@ -40,6 +40,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         borderRadius: 12,
         background: "#ffffff",
         objectFit: "cover",
+        border: "1px solid #eee",
         [theme.breakpoints.down(420)]: {
           float: "none",
           marginRight: 0,
