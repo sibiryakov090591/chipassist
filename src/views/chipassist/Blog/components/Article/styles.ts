@@ -6,9 +6,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     wrapper: {
       "& img": {
-        borderRadius: 12,
         objectFit: "cover",
-        margin: "12px",
       },
     },
     intro: {

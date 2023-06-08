@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { Box, Dialog, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import placeholderImg from "@src/images/file.png";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import FallbackImage from "@src/components/FallbackImage/FallbackImage";
 import { useStyles as useMessageInputStyles } from "../MessageInput/styles";
 import { useStyles } from "./styles";
 
@@ -19,16 +20,6 @@ interface Props {
   onAddFiles: any;
   handleDeleteFile: any;
 }
-
-const FallbackImage: React.FC<any> = ({ src, fallbackSrc, ...rest }) => {
-  const [imageSource, setImageSource] = useState(src);
-
-  const handleImageError = () => {
-    setImageSource(fallbackSrc);
-  };
-
-  return <img src={imageSource} onError={handleImageError} {...rest} />;
-};
 
 const UploadFilesModal: React.FC<Props> = ({
   open,

@@ -102,7 +102,10 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                     <Status status="Requested" />
                   </Box>
                 </Box>
-                <div className={classes.message}>{lastMessage?.text}</div>
+                <div className={classes.message}>
+                  {lastMessage?.text ||
+                    (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
+                </div>
                 <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
                   <div>{item.rfq.upc}</div>
                   {!!item.rfq.quantity && !!item.rfq.price && (

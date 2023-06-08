@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import useAppTheme from "@src/theme/useAppTheme";
 import InfiniteScroll from "react-infinite-scroller";
 import { clsx } from "clsx";
+import FallbackImage from "@src/components/FallbackImage/FallbackImage";
 import { useStyles } from "./styles";
 
 const Blog: React.FC = () => {
@@ -91,7 +92,7 @@ const Blog: React.FC = () => {
                     <h1>{item.title}</h1>
                   </Box>
                   <div className={classes.content}>
-                    {!!item.img && <img src={item.img} alt="image of article" />}
+                    {!!item.img && <FallbackImage src={item.img} alt="image of article" />}
                     <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
                     <div>
                       <Box display="flex" justifyContent="space-between">

@@ -86,23 +86,17 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
     if (chatId && !isSending) {
       setIsSending(true);
 
-      if (message.trim()) {
-        dispatch(sendMessage(chatId, message.trim()))
-          .then(() => {
-            setMessage("");
-          })
-          .finally(() => {
-            setIsSending(false);
-          });
-      }
+      const promises: any = [];
 
+      if (message.trim()) {
+        promises.push(dispatch(sendMessage(chatId, message.trim())).then(() => setMessage("")));
+      }
       if (files.length) {
         setOpen(false);
-        dispatch(sendFiles(chatId, files)).finally(() => {
-          setIsSending(false);
-          setFiles([]);
-        });
+        promises.push(dispatch(sendFiles(chatId, files)).finally(() => setFiles([])));
       }
+
+      Promise.all(promises).finally(() => setIsSending(false));
     }
   };
 

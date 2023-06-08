@@ -174,7 +174,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
   };
 };
 
-export const downloadFile = (fileId: number, fileName: string) => {
+export const downloadFile = (fileId: number, name: string) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -182,9 +182,11 @@ export const downloadFile = (fileId: number, fileName: string) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/attachments/${fileId}/${params}`, { cancelId: "get_chat_file" })
+          .get(`/chats/attachments/${fileId}/${params}`, {
+            config: { responseType: "blob" },
+          })
           .then((res) => {
-            FileDownload(res.data, fileName);
+            FileDownload(res.data, name);
             return res.data;
           })
           .catch((e) => {

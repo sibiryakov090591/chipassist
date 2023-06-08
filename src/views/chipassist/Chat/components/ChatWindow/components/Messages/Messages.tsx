@@ -9,6 +9,8 @@ import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 
@@ -60,8 +62,8 @@ const Messages: React.FC = () => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight, behavior: "smooth" });
   }, []);
 
-  const onDownloadFile = (fileId: number, fileName: string) => () => {
-    dispatch(downloadFile(fileId, fileName)).then((blob: Blob) => {
+  const onDownloadFile = (fileId: number, name: string) => () => {
+    dispatch(downloadFile(fileId, name)).then((blob: Blob) => {
       if (blob) {
         const url = URL.createObjectURL(blob);
         window.open(url, "_blank");
@@ -121,7 +123,11 @@ const Messages: React.FC = () => {
                 <div className={classes.messageItem}>
                   <div className={classes.messageInfo}>
                     <span className={classes.messageFrom}>
-                      {item.sender === "You" ? "You" : selectedChat?.partner?.name}
+                      {item.sender === "You"
+                        ? "You"
+                        : constants.id !== ID_SUPPLIER_RESPONSE
+                        ? selectedChat?.partner?.name
+                        : item.sender}
                     </span>
                     <span className={classes.messageDate}>{time}</span>
                   </div>

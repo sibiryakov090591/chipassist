@@ -34,7 +34,7 @@ const blogReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return {
         ...state,
         isLoading: false,
-        selected: action.response.response,
+        selected: action.response.results,
       };
     }
     case actionTypes.LOAD_ARTICLE_F:
@@ -50,14 +50,14 @@ const blogReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         isLoading: true,
       };
     case actionTypes.LOAD_BLOG_LIST_S: {
-      const { pages, current_page, response } = action.response;
+      const { total_pages, current_page, results } = action.response;
       return {
         ...state,
         isLoading: false,
         list: {
-          total_pages: pages,
+          total_pages,
           page: current_page,
-          results: response,
+          results,
         },
       };
     }
@@ -68,13 +68,13 @@ const blogReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
 
     case actionTypes.LOAD_MORE_BLOG_LIST_S: {
-      const { pages, current_page, response } = action.response;
+      const { total_pages, current_page, results } = action.response;
       return {
         ...state,
         list: {
-          total_pages: pages,
+          total_pages,
           page: current_page,
-          results: [...state.list.results, ...response],
+          results: [...state.list.results, ...results],
         },
       };
     }
