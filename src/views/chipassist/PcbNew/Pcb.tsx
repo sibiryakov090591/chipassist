@@ -19,7 +19,7 @@ const Pcb: React.FC = () => {
   }, []);
 
   return (
-    <Page title={t("page_title")} description={t("page_description")}>
+    <Page title={t("page_title", { name: constants.title })} description={t("page_description")}>
       <Container maxWidth="xl">
         <Box mt={5} mb={5}>
           <div className={classes.text}>

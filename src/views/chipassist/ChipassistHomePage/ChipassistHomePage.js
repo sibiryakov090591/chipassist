@@ -83,10 +83,7 @@ export const ChipassistHomePage = () => {
   };
 
   return (
-    <Page
-      title={t("page_title", { name: constants.title })}
-      description={t("page_description", { name: constants.title })}
-    >
+    <Page title={t("page_title", { name: constants.title })} description={t("page_description")}>
       <div className={classes.main}>
         {isMdUp && (
           <section className={classes.header}>
@@ -166,11 +163,12 @@ export const ChipassistHomePage = () => {
               <Grid item xs={12} md={6}>
                 <Box className={classes.heroSearchBlock}>
                   <h1 className={classes.heroTitle}>
-                    Our supply is the <br /> <span className={classes.blueColor}>key for your success</span>
+                    Global marketplace for <br />
+                    <span className={classes.blueColor}>simple purchases of electronic components.</span>
                   </h1>
                   <h2 className={classes.heroSubTitle}>
-                    We help customers from all over the world to effectively eliminate the shortage of electronic
-                    products on the market.
+                    We believe finding electronic components should be easy. Shop across distributors, manufacturers,
+                    and parts, or compare pricing and monitor inventory.
                   </h2>
                   <Hidden smDown>
                     <SearchSuggestion

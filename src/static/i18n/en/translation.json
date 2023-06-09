@@ -193,8 +193,8 @@
     "account": "Account"
   },
   "sell_excess": {
-    "page_title": "{{name}} - sell excessive inventory",
-    "page_description": "{{name}} helps OEM and EMS companies to turn their excessive inventory into profits",
+    "page_title": "Selling stocks & excessive inventory on {{name}}",
+    "page_description": "{{name}} helps to turn your excessive inventory into profits.",
     "alertMessage": "Request to sell excess stock successfully sent!",
     "top": {
       "paragraph_1": "Are you looking to sell your surplus stock that can’t be returned to the original supplier? We help many of our partners quickly and efficiently sell their electronic components overstocks.",
@@ -330,8 +330,8 @@
     "select_product_distributor": "Product not found",
     "order_not_created": "Order could not be created",
     "bom": "BOM",
-    "bom_tool": "BOM Tool",
-    "page_description": "bom lists, create bom",
+    "bom_tool": "BOM Tool-{{name}}",
+    "page_description": "The BOM Tool makes it easy to upload a list of electronics components and compare distributor prices, saving both money and time. Publish a bill of materials right now for free.",
     "bom_list": "Processed BOMs",
     "no_saved_bom_lists": "You have no saved BOM-lists. ",
     "you_can": "",
@@ -800,16 +800,16 @@
     }
   },
   "home": {
-    "page_title": "{{name}} - Search and order electronic components",
+    "page_title": "Search electronic parts, components prices|Datasheets & inventory-{{name}}",
     "title": "Welcome to {{name}}!",
-    "page_description": "{{name}} is the place where you can find and order electronic components, Printed Circuit Boards (PCBs), power supplies and many more in just one click",
+    "page_description": "Global marketplace for sourcing electronic components. To compare prices and monitor inventory, shop across 180 distributors & manufacturers, and 20 000 000 parts.",
     "advanced_section": {
       "title": "Advanced Search is the Key",
       "paragraph_1": "{{name}} is the place where you can find and order electronic components, Printed Circuit Boards (PCBs) and power supplies.",
       "paragraph_2": "{{name}} is an open eco-system for suppliers and service providers where you can offer your products and services to the audience worldwide."
     },
     "workplace_section": {
-      "title": "Best Market Offering in 24 Hours",
+      "title": "Best Market Offering in 48 Hours",
       "paragraph_1": "{{name}} introduces the concept of Integrated Customer's Workplace (ICW) where all necessary routines of finding and ordering e-components can be done from any device, any place, any time.",
       "list_title": "Rapid RFQ Exchange is:",
       "line_1": "Sending anonymous RFQs to the tens of suppliers from all over the world in one click",
@@ -1019,8 +1019,8 @@
     }
   },
   "pcb_new": {
-    "page_title": "PCBs",
-    "page_description": "pcbs",
+    "page_title": "Request a PCB Quote | {{name}}",
+    "page_description": "Want to learn more about our pcb board capabilities or require help with a PCB project you are working on? From design to completion of production, we are here to assist you.",
     "title": "Request your next PCB",
     "description_1": "Engage with PCB suppliers from all over the world and get the best offering for the PCB you need.",
     "description_2": "Send us your Gerber files and additional data or provide a detailed specification and we will get back to you with a competitive quotation.",
@@ -1030,8 +1030,8 @@
     "hide_details": "Hide details"
   },
   "pcb": {
-    "page_title": "PCBs",
-    "page_description": "pcbs",
+    "page_title": "Request a PCB Quote | {{name}}",
+    "page_description": "Want to learn more about our pcb board capabilities or require help with a PCB project you are working on? From design to completion of production, we are here to assist you.",
     "title": "PCBs",
     "pcb": "PCB",
     "type": "PCB type",
