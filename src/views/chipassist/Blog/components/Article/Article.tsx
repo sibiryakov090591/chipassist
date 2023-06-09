@@ -5,9 +5,10 @@ import Container from "@material-ui/core/Container";
 import { Page } from "@src/components";
 import Preloader from "@src/components/Preloader/Preloader";
 import { Box } from "@material-ui/core";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getArticle } from "@src/store/blog/blogActions";
 import clsx from "clsx";
+import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { useStyles } from "./styles";
 import { useStyles as useBlogStyles } from "../../styles";
 
@@ -15,9 +16,9 @@ const Article: React.FC = () => {
   const classes = useStyles();
   const blogClasses = useBlogStyles();
   const dispatch = useAppDispatch();
-  const { articleId } = useParams();
 
   const { selected, isLoading } = useAppSelector((state) => state.blog);
+  const articleId = useURLSearchParams("article", false, null, false);
 
   useEffect(() => {
     if (articleId) dispatch(getArticle(+articleId));
@@ -26,6 +27,11 @@ const Article: React.FC = () => {
 
   const isDisabledNext = isLoading || !selected || !selected.next || selected.next.id === +articleId;
   const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.id === +articleId;
+
+  const previousLink =
+    selected && `/blog/${selected.previous.title.toLowerCase().split(" ").join("-")}/?article=${selected.previous.id}`;
+  const nextLink =
+    selected && `/blog/${selected.next.title.toLowerCase().split(" ").join("-")}/?article=${selected.next.id}`;
 
   return (
     <Page title="Article" description={`${selected?.intro}`}>
@@ -54,7 +60,7 @@ const Article: React.FC = () => {
           <Box display="flex" justifyContent="space-around" p="42px 0 24px 0">
             <Link
               className={clsx(classes.paginationLink, { disabled: isDisabledPrevious })}
-              to={!isDisabledPrevious && `/blog/${selected?.previous.id}`}
+              to={!isDisabledPrevious && previousLink}
             >
               {selected?.previous?.title}
             </Link>
@@ -63,7 +69,7 @@ const Article: React.FC = () => {
             </Link>
             <Link
               className={clsx(classes.paginationLink, { disabled: isDisabledNext })}
-              to={!isDisabledNext && `/blog/${selected?.next.id}`}
+              to={!isDisabledNext && nextLink}
             >
               {selected?.next?.title}
             </Link>

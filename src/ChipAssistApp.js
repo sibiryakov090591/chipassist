@@ -364,7 +364,7 @@ const ChipAssistApp = () => {
                     }
                   />
                   <Route
-                    path=":articleId"
+                    path=":article"
                     element={
                       <Suspense fallback={}>
                         <Article />
