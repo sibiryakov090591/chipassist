@@ -27,6 +27,7 @@ const Messages: React.FC = () => {
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const messages = useAppSelector((state) => state.chat.messages);
+  const files = useAppSelector((state) => state.chat.files);
 
   const [isSending, setIsSending] = useState(false);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
@@ -68,8 +69,8 @@ const Messages: React.FC = () => {
   }, []);
 
   const onDownloadFile = (fileId: number, name: string) => () => {
-    if (messages.files[fileId]) {
-      return onOpenPreview(messages.files[fileId].url)();
+    if (files[fileId]) {
+      return onOpenPreview(files[fileId].url)();
     }
     return dispatch(downloadFile(fileId)).then((blob: Blob) => {
       if (blob) FileDownload(blob, name);
@@ -142,7 +143,7 @@ const Messages: React.FC = () => {
                   </div>
                   <Box display="flex" flexWrap="wrap" gridGap="6px">
                     {item.message_attachments?.map((attachment) => {
-                      const file = messages.files[attachment.id];
+                      const file = files[attachment.id];
                       const imgUrl =
                         (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
                         (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||

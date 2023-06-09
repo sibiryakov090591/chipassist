@@ -50,10 +50,10 @@ export interface ChatState {
     total_pages: number;
     page: number;
     results: ChatListMessage[];
-    files: { [key: number]: FileType };
     isLoading: boolean;
     loaded: boolean;
   };
+  files: { [key: number]: FileType };
 }
 
 export interface FileType {

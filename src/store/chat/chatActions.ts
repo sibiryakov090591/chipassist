@@ -69,7 +69,7 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
             res.data.results.forEach((i: ChatListMessage) => {
               i.message_attachments.forEach((file) => {
                 const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
-                if (validType) {
+                if (validType && !getState().chat.files[file.id]) {
                   filesPromises.push(
                     dispatch(downloadFile(file.id)).then((blob: Blob) => {
                       files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
