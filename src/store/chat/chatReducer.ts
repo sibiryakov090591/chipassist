@@ -22,6 +22,7 @@ const initialState: actionTypes.ChatState = {
     page: null,
     total_pages: null,
     results: [],
+    files: {},
     isLoading: true,
     loaded: false,
   },
@@ -123,6 +124,12 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     }
     case actionTypes.LOAD_MESSAGES_F:
       return { ...state, messages: { ...state.messages, isLoading: false, loaded: true } };
+
+    case actionTypes.SAVE_FILES:
+      return {
+        ...state,
+        messages: { ...state.messages, files: { ...state.messages.files, ...action.payload } },
+      };
 
     case actionTypes.SEND_MESSAGE_R:
       return { ...state, messages: { ...state.messages, error: "" } };

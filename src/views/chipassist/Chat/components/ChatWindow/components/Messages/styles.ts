@@ -93,8 +93,8 @@ export const useStyles = makeStyles(() =>
       },
       "& svg": {
         color: "#878787",
-        marginRight: 4,
-        fontSize: 20,
+        marginRight: 6,
+        fontSize: 18,
       },
       "& img": {
         height: 16,

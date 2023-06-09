@@ -25,6 +25,7 @@ export const SEND_MESSAGE_ARRAY = [SEND_MESSAGE_R, SEND_MESSAGE_S, SEND_MESSAGE_
 
 export const ON_CHANGE_FILTERS_VALUES = "@chat/ON_CHANGE_FILTERS_VALUES";
 export const DEDUCT_READ_MESSAGES = "@chat/DEDUCT_READ_MESSAGES";
+export const SAVE_FILES = "@chat/SAVE_FILES";
 export const CLEAR_CHAT_REDUCER = "@chat/CLEAR_CHAT_REDUCER";
 
 export interface ChatState {
@@ -49,9 +50,15 @@ export interface ChatState {
     total_pages: number;
     page: number;
     results: ChatListMessage[];
+    files: { [key: number]: FileType };
     isLoading: boolean;
     loaded: boolean;
   };
+}
+
+export interface FileType {
+  type: string;
+  url: string;
 }
 
 export interface ChatListItem {
@@ -158,7 +165,13 @@ interface OnChangeFiltersValuesAction {
   payload: any;
 }
 
+interface SaveFilesAction {
+  type: typeof SAVE_FILES;
+  payload: any;
+}
+
 export type ChatActionTypes =
+  | SaveFilesAction
   | SelectChatAction
   | AddMessageAction
   | SendMessageRequestAction
