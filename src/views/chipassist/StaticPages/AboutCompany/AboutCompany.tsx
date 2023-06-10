@@ -89,14 +89,14 @@ const AboutCompany = () => {
                 reliable.
               </p>
             </Grid>
-            <Grid item md={12} xs={12}>
-              <span className={classes.footerTitle}>
-                For more information about data, search results, and using ChipAssist please click{" "}
-                <NavLink className={classes.link} to={"/about_company"}>
-                  here
-                </NavLink>
-              </span>
-            </Grid>
+            {/*<Grid item md={12} xs={12}>*/}
+            {/*  <span className={classes.footerTitle}>*/}
+            {/*    For more information about data, search results, and using ChipAssist please click{" "}*/}
+            {/*    <NavLink className={classes.link} to={"/about_company"}>*/}
+            {/*      here*/}
+            {/*    </NavLink>*/}
+            {/*  </span>*/}
+            {/*</Grid>*/}
           </Grid>
         </Container>
       </section>
