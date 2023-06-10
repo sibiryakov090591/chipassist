@@ -82,6 +82,11 @@ const Pcb = lazy(() => lazyLoader(() => import(/* webpackChunkName: "pcb" */ "@s
 const Policy = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "policy" */ "@src/views/chipassist/StaticPages/Policy")),
 );
+const About = lazy(() =>
+  lazyLoader(() =>
+    import(/* webpackChunkName: "policy" */ "@src/views/chipassist/StaticPages/AboutCompany/AboutCompany"),
+  ),
+);
 const Terms = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "terms" */ "@src/views/chipassist/StaticPages/Terms")),
 );
@@ -436,6 +441,16 @@ const ChipAssistApp = () => {
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <Policy />
+                  </Suspense>
+                }
+              />
+            )}
+            {constants.id !== ID_ICSEARCH && (
+              <Route
+                path={"/about_company"}
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <About />
                   </Suspense>
                 }
               />

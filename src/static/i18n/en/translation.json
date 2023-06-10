@@ -1351,7 +1351,16 @@
   },
   "static_pages": {
     "about_company": {
-      "header": "About company"
+      "page_title": "About {{name}}: Global marketplace for sourcing electronic components.",
+      "page_description": "{{name}} is a marketplace for electronic parts. Look up any electronic component you need in an easy way.Learn more about {{name}} now!",
+      "sub_header": "Your Go-To Worldwide Marketplace for Electronic Components",
+      "company_name": "ChipAssist'",
+      "search_tool": "Powerful Search Engine",
+      "search_tool_description": "Our robust search engine allows for the rapid and seamless comparison of millions of components. Easily select and purchase parts from distributors, making the sourcing process efficient and hassle-free.",
+      "bom_tool": "User-Friendly BOM Tool",
+      "bom_tool_description": "With our intuitive BOM (Bill of Materials) tool, you can edit, save, and generate BOMs, providing a comprehensive snapshot of costs and product availability for your desired components. Stay informed about price fluctuations and availability timelines to mitigate risks and optimize your procurement strategy.",
+      "api_tool": "Seamless API Integration",
+      "api_tool_description": "Another key feature is our seamless API integration capability, which allows users to connect their own applications with the platform’s database of products and components, making data collection easier than ever before."
     },
     "for_distributors": {
       "header": "For Distributors"
