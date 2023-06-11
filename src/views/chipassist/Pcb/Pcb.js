@@ -41,6 +41,7 @@ import PcbRow from "@src/views/chipassist/Pcb/components/PcbRow/PcbRow";
 import PcbResponses from "@src/views/chipassist/Pcb/components/PcbResponses/PcbResponses";
 import PcbMakeResponse from "@src/views/chipassist/Pcb/components/PcbMakeResponse/PcbMakeResponse";
 import PcbCommentModal from "@src/views/chipassist/Pcb/components/PcbCommentModal/PcbCommentModal";
+import constants from "@src/constants/constants";
 import { useStyles } from "./style";
 
 export const PCB_TYPE_YOUR = "PCB_TYPE_YOUR";
@@ -347,7 +348,7 @@ function Pcb(props) {
   // };
 
   return (
-    <Page title={t("page_title")} description={t("page_description")}>
+    <Page title={t("page_title", { name: constants.title })} description={t("page_description")}>
       <Container maxWidth="xl">
         <Box mt={5} mb={5}>
           <Card className={clsx(classes.root, className)}>

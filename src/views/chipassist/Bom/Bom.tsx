@@ -9,6 +9,7 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Page } from "@src/components";
 import { getAttributesThunk } from "@src/store/bom/bomActions";
 import useAppSelector from "@src/hooks/useAppSelector";
+import constants from "@src/constants/constants";
 import BomList from "./components/BomList/BomList";
 import { useStyles } from "./style";
 import BomUpload from "./components/BomUpload/BomUpload";
@@ -37,7 +38,7 @@ const Bom: React.FC = () => {
   };
 
   return (
-    <Page title={t("bom_tool")} description={t("page_description")}>
+    <Page title={t("bom_tool", { name: constants.title })} description={t("page_description")}>
       <Container maxWidth="xl">
         <Box style={{ position: "relative" }} mt={5} mb={5}>
           <Paper square>
