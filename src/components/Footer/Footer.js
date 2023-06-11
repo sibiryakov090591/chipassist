@@ -36,7 +36,7 @@ const Footer = () => {
               <Box display="flex" className={classes.nav}>
                 <Box display="flex" flexWrap="wrap">
                   <Box className={classes.navGroup}>
-                    <NavLink className={classes.navLink} to={"/"}>
+                    <NavLink className={classes.navLink} to={"/about_company"}>
                       About us
                     </NavLink>
                     <NavLink className={classes.navLink} to={"/parts"}>

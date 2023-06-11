@@ -124,8 +124,7 @@ export const SellExcess = () => {
           <Grid container spacing={4}>
             <Grid item md={6} xs={12}>
               <h1 className={classes.topTitle}>
-                <span className={classes.redColor}>ChipAssist</span> helps OEM and EMS companies to turn their excessive
-                inventory into profits
+                <span className={classes.redColor}>ChipAssist</span> helps turn your excessive inventory into profits.
               </h1>
               <p className={classes.paragraph}>{t("top.paragraph_1")}</p>
               <p className={classes.paragraph}>{t("top.paragraph_2")}</p>
