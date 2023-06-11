@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   section: {
     padding: "3rem 0",
   },
+  tools: {
+    backgroundColor: "#fcf0f2",
+  },
   paragraph: {
     fontSize: "1.2rem",
   },
@@ -14,18 +17,27 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: theme.palette.primary.main,
     marginBottom: "2.5rem",
     textAlign: "center",
-    alignItems: "center",
+  },
+  subTitle: {
+    fontWeight: 400,
   },
   footerTitle: {
     fontSize: "2.0rem",
     color: theme.palette.primary.main,
     marginBottom: "2.5rem",
+    textAlign: "center",
   },
   redColor: {
     color: "#e94160",
   },
   toolGrid: {
     marginTop: "2.5rem",
+    "& p": {
+      color: "#666666",
+    },
+    "& h3": {
+      fontSize: 20,
+    },
   },
   link: {
     color: theme.palette.primary.main,
