@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { ApiClientInterface } from "@src/services/ApiClient";
 import { RootState } from "@src/store";
 import * as actionTypes from "./blogTypes";
+import { Article } from "./blogTypes";
 
 export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join = false) => {
   let params = `?page=${page}&page_size=25`;
@@ -15,7 +16,15 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
       promise: (client: ApiClientInterface) =>
         client
           .get(`https://blog.master.chipassist.com/api/blogs/${params}`, { noapi: true })
-          .then((res) => res.data)
+          .then((res) => {
+            return {
+              ...res.data,
+              results: res.data.results.map((article: Article) => ({
+                ...article,
+                link: `${article.title.toLowerCase().split(" ").join("-")}/?article=${article.id}`,
+              })),
+            };
+          })
           .catch((e) => {
             console.log("***LOAD_BLOG_LIST_ERROR", e);
             throw e;

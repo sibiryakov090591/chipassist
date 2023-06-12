@@ -39,6 +39,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       flexDirection: "column",
       "& img": {
         width: "100%",
+        height: 235,
         background: "#ffffff",
         objectFit: "cover",
       },

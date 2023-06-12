@@ -91,15 +91,25 @@ export const useStyles = makeStyles(() =>
       "&:hover": {
         background: "#dedede",
       },
-      "& > div": {
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-      },
       "& svg": {
         color: "#878787",
-        marginRight: 8,
+        marginRight: 6,
+        fontSize: 18,
       },
+      "& img": {
+        height: 16,
+        marginRight: 4,
+      },
+    },
+    fileName: {
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
+    image: {
+      maxWidth: 200,
+      borderRadius: 12,
+      cursor: "pointer",
     },
   }),
 );

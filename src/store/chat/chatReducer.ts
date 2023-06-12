@@ -25,6 +25,7 @@ const initialState: actionTypes.ChatState = {
     isLoading: true,
     loaded: false,
   },
+  files: {},
 };
 
 const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) => {
@@ -123,6 +124,12 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     }
     case actionTypes.LOAD_MESSAGES_F:
       return { ...state, messages: { ...state.messages, isLoading: false, loaded: true } };
+
+    case actionTypes.SAVE_FILES:
+      return {
+        ...state,
+        files: { ...state.files, ...action.payload },
+      };
 
     case actionTypes.SEND_MESSAGE_R:
       return { ...state, messages: { ...state.messages, error: "" } };

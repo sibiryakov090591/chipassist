@@ -11,8 +11,13 @@ import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
+import doc_icon from "@src/images/files_icons/docx_icon.png";
+import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
+
+const FileDownload = require("js-file-download");
 
 const Messages: React.FC = () => {
   const classes = useStyles();
@@ -22,6 +27,7 @@ const Messages: React.FC = () => {
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const messages = useAppSelector((state) => state.chat.messages);
+  const files = useAppSelector((state) => state.chat.files);
 
   const [isSending, setIsSending] = useState(false);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
@@ -63,12 +69,16 @@ const Messages: React.FC = () => {
   }, []);
 
   const onDownloadFile = (fileId: number, name: string) => () => {
-    dispatch(downloadFile(fileId, name)).then((blob: Blob) => {
-      if (blob) {
-        const url = URL.createObjectURL(blob);
-        window.open(url, "_blank");
-      }
+    if (files[fileId]) {
+      return onOpenPreview(files[fileId].url)();
+    }
+    return dispatch(downloadFile(fileId)).then((blob: Blob) => {
+      if (blob) FileDownload(blob, name);
     });
+  };
+
+  const onOpenPreview = (url: any) => () => {
+    if (url) window.open(url, "_blank");
   };
 
   return (
@@ -132,15 +142,28 @@ const Messages: React.FC = () => {
                     <span className={classes.messageDate}>{time}</span>
                   </div>
                   <Box display="flex" flexWrap="wrap" gridGap="6px">
-                    {item.message_attachments?.map((file) => {
-                      return (
+                    {item.message_attachments?.map((attachment) => {
+                      const file = files[attachment.id];
+                      const imgUrl =
+                        (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
+                        (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                        (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+                      return file && !file.type.includes("pdf") ? (
+                        <img
+                          key={attachment.id}
+                          className={classes.image}
+                          src={file.url}
+                          alt="file"
+                          onClick={onOpenPreview(file.url)}
+                        />
+                      ) : (
                         <div
-                          key={`${file.id}`}
+                          key={attachment.id}
                           className={classes.file}
-                          onClick={onDownloadFile(file.id, file.file_name)}
+                          onClick={onDownloadFile(attachment.id, attachment.file_name)}
                         >
-                          <CloudDownloadIcon />
-                          <div>{file.file_name}</div>
+                          {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
+                          <div className={classes.fileName}>{attachment.file_name}</div>
                         </div>
                       );
                     })}

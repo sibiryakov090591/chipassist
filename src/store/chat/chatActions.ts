@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import * as actionTypes from "./chatTypes";
 import { ChatListMessage } from "./chatTypes";
 
-const FileDownload = require("js-file-download");
-
 const isUser = constants.id !== "supplier_response";
 
 export const getChatList = (page = 1, filters: any = {}, join = false) => {
@@ -38,7 +36,7 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
 };
 
 export const getMessages = (chatId: number, filters: { [key: string]: any }, join = false) => {
-  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+  return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     let params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}&level=messages`;
     Object.entries(filters).forEach((v) => {
@@ -53,7 +51,7 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
       promise: (client: ApiClientInterface) =>
         client
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
-          .then((res) => {
+          .then(async (res) => {
             // read messages
             const promises: any = [];
             res.data.results.forEach((message: ChatListMessage) => {
@@ -64,6 +62,24 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
             if (promises.length) {
               Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
             }
+
+            // download images
+            const files: any = {};
+            const filesPromises: any = [];
+            res.data.results.forEach((i: ChatListMessage) => {
+              i.message_attachments.forEach((file) => {
+                const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
+                if (validType && !getState().chat.files[file.id]) {
+                  filesPromises.push(
+                    dispatch(downloadFile(file.id)).then((blob: Blob) => {
+                      files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                    }),
+                  );
+                }
+              });
+            });
+            await Promise.all(filesPromises);
+            dispatch(saveFiles(files));
             return res.data;
           })
           .catch((e) => {
@@ -174,7 +190,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
   };
 };
 
-export const downloadFile = (fileId: number, name: string) => {
+export const downloadFile = (fileId: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -186,7 +202,6 @@ export const downloadFile = (fileId: number, name: string) => {
             config: { responseType: "blob" },
           })
           .then((res) => {
-            FileDownload(res.data, name);
             return res.data;
           })
           .catch((e) => {
@@ -219,4 +234,9 @@ export const clearChatReducer = () => ({
 export const onChangeFiltersValues = (filters: any) => ({
   type: actionTypes.ON_CHANGE_FILTERS_VALUES,
   payload: filters,
+});
+
+export const saveFiles = (files: any) => ({
+  type: actionTypes.SAVE_FILES,
+  payload: files,
 });
