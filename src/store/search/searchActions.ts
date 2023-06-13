@@ -13,7 +13,7 @@ import { Dispatch } from "redux";
 import * as actionTypes from "./searchTypes";
 
 export const API_PATH = [ID_CHIPASSIST, ID_MASTER].includes(constants.id) ? "apiv2" : "api";
-export const SEARCH_URL = constants.id === ID_ELFARO ? "/searches/" : "/search-byparams/";
+export const SEARCH_URL = constants.id === ID_ELFARO ? "/searches/" : "/search/";
 export const SEARCH_URL_EXTENDED = constants.id === ID_ELFARO ? "/search_results/" : "/search_result/";
 
 const apiClient = new ApiClient();
