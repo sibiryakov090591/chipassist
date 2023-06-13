@@ -160,7 +160,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
   const formData = new FormData();
   files.map((file) => formData.append(`files[]`, file));
 
-  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+  return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
     return dispatch({
@@ -170,7 +170,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
           .post(`/chats/${chatId}/attachments/${params}`, {
             data: formData,
           })
-          .then((res) => {
+          .then(async (res) => {
             const newMessage = {
               id: uuidv4(),
               text: "",
@@ -179,6 +179,21 @@ export const sendFiles = (chatId: number, files: File[]) => {
               read: true,
               created: new Date().toISOString(),
             };
+            // download image
+            const previewFiles: any = {};
+            const filesPromises: any = [];
+            res.data.message_attachments.forEach((file: any) => {
+              const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
+              if (validType && !getState().chat.files[file.id]) {
+                filesPromises.push(
+                  dispatch(downloadFile(file.id)).then((blob: Blob) => {
+                    previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                  }),
+                );
+              }
+            });
+            await Promise.all(filesPromises);
+            dispatch(saveFiles(previewFiles));
             dispatch(addMessage(chatId, newMessage));
             return res.data;
           })
