@@ -21,7 +21,7 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
               ...res.data,
               results: res.data.results.map((article: Article) => ({
                 ...article,
-                link: `${article.title.toLowerCase().split(" ").join("-")}/?article=${article.id}`,
+                linkName: `${article.title.toLowerCase().split(" ").join("-")}`,
               })),
             };
           })
@@ -42,7 +42,12 @@ export const getArticle = (articleId: number) => {
       promise: (client: ApiClientInterface) =>
         client
           .get(`https://blog.master.chipassist.com/api/blog/${articleId}/${params}`)
-          .then((res) => res.data)
+          .then((res) => {
+            return {
+              ...res.data.results,
+              linkName: `${res.data.results.title.toLowerCase().split(" ").join("-")}`,
+            };
+          })
           .catch((e) => {
             console.log("***LOAD_ARTICLE_ERROR", e);
             throw e;

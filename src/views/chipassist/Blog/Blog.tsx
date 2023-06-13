@@ -88,7 +88,7 @@ const Blog: React.FC = () => {
           {!isLoading &&
             list.results.map((item) => {
               return (
-                <Link key={item.id} to={item.link}>
+                <Link key={item.id} to={`${item.linkName}?article=${item.id}`}>
                   <div className={classes.article}>
                     {!!item.img && <FallbackImage src={item.img} fallbackSrc={placeholderImg} alt="image of article" />}
                     <div className={classes.content}>
