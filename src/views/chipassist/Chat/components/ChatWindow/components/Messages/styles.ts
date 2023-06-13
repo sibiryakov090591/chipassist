@@ -107,7 +107,7 @@ export const useStyles = makeStyles(() =>
       textOverflow: "ellipsis",
     },
     image: {
-      maxWidth: 200,
+      height: 200,
       borderRadius: 12,
       cursor: "pointer",
     },

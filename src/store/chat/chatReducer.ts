@@ -95,7 +95,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.LOAD_MESSAGES_R:
       return { ...state, messages: { ...state.messages, isLoading: true } };
     case actionTypes.LOAD_MESSAGES_S: {
-      const { page, total_pages, results } = action.response;
+      const { page, total_pages, results } = action.payload;
       return {
         ...state,
         messages: {
@@ -109,7 +109,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
     case actionTypes.LOAD_MORE_MESSAGES_S: {
-      const { page, total_pages, results } = action.response;
+      const { page, total_pages, results } = action.payload;
       return {
         ...state,
         messages: {

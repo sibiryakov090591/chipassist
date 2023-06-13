@@ -47,13 +47,13 @@ const Messages: React.FC = () => {
   const onScrollLoading = () => {
     if (!messages.isLoading && selectedChat.id) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
-      dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, page_size: pageSize }, true)).then(
-        () => {
-          // stay scroll the right place
-          const currentHeight = messagesWindowRef.current.scrollHeight;
-          messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
-        },
-      );
+      dispatch(
+        getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
+      ).then(() => {
+        // stay scroll in the right place
+        const currentHeight = messagesWindowRef.current.scrollHeight;
+        messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
+      });
     }
   };
 
@@ -148,6 +148,7 @@ const Messages: React.FC = () => {
                         (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
                         (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
                         (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+
                       return file && !file.type.includes("pdf") ? (
                         <img
                           key={attachment.id}

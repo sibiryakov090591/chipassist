@@ -118,11 +118,11 @@ interface LoadMessagesRequestAction {
 }
 interface LoadMessagesSuccessAction {
   type: typeof LOAD_MESSAGES_S;
-  response: any;
+  payload: any;
 }
 interface LoadMoreMessagesSuccessAction {
   type: typeof LOAD_MORE_MESSAGES_S;
-  response: any;
+  payload: any;
 }
 interface LoadMessagesFailAction {
   type: typeof LOAD_MESSAGES_F;
