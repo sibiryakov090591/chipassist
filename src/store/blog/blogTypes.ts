@@ -31,7 +31,7 @@ export interface Article {
   body: JSX.Element;
   img: any;
   title: any;
-  linkName: string;
+  slug: string;
 }
 
 export interface SelectedArticle extends Article {

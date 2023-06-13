@@ -21,7 +21,7 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
               ...res.data,
               results: res.data.results.map((article: Article) => ({
                 ...article,
-                linkName: `${article.title.toLowerCase().split(" ").join("-")}`,
+                slug: `${encodeURIComponent(article.title.toLowerCase().split(" ").join("-"))}`,
               })),
             };
           })
@@ -33,7 +33,7 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
   };
 };
 
-export const getArticle = (articleId: number) => {
+export const getArticle = (slug: string) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const { search } = getState().blog.filters;
     const params = search ? `?search=${encodeURIComponent(search.trim())}` : "";
@@ -41,11 +41,11 @@ export const getArticle = (articleId: number) => {
       types: actionTypes.LOAD_ARTICLE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`https://blog.master.chipassist.com/api/blog/${articleId}/${params}`)
+          .get(`https://blog.master.chipassist.com/api/blog/${slug}/${params}`)
           .then((res) => {
             return {
               ...res.data.results,
-              linkName: `${res.data.results.title.toLowerCase().split(" ").join("-")}`,
+              slug: `${encodeURIComponent(res.data.results.title.toLowerCase().split(" ").join("-"))}`,
             };
           })
           .catch((e) => {

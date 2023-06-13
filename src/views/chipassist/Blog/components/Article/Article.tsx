@@ -5,10 +5,9 @@ import Container from "@material-ui/core/Container";
 import { Page } from "@src/components";
 import Preloader from "@src/components/Preloader/Preloader";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getArticle, getBlogList } from "@src/store/blog/blogActions";
 import clsx from "clsx";
-import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { useStyles } from "./styles";
 import { useStyles as useBlogStyles } from "../../styles";
 
@@ -20,24 +19,23 @@ const Article: React.FC = () => {
   const isSmDown = useMediaQuery(theme.breakpoints.down(720));
 
   const { selected, isLoading, list, filters } = useAppSelector((state) => state.blog);
-  const articleId = useURLSearchParams("article", false, null, false);
+  const { slug } = useParams();
 
   useEffect(() => {
     if (!list.page) dispatch(getBlogList(1, filters));
   }, []);
 
   useEffect(() => {
-    if (articleId) dispatch(getArticle(+articleId));
+    dispatch(getArticle(slug));
     window.scrollTo({ top: 0 });
-  }, [articleId]);
+  }, [slug]);
 
-  const isDisabledNext = isLoading || !selected || !selected.next || selected.next.id === +articleId;
-  const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.id === +articleId;
+  const isDisabledNext = isLoading || !selected || !selected.next || selected.next.title === selected.title;
+  const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.title === selected.title;
 
   const previousLink =
-    selected && `/blog/${selected.previous.title.toLowerCase().split(" ").join("-")}/?article=${selected.previous.id}`;
-  const nextLink =
-    selected && `/blog/${selected.next.title.toLowerCase().split(" ").join("-")}/?article=${selected.next.id}`;
+    selected && `/blog/${encodeURIComponent(selected.previous.title.toLowerCase().split(" ").join("-"))}`;
+  const nextLink = selected && `/blog/${encodeURIComponent(selected.next.title.toLowerCase().split(" ").join("-"))}`;
 
   return (
     <Page title="Article" description={`${selected?.intro}`}>
@@ -87,8 +85,8 @@ const Article: React.FC = () => {
               return (
                 <Link
                   key={item.id}
-                  to={`/blog/${item.linkName}?article=${item.id}`}
-                  className={clsx(classes.listItem, { active: item.linkName === selected.linkName })}
+                  to={`/blog/${item.slug}`}
+                  className={clsx(classes.listItem, { active: item.slug === selected?.slug })}
                 >
                   {item.title}
                 </Link>
