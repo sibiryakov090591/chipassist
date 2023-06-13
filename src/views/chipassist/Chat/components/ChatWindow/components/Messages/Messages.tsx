@@ -144,12 +144,9 @@ const Messages: React.FC = () => {
                   <Box display="flex" flexWrap="wrap" gridGap="6px">
                     {item.message_attachments?.map((attachment) => {
                       const file = files[attachment.id];
-                      const imgUrl =
-                        (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
-                        (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
-                        (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+                      if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
 
-                      return file && !file.type.includes("pdf") ? (
+                      return (
                         <img
                           key={attachment.id}
                           className={classes.image}
@@ -157,7 +154,20 @@ const Messages: React.FC = () => {
                           alt="file"
                           onClick={onOpenPreview(file.url)}
                         />
-                      ) : (
+                      );
+                    })}
+                  </Box>
+                  <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
+                    {item.message_attachments?.map((attachment) => {
+                      const file = files[attachment.id];
+                      if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+
+                      const imgUrl =
+                        (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
+                        (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                        (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+
+                      return (
                         <div
                           key={attachment.id}
                           className={classes.file}
