@@ -35,6 +35,17 @@ export const useStyles = makeStyles(() =>
       flexDirection: "column",
       justifyContent: "flex-end",
     },
+    unreadLabel: {
+      textAlign: "center",
+      "& span": {
+        fontWeight: "bold",
+        padding: "2px 8px 4px 8px",
+        color: "#ffffff",
+        fontSize: 12,
+        borderRadius: "50ch",
+        background: "rgba(64,56,84,0.3)",
+      },
+    },
     dateLabel: {
       textAlign: "center",
       color: "#737373",

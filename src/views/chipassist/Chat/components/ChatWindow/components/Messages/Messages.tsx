@@ -14,6 +14,7 @@ import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
 import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
+import { ChatListMessage } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 
@@ -29,13 +30,19 @@ const Messages: React.FC = () => {
   const messages = useAppSelector((state) => state.chat.messages);
   const files = useAppSelector((state) => state.chat.files);
 
+  const [firstUnreadMessageId, setFirstUnreadMessageId] = useState<number>(null);
   const [isSending, setIsSending] = useState(false);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
 
   useEffect(() => {
     if (selectedChat?.id) {
-      dispatch(getMessages(selectedChat.id, { page: 1, page_size: pageSize })).then(() => {
-        messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+      dispatch(getMessages(selectedChat.id, { page: 1, page_size: pageSize })).then((res: any) => {
+        const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
+        if (firstUnreadMessage) {
+          setFirstUnreadMessageId(firstUnreadMessage.id);
+        } else {
+          messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+        }
       });
     }
   }, [selectedChat]);
@@ -114,6 +121,11 @@ const Messages: React.FC = () => {
 
             return (
               <div key={item.id}>
+                {item.id === firstUnreadMessageId && (
+                  <div className={classes.unreadLabel}>
+                    <span>Unread Messages</span>
+                  </div>
+                )}
                 {isShowDateLabel && (
                   <div className={classes.dateLabel}>{today === messageDate ? "Today" : messageDate}</div>
                 )}
