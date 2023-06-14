@@ -291,7 +291,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         values: {
           ...prevState.values,
           ...rfqItem,
-          productId: rfqItem.id,
+          productId: rfqItem.productId,
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),

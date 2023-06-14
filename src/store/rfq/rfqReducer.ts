@@ -39,7 +39,7 @@ const initialState: RfqState = {
     seller: null,
     // address: "",
     comment: "",
-    id: 0,
+    productId: 0,
   },
   rfqResponseData: {},
   rfqResponse: {
