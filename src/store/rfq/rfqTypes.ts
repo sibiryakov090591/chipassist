@@ -69,6 +69,7 @@ export interface NewRfqItem {
   seller: Array<RfqSeller>;
   // address: string;
   comment?: string;
+  productId: number;
 }
 
 export interface RfqItem {
@@ -238,6 +239,7 @@ interface RfqModalOpenAction {
   type: typeof MODAL_OPEN;
   payload: {
     partNumber: string;
+    productId: number;
     quantity: string | number;
     stockrecord: Stockrecord;
     product: Product;
