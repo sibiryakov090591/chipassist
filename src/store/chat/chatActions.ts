@@ -49,15 +49,15 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
           .then(async (res) => {
             // read messages
-            const promises: any = [];
-            res.data.results.forEach((message: ChatListMessage) => {
-              if (!message.read) {
-                promises.push(dispatch(readMessage(chatId, message.id)));
-              }
-            });
-            if (promises.length) {
-              Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
-            }
+            // const promises: any = [];
+            // res.data.results.forEach((message: ChatListMessage) => {
+            //   if (!message.read) {
+            //     promises.push(dispatch(readMessage(chatId, message.id)));
+            //   }
+            // });
+            // if (promises.length) {
+            //   Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
+            // }
 
             // download images
             const files: any = {};

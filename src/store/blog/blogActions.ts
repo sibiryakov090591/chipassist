@@ -1,8 +1,12 @@
 import { Dispatch } from "redux";
 import { ApiClientInterface } from "@src/services/ApiClient";
 import { RootState } from "@src/store";
+import constants from "@src/constants/constants";
+import { ID_CHIPASSIST } from "@src/constants/server_constants";
 import * as actionTypes from "./blogTypes";
 import { Article } from "./blogTypes";
+
+const BLOG_URL = `https://blog${constants.id === ID_CHIPASSIST ? "." : ".master."}chipassist.com`;
 
 export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join = false) => {
   let params = `?page=${page}&page_size=25`;
@@ -15,7 +19,7 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
       types: join ? [false, actionTypes.LOAD_MORE_BLOG_LIST_S, false] : actionTypes.LOAD_BLOG_LIST_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`https://blog.master.chipassist.com/api/blogs/${params}`, { noapi: true })
+          .get(`${BLOG_URL}/api/blogs/${params}`, { noapi: true })
           .then((res) => {
             return {
               ...res.data,
@@ -41,7 +45,7 @@ export const getArticle = (slug: string) => {
       types: actionTypes.LOAD_ARTICLE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`https://blog.master.chipassist.com/api/blog/${slug}/${params}`)
+          .get(`${BLOG_URL}/api/blog/${slug}/${params}`)
           .then((res) => {
             return {
               ...res.data.results,
