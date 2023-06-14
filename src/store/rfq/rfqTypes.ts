@@ -238,6 +238,7 @@ interface RfqModalOpenAction {
   type: typeof MODAL_OPEN;
   payload: {
     partNumber: string;
+    id: number;
     quantity: string | number;
     stockrecord: Stockrecord;
     product: Product;

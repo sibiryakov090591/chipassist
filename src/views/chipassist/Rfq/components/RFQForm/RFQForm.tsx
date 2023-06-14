@@ -79,6 +79,7 @@ interface RfqItemInterface {
   country: string;
   quantity: string;
   price: string;
+  id: number;
   // deliveryDate: string;
   // validateDate: string;
   // seller: Array<any>;
@@ -99,6 +100,7 @@ interface RfqItemTouched {
   country?: boolean;
   quantity?: boolean;
   price?: boolean;
+  id?: boolean;
   comment?: boolean;
   email?: boolean;
   firstName?: boolean;
@@ -115,6 +117,7 @@ interface RfqItemErrors {
   country?: string[];
   quantity?: string[];
   price?: string[];
+  id?: string[];
   comment?: string[];
   email?: string[];
   firstName?: string[];
@@ -148,6 +151,7 @@ const defaultState = (): FormState => ({
     country: "",
     quantity: "",
     price: "",
+    id: 0,
     // deliveryDate: getCurrentDate(),
     // validateDate: getCurrentDate(),
     // seller: [],
@@ -489,6 +493,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
             }, "")
           : ""
       }`,
+      id: formState.values.id,
     };
 
     dispatch(progressModalSetPartNumber(formState.values.partNumber, "rfq"));

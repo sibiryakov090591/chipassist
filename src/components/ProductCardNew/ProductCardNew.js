@@ -156,14 +156,14 @@ const ProductCardNew = (props) => {
     }
   }, [sortedStockrecords]);
 
-  const sendRfqOpenModal = React.useCallback(() => dispatch(rfqModalOpen(product.upc, 1)), [rfq]);
+  const sendRfqOpenModal = React.useCallback(() => dispatch(rfqModalOpen(product.upc, product.id, 1)), [rfq]);
   const sellerMessageOpenModal = React.useCallback(
     (sellerId, sellerName) => () => dispatch(setSellerMessageData(true, product.upc, sellerId, sellerName)),
     [product],
   );
 
   useEffect(() => {
-    const requestedData = localStorage.getItem(product.upc) && JSON.parse(localStorage.getItem(product.upc));
+    const requestedData = localStorage.getItem(product.id) && JSON.parse(localStorage.getItem(product.id));
     if (requestedData) {
       const prevDate = Number(requestedData.date);
       const currentDate = Date.now();
@@ -172,7 +172,7 @@ const ProductCardNew = (props) => {
       const diff = Math.floor((currentDate - prevDate) / msInDay);
 
       if (diff >= 1) {
-        localStorage.removeItem(product.upc);
+        localStorage.removeItem(product.id);
         setRequestedQty(null);
       } else {
         setRequestedQty(requestedData.value);

@@ -225,7 +225,8 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
         .then((res) => {
           dispatch(progressModalOpen());
           dispatch(progressModalSuccess());
-          localStorage.setItem(data.part_number, JSON.stringify({ date: Date.now(), value: data.quantity }));
+          console.log(data);
+          localStorage.setItem(data.id, JSON.stringify({ date: Date.now(), value: data.quantity }));
           dispatch(shouldUpdateCard());
           return res.data;
         })
@@ -310,6 +311,7 @@ export const clearRfqItem = (): RfqActionTypes => {
 
 export const rfqModalOpen = (
   partNumber = "",
+  id = 0,
   quantity: string | number = "",
   stockrecord: Stockrecord = null,
   price: string = null,
@@ -319,7 +321,7 @@ export const rfqModalOpen = (
 ): RfqActionTypes => {
   return {
     type: actionTypes.MODAL_OPEN,
-    payload: { partNumber, quantity, title, stockrecord, price, currency, product },
+    payload: { partNumber, id, quantity, title, stockrecord, price, currency, product },
   };
 };
 
