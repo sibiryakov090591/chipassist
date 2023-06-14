@@ -123,6 +123,14 @@ module.exports = {
       content: process.env.AWS_COMMIT_ID || gitRevisionPlugin.commithash(),
     }),
     new CopyPlugin({
+      patterns: [
+        {
+          from: isProd ? "robots.prod.txt" : "robots.dev.txt",
+          to: "robots.txt",
+        },
+      ],
+    }),
+    new CopyPlugin({
       patterns: [{ from: logos.fromPath, to: logos.distPath }],
     }),
     new CopyPlugin({
