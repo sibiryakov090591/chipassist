@@ -33,9 +33,8 @@ const Article: React.FC = () => {
   const isDisabledNext = isLoading || !selected || !selected.next || selected.next.title === selected.title;
   const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.title === selected.title;
 
-  const previousLink =
-    selected && `/blog/${encodeURIComponent(selected.previous.title.toLowerCase().split(" ").join("-"))}`;
-  const nextLink = selected && `/blog/${encodeURIComponent(selected.next.title.toLowerCase().split(" ").join("-"))}`;
+  const previousLink = selected && `/blog/${selected.previous.slug}`;
+  const nextLink = selected && `/blog/${selected.next.slug}`;
 
   return (
     <Page title="Article" description={`${selected?.intro}`}>

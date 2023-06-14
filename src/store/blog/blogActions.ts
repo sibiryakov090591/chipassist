@@ -4,9 +4,8 @@ import { RootState } from "@src/store";
 import constants from "@src/constants/constants";
 import { ID_CHIPASSIST } from "@src/constants/server_constants";
 import * as actionTypes from "./blogTypes";
-import { Article } from "./blogTypes";
 
-const BLOG_URL = `https://blog${constants.id === ID_CHIPASSIST ? "." : ".master."}chipassist.com`;
+const BLOG_URL = `https://${constants.id === ID_CHIPASSIST ? "blog.chipassist.com" : "blog.camaster.site"}`;
 
 export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join = false) => {
   let params = `?page=${page}&page_size=25`;
@@ -20,15 +19,7 @@ export const getBlogList = (page = 1, filters: { [key: string]: any } = {}, join
       promise: (client: ApiClientInterface) =>
         client
           .get(`${BLOG_URL}/api/blogs/${params}`, { noapi: true })
-          .then((res) => {
-            return {
-              ...res.data,
-              results: res.data.results.map((article: Article) => ({
-                ...article,
-                slug: `${encodeURIComponent(article.title.toLowerCase().split(" ").join("-"))}`,
-              })),
-            };
-          })
+          .then((res) => res.data)
           .catch((e) => {
             console.log("***LOAD_BLOG_LIST_ERROR", e);
             throw e;
@@ -45,12 +36,9 @@ export const getArticle = (slug: string) => {
       types: actionTypes.LOAD_ARTICLE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`${BLOG_URL}/api/blog/${slug}/${params}`)
+          .get(`${BLOG_URL}/api/blogs/${slug}/${params}`)
           .then((res) => {
-            return {
-              ...res.data.results,
-              slug: `${encodeURIComponent(res.data.results.title.toLowerCase().split(" ").join("-"))}`,
-            };
+            return res.data.results;
           })
           .catch((e) => {
             console.log("***LOAD_ARTICLE_ERROR", e);
