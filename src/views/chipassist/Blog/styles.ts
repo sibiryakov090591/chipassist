@@ -22,7 +22,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         flexDirection: "column",
       },
       "& h1": {
+        fontSize: "2.2rem",
         marginBottom: 8,
+        "& span": {
+          color: "#E94160",
+        },
       },
     },
     article: {
@@ -44,7 +48,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         objectFit: "cover",
       },
       "&:hover": {
-        borderColor: "#535353",
+        borderColor: "#e0e0e0",
       },
     },
     title: {
@@ -58,6 +62,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       flexGrow: 1,
     },
     searchInput: {
+      width: "260px",
       borderRadius: "50ch",
       "& input::placeholder": {
         color: "#c6c6c6",

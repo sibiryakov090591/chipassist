@@ -57,7 +57,9 @@ const Blog: React.FC = () => {
     <Page title="Blog" description="Articles about ChipAssist">
       <Container maxWidth="lg">
         <div className={classes.header}>
-          <h1>ChipAssist News</h1>
+          <h1>
+            ChipAssist <span>News</span>
+          </h1>
           <TextField
             className={classes.searchInput}
             size="small"

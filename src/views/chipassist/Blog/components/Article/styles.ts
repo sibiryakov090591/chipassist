@@ -17,10 +17,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         objectFit: "cover",
       },
     },
-    intro: {
-      borderBottom: "1px solid #d4d4d4",
-      padding: "8px 0 16px 0",
-      marginBottom: 16,
+    title: {
+      fontSize: "2.6rem",
     },
     pagination: {
       display: "flex",
@@ -61,6 +59,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     list: {
       maxWidth: 250,
+      minWidth: 200,
       marginLeft: 24,
       position: "sticky",
       top: 95,
