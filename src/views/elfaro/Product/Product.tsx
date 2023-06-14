@@ -165,7 +165,7 @@ const Product = () => {
     //   : dispatch(
     //       rfqModalOpen(productData.upc, orderQty, (formatMoney(getPrice(orderQty, stockrecord, false)) as any) || ""),
     //     );
-    dispatch(rfqModalOpen(productData.upc, productData.id, orderQty, stockrecord));
+    dispatch(rfqModalOpen(productData.upc, orderQty, stockrecord));
   };
 
   return (

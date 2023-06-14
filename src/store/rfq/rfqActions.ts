@@ -225,9 +225,10 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
         .then((res) => {
           dispatch(progressModalOpen());
           dispatch(progressModalSuccess());
-          console.log(data);
-          localStorage.setItem(data.id, JSON.stringify({ date: Date.now(), value: data.quantity }));
-          dispatch(shouldUpdateCard());
+          if (data.productId !== 0 && data.productId !== undefined) {
+            localStorage.setItem(data.productId, JSON.stringify({ date: Date.now(), value: data.quantity }));
+            dispatch(shouldUpdateCard());
+          }
           return res.data;
         })
         .catch((e) => {
@@ -263,7 +264,7 @@ export const saveRfqListItems = (data: any) => (dispatch: any) => {
         .post(`/rfqs/list/`, { data: { rfq_list: data } })
         .then((res) => {
           for (const i of data) {
-            localStorage.setItem(i.part_number, JSON.stringify({ date: Date.now(), value: i.quantity }));
+            localStorage.setItem(i.id, JSON.stringify({ date: Date.now(), value: i.quantity }));
           }
           return res.data;
         })
@@ -311,17 +312,17 @@ export const clearRfqItem = (): RfqActionTypes => {
 
 export const rfqModalOpen = (
   partNumber = "",
-  id = 0,
   quantity: string | number = "",
   stockrecord: Stockrecord = null,
   price: string = null,
   currency: CurrenciesAllowed = null,
   product: Product = null,
   title: "rfq" | "order" = "rfq",
+  productId = 0,
 ): RfqActionTypes => {
   return {
     type: actionTypes.MODAL_OPEN,
-    payload: { partNumber, id, quantity, title, stockrecord, price, currency, product },
+    payload: { partNumber, id: productId, quantity, title, stockrecord, price, currency, product },
   };
 };
 

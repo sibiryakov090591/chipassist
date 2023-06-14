@@ -79,7 +79,6 @@ interface RfqItemInterface {
   country: string;
   quantity: string;
   price: string;
-  id: number;
   // deliveryDate: string;
   // validateDate: string;
   // seller: Array<any>;
@@ -92,6 +91,7 @@ interface RfqItemInterface {
   company_other_type: string;
   policy_confirm: boolean;
   receive_updates_confirm: boolean;
+  productId: number;
 }
 
 interface RfqItemTouched {
@@ -100,7 +100,6 @@ interface RfqItemTouched {
   country?: boolean;
   quantity?: boolean;
   price?: boolean;
-  id?: boolean;
   comment?: boolean;
   email?: boolean;
   firstName?: boolean;
@@ -109,6 +108,7 @@ interface RfqItemTouched {
   company_other_type?: boolean;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
+  productId?: boolean;
 }
 
 interface RfqItemErrors {
@@ -117,7 +117,6 @@ interface RfqItemErrors {
   country?: string[];
   quantity?: string[];
   price?: string[];
-  id?: string[];
   comment?: string[];
   email?: string[];
   firstName?: string[];
@@ -126,6 +125,7 @@ interface RfqItemErrors {
   company_other_type?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
+  productId?: string[];
   [key: string]: string[];
 }
 
@@ -151,7 +151,6 @@ const defaultState = (): FormState => ({
     country: "",
     quantity: "",
     price: "",
-    id: 0,
     // deliveryDate: getCurrentDate(),
     // validateDate: getCurrentDate(),
     // seller: [],
@@ -164,6 +163,7 @@ const defaultState = (): FormState => ({
     company_other_type: "",
     policy_confirm: false,
     receive_updates_confirm: false,
+    productId: 0,
   },
   touched: {},
   errors: {},
@@ -291,6 +291,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         values: {
           ...prevState.values,
           ...rfqItem,
+          productId: rfqItem.id,
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),
@@ -493,7 +494,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
             }, "")
           : ""
       }`,
-      id: formState.values.id,
+      productId: formState.values.productId,
     };
 
     dispatch(progressModalSetPartNumber(formState.values.partNumber, "rfq"));

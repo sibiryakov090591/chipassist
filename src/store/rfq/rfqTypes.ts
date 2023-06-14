@@ -69,6 +69,7 @@ export interface NewRfqItem {
   seller: Array<RfqSeller>;
   // address: string;
   comment?: string;
+  id: number;
 }
 
 export interface RfqItem {
