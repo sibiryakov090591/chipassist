@@ -6,7 +6,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Button, CircularProgress, FormHelperText, TextField } from "@material-ui/core";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { authFail, authLoginAction, authStart, loginAction, login } from "@src/store/authentication/authActions";
+import { authFail, authLoginAction, authStart, login } from "@src/store/authentication/authActions";
 import useAppTheme from "@src/theme/useAppTheme";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -128,22 +128,12 @@ const LoginForm = (props: { className: string }) => {
     const data: { email: string } & FormStateValues = { ...formState.values, email: "" };
     data.email = data.username;
 
-    return dispatch(loginAction(data.username, data.password))
-      .then(() => {
-        dispatch(authLoginAction(data))
-          .then((res: any) => {
-            console.log("LOGIN", res);
-            const { token } = res;
-            dispatch(login(data, token, navigate, { backurl }));
-          })
-          .catch((e: any) => {
-            console.log("LOGIN_ERROR", e);
-            setError("Error", "Error");
-          });
+    return dispatch(authLoginAction(data))
+      .then((res: any) => {
+        const { token } = res;
+        dispatch(login(data, token, navigate, { backurl }));
       })
       .catch((err: any) => {
-        console.log("LOGIN_ERROR 2", err);
-        // Sentry.captureException(err);
         const textError = "Incorrect username or password";
         setError(textError, textError);
         localStorage.setItem("login_failure_email", formState.values.username);

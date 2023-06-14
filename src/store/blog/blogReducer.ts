@@ -34,7 +34,7 @@ const blogReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return {
         ...state,
         isLoading: false,
-        selected: action.response.results,
+        selected: action.response,
       };
     }
     case actionTypes.LOAD_ARTICLE_F:

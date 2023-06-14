@@ -14,6 +14,7 @@ import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
 import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
+import { ChatListMessage } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 
@@ -29,13 +30,19 @@ const Messages: React.FC = () => {
   const messages = useAppSelector((state) => state.chat.messages);
   const files = useAppSelector((state) => state.chat.files);
 
+  const [firstUnreadMessageId, setFirstUnreadMessageId] = useState<number>(null);
   const [isSending, setIsSending] = useState(false);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
 
   useEffect(() => {
     if (selectedChat?.id) {
-      dispatch(getMessages(selectedChat.id, { page: 1, page_size: pageSize })).then(() => {
-        messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+      dispatch(getMessages(selectedChat.id, { page: 1, page_size: pageSize })).then((res: any) => {
+        const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
+        if (firstUnreadMessage) {
+          setFirstUnreadMessageId(firstUnreadMessage.id);
+        } else {
+          messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+        }
       });
     }
   }, [selectedChat]);
@@ -47,13 +54,13 @@ const Messages: React.FC = () => {
   const onScrollLoading = () => {
     if (!messages.isLoading && selectedChat.id) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
-      dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, page_size: pageSize }, true)).then(
-        () => {
-          // stay scroll the right place
-          const currentHeight = messagesWindowRef.current.scrollHeight;
-          messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
-        },
-      );
+      dispatch(
+        getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
+      ).then(() => {
+        // stay scroll in the right place
+        const currentHeight = messagesWindowRef.current.scrollHeight;
+        messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
+      });
     }
   };
 
@@ -114,6 +121,11 @@ const Messages: React.FC = () => {
 
             return (
               <div key={item.id}>
+                {item.id === firstUnreadMessageId && (
+                  <div className={classes.unreadLabel}>
+                    <span>Unread Messages</span>
+                  </div>
+                )}
                 {isShowDateLabel && (
                   <div className={classes.dateLabel}>{today === messageDate ? "Today" : messageDate}</div>
                 )}
@@ -144,11 +156,9 @@ const Messages: React.FC = () => {
                   <Box display="flex" flexWrap="wrap" gridGap="6px">
                     {item.message_attachments?.map((attachment) => {
                       const file = files[attachment.id];
-                      const imgUrl =
-                        (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
-                        (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
-                        (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
-                      return file && !file.type.includes("pdf") ? (
+                      if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
+
+                      return (
                         <img
                           key={attachment.id}
                           className={classes.image}
@@ -156,7 +166,20 @@ const Messages: React.FC = () => {
                           alt="file"
                           onClick={onOpenPreview(file.url)}
                         />
-                      ) : (
+                      );
+                    })}
+                  </Box>
+                  <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
+                    {item.message_attachments?.map((attachment) => {
+                      const file = files[attachment.id];
+                      if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+
+                      const imgUrl =
+                        (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
+                        (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                        (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+
+                      return (
                         <div
                           key={attachment.id}
                           className={classes.file}
