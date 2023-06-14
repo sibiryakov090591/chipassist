@@ -8,6 +8,10 @@ const { t } = staticI18n("bom");
 
 const firstName = {
   presence: { allowEmpty: false, message: `^${t("form_labels.first_name")} ${t("errors.required")}` },
+  length: {
+    maximum: 30,
+    tooLong: `^${t("form_labels.first_name")} ${t("errors.too_long", { count: 30 })}`,
+  },
   format: {
     pattern: `[a-zA-Z${constants.id === ID_ICSEARCH ? "А-Яа-яЁё" : ""} -]+`,
     flags: "i",
@@ -17,6 +21,10 @@ const firstName = {
 
 const lastName = {
   presence: { allowEmpty: false, message: `^${t("form_labels.last_name")} ${t("errors.required")}` },
+  length: {
+    maximum: 150,
+    tooLong: `^${t("form_labels.last_name")} ${t("errors.too_long", { count: 150 })}`,
+  },
   format: {
     pattern: `[a-zA-Z${constants.id === ID_ICSEARCH ? "А-Яа-яЁё" : ""} -]+`,
     flags: "i",

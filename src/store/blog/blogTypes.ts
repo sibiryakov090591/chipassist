@@ -35,8 +35,8 @@ export interface Article {
 }
 
 export interface SelectedArticle extends Article {
-  next: { id: number; title: string };
-  previous: { id: number; title: string };
+  next: { id: number; title: string; slug: string };
+  previous: { id: number; title: string; slug: string };
 }
 
 interface LoadBlogListRequestAction {
