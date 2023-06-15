@@ -49,15 +49,15 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
           .then(async (res) => {
             // read messages
-            const promises: any = [];
-            res.data.results.forEach((message: ChatListMessage) => {
-              if (!message.read) {
-                promises.push(dispatch(readMessage(chatId, message.id)));
-              }
-            });
-            if (promises.length) {
-              Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
-            }
+            // const promises: any = [];
+            // res.data.results.forEach((message: ChatListMessage) => {
+            //   if (!message.read) {
+            //     promises.push(dispatch(readMessage(chatId, message.id)));
+            //   }
+            // });
+            // if (promises.length) {
+            //   Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
+            // }
 
             // download images
             const files: any = {};
@@ -78,7 +78,10 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
             dispatch(saveFiles(files));
             dispatch({
               type: join ? actionTypes.LOAD_MORE_MESSAGES_S : actionTypes.LOAD_MESSAGES_S,
-              payload: res.data,
+              payload: {
+                response: res.data,
+                rewind: !!filters.rewind,
+              },
             });
             return res.data;
           })

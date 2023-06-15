@@ -95,7 +95,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.LOAD_MESSAGES_R:
       return { ...state, messages: { ...state.messages, isLoading: true } };
     case actionTypes.LOAD_MESSAGES_S: {
-      const { page, total_pages, results } = action.payload;
+      const { page, total_pages, results } = action.payload.response;
       return {
         ...state,
         messages: {
@@ -109,7 +109,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
     case actionTypes.LOAD_MORE_MESSAGES_S: {
-      const { page, total_pages, results } = action.payload;
+      const { page, total_pages, results } = action.payload.response;
       return {
         ...state,
         messages: {
@@ -118,7 +118,9 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           loaded: true,
           page,
           total_pages,
-          results: [...results.reverse(), ...state.messages.results],
+          results: action.payload.rewind
+            ? [...results.reverse(), ...state.messages.results]
+            : [...state.messages.results, ...results.reverse()],
         },
       };
     }
