@@ -165,9 +165,14 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
     case actionTypes.DEDUCT_READ_MESSAGES: {
       const newTotal = Number(state.chatList.unread_total) - action.payload.count;
+      const newSelected = Number(state.selectedChat.unread_messages) - action.payload.count;
 
       return {
         ...state,
+        selectedChat: {
+          ...state.selectedChat,
+          unread_messages: newSelected > 0 ? newSelected : 0,
+        },
         chatList: {
           ...state.chatList,
           unread_total: newTotal > 0 ? newTotal : 0,

@@ -52,10 +52,7 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadMessagesRef.current) {
-      const parentRect = messagesWindowRef.current.getBoundingClientRect();
-      const childRect = unreadMessagesRef.current.getBoundingClientRect();
-      const distance = childRect.top - parentRect.top;
-      messagesWindowRef.current.scrollTo({ top: distance });
+      unreadMessagesRef.current.scrollIntoView({ block: "center" });
     }
   }, [unreadMessagesRef, firstUnreadMessageId]);
 
@@ -99,8 +96,8 @@ const Messages: React.FC = () => {
 
   const onScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
-    const loadingYOffset = 150;
-    const toShowButtonYOffset = 100;
+    const loadingYOffset = 500;
+    const toShowButtonYOffset = 200;
 
     const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;
     if (toShowButton !== isShowScrollButton) setIsShowScrollButton(toShowButton);
@@ -154,7 +151,7 @@ const Messages: React.FC = () => {
 
             return (
               <div key={item.id}>
-                {item.id === firstUnreadMessageId && (
+                {item.id === firstUnreadMessageId && !!selectedChat.unread_messages && (
                   <div ref={unreadMessagesRef} className={classes.unreadLabel}>
                     <span>Unread Messages</span>
                   </div>
