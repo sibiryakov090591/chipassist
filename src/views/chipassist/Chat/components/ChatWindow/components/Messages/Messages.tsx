@@ -4,7 +4,6 @@ import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/compo
 import { downloadFile, getMessages } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
-import InfiniteScroll from "react-infinite-scroller";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { formatMoney } from "@src/utils/formatters";
@@ -24,6 +23,7 @@ const Messages: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const messagesWindowRef = useRef(null);
+  const unreadMessagesRef = useRef(null);
   const pageSize = 15;
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
@@ -33,10 +33,12 @@ const Messages: React.FC = () => {
   const [firstUnreadMessageId, setFirstUnreadMessageId] = useState<number>(null);
   const [isSending, setIsSending] = useState(false);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
+  const [loadedPages, setLoadedPages] = useState<number[]>([]);
 
   useEffect(() => {
     if (selectedChat?.id) {
-      dispatch(getMessages(selectedChat.id, { page: 1, page_size: pageSize })).then((res: any) => {
+      setFirstUnreadMessageId(null);
+      dispatch(getMessages(selectedChat.id, { page_size: pageSize })).then((res: any) => {
         const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
         if (firstUnreadMessage) {
           setFirstUnreadMessageId(firstUnreadMessage.id);
@@ -48,11 +50,21 @@ const Messages: React.FC = () => {
   }, [selectedChat]);
 
   useEffect(() => {
+    if (unreadMessagesRef.current) {
+      unreadMessagesRef.current.scrollIntoView({ block: "center" });
+    }
+  }, [unreadMessagesRef, firstUnreadMessageId]);
+
+  useEffect(() => {
+    if (messages.page && !loadedPages.includes(messages.page)) setLoadedPages([...loadedPages, messages.page]);
+  }, [messages.page]);
+
+  useEffect(() => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
   }, [isSending]);
 
-  const onScrollLoading = () => {
-    if (!messages.isLoading && selectedChat.id) {
+  const loadOnTheTopSide = () => {
+    if (!messages.isLoading && selectedChat.id && messages.total_pages > Math.max(...loadedPages)) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
       dispatch(
         getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
@@ -64,11 +76,31 @@ const Messages: React.FC = () => {
     }
   };
 
+  const loadOnTheBottomSide = () => {
+    if (!messages.isLoading && selectedChat.id && Math.min(...loadedPages) > 1) {
+      dispatch(
+        getMessages(
+          selectedChat.id,
+          { start_id: messages.results[messages.results.length - 1].id, rewind: false, page_size: pageSize },
+          true,
+        ),
+      );
+    }
+  };
+
   const onScroll = () => {
-    const toShowButton =
-      messagesWindowRef.current.scrollHeight >
-      messagesWindowRef.current.scrollTop + messagesWindowRef.current.offsetHeight + 100;
+    const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
+    const loadingYOffset = 150;
+    const toShowButtonYOffset = 100;
+
+    const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;
     if (toShowButton !== isShowScrollButton) setIsShowScrollButton(toShowButton);
+
+    const isAtBottom = scrollTop + clientHeight > scrollHeight - loadingYOffset;
+    if (isAtBottom) loadOnTheBottomSide();
+
+    const isAtTop = scrollTop < loadingYOffset;
+    if (isAtTop) loadOnTheTopSide();
   };
 
   const onScrollToBottom = React.useCallback(() => {
@@ -101,15 +133,7 @@ const Messages: React.FC = () => {
         onScroll={onScroll}
         className={clsx(classes.messagesWrapper, { hidden: !messages.results.length })}
       >
-        <InfiniteScroll
-          className={classes.messages}
-          isReverse={true}
-          threshold={250}
-          loadMore={onScrollLoading}
-          initialLoad={false}
-          useWindow={false}
-          hasMore={messages.total_pages > messages.page}
-        >
+        <div className={classes.messages}>
           {messages.results.map((item, index) => {
             const today = new Date().toLocaleDateString();
             const messageDate = new Date(item.created).toLocaleDateString();
@@ -122,7 +146,7 @@ const Messages: React.FC = () => {
             return (
               <div key={item.id}>
                 {item.id === firstUnreadMessageId && (
-                  <div className={classes.unreadLabel}>
+                  <div ref={unreadMessagesRef} className={classes.unreadLabel}>
                     <span>Unread Messages</span>
                   </div>
                 )}
@@ -201,7 +225,7 @@ const Messages: React.FC = () => {
               <Preloader />
             </div>
           )}
-        </InfiniteScroll>
+        </div>
       </div>
       <MessageInput
         chatId={selectedChat?.id}

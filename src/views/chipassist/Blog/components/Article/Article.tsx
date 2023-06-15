@@ -49,10 +49,7 @@ const Article: React.FC = () => {
             )}
             {!isLoading && selected && (
               <>
-                <h1>{selected.title}</h1>
-                <div className={classes.intro}>
-                  <p dangerouslySetInnerHTML={{ __html: selected.intro }} />
-                </div>
+                <h1 className={classes.title}>{selected.title}</h1>
                 <p dangerouslySetInnerHTML={{ __html: selected.body }} />
                 <Box display="flex" mb="12px">
                   <span className={blogClasses.date}>{new Date(selected.date).toDateString()}</span>
