@@ -28,6 +28,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
       left: 14,
     },
   },
+  label: {
+    position: "relative",
+  },
+  chatUnreadCount: {
+    position: "absolute",
+    top: "-7px",
+    left: "100%",
+  },
 }));
 
 export default "styles";

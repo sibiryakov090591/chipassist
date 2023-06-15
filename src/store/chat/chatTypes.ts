@@ -39,6 +39,7 @@ export interface ChatState {
   };
   chatList: {
     total_pages: number;
+    unread_total: number;
     page: number;
     results: ChatListItem[];
     isLoading: boolean;

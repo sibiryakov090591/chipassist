@@ -52,7 +52,10 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadMessagesRef.current) {
-      unreadMessagesRef.current.scrollIntoView({ block: "center" });
+      const parentRect = messagesWindowRef.current.getBoundingClientRect();
+      const childRect = unreadMessagesRef.current.getBoundingClientRect();
+      const distance = childRect.top - parentRect.top;
+      messagesWindowRef.current.scrollTo({ top: distance });
     }
   }, [unreadMessagesRef, firstUnreadMessageId]);
 
@@ -65,7 +68,12 @@ const Messages: React.FC = () => {
   }, [isSending]);
 
   const loadOnTheTopSide = () => {
-    if (!messages.isLoading && selectedChat.id && messages.total_pages > Math.max(...loadedPages)) {
+    if (
+      !messages.isLoading &&
+      selectedChat.id &&
+      messages.results.length &&
+      messages.total_pages > Math.max(...loadedPages)
+    ) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
       dispatch(
         getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
@@ -78,7 +86,7 @@ const Messages: React.FC = () => {
   };
 
   const loadOnTheBottomSide = () => {
-    if (!messages.isLoading && selectedChat.id && Math.min(...loadedPages) > 1) {
+    if (!messages.isLoading && selectedChat.id && messages.results.length && Math.min(...loadedPages) > 1) {
       dispatch(
         getMessages(
           selectedChat.id,
