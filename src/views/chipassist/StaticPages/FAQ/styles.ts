@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     backgroundColor: "#fcf0f2",
   },
   answer: {
-    fontSize: "1.4rem",
+    fontSize: "1.2rem",
   },
   question: {
-    fontSize: "1.7rem",
+    fontSize: "1.4rem",
     fontWeight: 400,
   },
   title: {
