@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontWeight: 400,
   },
   footerTitle: {
-    fontSize: "2.0rem",
+    fontSize: "1.8rem",
     color: theme.palette.primary.main,
     marginBottom: "2.5rem",
     textAlign: "center",
@@ -40,14 +40,15 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   link: {
-    color: theme.palette.primary.main,
-    fontSize: "2.0rem",
+    fontSize: "1.8rem",
     fontWeight: "bold",
     marginBottom: 3,
     whiteSpace: "nowrap",
+    textDecoration: "underline",
+    color: "#e94160",
     "&:hover": {
+      color: theme.palette.app.blue300,
       textDecoration: "underline",
-      color: "#e94160",
     },
     [theme.breakpoints.down("sm")]: {
       marginBottom: 12,
