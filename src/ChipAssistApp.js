@@ -55,6 +55,7 @@ import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/curr
 import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
 import { loadSellersWithProductLink } from "@src/store/products/productsActions";
+import FAQ from "@src/views/chipassist/FAQ/FAQ";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -451,6 +452,16 @@ const ChipAssistApp = () => {
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <About />
+                  </Suspense>
+                }
+              />
+            )}
+            {constants.id !== ID_ICSEARCH && (
+              <Route
+                path={"/FAQ"}
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <FAQ />
                   </Suspense>
                 }
               />
