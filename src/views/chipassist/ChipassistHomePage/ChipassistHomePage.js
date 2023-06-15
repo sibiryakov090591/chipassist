@@ -525,7 +525,7 @@ export const ChipassistHomePage = () => {
           <Container maxWidth="lg">
             <Grid container spacing={3}>
               <Grid item md={6} xs={12} className={classes.contactsItemWrapper}>
-                <h2 style={{ textAlign: "start" }} className={classes.title}>
+                <h2 style={{ textAlign: "start" }} className={clsx(classes.title, classes.titleDark)}>
                   Our <span className={classes.redColor}>contacts</span>
                 </h2>
                 <p className={classes.contactsName}>{t("contacts.name")}</p>
