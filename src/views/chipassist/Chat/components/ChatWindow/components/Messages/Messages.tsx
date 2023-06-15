@@ -38,6 +38,7 @@ const Messages: React.FC = () => {
   useEffect(() => {
     if (selectedChat?.id) {
       setFirstUnreadMessageId(null);
+      setLoadedPages([]);
       dispatch(getMessages(selectedChat.id, { page_size: pageSize })).then((res: any) => {
         const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
         if (firstUnreadMessage) {
