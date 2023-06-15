@@ -16,6 +16,7 @@ import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
+import UnreadMessagesLabel from "./UnreadMessagesLabel";
 
 const FileDownload = require("js-file-download");
 
@@ -151,10 +152,8 @@ const Messages: React.FC = () => {
 
             return (
               <div key={item.id}>
-                {item.id === firstUnreadMessageId && !!selectedChat.unread_messages && (
-                  <div ref={unreadMessagesRef} className={classes.unreadLabel}>
-                    <span>Unread Messages</span>
-                  </div>
+                {item.id === firstUnreadMessageId && (
+                  <UnreadMessagesLabel ref={unreadMessagesRef} chatId={selectedChat?.id} />
                 )}
                 {isShowDateLabel && (
                   <div className={classes.dateLabel}>{today === messageDate ? "Today" : messageDate}</div>
