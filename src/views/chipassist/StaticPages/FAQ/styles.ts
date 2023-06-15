@@ -6,6 +6,11 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   section: {
     padding: "3rem 0",
   },
+  summaryRoot: {
+    "& .Mui-expanded": {
+      transform: "none",
+    },
+  },
   tools: {
     backgroundColor: "#fcf0f2",
   },
@@ -29,7 +34,7 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontWeight: 600,
   },
   accordionDescr: {
-    backgroundColor: theme.palette.app.blue100,
+    backgroundColor: "#f2f2f2",
     color: theme.palette.primary.main,
   },
   redColor: {
