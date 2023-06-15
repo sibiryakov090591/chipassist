@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Page } from "@src/components";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Container, Grid } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import useStyles from "@src/views/chipassist/StaticPages/AboutCompany/styles";
 import { clsx } from "clsx";
+import { NavLink } from "react-router-dom";
 
 const AboutCompany = () => {
   const { t } = useI18n("static_pages.about_company");
   const classes = useStyles();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   return (
     <Page
       title={t("page_title", { name: constants.title })}
@@ -83,14 +89,14 @@ const AboutCompany = () => {
                 reliable.
               </p>
             </Grid>
-            {/* <Grid item md={12} xs={12}> */}
-            {/*  <span className={classes.footerTitle}> */}
-            {/*    For more information about data, search results, and using ChipAssist please click{" "} */}
-            {/*    <NavLink className={classes.link} to={"/about_company"}> */}
-            {/*      here */}
-            {/*    </NavLink> */}
-            {/*  </span> */}
-            {/* </Grid> */}
+            <Grid item md={12} xs={12}>
+              <p className={classes.footerTitle}>
+                For more information about data, search results, and using ChipAssist please click{" "}
+                <NavLink className={classes.link} to={"/FAQ"}>
+                  here
+                </NavLink>
+              </p>
+            </Grid>
           </Grid>
         </Container>
       </section>
