@@ -10,7 +10,6 @@ import Filters from "@src/views/chipassist/Chat/components/ChatList/components/F
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
