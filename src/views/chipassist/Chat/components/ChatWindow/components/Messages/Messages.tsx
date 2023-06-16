@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/components/MessageInput/MessageInput";
-import { downloadFile, getMessages } from "@src/store/chat/chatActions";
+import { deductReadMessages, downloadFile, getMessages, readMessage } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
@@ -23,14 +23,17 @@ const FileDownload = require("js-file-download");
 const Messages: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const messagesWindowRef = useRef(null);
-  const unreadMessagesRef = useRef(null);
   const pageSize = 15;
+
+  const messagesWindowRef = useRef(null);
+  const unreadLabelRef = useRef(null);
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const messages = useAppSelector((state) => state.chat.messages);
   const files = useAppSelector((state) => state.chat.files);
 
+  const [messagesWasRead, setMessagesWasRead] = useState<number[]>([]);
+  const [unreadMessagesRefs, setUnreadMessagesRefs] = useState<{ [key: number]: any }>({});
   const [firstUnreadMessageId, setFirstUnreadMessageId] = useState<number>(null);
   const [isSending, setIsSending] = useState(false);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
@@ -52,12 +55,48 @@ const Messages: React.FC = () => {
   }, [selectedChat]);
 
   useEffect(() => {
-    if (unreadMessagesRef.current) {
-      console.log(firstUnreadMessageId);
-      unreadMessagesRef.current.scrollIntoView({ block: "center" });
+    if (messages.results.length) {
+      const result: any = {};
+      messages.results.forEach((message) => {
+        if (!message.read && !unreadMessagesRefs[message.id]) {
+          const elem = document.getElementById(`chat-message-${message.id}`);
+          if (elem) result[message.id] = elem;
+        }
+      });
+      setUnreadMessagesRefs((prev) => ({ ...prev, ...result }));
     }
-  }, [unreadMessagesRef.current, firstUnreadMessageId]);
-  console.log(firstUnreadMessageId, unreadMessagesRef.current);
+  }, [messages.results]);
+
+  useEffect(() => {
+    const options = {
+      threshold: 0.5, // Customize the visibility threshold as needed
+    };
+
+    const handleIntersection = (entries: any) => {
+      entries.forEach((entry: any) => {
+        if (entry.isIntersecting) {
+          const messageId = parseInt(entry.target.getAttribute("data-id"));
+          markAsRead(messageId);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+    Object.entries(unreadMessagesRefs).forEach(([id, ref]) => {
+      if (!messagesWasRead.includes(Number(id))) observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [unreadMessagesRefs, messagesWasRead]);
+
+  useEffect(() => {
+    if (unreadLabelRef.current) {
+      unreadLabelRef.current.scrollIntoView({ block: "center" });
+    }
+  }, [unreadLabelRef.current, firstUnreadMessageId]);
+
   useEffect(() => {
     if (messages.page && !loadedPages.includes(messages.page)) setLoadedPages([...loadedPages, messages.page]);
   }, [messages.page]);
@@ -65,6 +104,13 @@ const Messages: React.FC = () => {
   useEffect(() => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
   }, [isSending]);
+
+  const markAsRead = (messageId: number) => {
+    if (messagesWasRead.includes(messageId)) return;
+
+    setMessagesWasRead((prev) => [...prev, messageId]);
+    dispatch(readMessage(selectedChat.id, messageId)).then(() => dispatch(deductReadMessages(selectedChat.id, 1)));
+  };
 
   const loadOnTheTopSide = () => {
     if (
@@ -154,7 +200,7 @@ const Messages: React.FC = () => {
             return (
               <div key={item.id}>
                 {item.id === firstUnreadMessageId && (
-                  <div ref={unreadMessagesRef}>
+                  <div ref={unreadLabelRef}>
                     <UnreadMessagesLabel chatId={selectedChat?.id} />
                   </div>
                 )}
@@ -174,7 +220,7 @@ const Messages: React.FC = () => {
                     </div>
                   </div>
                 )}
-                <div className={classes.messageItem}>
+                <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
                   <div className={classes.messageInfo}>
                     <span className={classes.messageFrom}>
                       {item.sender === "You"

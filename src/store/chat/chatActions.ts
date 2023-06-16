@@ -49,27 +49,27 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
           .then(async (res) => {
             // read messages
-            const promises: any = [];
-            res.data.results.forEach((message: ChatListMessage) => {
-              if (!message.read) {
-                promises.push(dispatch(readMessage(chatId, message.id)));
-              }
-            });
-            if (promises.length) {
-              let resolvedCount = 0;
-              // Create wrapper promises to track resolution
-              const wrapperPromises = promises.map((promise: any) => {
-                return Promise.resolve(promise)
-                  .then(() => {
-                    resolvedCount += 1;
-                  })
-                  .catch(() => {
-                    // Handle rejected promises if needed
-                  });
-              });
-              await Promise.all(wrapperPromises);
-              dispatch(deductReadMessages(chatId, resolvedCount));
-            }
+            // const promises: any = [];
+            // res.data.results.forEach((message: ChatListMessage) => {
+            //   if (!message.read) {
+            //     promises.push(dispatch(readMessage(chatId, message.id)));
+            //   }
+            // });
+            // if (promises.length) {
+            //   let resolvedCount = 0;
+            //   // Create wrapper promises to track resolution
+            //   const wrapperPromises = promises.map((promise: any) => {
+            //     return Promise.resolve(promise)
+            //       .then(() => {
+            //         resolvedCount += 1;
+            //       })
+            //       .catch(() => {
+            //         // Handle rejected promises if needed
+            //       });
+            //   });
+            //   await Promise.all(wrapperPromises);
+            //   dispatch(deductReadMessages(chatId, resolvedCount));
+            // }
 
             // download images
             const files: any = {};
