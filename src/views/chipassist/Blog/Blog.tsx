@@ -58,7 +58,7 @@ const Blog: React.FC = () => {
       <Container maxWidth="lg">
         <div className={classes.header}>
           <h1>
-            ChipAssist <span>News</span>
+            ChipAssist <span>Blog</span>
           </h1>
           <TextField
             className={classes.searchInput}

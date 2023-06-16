@@ -135,6 +135,9 @@ export const ChipassistHomePage = () => {
                   <NavLink className={`${classes.heroMenuLink}`} to={`/about_company`}>
                     About us
                   </NavLink>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
+                    {t("menu.blog")}
+                  </NavLink>
                   <NavLink className={`${classes.heroMenuLink}`} to={`/parts`}>
                     {t("menu.parts")}
                   </NavLink>
