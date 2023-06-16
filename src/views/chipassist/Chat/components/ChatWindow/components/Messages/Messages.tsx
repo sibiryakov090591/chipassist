@@ -53,10 +53,11 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadMessagesRef.current) {
+      console.log(firstUnreadMessageId);
       unreadMessagesRef.current.scrollIntoView({ block: "center" });
     }
-  }, [unreadMessagesRef, firstUnreadMessageId]);
-
+  }, [unreadMessagesRef.current, firstUnreadMessageId]);
+  console.log(firstUnreadMessageId, unreadMessagesRef.current);
   useEffect(() => {
     if (messages.page && !loadedPages.includes(messages.page)) setLoadedPages([...loadedPages, messages.page]);
   }, [messages.page]);
@@ -153,7 +154,9 @@ const Messages: React.FC = () => {
             return (
               <div key={item.id}>
                 {item.id === firstUnreadMessageId && (
-                  <UnreadMessagesLabel ref={unreadMessagesRef} chatId={selectedChat?.id} />
+                  <div ref={unreadMessagesRef}>
+                    <UnreadMessagesLabel chatId={selectedChat?.id} />
+                  </div>
                 )}
                 {isShowDateLabel && (
                   <div className={classes.dateLabel}>{today === messageDate ? "Today" : messageDate}</div>
