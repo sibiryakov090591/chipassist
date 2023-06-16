@@ -7,6 +7,7 @@ import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import constants from "@src/constants/constants";
 import { ID_MASTER } from "@src/constants/server_constants";
+import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
@@ -42,6 +43,7 @@ const TopMenu = ({ isMobile }) => {
           <NavLink className={`${classes.topMenuItemLink}`} to={`/chat`}>
             {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
             Chat
+            <ChatUnreadTotalCount className={classes.chatUnreadCount} />
           </NavLink>
         </div>
       )}

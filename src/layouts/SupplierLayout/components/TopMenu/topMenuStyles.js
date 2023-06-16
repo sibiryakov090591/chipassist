@@ -30,6 +30,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: "4px 9px",
     lineHeight: "14px",
     borderRadius: "50ch",
+    position: "relative",
     "&:hover": {
       color: theme.palette.app.blue500,
       backgroundColor: "#eee",
@@ -41,6 +42,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   topMenuItemIcon: {
     marginRight: 5,
+  },
+  chatUnreadCount: {
+    position: "absolute",
+    top: "-7px",
+    left: "85%",
   },
 }));
 

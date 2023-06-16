@@ -1,8 +1,8 @@
-import { Theme } from "@material-ui/core";
+// import { Theme } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/styles";
-import { AppTheme } from "@src/themes/AppTheme";
+// import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles((theme: Theme & AppTheme) =>
+export const useStyles = makeStyles(() =>
   createStyles({
     unreadCount: {
       padding: "0 5px",
