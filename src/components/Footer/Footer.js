@@ -65,6 +65,9 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/privacy_policy"}>
                       Privacy Policy
                     </NavLink>
+                    <NavLink className={classes.navLink} to={"/FAQ"}>
+                      FAQ
+                    </NavLink>
                   </Box>
                   <Box className={classes.navGroup}>
                     <a className={classes.navLink} href="mailto:info@chipassist.com">
