@@ -12,6 +12,7 @@ const initialState: actionTypes.ChatState = {
   chatList: {
     page: null,
     total_pages: null,
+    unread_total: null,
     results: [],
     isLoading: true,
     loaded: false,
@@ -54,7 +55,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.LOAD_CHAT_LIST_R:
       return { ...state, chatList: { ...state.chatList, isLoading: true } };
     case actionTypes.LOAD_CHAT_LIST_S: {
-      const { page, total_pages, results } = action.response;
+      const { page, total_pages, unread_total, results } = action.response;
       return {
         ...state,
         chatList: {
@@ -63,6 +64,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           loaded: true,
           page,
           total_pages,
+          unread_total,
           results,
         },
         messages: {
@@ -95,7 +97,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.LOAD_MESSAGES_R:
       return { ...state, messages: { ...state.messages, isLoading: true } };
     case actionTypes.LOAD_MESSAGES_S: {
-      const { page, total_pages, results } = action.payload;
+      const { page, total_pages, results } = action.payload.response;
       return {
         ...state,
         messages: {
@@ -109,7 +111,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
     case actionTypes.LOAD_MORE_MESSAGES_S: {
-      const { page, total_pages, results } = action.payload;
+      const { page, total_pages, results } = action.payload.response;
       return {
         ...state,
         messages: {
@@ -118,7 +120,9 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           loaded: true,
           page,
           total_pages,
-          results: [...results.reverse(), ...state.messages.results],
+          results: action.payload.rewind
+            ? [...results.reverse(), ...state.messages.results]
+            : [...state.messages.results, ...results.reverse()],
         },
       };
     }
@@ -159,11 +163,13 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         messages: { ...initialState.messages },
       };
 
-    case actionTypes.DEDUCT_READ_MESSAGES:
+    case actionTypes.DEDUCT_READ_MESSAGES: {
+      const newTotal = Number(state.chatList.unread_total) - action.payload.count;
       return {
         ...state,
         chatList: {
           ...state.chatList,
+          unread_total: newTotal > 0 ? newTotal : 0,
           results: state.chatList.results.map((chat) => {
             if (chat.id === action.payload.chatId) {
               const newCount = Number(chat.unread_messages) - action.payload.count;
@@ -173,6 +179,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           }),
         },
       };
+    }
 
     case actionTypes.CLEAR_CHAT_REDUCER:
       return { ...initialState };

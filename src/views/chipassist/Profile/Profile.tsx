@@ -11,6 +11,7 @@ import clsx from "clsx";
 import PublishIcon from "@material-ui/icons/Publish";
 import useAppTheme from "@src/theme/useAppTheme";
 import Chat from "@src/views/chipassist/Chat/Chat";
+import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import { useStyles } from "./styles";
 import { Header, General } from "./components";
 
@@ -59,7 +60,18 @@ const Profile = () => {
           {tabs.map((val) => {
             if (!val) return null;
             if (val.value === "/profile/bom-list" && isXsDown) return null;
-            return <Tab key={val.value} label={val.label} value={val.value} />;
+            return (
+              <Tab
+                key={val.value}
+                label={
+                  <div className={classes.label}>
+                    {val.label}
+                    {val.value === "/profile/chat" && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+                  </div>
+                }
+                value={val.value}
+              />
+            );
           })}
         </Tabs>
         <Divider className={classes.divider} />

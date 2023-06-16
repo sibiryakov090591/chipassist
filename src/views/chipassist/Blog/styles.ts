@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       gridTemplateColumns: "1fr 1fr",
       gridGap: "32px",
       paddingBottom: "36px",
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down(800)]: {
         gridTemplateColumns: "1fr",
       },
     },
@@ -46,6 +46,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         height: 235,
         background: "#ffffff",
         objectFit: "cover",
+        objectPosition: "left",
+        [theme.breakpoints.down(800)]: {
+          height: "auto",
+        },
       },
       "&:hover": {
         borderColor: "#e0e0e0",

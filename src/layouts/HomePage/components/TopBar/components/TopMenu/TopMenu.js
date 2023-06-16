@@ -15,7 +15,8 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import { Hidden } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import { ID_CHIPASSIST } from "@src/constants/server_constants";
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import clsx from "clsx";
 import { logout } from "@src/store/authentication/authActions";
@@ -43,6 +44,8 @@ const TopMenu = ({ isMobile }) => {
     dispatch(logout());
   };
 
+  const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
+
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
       <div className={itemClasses}>
@@ -54,7 +57,18 @@ const TopMenu = ({ isMobile }) => {
           {t("home")}
         </NavLink>
       </div>
-      {constants.id === ID_CHIPASSIST && (
+      {isChipAssist && (
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/blog") })}
+            to={`/blog`}
+          >
+            {isMobile && <ReceiptIcon className={`${classes.topMenuItemIcon}`} />}
+            {t("blog")}
+          </NavLink>
+        </div>
+      )}
+      {isChipAssist && (
         <div className={itemClasses}>
           <NavLink
             className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}

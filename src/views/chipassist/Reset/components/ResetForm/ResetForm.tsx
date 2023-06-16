@@ -10,6 +10,7 @@ import { clearResetPasswordState, resetPasswordRequestThunk } from "@src/store/p
 import Alert from "@material-ui/lab/Alert";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
+import SuccessModal from "@src/views/chipassist/HomeRestricted/SuccessModal/SuccessModal";
 import { useStyles } from "./styles";
 
 const schema = {
@@ -54,6 +55,7 @@ const ResetForm = (props: { className: string }) => {
     errors: {},
     loginError: null,
   });
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("login_failure_email")) {
@@ -99,6 +101,7 @@ const ResetForm = (props: { className: string }) => {
       dispatch(resetPasswordRequestThunk(formState.values.username)).then(() => {
         localStorage.setItem("reset_email", formState.values.username);
         localStorage.removeItem("login_failure_email");
+        setSuccessModalOpen(true);
       });
     }
   };
@@ -119,48 +122,54 @@ const ResetForm = (props: { className: string }) => {
     return errorMessages;
   };
 
+  const onCloseModal = () => setSuccessModalOpen(false);
+
   return (
-    <form {...rest} className={clsx(classes.root, className)} onSubmit={handleSubmit}>
-      <div className={classes.fields}>
-        <TextField
-          error={hasError("username")}
-          fullWidth
-          helperText={hasError("username") ? t(formState.errors.username[0]) : null}
-          label={t("email")}
-          name="username"
-          id="username"
-          onChange={handleChange}
-          value={formState.values.username || ""}
-          variant="outlined"
-        />
-      </div>
-      {formState.loginError && <FormHelperText error>{formState.loginError}</FormHelperText>}
-      <Button
-        className={clsx(classes.submitButton, appTheme.buttonCreate)}
-        disabled={!formState.isValid || status.isLoading}
-        size="large"
-        type="submit"
-        name="signin"
-        variant="contained"
-      >
-        {status.isLoading && <CircularProgress className={classes.progressCircle} size="1.5em" />}
-        {t("reset")}
-      </Button>
-      {status.success && (
-        <Alert severity="success" style={{ marginTop: 10 }}>
-          {t("reset_success")}
-        </Alert>
-      )}
-      {status.error && (
-        <Alert severity="error" style={{ marginTop: 10 }}>
-          <ul style={{ paddingLeft: 10 }}>
-            {getErrorsText().map((error, i) => (
-              <li key={i}>{error}</li>
-            ))}
-          </ul>
-        </Alert>
-      )}
-    </form>
+    <>
+      <form {...rest} className={clsx(classes.root, className)} onSubmit={handleSubmit}>
+        <div className={classes.fields}>
+          <TextField
+            error={hasError("username")}
+            fullWidth
+            helperText={hasError("username") ? t(formState.errors.username[0]) : null}
+            label={t("email")}
+            name="username"
+            id="username"
+            onChange={handleChange}
+            value={formState.values.username || ""}
+            variant="outlined"
+          />
+        </div>
+        {formState.loginError && <FormHelperText error>{formState.loginError}</FormHelperText>}
+        <Button
+          className={clsx(classes.submitButton, appTheme.buttonCreate)}
+          disabled={!formState.isValid || status.isLoading}
+          size="large"
+          type="submit"
+          name="signin"
+          variant="contained"
+        >
+          {status.isLoading && <CircularProgress className={classes.progressCircle} size="1.5em" />}
+          {t("reset")}
+        </Button>
+        {status.success && (
+          <Alert severity="success" style={{ marginTop: 10 }}>
+            {t("reset_success")}
+          </Alert>
+        )}
+        {status.error && (
+          <Alert severity="error" style={{ marginTop: 10 }}>
+            <ul style={{ paddingLeft: 10 }}>
+              {getErrorsText().map((error, i) => (
+                <li key={i}>{error}</li>
+              ))}
+            </ul>
+          </Alert>
+        )}
+      </form>
+
+      {successModalOpen && <SuccessModal onCloseModal={onCloseModal} type="reset" />}
+    </>
   );
 };
 

@@ -16,6 +16,7 @@ import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
+import UnreadMessagesLabel from "./UnreadMessagesLabel";
 
 const FileDownload = require("js-file-download");
 
@@ -38,6 +39,7 @@ const Messages: React.FC = () => {
   useEffect(() => {
     if (selectedChat?.id) {
       setFirstUnreadMessageId(null);
+      setLoadedPages([]);
       dispatch(getMessages(selectedChat.id, { page_size: pageSize })).then((res: any) => {
         const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
         if (firstUnreadMessage) {
@@ -51,10 +53,11 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadMessagesRef.current) {
+      console.log(firstUnreadMessageId);
       unreadMessagesRef.current.scrollIntoView({ block: "center" });
     }
-  }, [unreadMessagesRef, firstUnreadMessageId]);
-
+  }, [unreadMessagesRef.current, firstUnreadMessageId]);
+  console.log(firstUnreadMessageId, unreadMessagesRef.current);
   useEffect(() => {
     if (messages.page && !loadedPages.includes(messages.page)) setLoadedPages([...loadedPages, messages.page]);
   }, [messages.page]);
@@ -64,7 +67,12 @@ const Messages: React.FC = () => {
   }, [isSending]);
 
   const loadOnTheTopSide = () => {
-    if (!messages.isLoading && selectedChat.id && messages.total_pages > Math.max(...loadedPages)) {
+    if (
+      !messages.isLoading &&
+      selectedChat.id &&
+      messages.results.length &&
+      messages.total_pages > Math.max(...loadedPages)
+    ) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
       dispatch(
         getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
@@ -77,7 +85,7 @@ const Messages: React.FC = () => {
   };
 
   const loadOnTheBottomSide = () => {
-    if (!messages.isLoading && selectedChat.id && Math.min(...loadedPages) > 1) {
+    if (!messages.isLoading && selectedChat.id && messages.results.length && Math.min(...loadedPages) > 1) {
       dispatch(
         getMessages(
           selectedChat.id,
@@ -90,8 +98,8 @@ const Messages: React.FC = () => {
 
   const onScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
-    const loadingYOffset = 150;
-    const toShowButtonYOffset = 100;
+    const loadingYOffset = 500;
+    const toShowButtonYOffset = 200;
 
     const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;
     if (toShowButton !== isShowScrollButton) setIsShowScrollButton(toShowButton);
@@ -146,8 +154,8 @@ const Messages: React.FC = () => {
             return (
               <div key={item.id}>
                 {item.id === firstUnreadMessageId && (
-                  <div ref={unreadMessagesRef} className={classes.unreadLabel}>
-                    <span>Unread Messages</span>
+                  <div ref={unreadMessagesRef}>
+                    <UnreadMessagesLabel chatId={selectedChat?.id} />
                   </div>
                 )}
                 {isShowDateLabel && (

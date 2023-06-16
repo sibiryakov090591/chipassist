@@ -56,7 +56,19 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
               }
             });
             if (promises.length) {
-              Promise.all(promises).then(() => dispatch(deductReadMessages(chatId, promises.length)));
+              let resolvedCount = 0;
+              // Create wrapper promises to track resolution
+              const wrapperPromises = promises.map((promise: any) => {
+                return Promise.resolve(promise)
+                  .then(() => {
+                    resolvedCount += 1;
+                  })
+                  .catch(() => {
+                    // Handle rejected promises if needed
+                  });
+              });
+              await Promise.all(wrapperPromises);
+              dispatch(deductReadMessages(chatId, resolvedCount));
             }
 
             // download images
@@ -74,11 +86,19 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
                 }
               });
             });
-            await Promise.all(filesPromises);
-            dispatch(saveFiles(files));
+            if (filesPromises.length) {
+              // Create wrapper promises to avoid some rejected promise that causes error
+              const wrapperPromises = filesPromises.map((promise: any) => Promise.resolve(promise));
+              await Promise.all(wrapperPromises);
+              dispatch(saveFiles(files));
+            }
+
             dispatch({
               type: join ? actionTypes.LOAD_MORE_MESSAGES_S : actionTypes.LOAD_MESSAGES_S,
-              payload: res.data,
+              payload: {
+                response: res.data,
+                rewind: !!filters.rewind,
+              },
             });
             return res.data;
           })

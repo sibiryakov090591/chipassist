@@ -10,7 +10,6 @@ import Filters from "@src/views/chipassist/Chat/components/ChatList/components/F
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -28,16 +27,6 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const chatListRef = React.useRef(null);
 
   const { chatList, selectedChat, filters } = useAppSelector((state) => state.chat);
-  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-
-  useEffect(() => {
-    if (isAuthenticated && (constants.id === "supplier_response" ? !!selectedPartner : true)) {
-      dispatch(getChatList(1, filters.values)).then((res: any) => {
-        if (res.results?.length) dispatch(selectChat(res.results[0]));
-      });
-    }
-  }, [isAuthenticated, selectedPartner]);
 
   useEffect(() => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });

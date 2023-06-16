@@ -11,21 +11,22 @@ import {
 } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { authSignupAction, login } from "@src/store/authentication/authActions";
+import { authSignupAction } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
 import { useStyles as useProgressStyles } from "@src/components/ProgressModal/styles";
-import { sendVerificationCode } from "@src/store/progressModal/progressModalActions";
 import { useLocation, useNavigate } from "react-router-dom";
 import OtpInput from "react-verification-code-input";
+import { resetPasswordRequestThunk } from "@src/store/profile/profileActions";
 import { useStyles } from "./styles";
 
 interface Props {
   onCloseModal: () => void;
+  type?: "reset" | "register";
 }
 
-const SuccessModal: React.FC<Props> = ({ onCloseModal }) => {
+const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register" }) => {
   const appTheme = useAppTheme();
   const { t } = useI18n("restricted.success_modal");
   const classes = useStyles();
@@ -37,6 +38,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal }) => {
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const registerData = useAppSelector((state) => state.auth.registerData);
+  const email = localStorage.getItem(type === "reset" ? "reset_email" : "registered_email");
 
   const [checking, setChecking] = useState<number>(1);
   const [confirmed, setConfirmed] = useState(false);
@@ -61,26 +63,30 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal }) => {
 
   useEffect(() => {
     if (values.length === 4) {
-      const email = localStorage.getItem("registered_email");
-      dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
-        if (codeRes?.code) {
-          navigate(`/password/request/${codeRes?.code}`, {
-            state: { background: location.state?.background || location },
-          });
-          onCloseModal();
-        } else if (codeRes?.token) {
-          dispatch(login({ email: localStorage.getItem("registered_email") }, codeRes?.token, navigate, null));
-          onCloseModal();
-        } else {
-          setInvalidCode(true);
-        }
+      // dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
+      //   if (codeRes?.code) {
+      //     navigate(`/password/request/${codeRes?.code}`, {
+      //       state: { background: location.state?.background || location },
+      //     });
+      //     onCloseModal();
+      //   } else if (codeRes?.token) {
+      //     dispatch(login({ email }, codeRes?.token, navigate, null));
+      //     onCloseModal();
+      //   } else {
+      //     setInvalidCode(true);
+      //   }
+      // });
+      navigate(`/password/request/${values.join("")}`, {
+        state: { background: location.state?.background || location },
       });
+      onCloseModal();
     }
   }, [values]);
 
-  const signUpAgain = () => {
+  const sendCodeAgain = () => {
     setTimer(60);
-    if (registerData) dispatch(authSignupAction(registerData));
+    if (type === "register" && registerData) dispatch(authSignupAction(registerData));
+    if (type === "reset") dispatch(resetPasswordRequestThunk(localStorage.getItem("reset_email")));
   };
 
   const handleOnChange = (value: string) => {
@@ -120,7 +126,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal }) => {
               </div>
               <div className={classes.text}>
                 {t("un_auth.text_2")}
-                <span className={classes.email}>{registerData?.email}</span>
+                <span className={classes.email}>{email}</span>
               </div>
               <div>
                 <strong>{t("un_auth.text_3")}</strong>
@@ -139,7 +145,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal }) => {
                   }}
                 />
               ) : (
-                <span className={clsx(appTheme.hyperlink, classes.signUpAgainLink)} onClick={signUpAgain}>
+                <span className={clsx(appTheme.hyperlink, classes.signUpAgainLink)} onClick={sendCodeAgain}>
                   {t("un_auth.send_link")}
                 </span>
               )}

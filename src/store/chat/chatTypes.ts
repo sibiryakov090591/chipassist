@@ -39,6 +39,7 @@ export interface ChatState {
   };
   chatList: {
     total_pages: number;
+    unread_total: number;
     page: number;
     results: ChatListItem[];
     isLoading: boolean;
@@ -118,11 +119,17 @@ interface LoadMessagesRequestAction {
 }
 interface LoadMessagesSuccessAction {
   type: typeof LOAD_MESSAGES_S;
-  payload: any;
+  payload: {
+    response: any;
+    rewind: boolean;
+  };
 }
 interface LoadMoreMessagesSuccessAction {
   type: typeof LOAD_MORE_MESSAGES_S;
-  payload: any;
+  payload: {
+    response: any;
+    rewind: boolean;
+  };
 }
 interface LoadMessagesFailAction {
   type: typeof LOAD_MESSAGES_F;
