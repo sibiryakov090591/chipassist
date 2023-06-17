@@ -9,6 +9,58 @@ const FAQ = () => {
   const { t } = useI18n("static_pages.faq");
   const classes = useStyles();
 
+  const userFAQ = [
+    {
+      label_question: "user_question_1",
+      label_answer: "user_answer_1",
+    },
+    {
+      label_question: "user_question_2",
+      label_answer: "user_answer_2",
+    },
+    {
+      label_question: "user_question_3",
+      label_answer: "user_answer_3",
+    },
+    {
+      label_question: "user_question_4",
+      label_answer: "user_answer_4",
+    },
+    {
+      label_question: "user_question_5",
+      label_answer: "user_answer_5",
+    },
+  ];
+
+  const distributoFAQPart1 = [
+    {
+      label_question: "distributor_question_1",
+      label_answer: "distributor_answer_1",
+    },
+    {
+      label_question: "distributor_question_2",
+      label_answer: "distributor_answer_2",
+    },
+    {
+      label_question: "distributor_question_3",
+      label_answer: "distributor_answer_3",
+    },
+    {
+      label_question: "distributor_question_4",
+      label_answer: "distributor_answer_4",
+    },
+  ];
+
+  const distributorFAQPart2 = [
+    {
+      label_question: "distributor_question_7",
+      label_answer: "distributor_answer_7",
+    },
+    {
+      label_question: "distributor_question_8",
+      label_answer: "distributor_answer_8",
+    },
+  ];
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
@@ -24,20 +76,18 @@ const FAQ = () => {
         <Container maxWidth={"lg"}>
           <h2 className={classes.subTitle}>{t("subtitle_user")}</h2>
           <Grid container spacing={4} direction={"column"}>
-            {[...Array(Number(t("users_questions_amount"))).keys()]
-              .map((x) => x + 1)
-              .map((element, key) => (
-                <Grid item md={12} xs={12} key={key}>
-                  <Accordion>
-                    <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                      <p className={classes.question}>{t(`user_question_${element}`)}</p>
-                    </AccordionSummary>
-                    <AccordionDetails className={classes.accordionDescr}>
-                      <p className={classes.answer}>{t(`user_answer_${element}`)}</p>
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              ))}
+            {userFAQ.map((element, key) => (
+              <Grid item md={12} xs={12} key={key}>
+                <Accordion>
+                  <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
+                    <p className={classes.question}>{t(element.label_question)}</p>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.accordionDescr}>
+                    <p className={classes.answer}>{t(element.label_answer)}</p>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </section>
@@ -45,20 +95,18 @@ const FAQ = () => {
         <Container maxWidth={"lg"}>
           <h2 className={classes.subTitle}>{t("subtitle_distributor")}</h2>
           <Grid container spacing={4} direction={"column"}>
-            {[...Array(4).keys()]
-              .map((x) => x + 1)
-              .map((element, key) => (
-                <Grid item md={12} xs={12} key={key}>
-                  <Accordion>
-                    <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                      <p className={classes.question}>{t(`distributor_question_${element}`)}</p>
-                    </AccordionSummary>
-                    <AccordionDetails className={classes.accordionDescr}>
-                      <p className={classes.answer}>{t(`distributor_answer_${element}`)}</p>
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              ))}
+            {distributoFAQPart1.map((element, key) => (
+              <Grid item md={12} xs={12} key={key}>
+                <Accordion>
+                  <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
+                    <p className={classes.question}>{t(element.label_question)}</p>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.accordionDescr}>
+                    <p className={classes.answer}>{t(element.label_answer)}</p>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            ))}
             <Grid item md={12} xs={12}>
               <Accordion>
                 <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
@@ -95,20 +143,18 @@ const FAQ = () => {
                 </AccordionDetails>
               </Accordion>
             </Grid>
-            {[...Array(Number(t("distributors_questions_amount")) - 6).keys()]
-              .map((x) => x + 7)
-              .map((element, key) => (
-                <Grid item md={12} xs={12} key={key}>
-                  <Accordion>
-                    <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                      <p className={classes.question}>{t(`distributor_question_${element}`)}</p>
-                    </AccordionSummary>
-                    <AccordionDetails className={classes.accordionDescr}>
-                      <p className={classes.answer}>{t(`distributor_answer_${element}`)}</p>
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              ))}
+            {distributorFAQPart2.map((element, key) => (
+              <Grid item md={12} xs={12} key={key}>
+                <Accordion>
+                  <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
+                    <p className={classes.question}>{t(element.label_question)}</p>
+                  </AccordionSummary>
+                  <AccordionDetails className={classes.accordionDescr}>
+                    <p className={classes.answer}>{t(element.label_answer)}</p>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </section>
