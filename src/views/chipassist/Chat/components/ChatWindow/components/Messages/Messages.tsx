@@ -32,7 +32,7 @@ const Messages: React.FC = () => {
   const messages = useAppSelector((state) => state.chat.messages);
   const files = useAppSelector((state) => state.chat.files);
 
-  const [messagesWasRead, setMessagesWasRead] = useState<number[]>([]);
+  const [messagesIdsWasRead, setMessagesIdsWasRead] = useState<number[]>([]);
   const [unreadMessagesRefs, setUnreadMessagesRefs] = useState<{ [key: number]: any }>({});
   const [firstUnreadMessageId, setFirstUnreadMessageId] = useState<number>(null);
   const [isSending, setIsSending] = useState(false);
@@ -41,8 +41,10 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (selectedChat?.id) {
+      setMessagesIdsWasRead([]);
       setFirstUnreadMessageId(null);
       setLoadedPages([]);
+
       dispatch(getMessages(selectedChat.id, { page_size: pageSize })).then((res: any) => {
         const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
         if (firstUnreadMessage) {
@@ -83,13 +85,13 @@ const Messages: React.FC = () => {
 
     const observer = new IntersectionObserver(handleIntersection, options);
     Object.entries(unreadMessagesRefs).forEach(([id, ref]) => {
-      if (!messagesWasRead.includes(Number(id))) observer.observe(ref);
+      if (!messagesIdsWasRead.includes(Number(id))) observer.observe(ref);
     });
 
     return () => {
       observer.disconnect();
     };
-  }, [unreadMessagesRefs, messagesWasRead]);
+  }, [unreadMessagesRefs, messagesIdsWasRead]);
 
   useEffect(() => {
     if (unreadLabelRef.current) {
@@ -106,9 +108,9 @@ const Messages: React.FC = () => {
   }, [isSending]);
 
   const markAsRead = (messageId: number) => {
-    if (messagesWasRead.includes(messageId)) return;
+    if (messagesIdsWasRead.includes(messageId)) return;
 
-    setMessagesWasRead((prev) => [...prev, messageId]);
+    setMessagesIdsWasRead((prev) => [...prev, messageId]);
     dispatch(readMessage(selectedChat.id, messageId)).then(() => dispatch(deductReadMessages(selectedChat.id, 1)));
   };
 
