@@ -39,6 +39,8 @@ const Messages: React.FC = () => {
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
   const [loadedPages, setLoadedPages] = useState<number[]>([]);
 
+  const minLoadedPage = React.useMemo(() => !!loadedPages.length && Math.min(...loadedPages), [loadedPages]);
+
   useEffect(() => {
     if (selectedChat?.id) {
       setMessagesIdsWasRead([]);
@@ -289,6 +291,7 @@ const Messages: React.FC = () => {
         setIsSending={setIsSending}
         isShowScrollButton={isShowScrollButton}
         onScrollToBottom={onScrollToBottom}
+        minLoadedPage={minLoadedPage}
       />
     </div>
   );
