@@ -106,20 +106,14 @@ const FAQ = () => {
             <Grid item md={12} xs={12}>
               <CustomAccordion>
                 {{
-                  summary: (
-                    <>
-                      <p className={classes.question}>{t(`distributor_question_5`)}</p>
-                    </>
-                  ),
+                  summary: <p className={classes.question}>{t(`distributor_question_5`)}</p>,
                   details: (
-                    <>
-                      <p className={classes.answer}>
-                        {t(`distributor_answer_5_1`)}{" "}
-                        <span className={classes.redColor}>{t("distributor_answer_5_2")}</span>
-                        <br />
-                        {t("distributor_answer_5_3")}
-                      </p>
-                    </>
+                    <p className={classes.answer}>
+                      {t(`distributor_answer_5_1`)}{" "}
+                      <span className={classes.redColor}>{t("distributor_answer_5_2")}</span>
+                      <br />
+                      {t("distributor_answer_5_3")}
+                    </p>
                   ),
                 }}
               </CustomAccordion>
@@ -127,11 +121,7 @@ const FAQ = () => {
             <Grid item md={12} xs={12}>
               <CustomAccordion>
                 {{
-                  summary: (
-                    <>
-                      <p className={classes.question}>{t(`distributor_question_6`)}</p>
-                    </>
-                  ),
+                  summary: <p className={classes.question}>{t(`distributor_question_6`)}</p>,
                   details: (
                     <p className={classes.answer}>
                       {t(`distributor_answer_6_1_1`)} <br />
