@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Page } from "@src/components";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useStyles from "@src/views/chipassist/StaticPages/FAQ/styles";
-import { Accordion, AccordionDetails, AccordionSummary, Container, Grid } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
+import { Container, Grid } from "@material-ui/core";
+import { CustomAccordion } from "@src/views/chipassist/StaticPages/FAQ/components/CustomAccordion";
 
 const FAQ = () => {
   const { t } = useI18n("static_pages.faq");
@@ -78,14 +78,12 @@ const FAQ = () => {
           <Grid container spacing={4} direction={"column"}>
             {userFAQ.map((element, key) => (
               <Grid item md={12} xs={12} key={key}>
-                <Accordion>
-                  <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                    <p className={classes.question}>{t(element.label_question)}</p>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.accordionDescr}>
-                    <p className={classes.answer}>{t(element.label_answer)}</p>
-                  </AccordionDetails>
-                </Accordion>
+                <CustomAccordion>
+                  {{
+                    summary: <p className={classes.question}>{t(element.label_question)}</p>,
+                    details: <p className={classes.answer}>{t(element.label_answer)} </p>,
+                  }}
+                </CustomAccordion>
               </Grid>
             ))}
           </Grid>
@@ -97,62 +95,68 @@ const FAQ = () => {
           <Grid container spacing={4} direction={"column"}>
             {distributoFAQPart1.map((element, key) => (
               <Grid item md={12} xs={12} key={key}>
-                <Accordion>
-                  <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                    <p className={classes.question}>{t(element.label_question)}</p>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.accordionDescr}>
-                    <p className={classes.answer}>{t(element.label_answer)}</p>
-                  </AccordionDetails>
-                </Accordion>
+                <CustomAccordion>
+                  {{
+                    summary: <p className={classes.question}>{t(element.label_question)}</p>,
+                    details: <p className={classes.answer}>{t(element.label_answer)} </p>,
+                  }}
+                </CustomAccordion>
               </Grid>
             ))}
             <Grid item md={12} xs={12}>
-              <Accordion>
-                <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                  <p className={classes.question}>{t(`distributor_question_5`)}</p>
-                </AccordionSummary>
-                <AccordionDetails className={classes.accordionDescr}>
-                  <p className={classes.answer}>
-                    {t(`distributor_answer_5_1`)}{" "}
-                    <span className={classes.redColor}>{t("distributor_answer_5_2")}</span>
-                    <br />
-                    {t("distributor_answer_5_3")}
-                  </p>
-                </AccordionDetails>
-              </Accordion>
+              <CustomAccordion>
+                {{
+                  summary: (
+                    <>
+                      <p className={classes.question}>{t(`distributor_question_5`)}</p>
+                    </>
+                  ),
+                  details: (
+                    <>
+                      <p className={classes.answer}>
+                        {t(`distributor_answer_5_1`)}{" "}
+                        <span className={classes.redColor}>{t("distributor_answer_5_2")}</span>
+                        <br />
+                        {t("distributor_answer_5_3")}
+                      </p>
+                    </>
+                  ),
+                }}
+              </CustomAccordion>
             </Grid>
             <Grid item md={12} xs={12}>
-              <Accordion>
-                <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                  <p className={classes.question}>{t(`distributor_question_6`)}</p>
-                </AccordionSummary>
-                <AccordionDetails className={classes.accordionDescr}>
-                  <p className={classes.answer}>
-                    {t(`distributor_answer_6_1_1`)} <br />
-                    {t(`distributor_answer_6_1_2`)} <br />
-                    {t(`distributor_answer_6_1_3`)} <br />
-                    {t(`distributor_answer_6_1_4`)} <br />
-                    {t("distributor_answer_6_2_1")} <br />
-                    {t("distributor_answer_6_2_2")}
-                    <a className={classes.redColor} href={`mailto:${t("distributor_answer_6_2_link")}`}>
-                      {" "}
-                      {t("distributor_answer_6_2_link")}
-                    </a>
-                  </p>
-                </AccordionDetails>
-              </Accordion>
+              <CustomAccordion>
+                {{
+                  summary: (
+                    <>
+                      <p className={classes.question}>{t(`distributor_question_6`)}</p>
+                    </>
+                  ),
+                  details: (
+                    <p className={classes.answer}>
+                      {t(`distributor_answer_6_1_1`)} <br />
+                      {t(`distributor_answer_6_1_2`)} <br />
+                      {t(`distributor_answer_6_1_3`)} <br />
+                      {t(`distributor_answer_6_1_4`)} <br />
+                      {t("distributor_answer_6_2_1")} <br />
+                      {t("distributor_answer_6_2_2")}
+                      <a className={classes.redColor} href={`mailto:${t("distributor_answer_6_2_link")}`}>
+                        {" "}
+                        {t("distributor_answer_6_2_link")}
+                      </a>
+                    </p>
+                  ),
+                }}
+              </CustomAccordion>
             </Grid>
             {distributorFAQPart2.map((element, key) => (
               <Grid item md={12} xs={12} key={key}>
-                <Accordion>
-                  <AccordionSummary classes={{ root: classes.summaryRoot }} expandIcon={<AddIcon />}>
-                    <p className={classes.question}>{t(element.label_question)}</p>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.accordionDescr}>
-                    <p className={classes.answer}>{t(element.label_answer)}</p>
-                  </AccordionDetails>
-                </Accordion>
+                <CustomAccordion>
+                  {{
+                    summary: <p className={classes.question}>{t(element.label_question)}</p>,
+                    details: <p className={classes.answer}>{t(element.label_answer)} </p>,
+                  }}
+                </CustomAccordion>
               </Grid>
             ))}
           </Grid>
