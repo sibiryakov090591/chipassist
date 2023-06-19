@@ -8,6 +8,10 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TopBar } from "./components";
 
+const scrollbarWidth =
+  document.getElementById("scrollbar-measure")?.offsetWidth -
+  document.getElementById("scrollbar-measure-content")?.offsetWidth;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -27,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 250ms ease",
     height: 133,
     width: "100vw",
-    paddingRight: 12,
+    paddingRight: `${scrollbarWidth}px`,
     [theme.breakpoints.up("md")]: {
       "&.collapse": {
         height: 80,
@@ -53,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingRight: "10px",
+    paddingRight: `${scrollbarWidth}px`,
     background: "white !important",
     [theme.breakpoints.down("sm")]: {
       paddingRight: "initial",

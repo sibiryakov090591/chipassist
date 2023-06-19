@@ -128,6 +128,13 @@
                     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
   <% } %>
-    <div id="app"></div>
+
+  <!-- Creating a hidden scrollbar to determine its width -->
+  <div id="scrollbar-measure" style="width: 100px; height: 100px; overflow: scroll; position: absolute; top: -9999px;">
+    <div id="scrollbar-measure-content" style="height: 200px"></div>
+  </div>
+  <!-- End creating a hidden scrollbar -->
+
+  <div id="app"></div>
   </body>
 </html>

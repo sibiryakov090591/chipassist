@@ -66,9 +66,7 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
               });
             });
             if (filesPromises.length) {
-              // Create wrapper promises to avoid some rejected promise that causes error
-              const wrapperPromises = filesPromises.map((promise: any) => Promise.resolve(promise));
-              await Promise.all(wrapperPromises);
+              await Promise.all(filesPromises);
               dispatch(saveFiles(files));
             }
 

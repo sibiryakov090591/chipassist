@@ -55,6 +55,9 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/pcb"}>
                       Request PCB
                     </NavLink>
+                    <NavLink className={classes.navLink} to={`/blog`}>
+                      Blog
+                    </NavLink>
                   </Box>
                 </Box>
                 <Box display="flex" flexWrap="wrap">

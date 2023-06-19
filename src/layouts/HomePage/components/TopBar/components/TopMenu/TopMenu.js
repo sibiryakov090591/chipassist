@@ -60,17 +60,6 @@ const TopMenu = ({ isMobile }) => {
       {isChipAssist && (
         <div className={itemClasses}>
           <NavLink
-            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/blog") })}
-            to={`/blog`}
-          >
-            {isMobile && <ReceiptIcon className={`${classes.topMenuItemIcon}`} />}
-            {t("blog")}
-          </NavLink>
-        </div>
-      )}
-      {isChipAssist && (
-        <div className={itemClasses}>
-          <NavLink
             className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}
             to={`/parts`}
           >
@@ -133,6 +122,17 @@ const TopMenu = ({ isMobile }) => {
       {/*  </div> */}
       {/*  <Feedback open={openFeedback} onClose={handleFeedback} /> */}
       {/* </div> */}
+      {isChipAssist && (
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/blog") })}
+            to={`/blog`}
+          >
+            {isMobile && <ReceiptIcon className={`${classes.topMenuItemIcon}`} />}
+            {t("blog")}
+          </NavLink>
+        </div>
+      )}
       {isMobile && isAuthenticated && (
         <div className={itemClasses}>
           <NavLink className={`${classes.topMenuItemLink} top-menu-logout`} to={`/logout`} onClick={logoutHandler}>
