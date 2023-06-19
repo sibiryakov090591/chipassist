@@ -6,11 +6,8 @@ import constants from "@src/constants/constants";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { scrollbarWidth } from "@src/config";
 import { TopBar } from "./components";
-
-const scrollbarWidth =
-  document.getElementById("scrollbar-measure")?.offsetWidth -
-  document.getElementById("scrollbar-measure-content")?.offsetWidth;
 
 const useStyles = makeStyles((theme) => ({
   root: {
