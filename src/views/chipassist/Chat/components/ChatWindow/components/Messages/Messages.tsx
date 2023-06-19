@@ -119,8 +119,8 @@ const Messages: React.FC = () => {
   const loadOnTheTopSide = () => {
     if (
       !messages.isLoading &&
-      selectedChat.id &&
       messages.results.length &&
+      loadedPages.length &&
       messages.total_pages > Math.max(...loadedPages)
     ) {
       const prevHeight = messagesWindowRef.current.scrollHeight;
@@ -135,7 +135,7 @@ const Messages: React.FC = () => {
   };
 
   const loadOnTheBottomSide = () => {
-    if (!messages.isLoading && selectedChat.id && messages.results.length && Math.min(...loadedPages) > 1) {
+    if (!messages.isLoading && messages.results.length && loadedPages.length && Math.min(...loadedPages) > 1) {
       dispatch(
         getMessages(
           selectedChat.id,

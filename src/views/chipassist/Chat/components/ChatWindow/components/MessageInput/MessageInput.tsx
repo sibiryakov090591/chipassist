@@ -90,12 +90,11 @@ const MessageInput: React.FC<Props> = ({
     if (error) setError("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (chatId && !isSending) {
       setIsSending(true);
 
       if (minLoadedPage > 1) {
-        console.log(minLoadedPage);
       }
 
       const promises: any = [];
