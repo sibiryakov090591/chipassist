@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { sendMessage, sendFiles } from "@src/store/chat/chatActions";
+import { sendMessage, sendFiles, getMessages } from "@src/store/chat/chatActions";
 import ScrollToBottom from "@src/views/chipassist/Chat/components/ChatWindow/components/ScrollToBottom/ScrollToBottom";
 import useAppSelector from "@src/hooks/useAppSelector";
 import Box from "@material-ui/core/Box";
@@ -18,6 +18,7 @@ interface Props {
   isShowScrollButton: boolean;
   onScrollToBottom: () => void;
   minLoadedPage: number;
+  pageSize: number;
 }
 
 const MessageInput: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const MessageInput: React.FC<Props> = ({
   isShowScrollButton,
   onScrollToBottom,
   minLoadedPage,
+  pageSize,
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -95,6 +97,17 @@ const MessageInput: React.FC<Props> = ({
       setIsSending(true);
 
       if (minLoadedPage > 1) {
+        // Asynchronous function with an async cycle
+        const asyncLoadingPages = async (pages: number[]) => {
+          for (const page of pages) {
+            // eslint-disable-next-line no-await-in-loop
+            await dispatch(getMessages(chatId, { page, rewind: false, page_size: pageSize }, true));
+          }
+        };
+
+        const startPage = minLoadedPage - 1;
+        const pagesNeedToLoad = Array.from({ length: startPage }, (_, index) => startPage - index);
+        await asyncLoadingPages(pagesNeedToLoad);
       }
 
       const promises: any = [];
