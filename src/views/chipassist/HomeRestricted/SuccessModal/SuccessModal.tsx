@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { authSignupAction } from "@src/store/authentication/authActions";
+import { authSignupAction, login } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
@@ -19,6 +19,7 @@ import { useStyles as useProgressStyles } from "@src/components/ProgressModal/st
 import { useLocation, useNavigate } from "react-router-dom";
 import OtpInput from "react-verification-code-input";
 import { resetPasswordRequestThunk } from "@src/store/profile/profileActions";
+import { sendVerificationCode } from "@src/store/progressModal/progressModalActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -63,23 +64,19 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register" }) => {
 
   useEffect(() => {
     if (values.length === 4) {
-      // dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
-      //   if (codeRes?.code) {
-      //     navigate(`/password/request/${codeRes?.code}`, {
-      //       state: { background: location.state?.background || location },
-      //     });
-      //     onCloseModal();
-      //   } else if (codeRes?.token) {
-      //     dispatch(login({ email }, codeRes?.token, navigate, null));
-      //     onCloseModal();
-      //   } else {
-      //     setInvalidCode(true);
-      //   }
-      // });
-      navigate(`/password/request/${values.join("")}`, {
-        state: { background: location.state?.background || location },
+      dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
+        if (codeRes?.code) {
+          navigate(`/password/request/${codeRes?.code}`, {
+            state: { background: location.state?.background || location },
+          });
+          onCloseModal();
+        } else if (codeRes?.token) {
+          dispatch(login({ email }, codeRes?.token, navigate, null));
+          onCloseModal();
+        } else {
+          setInvalidCode(true);
+        }
       });
-      onCloseModal();
     }
   }, [values]);
 
