@@ -17,9 +17,17 @@ interface Props {
   setIsSending: any;
   isShowScrollButton: boolean;
   onScrollToBottom: () => void;
+  minLoadedPage: number;
 }
 
-const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShowScrollButton, onScrollToBottom }) => {
+const MessageInput: React.FC<Props> = ({
+  chatId,
+  setIsSending,
+  isSending,
+  isShowScrollButton,
+  onScrollToBottom,
+  minLoadedPage,
+}) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const textareaRef = useRef(null);
@@ -86,8 +94,11 @@ const MessageInput: React.FC<Props> = ({ chatId, setIsSending, isSending, isShow
     if (chatId && !isSending) {
       setIsSending(true);
 
-      const promises: any = [];
+      if (minLoadedPage > 1) {
+        console.log(minLoadedPage);
+      }
 
+      const promises: any = [];
       if (message.trim()) {
         promises.push(dispatch(sendMessage(chatId, message.trim())).then(() => setMessage("")));
       }
