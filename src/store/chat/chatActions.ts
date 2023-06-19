@@ -56,9 +56,11 @@ export const getMessages = (chatId: number, filters: { [key: string]: any }, joi
                 const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
                 if (validType && !getState().chat.files[file.id]) {
                   filesPromises.push(
-                    dispatch(downloadFile(file.id)).then((blob: Blob) => {
-                      files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
-                    }),
+                    dispatch(downloadFile(file.id))
+                      .then((blob: Blob) => {
+                        files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                      })
+                      .catch((e: any) => e),
                   );
                 }
               });
@@ -183,9 +185,11 @@ export const sendFiles = (chatId: number, files: File[]) => {
               const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
               if (validType && !getState().chat.files[file.id]) {
                 filesPromises.push(
-                  dispatch(downloadFile(file.id)).then((blob: Blob) => {
-                    previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
-                  }),
+                  dispatch(downloadFile(file.id))
+                    .then((blob: Blob) => {
+                      previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                    })
+                    .catch((e: any) => e),
                 );
               }
             });
