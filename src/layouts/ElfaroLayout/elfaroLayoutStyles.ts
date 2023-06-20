@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core";
+import { scrollbarWidth } from "@src/config";
 
 export const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
@@ -17,7 +18,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   container: {
     width: "100vw",
     marginTop: 24,
-    paddingRight: 12,
+    paddingRight: `${scrollbarWidth}px`,
     display: "flex",
     flex: "1 1 auto",
     [theme.breakpoints.down("sm")]: {

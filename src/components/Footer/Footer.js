@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { useStyles } from "./footerStyles";
@@ -21,6 +21,8 @@ const Footer = () => {
     build = "any";
   }
 
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+
   return (
     <div className={classes.root}>
       <footer className={classes.footer}>
@@ -34,29 +36,50 @@ const Footer = () => {
                 <div className={classes.copy}>Copyright © {new Date().toISOString().slice(0, 4)} ChipAssist AG</div>
               </Box>
               <Box display="flex" className={classes.nav}>
-                <Box display="flex" flexWrap="wrap">
+                {isSupplierResponse && (
                   <Box className={classes.navGroup}>
-                    <NavLink className={classes.navLink} to={"/about_company"}>
-                      About us
+                    <NavLink className={classes.navLink} to={"/supplier-response"}>
+                      Requests
                     </NavLink>
-                    <NavLink className={classes.navLink} to={"/parts"}>
-                      Products
+                    <NavLink className={classes.navLink} to={"/statistics"}>
+                      Statistics
                     </NavLink>
-                    <Hidden smDown>
-                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                        BOM Tool
+                    <NavLink className={classes.navLink} to={"/chat"}>
+                      Messages
+                    </NavLink>
+                    <NavLink className={classes.navLink} to={"/help"}>
+                      Help
+                    </NavLink>
+                  </Box>
+                )}
+                {!isSupplierResponse && (
+                  <Box display="flex" flexWrap="wrap">
+                    <Box className={classes.navGroup}>
+                      <NavLink className={classes.navLink} to={"/about_company"}>
+                        About us
                       </NavLink>
-                    </Hidden>
+                      <NavLink className={classes.navLink} to={"/parts"}>
+                        Products
+                      </NavLink>
+                      <Hidden smDown>
+                        <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                          BOM Tool
+                        </NavLink>
+                      </Hidden>
+                    </Box>
+                    <Box className={classes.navGroup}>
+                      <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
+                        Sell on ChipAssist
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/pcb"}>
+                        Request PCB
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={`/blog`}>
+                        Blog
+                      </NavLink>
+                    </Box>
                   </Box>
-                  <Box className={classes.navGroup}>
-                    <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
-                      Sell on ChipAssist
-                    </NavLink>
-                    <NavLink className={classes.navLink} to={"/pcb"}>
-                      Request PCB
-                    </NavLink>
-                  </Box>
-                </Box>
+                )}
                 <Box display="flex" flexWrap="wrap">
                   <Box className={classes.navGroup}>
                     <NavLink className={classes.navLink} to={"/terms_of_services"}>
@@ -65,9 +88,11 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/privacy_policy"}>
                       Privacy Policy
                     </NavLink>
-                    <NavLink className={classes.navLink} to={"/FAQ"}>
-                      FAQ
-                    </NavLink>
+                    {!isSupplierResponse && (
+                      <NavLink className={classes.navLink} to={"/FAQ"}>
+                        FAQ
+                      </NavLink>
+                    )}
                   </Box>
                   <Box className={classes.navGroup}>
                     <a className={classes.navLink} href="mailto:info@chipassist.com">

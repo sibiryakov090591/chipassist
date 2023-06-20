@@ -62,6 +62,11 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
           useWindow={false}
           initialLoad={false}
           hasMore={chatList.total_pages > chatList.page}
+          loader={
+            <Box display="flex" justifyContent={"center"}>
+              <Preloader />
+            </Box>
+          }
         >
           {chatList.results.map((item, index) => {
             const lastMessage = item.messages[0];

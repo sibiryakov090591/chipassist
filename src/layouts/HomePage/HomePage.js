@@ -6,6 +6,7 @@ import constants from "@src/constants/constants";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { scrollbarWidth } from "@src/config";
 import { TopBar } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 250ms ease",
     height: 133,
     width: "100vw",
-    paddingRight: 12,
+    paddingRight: `${scrollbarWidth}px`,
     [theme.breakpoints.up("md")]: {
       "&.collapse": {
         height: 80,
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingRight: "10px",
+    paddingRight: `${scrollbarWidth}px`,
     background: "white !important",
     [theme.breakpoints.down("sm")]: {
       paddingRight: "initial",

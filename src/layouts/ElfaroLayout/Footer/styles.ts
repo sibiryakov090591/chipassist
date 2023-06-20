@@ -1,10 +1,12 @@
 import { Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
+import { scrollbarWidth } from "@src/config";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   footer: {
     width: "100vw",
+    paddingRight: `${scrollbarWidth}px`,
     minHeight: 80,
     backgroundColor: theme.palette.primary.main,
   },

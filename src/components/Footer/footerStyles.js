@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { scrollbarWidth } from "@src/config";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -6,6 +7,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   footer: {
     padding: "26px 0",
+    paddingRight: `${scrollbarWidth}px`,
     backgroundColor: theme.palette.primary.main,
   },
   footerWrapper: {
@@ -91,6 +93,12 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       width: "100%",
     },
+    [theme.breakpoints.down(400)]: {
+      flexDirection: "column",
+      "& > div": {
+        flexDirection: "column",
+      },
+    },
   },
   navGroup: {
     marginRight: 50,
@@ -123,6 +131,9 @@ export const useStyles = makeStyles((theme) => ({
     position: "absolute",
     bottom: "-24px",
     left: 0,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   addressWrapper: {
     display: "flex",

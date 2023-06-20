@@ -8,4 +8,8 @@ export const INIT_ALERTS = !IS_PROD;
 export const DATE_FORMAT = "DD/MM/YYYY";
 export const FILE_SIZE = "50";
 
+export const scrollbarWidth =
+  document.getElementById("scrollbar-measure")?.offsetWidth -
+  document.getElementById("scrollbar-measure-content")?.offsetWidth;
+
 export default "config";

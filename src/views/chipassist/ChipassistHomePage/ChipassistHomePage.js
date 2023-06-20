@@ -135,9 +135,6 @@ export const ChipassistHomePage = () => {
                   <NavLink className={`${classes.heroMenuLink}`} to={`/about_company`}>
                     About us
                   </NavLink>
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
-                    {t("menu.blog")}
-                  </NavLink>
                   <NavLink className={`${classes.heroMenuLink}`} to={`/parts`}>
                     {t("menu.parts")}
                   </NavLink>
@@ -152,6 +149,9 @@ export const ChipassistHomePage = () => {
                   <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
                     Contacts
                   </a>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
+                    {t("menu.blog")}
+                  </NavLink>
                 </Box>
                 <Box display="flex" alignItems="center">
                   <NavLink to="/pcb" className={clsx(classes.headerButtonLink, classes.heroButtonLink)}>

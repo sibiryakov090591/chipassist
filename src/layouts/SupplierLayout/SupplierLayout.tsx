@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Footer from "@src/components/Footer/Footer";
+import { scrollbarWidth } from "@src/config";
 import TopBar from "./components/TopBar";
 
 const useStyles = makeStyles(() => ({
@@ -21,12 +22,13 @@ const useStyles = makeStyles(() => ({
     zIndex: 999,
     position: "fixed",
     width: "100vw",
-    paddingRight: 12,
+    paddingRight: `${scrollbarWidth}px`,
     height: 80,
     display: "flex",
     justifyContent: "center",
   },
   container: {
+    paddingRight: `${scrollbarWidth}px`,
     marginTop: 80,
     display: "flex",
     flex: "1 1 auto",

@@ -23,7 +23,7 @@ const FileDownload = require("js-file-download");
 const Messages: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const pageSize = 15;
+  const pageSize = 5;
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
@@ -36,6 +36,7 @@ const Messages: React.FC = () => {
   const [unreadMessagesRefs, setUnreadMessagesRefs] = useState<{ [key: number]: any }>({});
   const [firstUnreadMessageId, setFirstUnreadMessageId] = useState<number>(null);
   const [isSending, setIsSending] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState<"top" | "bottom">(null);
   const [isShowScrollButton, setIsShowScrollButton] = useState(false);
   const [loadedPages, setLoadedPages] = useState<number[]>([]);
 
@@ -119,30 +120,34 @@ const Messages: React.FC = () => {
   const loadOnTheTopSide = () => {
     if (
       !messages.isLoading &&
-      selectedChat.id &&
       messages.results.length &&
+      loadedPages.length &&
       messages.total_pages > Math.max(...loadedPages)
     ) {
+      setIsLoadingMore("top");
       const prevHeight = messagesWindowRef.current.scrollHeight;
       dispatch(
         getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
-      ).then(() => {
-        // stay scroll in the right place
-        const currentHeight = messagesWindowRef.current.scrollHeight;
-        messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
-      });
+      )
+        .then(() => {
+          // stay scroll in the right place
+          const currentHeight = messagesWindowRef.current.scrollHeight;
+          messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
+        })
+        .finally(() => setIsLoadingMore(null));
     }
   };
 
   const loadOnTheBottomSide = () => {
-    if (!messages.isLoading && selectedChat.id && messages.results.length && Math.min(...loadedPages) > 1) {
+    if (!messages.isLoading && messages.results.length && loadedPages.length && Math.min(...loadedPages) > 1) {
+      setIsLoadingMore("bottom");
       dispatch(
         getMessages(
           selectedChat.id,
           { start_id: messages.results[messages.results.length - 1].id, rewind: false, page_size: pageSize },
           true,
         ),
-      );
+      ).finally(() => setIsLoadingMore(null));
     }
   };
 
@@ -192,6 +197,11 @@ const Messages: React.FC = () => {
         className={clsx(classes.messagesWrapper, { hidden: !messages.results.length })}
       >
         <div className={classes.messages}>
+          {isLoadingMore === "top" && (
+            <Box display="flex" justifyContent={"center"}>
+              <Preloader />
+            </Box>
+          )}
           {messages.results.map((item, index) => {
             const today = new Date().toLocaleDateString();
             const messageDate = new Date(item.created).toLocaleDateString();
@@ -235,44 +245,48 @@ const Messages: React.FC = () => {
                     </span>
                     <span className={classes.messageDate}>{time}</span>
                   </div>
-                  <Box display="flex" flexWrap="wrap" gridGap="6px">
-                    {item.message_attachments?.map((attachment) => {
-                      const file = files[attachment.id];
-                      if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
+                  {!!item.message_attachments?.length && (
+                    <Box display="flex" flexWrap="wrap" gridGap="6px">
+                      {item.message_attachments.map((attachment) => {
+                        const file = files[attachment.id];
+                        if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
 
-                      return (
-                        <img
-                          key={attachment.id}
-                          className={classes.image}
-                          src={file.url}
-                          alt="file"
-                          onClick={onOpenPreview(file.url)}
-                        />
-                      );
-                    })}
-                  </Box>
-                  <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
-                    {item.message_attachments?.map((attachment) => {
-                      const file = files[attachment.id];
-                      if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+                        return (
+                          <img
+                            key={attachment.id}
+                            className={classes.image}
+                            src={file.url}
+                            alt="file"
+                            onClick={onOpenPreview(file.url)}
+                          />
+                        );
+                      })}
+                    </Box>
+                  )}
+                  {!!item.message_attachments?.length && (
+                    <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
+                      {item.message_attachments.map((attachment) => {
+                        const file = files[attachment.id];
+                        if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
 
-                      const imgUrl =
-                        (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
-                        (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
-                        (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+                        const imgUrl =
+                          (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
+                          (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                          (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
 
-                      return (
-                        <div
-                          key={attachment.id}
-                          className={classes.file}
-                          onClick={onDownloadFile(attachment.id, attachment.file_name)}
-                        >
-                          {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
-                          <div className={classes.fileName}>{attachment.file_name}</div>
-                        </div>
-                      );
-                    })}
-                  </Box>
+                        return (
+                          <div
+                            key={attachment.id}
+                            className={classes.file}
+                            onClick={onDownloadFile(attachment.id, attachment.file_name)}
+                          >
+                            {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
+                            <div className={classes.fileName}>{attachment.file_name}</div>
+                          </div>
+                        );
+                      })}
+                    </Box>
+                  )}
                   <div className={classes.message}>{item.text}</div>
                 </div>
               </div>
@@ -280,8 +294,17 @@ const Messages: React.FC = () => {
           })}
           {isSending && (
             <div className={classes.messageItem}>
+              <div className={classes.messageInfo}>
+                <span className={classes.messageFrom}>You</span>
+                <span className={classes.messageDate}>{new Date().toLocaleTimeString().slice(0, 5)}</span>
+              </div>
               <Preloader />
             </div>
+          )}
+          {isLoadingMore === "bottom" && (
+            <Box display="flex" justifyContent={"center"}>
+              <Preloader />
+            </Box>
           )}
         </div>
       </div>
@@ -292,6 +315,7 @@ const Messages: React.FC = () => {
         isShowScrollButton={isShowScrollButton}
         onScrollToBottom={onScrollToBottom}
         minLoadedPage={minLoadedPage}
+        pageSize={pageSize}
       />
     </div>
   );

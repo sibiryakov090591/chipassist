@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import { Theme } from "@material-ui/core/styles";
+import { scrollbarWidth } from "@src/config";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   header: {
@@ -12,7 +13,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     top: 0,
     width: "100vw",
-    paddingRight: 12,
+    paddingRight: `${scrollbarWidth}px`,
     zIndex: 999,
     [theme.breakpoints.down("sm")]: {
       height: 130,
