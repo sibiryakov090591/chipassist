@@ -120,7 +120,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           results: [...results, ...filteredState],
           unread_total,
         },
-        // selectedChat: isNeedToUpdateMessages ? { ...state.selectedChat } : state.selectedChat, // force updating messages
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },
       };
     }
@@ -191,7 +190,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return {
         ...state,
         selectedChat: { ...action.payload },
-        messages: { ...initialState.messages },
+        messages: { ...initialState.messages, forceUpdate: 0 },
       };
 
     case actionTypes.DEDUCT_READ_MESSAGES: {
