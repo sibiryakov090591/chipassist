@@ -18,7 +18,6 @@ interface Props {
   isShowScrollButton: boolean;
   onScrollToBottom: () => void;
   minLoadedPage: number;
-  pageSize: number;
 }
 
 const MessageInput: React.FC<Props> = ({
@@ -28,7 +27,6 @@ const MessageInput: React.FC<Props> = ({
   isShowScrollButton,
   onScrollToBottom,
   minLoadedPage,
-  pageSize,
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -101,7 +99,7 @@ const MessageInput: React.FC<Props> = ({
         const asyncLoadingPages = async (pages: number[]) => {
           for (const page of pages) {
             // eslint-disable-next-line no-await-in-loop
-            await dispatch(getMessages(chatId, { page, rewind: false, page_size: pageSize }, true));
+            await dispatch(getMessages(chatId, { page, rewind: false }, true));
           }
         };
 

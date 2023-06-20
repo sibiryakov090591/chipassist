@@ -56,7 +56,7 @@ import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
 import { loadSellersWithProductLink } from "@src/store/products/productsActions";
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
-import { getChatList, selectChat } from "@src/store/chat/chatActions";
+import { getChatList, selectChat, updateChatList } from "@src/store/chat/chatActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -131,6 +131,7 @@ const ChipAssistApp = () => {
   const location = useLocation();
   const isRestricted = constants.closedRegistration;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
+  const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
   const dispatch = useAppDispatch();
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
@@ -221,6 +222,14 @@ const ChipAssistApp = () => {
       });
     }
   }, [isAuthenticated, selectedPartner]);
+
+  useEffect(() => {
+    if (isAuthenticated && (constants.id === "supplier_response" ? !!selectedPartner : true)) {
+      dispatch(updateChatList()).then((res) => {
+        if (res.results?.length) dispatch(selectChat(res.results[0]));
+      });
+    }
+  }, [isAuthenticated]);
 
   if (maintenance.loaded && maintenance.status === "CRITICAL") {
     return <Maintenance />;

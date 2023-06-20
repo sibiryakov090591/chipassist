@@ -1,4 +1,5 @@
 import * as actionTypes from "./chatTypes";
+import { ChatListItem } from "./chatTypes";
 
 const initialState: actionTypes.ChatState = {
   filters: {
@@ -12,16 +13,19 @@ const initialState: actionTypes.ChatState = {
   chatList: {
     page: null,
     total_pages: null,
+    page_size: 10,
     unread_total: null,
     results: [],
     isLoading: true,
     loaded: false,
+    loadedPages: [],
   },
   selectedChat: null,
   messages: {
     error: "",
     page: null,
     total_pages: null,
+    page_size: 15,
     results: [],
     isLoading: true,
     loaded: false,
@@ -66,6 +70,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           total_pages,
           unread_total,
           results,
+          loadedPages: [...state.chatList.loadedPages, page],
         },
         messages: {
           ...initialState.messages,
@@ -84,6 +89,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           page,
           total_pages,
           results: [...state.chatList.results, ...results],
+          loadedPages: [...state.chatList.loadedPages, page],
         },
       };
     }
@@ -93,6 +99,30 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         chatList: { ...state.chatList, isLoading: false, loaded: true },
         messages: { ...state.messages, isLoading: false, loaded: true },
       };
+
+    case actionTypes.UPDATE_CHAT_LIST_S: {
+      const { results } = action.response;
+      const newChats: ChatListItem[] = [];
+      results.forEach((chat: ChatListItem) => {
+        const isChatExist = state.chatList.results.find((i) => i.id === chat.id);
+        if (!isChatExist) newChats.push(chat);
+      });
+
+      return {
+        ...state,
+        chatList: {
+          ...state.chatList,
+          results: [
+            ...newChats,
+            ...state.chatList.results.map((chat) => {
+              const updatedChat = results.find((i: ChatListItem) => i.id === chat.id);
+              if (!updatedChat) return chat;
+              return updatedChat;
+            }),
+          ],
+        },
+      };
+    }
 
     case actionTypes.LOAD_MESSAGES_R:
       return { ...state, messages: { ...state.messages, isLoading: true } };

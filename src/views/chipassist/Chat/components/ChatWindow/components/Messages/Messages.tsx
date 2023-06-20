@@ -23,7 +23,6 @@ const FileDownload = require("js-file-download");
 const Messages: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const pageSize = 5;
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
@@ -48,7 +47,7 @@ const Messages: React.FC = () => {
       setFirstUnreadMessageId(null);
       setLoadedPages([]);
 
-      dispatch(getMessages(selectedChat.id, { page_size: pageSize })).then((res: any) => {
+      dispatch(getMessages(selectedChat.id)).then((res: any) => {
         const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
         if (firstUnreadMessage) {
           setFirstUnreadMessageId(firstUnreadMessage.id);
@@ -126,9 +125,7 @@ const Messages: React.FC = () => {
     ) {
       setIsLoadingMore("top");
       const prevHeight = messagesWindowRef.current.scrollHeight;
-      dispatch(
-        getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true, page_size: pageSize }, true),
-      )
+      dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true }, true))
         .then(() => {
           // stay scroll in the right place
           const currentHeight = messagesWindowRef.current.scrollHeight;
@@ -144,7 +141,7 @@ const Messages: React.FC = () => {
       dispatch(
         getMessages(
           selectedChat.id,
-          { start_id: messages.results[messages.results.length - 1].id, rewind: false, page_size: pageSize },
+          { start_id: messages.results[messages.results.length - 1].id, rewind: false },
           true,
         ),
       ).finally(() => setIsLoadingMore(null));
@@ -315,7 +312,6 @@ const Messages: React.FC = () => {
         isShowScrollButton={isShowScrollButton}
         onScrollToBottom={onScrollToBottom}
         minLoadedPage={minLoadedPage}
-        pageSize={pageSize}
       />
     </div>
   );
