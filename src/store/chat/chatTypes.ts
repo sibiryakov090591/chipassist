@@ -72,6 +72,11 @@ export interface ChatListItem {
   id: number;
   created: string;
   partner: string;
+  title: string;
+  details: {
+    quantity: number;
+    price: number;
+  };
   rfq: {
     upc: string;
     quantity: number;
