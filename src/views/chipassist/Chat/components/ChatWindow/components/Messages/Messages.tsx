@@ -200,9 +200,11 @@ const Messages: React.FC = () => {
             </Box>
           )}
           {messages.results.map((item, index) => {
-            const today = new Date().toLocaleDateString();
+            const todayDate = new Date().toLocaleDateString();
             const messageDate = new Date(item.created).toLocaleDateString();
             const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
+            const dateLabel = todayDate === messageDate ? "Today" : messageDate;
+            const messageDateLabel = todayDate === messageDate ? "Today" : messageDate.slice(0, 5);
 
             const isShowDateLabel =
               index === 0 || new Date(messages.results[index - 1].created).toLocaleDateString() !== messageDate;
@@ -215,9 +217,7 @@ const Messages: React.FC = () => {
                     <UnreadMessagesLabel chatId={selectedChat?.id} />
                   </div>
                 )}
-                {isShowDateLabel && (
-                  <div className={classes.dateLabel}>{today === messageDate ? "Today" : messageDate}</div>
-                )}
+                {isShowDateLabel && <div className={classes.dateLabel}>{dateLabel}</div>}
                 {isFirstMessage && selectedChat?.rfq && (
                   <div className={classes.requestItem}>
                     <ScheduleRoundedIcon className={classes.requestItemIcon} />
@@ -237,10 +237,12 @@ const Messages: React.FC = () => {
                       {item.sender === "You"
                         ? "You"
                         : constants.id !== ID_SUPPLIER_RESPONSE
-                        ? selectedChat?.partner?.name
+                        ? selectedChat?.partner
                         : item.sender}
                     </span>
-                    <span className={classes.messageDate}>{time}</span>
+                    <span className={classes.messageDate}>
+                      {time} - {messageDateLabel}
+                    </span>
                   </div>
                   {!!item.message_attachments?.length && (
                     <Box display="flex" flexWrap="wrap" gridGap="6px">

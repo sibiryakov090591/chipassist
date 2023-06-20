@@ -29,6 +29,7 @@ export const ON_CHANGE_FILTERS_VALUES = "@chat/ON_CHANGE_FILTERS_VALUES";
 export const DEDUCT_READ_MESSAGES = "@chat/DEDUCT_READ_MESSAGES";
 export const SAVE_FILES = "@chat/SAVE_FILES";
 export const CLEAR_CHAT_REDUCER = "@chat/CLEAR_CHAT_REDUCER";
+export const READ_MESSAGE = "@chat/READ_MESSAGE";
 
 export interface ChatState {
   filters: {
@@ -70,7 +71,7 @@ export interface FileType {
 export interface ChatListItem {
   id: number;
   created: string;
-  partner: RfqSeller;
+  partner: string;
   rfq: {
     upc: string;
     quantity: number;

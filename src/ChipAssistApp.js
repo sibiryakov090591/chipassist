@@ -137,6 +137,7 @@ const ChipAssistApp = () => {
   const maintenance = useAppSelector((state) => state.maintenance);
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
+  const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
 
@@ -216,7 +217,7 @@ const ChipAssistApp = () => {
   }, [isAuthToken]);
 
   useEffect(() => {
-    if (isAuthenticated && (constants.id === "supplier_response" ? !!selectedPartner : true)) {
+    if (isAuthenticated) {
       dispatch(getChatList(1)).then((res) => {
         if (res.results?.length) dispatch(selectChat(res.results[0]));
       });
@@ -224,12 +225,15 @@ const ChipAssistApp = () => {
   }, [isAuthenticated, selectedPartner]);
 
   useEffect(() => {
-    if (isAuthenticated && (constants.id === "supplier_response" ? !!selectedPartner : true)) {
-      dispatch(updateChatList()).then((res) => {
-        if (res.results?.length) dispatch(selectChat(res.results[0]));
-      });
+    if (isAuthenticated && loadedChatPages.length) {
+      if (chatUpdatingIntervalId) clearInterval(chatUpdatingIntervalId);
+      const intervalId = setInterval(() => {
+        const loadedPages = [...new Set(loadedChatPages)];
+        loadedPages.forEach((page) => dispatch(updateChatList(page)));
+      }, 30000);
+      setChatUpdatingIntervalId(intervalId);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loadedChatPages]);
 
   if (maintenance.loaded && maintenance.status === "CRITICAL") {
     return <Maintenance />;

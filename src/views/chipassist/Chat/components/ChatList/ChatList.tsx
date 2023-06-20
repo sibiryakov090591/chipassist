@@ -86,7 +86,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
               >
                 <Box display="flex" justifyContent="space-between">
                   <div className={classes.title}>
-                    <div className={classes.sellerName}>{item.partner.name}</div>
+                    <div className={classes.sellerName}>{item.partner}</div>
                     {!!unreadMessages && (
                       <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
                     )}

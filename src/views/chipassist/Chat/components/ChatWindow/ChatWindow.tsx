@@ -48,7 +48,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
             )}
             <div>
               <h2 className={classes.upc}>{selectedChat?.rfq?.upc}</h2>
-              <div className={classes.seller}>{selectedChat?.partner?.name}</div>
+              <div className={classes.seller}>{selectedChat?.partner}</div>
             </div>
           </div>
           <MoreVertIcon

@@ -36,8 +36,7 @@ import AdapterUpload from "@src/views/supplier-response/Adapter/AdapterUpload";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
-import constants from "@src/constants/constants";
-import { getChatList, selectChat } from "@src/store/chat/chatActions";
+import { getChatList, selectChat, updateChatList } from "@src/store/chat/chatActions";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
@@ -52,11 +51,13 @@ const SupplierResponseApp = () => {
   useConsoleLogSave();
 
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
+  const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
 
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
+  const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
 
   // const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
   const selectedCurrency = "USD";
@@ -98,12 +99,23 @@ const SupplierResponseApp = () => {
   }, [isAuthToken]);
 
   useEffect(() => {
-    if (isAuthenticated && (constants.id === "supplier_response" ? !!selectedPartner : true)) {
+    if (isAuthenticated && !!selectedPartner) {
       dispatch(getChatList(1)).then((res) => {
         if (res.results?.length) dispatch(selectChat(res.results[0]));
       });
     }
   }, [isAuthenticated, selectedPartner]);
+
+  useEffect(() => {
+    if (isAuthenticated && !!selectedPartner && loadedChatPages.length) {
+      if (chatUpdatingIntervalId) clearInterval(chatUpdatingIntervalId);
+      const intervalId = setInterval(() => {
+        const loadedPages = [...new Set(loadedChatPages)];
+        loadedPages.forEach((page) => dispatch(updateChatList(page)));
+      }, 30000);
+      setChatUpdatingIntervalId(intervalId);
+    }
+  }, [isAuthenticated, loadedChatPages, selectedPartner]);
 
   useEffect(() => {
     let partner = false;

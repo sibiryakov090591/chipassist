@@ -7,7 +7,7 @@ const UnreadMessagesLabel: React.FC<{ chatId: number }> = ({ chatId }) => {
 
   const chatItem = useAppSelector((state) => state.chat.chatList.results.find((chat) => chat.id === chatId));
 
-  if (!chatItem?.unread_messages) return null;
+  if (!chatItem || !Number(chatItem.unread_messages)) return null;
   return (
     <div className={classes.unreadLabel}>
       <span>Unread Messages</span>

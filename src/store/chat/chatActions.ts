@@ -38,7 +38,7 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
 
 export const updateChatList = (page: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
-    const { filters } = getState().chat;
+    const filters = getState().chat.filters.values;
     const partner = getState().profile.selectedPartner;
     const pageSize = getState().chat.chatList.page_size;
     let params = `?user=${isUser}${
