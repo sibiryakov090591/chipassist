@@ -59,6 +59,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: "#d8d5df",
     fontWeight: "bold",
     marginRight: 28,
+    position: "relative",
     "&:hover": {
       textDecoration: "underline",
       color: "#d8d5df",
@@ -71,6 +72,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       color: "#d8d5df",
       backgroundColor: "#362558",
     },
+  },
+  chatUnreadCount: {
+    position: "absolute",
+    top: "-7px",
+    left: "85%",
   },
   cartBlock: {
     display: "flex",

@@ -32,6 +32,7 @@ import { partNumbers } from "@src/layouts/HomePage/components/TopBar/TopBar";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import ReplyIcon from "@material-ui/icons/Reply";
+import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import { useStyles } from "./styles";
 
 const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
@@ -44,6 +45,7 @@ export const ChipassistHomePage = () => {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useAppDispatch();
+  const isShowChat = !!localStorage.getItem("isShowChat");
 
   const aboutUsRef = React.useRef(null);
   const contactsRef = React.useRef(null);
@@ -144,6 +146,7 @@ export const ChipassistHomePage = () => {
                   {isAuthenticated && (
                     <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
                       {t("menu.profile")}
+                      {isShowChat && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
                     </NavLink>
                   )}
                   <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
