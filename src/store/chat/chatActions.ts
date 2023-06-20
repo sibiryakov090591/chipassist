@@ -62,7 +62,12 @@ export const updateChatList = (page: number) => {
   };
 };
 
-export const getMessages = (chatId: number, filters: { [key: string]: any } = {}, join = false) => {
+export const getMessages = (
+  chatId: number,
+  filters: { [key: string]: any } = {},
+  join = false,
+  isUpdatingMessages = false,
+) => {
   return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const pageSize = getState().chat.messages.page_size;
@@ -73,7 +78,11 @@ export const getMessages = (chatId: number, filters: { [key: string]: any } = {}
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
     return dispatch({
-      types: [actionTypes.LOAD_MESSAGES_R, false, actionTypes.LOAD_MESSAGES_F],
+      types: [
+        !isUpdatingMessages && actionTypes.LOAD_MESSAGES_R,
+        false,
+        !isUpdatingMessages && actionTypes.LOAD_MESSAGES_F,
+      ],
       promise: (client: ApiClientInterface) =>
         client
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })

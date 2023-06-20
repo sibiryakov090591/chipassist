@@ -59,6 +59,23 @@ const Messages: React.FC = () => {
   }, [selectedChat]);
 
   useEffect(() => {
+    if (selectedChat?.id && messages.forceUpdate) {
+      setMessagesIdsWasRead([]);
+      setFirstUnreadMessageId(null);
+      setLoadedPages([]);
+
+      dispatch(getMessages(selectedChat.id, {}, false, true)).then((res: any) => {
+        const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
+        if (firstUnreadMessage) {
+          setFirstUnreadMessageId(firstUnreadMessage.id);
+        } else {
+          messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+        }
+      });
+    }
+  }, [messages.forceUpdate]);
+
+  useEffect(() => {
     if (messages.results.length) {
       const result: any = {};
       messages.results.forEach((message) => {

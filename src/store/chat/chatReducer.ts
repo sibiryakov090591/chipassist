@@ -29,6 +29,7 @@ const initialState: actionTypes.ChatState = {
     results: [],
     isLoading: true,
     loaded: false,
+    forceUpdate: 0,
   },
   files: {},
 };
@@ -119,7 +120,8 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           results: [...results, ...filteredState],
           unread_total,
         },
-        selectedChat: isNeedToUpdateMessages ? { ...state.selectedChat } : state.selectedChat, // force updating messages
+        // selectedChat: isNeedToUpdateMessages ? { ...state.selectedChat } : state.selectedChat, // force updating messages
+        messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },
       };
     }
 

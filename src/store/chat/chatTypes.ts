@@ -59,6 +59,7 @@ export interface ChatState {
     results: ChatListMessage[];
     isLoading: boolean;
     loaded: boolean;
+    forceUpdate: number;
   };
   files: { [key: number]: FileType };
 }
