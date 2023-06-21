@@ -102,7 +102,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
 
     case actionTypes.UPDATE_CHAT_LIST_S: {
-      const { results, unread_total, total_pages } = action.response;
+      const { results, unread_total } = action.response;
       let isNeedToUpdateMessages = false;
 
       const newChats: ChatListItem[] = [];
@@ -111,28 +111,27 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         if (!existedChat) newChats.push(chat);
       });
 
-      const updatedChats = state.chatList.results.map((chat) => {
+      const updatedChats: ChatListItem[] = [];
+      const filteredState = state.chatList.results.filter((chat) => {
         const updatedChat: ChatListItem = results.find((i: ChatListItem) => i.id === chat.id);
-        if (updatedChat && updatedChat.id === state.selectedChat.id && Number(updatedChat.unread_messages) > 0) {
-          isNeedToUpdateMessages = true;
-        }
         if (
           updatedChat &&
           Number(updatedChat.unread_messages) > 0 &&
           Number(updatedChat.unread_messages) !== Number(chat.unread_messages)
         ) {
-          return updatedChat;
+          updatedChats.push(updatedChat);
+          if (updatedChat.id === state.selectedChat.id) isNeedToUpdateMessages = true;
+          return false;
         }
-        return chat;
+        return true;
       });
 
       return {
         ...state,
         chatList: {
           ...state.chatList,
-          results: [...newChats, ...updatedChats],
+          results: [...newChats, ...updatedChats, ...filteredState],
           unread_total,
-          total_pages,
         },
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },
       };
