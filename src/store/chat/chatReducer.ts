@@ -105,19 +105,32 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const { results, unread_total } = action.response;
       let isNeedToUpdateMessages = false;
 
+      const newChats: ChatListItem[] = [];
+      results.forEach((chat: ChatListItem) => {
+        const existedChat = state.chatList.results.find((i) => i.id === chat.id);
+        if (!existedChat) newChats.push(chat);
+      });
+
+      const updatedChats: ChatListItem[] = [];
       const filteredState = state.chatList.results.filter((chat) => {
-        const existedChat: ChatListItem = results.find((i: ChatListItem) => i.id === chat.id);
-        if (existedChat && existedChat.id === state.selectedChat.id && Number(existedChat.unread_messages) > 0) {
-          isNeedToUpdateMessages = true;
+        const updatedChat: ChatListItem = results.find((i: ChatListItem) => i.id === chat.id);
+        if (
+          updatedChat &&
+          Number(updatedChat.unread_messages) > 0 &&
+          Number(updatedChat.unread_messages) !== Number(chat.unread_messages)
+        ) {
+          updatedChats.push(updatedChat);
+          if (updatedChat.id === state.selectedChat.id) isNeedToUpdateMessages = true;
+          return false;
         }
-        return !existedChat;
+        return true;
       });
 
       return {
         ...state,
         chatList: {
           ...state.chatList,
-          results: [...results, ...filteredState],
+          results: [...newChats, ...updatedChats, ...filteredState],
           unread_total,
         },
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },

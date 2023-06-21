@@ -120,7 +120,7 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (messages.page && !loadedPages.includes(messages.page)) setLoadedPages([...loadedPages, messages.page]);
-  }, [messages.page]);
+  }, [messages]);
 
   useEffect(() => {
     messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
