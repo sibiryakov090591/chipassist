@@ -35,6 +35,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
     username: localStorage.getItem("registered_email") || localStorage.getItem("reset_email") || "",
   });
   const isShowEmailField = !(localStorage.getItem("registered_email") || localStorage.getItem("reset_email"));
+  const isShowConfirmError = notMatchError && !!values.confirm;
 
   const password = useRef(null);
   const confirm = useRef(null);
@@ -172,14 +173,14 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
                   type="password"
                   value={values.confirm}
                   variant="outlined"
-                  error={notMatchError}
+                  error={isShowConfirmError}
                 />
                 {showPassword ? (
                   <VisibilityOffIcon className={classes.visibilityIcon} onClick={showPasswordHandler} />
                 ) : (
                   <VisibilityIcon className={classes.visibilityIcon} onClick={showPasswordHandler} />
                 )}
-                <div className={`${classes.helper} ${notMatchError ? classes.helperActive : ""}`}>
+                <div className={`${classes.helper} ${isShowConfirmError ? classes.helperActive : ""}`}>
                   {t(`reset.helper_text.does_not_match`)}
                 </div>
               </div>
