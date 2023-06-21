@@ -15,7 +15,10 @@ interface Props {
 const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const classes = useStyles();
 
-  const { selectedChat: details } = useAppSelector((state) => state.chat);
+  const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+
+  const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
+  const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
   return (
     <div className={clsx(classes.rightColumn, { active: showDetails })}>
@@ -28,22 +31,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         <div className={classes.requestCard}>
           <Box display="flex" alignItems="center" justifyContent="space-between">
             <h3 className={classes.requestTitle}>Status</h3>
-            <Status status={details ? "Requested" : "Closed"} />
+            <Status status={selectedChat ? "Requested" : "Closed"} />
           </Box>
           <Box display="flex" justifyContent="space-between" className={classes.requestData}>
             <div>
               <h5>Quantity</h5>
-              <div>{details?.rfq ? formatMoney(details.rfq.quantity, 0) : "-"}</div>
+              <div>{quantity ? formatMoney(quantity, 0) : "-"}</div>
             </div>
             <div>
               <h5>Target price</h5>
-              <div>{details?.rfq && details.rfq.price ? `${formatMoney(details.rfq.price)} €` : "-"}</div>
+              <div>{price ? `${formatMoney(price)} €` : "-"}</div>
             </div>
             <div>
               <h5>Total</h5>
-              <div>
-                {details?.rfq && details.rfq.price ? `${formatMoney(details.rfq.quantity * details.rfq.price)} €` : "-"}
-              </div>
+              <div>{price ? `${formatMoney(quantity * price)} €` : "-"}</div>
             </div>
           </Box>
         </div>

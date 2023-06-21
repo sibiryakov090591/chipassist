@@ -21,6 +21,7 @@ import constants from "@src/constants/constants";
 import clsx from "clsx";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
@@ -45,6 +46,7 @@ const TopMenu = ({ isMobile }) => {
   };
 
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
+  const isShowChat = !!localStorage.getItem("isShowChat");
 
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
@@ -111,6 +113,7 @@ const TopMenu = ({ isMobile }) => {
             >
               {isMobile && <SettingsIcon className={`${classes.topMenuItemIcon}`} />}
               {t("profile")}
+              {isShowChat && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
             </NavLink>
           </div>
         </>

@@ -11,9 +11,10 @@ const isUser = constants.id !== "supplier_response";
 export const getChatList = (page = 1, filters: any = {}, join = false) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
+    const pageSize = getState().chat.chatList.page_size;
     let params = `?user=${isUser}${
       !isUser && partner ? `&seller=${partner.id}` : ""
-    }&level=messages&page=${page}&page_size=10`;
+    }&level=messages&page=${page}&page_size=${pageSize}`;
     Object.entries(filters).forEach((v) => {
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
@@ -35,15 +36,53 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
   };
 };
 
-export const getMessages = (chatId: number, filters: { [key: string]: any }, join = false) => {
+export const updateChatList = (page: number) => {
+  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+    const filters = getState().chat.filters.values;
+    const partner = getState().profile.selectedPartner;
+    const pageSize = getState().chat.chatList.page_size;
+    let params = `?user=${isUser}${
+      !isUser && partner ? `&seller=${partner.id}` : ""
+    }&level=messages&page=${page}&page_size=${pageSize}`;
+    Object.entries(filters).forEach((v) => {
+      if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
+    });
+
+    return dispatch({
+      types: [false, actionTypes.UPDATE_CHAT_LIST_S, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/chats/${params}`)
+          .then((res) => res.data)
+          .catch((e) => {
+            console.log("***UPDATE_CHAT_LIST_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
+export const getMessages = (
+  chatId: number,
+  filters: { [key: string]: any } = {},
+  join = false,
+  isUpdatingMessages = false,
+) => {
   return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
-    let params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}&level=messages`;
+    const pageSize = getState().chat.messages.page_size;
+    let params = `?user=${isUser}${
+      !isUser && partner ? `&seller=${partner.id}` : ""
+    }&level=messages&page_size=${pageSize}`;
     Object.entries(filters).forEach((v) => {
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
     return dispatch({
-      types: [actionTypes.LOAD_MESSAGES_R, false, actionTypes.LOAD_MESSAGES_F],
+      types: [
+        !isUpdatingMessages && actionTypes.LOAD_MESSAGES_R,
+        false,
+        !isUpdatingMessages && actionTypes.LOAD_MESSAGES_F,
+      ],
       promise: (client: ApiClientInterface) =>
         client
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })

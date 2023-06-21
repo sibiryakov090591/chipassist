@@ -11,6 +11,8 @@ export const LOAD_MORE_CHAT_LIST_S = "@chat/LOAD_MORE_CHAT_LIST_S";
 export const LOAD_CHAT_LIST_F = "@chat/LOAD_CHAT_LIST_F";
 export const LOAD_CHAT_LIST_ARRAY = [LOAD_CHAT_LIST_R, LOAD_CHAT_LIST_S, LOAD_CHAT_LIST_F];
 
+export const UPDATE_CHAT_LIST_S = "@chat/UPDATE_CHAT_LIST_S";
+
 export const LOAD_MESSAGES_R = "@chat/LOAD_MESSAGES_R";
 export const LOAD_MESSAGES_S = "@chat/LOAD_MESSAGES_S";
 export const LOAD_MORE_MESSAGES_S = "@chat/LOAD_MORE_MESSAGES_S";
@@ -27,6 +29,7 @@ export const ON_CHANGE_FILTERS_VALUES = "@chat/ON_CHANGE_FILTERS_VALUES";
 export const DEDUCT_READ_MESSAGES = "@chat/DEDUCT_READ_MESSAGES";
 export const SAVE_FILES = "@chat/SAVE_FILES";
 export const CLEAR_CHAT_REDUCER = "@chat/CLEAR_CHAT_REDUCER";
+export const READ_MESSAGE = "@chat/READ_MESSAGE";
 
 export interface ChatState {
   filters: {
@@ -39,20 +42,24 @@ export interface ChatState {
   };
   chatList: {
     total_pages: number;
+    page_size: number;
     unread_total: number;
     page: number;
     results: ChatListItem[];
     isLoading: boolean;
     loaded: boolean;
+    loadedPages: number[];
   };
   selectedChat: ChatListItem;
   messages: {
     error: string;
     total_pages: number;
     page: number;
+    page_size: number;
     results: ChatListMessage[];
     isLoading: boolean;
     loaded: boolean;
+    forceUpdate: number;
   };
   files: { [key: number]: FileType };
 }
@@ -65,7 +72,12 @@ export interface FileType {
 export interface ChatListItem {
   id: number;
   created: string;
-  partner: RfqSeller;
+  partner: string;
+  title: string;
+  details: {
+    quantity: number;
+    price: number;
+  };
   rfq: {
     upc: string;
     quantity: number;
@@ -112,6 +124,11 @@ interface LoadMoreChatListSuccessAction {
 interface LoadChatListFailAction {
   type: typeof LOAD_CHAT_LIST_F;
   error: any;
+}
+
+interface UpdateChatListAction {
+  type: typeof UPDATE_CHAT_LIST_S;
+  response: any;
 }
 
 interface LoadMessagesRequestAction {
@@ -191,6 +208,7 @@ export type ChatActionTypes =
   | LoadChatListSuccessAction
   | LoadMoreChatListSuccessAction
   | LoadChatListFailAction
+  | UpdateChatListAction
   | LoadMessagesRequestAction
   | LoadMessagesFailAction
   | LoadMessagesSuccessAction

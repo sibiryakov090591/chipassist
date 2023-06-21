@@ -15,10 +15,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     wrapper: {
       "& img": {
         objectFit: "cover",
+        borderRadius: 10,
+        boxShadow: "1px 1px 5px 0px #bcbcbc",
       },
     },
     title: {
       fontSize: "2.6rem",
+    },
+    paragraph: {
+      fontSize: 16,
     },
     pagination: {
       display: "flex",
@@ -30,9 +35,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     paginationLink: {
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
       maxWidth: 235,
       color: theme.palette.app.blue300,
       textDecoration: "underline",

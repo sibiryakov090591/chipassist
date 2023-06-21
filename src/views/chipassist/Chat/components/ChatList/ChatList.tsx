@@ -75,6 +75,9 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                 ? new Date(lastMessage.created).toLocaleDateString()
                 : new Date(lastMessage.created).toLocaleTimeString().slice(0, 5);
             const unreadMessages = Number(item.unread_messages);
+            const quantity = item.details?.quantity || item.rfq?.quantity;
+            const price = item.details?.price || item.rfq?.price;
+            const partNumber = item.title || item.rfq?.upc;
 
             return (
               <div
@@ -86,7 +89,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
               >
                 <Box display="flex" justifyContent="space-between">
                   <div className={classes.title}>
-                    <div className={classes.sellerName}>{item.partner.name}</div>
+                    <div className={classes.sellerName}>{item.partner}</div>
                     {!!unreadMessages && (
                       <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
                     )}
@@ -101,11 +104,9 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                     (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                 </div>
                 <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
-                  <div>{item.rfq.upc}</div>
-                  {!!item.rfq.quantity && !!item.rfq.price && (
-                    <div>{`${item.rfq.quantity} x ${formatMoney(item.rfq.price)} € = ${formatMoney(
-                      item.rfq.quantity * item.rfq.price,
-                    )} €`}</div>
+                  <div>{partNumber}</div>
+                  {!!quantity && !!price && (
+                    <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
                   )}
                 </Box>
               </div>
