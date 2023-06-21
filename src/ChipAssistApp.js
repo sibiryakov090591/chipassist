@@ -225,8 +225,8 @@ const ChipAssistApp = () => {
   }, [isAuthenticated, selectedPartner]);
 
   useEffect(() => {
+    if (chatUpdatingIntervalId) clearInterval(chatUpdatingIntervalId);
     if (isAuthenticated && loadedChatPages.length) {
-      if (chatUpdatingIntervalId) clearInterval(chatUpdatingIntervalId);
       const intervalId = setInterval(() => {
         const loadedPages = [...new Set(loadedChatPages)];
         loadedPages.forEach((page) => dispatch(updateChatList(page)));
