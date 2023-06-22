@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
           paddingRight: "25vw",
         },
       },
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.between("sm", "md")]: {
         "&.chatListActive": {
           paddingLeft: "35vw",
         },
@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
           paddingRight: "35vw",
         },
       },
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.between(800, "sm")]: {
         "&.chatListActive": {
           paddingLeft: "335px",
         },
