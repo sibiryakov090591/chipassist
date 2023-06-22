@@ -9,6 +9,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down("md")]: { padding: "1em" },
     [theme.breakpoints.down("sm")]: { padding: "1em 0" },
   },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+  },
   tabs: {
     marginTop: theme.spacing(3),
   },
@@ -17,6 +22,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   content: {
     marginTop: theme.spacing(3),
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
   },
   uploadButton: {
     minWidth: 250,

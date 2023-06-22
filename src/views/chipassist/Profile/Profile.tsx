@@ -46,8 +46,13 @@ const Profile = () => {
   }
 
   return (
-    <Page className={classes.root} title={t("page_title")} description={t("page_description")}>
-      <Container maxWidth="xl">
+    <Page
+      className={classes.root}
+      title={t("page_title")}
+      description={t("page_description")}
+      style={{ height: "100%" }}
+    >
+      <Container maxWidth="xl" className={classes.container}>
         <Header />
         <Tabs
           variant="scrollable"
