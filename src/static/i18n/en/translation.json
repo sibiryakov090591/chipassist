@@ -1316,7 +1316,7 @@
     "reset_success": "Password request email has been sent.",
     "dont_have_account": "Don't have an account?",
     "helper_text": {
-      "title": "At least 9 characters, a combination of Latin letters and numbers",
+      "title": "At least 9 characters, a combination of letters and numbers",
       "min": "At least 9 characters",
       "max": "No more than 100 characters",
       "digits": "Add at least one digit",

@@ -82,6 +82,20 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       transform: "translateY(50%)",
       zIndex: 100,
     },
+    complexity: {
+      height: 2,
+      flexGrow: 1,
+      backgroundColor: "#eee",
+    },
+    bad: {
+      backgroundColor: "#ff4100",
+    },
+    fair: {
+      backgroundColor: "#ffcc1e",
+    },
+    good: {
+      backgroundColor: "#43b820",
+    },
   }),
 );
 
