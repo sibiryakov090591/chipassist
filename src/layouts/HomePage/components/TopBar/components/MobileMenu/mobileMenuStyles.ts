@@ -15,6 +15,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       border: "1px solid #666",
       float: "left",
       marginTop: "3px",
+      position: "relative",
     },
     drawerPapper: {
       minWidth: 140,
@@ -28,6 +29,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: "#e8e8e8",
       fontWeight: "bold",
       marginBottom: 12,
+    },
+    chatUnreadCount: {
+      position: "absolute",
+      top: "-7px",
+      left: "85%",
     },
   }),
 );

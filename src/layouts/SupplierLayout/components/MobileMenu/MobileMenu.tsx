@@ -3,6 +3,7 @@ import { IconButton, Drawer } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link, useNavigate } from "react-router-dom";
 
+import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import TopMenu from "../TopMenu/TopMenu";
 import { useStyles } from "./mobileMenuStyles";
 
@@ -23,6 +24,7 @@ const MobileMenu: React.FC<Props> = ({ logo }) => {
         aria-label="open menu"
       >
         <MenuIcon />
+        <ChatUnreadTotalCount className={classes.chatUnreadCount} />
       </IconButton>
       <Drawer
         classes={{ paper: classes.drawerPapper }}
