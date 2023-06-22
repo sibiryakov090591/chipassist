@@ -1396,7 +1396,7 @@
       "subtitle_distributor": "For distributors & manufacturers",
       "distributor_question_1": "1. How can I become a supplier on ChipAssist?",
       "distributor_answer_1": "To become a supplier, you need to fill in the \"Know Your Partner\" form. Once you've completed the form, our team will contact you and provide access to the platform's tools.",
-      "distributor_question_2": "2. Will the customer see our company's name on the platform?",
+      "distributor_question_2": "2. Will a customer see our company's name on the platform?",
       "distributor_answer_2": "Yes.",
       "distributor_question_3": "3. How can I check the status of our quotation?",
       "distributor_answer_3": "Currently, we are implementing a supplier statistics system where you will be able to compare your prices with the best offer and track the status of your quotation.",
@@ -1416,7 +1416,7 @@
       "distributor_answer_6_2_link": "stocks@chipassist.com",
       "distributor_question_7": "7. How often do you think it will be reasonable to deliver files? Once a week?",
       "distributor_answer_7": "That depends on how frequently changes occur. If new parts arrive and old ones are sold every day, we recommend updating the data on a daily basis.",
-      "distributor_question_8": "8. How is the price on the website determined? Is it the supplier's price, or is there a markup?",
+      "distributor_question_8": "8. How is the price on the website determined? Is it a supplier's price, or is there a markup?",
       "distributor_answer_8": "The price listed on the website is the price set by the supplier themselves. A markup or discount may be applied by the supplier depending on their pricing strategy or current promotions."
     }
   }
