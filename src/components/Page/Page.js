@@ -38,6 +38,7 @@ Page.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   className: PropTypes.string,
+  style: PropTypes.any,
 };
 
 export default Page;

@@ -30,12 +30,11 @@ const Profile = () => {
     navigate(`${value}`);
   };
 
-  const isShowChat = !!localStorage.getItem("isShowChat");
   const tabs = [
     { value: "/profile/general", label: t("general.title") },
     { value: "/profile/company/addresses", label: t("company.address") },
     { value: "/profile/requests", label: t("menu.rfqs") },
-    isShowChat && { value: "/profile/chat", label: t("menu.chat") },
+    { value: "/profile/chat", label: t("menu.chat") },
     { value: "/profile/orders", label: t("menu.orders") },
     { value: "/profile/bom-list", label: t("menu.bom") },
     // { value: "/profile/notifications", label: t("notifications.title") },
@@ -47,8 +46,13 @@ const Profile = () => {
   }
 
   return (
-    <Page className={classes.root} title={t("page_title")} description={t("page_description")}>
-      <Container maxWidth="xl">
+    <Page
+      className={classes.root}
+      title={t("page_title")}
+      description={t("page_description")}
+      style={{ height: "100%" }}
+    >
+      <Container maxWidth="xl" className={classes.container}>
         <Header />
         <Tabs
           variant="scrollable"
@@ -81,7 +85,7 @@ const Profile = () => {
           {/* {location.pathname === "/profile/security" && <Security />} */}
           {location.pathname === "/profile/company/addresses" && <CompanyAddress />}
           {location.pathname === "/profile/requests" && <Rfq />}
-          {location.pathname === "/profile/chat" && isShowChat && <Chat />}
+          {location.pathname === "/profile/chat" && <Chat />}
           {location.pathname === "/profile/orders" && <Orders />}
           {location.pathname === "/profile/bom-list" && (
             <>

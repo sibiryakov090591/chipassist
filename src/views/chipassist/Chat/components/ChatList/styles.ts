@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         bottom: 0,
         left: 0,
         pointerEvents: "none",
-        transform: "translateX(-100%)",
+        transform: "translateX(-102%)",
         transition: "transform 550ms cubic-bezier(0.25, 1, 0.5, 1)",
         [theme.breakpoints.down("sm")]: {
           width: "335px",

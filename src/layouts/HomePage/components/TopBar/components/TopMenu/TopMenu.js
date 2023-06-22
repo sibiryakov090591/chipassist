@@ -46,7 +46,6 @@ const TopMenu = ({ isMobile }) => {
   };
 
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
-  const isShowChat = !!localStorage.getItem("isShowChat");
 
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
@@ -113,7 +112,7 @@ const TopMenu = ({ isMobile }) => {
             >
               {isMobile && <SettingsIcon className={`${classes.topMenuItemIcon}`} />}
               {t("profile")}
-              {isShowChat && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+              <ChatUnreadTotalCount className={classes.chatUnreadCount} />
             </NavLink>
           </div>
         </>

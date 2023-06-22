@@ -61,12 +61,18 @@ const MessageInput: React.FC<Props> = ({
   useEffect(() => {
     const textarea = textareaRef.current;
     const inputWrapper = inputWrapperRef.current;
-    textarea.style.height = "32px"; // Reset the height before calculating the new height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to match the content
-    textarea.scrollTop = textarea.scrollHeight; // Scroll to the bottom of the textarea
 
-    textarea.style.overflowY = textarea.scrollHeight > 230 ? "auto" : "hidden";
-    inputWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
+    // Reset
+    textarea.style.height = "32px";
+    inputWrapper.style.borderRadius = "50ch";
+
+    if (message) {
+      textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to match the content
+      textarea.scrollTop = textarea.scrollHeight; // Scroll to the bottom of the textarea
+
+      textarea.style.overflowY = textarea.scrollHeight > 230 ? "auto" : "hidden";
+      inputWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
+    }
   }, [message]);
 
   const onCloseModal = () => {

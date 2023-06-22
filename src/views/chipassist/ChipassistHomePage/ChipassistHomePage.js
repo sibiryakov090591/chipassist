@@ -45,7 +45,6 @@ export const ChipassistHomePage = () => {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useAppDispatch();
-  const isShowChat = !!localStorage.getItem("isShowChat");
 
   const aboutUsRef = React.useRef(null);
   const contactsRef = React.useRef(null);
@@ -146,7 +145,7 @@ export const ChipassistHomePage = () => {
                   {isAuthenticated && (
                     <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
                       {t("menu.profile")}
-                      {isShowChat && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+                      <ChatUnreadTotalCount className={classes.chatUnreadCount} />
                     </NavLink>
                   )}
                   <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>

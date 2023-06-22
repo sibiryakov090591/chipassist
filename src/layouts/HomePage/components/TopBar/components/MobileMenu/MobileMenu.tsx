@@ -4,6 +4,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Link, useNavigate } from "react-router-dom";
 import constants from "@src/constants/constants";
 import { ID_CHIPASSIST } from "@src/constants/server_constants";
+import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import TopMenu from "../TopMenu/TopMenu";
 import { useStyles } from "./mobileMenuStyles";
 
@@ -24,6 +25,7 @@ const MobileMenu: React.FC<Props> = ({ logo }) => {
         aria-label="open menu"
       >
         <MenuIcon />
+        <ChatUnreadTotalCount className={classes.chatUnreadCount} />
       </IconButton>
       <Drawer
         classes={{ paper: classes.drawerPapper }}

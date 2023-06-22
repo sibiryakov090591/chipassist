@@ -12,7 +12,6 @@ import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
-  const isShowChat = !!localStorage.getItem("isShowChat");
 
   const itemClasses = [classes.topMenuItem, isMobile ? classes.topMenuItemMobile : ""].join(" ");
 
@@ -38,15 +37,13 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       )}
-      {isShowChat && (
-        <div className={itemClasses}>
-          <NavLink className={`${classes.topMenuItemLink}`} to={`/chat`}>
-            {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-            Messages
-            <ChatUnreadTotalCount className={classes.chatUnreadCount} />
-          </NavLink>
-        </div>
-      )}
+      <div className={itemClasses}>
+        <NavLink className={`${classes.topMenuItemLink}`} to={`/chat`}>
+          {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+          Messages
+          <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+        </NavLink>
+      </div>
       <div className={itemClasses}>
         <NavLink className={`${classes.topMenuItemLink}`} to={`/help`}>
           {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}

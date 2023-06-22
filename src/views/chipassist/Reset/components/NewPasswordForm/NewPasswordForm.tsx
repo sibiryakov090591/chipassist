@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useRef } from "react";
 import clsx from "clsx";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { Button, CircularProgress, TextField } from "@material-ui/core";
+import { Box, Button, CircularProgress, TextField } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import passwordValidator from "password-validator";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -13,6 +12,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { authStart, login } from "@src/store/authentication/authActions";
 import { useNavigate } from "react-router-dom";
+import zxcvbn from "zxcvbn";
 import { useStyles } from "./styles";
 
 const NewPasswordForm = (props: { token: string; className: string }) => {
@@ -27,6 +27,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
 
   const [validateErrors, setValidateErrors] = useState<string[]>([]);
   const [notMatchError, setNotMatchError] = useState(false);
+  const [complexityLevel, setComplexityLevel] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [values, setValues] = useState({
@@ -35,6 +36,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
     username: localStorage.getItem("registered_email") || localStorage.getItem("reset_email") || "",
   });
   const isShowEmailField = !(localStorage.getItem("registered_email") || localStorage.getItem("reset_email"));
+  const isShowConfirmError = notMatchError && !!values.confirm;
 
   const password = useRef(null);
   const confirm = useRef(null);
@@ -42,7 +44,6 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
   // eslint-disable-next-line new-cap
   const schema = new passwordValidator();
   schema
-    .not(/[А-Яа-я|ё]/gi) // Not RU letters
     .has()
     .digits(1) // Must have at least 1 digit
     .has()
@@ -59,6 +60,9 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
       const errorsList = schema.validate(value, { list: true });
       setValidateErrors(errorsList);
       setNotMatchError(values.confirm !== value);
+
+      // Evaluate password complexity
+      setComplexityLevel(value ? zxcvbn(value).score : null);
     }
 
     if (name === "confirm") {
@@ -154,7 +158,6 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
                   type="password"
                   value={values.password}
                   variant="outlined"
-                  error={validateErrors.length > 0}
                 />
                 <div className={`${classes.helper} ${validateErrors.length > 0 ? classes.helperActive : ""}`}>
                   {validateErrors.length > 0 && t(`reset.helper_text.${validateErrors[0]}`)}
@@ -172,17 +175,40 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
                   type="password"
                   value={values.confirm}
                   variant="outlined"
-                  error={notMatchError}
                 />
                 {showPassword ? (
                   <VisibilityOffIcon className={classes.visibilityIcon} onClick={showPasswordHandler} />
                 ) : (
                   <VisibilityIcon className={classes.visibilityIcon} onClick={showPasswordHandler} />
                 )}
-                <div className={`${classes.helper} ${notMatchError ? classes.helperActive : ""}`}>
+                <div className={`${classes.helper} ${isShowConfirmError ? classes.helperActive : ""}`}>
                   {t(`reset.helper_text.does_not_match`)}
                 </div>
               </div>
+
+              <Box display="flex" gridGap="5px">
+                <div
+                  className={clsx(classes.complexity, {
+                    [classes.bad]: [0].includes(complexityLevel),
+                    [classes.fair]: [1, 2].includes(complexityLevel),
+                    [classes.good]: [3, 4].includes(complexityLevel),
+                  })}
+                />
+                <div
+                  className={clsx(classes.complexity, {
+                    [classes.fair]: [1, 2].includes(complexityLevel),
+                    [classes.good]: [3, 4].includes(complexityLevel),
+                  })}
+                />
+                <div
+                  className={clsx(classes.complexity, {
+                    [classes.fair]: [2].includes(complexityLevel),
+                    [classes.good]: [3, 4].includes(complexityLevel),
+                  })}
+                />
+                <div className={clsx(classes.complexity, { [classes.good]: [3, 4].includes(complexityLevel) })} />
+                <div className={clsx(classes.complexity, { [classes.good]: [4].includes(complexityLevel) })} />
+              </Box>
             </div>
             <Button
               className={clsx(classes.submitButton, appTheme.buttonCreate)}

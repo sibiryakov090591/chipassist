@@ -26,10 +26,10 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <Page title={"Chat"} description={"Chat with buyers"}>
+    <Page title={"Chat"} description={"Chat with buyers"} style={{ height: "100%" }}>
       <section className={classes.section}>
-        <Container maxWidth="xl">
-          <Box display="flex" flexDirection="column" alignItems="flex-start">
+        <Container maxWidth="xl" className={classes.container}>
+          <Box display="flex" flexDirection="column" className={classes.header}>
             <h1 className={requestsClasses.title}>Communication with buyers</h1>
             {selectedPartner && (
               <div className={clsx(requestsClasses.supplier, { flexible: partners?.length > 1 })}>

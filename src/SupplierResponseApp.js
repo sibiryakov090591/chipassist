@@ -61,7 +61,6 @@ const SupplierResponseApp = () => {
 
   // const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
   const selectedCurrency = "USD";
-  const isShowChat = !!localStorage.getItem("isShowChat");
 
   useEffect(() => {
     // update old site version
@@ -140,7 +139,7 @@ const SupplierResponseApp = () => {
             <Route path="/" element={<Navigate to="/supplier-response" />} />
             <Route path="/supplier-response/*" element={<SupplierResponse />} />
             <Route path="/statistics" element={<Statistics />} />
-            {isShowChat && <Route path="/chat" element={<ChatPage />} />}
+            <Route path="/chat" element={<ChatPage />} />
             <Route path="/auth/login" element={<Login />} />
             <Route
               path="/logout"
