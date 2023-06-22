@@ -3,7 +3,7 @@ import { Page } from "@src/components";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useStyles from "@src/views/chipassist/StaticPages/FAQ/styles";
 import { Container, Grid } from "@material-ui/core";
-import { CustomAccordion } from "@src/views/chipassist/StaticPages/FAQ/components/CustomAccordion";
+import CustomAccordion from "@src/views/chipassist/StaticPages/FAQ/components/CustomAccordion";
 
 const userFAQ = [
   {
