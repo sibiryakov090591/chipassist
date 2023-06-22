@@ -1,15 +1,27 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-// import { Theme } from "@material-ui/core";
-// import { AppTheme } from "@src/themes/AppTheme";
+import { Theme } from "@material-ui/core";
+import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     section: {
       padding: "2em 0",
+      height: "100%",
     },
     container: {
+      height: "100%",
       display: "flex",
-      maxHeight: "80vh",
+      flexDirection: "column",
+    },
+    header: {
+      alignItems: "flex-start",
+      [theme.breakpoints.down("sm")]: {
+        alignItems: "center",
+      },
+    },
+    wrapper: {
+      display: "flex",
+      flexGrow: 1,
       minHeight: 500,
       border: "1px solid #D4D4D4",
       borderRadius: 8,

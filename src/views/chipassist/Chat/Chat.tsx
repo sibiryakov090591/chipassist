@@ -25,7 +25,7 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className={classes.container}>
+    <div className={classes.wrapper}>
       <ChatList onShowList={onShowListHandler} showList={showList} />
       <ChatWindow
         onShowList={onShowListHandler}
