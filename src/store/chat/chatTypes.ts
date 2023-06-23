@@ -73,7 +73,11 @@ export interface FileType {
 export interface ChatListItem {
   id: number;
   created: string;
-  partner: string;
+  partner: {
+    first_name: string;
+    last_name: string;
+    company_name: string;
+  };
   title: string;
   details: {
     quantity: number;

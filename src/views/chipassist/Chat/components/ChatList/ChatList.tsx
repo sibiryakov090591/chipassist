@@ -10,6 +10,8 @@ import Filters from "@src/views/chipassist/Chat/components/ChatList/components/F
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -104,7 +106,13 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                     (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                 </div>
                 <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
-                  <div>{item.partner}</div>
+                  <div>
+                    {constants.id === ID_SUPPLIER_RESPONSE
+                      ? `${item.partner.first_name} ${item.partner.last_name} ${
+                          item.partner.company_name ? `(${item.partner.company_name})` : ""
+                        }`
+                      : item.partner.first_name}
+                  </div>
                   {!!quantity && !!price && (
                     <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
                   )}

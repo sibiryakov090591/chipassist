@@ -254,9 +254,11 @@ const Messages: React.FC = () => {
                     <span className={classes.messageFrom}>
                       {item.sender === "You"
                         ? "You"
-                        : constants.id !== ID_SUPPLIER_RESPONSE
-                        ? selectedChat?.partner
-                        : item.sender}
+                        : constants.id === ID_SUPPLIER_RESPONSE
+                        ? `${selectedChat?.partner.first_name} ${selectedChat?.partner.last_name} ${
+                            selectedChat?.partner.company_name ? `(${selectedChat?.partner.company_name})` : ""
+                          }`
+                        : selectedChat?.partner.first_name}
                     </span>
                     <span className={classes.messageDate}>
                       {time} - {messageDateLabel}
