@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/components/MessageInput/MessageInput";
-import { deductReadMessages, downloadFile, getMessages, readMessage } from "@src/store/chat/chatActions";
+import {
+  deductReadMessages,
+  downloadFile,
+  getMessages,
+  readMessage,
+  updateMessages,
+} from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
@@ -60,17 +66,10 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (selectedChat?.id && messages.forceUpdate) {
-      setMessagesIdsWasRead([]);
-      setFirstUnreadMessageId(null);
-      setLoadedPages([]);
-
-      dispatch(getMessages(selectedChat.id, {}, false, true)).then((res: any) => {
-        const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
-        if (firstUnreadMessage) {
-          setFirstUnreadMessageId(firstUnreadMessage.id);
-        } else {
-          messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
-        }
+      const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
+      const isNeedToScroll = scrollTop + clientHeight > scrollHeight - 50;
+      dispatch(updateMessages(selectedChat.id)).then(() => {
+        if (isNeedToScroll) messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
       });
     }
   }, [messages.forceUpdate]);

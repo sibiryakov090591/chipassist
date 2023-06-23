@@ -12,6 +12,7 @@ export const LOAD_CHAT_LIST_F = "@chat/LOAD_CHAT_LIST_F";
 export const LOAD_CHAT_LIST_ARRAY = [LOAD_CHAT_LIST_R, LOAD_CHAT_LIST_S, LOAD_CHAT_LIST_F];
 
 export const UPDATE_CHAT_LIST_S = "@chat/UPDATE_CHAT_LIST_S";
+export const UPDATE_MESSAGES_S = "@chat/UPDATE_MESSAGES_S";
 
 export const LOAD_MESSAGES_R = "@chat/LOAD_MESSAGES_R";
 export const LOAD_MESSAGES_S = "@chat/LOAD_MESSAGES_S";
@@ -153,6 +154,11 @@ interface LoadMessagesFailAction {
   error: any;
 }
 
+interface UpdateMessagesAction {
+  type: typeof UPDATE_MESSAGES_S;
+  payload: any;
+}
+
 interface SelectChatAction {
   type: typeof SELECT_CHAT;
   payload: any;
@@ -209,6 +215,7 @@ export type ChatActionTypes =
   | LoadMoreChatListSuccessAction
   | LoadChatListFailAction
   | UpdateChatListAction
+  | UpdateMessagesAction
   | LoadMessagesRequestAction
   | LoadMessagesFailAction
   | LoadMessagesSuccessAction

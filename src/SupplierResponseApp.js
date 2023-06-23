@@ -111,7 +111,7 @@ const SupplierResponseApp = () => {
       const intervalId = setInterval(() => {
         const loadedPages = [...new Set(loadedChatPages)];
         loadedPages.forEach((page) => dispatch(updateChatList(page)));
-      }, 30000);
+      }, 10000);
       setChatUpdatingIntervalId(intervalId);
     }
   }, [isAuthenticated, loadedChatPages, selectedPartner]);

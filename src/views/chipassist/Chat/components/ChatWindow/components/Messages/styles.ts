@@ -119,6 +119,7 @@ export const useStyles = makeStyles(() =>
     },
     image: {
       height: 200,
+      minHeight: 200,
       maxWidth: "100%",
       objectFit: "cover",
       borderRadius: 12,
