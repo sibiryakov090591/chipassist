@@ -23,6 +23,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       flexGrow: 1,
       minHeight: 500,
+      maxHeight: "85vh",
       border: "1px solid #D4D4D4",
       borderRadius: 8,
       overflow: "hidden",

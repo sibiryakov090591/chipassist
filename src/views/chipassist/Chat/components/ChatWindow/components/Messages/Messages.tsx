@@ -239,7 +239,9 @@ const Messages: React.FC = () => {
                   <div className={classes.requestItem}>
                     <ScheduleRoundedIcon className={classes.requestItemIcon} />
                     <div>
-                      <strong>{`${item.sender} sent a new request for ${selectedChat.rfq.upc}.`}</strong>{" "}
+                      <strong>{`${item.sender} sent a new request for ${
+                        selectedChat.title || selectedChat.rfq.upc
+                      }.`}</strong>{" "}
                       {!!selectedChat.rfq.quantity && !!selectedChat.rfq.price && (
                         <span>{`${selectedChat.rfq.quantity} x ${formatMoney(selectedChat.rfq.price)} € = ${formatMoney(
                           selectedChat.rfq.quantity * selectedChat.rfq.price,
@@ -324,14 +326,16 @@ const Messages: React.FC = () => {
           )}
         </div>
       </div>
-      <MessageInput
-        chatId={selectedChat?.id}
-        isSending={isSending}
-        setIsSending={setIsSending}
-        isShowScrollButton={isShowScrollButton}
-        onScrollToBottom={onScrollToBottom}
-        minLoadedPage={minLoadedPage}
-      />
+      {!!messages.results.length && (
+        <MessageInput
+          chatId={selectedChat?.id}
+          isSending={isSending}
+          setIsSending={setIsSending}
+          isShowScrollButton={isShowScrollButton}
+          onScrollToBottom={onScrollToBottom}
+          minLoadedPage={minLoadedPage}
+        />
+      )}
     </div>
   );
 };

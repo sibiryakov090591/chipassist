@@ -89,7 +89,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
               >
                 <Box display="flex" justifyContent="space-between">
                   <div className={classes.title}>
-                    <div className={classes.sellerName}>{item.partner}</div>
+                    <div className={classes.sellerName}>{partNumber}</div>
                     {!!unreadMessages && (
                       <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
                     )}
@@ -104,7 +104,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                     (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                 </div>
                 <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
-                  <div>{partNumber}</div>
+                  <div>{item.partner}</div>
                   {!!quantity && !!price && (
                     <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
                   )}
