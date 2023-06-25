@@ -1,5 +1,5 @@
 import * as actionTypes from "./chatTypes";
-import { ChatListItem } from "./chatTypes";
+import { ChatListItem, ChatListMessage } from "./chatTypes";
 
 const initialState: actionTypes.ChatState = {
   filters: {
@@ -134,6 +134,21 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           unread_total,
         },
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },
+      };
+    }
+
+    case actionTypes.UPDATE_MESSAGES_S: {
+      const results = action.payload;
+      const newMessages = results.filter(
+        (message: ChatListMessage) => !message.read && !state.messages.results.find((i) => i.id === message.id),
+      );
+
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          results: [...state.messages.results, ...newMessages],
+        },
       };
     }
 

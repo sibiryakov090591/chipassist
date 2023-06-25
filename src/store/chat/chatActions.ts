@@ -62,12 +62,7 @@ export const updateChatList = (page: number) => {
   };
 };
 
-export const getMessages = (
-  chatId: number,
-  filters: { [key: string]: any } = {},
-  join = false,
-  isUpdatingMessages = false,
-) => {
+export const getMessages = (chatId: number, filters: { [key: string]: any } = {}, join = false) => {
   return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const pageSize = getState().chat.messages.page_size;
@@ -78,11 +73,7 @@ export const getMessages = (
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
     return dispatch({
-      types: [
-        !isUpdatingMessages && actionTypes.LOAD_MESSAGES_R,
-        false,
-        !isUpdatingMessages && actionTypes.LOAD_MESSAGES_F,
-      ],
+      types: [actionTypes.LOAD_MESSAGES_R, false, actionTypes.LOAD_MESSAGES_F],
       promise: (client: ApiClientInterface) =>
         client
           .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
@@ -116,6 +107,63 @@ export const getMessages = (
                 rewind: !!filters.rewind,
               },
             });
+            return res.data;
+          })
+          .catch((e) => {
+            console.log("***LOAD_MESSAGES_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
+export const updateMessages = (chatId: number, filters: { [key: string]: any } = {}) => {
+  return (dispatch: any, getState: () => RootState) => {
+    const partner = getState().profile.selectedPartner;
+    const pageSize = getState().chat.messages.page_size;
+    let params = `?user=${isUser}${
+      !isUser && partner ? `&seller=${partner.id}` : ""
+    }&level=messages&page_size=${pageSize}`;
+    Object.entries(filters).forEach((v) => {
+      if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
+    });
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
+          .then(async (res) => {
+            // download images
+            const files: any = {};
+            const filesPromises: any = [];
+            res.data.results.forEach((i: ChatListMessage) => {
+              i.message_attachments.forEach((file) => {
+                const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
+                if (validType && !getState().chat.files[file.id]) {
+                  filesPromises.push(
+                    dispatch(downloadFile(file.id))
+                      .then((blob: Blob) => {
+                        files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                      })
+                      .catch((e: any) => e),
+                  );
+                }
+              });
+            });
+            if (filesPromises.length) {
+              await Promise.all(filesPromises);
+              dispatch(saveFiles(files));
+            }
+
+            dispatch({
+              type: actionTypes.UPDATE_MESSAGES_S,
+              payload: res.data.results,
+            });
+
+            if (res.data.page > 1) {
+              dispatch(updateMessages(chatId, { page: res.data.page - 1 }));
+            }
+
             return res.data;
           })
           .catch((e) => {

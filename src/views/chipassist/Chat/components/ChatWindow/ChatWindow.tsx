@@ -7,6 +7,8 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -48,7 +50,13 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
             )}
             <div>
               <h2 className={classes.upc}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
-              <div className={classes.seller}>{selectedChat?.partner}</div>
+              <div className={classes.seller}>
+                {constants.id === ID_SUPPLIER_RESPONSE
+                  ? `${selectedChat?.partner.first_name} ${selectedChat?.partner.last_name} ${
+                      selectedChat?.partner.company_name ? `(${selectedChat?.partner.company_name})` : ""
+                    }`
+                  : selectedChat?.partner.first_name}
+              </div>
             </div>
           </div>
           <MoreVertIcon

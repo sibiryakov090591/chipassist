@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/components/MessageInput/MessageInput";
-import { deductReadMessages, downloadFile, getMessages, readMessage } from "@src/store/chat/chatActions";
+import {
+  deductReadMessages,
+  downloadFile,
+  getMessages,
+  readMessage,
+  updateMessages,
+} from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
@@ -60,17 +66,10 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (selectedChat?.id && messages.forceUpdate) {
-      setMessagesIdsWasRead([]);
-      setFirstUnreadMessageId(null);
-      setLoadedPages([]);
-
-      dispatch(getMessages(selectedChat.id, {}, false, true)).then((res: any) => {
-        const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
-        if (firstUnreadMessage) {
-          setFirstUnreadMessageId(firstUnreadMessage.id);
-        } else {
-          messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
-        }
+      const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
+      const isNeedToScroll = scrollTop + clientHeight > scrollHeight - 50;
+      dispatch(updateMessages(selectedChat.id)).then(() => {
+        if (isNeedToScroll) messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
       });
     }
   }, [messages.forceUpdate]);
@@ -239,7 +238,9 @@ const Messages: React.FC = () => {
                   <div className={classes.requestItem}>
                     <ScheduleRoundedIcon className={classes.requestItemIcon} />
                     <div>
-                      <strong>{`${item.sender} sent a new request for ${selectedChat.rfq.upc}.`}</strong>{" "}
+                      <strong>{`${item.sender} sent a new request for ${
+                        selectedChat.title || selectedChat.rfq.upc
+                      }.`}</strong>{" "}
                       {!!selectedChat.rfq.quantity && !!selectedChat.rfq.price && (
                         <span>{`${selectedChat.rfq.quantity} x ${formatMoney(selectedChat.rfq.price)} € = ${formatMoney(
                           selectedChat.rfq.quantity * selectedChat.rfq.price,
@@ -253,9 +254,11 @@ const Messages: React.FC = () => {
                     <span className={classes.messageFrom}>
                       {item.sender === "You"
                         ? "You"
-                        : constants.id !== ID_SUPPLIER_RESPONSE
-                        ? selectedChat?.partner
-                        : item.sender}
+                        : constants.id === ID_SUPPLIER_RESPONSE
+                        ? `${selectedChat?.partner.first_name} ${selectedChat?.partner.last_name} ${
+                            selectedChat?.partner.company_name ? `(${selectedChat?.partner.company_name})` : ""
+                          }`
+                        : selectedChat?.partner.first_name}
                     </span>
                     <span className={classes.messageDate}>
                       {time} - {messageDateLabel}
@@ -324,14 +327,16 @@ const Messages: React.FC = () => {
           )}
         </div>
       </div>
-      <MessageInput
-        chatId={selectedChat?.id}
-        isSending={isSending}
-        setIsSending={setIsSending}
-        isShowScrollButton={isShowScrollButton}
-        onScrollToBottom={onScrollToBottom}
-        minLoadedPage={minLoadedPage}
-      />
+      {!!messages.results.length && (
+        <MessageInput
+          chatId={selectedChat?.id}
+          isSending={isSending}
+          setIsSending={setIsSending}
+          isShowScrollButton={isShowScrollButton}
+          onScrollToBottom={onScrollToBottom}
+          minLoadedPage={minLoadedPage}
+        />
+      )}
     </div>
   );
 };
