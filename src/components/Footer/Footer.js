@@ -8,9 +8,7 @@ import { useStyles } from "./footerStyles";
 
 const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
-const instagramIcon = "../../src/images/Icons/socialsIcons/instagram.png";
-const facebookIcon = "../../src/images/Icons/socialsIcons/facebook.png";
-const linkedinIcon = "../../src/images/Icons/socialsIcons/linkedin.png";
+const socialIconsPath = "../../src/images/Icons/socialsIcons/";
 
 let build = "";
 
@@ -49,17 +47,17 @@ const Footer = () => {
                         href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
                         title="Chipassist on Instagram"
                       >
-                        <img src={instagramIcon} alt={"Instagram"} className={classes.socialIcon} />
+                        <img src={`${socialIconsPath}instagram.png`} alt={"Instagram"} className={classes.socialIcon} />
                       </a>
                     </Grid>
                     <Grid item>
                       <a href="https://www.facebook.com/ChipAssist/" title="Chipassist on Facebook">
-                        <img src={facebookIcon} alt={"Facebook"} className={classes.socialIcon} />
+                        <img src={`${socialIconsPath}facebook.png`} alt={"Facebook"} className={classes.socialIcon} />
                       </a>
                     </Grid>
                     <Grid item>
                       <a href="https://www.linkedin.com/company/54117339" title="Chipassist on LinkedIn">
-                        <img src={linkedinIcon} alt={"LinkedIn"} className={classes.socialIcon} />
+                        <img src={`${socialIconsPath}linkedin.png`} alt={"LinkedIn"} className={classes.socialIcon} />
                       </a>
                     </Grid>
                   </Grid>
