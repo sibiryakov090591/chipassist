@@ -52,20 +52,32 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     item: {
-      padding: 12,
       cursor: "pointer",
-      "&:not(:first-child)": {
-        borderTop: "1px solid #dddddd",
-      },
       "&:hover": {
         background: "#F5F5F5",
+      },
+      "&:not(:last-child) > div": {
+        borderBottom: "1px solid #dddddd",
+      },
+      "&:last-child > div": {
+        borderBottom: "1px solid transparent",
+      },
+      "&.borderTransparent > div, &.prevActive > div": {
+        borderBottom: "1px solid transparent",
+      },
+      "&.active": {
+        background: "#f0f0f0",
+        "& > div": {
+          borderBottom: "1px solid transparent",
+        },
+        "&:hover": {
+          background: "#F5F5F5",
+        },
       },
     },
-    itemActive: {
-      background: "#f0f0f0",
-      "&:hover": {
-        background: "#F5F5F5",
-      },
+    itemInner: {
+      margin: "0 12px",
+      padding: "12px 0",
     },
     title: {
       display: "flex",
