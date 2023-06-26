@@ -1,8 +1,8 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-// import { Theme } from "@material-ui/core";
-// import { AppTheme } from "@src/themes/AppTheme";
+import { Theme } from "@material-ui/core";
+import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     select: {
       position: "relative",
@@ -20,27 +20,44 @@ export const useStyles = makeStyles(() =>
       "& .MuiSvgIcon-root": {
         color: "#a3a3a3",
         marginTop: 2,
-        marginRight: 2,
         fontSize: 20,
       },
     },
     button: {
       minWidth: 38,
       paddingLeft: 11,
-      border: "1px solid #A3A3A3",
+      border: "none",
       borderRadius: 8,
-      color: "#A3A3A3",
+      color: "#ffffff",
+      backgroundColor: theme.palette.app.red500,
+      "&:hover": {
+        backgroundColor: theme.palette.app.red400,
+      },
+      "&:active": {
+        backgroundColor: theme.palette.app.red400,
+      },
     },
     clearBtn: {
       position: "absolute",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      transition: "background 180ms ease",
       top: 0,
       bottom: 0,
-      right: 0,
-      width: 35,
+      right: "-1px",
+      width: 30,
       cursor: "pointer",
       borderRadius: "0 8px 8px 0",
+      border: "1px solid #A3A3A3",
+      background: "#f5f5f5",
       "&:hover": {
-        background: "rgba(0,0,0,0.04)",
+        background: "#ffd3d3",
+      },
+      "& svg": {
+        color: `#8b8b8b !important`,
+        fontSize: `16px !important`,
+        marginTop: `0 !important`,
       },
     },
   }),

@@ -5,7 +5,7 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
-import BackspaceOutlinedIcon from "@material-ui/icons/BackspaceOutlined";
+import CloseIcon from "@material-ui/icons/Close";
 import { useStyles } from "./styles";
 
 interface Values {
@@ -57,7 +57,7 @@ const Filters: React.FC = () => {
             <Select
               labelId="chat-filters-upc-label"
               label="Part number"
-              IconComponent={values.upc ? BackspaceOutlinedIcon : ExpandMoreRoundedIcon}
+              IconComponent={ExpandMoreRoundedIcon}
               name="upc"
               value={values.upc || ""}
               onChange={onChangeHandler}
@@ -70,14 +70,18 @@ const Filters: React.FC = () => {
                 );
               })}
             </Select>
-            {values.upc && <span className={classes.clearBtn} onClick={onClearHandler("upc")} />}
+            {values.upc && (
+              <span className={classes.clearBtn} onClick={onClearHandler("upc")}>
+                <CloseIcon />
+              </span>
+            )}
           </FormControl>
           <FormControl variant="outlined" size="small" className={classes.select}>
             <InputLabel id="chat-filters-partner-label">Seller</InputLabel>
             <Select
               labelId="chat-filters-partner-label"
               label="Seller"
-              IconComponent={values.partner ? BackspaceOutlinedIcon : ExpandMoreRoundedIcon}
+              IconComponent={ExpandMoreRoundedIcon}
               name="partner"
               value={values.partner || ""}
               onChange={onChangeHandler}
@@ -90,7 +94,11 @@ const Filters: React.FC = () => {
                 );
               })}
             </Select>
-            {values.partner && <span className={classes.clearBtn} onClick={onClearHandler("partner")} />}
+            {values.partner && (
+              <span className={classes.clearBtn} onClick={onClearHandler("partner")}>
+                <CloseIcon />
+              </span>
+            )}
           </FormControl>
           <Button className={classes.button} variant="outlined" size="small" onClick={onSubmitHandler}>
             <SearchIcon />

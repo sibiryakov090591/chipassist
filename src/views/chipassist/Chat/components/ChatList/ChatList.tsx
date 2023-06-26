@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Box } from "@material-ui/core";
 import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
-import Status from "@src/views/chipassist/Chat/components/Status/Status";
+// import Status from "@src/views/chipassist/Chat/components/Status/Status";
 import { getChatList, selectChat } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -48,7 +48,6 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   return (
     <div className={clsx(classes.leftColumn, { active: showList })}>
       <div className={classes.header}>
-        <h1 className={classes.headerTitle}>All requests</h1>
         <Filters />
       </div>
 
@@ -98,7 +97,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                   </div>
                   <Box display="flex" alignItems="center">
                     <div className={classes.messageDate}>{lastMessageDate}</div>
-                    <Status status="Requested" />
+                    {/* <Status status="Requested" /> */}
                   </Box>
                 </Box>
                 <div className={classes.message}>
