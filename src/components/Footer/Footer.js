@@ -39,28 +39,34 @@ const Footer = () => {
                 <div className={classes.copy}>Copyright © {new Date().toISOString().slice(0, 4)} ChipAssist AG</div>
               </Box>
               <Box display="flex" className={classes.nav}>
-                <Box className={classes.navGroup}>
-                  <p style={{ fontSize: 13, color: "#d8d5df", fontWeight: "bold" }}>Follow us</p>
-                  <Grid container direction={"row"} spacing={2} wrap={"nowrap"}>
-                    <Grid item>
-                      <a
-                        href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
-                        title="Chipassist on Instagram"
-                      >
-                        <img src={`${socialIconsPath}instagram.png`} alt={"Instagram"} className={classes.socialIcon} />
-                      </a>
+                <Box display="flex" flexWrap="wrap">
+                  <Box className={classes.navGroup}>
+                    <p style={{ fontSize: 13, color: "#d8d5df", fontWeight: "bold" }}>Follow us</p>
+                    <Grid container direction={"row"} spacing={1} wrap={"nowrap"}>
+                      <Grid item>
+                        <a
+                          href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
+                          title="Chipassist on Instagram"
+                        >
+                          <img
+                            src={`${socialIconsPath}instagram.png`}
+                            alt={"Instagram"}
+                            className={classes.socialIcon}
+                          />
+                        </a>
+                      </Grid>
+                      <Grid item>
+                        <a href="https://www.facebook.com/ChipAssist/" title="Chipassist on Facebook">
+                          <img src={`${socialIconsPath}facebook.png`} alt={"Facebook"} className={classes.socialIcon} />
+                        </a>
+                      </Grid>
+                      <Grid item>
+                        <a href="https://www.linkedin.com/company/54117339" title="Chipassist on LinkedIn">
+                          <img src={`${socialIconsPath}linkedin.png`} alt={"LinkedIn"} className={classes.socialIcon} />
+                        </a>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <a href="https://www.facebook.com/ChipAssist/" title="Chipassist on Facebook">
-                        <img src={`${socialIconsPath}facebook.png`} alt={"Facebook"} className={classes.socialIcon} />
-                      </a>
-                    </Grid>
-                    <Grid item>
-                      <a href="https://www.linkedin.com/company/54117339" title="Chipassist on LinkedIn">
-                        <img src={`${socialIconsPath}linkedin.png`} alt={"LinkedIn"} className={classes.socialIcon} />
-                      </a>
-                    </Grid>
-                  </Grid>
+                  </Box>
                 </Box>
                 {isSupplierResponse && (
                   <Box className={classes.navGroup}>

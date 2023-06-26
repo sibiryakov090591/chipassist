@@ -101,7 +101,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   navGroup: {
-    marginRight: 50,
+    marginRight: 25,
   },
   navLink: {
     display: "block",
