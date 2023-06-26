@@ -7,6 +7,11 @@ import { NavLink } from "react-router-dom";
 import { useStyles } from "./footerStyles";
 
 const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
+
+const instagramIcon = "../../src/images/Icons/socialsIcons/instagram.png";
+const facebookIcon = "../../src/images/Icons/socialsIcons/facebook.png";
+const linkedinIcon = "../../src/images/Icons/socialsIcons/linkedin.png";
+
 let build = "";
 
 const Footer = () => {
@@ -36,6 +41,29 @@ const Footer = () => {
                 <div className={classes.copy}>Copyright © {new Date().toISOString().slice(0, 4)} ChipAssist AG</div>
               </Box>
               <Box display="flex" className={classes.nav}>
+                <Box className={classes.navGroup}>
+                  <p style={{ fontSize: 13, color: "#d8d5df", fontWeight: "bold" }}>Follow us</p>
+                  <Grid container direction={"row"} spacing={2} wrap={"nowrap"}>
+                    <Grid item>
+                      <a
+                        href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
+                        title="Chipassist on Instagram"
+                      >
+                        <img src={instagramIcon} alt={"Instagram"} className={classes.socialIcon} />
+                      </a>
+                    </Grid>
+                    <Grid item>
+                      <a href="https://www.facebook.com/ChipAssist/" title="Chipassist on Facebook">
+                        <img src={facebookIcon} alt={"Facebook"} className={classes.socialIcon} />
+                      </a>
+                    </Grid>
+                    <Grid item>
+                      <a href="https://www.linkedin.com/company/54117339" title="Chipassist on LinkedIn">
+                        <img src={linkedinIcon} alt={"LinkedIn"} className={classes.socialIcon} />
+                      </a>
+                    </Grid>
+                  </Grid>
+                </Box>
                 {isSupplierResponse && (
                   <Box className={classes.navGroup}>
                     <NavLink className={classes.navLink} to={"/supplier-response"}>
