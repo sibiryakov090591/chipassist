@@ -64,7 +64,6 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   };
 
   const onMouseEnterHandler = (id: number) => () => {
-    if (selectedChat?.id === id) return false;
     const elem = document.getElementById(`chat-item-${id}`);
     const prevElem = elem.previousElementSibling;
 
@@ -74,7 +73,6 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   };
 
   const onMouseLeaveHandler = (id: number) => () => {
-    if (selectedChat?.id === id) return false;
     const elem = document.getElementById(`chat-item-${id}`);
     const prevElem = elem.previousElementSibling;
 
