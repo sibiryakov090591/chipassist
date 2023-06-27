@@ -4,11 +4,13 @@ import constants from "@src/constants/constants";
 import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import linkedIn from "@src/images/Icons/socialsIcons/linkedin.png";
+import instagram from "@src/images/Icons/socialsIcons/instagram.png";
+import facebook from "@src/images/Icons/socialsIcons/facebook.png";
+
 import { useStyles } from "./footerStyles";
 
 const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
-
-const socialIconsPath = "../../src/images/Icons/socialsIcons/";
 
 let build = "";
 
@@ -47,22 +49,33 @@ const Footer = () => {
                         <a
                           href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
                           title="Chipassist on Instagram"
+                          target={"_blank"}
+                          rel={"noreferrer"}
+                          className={classes.navLink}
                         >
-                          <img
-                            src={`${socialIconsPath}instagram.png`}
-                            alt={"Instagram"}
-                            className={classes.socialIcon}
-                          />
+                          <img src={instagram} alt={"Instagram"} className={classes.socialIcon} />
                         </a>
                       </Grid>
                       <Grid item>
-                        <a href="https://www.facebook.com/ChipAssist/" title="Chipassist on Facebook">
-                          <img src={`${socialIconsPath}facebook.png`} alt={"Facebook"} className={classes.socialIcon} />
+                        <a
+                          href="https://www.facebook.com/ChipAssist/"
+                          title="Chipassist on Facebook"
+                          target={"_blank"}
+                          rel={"noreferrer"}
+                          className={classes.navLink}
+                        >
+                          <img src={facebook} alt={"Facebook"} className={classes.socialIcon} />
                         </a>
                       </Grid>
                       <Grid item>
-                        <a href="https://www.linkedin.com/company/54117339" title="Chipassist on LinkedIn">
-                          <img src={`${socialIconsPath}linkedin.png`} alt={"LinkedIn"} className={classes.socialIcon} />
+                        <a
+                          href="https://www.linkedin.com/company/54117339"
+                          title="Chipassist on LinkedIn"
+                          target={"_blank"}
+                          rel={"noreferrer"}
+                          className={classes.navLink}
+                        >
+                          <img src={linkedIn} alt={"LinkedIn"} className={classes.socialIcon} />
                         </a>
                       </Grid>
                     </Grid>
