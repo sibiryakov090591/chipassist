@@ -34,17 +34,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     header: {
-      padding: "12px 20px",
+      padding: "12px 7px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-    },
-    headerTitle: {
-      fontSize: 22,
-      color: "#262626",
+      minHeight: 80,
+      borderBottom: "1px solid #D4D4D4",
     },
     list: {
-      padding: 8,
       overflow: "auto",
       height: "100%",
       "&::-webkit-scrollbar": {
@@ -55,18 +52,32 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     item: {
-      padding: 12,
-      borderRadius: 5,
       cursor: "pointer",
       "&:hover": {
         background: "#F5F5F5",
       },
-    },
-    itemActive: {
-      background: "#dadbe3",
-      "&:hover": {
-        background: "#dadbe3",
+      "&:not(:last-child) > div": {
+        borderBottom: "1px solid #dddddd",
       },
+      "&:last-child > div": {
+        borderBottom: "1px solid transparent",
+      },
+      "&.borderTransparent > div, &.prevActive > div": {
+        borderBottom: "1px solid transparent",
+      },
+      "&.active": {
+        background: "#f0f0f0",
+        "& > div": {
+          borderBottom: "1px solid transparent",
+        },
+        "&:hover": {
+          background: "#F5F5F5",
+        },
+      },
+    },
+    itemInner: {
+      margin: "0 12px",
+      padding: "12px 0",
     },
     title: {
       display: "flex",

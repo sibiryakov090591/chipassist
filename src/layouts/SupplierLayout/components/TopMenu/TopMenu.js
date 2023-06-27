@@ -38,7 +38,7 @@ const TopMenu = ({ isMobile }) => {
         </div>
       )}
       <div className={itemClasses}>
-        <NavLink className={`${classes.topMenuItemLink}`} to={`/chat`}>
+        <NavLink className={`${classes.topMenuItemLink}`} to={`/messages`}>
           {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
           Messages
           <ChatUnreadTotalCount className={classes.chatUnreadCount} />

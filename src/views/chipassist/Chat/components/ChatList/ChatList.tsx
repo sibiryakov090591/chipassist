@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Box } from "@material-ui/core";
 import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
-import Status from "@src/views/chipassist/Chat/components/Status/Status";
+// import Status from "@src/views/chipassist/Chat/components/Status/Status";
 import { getChatList, selectChat } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -34,6 +34,24 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });
   }, [filters.values]);
 
+  useEffect(() => {
+    if (selectedChat) {
+      const chatListElem = document.querySelectorAll(".chat-list-item");
+      if (chatListElem.length) {
+        chatListElem.forEach((node) => {
+          node.classList.remove("active");
+          const prevElem = node.previousElementSibling;
+          if (prevElem) prevElem.classList.remove("prevActive");
+        });
+      }
+
+      const elem = document.getElementById(`chat-item-${selectedChat.id}`);
+      const prevElem = elem && elem.previousElementSibling;
+      if (elem) elem.classList.add("active");
+      if (prevElem) prevElem.classList.add("prevActive");
+    }
+  }, [selectedChat]);
+
   const selectItemHandler = (item: any) => () => {
     if (item.id !== selectedChat?.id) dispatch(selectChat(item));
     if (isXsDown) onShowList(false);
@@ -45,10 +63,27 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
     }
   };
 
+  const onMouseEnterHandler = (id: number) => () => {
+    const elem = document.getElementById(`chat-item-${id}`);
+    const prevElem = elem.previousElementSibling;
+
+    if (elem) elem.classList.add("borderTransparent");
+    if (prevElem) prevElem.classList.add("borderTransparent");
+    return true;
+  };
+
+  const onMouseLeaveHandler = (id: number) => () => {
+    const elem = document.getElementById(`chat-item-${id}`);
+    const prevElem = elem.previousElementSibling;
+
+    if (elem) elem.classList.remove("borderTransparent");
+    if (prevElem) prevElem.classList.remove("borderTransparent");
+    return true;
+  };
+
   return (
     <div className={clsx(classes.leftColumn, { active: showList })}>
       <div className={classes.header}>
-        <h1 className={classes.headerTitle}>All requests</h1>
         <Filters />
       </div>
 
@@ -59,6 +94,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
           </Box>
         )}
         <InfiniteScroll
+          id="chat-list-inner"
           threshold={250}
           loadMore={onScrollLoading}
           useWindow={false}
@@ -81,42 +117,49 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
             const price = item.details?.price || item.rfq?.price;
             const partNumber = item.title || item.rfq?.upc;
 
+            const name =
+              constants.id === ID_SUPPLIER_RESPONSE
+                ? selectedChat?.partner &&
+                  Object.entries(selectedChat.partner).reduce((acc, i) => {
+                    const [key, value] = i;
+                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                    return acc;
+                  }, "")
+                : selectedChat?.partner.first_name;
+
             return (
               <div
                 key={`${item.id}_${index}`}
-                className={clsx(classes.item, {
-                  [classes.itemActive]: selectedChat?.id === item.id,
-                })}
+                id={`chat-item-${item.id}`}
+                className={clsx("chat-list-item", classes.item)}
+                onMouseEnter={onMouseEnterHandler(item.id)}
+                onMouseLeave={onMouseLeaveHandler(item.id)}
                 onClick={selectItemHandler(item)}
               >
-                <Box display="flex" justifyContent="space-between">
-                  <div className={classes.title}>
-                    <div className={classes.sellerName}>{partNumber}</div>
-                    {!!unreadMessages && (
-                      <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
-                    )}
-                  </div>
-                  <Box display="flex" alignItems="center">
-                    <div className={classes.messageDate}>{lastMessageDate}</div>
-                    <Status status="Requested" />
+                <div className={classes.itemInner}>
+                  <Box display="flex" justifyContent="space-between">
+                    <div className={classes.title}>
+                      <div className={classes.sellerName}>{partNumber}</div>
+                      {!!unreadMessages && (
+                        <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
+                      )}
+                    </div>
+                    <Box display="flex" alignItems="center">
+                      <div className={classes.messageDate}>{lastMessageDate}</div>
+                      {/* <Status status="Requested" /> */}
+                    </Box>
                   </Box>
-                </Box>
-                <div className={classes.message}>
-                  {lastMessage?.text ||
-                    (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
-                </div>
-                <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
-                  <div>
-                    {constants.id === ID_SUPPLIER_RESPONSE
-                      ? `${item.partner.first_name} ${item.partner.last_name} ${
-                          item.partner.company_name ? `(${item.partner.company_name})` : ""
-                        }`
-                      : item.partner.first_name}
+                  <div className={classes.message}>
+                    {lastMessage?.text ||
+                      (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                   </div>
-                  {!!quantity && !!price && (
-                    <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
-                  )}
-                </Box>
+                  <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
+                    <div>{name}</div>
+                    {!!quantity && !!price && (
+                      <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
+                    )}
+                  </Box>
+                </div>
               </div>
             );
           })}

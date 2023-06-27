@@ -226,6 +226,16 @@ const Messages: React.FC = () => {
               index === 0 || new Date(messages.results[index - 1].created).toLocaleDateString() !== messageDate;
             const isFirstMessage = messages.page === messages.total_pages && index === 0;
 
+            const name =
+              constants.id === ID_SUPPLIER_RESPONSE
+                ? selectedChat?.partner &&
+                  Object.entries(selectedChat.partner).reduce((acc, i) => {
+                    const [key, value] = i;
+                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                    return acc;
+                  }, "")
+                : selectedChat?.partner.first_name;
+
             return (
               <div key={item.id}>
                 {item.id === firstUnreadMessageId && (
@@ -251,15 +261,7 @@ const Messages: React.FC = () => {
                 )}
                 <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
                   <div className={classes.messageInfo}>
-                    <span className={classes.messageFrom}>
-                      {item.sender === "You"
-                        ? "You"
-                        : constants.id === ID_SUPPLIER_RESPONSE
-                        ? `${selectedChat?.partner.first_name} ${selectedChat?.partner.last_name} ${
-                            selectedChat?.partner.company_name ? `(${selectedChat?.partner.company_name})` : ""
-                          }`
-                        : selectedChat?.partner.first_name}
-                    </span>
+                    <span className={classes.messageFrom}>{item.sender === "You" ? "You" : name}</span>
                     <span className={classes.messageDate}>
                       {time} - {messageDateLabel}
                     </span>

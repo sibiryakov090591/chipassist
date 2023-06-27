@@ -76,7 +76,7 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/statistics"}>
                       Statistics
                     </NavLink>
-                    <NavLink className={classes.navLink} to={"/chat"}>
+                    <NavLink className={classes.navLink} to={"/messages"}>
                       Messages
                     </NavLink>
                     <NavLink className={classes.navLink} to={"/help"}>

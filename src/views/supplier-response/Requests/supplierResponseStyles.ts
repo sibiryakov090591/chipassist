@@ -36,7 +36,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   title: {
     textAlign: "center",
-    paddingTop: "1em",
     color: "#345",
     [theme.breakpoints.down("xs")]: {
       paddingTop: 0,
@@ -151,7 +150,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   supplier: {
     fontWeight: 400,
     color: "#434343",
-    marginBottom: 30,
+    marginBottom: 12,
     "&.flexible": {
       display: "flex",
       alignItems: "center",
