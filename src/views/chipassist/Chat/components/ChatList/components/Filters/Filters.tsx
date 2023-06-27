@@ -6,6 +6,8 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@materia
 import SearchIcon from "@material-ui/icons/Search";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import CloseIcon from "@material-ui/icons/Close";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 
 interface Values {
@@ -16,6 +18,8 @@ interface Values {
 const Filters: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const partnerLabel = isSupplierResponse ? "User" : "Seller";
 
   const filters = useAppSelector((state) => state.chat.filters);
   const isLoading = useAppSelector((state) => state.chat.chatList.isLoading);
@@ -77,10 +81,10 @@ const Filters: React.FC = () => {
             )}
           </FormControl>
           <FormControl classes={{ root: classes.root }} variant="outlined" size="small" className={classes.select}>
-            <InputLabel id="chat-filters-partner-label">Seller</InputLabel>
+            <InputLabel id="chat-filters-partner-label">{partnerLabel}</InputLabel>
             <Select
               labelId="chat-filters-partner-label"
-              label="Seller"
+              label={partnerLabel}
               IconComponent={ExpandMoreRoundedIcon}
               name="partner"
               value={values.partner || ""}
