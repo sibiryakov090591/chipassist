@@ -33,6 +33,17 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
     onShowDetails(!showDetails);
   };
 
+  const name = React.useMemo(() => {
+    return constants.id === ID_SUPPLIER_RESPONSE
+      ? selectedChat?.partner &&
+          Object.entries(selectedChat.partner).reduce((acc, item) => {
+            const [key, value] = item;
+            if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+            return acc;
+          }, "")
+      : selectedChat?.partner.first_name;
+  }, [selectedChat]);
+
   return (
     <div
       className={clsx(classes.middleColumn, {
@@ -50,13 +61,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
             )}
             <div>
               <h2 className={classes.upc}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
-              <div className={classes.seller}>
-                {constants.id === ID_SUPPLIER_RESPONSE
-                  ? `${selectedChat?.partner.first_name} ${selectedChat?.partner.last_name} ${
-                      selectedChat?.partner.company_name ? `(${selectedChat?.partner.company_name})` : ""
-                    }`
-                  : selectedChat?.partner.first_name}
-              </div>
+              <div className={classes.seller}>{name}</div>
             </div>
           </div>
           <MoreVertIcon

@@ -117,6 +117,16 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
             const price = item.details?.price || item.rfq?.price;
             const partNumber = item.title || item.rfq?.upc;
 
+            const name =
+              constants.id === ID_SUPPLIER_RESPONSE
+                ? selectedChat?.partner &&
+                  Object.entries(selectedChat.partner).reduce((acc, i) => {
+                    const [key, value] = i;
+                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                    return acc;
+                  }, "")
+                : selectedChat?.partner.first_name;
+
             return (
               <div
                 key={`${item.id}_${index}`}
@@ -144,13 +154,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                       (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                   </div>
                   <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
-                    <div>
-                      {constants.id === ID_SUPPLIER_RESPONSE
-                        ? `${item.partner.first_name} ${item.partner.last_name} ${
-                            item.partner.company_name ? `(${item.partner.company_name})` : ""
-                          }`
-                        : item.partner.first_name}
-                    </div>
+                    <div>{name}</div>
                     {!!quantity && !!price && (
                       <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
                     )}
