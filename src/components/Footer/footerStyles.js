@@ -101,7 +101,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   navGroup: {
-    marginRight: 50,
+    marginRight: 25,
   },
   navLink: {
     display: "block",
@@ -164,6 +164,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   mail: {
     margin: "10px 0",
+  },
+  socialIcon: {
+    height: "20px",
   },
 }));
 
