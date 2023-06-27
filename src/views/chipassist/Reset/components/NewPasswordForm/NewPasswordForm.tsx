@@ -185,31 +185,30 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
                   {t(`reset.helper_text.does_not_match`)}
                 </div>
               </div>
-
-              <Box display="flex" gridGap="5px">
-                <div
-                  className={clsx(classes.complexity, {
-                    [classes.bad]: [0].includes(complexityLevel),
-                    [classes.fair]: [1, 2].includes(complexityLevel),
-                    [classes.good]: [3, 4].includes(complexityLevel),
-                  })}
-                />
-                <div
-                  className={clsx(classes.complexity, {
-                    [classes.fair]: [1, 2].includes(complexityLevel),
-                    [classes.good]: [3, 4].includes(complexityLevel),
-                  })}
-                />
-                <div
-                  className={clsx(classes.complexity, {
-                    [classes.fair]: [2].includes(complexityLevel),
-                    [classes.good]: [3, 4].includes(complexityLevel),
-                  })}
-                />
-                <div className={clsx(classes.complexity, { [classes.good]: [3, 4].includes(complexityLevel) })} />
-                <div className={clsx(classes.complexity, { [classes.good]: [4].includes(complexityLevel) })} />
-              </Box>
             </div>
+            <Box display="flex" gridGap="5px" pt="8px">
+              <div
+                className={clsx(classes.complexity, {
+                  [classes.bad]: [0].includes(complexityLevel),
+                  [classes.fair]: [1, 2].includes(complexityLevel),
+                  [classes.good]: [3, 4].includes(complexityLevel),
+                })}
+              />
+              <div
+                className={clsx(classes.complexity, {
+                  [classes.fair]: [1, 2].includes(complexityLevel),
+                  [classes.good]: [3, 4].includes(complexityLevel),
+                })}
+              />
+              <div
+                className={clsx(classes.complexity, {
+                  [classes.fair]: [2].includes(complexityLevel),
+                  [classes.good]: [3, 4].includes(complexityLevel),
+                })}
+              />
+              <div className={clsx(classes.complexity, { [classes.good]: [3, 4].includes(complexityLevel) })} />
+              <div className={clsx(classes.complexity, { [classes.good]: [4].includes(complexityLevel) })} />
+            </Box>
             <Button
               className={clsx(classes.submitButton, appTheme.buttonCreate)}
               color="secondary"
