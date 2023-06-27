@@ -28,6 +28,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderRadius: 8,
       overflow: "hidden",
       position: "relative",
+      marginTop: 8,
     },
   }),
 );

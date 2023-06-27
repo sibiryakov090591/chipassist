@@ -34,7 +34,7 @@ const Profile = () => {
     { value: "/profile/general", label: t("general.title") },
     { value: "/profile/company/addresses", label: t("company.address") },
     { value: "/profile/requests", label: t("menu.rfqs") },
-    { value: "/profile/chat", label: t("menu.chat") },
+    { value: "/profile/messages", label: t("menu.chat") },
     { value: "/profile/orders", label: t("menu.orders") },
     { value: "/profile/bom-list", label: t("menu.bom") },
     // { value: "/profile/notifications", label: t("notifications.title") },
@@ -70,7 +70,7 @@ const Profile = () => {
                 label={
                   <div className={classes.label}>
                     {val.label}
-                    {val.value === "/profile/chat" && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+                    {val.value === "/profile/messages" && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
                   </div>
                 }
                 value={val.value}
@@ -85,7 +85,7 @@ const Profile = () => {
           {/* {location.pathname === "/profile/security" && <Security />} */}
           {location.pathname === "/profile/company/addresses" && <CompanyAddress />}
           {location.pathname === "/profile/requests" && <Rfq />}
-          {location.pathname === "/profile/chat" && <Chat />}
+          {location.pathname === "/profile/messages" && <Chat />}
           {location.pathname === "/profile/orders" && <Orders />}
           {location.pathname === "/profile/bom-list" && (
             <>

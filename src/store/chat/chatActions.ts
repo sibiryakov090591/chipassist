@@ -253,6 +253,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
         client
           .post(`/chats/${chatId}/attachments/${params}`, {
             data: formData,
+            config: { timeout: 300000 }, // 5min
           })
           .then(async (res) => {
             const newMessage = {

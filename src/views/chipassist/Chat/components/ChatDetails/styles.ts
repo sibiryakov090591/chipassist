@@ -35,7 +35,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderBottom: "1px solid #D4D4D4",
       "& > h2": {
         fontSize: 22,
-        color: "#262626",
+        color: "#345",
         marginBottom: 4,
       },
     },
@@ -58,7 +58,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderRadius: 8,
       padding: 12,
       "& h5": {
-        marginTop: 16,
+        // marginTop: 16,
         marginBottom: 4,
       },
     },

@@ -34,6 +34,7 @@ const Authorized = () => {
   const { t } = useI18n("menu");
 
   const ordersPage = useAppSelector((state) => state.orders.orders.page);
+  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const email = useAppSelector((state) => state.profile.profileInfo?.email);
   const avatar = useAppSelector((state) => state.profile.profileInfo?.avatar);
 
@@ -136,6 +137,11 @@ const Authorized = () => {
                     onKeyDown={handleListKeyDown}
                     onClick={handleClose}
                   >
+                    {constants.id === ID_SUPPLIER_RESPONSE && selectedPartner && (
+                      <div style={{ borderBottom: "1px solid #eee", padding: "0 16px 6px", fontWeight: "bold" }}>
+                        {selectedPartner.name}
+                      </div>
+                    )}
                     {listItems.map((link, index) => (
                       <ProfileMenuItem key={index} to={link.to} title={link.title} />
                     ))}
