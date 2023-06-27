@@ -4,6 +4,12 @@ import { AppTheme } from "@src/themes/AppTheme";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
+    root: {
+      "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+        border: "1px solid #484850",
+        borderRadius: "8px",
+      },
+    },
     select: {
       position: "relative",
       width: "100%",

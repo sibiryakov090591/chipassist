@@ -52,7 +52,7 @@ const Filters: React.FC = () => {
     <>
       {filters && (
         <Box display="flex" gridGap="8px" mt="8px">
-          <FormControl variant="outlined" size="small" className={classes.select}>
+          <FormControl classes={{ root: classes.root }} variant="outlined" size="small" className={classes.select}>
             <InputLabel id="chat-filters-upc-label">Part number</InputLabel>
             <Select
               labelId="chat-filters-upc-label"
@@ -76,7 +76,7 @@ const Filters: React.FC = () => {
               </span>
             )}
           </FormControl>
-          <FormControl variant="outlined" size="small" className={classes.select}>
+          <FormControl classes={{ root: classes.root }} variant="outlined" size="small" className={classes.select}>
             <InputLabel id="chat-filters-partner-label">Seller</InputLabel>
             <Select
               labelId="chat-filters-partner-label"
