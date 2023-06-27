@@ -4,9 +4,14 @@ import constants from "@src/constants/constants";
 import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import linkedIn from "@src/images/Icons/socialsIcons/linkedin.png";
+import instagram from "@src/images/Icons/socialsIcons/instagram.png";
+import facebook from "@src/images/Icons/socialsIcons/facebook.png";
+
 import { useStyles } from "./footerStyles";
 
 const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
+
 let build = "";
 
 const Footer = () => {
@@ -36,6 +41,46 @@ const Footer = () => {
                 <div className={classes.copy}>Copyright © {new Date().toISOString().slice(0, 4)} ChipAssist AG</div>
               </Box>
               <Box display="flex" className={classes.nav}>
+                <Box display="flex" flexWrap="wrap">
+                  <Box className={classes.navGroup}>
+                    <p style={{ fontSize: 13, color: "#d8d5df", fontWeight: "bold" }}>Follow us</p>
+                    <Grid container direction={"row"} spacing={1} wrap={"nowrap"}>
+                      <Grid item>
+                        <a
+                          href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
+                          title="Chipassist on Instagram"
+                          target={"_blank"}
+                          rel={"noreferrer"}
+                          className={classes.navLink}
+                        >
+                          <img src={instagram} alt={"Instagram"} className={classes.socialIcon} />
+                        </a>
+                      </Grid>
+                      <Grid item>
+                        <a
+                          href="https://www.facebook.com/ChipAssist/"
+                          title="Chipassist on Facebook"
+                          target={"_blank"}
+                          rel={"noreferrer"}
+                          className={classes.navLink}
+                        >
+                          <img src={facebook} alt={"Facebook"} className={classes.socialIcon} />
+                        </a>
+                      </Grid>
+                      <Grid item>
+                        <a
+                          href="https://www.linkedin.com/company/54117339"
+                          title="Chipassist on LinkedIn"
+                          target={"_blank"}
+                          rel={"noreferrer"}
+                          className={classes.navLink}
+                        >
+                          <img src={linkedIn} alt={"LinkedIn"} className={classes.socialIcon} />
+                        </a>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Box>
                 {isSupplierResponse && (
                   <Box className={classes.navGroup}>
                     <NavLink className={classes.navLink} to={"/supplier-response"}>
