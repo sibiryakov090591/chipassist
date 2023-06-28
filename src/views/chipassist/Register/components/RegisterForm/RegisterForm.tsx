@@ -184,9 +184,9 @@ const RegisterForm = (props: { className: string; [x: string]: any }) => {
     };
     return dispatch(authSignup(data))
       .then(() => {
-        setSuccessModalOpen(true);
         localStorage.setItem("registered_email", formState.values.email);
         if (!localStorage.getItem("prev_user_email")) dispatch(updatePrevEmail(formState.values.email));
+        setSuccessModalOpen(true);
       })
       .catch((err: any, response: any) => {
         console.log("authFail", err, response, err.error);
