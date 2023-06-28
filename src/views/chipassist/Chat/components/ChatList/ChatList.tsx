@@ -3,7 +3,7 @@ import { Box } from "@material-ui/core";
 import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
 // import Status from "@src/views/chipassist/Chat/components/Status/Status";
-import { getChatList, selectChat } from "@src/store/chat/chatActions";
+import { getChatList, selectChat, updateChatList } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
 import Filters from "@src/views/chipassist/Chat/components/ChatList/components/Filters/Filters";
@@ -12,6 +12,7 @@ import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
+import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -22,6 +23,7 @@ interface Props {
 
 const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const classes = useStyles();
+  const chatClasses = useChatStyles();
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down(800));
@@ -35,22 +37,11 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   }, [filters.values]);
 
   useEffect(() => {
-    if (selectedChat) {
-      const chatListElem = document.querySelectorAll(".chat-list-item");
-      if (chatListElem.length) {
-        chatListElem.forEach((node) => {
-          node.classList.remove("active");
-          const prevElem = node.previousElementSibling;
-          if (prevElem) prevElem.classList.remove("prevActive");
-        });
-      }
-
-      const elem = document.getElementById(`chat-item-${selectedChat.id}`);
-      const prevElem = elem && elem.previousElementSibling;
-      if (elem) elem.classList.add("active");
-      if (prevElem) prevElem.classList.add("prevActive");
+    if (chatList.loadedPages.length) {
+      const loadedPages = [...new Set(chatList.loadedPages)];
+      loadedPages.forEach((page) => dispatch(updateChatList(page)));
     }
-  }, [selectedChat]);
+  }, []);
 
   const selectItemHandler = (item: any) => () => {
     if (item.id !== selectedChat?.id) dispatch(selectChat(item));
@@ -63,24 +54,6 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
     }
   };
 
-  const onMouseEnterHandler = (id: number) => () => {
-    const elem = document.getElementById(`chat-item-${id}`);
-    const prevElem = elem.previousElementSibling;
-
-    if (elem) elem.classList.add("borderTransparent");
-    if (prevElem) prevElem.classList.add("borderTransparent");
-    return true;
-  };
-
-  const onMouseLeaveHandler = (id: number) => () => {
-    const elem = document.getElementById(`chat-item-${id}`);
-    const prevElem = elem.previousElementSibling;
-
-    if (elem) elem.classList.remove("borderTransparent");
-    if (prevElem) prevElem.classList.remove("borderTransparent");
-    return true;
-  };
-
   return (
     <div className={clsx(classes.leftColumn, { active: showList })}>
       <div className={classes.header}>
@@ -90,11 +63,10 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
       <div ref={chatListRef} className={classes.list}>
         {!chatList.results.length && (
           <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-            {!chatList.isLoading && chatList.loaded ? <h5>You have no chats</h5> : <Preloader />}
+            {chatList.isLoading ? <Preloader /> : <h5 className={chatClasses.emptyMessage}>You have no chats</h5>}
           </Box>
         )}
         <InfiniteScroll
-          id="chat-list-inner"
           threshold={250}
           loadMore={onScrollLoading}
           useWindow={false}
@@ -119,21 +91,20 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
 
             const name =
               constants.id === ID_SUPPLIER_RESPONSE
-                ? selectedChat?.partner &&
-                  Object.entries(selectedChat.partner).reduce((acc, i) => {
+                ? item.partner &&
+                  Object.entries(item.partner).reduce((acc, i) => {
                     const [key, value] = i;
                     if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
                     return acc;
                   }, "")
-                : selectedChat?.partner.first_name;
+                : item.partner.first_name;
 
             return (
               <div
                 key={`${item.id}_${index}`}
-                id={`chat-item-${item.id}`}
-                className={clsx("chat-list-item", classes.item)}
-                onMouseEnter={onMouseEnterHandler(item.id)}
-                onMouseLeave={onMouseLeaveHandler(item.id)}
+                className={clsx(classes.item, {
+                  [classes.itemActive]: selectedChat?.id === item.id,
+                })}
                 onClick={selectItemHandler(item)}
               >
                 <div className={classes.itemInner}>

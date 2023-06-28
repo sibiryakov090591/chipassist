@@ -56,7 +56,7 @@ import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
 import { loadSellersWithProductLink } from "@src/store/products/productsActions";
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
-import { getChatList, selectChat, updateChatList } from "@src/store/chat/chatActions";
+import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -218,9 +218,7 @@ const ChipAssistApp = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      dispatch(getChatList(1)).then((res) => {
-        if (res.results?.length) dispatch(selectChat(res.results[0]));
-      });
+      dispatch(getChatList(1));
     }
   }, [isAuthenticated, selectedPartner]);
 

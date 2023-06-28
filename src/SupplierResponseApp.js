@@ -36,7 +36,7 @@ import AdapterUpload from "@src/views/supplier-response/Adapter/AdapterUpload";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
-import { getChatList, selectChat, updateChatList } from "@src/store/chat/chatActions";
+import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
@@ -98,10 +98,8 @@ const SupplierResponseApp = () => {
   }, [isAuthToken]);
 
   useEffect(() => {
-    if (isAuthenticated && !!selectedPartner) {
-      dispatch(getChatList(1)).then((res) => {
-        if (res.results?.length) dispatch(selectChat(res.results[0]));
-      });
+    if (isAuthenticated && selectedPartner) {
+      dispatch(getChatList(1));
     }
   }, [isAuthenticated, selectedPartner]);
 
@@ -111,7 +109,7 @@ const SupplierResponseApp = () => {
       const intervalId = setInterval(() => {
         const loadedPages = [...new Set(loadedChatPages)];
         loadedPages.forEach((page) => dispatch(updateChatList(page)));
-      }, 30000);
+      }, 10000);
       setChatUpdatingIntervalId(intervalId);
     }
   }, [isAuthenticated, loadedChatPages, selectedPartner]);
