@@ -30,6 +30,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       position: "relative",
       marginTop: 8,
     },
+    emptyMessage: {
+      borderRadius: "50ch",
+      background: "rgba(0,0,0,0.08)",
+      padding: "3px 16px 2px",
+      color: "#a1a1a2",
+    },
   }),
 );
 

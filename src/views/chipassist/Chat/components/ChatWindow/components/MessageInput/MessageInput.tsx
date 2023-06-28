@@ -136,7 +136,7 @@ const MessageInput: React.FC<Props> = ({
 
   return (
     <div className={classes.root}>
-      <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} />
+      <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
         <Box display="flex" {...getRootProps()}>

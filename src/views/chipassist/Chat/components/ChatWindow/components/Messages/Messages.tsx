@@ -20,6 +20,7 @@ import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
 import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
+import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -28,6 +29,7 @@ const FileDownload = require("js-file-download");
 
 const Messages: React.FC = () => {
   const classes = useStyles();
+  const chatClasses = useChatStyles();
   const dispatch = useAppDispatch();
 
   const messagesWindowRef = useRef(null);
@@ -49,20 +51,22 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (selectedChat?.id) {
+      // clear state
       setMessagesIdsWasRead([]);
+      setUnreadMessagesRefs({});
       setFirstUnreadMessageId(null);
       setLoadedPages([]);
 
       dispatch(getMessages(selectedChat.id)).then((res: any) => {
         const firstUnreadMessage = res.results.find((i: ChatListMessage) => i.read === false);
         if (firstUnreadMessage) {
-          setFirstUnreadMessageId(firstUnreadMessage.id);
+          setFirstUnreadMessageId((prev) => prev || firstUnreadMessage.id);
         } else {
           messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
         }
       });
     }
-  }, [selectedChat]);
+  }, [selectedChat?.id]);
 
   useEffect(() => {
     if (selectedChat?.id && messages.forceUpdate) {
@@ -132,7 +136,7 @@ const Messages: React.FC = () => {
     dispatch(readMessage(selectedChat.id, messageId)).then(() => dispatch(deductReadMessages(selectedChat.id, 1)));
   };
 
-  const loadOnTheTopSide = () => {
+  const loadOnTheTopSide = async () => {
     if (
       !messages.isLoading &&
       messages.results.length &&
@@ -140,14 +144,17 @@ const Messages: React.FC = () => {
       messages.total_pages > Math.max(...loadedPages)
     ) {
       setIsLoadingMore("top");
-      const prevHeight = messagesWindowRef.current.scrollHeight;
-      dispatch(getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true }, true))
-        .then(() => {
-          // stay scroll in the right place
-          const currentHeight = messagesWindowRef.current.scrollHeight;
-          messagesWindowRef.current.scrollTo({ top: currentHeight - prevHeight });
-        })
-        .finally(() => setIsLoadingMore(null));
+
+      const { scrollHeight, scrollTop, clientHeight } = messagesWindowRef.current;
+      const scrollBottom = scrollHeight - scrollTop - clientHeight;
+
+      await dispatch(
+        getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true }, true),
+      ).finally(() => setIsLoadingMore(null));
+
+      // stay scroll in the right place
+      const currentHeight = messagesWindowRef.current.scrollHeight;
+      messagesWindowRef.current.scrollTo({ top: currentHeight - clientHeight - scrollBottom });
     }
   };
 
@@ -200,8 +207,13 @@ const Messages: React.FC = () => {
     <div className={classes.container}>
       {!messages.results.length && (
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-          {!messages.isLoading && messages.loaded && <h5>You have no messages</h5>}
-          {messages.isLoading && !messages.loaded && <Preloader size={12} />}
+          {messages.isLoading ? (
+            <Preloader size={12} />
+          ) : selectedChat ? (
+            <h5 className={chatClasses.emptyMessage}>You have no messages</h5>
+          ) : (
+            <h5 className={chatClasses.emptyMessage}>Select a chat</h5>
+          )}
         </Box>
       )}
       <div
@@ -211,7 +223,7 @@ const Messages: React.FC = () => {
       >
         <div className={classes.messages}>
           {isLoadingMore === "top" && (
-            <Box display="flex" justifyContent={"center"}>
+            <Box className={classes.topPreloader} display="flex" justifyContent={"center"}>
               <Preloader />
             </Box>
           )}
@@ -323,7 +335,7 @@ const Messages: React.FC = () => {
             </div>
           )}
           {isLoadingMore === "bottom" && (
-            <Box display="flex" justifyContent={"center"}>
+            <Box className={classes.bottomPreloader} display="flex" justifyContent={"center"}>
               <Preloader />
             </Box>
           )}

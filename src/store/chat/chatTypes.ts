@@ -48,7 +48,6 @@ export interface ChatState {
     page: number;
     results: ChatListItem[];
     isLoading: boolean;
-    loaded: boolean;
     loadedPages: number[];
   };
   selectedChat: ChatListItem;
@@ -59,7 +58,6 @@ export interface ChatState {
     page_size: number;
     results: ChatListMessage[];
     isLoading: boolean;
-    loaded: boolean;
     forceUpdate: number;
   };
   files: { [key: number]: FileType };

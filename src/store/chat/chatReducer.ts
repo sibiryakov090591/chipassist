@@ -17,7 +17,6 @@ const initialState: actionTypes.ChatState = {
     unread_total: null,
     results: [],
     isLoading: true,
-    loaded: false,
     loadedPages: [],
   },
   selectedChat: null,
@@ -27,8 +26,7 @@ const initialState: actionTypes.ChatState = {
     total_pages: null,
     page_size: 15,
     results: [],
-    isLoading: true,
-    loaded: false,
+    isLoading: false,
     forceUpdate: 0,
   },
   files: {},
@@ -66,16 +64,11 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         chatList: {
           ...state.chatList,
           isLoading: false,
-          loaded: true,
           page,
           total_pages,
           unread_total,
           results,
           loadedPages: [page],
-        },
-        messages: {
-          ...initialState.messages,
-          ...(!results?.length && { isLoading: false, loaded: true }),
         },
       };
     }
@@ -86,7 +79,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         chatList: {
           ...state.chatList,
           isLoading: false,
-          loaded: true,
           page,
           total_pages,
           results: [...state.chatList.results, ...results],
@@ -97,13 +89,13 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.LOAD_CHAT_LIST_F:
       return {
         ...state,
-        chatList: { ...state.chatList, isLoading: false, loaded: true },
-        messages: { ...state.messages, isLoading: false, loaded: true },
+        chatList: { ...state.chatList, isLoading: false },
       };
 
     case actionTypes.UPDATE_CHAT_LIST_S: {
       const { results, unread_total } = action.response;
       let isNeedToUpdateMessages = false;
+      let unreadCountSelectedChat = 0;
 
       const newChats: ChatListItem[] = [];
       results.forEach((chat: ChatListItem) => {
@@ -120,7 +112,10 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           Number(updatedChat.unread_messages) !== Number(chat.unread_messages)
         ) {
           updatedChats.push(updatedChat);
-          if (updatedChat.id === state.selectedChat.id) isNeedToUpdateMessages = true;
+          if (updatedChat.id === state.selectedChat?.id) {
+            isNeedToUpdateMessages = true;
+            unreadCountSelectedChat = Number(updatedChat.unread_messages);
+          }
           return false;
         }
         return true;
@@ -133,6 +128,9 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           results: [...newChats, ...updatedChats, ...filteredState],
           unread_total,
         },
+        ...(unreadCountSelectedChat > 0 && {
+          selectedChat: { ...state.selectedChat, unread_messages: unreadCountSelectedChat },
+        }),
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },
       };
     }
@@ -147,7 +145,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         ...state,
         messages: {
           ...state.messages,
-          results: [...state.messages.results, ...newMessages],
+          results: [...state.messages.results, ...newMessages.reverse()],
         },
       };
     }
@@ -161,7 +159,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         messages: {
           ...state.messages,
           isLoading: false,
-          loaded: true,
           page,
           total_pages,
           results: results.reverse(),
@@ -175,7 +172,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         messages: {
           ...state.messages,
           isLoading: false,
-          loaded: true,
           page,
           total_pages,
           results: action.payload.rewind
@@ -185,7 +181,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
     case actionTypes.LOAD_MESSAGES_F:
-      return { ...state, messages: { ...state.messages, isLoading: false, loaded: true } };
+      return { ...state, messages: { ...state.messages, isLoading: false } };
 
     case actionTypes.SAVE_FILES:
       return {
@@ -218,7 +214,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return {
         ...state,
         selectedChat: { ...action.payload },
-        messages: { ...initialState.messages, forceUpdate: 0 },
+        messages: { ...initialState.messages, forceUpdate: 0, isLoading: true },
       };
 
     case actionTypes.DEDUCT_READ_MESSAGES: {
