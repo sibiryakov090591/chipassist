@@ -81,6 +81,7 @@ export const useStyles = makeStyles(() =>
       fontSize: 14,
     },
     messageDate: {
+      position: "relative",
       marginLeft: 8,
       fontSize: 12,
       color: "#737373",
@@ -136,6 +137,13 @@ export const useStyles = makeStyles(() =>
       bottom: 5,
       left: "50%",
       transform: "translateX(-50%)",
+    },
+    wasReadIcon: {
+      position: "absolute",
+      bottom: 0,
+      left: "105%",
+      fontSize: 14,
+      color: "#384054",
     },
   }),
 );

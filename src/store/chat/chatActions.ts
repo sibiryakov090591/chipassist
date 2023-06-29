@@ -187,10 +187,11 @@ export const sendMessage = (chatId: number, message: string) => {
           })
           .then((res) => {
             const newMessage = {
-              id: uuidv4(),
+              id: res.data.id || uuidv4(),
               text: message,
               sender: "You",
               read: true,
+              read_by_partner: false,
               created: new Date().toISOString(),
             };
             dispatch(addMessage(chatId, newMessage));

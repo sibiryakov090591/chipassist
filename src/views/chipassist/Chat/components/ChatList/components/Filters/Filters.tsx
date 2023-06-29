@@ -94,7 +94,11 @@ const Filters: React.FC = () => {
               {filters.partners_list?.map((partner) => {
                 return (
                   <MenuItem key={partner.id} value={partner.id}>
-                    {partner.name}
+                    {isSupplierResponse
+                      ? `${partner.first_name}${partner.last_name ? ` ${partner.last_name}` : ""}${
+                          partner.company ? ` (${partner.company})` : ""
+                        }`
+                      : partner.first_name}
                   </MenuItem>
                 );
               })}

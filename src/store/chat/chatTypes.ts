@@ -1,5 +1,3 @@
-import { RfqSeller } from "@src/store/rfq/rfqTypes";
-
 export const LOAD_CHAT_FILTERS_R = "@chat/LOAD_CHAT_FILTERS_R";
 export const LOAD_CHAT_FILTERS_S = "@chat/LOAD_CHAT_FILTERS_S";
 export const LOAD_CHAT_FILTERS_F = "@chat/LOAD_CHAT_FILTERS_F";
@@ -36,7 +34,7 @@ export const READ_MESSAGE = "@chat/READ_MESSAGE";
 export interface ChatState {
   filters: {
     upc_list: string[];
-    partners_list: RfqSeller[];
+    partners_list: PartnersListItem[];
     values: {
       upc: string;
       partner: number;
@@ -62,6 +60,14 @@ export interface ChatState {
     forceUpdate: number;
   };
   files: { [key: number]: FileType };
+}
+
+export interface PartnersListItem {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  company: string;
 }
 
 export interface FileType {
@@ -95,6 +101,7 @@ export interface ChatListMessage {
   id: number;
   sender: string;
   read: boolean;
+  read_by_partner: boolean;
   text: string;
   created: string;
   message_attachments: Array<{ id: number; file_name: string }>;

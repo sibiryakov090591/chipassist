@@ -12,6 +12,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
@@ -276,6 +277,7 @@ const Messages: React.FC = () => {
                     <span className={classes.messageFrom}>{item.sender === "You" ? "You" : name}</span>
                     <span className={classes.messageDate}>
                       {time} - {messageDateLabel}
+                      {item.sender === "You" && item.read_by_partner && <DoneAllIcon className={classes.wasReadIcon} />}
                     </span>
                   </div>
                   {!!item.message_attachments?.length && (
