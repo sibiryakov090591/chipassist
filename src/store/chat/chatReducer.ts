@@ -94,7 +94,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
     case actionTypes.UPDATE_CHAT_LIST_S: {
       const { results, unread_total } = action.response;
-      let isNeedToUpdateMessages = false;
       let unreadCountSelectedChat = 0;
 
       const newChats: ChatListItem[] = [];
@@ -113,7 +112,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         ) {
           updatedChats.push(updatedChat);
           if (updatedChat.id === state.selectedChat?.id) {
-            isNeedToUpdateMessages = true;
             unreadCountSelectedChat = Number(updatedChat.unread_messages);
           }
           return false;
@@ -131,21 +129,34 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         ...(unreadCountSelectedChat > 0 && {
           selectedChat: { ...state.selectedChat, unread_messages: unreadCountSelectedChat },
         }),
-        messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + (isNeedToUpdateMessages ? 1 : 0) },
+        messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + 1 },
       };
     }
 
     case actionTypes.UPDATE_MESSAGES_S: {
       const results = action.payload;
-      const newMessages = results.filter(
-        (message: ChatListMessage) => !message.read && !state.messages.results.find((i) => i.id === message.id),
-      );
+      const updatedMessages: ChatListMessage[] = [];
+      const newMessages: ChatListMessage[] = [];
+
+      results.forEach((message: ChatListMessage) => {
+        const existedMessage = state.messages.results.find((i) => i.id === message.id);
+        if (!message.read && !existedMessage) {
+          newMessages.push(message);
+        } else if (existedMessage && existedMessage.read_by_partner !== message.read_by_partner) {
+          updatedMessages.push(message);
+        }
+      });
 
       return {
         ...state,
         messages: {
           ...state.messages,
-          results: [...state.messages.results, ...newMessages.reverse()],
+          results: [
+            ...state.messages.results.map((message) => {
+              return updatedMessages.find((i) => i.id === message.id) || message;
+            }),
+            ...newMessages.reverse(),
+          ],
         },
       };
     }
@@ -215,6 +226,13 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         ...state,
         selectedChat: { ...action.payload },
         messages: { ...initialState.messages, forceUpdate: 0, isLoading: true },
+      };
+    case actionTypes.CLEAR_CHAT:
+      return {
+        ...state,
+        selectedChat: null,
+        chatList: initialState.chatList,
+        messages: initialState.messages,
       };
 
     case actionTypes.DEDUCT_READ_MESSAGES: {

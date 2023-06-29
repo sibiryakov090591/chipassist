@@ -1,5 +1,3 @@
-import { RfqSeller } from "@src/store/rfq/rfqTypes";
-
 export const LOAD_CHAT_FILTERS_R = "@chat/LOAD_CHAT_FILTERS_R";
 export const LOAD_CHAT_FILTERS_S = "@chat/LOAD_CHAT_FILTERS_S";
 export const LOAD_CHAT_FILTERS_F = "@chat/LOAD_CHAT_FILTERS_F";
@@ -20,6 +18,7 @@ export const LOAD_MORE_MESSAGES_S = "@chat/LOAD_MORE_MESSAGES_S";
 export const LOAD_MESSAGES_F = "@chat/LOAD_MESSAGES_F";
 
 export const SELECT_CHAT = "@chat/SELECT_CHAT";
+export const CLEAR_CHAT = "@chat/CLEAR_CHAT";
 export const ADD_MESSAGE = "@chat/ADD_MESSAGE";
 export const SEND_MESSAGE_R = "@chat/SEND_MESSAGE_R";
 export const SEND_MESSAGE_S = "@chat/SEND_MESSAGE_S";
@@ -35,7 +34,7 @@ export const READ_MESSAGE = "@chat/READ_MESSAGE";
 export interface ChatState {
   filters: {
     upc_list: string[];
-    partners_list: RfqSeller[];
+    partners_list: PartnersListItem[];
     values: {
       upc: string;
       partner: number;
@@ -61,6 +60,14 @@ export interface ChatState {
     forceUpdate: number;
   };
   files: { [key: number]: FileType };
+}
+
+export interface PartnersListItem {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  company: string;
 }
 
 export interface FileType {
@@ -94,6 +101,7 @@ export interface ChatListMessage {
   id: number;
   sender: string;
   read: boolean;
+  read_by_partner: boolean;
   text: string;
   created: string;
   message_attachments: Array<{ id: number; file_name: string }>;
@@ -166,6 +174,11 @@ interface SelectChatAction {
   payload: any;
 }
 
+interface ClearChatAction {
+  type: typeof CLEAR_CHAT;
+  payload: any;
+}
+
 interface AddMessageAction {
   type: typeof ADD_MESSAGE;
   payload: { chatId: number; message: any };
@@ -205,6 +218,7 @@ interface SaveFilesAction {
 export type ChatActionTypes =
   | SaveFilesAction
   | SelectChatAction
+  | ClearChatAction
   | AddMessageAction
   | SendMessageRequestAction
   | SendMessageSuccessAction

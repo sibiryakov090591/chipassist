@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { getChatList, getFilters, selectChat, onChangeFiltersValues } from "@src/store/chat/chatActions";
+import { clearChat, getChatList, getFilters, onChangeFiltersValues } from "@src/store/chat/chatActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
@@ -45,9 +45,10 @@ const Filters: React.FC = () => {
   const onSubmitHandler = () => {
     const isChanged = Object.entries(filters.values).some(([key, val]) => val !== values[key as keyof Values]);
     if (!isLoading && isChanged) {
-      dispatch(getChatList(1, values)).then((res: any) => {
+      dispatch(clearChat());
+      dispatch(getChatList(1, values)).then(() => {
         dispatch(onChangeFiltersValues(values));
-        if (res.results?.length) dispatch(selectChat(res.results[0]));
+        // if (res.results?.length) dispatch(selectChat(res.results[0]));
       });
     }
   };
@@ -93,7 +94,11 @@ const Filters: React.FC = () => {
               {filters.partners_list?.map((partner) => {
                 return (
                   <MenuItem key={partner.id} value={partner.id}>
-                    {partner.name}
+                    {isSupplierResponse
+                      ? `${partner.first_name}${partner.last_name ? ` ${partner.last_name}` : ""}${
+                          partner.company ? ` (${partner.company})` : ""
+                        }`
+                      : partner.first_name}
                   </MenuItem>
                 );
               })}
