@@ -20,6 +20,7 @@ export const LOAD_MORE_MESSAGES_S = "@chat/LOAD_MORE_MESSAGES_S";
 export const LOAD_MESSAGES_F = "@chat/LOAD_MESSAGES_F";
 
 export const SELECT_CHAT = "@chat/SELECT_CHAT";
+export const CLEAR_CHAT = "@chat/CLEAR_CHAT";
 export const ADD_MESSAGE = "@chat/ADD_MESSAGE";
 export const SEND_MESSAGE_R = "@chat/SEND_MESSAGE_R";
 export const SEND_MESSAGE_S = "@chat/SEND_MESSAGE_S";
@@ -166,6 +167,11 @@ interface SelectChatAction {
   payload: any;
 }
 
+interface ClearChatAction {
+  type: typeof CLEAR_CHAT;
+  payload: any;
+}
+
 interface AddMessageAction {
   type: typeof ADD_MESSAGE;
   payload: { chatId: number; message: any };
@@ -205,6 +211,7 @@ interface SaveFilesAction {
 export type ChatActionTypes =
   | SaveFilesAction
   | SelectChatAction
+  | ClearChatAction
   | AddMessageAction
   | SendMessageRequestAction
   | SendMessageSuccessAction

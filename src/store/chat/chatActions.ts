@@ -319,6 +319,10 @@ export const selectChat = (item: any) => ({
   payload: item,
 });
 
+export const clearChat = () => ({
+  type: actionTypes.CLEAR_CHAT,
+});
+
 export const saveMessages = (data: any) => ({
   type: actionTypes.LOAD_MESSAGES_S,
   payload: data,
