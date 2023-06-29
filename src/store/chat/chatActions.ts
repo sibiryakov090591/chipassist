@@ -261,7 +261,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
           })
           .then(async (res) => {
             const newMessage = {
-              id: uuidv4(),
+              id: res.data.id || uuidv4(),
               text: "",
               message_attachments: res.data.message_attachments,
               sender: "You",
