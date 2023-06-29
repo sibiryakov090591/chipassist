@@ -139,7 +139,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
       const newRes = results.reduce((acc: any, message: ChatListMessage) => {
         const date = message.created.slice(0, 10);
-        const existedMessage = state.messages.results[date].find((i) => i.id === message.id);
+        const existedMessage = state.messages.results[date]?.find((i) => i.id === message.id);
         if (!message.read && !existedMessage) {
           if (acc[date]) acc[date] = [...acc[date], message];
           if (!acc[date]) acc[date] = [message];
@@ -233,7 +233,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const updatedChat = { ...selectedChat, messages: [action.payload.message, ...selectedChat.messages] };
       const date = action.payload.message.created.slice(0, 10);
       const newRes = { ...state.messages.results };
-      if (newRes[date]) newRes[date].push(action.payload.message);
+      if (newRes[date]) newRes[date] = [...newRes[date], action.payload.message];
       if (!newRes[date]) newRes[date] = [action.payload.message];
       return {
         ...state,
