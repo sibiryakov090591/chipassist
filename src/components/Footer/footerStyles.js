@@ -169,6 +169,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   socialIcon: {
     color: theme.palette.white,
+    fontSize: 30,
     "&:hover": {
       color: theme.palette.app.grey400,
     },

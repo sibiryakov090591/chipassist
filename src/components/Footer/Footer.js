@@ -53,7 +53,7 @@ const Footer = () => {
                           rel={"noreferrer"}
                           className={classes.navLink}
                         >
-                          <InstagramIcon className={classes.socialIcon} fontSize={"large"} />
+                          <InstagramIcon className={classes.socialIcon} />
                         </a>
                       </Grid>
                       <Grid item>
@@ -64,7 +64,7 @@ const Footer = () => {
                           rel={"noreferrer"}
                           className={classes.navLink}
                         >
-                          <FacebookIcon className={classes.socialIcon} fontSize={"large"} />
+                          <FacebookIcon className={classes.socialIcon} />
                         </a>
                       </Grid>
                       <Grid item>
@@ -75,7 +75,7 @@ const Footer = () => {
                           rel={"noreferrer"}
                           className={classes.navLink}
                         >
-                          <LinkedInIcon className={classes.socialIcon} fontSize={"large"} />
+                          <LinkedInIcon className={classes.socialIcon} />
                         </a>
                       </Grid>
                     </Grid>
