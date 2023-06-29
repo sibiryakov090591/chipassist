@@ -35,6 +35,9 @@ export const useStyles = makeStyles(() =>
       flexDirection: "column",
       justifyContent: "flex-end",
     },
+    group: {
+      marginTop: 6,
+    },
     unreadLabel: {
       textAlign: "center",
       "& span": {
@@ -47,11 +50,19 @@ export const useStyles = makeStyles(() =>
       },
     },
     dateLabel: {
-      textAlign: "center",
-      color: "#737373",
+      position: "sticky",
+      top: 20,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: "50ch",
+      background: "rgba(0,0,0,0.04)",
+      color: "#a1a1a2",
       fontSize: 12,
       fontWeight: "bold",
-      margin: "12px 0",
+      padding: "3px 16px 2px",
+      margin: "0 auto",
+      width: "fit-content",
     },
     requestItem: {
       display: "flex",
@@ -141,7 +152,7 @@ export const useStyles = makeStyles(() =>
     wasReadIcon: {
       position: "absolute",
       bottom: 0,
-      left: "105%",
+      left: "107%",
       fontSize: 14,
       color: "#384054",
     },

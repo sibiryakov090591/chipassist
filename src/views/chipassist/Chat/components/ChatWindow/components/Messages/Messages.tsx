@@ -142,7 +142,7 @@ const Messages: React.FC = () => {
   const loadOnTheTopSide = async () => {
     if (
       !messages.isLoading &&
-      messages.results.length &&
+      Object.keys(messages.results).length &&
       loadedPages.length &&
       messages.total_pages > Math.max(...loadedPages)
     ) {
@@ -162,7 +162,12 @@ const Messages: React.FC = () => {
   };
 
   const loadOnTheBottomSide = () => {
-    if (!messages.isLoading && messages.results.length && loadedPages.length && Math.min(...loadedPages) > 1) {
+    if (
+      !messages.isLoading &&
+      Object.keys(messages.results).length &&
+      loadedPages.length &&
+      Math.min(...loadedPages) > 1
+    ) {
       setIsLoadingMore("bottom");
       const group = Object.values(messages.results)[Object.values(messages.results).length - 1];
       dispatch(
@@ -235,8 +240,7 @@ const Messages: React.FC = () => {
             const isFirstMessage = messages.page === messages.total_pages && i === 0;
 
             return (
-              <React.Fragment key={i}>
-                <div className={classes.dateLabel}>{dateLabel}</div>
+              <div key={i} className={classes.group}>
                 {isFirstMessage && selectedChat?.rfq && (
                   <div className={classes.requestItem}>
                     <ScheduleRoundedIcon className={classes.requestItemIcon} />
@@ -252,6 +256,8 @@ const Messages: React.FC = () => {
                     </div>
                   </div>
                 )}
+
+                <div className={classes.dateLabel}>{dateLabel}</div>
 
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
@@ -330,7 +336,7 @@ const Messages: React.FC = () => {
                     </div>
                   );
                 })}
-              </React.Fragment>
+              </div>
             );
           })}
           {isSending && (
@@ -349,7 +355,7 @@ const Messages: React.FC = () => {
           )}
         </div>
       </div>
-      {!!messages.results.length && (
+      {!!Object.keys(messages.results).length && (
         <MessageInput
           chatId={selectedChat?.id}
           isSending={isSending}

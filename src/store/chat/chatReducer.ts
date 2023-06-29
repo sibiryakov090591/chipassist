@@ -189,19 +189,18 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.LOAD_MORE_MESSAGES_S: {
       const { page, total_pages, results } = action.payload.response;
 
-      const newRes = results.reverse().reduce(
-        (acc: any, message: any) => {
-          const date = message.created.slice(0, 10);
-          if (acc[date]) {
-            if (action.payload.rewind) acc[date].unshift(message);
-            if (!action.payload.rewind) acc[date].push(message);
-          } else {
-            acc[date] = [message];
-          }
-          return acc;
-        },
-        { ...state.messages.results },
-      );
+      const copy = { ...state.messages.results };
+      const newRes = results.reduce((acc: any, message: any) => {
+        const date = message.created.slice(0, 10);
+        if (acc[date]) {
+          if (action.payload.rewind) acc[date] = [message, ...acc[date]];
+          if (!action.payload.rewind) acc[date] = [...acc[date], message];
+        } else {
+          if (action.payload.rewind) return { [date]: [message], ...acc };
+          if (!action.payload.rewind) return { ...acc, [date]: [message] };
+        }
+        return acc;
+      }, copy);
 
       return {
         ...state,
