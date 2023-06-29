@@ -135,24 +135,22 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
     case actionTypes.UPDATE_MESSAGES_S: {
       const results = action.payload.reverse();
+      const copy = { ...state.messages.results };
 
-      const newRes = results.reduce(
-        (acc: any, message: ChatListMessage) => {
-          const date = message.created.slice(0, 10);
-          const existedMessage = state.messages.results[date].find((i) => i.id === message.id);
-          if (!message.read && !existedMessage) {
-            if (acc[date]) acc[date].push(message);
-            if (!acc[date]) acc[date] = [message];
-          } else if (existedMessage && existedMessage.read_by_partner !== message.read_by_partner) {
-            acc[date] = acc[date].map((i: any) => {
-              if (i.id === message.id) return message;
-              return i;
-            });
-          }
-          return acc;
-        },
-        { ...state.messages.results },
-      );
+      const newRes = results.reduce((acc: any, message: ChatListMessage) => {
+        const date = message.created.slice(0, 10);
+        const existedMessage = state.messages.results[date].find((i) => i.id === message.id);
+        if (!message.read && !existedMessage) {
+          if (acc[date]) acc[date] = [...acc[date], message];
+          if (!acc[date]) acc[date] = [message];
+        } else if (existedMessage && existedMessage.read_by_partner !== message.read_by_partner) {
+          acc[date] = acc[date].map((i: any) => {
+            if (i.id === message.id) return message;
+            return i;
+          });
+        }
+        return acc;
+      }, copy);
 
       return {
         ...state,

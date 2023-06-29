@@ -80,7 +80,7 @@ const Messages: React.FC = () => {
   }, [messages.forceUpdate]);
 
   useEffect(() => {
-    if (messages.results.length) {
+    if (Object.keys(messages.results).length) {
       const result: any = {};
       Object.values(messages.results).forEach((list) => {
         list.forEach((message) => {
