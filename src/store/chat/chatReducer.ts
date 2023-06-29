@@ -231,6 +231,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return {
         ...state,
         selectedChat: null,
+        chatList: initialState.chatList,
         messages: initialState.messages,
       };
 
