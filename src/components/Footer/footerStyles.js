@@ -91,6 +91,7 @@ export const useStyles = makeStyles((theme) => ({
     width: "60%",
     justifyContent: "flex-end",
     [theme.breakpoints.down("xs")]: {
+      justifyContent: "center",
       width: "100%",
     },
     [theme.breakpoints.down(400)]: {
@@ -101,7 +102,8 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   navGroup: {
-    marginRight: 25,
+    marginRight: 10,
+    marginLeft: 10,
   },
   navLink: {
     display: "block",
@@ -166,7 +168,11 @@ export const useStyles = makeStyles((theme) => ({
     margin: "10px 0",
   },
   socialIcon: {
-    height: "20px",
+    color: theme.palette.white,
+    fontSize: 30,
+    "&:hover": {
+      color: theme.palette.app.grey400,
+    },
   },
 }));
 

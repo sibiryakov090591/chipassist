@@ -4,9 +4,9 @@ import constants from "@src/constants/constants";
 import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
-import linkedIn from "@src/images/Icons/socialsIcons/linkedin.png";
-import instagram from "@src/images/Icons/socialsIcons/instagram.png";
-import facebook from "@src/images/Icons/socialsIcons/facebook.png";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
 
 import { useStyles } from "./footerStyles";
 
@@ -53,7 +53,7 @@ const Footer = () => {
                           rel={"noreferrer"}
                           className={classes.navLink}
                         >
-                          <img src={instagram} alt={"Instagram"} className={classes.socialIcon} />
+                          <InstagramIcon className={classes.socialIcon} />
                         </a>
                       </Grid>
                       <Grid item>
@@ -64,7 +64,7 @@ const Footer = () => {
                           rel={"noreferrer"}
                           className={classes.navLink}
                         >
-                          <img src={facebook} alt={"Facebook"} className={classes.socialIcon} />
+                          <FacebookIcon className={classes.socialIcon} />
                         </a>
                       </Grid>
                       <Grid item>
@@ -75,7 +75,7 @@ const Footer = () => {
                           rel={"noreferrer"}
                           className={classes.navLink}
                         >
-                          <img src={linkedIn} alt={"LinkedIn"} className={classes.socialIcon} />
+                          <LinkedInIcon className={classes.socialIcon} />
                         </a>
                       </Grid>
                     </Grid>
