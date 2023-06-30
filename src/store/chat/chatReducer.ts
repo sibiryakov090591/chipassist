@@ -13,7 +13,7 @@ const initialState: actionTypes.ChatState = {
   chatList: {
     page: null,
     total_pages: null,
-    page_size: 10,
+    page_size: 15,
     unread_total: null,
     results: [],
     isLoading: true,
@@ -24,7 +24,7 @@ const initialState: actionTypes.ChatState = {
     error: "",
     page: null,
     total_pages: null,
-    page_size: 15,
+    page_size: 25,
     results: {},
     isLoading: false,
     forceUpdate: 0,
