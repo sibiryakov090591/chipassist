@@ -70,7 +70,7 @@ const Messages: React.FC = () => {
   }, [selectedChat?.id]);
 
   useEffect(() => {
-    if (selectedChat?.id && messages.forceUpdate) {
+    if (selectedChat?.id && messages.forceUpdate && !messages.isLoading) {
       const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
       const isNeedToScroll = scrollTop + clientHeight > scrollHeight - 50;
       dispatch(updateMessages(selectedChat.id)).then(() => {
@@ -153,16 +153,18 @@ const Messages: React.FC = () => {
     ) {
       setIsLoadingMore("top");
 
-      const { scrollHeight, scrollTop, clientHeight } = messagesWindowRef.current;
-      const scrollBottom = scrollHeight - scrollTop - clientHeight;
+      // const { scrollHeight, scrollTop, clientHeight } = messagesWindowRef.current;
+      // const scrollBottom = scrollHeight - scrollTop - clientHeight;
 
       await dispatch(
         getMessages(selectedChat.id, { start_id: Object.values(messages.results)[0][0].id, rewind: true }, true),
       ).finally(() => setIsLoadingMore(null));
 
       // stay scroll in the right place
-      const currentHeight = messagesWindowRef.current.scrollHeight;
-      messagesWindowRef.current.scrollTo({ top: currentHeight - clientHeight - scrollBottom });
+      // setTimeout(() => {
+      //   const currentHeight = messagesWindowRef.current.scrollHeight;
+      //   messagesWindowRef.current.scrollTo({ top: currentHeight - clientHeight - scrollBottom });
+      // }, 1000);
     }
   };
 
@@ -242,7 +244,7 @@ const Messages: React.FC = () => {
             const groupDate = new Date(list[0].created).toLocaleDateString();
             const dateLabel = todayDate === groupDate ? "Today" : groupDate;
 
-            const isFirstMessage = messages.page === messages.total_pages && i === 0;
+            const isFirstMessage = i === 0;
 
             return (
               <div key={i} className={classes.group}>

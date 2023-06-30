@@ -138,7 +138,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const copy = { ...state.messages.results };
 
       const newRes = results.reduce((acc: any, message: ChatListMessage) => {
-        const date = message.created.slice(0, 10);
+        const date = new Date(message.created).toLocaleDateString();
         const existedMessage = state.messages.results[date]?.find((i) => i.id === message.id);
         if (!message.read && !existedMessage) {
           if (acc[date]) acc[date] = [...acc[date], message];
@@ -173,7 +173,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           page,
           total_pages,
           results: results.reverse().reduce((acc: any, message: any) => {
-            const date = message.created.slice(0, 10);
+            const date = new Date(message.created).toLocaleDateString();
             if (acc[date]) {
               acc[date].push(message);
             } else {
@@ -190,7 +190,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const copy = { ...state.messages.results };
       const res = action.payload.rewind ? results : results.reverse();
       const newRes = res.reduce((acc: any, message: any) => {
-        const date = message.created.slice(0, 10);
+        const date = new Date(message.created).toLocaleDateString();
         if (acc[date]) {
           if (action.payload.rewind) acc[date] = [message, ...acc[date]];
           if (!action.payload.rewind) acc[date] = [...acc[date], message];
@@ -232,7 +232,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.ADD_MESSAGE: {
       const selectedChat = state.chatList.results.find((chat) => chat.id === action.payload.chatId);
       const updatedChat = { ...selectedChat, messages: [action.payload.message, ...selectedChat.messages] };
-      const date = action.payload.message.created.slice(0, 10);
+      const date = new Date(action.payload.message.created).toLocaleDateString();
       const newRes = { ...state.messages.results };
       if (newRes[date]) newRes[date] = [...newRes[date], action.payload.message];
       if (!newRes[date]) newRes[date] = [action.payload.message];

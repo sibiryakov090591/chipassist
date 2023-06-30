@@ -39,7 +39,7 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
 export const updateChatList = (page: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const { isLoading } = getState().chat.chatList;
-    if (isLoading) return false;
+    if (isLoading) return Promise.reject();
 
     const filters = getState().chat.filters.values;
     const partner = getState().profile.selectedPartner;
@@ -122,6 +122,9 @@ export const getMessages = (chatId: number, filters: { [key: string]: any } = {}
 
 export const updateMessages = (chatId: number, filters: { [key: string]: any } = {}) => {
   return (dispatch: any, getState: () => RootState) => {
+    const { isLoading } = getState().chat.messages;
+    if (isLoading) return Promise.reject();
+
     const partner = getState().profile.selectedPartner;
     const pageSize = getState().chat.messages.page_size;
     let params = `?user=${isUser}${
