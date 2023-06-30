@@ -99,11 +99,14 @@ const Messages: React.FC = () => {
       threshold: 0.5, // Customize the visibility threshold as needed
     };
 
-    const handleIntersection = (entries: any) => {
+    const handleIntersection: IntersectionObserverCallback = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver,
+    ) => {
       entries.forEach((entry: any) => {
         if (entry.isIntersecting) {
           const messageId = parseInt(entry.target.getAttribute("data-id"));
-          markAsRead(messageId);
+          markAsRead(messageId).then(() => observer.unobserve(entry.target));
         }
       });
     };
@@ -133,10 +136,12 @@ const Messages: React.FC = () => {
   }, [isSending]);
 
   const markAsRead = (messageId: number) => {
-    if (messagesIdsWasRead.includes(messageId)) return;
+    // if (messagesIdsWasRead.includes(messageId)) return Promise.reject();
 
     setMessagesIdsWasRead((prev) => [...prev, messageId]);
-    dispatch(readMessage(selectedChat.id, messageId)).then(() => dispatch(deductReadMessages(selectedChat.id, 1)));
+    return dispatch(readMessage(selectedChat.id, messageId)).then(() => {
+      dispatch(deductReadMessages(selectedChat.id, 1));
+    });
   };
 
   const loadOnTheTopSide = async () => {
@@ -178,7 +183,7 @@ const Messages: React.FC = () => {
 
   const onScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
-    const loadingYOffset = 500;
+    const loadingYOffset = 250;
     const toShowButtonYOffset = 200;
 
     const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;

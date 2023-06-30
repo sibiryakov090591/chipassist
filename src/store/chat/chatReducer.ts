@@ -188,7 +188,8 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const { page, total_pages, results } = action.payload.response;
 
       const copy = { ...state.messages.results };
-      const newRes = results.reduce((acc: any, message: any) => {
+      const res = action.payload.rewind ? results : results.reverse();
+      const newRes = res.reduce((acc: any, message: any) => {
         const date = message.created.slice(0, 10);
         if (acc[date]) {
           if (action.payload.rewind) acc[date] = [message, ...acc[date]];
