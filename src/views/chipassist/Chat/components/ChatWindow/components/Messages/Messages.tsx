@@ -153,18 +153,16 @@ const Messages: React.FC = () => {
     ) {
       setIsLoadingMore("top");
 
-      // const { scrollHeight, scrollTop, clientHeight } = messagesWindowRef.current;
-      // const scrollBottom = scrollHeight - scrollTop - clientHeight;
+      const { scrollHeight, scrollTop, clientHeight } = messagesWindowRef.current;
+      const scrollBottom = scrollHeight - scrollTop - clientHeight;
 
       await dispatch(
         getMessages(selectedChat.id, { start_id: Object.values(messages.results)[0][0].id, rewind: true }, true),
       ).finally(() => setIsLoadingMore(null));
 
       // stay scroll in the right place
-      // setTimeout(() => {
-      //   const currentHeight = messagesWindowRef.current.scrollHeight;
-      //   messagesWindowRef.current.scrollTo({ top: currentHeight - clientHeight - scrollBottom });
-      // }, 1000);
+      const currentHeight = messagesWindowRef.current.scrollHeight;
+      messagesWindowRef.current.scrollTo({ top: currentHeight - clientHeight - scrollBottom });
     }
   };
 
