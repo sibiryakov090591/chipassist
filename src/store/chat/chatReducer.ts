@@ -13,7 +13,7 @@ const initialState: actionTypes.ChatState = {
   chatList: {
     page: null,
     total_pages: null,
-    page_size: 10,
+    page_size: 15,
     unread_total: null,
     results: [],
     isLoading: true,
@@ -24,8 +24,8 @@ const initialState: actionTypes.ChatState = {
     error: "",
     page: null,
     total_pages: null,
-    page_size: 15,
-    results: [],
+    page_size: 25,
+    results: {},
     isLoading: false,
     forceUpdate: 0,
   },
@@ -134,29 +134,29 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     }
 
     case actionTypes.UPDATE_MESSAGES_S: {
-      const results = action.payload;
-      const updatedMessages: ChatListMessage[] = [];
-      const newMessages: ChatListMessage[] = [];
+      const results = action.payload.reverse();
+      const copy = { ...state.messages.results };
 
-      results.forEach((message: ChatListMessage) => {
-        const existedMessage = state.messages.results.find((i) => i.id === message.id);
+      const newRes = results.reduce((acc: any, message: ChatListMessage) => {
+        const date = new Date(message.created).toLocaleDateString();
+        const existedMessage = state.messages.results[date]?.find((i) => i.id === message.id);
         if (!message.read && !existedMessage) {
-          newMessages.push(message);
+          if (acc[date]) acc[date] = [...acc[date], message];
+          if (!acc[date]) acc[date] = [message];
         } else if (existedMessage && existedMessage.read_by_partner !== message.read_by_partner) {
-          updatedMessages.push(message);
+          acc[date] = acc[date].map((i: any) => {
+            if (i.id === message.id) return message;
+            return i;
+          });
         }
-      });
+        return acc;
+      }, copy);
 
       return {
         ...state,
         messages: {
           ...state.messages,
-          results: [
-            ...state.messages.results.map((message) => {
-              return updatedMessages.find((i) => i.id === message.id) || message;
-            }),
-            ...newMessages.reverse(),
-          ],
+          results: newRes,
         },
       };
     }
@@ -172,12 +172,35 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           isLoading: false,
           page,
           total_pages,
-          results: results.reverse(),
+          results: results.reverse().reduce((acc: any, message: any) => {
+            const date = new Date(message.created).toLocaleDateString();
+            if (acc[date]) {
+              acc[date].push(message);
+            } else {
+              acc[date] = [message];
+            }
+            return acc;
+          }, {}),
         },
       };
     }
     case actionTypes.LOAD_MORE_MESSAGES_S: {
       const { page, total_pages, results } = action.payload.response;
+
+      const copy = { ...state.messages.results };
+      const res = action.payload.rewind ? results : results.reverse();
+      const newRes = res.reduce((acc: any, message: any) => {
+        const date = new Date(message.created).toLocaleDateString();
+        if (acc[date]) {
+          if (action.payload.rewind) acc[date] = [message, ...acc[date]];
+          if (!action.payload.rewind) acc[date] = [...acc[date], message];
+        } else {
+          if (action.payload.rewind) return { [date]: [message], ...acc };
+          if (!action.payload.rewind) return { ...acc, [date]: [message] };
+        }
+        return acc;
+      }, copy);
+
       return {
         ...state,
         messages: {
@@ -185,9 +208,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           isLoading: false,
           page,
           total_pages,
-          results: action.payload.rewind
-            ? [...results.reverse(), ...state.messages.results]
-            : [...state.messages.results, ...results.reverse()],
+          results: newRes,
         },
       };
     }
@@ -211,13 +232,17 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.ADD_MESSAGE: {
       const selectedChat = state.chatList.results.find((chat) => chat.id === action.payload.chatId);
       const updatedChat = { ...selectedChat, messages: [action.payload.message, ...selectedChat.messages] };
+      const date = new Date(action.payload.message.created).toLocaleDateString();
+      const newRes = { ...state.messages.results };
+      if (newRes[date]) newRes[date] = [...newRes[date], action.payload.message];
+      if (!newRes[date]) newRes[date] = [action.payload.message];
       return {
         ...state,
         chatList: {
           ...state.chatList,
           results: [updatedChat, ...state.chatList.results.filter((i) => i.id !== action.payload.chatId)],
         },
-        messages: { ...state.messages, results: [...state.messages.results, action.payload.message] },
+        messages: { ...state.messages, results: newRes },
       };
     }
 

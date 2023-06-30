@@ -70,7 +70,7 @@ const Messages: React.FC = () => {
   }, [selectedChat?.id]);
 
   useEffect(() => {
-    if (selectedChat?.id && messages.forceUpdate) {
+    if (selectedChat?.id && messages.forceUpdate && !messages.isLoading) {
       const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
       const isNeedToScroll = scrollTop + clientHeight > scrollHeight - 50;
       dispatch(updateMessages(selectedChat.id)).then(() => {
@@ -80,13 +80,15 @@ const Messages: React.FC = () => {
   }, [messages.forceUpdate]);
 
   useEffect(() => {
-    if (messages.results.length) {
+    if (Object.keys(messages.results).length) {
       const result: any = {};
-      messages.results.forEach((message) => {
-        if (!message.read && !unreadMessagesRefs[message.id]) {
-          const elem = document.getElementById(`chat-message-${message.id}`);
-          if (elem) result[message.id] = elem;
-        }
+      Object.values(messages.results).forEach((list) => {
+        list.forEach((message) => {
+          if (!message.read && !unreadMessagesRefs[message.id]) {
+            const elem = document.getElementById(`chat-message-${message.id}`);
+            if (elem) result[message.id] = elem;
+          }
+        });
       });
       setUnreadMessagesRefs((prev) => ({ ...prev, ...result }));
     }
@@ -97,11 +99,14 @@ const Messages: React.FC = () => {
       threshold: 0.5, // Customize the visibility threshold as needed
     };
 
-    const handleIntersection = (entries: any) => {
+    const handleIntersection: IntersectionObserverCallback = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver,
+    ) => {
       entries.forEach((entry: any) => {
         if (entry.isIntersecting) {
           const messageId = parseInt(entry.target.getAttribute("data-id"));
-          markAsRead(messageId);
+          markAsRead(messageId).then(() => observer.unobserve(entry.target));
         }
       });
     };
@@ -131,16 +136,18 @@ const Messages: React.FC = () => {
   }, [isSending]);
 
   const markAsRead = (messageId: number) => {
-    if (messagesIdsWasRead.includes(messageId)) return;
+    // if (messagesIdsWasRead.includes(messageId)) return Promise.reject();
 
     setMessagesIdsWasRead((prev) => [...prev, messageId]);
-    dispatch(readMessage(selectedChat.id, messageId)).then(() => dispatch(deductReadMessages(selectedChat.id, 1)));
+    return dispatch(readMessage(selectedChat.id, messageId)).then(() => {
+      dispatch(deductReadMessages(selectedChat.id, 1));
+    });
   };
 
   const loadOnTheTopSide = async () => {
     if (
       !messages.isLoading &&
-      messages.results.length &&
+      Object.keys(messages.results).length &&
       loadedPages.length &&
       messages.total_pages > Math.max(...loadedPages)
     ) {
@@ -150,7 +157,7 @@ const Messages: React.FC = () => {
       const scrollBottom = scrollHeight - scrollTop - clientHeight;
 
       await dispatch(
-        getMessages(selectedChat.id, { start_id: messages.results[0].id, rewind: true }, true),
+        getMessages(selectedChat.id, { start_id: Object.values(messages.results)[0][0].id, rewind: true }, true),
       ).finally(() => setIsLoadingMore(null));
 
       // stay scroll in the right place
@@ -160,21 +167,23 @@ const Messages: React.FC = () => {
   };
 
   const loadOnTheBottomSide = () => {
-    if (!messages.isLoading && messages.results.length && loadedPages.length && Math.min(...loadedPages) > 1) {
+    if (
+      !messages.isLoading &&
+      Object.keys(messages.results).length &&
+      loadedPages.length &&
+      Math.min(...loadedPages) > 1
+    ) {
       setIsLoadingMore("bottom");
+      const group = Object.values(messages.results)[Object.values(messages.results).length - 1];
       dispatch(
-        getMessages(
-          selectedChat.id,
-          { start_id: messages.results[messages.results.length - 1].id, rewind: false },
-          true,
-        ),
+        getMessages(selectedChat.id, { start_id: group[group.length - 1].id, rewind: false }, true),
       ).finally(() => setIsLoadingMore(null));
     }
   };
 
   const onScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
-    const loadingYOffset = 500;
+    const loadingYOffset = 250;
     const toShowButtonYOffset = 200;
 
     const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;
@@ -206,7 +215,7 @@ const Messages: React.FC = () => {
 
   return (
     <div className={classes.container}>
-      {!messages.results.length && (
+      {!Object.keys(messages.results).length && (
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
           {messages.isLoading ? (
             <Preloader size={12} />
@@ -220,7 +229,7 @@ const Messages: React.FC = () => {
       <div
         ref={messagesWindowRef}
         onScroll={onScroll}
-        className={clsx(classes.messagesWrapper, { hidden: !messages.results.length })}
+        className={clsx(classes.messagesWrapper, { hidden: !Object.keys(messages.results).length })}
       >
         <div className={classes.messages}>
           {isLoadingMore === "top" && (
@@ -228,40 +237,20 @@ const Messages: React.FC = () => {
               <Preloader />
             </Box>
           )}
-          {messages.results.map((item, index) => {
+          {Object.values(messages.results).map((list, i) => {
             const todayDate = new Date().toLocaleDateString();
-            const messageDate = new Date(item.created).toLocaleDateString();
-            const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
-            const dateLabel = todayDate === messageDate ? "Today" : messageDate;
-            const messageDateLabel = todayDate === messageDate ? "Today" : messageDate.slice(0, 5);
+            const groupDate = new Date(list[0].created).toLocaleDateString();
+            const dateLabel = todayDate === groupDate ? "Today" : groupDate;
 
-            const isShowDateLabel =
-              index === 0 || new Date(messages.results[index - 1].created).toLocaleDateString() !== messageDate;
-            const isFirstMessage = messages.page === messages.total_pages && index === 0;
-
-            const name =
-              constants.id === ID_SUPPLIER_RESPONSE
-                ? selectedChat?.partner &&
-                  Object.entries(selectedChat.partner).reduce((acc, i) => {
-                    const [key, value] = i;
-                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-                    return acc;
-                  }, "")
-                : selectedChat?.partner.first_name;
+            const isFirstMessage = messages.page === messages.total_pages && i === 0;
 
             return (
-              <div key={item.id}>
-                {item.id === firstUnreadMessageId && (
-                  <div ref={unreadLabelRef}>
-                    <UnreadMessagesLabel chatId={selectedChat?.id} />
-                  </div>
-                )}
-                {isShowDateLabel && <div className={classes.dateLabel}>{dateLabel}</div>}
+              <div key={i} className={classes.group}>
                 {isFirstMessage && selectedChat?.rfq && (
                   <div className={classes.requestItem}>
                     <ScheduleRoundedIcon className={classes.requestItemIcon} />
                     <div>
-                      <strong>{`${item.sender} sent a new request for ${
+                      <strong>{`${list[0].sender} sent a new request for ${
                         selectedChat.title || selectedChat.rfq.upc
                       }.`}</strong>{" "}
                       {!!selectedChat.rfq.quantity && !!selectedChat.rfq.price && (
@@ -272,58 +261,86 @@ const Messages: React.FC = () => {
                     </div>
                   </div>
                 )}
-                <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
-                  <div className={classes.messageInfo}>
-                    <span className={classes.messageFrom}>{item.sender === "You" ? "You" : name}</span>
-                    <span className={classes.messageDate}>
-                      {time} - {messageDateLabel}
-                      {item.sender === "You" && item.read_by_partner && <DoneAllIcon className={classes.wasReadIcon} />}
-                    </span>
-                  </div>
-                  {!!item.message_attachments?.length && (
-                    <Box display="flex" flexWrap="wrap" gridGap="6px">
-                      {item.message_attachments.map((attachment) => {
-                        const file = files[attachment.id];
-                        if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
 
-                        return (
-                          <img
-                            key={attachment.id}
-                            className={classes.image}
-                            src={file.url}
-                            alt="file"
-                            onClick={onOpenPreview(file.url)}
-                          />
-                        );
-                      })}
-                    </Box>
-                  )}
-                  {!!item.message_attachments?.length && (
-                    <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
-                      {item.message_attachments.map((attachment) => {
-                        const file = files[attachment.id];
-                        if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+                <div className={classes.dateLabel}>{dateLabel}</div>
 
-                        const imgUrl =
-                          (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
-                          (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
-                          (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+                {list.map((item) => {
+                  const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
+                  const name =
+                    constants.id === ID_SUPPLIER_RESPONSE
+                      ? selectedChat?.partner &&
+                        Object.entries(selectedChat.partner).reduce((acc, idx) => {
+                          const [key, value] = idx;
+                          if (value)
+                            return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                          return acc;
+                        }, "")
+                      : selectedChat?.partner.first_name;
 
-                        return (
-                          <div
-                            key={attachment.id}
-                            className={classes.file}
-                            onClick={onDownloadFile(attachment.id, attachment.file_name)}
-                          >
-                            {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
-                            <div className={classes.fileName}>{attachment.file_name}</div>
-                          </div>
-                        );
-                      })}
-                    </Box>
-                  )}
-                  <div className={classes.message}>{item.text}</div>
-                </div>
+                  return (
+                    <div key={item.id}>
+                      {item.id === firstUnreadMessageId && (
+                        <div ref={unreadLabelRef}>
+                          <UnreadMessagesLabel chatId={selectedChat?.id} />
+                        </div>
+                      )}
+                      <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
+                        <div className={classes.messageInfo}>
+                          <span className={classes.messageFrom}>{item.sender === "You" ? "You" : name}</span>
+                          <span className={classes.messageDate}>
+                            {time}
+                            {item.sender === "You" && item.read_by_partner && (
+                              <DoneAllIcon className={classes.wasReadIcon} />
+                            )}
+                          </span>
+                        </div>
+                        {!!item.message_attachments?.length && (
+                          <Box display="flex" flexWrap="wrap" gridGap="6px">
+                            {item.message_attachments.map((attachment) => {
+                              const file = files[attachment.id];
+                              if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
+
+                              return (
+                                <img
+                                  key={attachment.id}
+                                  className={classes.image}
+                                  src={file.url}
+                                  alt="file"
+                                  onClick={onOpenPreview(file.url)}
+                                />
+                              );
+                            })}
+                          </Box>
+                        )}
+                        {!!item.message_attachments?.length && (
+                          <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
+                            {item.message_attachments.map((attachment) => {
+                              const file = files[attachment.id];
+                              if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+
+                              const imgUrl =
+                                (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
+                                (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                                (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+
+                              return (
+                                <div
+                                  key={attachment.id}
+                                  className={classes.file}
+                                  onClick={onDownloadFile(attachment.id, attachment.file_name)}
+                                >
+                                  {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
+                                  <div className={classes.fileName}>{attachment.file_name}</div>
+                                </div>
+                              );
+                            })}
+                          </Box>
+                        )}
+                        <div className={classes.message}>{item.text}</div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             );
           })}
@@ -343,7 +360,7 @@ const Messages: React.FC = () => {
           )}
         </div>
       </div>
-      {!!messages.results.length && (
+      {!!Object.keys(messages.results).length && (
         <MessageInput
           chatId={selectedChat?.id}
           isSending={isSending}

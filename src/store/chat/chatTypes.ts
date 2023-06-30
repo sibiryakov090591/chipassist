@@ -55,7 +55,7 @@ export interface ChatState {
     total_pages: number;
     page: number;
     page_size: number;
-    results: ChatListMessage[];
+    results: { [key: string]: ChatListMessage[] };
     isLoading: boolean;
     forceUpdate: number;
   };
