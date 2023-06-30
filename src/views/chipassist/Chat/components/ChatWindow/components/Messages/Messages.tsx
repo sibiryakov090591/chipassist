@@ -242,7 +242,7 @@ const Messages: React.FC = () => {
             const groupDate = new Date(list[0].created).toLocaleDateString();
             const dateLabel = todayDate === groupDate ? "Today" : groupDate;
 
-            const isFirstMessage = i === 0;
+            const isFirstMessage = messages.page === messages.total_pages && i === 0;
 
             return (
               <div key={i} className={classes.group}>
