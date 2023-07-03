@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
-      textAlign: "center",
+      alignItems: "flex-start",
     },
   },
   sendButtonContainer: {
@@ -35,7 +35,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     minWidth: 185,
   },
   title: {
-    textAlign: "center",
     color: "#345",
     [theme.breakpoints.down("xs")]: {
       paddingTop: 0,
@@ -100,8 +99,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "& .MuiSelect-select": {
       fontWeight: "bold",
     },
-    [theme.breakpoints.down(420)]: {
-      margin: "6px",
+    [theme.breakpoints.down("xs")]: {
+      margin: 0,
+      "& > div": { margin: 0 },
     },
   },
   manufacturerSelect: {

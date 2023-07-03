@@ -70,6 +70,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     requestData: {
       [theme.breakpoints.down("md")]: {
         flexDirection: "column",
+        gap: "16px",
       },
     },
   }),

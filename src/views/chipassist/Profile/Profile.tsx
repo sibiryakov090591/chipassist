@@ -10,7 +10,6 @@ import BomList from "@src/views/chipassist/Bom/components/BomList/BomList";
 import clsx from "clsx";
 import PublishIcon from "@material-ui/icons/Publish";
 import useAppTheme from "@src/theme/useAppTheme";
-import Chat from "@src/views/chipassist/Chat/Chat";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import { useStyles } from "./styles";
 import { Header, General } from "./components";
@@ -34,7 +33,7 @@ const Profile = () => {
     { value: "/profile/general", label: t("general.title") },
     { value: "/profile/company/addresses", label: t("company.address") },
     { value: "/profile/requests", label: t("menu.rfqs") },
-    { value: "/profile/messages", label: t("menu.chat") },
+    { value: "/messages", label: t("menu.chat") },
     { value: "/profile/orders", label: t("menu.orders") },
     { value: "/profile/bom-list", label: t("menu.bom") },
     // { value: "/profile/notifications", label: t("notifications.title") },
@@ -85,7 +84,7 @@ const Profile = () => {
           {/* {location.pathname === "/profile/security" && <Security />} */}
           {location.pathname === "/profile/company/addresses" && <CompanyAddress />}
           {location.pathname === "/profile/requests" && <Rfq />}
-          {location.pathname === "/profile/messages" && <Chat />}
+          {/* {location.pathname === "/profile/messages" && <Chat />} */}
           {location.pathname === "/profile/orders" && <Orders />}
           {location.pathname === "/profile/bom-list" && (
             <>

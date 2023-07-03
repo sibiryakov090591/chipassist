@@ -49,13 +49,15 @@ const useStyles = makeStyles(() => ({
 const SupplierLayout: React.FC = (props) => {
   const classes = useStyles();
 
+  const isShowFooter = window.location.pathname !== "/messages";
+
   return (
     <div className={classes.wrapper}>
       <TopBar className={classes.topBar} />
       <div className={classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
-      <Footer />
+      {isShowFooter && <Footer />}
     </div>
   );
 };

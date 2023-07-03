@@ -6,6 +6,8 @@ import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect
 import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import { onChangePartner } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import Chat from "./Chat";
 import Page from "../../../components/Page";
 import { useStyles } from "./styles";
@@ -14,6 +16,7 @@ const ChatPage: React.FC = () => {
   const classes = useStyles();
   const requestsClasses = useRequestsStyles();
   const dispatch = useAppDispatch();
+  const isResponses = constants.id === ID_SUPPLIER_RESPONSE;
 
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
@@ -26,25 +29,21 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <Page title={"Chat"} description={"Chat with buyers"} style={{ height: "100%" }}>
+    <Page
+      title={"Messages"}
+      description={"Messages between buyers and sellers"}
+      className={clsx(classes.page, { [classes.chipassistPage]: !isResponses })}
+    >
       <section className={classes.section}>
         <Container maxWidth="xl" className={classes.container}>
           <Box display="flex" flexDirection="column" className={classes.header}>
             <h1 className={requestsClasses.title}>Message center</h1>
-            {selectedPartner && partners?.length > 1 && (
-              <div className={clsx(requestsClasses.supplier, { flexible: partners?.length > 1 })}>
-                You are logged in as{" "}
-                {partners?.length > 1 ? (
-                  <SupplierSelect
-                    selectedPartner={selectedPartner}
-                    partners={partners}
-                    onChangePartner={onChangePartnerHandler}
-                  />
-                ) : (
-                  <strong>{selectedPartner.name}</strong>
-                )}{" "}
-                supplier
-              </div>
+            {selectedPartner && (
+              <SupplierSelect
+                selectedPartner={selectedPartner}
+                partners={partners}
+                onChangePartner={onChangePartnerHandler}
+              />
             )}
           </Box>
 

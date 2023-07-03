@@ -28,7 +28,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
           );
         }
 
-        if (error?.response?.status !== 404 && getAuthToken() && (!url || !url.includes(feedback_url))) {
+        if (error && error?.response?.status !== 404 && getAuthToken() && (!url || !url.includes(feedback_url))) {
           this.props.dispatch(
             feedbackThunk(
               `${env} APP`,
