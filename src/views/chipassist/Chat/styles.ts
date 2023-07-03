@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       padding: "2em 0",
       height: "100%",
       [theme.breakpoints.down("xs")]: {
-        padding: "2em 0 0 0",
+        padding: "0",
       },
     },
     container: {
@@ -42,8 +42,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       flexGrow: 1,
       height: "100%",
-      minHeight: 350,
-      maxHeight: "85vh",
+      maxHeight: "100vh",
       border: "1px solid #D4D4D4",
       borderRadius: 8,
       overflow: "hidden",
@@ -55,6 +54,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         borderRight: "none",
         borderBottom: "none",
         borderRadius: 0,
+        marginTop: 0,
       },
     },
     emptyMessage: {

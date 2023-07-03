@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, Hidden } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
 import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
@@ -36,16 +36,20 @@ const ChatPage: React.FC = () => {
     >
       <section className={classes.section}>
         <Container maxWidth="xl" className={classes.container}>
-          <Box display="flex" flexDirection="column" className={classes.header}>
-            <h1 className={requestsClasses.title}>Message center</h1>
-            {selectedPartner && (
-              <SupplierSelect
-                selectedPartner={selectedPartner}
-                partners={partners}
-                onChangePartner={onChangePartnerHandler}
-              />
-            )}
-          </Box>
+          {partners?.length > 1 && (
+            <Box display="flex" flexDirection="column" className={classes.header}>
+              <Hidden xsDown>
+                <h1 className={requestsClasses.title}>Message center</h1>
+              </Hidden>
+              {selectedPartner && (
+                <SupplierSelect
+                  selectedPartner={selectedPartner}
+                  partners={partners}
+                  onChangePartner={onChangePartnerHandler}
+                />
+              )}
+            </Box>
+          )}
 
           <Chat />
         </Container>

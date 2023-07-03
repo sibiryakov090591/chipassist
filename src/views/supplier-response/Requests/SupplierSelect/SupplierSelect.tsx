@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import clsx from "clsx";
+import { Hidden } from "@material-ui/core";
 import { useStyles } from "../supplierResponseStyles";
 
 interface Props {
@@ -52,7 +53,9 @@ const SupplierSelect: React.FC<Props> = ({ onChangePartner, selectedPartner, par
           })}
         </TextField>
       ) : (
-        <strong>{selectedPartner.name}</strong>
+        <Hidden xsDown>
+          <strong>{selectedPartner.name}</strong>
+        </Hidden>
       )}
       {!isXsDown && " supplier"}
     </div>

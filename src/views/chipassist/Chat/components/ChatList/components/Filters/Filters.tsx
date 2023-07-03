@@ -56,7 +56,7 @@ const Filters: React.FC = () => {
   return (
     <>
       {filters && (
-        <Box display="flex" gridGap="8px" mt="8px">
+        <Box display="flex" gridGap="8px">
           <FormControl classes={{ root: classes.root }} variant="outlined" size="small" className={classes.select}>
             <InputLabel id="chat-filters-upc-label">Part number</InputLabel>
             <Select

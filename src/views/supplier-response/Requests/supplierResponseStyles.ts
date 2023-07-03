@@ -148,9 +148,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     margin: "8px 8px 0 8px",
   },
   supplier: {
+    margin: "12px 0",
     fontWeight: 400,
     color: "#434343",
-    marginBottom: 12,
     "&.flexible": {
       display: "flex",
       alignItems: "center",
