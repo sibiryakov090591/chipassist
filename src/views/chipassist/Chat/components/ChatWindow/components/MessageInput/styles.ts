@@ -42,15 +42,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     sendIcon: {
       color: "#ffffff",
-      background: "#171717",
       cursor: "pointer",
       borderRadius: "50ch",
       padding: "8px",
       width: 35,
       height: 35,
       transition: "all 150ms ease",
+      backgroundColor: theme.palette.app.red500,
       "&:hover": {
-        background: "#323232",
+        backgroundColor: theme.palette.app.red400,
       },
     },
     error: {
