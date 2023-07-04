@@ -12,7 +12,7 @@ const Chat: React.FC = () => {
   const betweenSmMd = useMediaQuery(theme.breakpoints.between(800, "md"));
 
   const [showList, setShowList] = useState(!isSmDown);
-  const [showDetails, setShowDetails] = useState(true);
+  const [showDetails, setShowDetails] = useState(false);
 
   const onShowDetailsHandler = () => {
     setShowDetails(!showDetails);
