@@ -14,23 +14,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       zIndex: 1,
     },
     chipassistPage: {
-      paddingTop: 135,
+      paddingTop: 133,
     },
     section: {
-      padding: "2em 0",
       height: "100%",
-      [theme.breakpoints.down("xs")]: {
-        padding: "0",
-      },
-    },
-    container: {
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      [theme.breakpoints.down("xs")]: {
-        paddingLeft: 0,
-        paddingRight: 0,
-      },
     },
     header: {
       alignItems: "flex-start",
@@ -42,20 +29,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       flexGrow: 1,
       height: "100%",
-      maxHeight: "100vh",
-      border: "1px solid #D4D4D4",
-      borderRadius: 8,
+      maxHeight: "90vh",
       overflow: "hidden",
       position: "relative",
-      marginTop: 8,
       background: "#ffffff",
-      [theme.breakpoints.down("xs")]: {
-        borderLeft: "none",
-        borderRight: "none",
-        borderBottom: "none",
-        borderRadius: 0,
-        marginTop: 0,
-      },
     },
     emptyMessage: {
       borderRadius: "50ch",
