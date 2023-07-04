@@ -21,9 +21,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     header: {
       alignItems: "flex-start",
-      [theme.breakpoints.down("xs")]: {
-        margin: "0 12px",
-      },
+      margin: "6 12px",
     },
     wrapper: {
       display: "flex",
@@ -33,6 +31,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       overflow: "hidden",
       position: "relative",
       background: "#ffffff",
+      borderTop: "1px solid #D4D4D4",
+      borderBottom: "1px solid #D4D4D4",
     },
     emptyMessage: {
       borderRadius: "50ch",

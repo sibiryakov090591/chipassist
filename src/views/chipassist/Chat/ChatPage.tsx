@@ -37,7 +37,7 @@ const ChatPage: React.FC = () => {
       <section className={classes.section}>
         {partners?.length > 1 && (
           <Box display="flex" flexDirection="column" className={classes.header}>
-            <Hidden xsDown>
+            <Hidden smDown>
               <h1 className={requestsClasses.title}>Message center</h1>
             </Hidden>
             {selectedPartner && (
