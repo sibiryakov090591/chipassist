@@ -1,8 +1,8 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-import { Theme } from "@material-ui/core";
-import { AppTheme } from "@src/themes/AppTheme";
+// import { Theme } from "@material-ui/core";
+// import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles((theme: Theme & AppTheme) =>
+export const useStyles = makeStyles(() =>
   createStyles({
     page: {
       position: "absolute",
@@ -21,7 +21,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     header: {
       alignItems: "flex-start",
-      margin: "6 12px",
+      margin: "6px 12px",
     },
     wrapper: {
       display: "flex",
