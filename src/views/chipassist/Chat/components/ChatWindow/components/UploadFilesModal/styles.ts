@@ -15,6 +15,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       minWidth: "450px",
       [theme.breakpoints.down("xs")]: {
         minWidth: "auto",
+        width: "90vw",
       },
     },
     formHeader: {
@@ -60,8 +61,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         opacity: 1,
       },
       [theme.breakpoints.down("sm")]: {
-        width: 100,
-        height: 100,
+        "& > div:nth-child(2)": {
+          opacity: 1,
+        },
       },
     },
     thumbInner: {
