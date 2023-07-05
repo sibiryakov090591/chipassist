@@ -75,6 +75,7 @@ const Filters: React.FC = () => {
               name="upc"
               value={values.upc || ""}
               onChange={onChangeHandler}
+              disabled={!filters.upc_list?.length}
             >
               {filters.upc_list?.map((upc) => {
                 return (
@@ -99,6 +100,7 @@ const Filters: React.FC = () => {
               name="partner"
               value={values.partner || ""}
               onChange={onChangeHandler}
+              disabled={!filters.partners_list?.length}
             >
               {filters.partners_list?.map((partner) => {
                 return (
