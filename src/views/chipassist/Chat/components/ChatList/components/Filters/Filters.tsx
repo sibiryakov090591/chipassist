@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { clearChat, getChatList, getFilters, onChangeFiltersValues } from "@src/store/chat/chatActions";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { Box, Button, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+// import SearchIcon from "@material-ui/icons/Search";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import CloseIcon from "@material-ui/icons/Close";
 import constants from "@src/constants/constants";
@@ -35,19 +35,28 @@ const Filters: React.FC = () => {
 
   const onChangeHandler = (e: React.ChangeEvent<{ name?: string; value: any }>) => {
     const { name, value } = e.target;
-    setValues((prev) => ({ ...prev, [name]: value }));
+    setValues((prev) => {
+      const newFilters: any = { ...prev, [name]: value };
+      onSubmitHandler(newFilters);
+      return newFilters;
+    });
   };
 
   const onClearHandler = (name: string) => () => {
-    setValues((prev) => ({ ...prev, [name]: null }));
+    setValues((prev) => {
+      const newFilters: any = { ...prev, [name]: null };
+      onSubmitHandler(newFilters);
+      return newFilters;
+    });
   };
 
-  const onSubmitHandler = () => {
-    const isChanged = Object.entries(filters.values).some(([key, val]) => val !== values[key as keyof Values]);
+  const onSubmitHandler = (newFilters: any) => {
+    const isChanged = Object.entries(newFilters).some(([key, val]) => val !== values[key as keyof Values]);
     if (!isLoading && isChanged) {
       dispatch(clearChat());
-      dispatch(getChatList(1, values)).then(() => {
-        dispatch(onChangeFiltersValues(values));
+      dispatch(getChatList(1, newFilters)).then(() => {
+        // was values for submit button
+        dispatch(onChangeFiltersValues(newFilters)); // was values for submit button
         // if (res.results?.length) dispatch(selectChat(res.results[0]));
       });
     }
@@ -109,9 +118,9 @@ const Filters: React.FC = () => {
               </span>
             )}
           </FormControl>
-          <Button className={classes.button} variant="outlined" size="small" onClick={onSubmitHandler}>
-            <SearchIcon />
-          </Button>
+          {/* <Button className={classes.button} variant="outlined" size="small" onClick={onSubmitHandler}> */}
+          {/*  <SearchIcon /> */}
+          {/* </Button> */}
         </Box>
       )}
     </>

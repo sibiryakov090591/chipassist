@@ -1,4 +1,5 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
+import { scrollbarWidth } from "@src/config";
 // import { Theme } from "@material-ui/core";
 // import { AppTheme } from "@src/themes/AppTheme";
 
@@ -8,10 +9,10 @@ export const useStyles = makeStyles(() =>
       position: "absolute",
       paddingTop: 80,
       top: 0,
-      left: 0,
-      right: 0,
+      width: "100vw",
       bottom: 0,
       zIndex: 1,
+      paddingRight: `${scrollbarWidth}px`,
     },
     chipassistPage: {
       paddingTop: 133,
