@@ -57,6 +57,7 @@ import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessa
 import { loadSellersWithProductLink } from "@src/store/products/productsActions";
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
+import RfqList from "@src/views/chipassist/RfqList/RfqList";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -483,6 +484,16 @@ const ChipAssistApp = () => {
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <FAQ />
+                  </Suspense>
+                }
+              />
+            )}
+            {constants.id !== ID_ICSEARCH && (
+              <Route
+                path={"/RfqList"}
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <RfqList />
                   </Suspense>
                 }
               />
