@@ -77,9 +77,9 @@ const Filters: React.FC = () => {
               onChange={onChangeHandler}
               disabled={!filters.upc_list?.length}
             >
-              {filters.upc_list?.map((upc) => {
+              {filters.upc_list?.map((upc, index) => {
                 return (
-                  <MenuItem key={upc} value={upc}>
+                  <MenuItem key={index} value={upc}>
                     {upc}
                   </MenuItem>
                 );
