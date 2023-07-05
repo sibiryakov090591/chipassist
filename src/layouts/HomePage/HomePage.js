@@ -66,6 +66,7 @@ const HomePage = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isShowFooter = window.location.pathname !== "/messages";
 
   let isDisableLayout = false;
   if (constants.id === ID_CHIPASSIST) {
@@ -85,7 +86,7 @@ const HomePage = (props) => {
       <div className={classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
-      <Footer />
+      {isShowFooter && <Footer />}
     </div>
   );
 };

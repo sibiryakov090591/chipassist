@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/class-name-casing */
 /* eslint-disable no-return-assign */
 import axios, { CancelTokenSource, AxiosRequestConfig, Method, AxiosPromise } from "axios";
-// import Cookies from "cookies-js";
+import Cookies from "cookies-js";
 import _ from "lodash";
 import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
 import { isUrl } from "@src/utils/validation";
@@ -109,9 +109,9 @@ class _ApiClient extends autoImplement<ApiClientInterface>() {
           if (isAuthenticated()) {
             axios_config.headers.Authorization = `Token ${getAuthToken()}`;
           }
-          // if (Cookies.get("csrftoken")) {
-          //   axios_config.headers["X-CSRFToken"] = Cookies.get("csrftoken");
-          // }
+          if (Cookies.get("csrftoken")) {
+            axios_config.headers["X-CSRFToken"] = Cookies.get("csrftoken");
+          }
           if (data) {
             axios_config.data = data;
           }

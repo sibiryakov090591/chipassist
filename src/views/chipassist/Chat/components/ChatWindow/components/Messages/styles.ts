@@ -1,8 +1,8 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-// import { Theme } from "@material-ui/core";
-// import { AppTheme } from "@src/themes/AppTheme";
+import { Theme } from "@material-ui/core";
+import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     container: {
       flexGrow: 1,
@@ -34,6 +34,9 @@ export const useStyles = makeStyles(() =>
       display: "flex",
       flexDirection: "column",
       justifyContent: "flex-end",
+      [theme.breakpoints.down("xs")]: {
+        padding: 8,
+      },
     },
     group: {
       marginTop: 6,

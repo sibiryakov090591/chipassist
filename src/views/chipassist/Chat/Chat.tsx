@@ -8,11 +8,10 @@ import { useStyles } from "./styles";
 const Chat: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const betweenSmMd = useMediaQuery(theme.breakpoints.between(800, "md"));
 
-  const [showList, setShowList] = useState(!isSmDown);
-  const [showDetails, setShowDetails] = useState(false);
+  const [showList, setShowList] = useState(true);
+  const [showDetails, setShowDetails] = useState(document.body.offsetWidth >= 1280);
 
   const onShowDetailsHandler = () => {
     setShowDetails(!showDetails);

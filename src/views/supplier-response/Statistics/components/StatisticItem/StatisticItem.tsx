@@ -37,23 +37,23 @@ const StatisticItem: React.FC<Props> = ({ item, index }) => {
     >
       <DataField gridArea="mpn">
         <DataLabel>Requested MPN</DataLabel>
-        <DataValue className={classes.strong}>{item.mpn?.toUpperCase()}</DataValue>
+        <DataValue className={classes.strong}>{item.mpn?.toUpperCase() || "-"}</DataValue>
       </DataField>
       <DataField gridArea="qty">
         <DataLabel>Requested quantity</DataLabel>
-        <DataValue>{formatMoney(item.quantity, 0)}</DataValue>
+        <DataValue>{item.quantity ? formatMoney(item.quantity, 0) : "-"}</DataValue>
       </DataField>
       <DataField gridArea="yourQty">
         <DataLabel>Your quantity</DataLabel>
-        <DataValue>{formatMoney(item.num_in_stock, 0)}</DataValue>
+        <DataValue>{item.num_in_stock ? formatMoney(item.num_in_stock, 0) : "-"}</DataValue>
       </DataField>
       <DataField gridArea="manufacturer">
         <DataLabel>Manufacturer</DataLabel>
-        <DataValue>{item.manufacturer_name}</DataValue>
+        <DataValue>{item.manufacturer_name || "-"}</DataValue>
       </DataField>
       <DataField gridArea="date">
         <DataLabel>Response date</DataLabel>
-        <DataValue className={classes.repliedData}>{repliedDate}</DataValue>
+        <DataValue className={classes.repliedData}>{repliedDate || "-"}</DataValue>
       </DataField>
       <DataField gridArea="yourPrice">
         <DataLabel>Your price</DataLabel>

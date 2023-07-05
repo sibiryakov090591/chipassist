@@ -145,12 +145,18 @@ export const ChipassistHomePage = () => {
                   {isAuthenticated && (
                     <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
                       {t("menu.profile")}
-                      <ChatUnreadTotalCount className={classes.chatUnreadCount} />
                     </NavLink>
                   )}
-                  <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
-                    Contacts
-                  </a>
+                  {isAuthenticated ? (
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/messages`}>
+                      {t("menu.chat")}
+                      <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+                    </NavLink>
+                  ) : (
+                    <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
+                      Contacts
+                    </a>
+                  )}
                   <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
                     {t("menu.blog")}
                   </NavLink>

@@ -1,34 +1,38 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-import { Theme } from "@material-ui/core";
-import { AppTheme } from "@src/themes/AppTheme";
+// import { Theme } from "@material-ui/core";
+// import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles((theme: Theme & AppTheme) =>
+export const useStyles = makeStyles(() =>
   createStyles({
-    section: {
-      padding: "2em 0",
-      height: "100%",
+    page: {
+      position: "absolute",
+      paddingTop: 80,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 1,
     },
-    container: {
+    chipassistPage: {
+      paddingTop: 133,
+    },
+    section: {
       height: "100%",
-      display: "flex",
-      flexDirection: "column",
     },
     header: {
       alignItems: "flex-start",
-      [theme.breakpoints.down("sm")]: {
-        alignItems: "center",
-      },
+      margin: "6px 12px",
     },
     wrapper: {
       display: "flex",
       flexGrow: 1,
-      minHeight: 500,
-      maxHeight: "85vh",
-      border: "1px solid #D4D4D4",
-      borderRadius: 8,
+      height: "100%",
+      maxHeight: "90vh",
       overflow: "hidden",
       position: "relative",
-      marginTop: 8,
+      background: "#ffffff",
+      borderTop: "1px solid #D4D4D4",
+      borderBottom: "1px solid #D4D4D4",
     },
     emptyMessage: {
       borderRadius: "50ch",

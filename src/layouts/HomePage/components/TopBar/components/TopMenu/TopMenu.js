@@ -7,7 +7,6 @@ import SettingsIcon from "@material-ui/icons/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 // import FindInPageOutlinedIcon from "@material-ui/icons/FindInPageOutlined";
-import MemoryOutlinedIcon from "@material-ui/icons/MemoryOutlined";
 // import PersonAddOutlinedIcon from "@material-ui/icons/PersonAddOutlined";
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
@@ -22,6 +21,7 @@ import clsx from "clsx";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
+import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
@@ -80,13 +80,25 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       </Hidden>
+      {/* <div className={itemClasses}> */}
+      {/*  <NavLink */}
+      {/*    className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })} */}
+      {/*    to={`/pcb`} */}
+      {/*  > */}
+      {/*    {isMobile && <MemoryOutlinedIcon className={`${classes.topMenuItemIcon}`} />} */}
+      {/*    {t("pcb")} */}
+      {/*  </NavLink> */}
+      {/* </div> */}
       <div className={itemClasses}>
         <NavLink
-          className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })}
-          to={`/pcb`}
+          className={clsx(classes.topMenuItemLink, {
+            [classes.active]: window.location.pathname.includes("/messages"),
+          })}
+          to={`/messages`}
         >
-          {isMobile && <MemoryOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          {t("pcb")}
+          {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+          {t("chat")}
+          <ChatUnreadTotalCount className={classes.chatUnreadCount} />
         </NavLink>
       </div>
       {isAuthenticated && (
@@ -112,7 +124,6 @@ const TopMenu = ({ isMobile }) => {
             >
               {isMobile && <SettingsIcon className={`${classes.topMenuItemIcon}`} />}
               {t("profile")}
-              <ChatUnreadTotalCount className={classes.chatUnreadCount} />
             </NavLink>
           </div>
         </>

@@ -359,24 +359,16 @@ const SupplierResponse: React.FC = () => {
       <Container maxWidth="xl">
         <div className={classes.main}>
           <Box className={classes.headerContainer} display="flex" justifyContent="space-between" alignItems="center">
-            <div>
-              <h1 className={classes.title}>Please feedback your {isXsDown && <br />}price and stock</h1>
+            <Box display="flex" flexDirection="column" alignItems="flex-start">
+              <h1 className={classes.title}>Please feedback your price and stock</h1>
               {selectedPartner && (
-                <div className={clsx(classes.supplier, { flexible: partners?.length > 1 })}>
-                  You are logged in as{" "}
-                  {partners?.length > 1 ? (
-                    <SupplierSelect
-                      selectedPartner={selectedPartner}
-                      partners={partners}
-                      onChangePartner={onChangePartnerHandler}
-                    />
-                  ) : (
-                    <strong>{selectedPartner.name}</strong>
-                  )}{" "}
-                  supplier
-                </div>
+                <SupplierSelect
+                  selectedPartner={selectedPartner}
+                  partners={partners}
+                  onChangePartner={onChangePartnerHandler}
+                />
               )}
-            </div>
+            </Box>
             {!isSmDown && (
               <div className={classes.fileActions}>
                 <Button
