@@ -40,27 +40,20 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         maxHeight: 130,
       },
     },
-    sendIcon: {
-      color: "#ffffff",
-      cursor: "pointer",
-      borderRadius: "50ch",
-      padding: "8px",
-      width: 35,
-      height: 35,
-      transition: "all 150ms ease",
-      backgroundColor: theme.palette.app.red500,
-      "&:hover": {
-        backgroundColor: theme.palette.app.red400,
-      },
-    },
     error: {
       color: "red",
     },
     attachIcon: {
+      color: "#505050",
       cursor: "pointer",
       transform: "rotate(-135deg)",
-      fontSize: 28,
+      fontSize: 32,
       marginRight: 8,
+      padding: 3,
+      borderRadius: "50%",
+      "&:hover": {
+        backgroundColor: "#eee",
+      },
     },
   }),
 );

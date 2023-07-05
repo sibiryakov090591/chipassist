@@ -4,7 +4,6 @@ import { Box, Dialog, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import placeholderImg from "@src/images/file.png";
-import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import FallbackImage from "@src/components/FallbackImage/FallbackImage";
 import { useStyles as useMessageInputStyles } from "../MessageInput/styles";
 import { useStyles } from "./styles";
@@ -13,7 +12,6 @@ interface Props {
   open: boolean;
   message: string;
   files: File[];
-  handleSubmit: any;
   handleChange: any;
   onEnterHandler: any;
   onCloseModal: any;
@@ -28,7 +26,6 @@ const UploadFilesModal: React.FC<Props> = ({
   handleDeleteFile,
   files,
   message,
-  handleSubmit,
   handleChange,
   onEnterHandler,
 }) => {
@@ -98,7 +95,6 @@ const UploadFilesModal: React.FC<Props> = ({
               value={message}
               placeholder="Type a message"
             />
-            <ArrowUpwardRoundedIcon className={messageInputClasses.sendIcon} onClick={handleSubmit} />
           </div>
         </div>
       </div>

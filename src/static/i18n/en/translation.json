@@ -312,12 +312,12 @@
         "rfq_text_1": "{{name}} will request this product from 100+ connected sellers.",
         "rfq_text_2": "You will receive the quotes in your email inbox.",
         "rfq_text_3": "Please note that the complete search process may take up to 48 hours.",
-        "pcb_text_1": "Your request for PCB is now confirmed and we have started working on it",
-        "pcb_text_2": "We will notify you about the progress of your PCB by email",
-        "order_text_1": "Your request for quotation (RFQ) is now confirmed and we have started working on it",
-        "order_text_2": "We will notify you about the progress of your RFQ by email",
-        "message_text_1": "Your message about {{mpn}} has been sent",
-        "message_text_2": "The seller will contact you about your request by email"
+        "pcb_text_1": "Your request for PCB is now confirmed and we have started working on it.",
+        "pcb_text_2": "We will notify you about the progress of your PCB by email.",
+        "order_text_1": "Your request for quotation (RFQ) is now confirmed and we have started working on it.",
+        "order_text_2": "We will notify you about the progress of your RFQ by email.",
+        "message_text_1": "Your message about <strong>{{mpn}}</strong> has been sent.",
+        "message_text_2": "The seller will contact you about your request by email."
       }
   },
   "bom": {

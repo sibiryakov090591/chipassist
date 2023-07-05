@@ -20,7 +20,7 @@ export const useStyles = makeStyles(() =>
     icon: {
       fontSize: 36,
       color: "#ffffff",
-      background: "#171717",
+      background: "#484848",
       borderRadius: "50ch",
       cursor: "pointer",
       transition: "background 150ms ease",

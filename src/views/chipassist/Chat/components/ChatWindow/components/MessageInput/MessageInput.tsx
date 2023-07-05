@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendMessage, sendFiles, getMessages } from "@src/store/chat/chatActions";
 import ScrollToBottom from "@src/views/chipassist/Chat/components/ChatWindow/components/ScrollToBottom/ScrollToBottom";
@@ -139,10 +138,6 @@ const MessageInput: React.FC<Props> = ({
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
-        <Box display="flex" {...getRootProps()}>
-          <input {...getInputProps()} />
-          <AttachFileIcon className={classes.attachIcon} />
-        </Box>
         <div ref={inputWrapperRef} className={classes.input}>
           <textarea
             className={classes.textarea}
@@ -153,7 +148,10 @@ const MessageInput: React.FC<Props> = ({
             value={message}
             placeholder="Type a message"
           />
-          <ArrowUpwardRoundedIcon className={classes.sendIcon} onClick={handleSubmit} />
+          <Box display="flex" {...getRootProps()}>
+            <input {...getInputProps()} />
+            <AttachFileIcon className={classes.attachIcon} />
+          </Box>
         </div>
       </Box>
 
@@ -161,7 +159,6 @@ const MessageInput: React.FC<Props> = ({
         open={open}
         message={message}
         files={files}
-        handleSubmit={handleSubmit}
         handleChange={handleChange}
         onEnterHandler={onEnterHandler}
         handleDeleteFile={handleDeleteFile}
