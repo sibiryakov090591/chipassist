@@ -18,6 +18,8 @@ export const useStyles = makeStyles(() =>
     },
     section: {
       height: "100%",
+      display: "flex",
+      flexDirection: "column",
     },
     header: {
       alignItems: "flex-start",
