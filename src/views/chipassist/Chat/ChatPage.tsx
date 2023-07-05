@@ -30,7 +30,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <Page
-      title={"Messages"}
+      title={"Messages - ChipAssist"}
       description={"Messages between buyers and sellers"}
       className={clsx(classes.page, { [classes.chipassistPage]: !isResponses })}
     >
