@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Policy = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   return (
     <div style={{ padding: "30px 50px" }}>
       <h1>Privacy Policy for ChipAssist AG</h1>
