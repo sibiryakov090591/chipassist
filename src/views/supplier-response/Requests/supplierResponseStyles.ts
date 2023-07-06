@@ -36,6 +36,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   title: {
     color: "#345",
+    marginBottom: 0,
     [theme.breakpoints.down("xs")]: {
       paddingTop: 0,
       fontSize: 24,
@@ -154,9 +155,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "&.flexible": {
       display: "flex",
       alignItems: "center",
-      [theme.breakpoints.down(420)]: {
-        flexDirection: "column",
-      },
     },
   },
   dateFilter: {
