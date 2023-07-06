@@ -27,7 +27,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useNavigate } from "react-router-dom";
 import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
-import Joyride, { CallBackProps, Step, STATUS } from "react-joyride";
+import Joyride, { CallBackProps, Step, EVENTS, STATUS, ACTIONS } from "react-joyride";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -106,15 +106,24 @@ const SearchResults = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status, type } = data;
+    const { action, index, status, type } = data;
 
-    if (status === "finished" || status === "skipped" || type === "tour:end") {
-      // Tutorial completed or skipped
-      setCurrentStep(0);
-    } else if (status === "step:before") {
-      setCurrentStep((prevStep) => prevStep + 1);
+    if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type as any)) {
+      // Update state to advance the tour
+      setCurrentStep(index + (action === ACTIONS.PREV ? -1 : 1));
+    } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status as any)) {
+      // Need to set our running state to false, so we can restart if we click start again.
+      setJoyrideRun(false);
     }
   };
+  console.log(currentStep);
+  useEffect(() => {
+    if (joyrideRun) {
+      document.body.style.overflow = "hidden"; // Disable scrolling during tutorial
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling after tutorial
+    }
+  }, [joyrideRun]);
 
   useSearchLoadResults();
 
@@ -205,6 +214,9 @@ const SearchResults = () => {
           continuous={true}
           showProgress={true}
           showSkipButton={true}
+          disableOverlayClose={true}
+          scrollOffset={document.body.clientHeight / 2}
+          stepIndex={currentStep}
         />
 
         <div className={classes.main}>
