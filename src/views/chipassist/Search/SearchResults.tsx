@@ -27,6 +27,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useNavigate } from "react-router-dom";
 import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
+import Joyride, { CallBackProps, Step, STATUS } from "react-joyride";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -91,6 +92,29 @@ const SearchResults = () => {
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
+  const [joyrideSteps] = useState<Step[]>([
+    {
+      target: ".tutorial-search",
+      content: "This is step one",
+    },
+    {
+      target: ".tutorial-product-card",
+      content: "This is step two",
+    },
+  ]);
+  const [joyrideRun, setJoyrideRun] = useState(true);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status, type } = data;
+
+    if (status === "finished" || status === "skipped" || type === "tour:end") {
+      // Tutorial completed or skipped
+      setCurrentStep(0);
+    } else if (status === "step:before") {
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
+  };
 
   useSearchLoadResults();
 
@@ -173,6 +197,16 @@ const SearchResults = () => {
   return (
     <Page title={t("page_title")} description={t("page_description")}>
       <Container maxWidth="xl">
+        {/* Step-by-step tutorial */}
+        <Joyride
+          steps={joyrideSteps}
+          run={joyrideRun}
+          callback={handleJoyrideCallback}
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+        />
+
         <div className={classes.main}>
           <div
             className={clsx(classes.searchPageLayout, {
