@@ -60,16 +60,16 @@ export const ChipassistHomePage = () => {
     </div>
   );
 
-  const cartBlock = (
-    <Link to="/cart" className={classes.cartBlock}>
-      <div className={classes.cartImageCont}>
-        <img className={classes.listIcon} src={list_icon} alt="rfq list" />
-        {cart.count > 0 && (
-          <div className={clsx(classes.cartCount, appTheme.topBarCartCount, "cart-count")}>{cart.count}</div>
-        )}
-      </div>
-    </Link>
-  );
+  // const cartBlock = (
+  //   <Link to="/cart" className={classes.cartBlock}>
+  //     <div className={classes.cartImageCont}>
+  //       <img className={classes.listIcon} src={list_icon} alt="rfq list" />
+  //       {cart.count > 0 && (
+  //         <div className={clsx(classes.cartCount, appTheme.topBarCartCount, "cart-count")}>{cart.count}</div>
+  //       )}
+  //     </div>
+  //   </Link>
+  // );
 
   const scrollTo = (ref) => (e) => {
     e.preventDefault();
@@ -165,7 +165,7 @@ export const ChipassistHomePage = () => {
                   <NavLink to="/pcb" className={clsx(classes.headerButtonLink, classes.heroButtonLink)}>
                     Request PCB
                   </NavLink>
-                  {cartBlock}
+                  {/* {cartBlock} */}
                 </Box>
               </nav>
             )}
