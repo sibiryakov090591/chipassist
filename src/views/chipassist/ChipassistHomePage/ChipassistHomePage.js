@@ -22,7 +22,7 @@ import map from "@src/images/Homepage/map_outimp.png";
 import useAppTheme from "@src/theme/useAppTheme";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAppSelector from "@src/hooks/useAppSelector";
-import list_icon from "@src/images/Icons/list.svg";
+// import list_icon from "@src/images/Icons/list.svg";
 import SearchSuggestion from "@src/layouts/HomePage/components/TopBar/components/SearchSuggestion/SearchSuggestion";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -50,7 +50,7 @@ export const ChipassistHomePage = () => {
   const contactsRef = React.useRef(null);
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const cart = useAppSelector((state) => state.cart);
+  // const cart = useAppSelector((state) => state.cart);
 
   const logoLink = (
     <div className={classes.logoCont}>

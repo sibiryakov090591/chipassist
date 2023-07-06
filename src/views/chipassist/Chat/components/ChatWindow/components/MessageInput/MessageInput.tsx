@@ -8,6 +8,9 @@ import UploadFilesModal from "@src/views/chipassist/Chat/components/ChatWindow/c
 import { useDropzone } from "react-dropzone";
 import { v1 } from "uuid";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import Hidden from "@material-ui/core/Hidden";
+import { clsx } from "clsx";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -29,6 +32,7 @@ const MessageInput: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
 
@@ -138,6 +142,12 @@ const MessageInput: React.FC<Props> = ({
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
+        <Hidden mdUp>
+          <Box display="flex" {...getRootProps()}>
+            <input {...getInputProps()} />
+            <AttachFileIcon className={classes.attachIcon} />
+          </Box>
+        </Hidden>
         <div ref={inputWrapperRef} className={classes.input}>
           <textarea
             className={classes.textarea}
@@ -148,11 +158,17 @@ const MessageInput: React.FC<Props> = ({
             value={message}
             placeholder="Type a message"
           />
-          <Box display="flex" {...getRootProps()}>
-            <input {...getInputProps()} />
-            <AttachFileIcon className={classes.attachIcon} />
-          </Box>
+          <Hidden smDown>
+            <Box display="flex" {...getRootProps()}>
+              <input {...getInputProps()} />
+              <AttachFileIcon className={classes.attachIcon} />
+            </Box>
+          </Hidden>
         </div>
+        <ArrowUpwardRoundedIcon
+          className={clsx(classes.sendIcon, { disabled: !message.trim() })}
+          onClick={handleSubmit}
+        />
       </Box>
 
       <UploadFilesModal
@@ -162,6 +178,7 @@ const MessageInput: React.FC<Props> = ({
         handleChange={handleChange}
         onEnterHandler={onEnterHandler}
         handleDeleteFile={handleDeleteFile}
+        handleSubmit={handleSubmit}
         onAddFiles={onAddFiles}
         onCloseModal={onCloseModal}
       />
