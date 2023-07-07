@@ -195,7 +195,7 @@ const ProductCardNew = (props) => {
       >
         <Button
           variant="contained"
-          className={clsx(appTheme.buttonCreate, classes.requestButton)}
+          className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
           onClick={sendRfqOpenModal}
         >
           <Box display="flex" alignItems={"center"}>
@@ -207,7 +207,7 @@ const ProductCardNew = (props) => {
     ) : (
       <Button
         variant="contained"
-        className={clsx(appTheme.buttonCreate, classes.requestButton, className)}
+        className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
         onClick={sendRfqOpenModal}
       >
         {"Get more quotes"}
@@ -258,7 +258,7 @@ const ProductCardNew = (props) => {
   return (
     <Paper
       elevation={3}
-      className={clsx("product-card", "tutorial-product-card", classes.productCard, {
+      className={clsx("product-card", classes.productCard, {
         [classes.productCard]: true,
         [classes.productCardElfaro]: viewType === ID_ELFARO,
       })}

@@ -27,7 +27,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useNavigate } from "react-router-dom";
 import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
-import Joyride, { CallBackProps, Step, EVENTS, STATUS, ACTIONS } from "react-joyride";
+import Tour from "reactour";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -92,38 +92,43 @@ const SearchResults = () => {
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
-  const [joyrideSteps] = useState<Step[]>([
+
+  const [tour, setTour] = useState({ isOpen: false, wasEnd: false });
+  const [steps] = useState([
     {
-      target: ".tutorial-search",
+      selector: ".tutorial-search",
       content: "This is step one",
+      disableInteraction: true, // Disable interaction with the overlay
+      action: () => {
+        // const inputElement = node.children[0].children[0];
+        // if (inputElement) {
+        //   inputElement.focus();
+        // }
+      },
     },
     {
-      target: ".tutorial-product-card",
+      selector: ".tutorial-create-rfq",
       content: "This is step two",
     },
   ]);
-  const [joyrideRun, setJoyrideRun] = useState(true);
-  const [currentStep, setCurrentStep] = useState(0);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status, type } = data;
-
-    if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type as any)) {
-      // Update state to advance the tour
-      setCurrentStep(index + (action === ACTIONS.PREV ? -1 : 1));
-    } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status as any)) {
-      // Need to set our running state to false, so we can restart if we click start again.
-      setJoyrideRun(false);
-    }
-  };
-  console.log(currentStep);
   useEffect(() => {
-    if (joyrideRun) {
+    if (!tour.wasEnd && !isLoadingSearchResultsInProgress && products?.length) {
+      setTour((prev) => ({ ...prev, isOpen: true }));
+    }
+  }, [isLoadingSearchResultsInProgress, products]);
+
+  const onCloseTour = () => {
+    setTour((prev) => ({ ...prev, isOpen: false, wasEnd: true }));
+  };
+
+  useEffect(() => {
+    if (tour.isOpen) {
       document.body.style.overflow = "hidden"; // Disable scrolling during tutorial
     } else {
       document.body.style.overflow = "auto"; // Enable scrolling after tutorial
     }
-  }, [joyrideRun]);
+  }, [tour.isOpen]);
 
   useSearchLoadResults();
 
@@ -207,16 +212,14 @@ const SearchResults = () => {
     <Page title={t("page_title")} description={t("page_description")}>
       <Container maxWidth="xl">
         {/* Step-by-step tutorial */}
-        <Joyride
-          steps={joyrideSteps}
-          run={joyrideRun}
-          callback={handleJoyrideCallback}
-          continuous={true}
-          showProgress={true}
-          showSkipButton={true}
-          disableOverlayClose={true}
-          scrollOffset={document.body.clientHeight / 2}
-          stepIndex={currentStep}
+        <Tour
+          steps={steps}
+          isOpen={tour.isOpen}
+          onRequestClose={onCloseTour}
+          closeWithMask={false}
+          disableInteraction={false}
+          rounded={8}
+          // disableFocusLock={true}
         />
 
         <div className={classes.main}>

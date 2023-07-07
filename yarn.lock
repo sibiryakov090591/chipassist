@@ -929,7 +929,7 @@
     "@babel/helper-validator-option" "^7.14.5"
     "@babel/plugin-transform-typescript" "^7.15.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.21.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.21.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.22.3"
   dependencies:
     regenerator-runtime "^0.13.11"
@@ -1141,11 +1141,6 @@
   version "1.1.2"
   resolved "https://registry.npmjs.org/@gar/promisify/-/promisify-1.1.2.tgz"
   integrity sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==
-
-"@gilbarbara/deep-equal@^0.1.1":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@gilbarbara/deep-equal/-/deep-equal-0.1.2.tgz"
-  integrity sha512-jk+qzItoEb0D0xSSmrKDDzf9sheQj/BAPxlgNxgmOaA3mxpUa6ndJLYGZKsJnIVEQSD8zcTbyILz7I0HcnBCRA==
 
 "@hypnosphi/create-react-context@^0.3.1":
   version "0.3.1"
@@ -1453,6 +1448,11 @@
   version "1.0.1"
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.0.1.tgz"
   integrity sha512-eBV5rvW4dRFOU1eajN7FmYxjAIVz/mRHgUE9En9mBn6m3mulK3WTR5C3iQhL9MZ14rWAq+xOlEaCkDiW0/heOg==
+
+"@rooks/use-mutation-observer@4.11.2":
+  version "4.11.2"
+  resolved "https://registry.npmjs.org/@rooks/use-mutation-observer/-/use-mutation-observer-4.11.2.tgz"
+  integrity sha512-vpsdrZdr6TkB1zZJcHx+fR1YC/pHs2BaqcuYiEGjBVbwY5xcC49+h0hAUtQKHth3oJqXfIX/Ng8S7s5HFHdM/A==
 
 "@semantic-ui-react/event-stack@^3.1.0":
   version "3.1.2"
@@ -1832,6 +1832,13 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
+
+"@types/reactour@1.18.2":
+  version "1.18.2"
+  resolved "https://registry.npmjs.org/@types/reactour/-/reactour-1.18.2.tgz"
+  integrity sha512-WFZ+RjmzZG8QzhW0NI0FQ3GsFxcn2kLIEak5R1NAW6PWkIJRCano1nLv81iFxA4qCneXSD1dwSbE6iuWVwCafw==
+  dependencies:
+    "@types/react" "*"
 
 "@types/recharts@1.8.17":
   version "1.8.17"
@@ -3272,6 +3279,11 @@ class-utils@^0.3.5:
 classnames@^2.2.5, classnames@^2.2.6, classnames@2.2.6:
   version "2.2.6"
 
+classnames@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/classnames/-/classnames-2.3.1.tgz"
+  integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
+
 clean-css@4.2.x:
   version "4.2.4"
   dependencies:
@@ -4093,7 +4105,7 @@ deep-equal@~0.2.1:
 deep-is@~0.1.3:
   version "0.1.4"
 
-deepmerge@^4.2.2, deepmerge@^4.3.1:
+deepmerge@^4.2.2:
   version "4.3.1"
 
 default-gateway@^4.2.0:
@@ -4180,6 +4192,11 @@ detect-indent@^5.0.0:
 
 detect-newline@^3.0.0:
   version "3.1.0"
+
+detect-node-es@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/detect-node-es/-/detect-node-es-1.1.0.tgz"
+  integrity sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==
 
 detect-node@^2.0.4:
   version "2.1.0"
@@ -5375,6 +5392,18 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
+focus-lock@^0.9.1:
+  version "0.9.2"
+  resolved "https://registry.npmjs.org/focus-lock/-/focus-lock-0.9.2.tgz"
+  integrity sha512-YtHxjX7a0IC0ZACL5wsX8QdncXofWpGPNoVMuI/nZUrPGp6LmNI6+D5j0pPj+v8Kw5EpweA+T5yImK0rnWf7oQ==
+  dependencies:
+    tslib "^2.0.3"
+
+focus-outline-manager@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/focus-outline-manager/-/focus-outline-manager-1.0.2.tgz"
+  integrity sha512-bHWEmjLsTjGP9gVs7P3Hyl+oY5NlMW8aTSPdTJ+X2GKt6glDctt9fUCLbRV+d/l8NDC40+FxMjp9WlTQXaQALw==
+
 follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.14.4:
   version "1.15.2"
 
@@ -6525,16 +6554,6 @@ is-in-browser@^1.0.2, is-in-browser@^1.1.3:
 is-jpg@^2.0.0:
   version "2.0.0"
 
-is-lite@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.npmjs.org/is-lite/-/is-lite-0.8.2.tgz"
-  integrity sha512-JZfH47qTsslwaAsqbMI3Q6HNNjUuq6Cmzzww50TdP5Esb6e1y2sK2UAaZZuzfAzpoI2AkxoPQapZdlDuP6Vlsw==
-
-is-lite@^0.9.2:
-  version "0.9.2"
-  resolved "https://registry.npmjs.org/is-lite/-/is-lite-0.9.2.tgz"
-  integrity sha512-qZuxbaEiKLOKhX4sbHLfhFN9iA3YciuZLb37/DfXCpWnz8p7qNL2lwkpxYMXfjlS8eEEjpULPZxAUI8N6FYvYQ==
-
 is-natural-number@^4.0.1:
   version "4.0.1"
 
@@ -7461,7 +7480,7 @@ locate-path@^6.0.0:
 lodash.curry@^4.0.1:
   version "4.1.1"
 
-lodash.debounce@^4.0.4, lodash.debounce@^4.0.8:
+lodash.debounce@^4.0.4, lodash.debounce@^4.0.8, lodash.debounce@4.0.8:
   version "4.0.8"
 
 lodash.escape@^4.0.1:
@@ -7490,6 +7509,11 @@ lodash.kebabcase@^4.1.1:
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
+
+lodash.pick@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.npmjs.org/lodash.pick/-/lodash.pick-4.4.0.tgz"
+  integrity sha512-hXt6Ul/5yWjfklSGvLQl8vM//l3FtyHZeuelpzK6mm99pNvN9yTDruNZPEJZD1oWrqo+izBmB7oUfWgcCX7s4Q==
 
 lodash.reduce@^4.6.0:
   version "4.6.0"
@@ -8696,11 +8720,6 @@ pngquant-bin@^6.0.0:
 popper.js@^1.14.4:
   version "1.16.1"
 
-popper.js@^1.16.0:
-  version "1.16.1"
-  resolved "https://registry.npmjs.org/popper.js/-/popper.js-1.16.1.tgz"
-  integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
-
 popper.js@1.16.1-lts:
   version "1.16.1-lts"
 
@@ -8992,6 +9011,15 @@ prop-types@^15.0.0, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, 
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
+prop-types@15.7.2:
+  version "15.7.2"
+  resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
+  integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.8.1"
+
 proto-list@~1.2.1:
   version "1.2.4"
 
@@ -9173,6 +9201,13 @@ react-chartjs-2@^2.7.4:
     lodash "^4.17.19"
     prop-types "^15.7.2"
 
+react-clientside-effect@^1.2.5:
+  version "1.2.6"
+  resolved "https://registry.npmjs.org/react-clientside-effect/-/react-clientside-effect-1.2.6.tgz"
+  integrity sha512-XGGGRQAKY+q25Lz9a/4EPqom7WRjz3z9R2k4jhVKA/puQFH/5Nt27vFZYql4m4NVNdUvX8PS3O7r/Zzm7cjUlg==
+  dependencies:
+    "@babel/runtime" "^7.12.13"
+
 react-component-scrollload@0.5.1:
   version "0.5.1"
   dependencies:
@@ -9202,18 +9237,17 @@ react-dropzone@11.0.0:
 react-fast-compare@^3.2.0:
   version "3.2.2"
 
-react-floater@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.npmjs.org/react-floater/-/react-floater-0.7.6.tgz"
-  integrity sha512-tt/15k/HpaShbtvWCwsQYLR+ebfUuYbl+oAUJ3DcEDkgYKeUcSkDey2PdAIERdVwzdFZANz47HbwoET2/Rduxg==
+react-focus-lock@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/react-focus-lock/-/react-focus-lock-2.5.2.tgz"
+  integrity sha512-WzpdOnEqjf+/A3EH9opMZWauag7gV0BxFl+EY4ElA4qFqYsUsBLnmo2sELbN5OC30S16GAWMy16B9DLPpdJKAQ==
   dependencies:
-    deepmerge "^4.2.2"
-    exenv "^1.2.2"
-    is-lite "^0.8.2"
-    popper.js "^1.16.0"
-    prop-types "^15.8.1"
-    react-proptype-conditional-require "^1.0.4"
-    tree-changes "^0.9.1"
+    "@babel/runtime" "^7.0.0"
+    focus-lock "^0.9.1"
+    prop-types "^15.6.2"
+    react-clientside-effect "^1.2.5"
+    use-callback-ref "^1.2.5"
+    use-sidecar "^1.0.5"
 
 react-helmet-async@1.0.7:
   version "1.0.7"
@@ -9294,26 +9328,11 @@ react-intl@3.9.2:
     invariant "^2.1.1"
     shallow-equal "^1.2.1"
 
-react-is@^16.10.2, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.0, "react-is@^16.8.0 || ^17.0.0", react-is@^16.8.6, react-is@^16.9.0:
+react-is@^16.10.2, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.0, "react-is@^16.8.0 || ^17.0.0", react-is@^16.8.1, react-is@^16.8.6, react-is@^16.9.0:
   version "16.13.1"
 
 react-is@^17.0.1:
   version "17.0.2"
-
-react-joyride@2.5.4:
-  version "2.5.4"
-  resolved "https://registry.npmjs.org/react-joyride/-/react-joyride-2.5.4.tgz"
-  integrity sha512-CLV1Ju79iRKIP/KqsEX05nSxMBzT41BhPAyNrTdBQWEYAkpyo6iiCPelk6No2W8iPgw373JKk2cK7AQ5Q3lFew==
-  dependencies:
-    deepmerge "^4.3.1"
-    exenv "^1.2.2"
-    is-lite "^0.9.2"
-    prop-types "^15.8.1"
-    react-floater "^0.7.6"
-    react-is "^16.13.1"
-    scroll "^3.0.1"
-    scrollparent "^2.0.1"
-    tree-changes "^0.9.2"
 
 react-json-tree@^0.11.0:
   version "0.11.2"
@@ -9361,11 +9380,6 @@ react-popper@^1.3.4:
     prop-types "^15.6.1"
     typed-styles "^0.0.7"
     warning "^4.0.2"
-
-react-proptype-conditional-require@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz"
-  integrity sha512-nopsRn7KnGgazBe2c3H2+Kf+Csp6PGDRLiBkYEDMKY8o/EIgft/WnIm/OnAKTawZiLnJXHAqhpFBddvs6NiXlw==
 
 react-pure-render@^1.0.2:
   version "1.0.2"
@@ -9505,6 +9519,21 @@ react@16.11.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
+
+reactour@1.19.0:
+  version "1.19.0"
+  resolved "https://registry.npmjs.org/reactour/-/reactour-1.19.0.tgz"
+  integrity sha512-KHWX46yRXgQX1iD+cS/qI33VYH5jFgZeRxXIk4yJyIAGsTrDTwPeFFa6m7Pv+WX/CoEfggGfdSi2LPAkkuOkOg==
+  dependencies:
+    "@rooks/use-mutation-observer" "4.11.2"
+    classnames "2.3.1"
+    focus-outline-manager "^1.0.2"
+    lodash.debounce "4.0.8"
+    lodash.pick "4.4.0"
+    prop-types "15.7.2"
+    react-focus-lock "2.5.2"
+    scroll-smooth "1.1.1"
+    scrollparent "2.0.1"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -10101,15 +10130,15 @@ schema-utils@2.7.0:
     ajv "^6.12.2"
     ajv-keywords "^3.4.1"
 
-scroll@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/scroll/-/scroll-3.0.1.tgz"
-  integrity sha512-pz7y517OVls1maEzlirKO5nPYle9AXsFzTMNJrRGmT951mzpIBy7sNHOg5o/0MQd/NqliCiWnAi0kZneMPFLcg==
+scroll-smooth@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/scroll-smooth/-/scroll-smooth-1.1.1.tgz"
+  integrity sha512-i9e/hJf0ODPEsy+AubE0zES6xdOuIvtebe5MvdSI1lB4t91k+O+8kV15CYfPN0yPH4j4hZUoKM3rVaPVcmiOoQ==
 
-scrollparent@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/scrollparent/-/scrollparent-2.1.0.tgz"
-  integrity sha512-bnnvJL28/Rtz/kz2+4wpBjHzWoEzXhVg/TE8BeVGJHUqE8THNIRnDxDWMktwM+qahvlRdvlLdsQfYe+cuqfZeA==
+scrollparent@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/scrollparent/-/scrollparent-2.0.1.tgz"
+  integrity sha512-HSdN78VMvFCSGCkh0oYX/tY4R3P1DW61f8+TeZZ4j2VLgfwvw0bpRSOv4PCVKisktIwbzHCfZsx+rLbbDBqIBA==
 
 scss-tokenizer@^0.2.3:
   version "0.2.3"
@@ -11172,14 +11201,6 @@ tr46@^2.1.0:
 tr46@~0.0.3:
   version "0.0.3"
 
-tree-changes@^0.9.1, tree-changes@^0.9.2:
-  version "0.9.3"
-  resolved "https://registry.npmjs.org/tree-changes/-/tree-changes-0.9.3.tgz"
-  integrity sha512-vvvS+O6kEeGRzMglTKbc19ltLWNtmNt1cpBoSYLj/iEcPVvpJasemKOlxBrmZaCtDJoF+4bwv3m01UKYi8mukQ==
-  dependencies:
-    "@gilbarbara/deep-equal" "^0.1.1"
-    is-lite "^0.8.2"
-
 tree-kill@^1.2.2:
   version "1.2.2"
 
@@ -11219,8 +11240,18 @@ tsconfig-paths@^3.9.0:
 tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
 
+tslib@^2.0.0:
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/tslib/-/tslib-2.6.0.tgz"
+  integrity sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==
+
 tslib@^2.0.1:
   version "2.5.2"
+
+tslib@^2.0.3:
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/tslib/-/tslib-2.6.0.tgz"
+  integrity sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==
 
 tslib@^2.1.0:
   version "2.5.2"
@@ -11451,6 +11482,21 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-callback-ref@^1.2.5:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/use-callback-ref/-/use-callback-ref-1.3.0.tgz"
+  integrity sha512-3FT9PRuRdbB9HfXhEq35u4oZkvpJ5kuYbpqhCfmiZyReuRgpnhDlbr2ZEnnuS0RrJAPn6l23xjFg9kpDM+Ms7w==
+  dependencies:
+    tslib "^2.0.0"
+
+use-sidecar@^1.0.5:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/use-sidecar/-/use-sidecar-1.1.2.tgz"
+  integrity sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==
+  dependencies:
+    detect-node-es "^1.1.0"
+    tslib "^2.0.0"
 
 use@^3.1.0:
   version "3.1.1"
