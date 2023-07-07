@@ -43,6 +43,27 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     error: {
       color: "red",
     },
+    sendIcon: {
+      color: "#ffffff",
+      cursor: "pointer",
+      borderRadius: "50ch",
+      padding: "8px",
+      width: 43,
+      height: 43,
+      marginLeft: 5,
+      transition: "all 150ms ease",
+      backgroundColor: theme.palette.app.red500,
+      "&:hover": {
+        backgroundColor: theme.palette.app.red400,
+      },
+      "&.disabled": {
+        backgroundColor: "#cdcbcb",
+        pointerEvents: "none",
+        "&:hover": {
+          backgroundColor: "#cdcbcb",
+        },
+      },
+    },
     attachIcon: {
       color: "#505050",
       cursor: "pointer",
@@ -53,6 +74,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderRadius: "50%",
       "&:hover": {
         backgroundColor: "#eee",
+      },
+      [theme.breakpoints.down("sm")]: {
+        marginRight: 3,
       },
     },
   }),
