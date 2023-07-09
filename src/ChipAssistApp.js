@@ -57,7 +57,6 @@ import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessa
 import { loadSellersWithProductLink } from "@src/store/products/productsActions";
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
-import RfqList from "@src/views/chipassist/RfqList/RfqList";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -115,6 +114,10 @@ const CatalogResults = lazy(() =>
   lazyLoader(() =>
     import(/* webpackChunkName: "catalogResults" */ "@src/views/chipassist/Catalog/Results/CatalogResults"),
   ),
+);
+
+const RfqList = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "catalogResults" */ "@src/views/chipassist/RfqList/RfqList")),
 );
 
 export function PrivateRoute({ children, isAuthenticated, prevEmail }) {

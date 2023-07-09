@@ -9,6 +9,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   section: {
     marginTop: "5rem",
+    width: "100%",
   },
   title: {
     fontSize: "20px",
@@ -49,6 +50,54 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+  },
+  phone: {
+    margin: 13,
+    width: "100%",
+    [theme.breakpoints.down(460)]: {
+      margin: "8px 0",
+    },
+  },
+  regSectionColor: {
+    backgroundColor: theme.palette.app.grey100,
+  },
+  regContainerStyle: {
+    paddingTop: "2em",
+    paddingBottom: "2em",
+  },
+  regBoxContainer: {
+    width: 500,
+    margin: "0 auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "auto",
+    },
+    "& .MuiTextField-root": {
+      margin: 13,
+      width: "25ch",
+    },
+  },
+  regColumn: {
+    display: "flex",
+    height: "17em",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "column",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
+  },
+  formRow: {
+    display: "flex",
+    [theme.breakpoints.down(460)]: {
+      flexDirection: "column",
+      "& .MuiTextField-root": {
+        display: "block",
+        margin: "8px 0",
+        "& .MuiOutlinedInput-root": {
+          width: "100%",
+        },
+      },
+    },
   },
 }));
 
