@@ -28,6 +28,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         marginTop: 2,
         fontSize: 20,
       },
+      "& .MuiInputBase-root.Mui-disabled": {
+        backgroundColor: "#f0f0f0 !important",
+        borderRadius: 8,
+      },
     },
     button: {
       minWidth: 38,

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendMessage, sendFiles, getMessages } from "@src/store/chat/chatActions";
 import ScrollToBottom from "@src/views/chipassist/Chat/components/ChatWindow/components/ScrollToBottom/ScrollToBottom";
@@ -9,6 +8,9 @@ import UploadFilesModal from "@src/views/chipassist/Chat/components/ChatWindow/c
 import { useDropzone } from "react-dropzone";
 import { v1 } from "uuid";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import Hidden from "@material-ui/core/Hidden";
+import { clsx } from "clsx";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -30,6 +32,7 @@ const MessageInput: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
 
@@ -139,10 +142,12 @@ const MessageInput: React.FC<Props> = ({
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
-        <Box display="flex" {...getRootProps()}>
-          <input {...getInputProps()} />
-          <AttachFileIcon className={classes.attachIcon} />
-        </Box>
+        <Hidden mdUp>
+          <Box display="flex" {...getRootProps()}>
+            <input {...getInputProps()} />
+            <AttachFileIcon className={classes.attachIcon} />
+          </Box>
+        </Hidden>
         <div ref={inputWrapperRef} className={classes.input}>
           <textarea
             className={classes.textarea}
@@ -153,18 +158,27 @@ const MessageInput: React.FC<Props> = ({
             value={message}
             placeholder="Type a message"
           />
-          <ArrowUpwardRoundedIcon className={classes.sendIcon} onClick={handleSubmit} />
+          <Hidden smDown>
+            <Box display="flex" {...getRootProps()}>
+              <input {...getInputProps()} />
+              <AttachFileIcon className={classes.attachIcon} />
+            </Box>
+          </Hidden>
         </div>
+        <ArrowUpwardRoundedIcon
+          className={clsx(classes.sendIcon, { disabled: !message.trim() })}
+          onClick={handleSubmit}
+        />
       </Box>
 
       <UploadFilesModal
         open={open}
         message={message}
         files={files}
-        handleSubmit={handleSubmit}
         handleChange={handleChange}
         onEnterHandler={onEnterHandler}
         handleDeleteFile={handleDeleteFile}
+        handleSubmit={handleSubmit}
         onAddFiles={onAddFiles}
         onCloseModal={onCloseModal}
       />

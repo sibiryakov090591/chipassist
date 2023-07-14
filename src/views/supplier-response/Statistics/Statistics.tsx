@@ -120,19 +120,11 @@ const Statistics: React.FC = () => {
           <Box display="flex" flexDirection="column" alignItems="flex-start">
             <h1 className={requestsClasses.title}>Statistic of your responses</h1>
             {selectedPartner && (
-              <div className={clsx(requestsClasses.supplier, { flexible: partners?.length > 1 })}>
-                You are logged in as{" "}
-                {partners?.length > 1 ? (
-                  <SupplierSelect
-                    selectedPartner={selectedPartner}
-                    partners={partners}
-                    onChangePartner={onChangePartnerHandler}
-                  />
-                ) : (
-                  <strong>{selectedPartner.name}</strong>
-                )}{" "}
-                supplier
-              </div>
+              <SupplierSelect
+                selectedPartner={selectedPartner}
+                partners={partners}
+                onChangePartner={onChangePartnerHandler}
+              />
             )}
           </Box>
           {isAuthenticated && selectedPartner === false && (

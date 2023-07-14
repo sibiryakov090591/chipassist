@@ -276,11 +276,14 @@ const ProgressModal: React.FC = () => {
                   )}
                   {requestType === "sellerMessage" && (
                     <>
-                      <p className={classes.p}>
-                        {t("success.message_text_1", {
-                          mpn: partNumber,
-                        })}
-                      </p>
+                      <p
+                        className={classes.p}
+                        dangerouslySetInnerHTML={{
+                          __html: t("success.message_text_1", {
+                            mpn: partNumber,
+                          }),
+                        }}
+                      />
                       <p className={classes.p}>{t("success.message_text_2")}</p>
                     </>
                   )}

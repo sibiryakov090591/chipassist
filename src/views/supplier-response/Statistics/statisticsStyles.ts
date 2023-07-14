@@ -71,6 +71,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       gridTemplateAreas: `
       "mpn"
       "date"
+      "yourQty"
       "qty"
       "manufacturer"
       "yourPrice"

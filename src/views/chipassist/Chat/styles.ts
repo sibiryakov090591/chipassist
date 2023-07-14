@@ -1,34 +1,39 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
+import { scrollbarWidth } from "@src/config";
 import { Theme } from "@material-ui/core";
 import { AppTheme } from "@src/themes/AppTheme";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
-    section: {
-      padding: "2em 0",
-      height: "100%",
+    page: {
+      position: "absolute",
+      paddingTop: 80,
+      top: 0,
+      width: "100vw",
+      bottom: 0,
+      zIndex: 1,
+      [theme.breakpoints.up("md")]: {
+        paddingRight: `${scrollbarWidth}px`,
+      },
     },
-    container: {
+    chipassistPage: {
+      paddingTop: 133,
+    },
+    section: {
       height: "100%",
       display: "flex",
       flexDirection: "column",
     },
-    header: {
-      alignItems: "flex-start",
-      [theme.breakpoints.down("sm")]: {
-        alignItems: "center",
-      },
-    },
     wrapper: {
       display: "flex",
       flexGrow: 1,
-      minHeight: 500,
-      maxHeight: "85vh",
-      border: "1px solid #D4D4D4",
-      borderRadius: 8,
+      height: "100%",
+      maxHeight: "90vh",
       overflow: "hidden",
       position: "relative",
-      marginTop: 8,
+      background: "#ffffff",
+      borderTop: "1px solid #D4D4D4",
+      borderBottom: "1px solid #D4D4D4",
     },
     emptyMessage: {
       borderRadius: "50ch",

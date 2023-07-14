@@ -1,11 +1,13 @@
 import React from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box, Hidden } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
 import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
 import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import { onChangePartner } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import Chat from "./Chat";
 import Page from "../../../components/Page";
 import { useStyles } from "./styles";
@@ -14,6 +16,7 @@ const ChatPage: React.FC = () => {
   const classes = useStyles();
   const requestsClasses = useRequestsStyles();
   const dispatch = useAppDispatch();
+  const isResponses = constants.id === ID_SUPPLIER_RESPONSE;
 
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
@@ -26,30 +29,28 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <Page title={"Chat"} description={"Chat with buyers"} style={{ height: "100%" }}>
+    <Page
+      title={"Messages - ChipAssist"}
+      description={"Messages between buyers and sellers"}
+      className={clsx(classes.page, { [classes.chipassistPage]: !isResponses })}
+    >
       <section className={classes.section}>
-        <Container maxWidth="xl" className={classes.container}>
-          <Box display="flex" flexDirection="column" className={classes.header}>
+        <Hidden smDown>
+          <Box m="6px 12px 0">
             <h1 className={requestsClasses.title}>Message center</h1>
-            {selectedPartner && partners?.length > 1 && (
-              <div className={clsx(requestsClasses.supplier, { flexible: partners?.length > 1 })}>
-                You are logged in as{" "}
-                {partners?.length > 1 ? (
-                  <SupplierSelect
-                    selectedPartner={selectedPartner}
-                    partners={partners}
-                    onChangePartner={onChangePartnerHandler}
-                  />
-                ) : (
-                  <strong>{selectedPartner.name}</strong>
-                )}{" "}
-                supplier
-              </div>
-            )}
           </Box>
+        </Hidden>
+        {partners?.length > 1 && selectedPartner && (
+          <Box m="0 12px">
+            <SupplierSelect
+              selectedPartner={selectedPartner}
+              partners={partners}
+              onChangePartner={onChangePartnerHandler}
+            />
+          </Box>
+        )}
 
-          <Chat />
-        </Container>
+        <Chat />
       </section>
     </Page>
   );

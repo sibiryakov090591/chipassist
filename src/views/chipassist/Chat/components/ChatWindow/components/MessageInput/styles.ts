@@ -1,8 +1,8 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-// import { Theme } from "@material-ui/core";
-// import { AppTheme } from "@src/themes/AppTheme";
+import { Theme } from "@material-ui/core";
+import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     root: {
       position: "relative",
@@ -12,7 +12,9 @@ export const useStyles = makeStyles(() =>
       padding: 12,
       display: "flex",
       flexDirection: "column",
-      borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+      [theme.breakpoints.down("xs")]: {
+        padding: 8,
+      },
     },
     input: {
       display: "flex",
@@ -34,28 +36,48 @@ export const useStyles = makeStyles(() =>
       height: 32,
       overflow: "hidden",
       maxHeight: 230,
-    },
-    sendIcon: {
-      color: "#ffffff",
-      background: "#171717",
-      cursor: "pointer",
-      borderRadius: "50ch",
-      padding: "8px",
-      width: 35,
-      height: 35,
-      transition: "all 150ms ease",
-      "&:hover": {
-        background: "#323232",
+      [theme.breakpoints.down("xs")]: {
+        maxHeight: 130,
       },
     },
     error: {
       color: "red",
     },
+    sendIcon: {
+      color: "#ffffff",
+      cursor: "pointer",
+      borderRadius: "50ch",
+      padding: "8px",
+      width: 43,
+      height: 43,
+      marginLeft: 5,
+      transition: "all 150ms ease",
+      backgroundColor: theme.palette.app.red500,
+      "&:hover": {
+        backgroundColor: theme.palette.app.red400,
+      },
+      "&.disabled": {
+        backgroundColor: "#cdcbcb",
+        pointerEvents: "none",
+        "&:hover": {
+          backgroundColor: "#cdcbcb",
+        },
+      },
+    },
     attachIcon: {
+      color: "#505050",
       cursor: "pointer",
       transform: "rotate(-135deg)",
-      fontSize: 28,
+      fontSize: 32,
       marginRight: 8,
+      padding: 3,
+      borderRadius: "50%",
+      "&:hover": {
+        backgroundColor: "#eee",
+      },
+      [theme.breakpoints.down("sm")]: {
+        marginRight: 3,
+      },
     },
   }),
 );

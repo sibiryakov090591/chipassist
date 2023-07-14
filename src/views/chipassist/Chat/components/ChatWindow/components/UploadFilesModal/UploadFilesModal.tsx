@@ -3,8 +3,8 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { Box, Dialog, IconButton, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import placeholderImg from "@src/images/file.png";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import placeholderImg from "@src/images/file.png";
 import FallbackImage from "@src/components/FallbackImage/FallbackImage";
 import { useStyles as useMessageInputStyles } from "../MessageInput/styles";
 import { useStyles } from "./styles";
@@ -98,8 +98,8 @@ const UploadFilesModal: React.FC<Props> = ({
               value={message}
               placeholder="Type a message"
             />
-            <ArrowUpwardRoundedIcon className={messageInputClasses.sendIcon} onClick={handleSubmit} />
           </div>
+          <ArrowUpwardRoundedIcon className={messageInputClasses.sendIcon} onClick={handleSubmit} />
         </div>
       </div>
     </Dialog>

@@ -22,7 +22,7 @@ import map from "@src/images/Homepage/map_outimp.png";
 import useAppTheme from "@src/theme/useAppTheme";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAppSelector from "@src/hooks/useAppSelector";
-import list_icon from "@src/images/Icons/list.svg";
+// import list_icon from "@src/images/Icons/list.svg";
 import SearchSuggestion from "@src/layouts/HomePage/components/TopBar/components/SearchSuggestion/SearchSuggestion";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -50,7 +50,7 @@ export const ChipassistHomePage = () => {
   const contactsRef = React.useRef(null);
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const cart = useAppSelector((state) => state.cart);
+  // const cart = useAppSelector((state) => state.cart);
 
   const logoLink = (
     <div className={classes.logoCont}>
@@ -60,16 +60,16 @@ export const ChipassistHomePage = () => {
     </div>
   );
 
-  const cartBlock = (
-    <Link to="/cart" className={classes.cartBlock}>
-      <div className={classes.cartImageCont}>
-        <img className={classes.listIcon} src={list_icon} alt="rfq list" />
-        {cart.count > 0 && (
-          <div className={clsx(classes.cartCount, appTheme.topBarCartCount, "cart-count")}>{cart.count}</div>
-        )}
-      </div>
-    </Link>
-  );
+  // const cartBlock = (
+  //   <Link to="/cart" className={classes.cartBlock}>
+  //     <div className={classes.cartImageCont}>
+  //       <img className={classes.listIcon} src={list_icon} alt="rfq list" />
+  //       {cart.count > 0 && (
+  //         <div className={clsx(classes.cartCount, appTheme.topBarCartCount, "cart-count")}>{cart.count}</div>
+  //       )}
+  //     </div>
+  //   </Link>
+  // );
 
   const scrollTo = (ref) => (e) => {
     e.preventDefault();
@@ -145,12 +145,18 @@ export const ChipassistHomePage = () => {
                   {isAuthenticated && (
                     <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
                       {t("menu.profile")}
-                      <ChatUnreadTotalCount className={classes.chatUnreadCount} />
                     </NavLink>
                   )}
-                  <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
-                    Contacts
-                  </a>
+                  {isAuthenticated ? (
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/messages`}>
+                      {t("menu.chat")}
+                      <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+                    </NavLink>
+                  ) : (
+                    <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
+                      Contacts
+                    </a>
+                  )}
                   <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
                     {t("menu.blog")}
                   </NavLink>
@@ -159,7 +165,7 @@ export const ChipassistHomePage = () => {
                   <NavLink to="/pcb" className={clsx(classes.headerButtonLink, classes.heroButtonLink)}>
                     Request PCB
                   </NavLink>
-                  {cartBlock}
+                  {/* {cartBlock} */}
                 </Box>
               </nav>
             )}
