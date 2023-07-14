@@ -24,9 +24,11 @@ export function sendFeedbackMessageThunk(subject: string, data: { [key: string]:
   let message = "";
   Object.entries(data).forEach((entr) => {
     if (typeof entr[1] !== "boolean" && !entr[1]) return;
-    message += message ? ` ${entr[0]}: ${entr[1]};` : `${subject}: ${entr[0]}: ${entr[1]};`;
+    message += message ? ` ${entr[0]}: ${entr[1]};` : `${subject}; ${entr[0]}: ${JSON.stringify(entr[1])};`;
   });
   formData.append("message", message);
+
+  console.log(formData.get("message"));
 
   return (dispatch: Dispatch<any>) => {
     return dispatch({
