@@ -27,7 +27,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginBottom: "2rem",
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center",
     width: "100%",
     [theme.breakpoints.down("md")]: {
       flexDirection: "column",
@@ -38,6 +37,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginRight: "2rem",
     [theme.breakpoints.down("md")]: {
       marginBottom: "1rem",
+    },
+    "& .MuiInputBase-root.Mui-disabled": {
+      backgroundColor: `${theme.palette.app.grey100}!important`,
     },
   },
 
@@ -66,10 +68,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     paddingBottom: "2em",
   },
   regBoxContainer: {
-    width: 500,
     margin: "0 auto",
+    display: "flex",
+    flexDirection: "row",
     [theme.breakpoints.down("sm")]: {
       width: "auto",
+      flexDirection: "column",
     },
     "& .MuiTextField-root": {
       margin: 13,
@@ -98,6 +102,19 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
         },
       },
     },
+  },
+  pageContainer: {
+    marginTop: "2rem",
+    marginBottom: "2rem",
+    padding: "2rem",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "flex-start",
+    flexDirection: "column",
+    alignItems: "center",
+    border: `${theme.palette.app.grey200} 1px solid`,
+    borderRadius: "4px",
   },
 }));
 

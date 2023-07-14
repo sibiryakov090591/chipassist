@@ -1,11 +1,22 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Page } from "@src/components";
-import { Box, Button, Checkbox, Container, FormControlLabel, FormHelperText, Link, TextField } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  Container,
+  FormControlLabel,
+  FormHelperText,
+  InputAdornment,
+  Link,
+  TextField,
+} from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useStyles from "@src/views/chipassist/RfqList/RfqListStyle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import { findLastIndex } from "lodash";
+import _, { findLastIndex } from "lodash";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useDebounce from "@src/hooks/useDebounce";
 import validate from "validate.js";
@@ -21,7 +32,7 @@ import { changeMisc, progressModalOpen } from "@src/store/progressModal/progress
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { batch } from "react-redux";
-import { clearRfqItem, rfqModalClose, saveRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
+import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
 
 interface RegInterface {
   country: string;
@@ -32,6 +43,7 @@ interface RegInterface {
   company_other_type: string;
   policy_confirm: boolean;
   receive_updates_confirm: boolean;
+  comment: string;
 }
 
 interface RfqItem {
@@ -63,6 +75,7 @@ interface RfqErrors {
 }
 
 interface RegTouched {
+  comment?: string[];
   country?: string[];
   email?: string[];
   firstName?: string[];
@@ -74,6 +87,7 @@ interface RegTouched {
 }
 
 interface RegErrors {
+  comment?: string[];
   country?: string[];
   email?: string[];
   firstName?: string[];
@@ -102,6 +116,7 @@ interface RfqListFormState {
 const defaultState = (): FormState => ({
   isValid: false,
   values: {
+    comment: "",
     country: "",
     email: "",
     firstName: "",
@@ -123,7 +138,7 @@ const defaultRfqListState = (): RfqListFormState => ({
       isDisabled: false,
       MPN: "",
       manufacturer: "",
-      quantity: 1,
+      quantity: null,
       price: 0,
     },
     {
@@ -131,7 +146,7 @@ const defaultRfqListState = (): RfqListFormState => ({
       isDisabled: true,
       MPN: "",
       manufacturer: "",
-      quantity: 1,
+      quantity: null,
       price: 0,
     },
   ],
@@ -140,12 +155,14 @@ const defaultRfqListState = (): RfqListFormState => ({
 });
 
 export const RfqList = () => {
+  const maxRfqRows = 10;
   const { t } = useI18n("rfq");
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const appTheme = useAppTheme();
+  const currency = useAppSelector((state) => state.currency.selected);
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const [formState, setFormState] = useState<FormState>(defaultState());
@@ -158,13 +175,14 @@ export const RfqList = () => {
   const [needToChange, setNeedToChange] = useState(false);
   const [prevFilledInputIndex, setPrewFilledInputIndex] = useState(0);
   const [phoneValue, setPhoneValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const addButtonClickHandler = () => {
     const newRfq: RfqItem = {
       MPN: "",
       index: rfqListState.values.length,
       manufacturer: "",
-      quantity: 1,
+      quantity: null,
       price: 0,
       isDisabled: true,
     };
@@ -271,9 +289,9 @@ export const RfqList = () => {
     if (rfqListState.values) {
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
-        (element) => element.MPN !== "" || element.manufacturer !== "",
+        (element) => element.MPN !== "" || element.quantity !== null,
       );
-      console.log(lastFilledIndex);
+      console.log(lastFilledIndex, rfqListState.values[0]);
 
       if (
         lastFilledIndex >= 0 &&
@@ -333,9 +351,12 @@ export const RfqList = () => {
     const errors = { ...formState.errors };
     if (errors[name]) delete errors[name];
 
+    console.log("errors ", errors);
+
     if (type === "checkbox") {
       return setFormState((prevState) => ({
         ...prevState,
+        isValid: _.isEmpty(errors),
         values: { ...prevState.values, [name]: checked },
         touched: {
           ...prevState.touched,
@@ -347,6 +368,7 @@ export const RfqList = () => {
 
     return setFormState((prevState) => ({
       ...prevState,
+      isValid: _.isEmpty(errors),
       values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
       touched: {
         ...prevState.touched,
@@ -361,8 +383,14 @@ export const RfqList = () => {
     const errors = [...rfqListState.errors];
     if (errors[index]) if (errors[index][name]) delete errors[index][name];
     setNeedToChange((prevState) => !prevState);
+
+    const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
+
+    // console.log("errors: ", isErrorsOccured);
+    // console.log("error.length: ", errors.length);
     return setRfqListState((prevState) => ({
       ...prevState,
+      isValid: isErrorsOccured.length === 0,
       values: [
         ...prevState.values.slice(0, index),
         { ...prevState.values[index], [name]: value },
@@ -431,9 +459,9 @@ export const RfqList = () => {
       ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
       : billingAddress?.company_name;
 
-    dispatch(changeMisc("rfqList", data, formState.values.email));
-    dispatch(changeMisc("not_activated_request", { ...data, requestType: "rfqList" }, formState.values.email));
-
+    dispatch(changeMisc("rfq_list", data, formState.values.email));
+    dispatch(changeMisc("not_activated_request", { ...data, requestType: "rfq_list" }, formState.values.email));
+    setIsLoading(true);
     let registerData = { ...defaultRegisterData };
     registerData.email = formState.values.email;
     registerData.first_name = formState.values.firstName;
@@ -454,28 +482,33 @@ export const RfqList = () => {
         .filter((i: any) => !!i),
     );
 
-    dispatch(authSignup(registerData, { subj: "rfq" })).then(() => {
-      batch(() => {
-        localStorage.removeItem("rfq_form_register_data");
-        localStorage.setItem("registered_email", formState.values.email);
-        dispatch(clearRfqItem());
-        setFormState((prevState) => ({
-          ...defaultState(),
-          values: {
-            ...defaultState().values,
-            country: prevState.values.country,
-          },
-        }));
-        dispatch(progressModalOpen());
-      });
-    });
+    dispatch(authSignup(registerData, { subj: "rfq" }))
+      .then(() => {
+        batch(() => {
+          localStorage.removeItem("rfq_form_register_data");
+          localStorage.setItem("registered_email", formState.values.email);
+          dispatch(clearRfqItem());
+          setFormState((prevState) => ({
+            ...defaultState(),
+            values: {
+              ...defaultState().values,
+              country: prevState.values.country,
+            },
+          }));
+          dispatch(progressModalOpen());
+        });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const checkErrorInRfqList = () => {
-    const rfqFormErrors = rfqListState.values.map((elem) => validate(elem, rfqSchema));
+    const rfqFormErrors = rfqListState.values.map((elem, index) =>
+      index === 0 || elem.MPN !== "" || elem.quantity !== null ? validate(elem, rfqSchema) : undefined,
+    );
     if (rfqFormErrors.filter((elem) => elem !== undefined).length !== 0) {
       const firstNotUndefined = rfqFormErrors.indexOf((elem: any) => elem !== undefined);
-
+      console.log("rfqFormError: ", rfqFormErrors);
+      console.log(firstNotUndefined);
       setRfqListState((prevState) => ({
         ...prevState,
         isValid: firstNotUndefined === -1,
@@ -486,6 +519,14 @@ export const RfqList = () => {
       }));
       return true;
     }
+
+    setRfqListState((prevState) => ({
+      ...prevState,
+      isValid: true,
+      touched: [],
+      errors: [],
+    }));
+
     return false;
   };
 
@@ -528,243 +569,305 @@ export const RfqList = () => {
   };
   return (
     <Page title={"rfqListPage"} description={"rfqListPageDescription"}>
-      <section className={classes.section}>
-        <Container maxWidth={"lg"} className={classes.mainContainer}>
-          <Box className={classes.listBox}>
-            <p className={classes.title}>Enter your quote list</p>
-            {rfqListState.values.map((elem, key) => (
-              <Box key={key} className={classes.rfqsBox}>
-                <TextField
-                  disabled={elem.isDisabled}
-                  variant={"outlined"}
-                  name={"MPN"}
-                  label={"Part Number"}
-                  defaultValue={elem.MPN}
-                  fullWidth
-                  className={classes.rfqInput}
-                  onChange={(event) => handleRfqListChange(event, key)}
-                  onBlur={onRfqBlurHandler("MPN", key)}
-                  {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
-                />
-                <TextField
-                  disabled={elem.isDisabled}
-                  variant={"outlined"}
-                  name={"manufacturer"}
-                  label={"Manufacturer"}
-                  defaultValue={elem.manufacturer}
-                  fullWidth
-                  className={classes.rfqInput}
-                  onChange={(event) => handleRfqListChange(event, key)}
-                />
-
-                <TextField
-                  disabled={elem.isDisabled}
-                  variant={"outlined"}
-                  name={"quantity"}
-                  label={"Quantity"}
-                  defaultValue={elem.quantity}
-                  style={!isDownMd ? { width: "20em" } : null}
-                  fullWidth={isDownMd}
-                  className={classes.rfqInput}
-                  onChange={(event) => handleRfqListChange(event, key)}
-                  onBlur={onRfqBlurHandler("quantity", key)}
-                  {...rfqErrorProps("quantity", key)}
-                />
-                <TextField
-                  disabled={elem.isDisabled}
-                  variant={"outlined"}
-                  name={"price"}
-                  label={"Target Price"}
-                  defaultValue={elem.price}
-                  style={!isDownMd ? { width: "20em" } : null}
-                  fullWidth={isDownMd}
-                  className={classes.rfqInput}
-                  onChange={(event) => handleRfqListChange(event, key)}
-                />
-              </Box>
-            ))}
-            <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-              Add new RFQ request
-            </Button>
-          </Box>
-        </Container>
-      </section>
-      {!isAuthenticated && (
-        <section className={clsx(classes.section, classes.regSectionColor)}>
-          <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
-            <p className={classes.title}>Tell us about yourself</p>
-            <Container maxWidth={"lg"}>
-              <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
-                <Box className={classes.formRow}>
+      <Container maxWidth={"xl"} className={classes.pageContainer}>
+        <section className={classes.section}>
+          <Container maxWidth={"lg"} className={classes.mainContainer}>
+            <Box className={classes.listBox}>
+              <p className={classes.title}>Enter your quote list</p>
+              {rfqListState.values.map((elem, key) => (
+                <Box key={key} className={classes.rfqsBox}>
                   <TextField
-                    name="firstName"
-                    label={`${t("form_labels.first_name")} *`}
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    style={{ width: "100%" }}
-                    value={formState.values.firstName}
-                    onBlur={onBlurHandler("firstName")}
-                    onChange={handleChange}
-                    disabled={isAuthenticated}
-                    {...errorProps("firstName")}
-                  />
-                  <TextField
-                    style={{ width: "100%" }}
-                    name="lastName"
-                    label={`${t("form_labels.last_name")} *`}
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={formState.values.lastName}
-                    onBlur={onBlurHandler("lastName")}
-                    onChange={handleChange}
-                    disabled={isAuthenticated}
-                    {...errorProps("lastName")}
-                  />
-                </Box>
-                <Box className={classes.formRow}>
-                  <TextField
-                    style={{ width: "100%" }}
-                    name="email"
-                    label={`${t(
-                      constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-                    )} *`}
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={formState.values.email}
-                    onBlur={onBlurHandler("email")}
-                    onChange={handleChange}
-                    disabled={isAuthenticated}
-                    {...errorProps("email")}
-                  />
-
-                  <div className={classes.phone}>
-                    <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
-                  </div>
-                </Box>
-                <Box className={classes.formRow}>
-                  <TextField
-                    style={{ textAlign: "start", width: "100%" }}
+                    disabled={elem.isDisabled}
+                    variant={"outlined"}
+                    name={"MPN"}
+                    label={"Part Number"}
+                    placeholder={"ex. KNP100"}
+                    defaultValue={elem.MPN}
                     fullWidth
-                    name="company_type"
-                    label={`${t("column.company_type")} *`}
-                    variant="outlined"
                     size="small"
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    value={formState.values.company_type}
-                    select
-                    onChange={handleChange}
-                  >
-                    <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
-                    <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
-                    <MenuItem value="Design organization">{t("column.design")}</MenuItem>
-                    <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
-                    <MenuItem value="Other">{t("column.other")}</MenuItem>
-                  </TextField>
+                    className={classes.rfqInput}
+                    onChange={(event) => handleRfqListChange(event, key)}
+                    onBlur={onRfqBlurHandler("MPN", key)}
+                    {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
+                  />
+                  <TextField
+                    disabled={elem.isDisabled}
+                    variant={"outlined"}
+                    name={"manufacturer"}
+                    label={"Manufacturer"}
+                    placeholder={"ex. Schneider Electric"}
+                    defaultValue={elem.manufacturer}
+                    size="small"
+                    fullWidth
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    className={classes.rfqInput}
+                    onChange={(event) => handleRfqListChange(event, key)}
+                  />
 
                   <TextField
-                    variant="outlined"
-                    name="country"
+                    disabled={elem.isDisabled}
+                    variant={"outlined"}
+                    name={"quantity"}
+                    label={"Quantity"}
+                    placeholder={"ex. 100"}
+                    defaultValue={elem.quantity}
+                    style={!isDownMd ? { width: "20em" } : null}
                     size="small"
-                    label={`${t("form_labels.delivery_to")} *`}
-                    value={formState.values.country}
-                    onBlur={onBlurHandler("country")}
-                    onChange={handleChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    select
-                    style={{ textAlign: "start", width: "100%" }}
-                    {...errorProps("country")}
-                  >
-                    {countries?.map((i: Record<string, any>) => (
-                      <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                        {i.printable_name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                    fullWidth={isDownMd}
+                    className={classes.rfqInput}
+                    onChange={(event) => handleRfqListChange(event, key)}
+                    onBlur={onRfqBlurHandler("quantity", key)}
+                    {...rfqErrorProps("quantity", key)}
+                  />
+                  <TextField
+                    disabled={elem.isDisabled}
+                    variant={"outlined"}
+                    name={"price"}
+                    label={"Target Price"}
+                    placeholder={"ex. 200"}
+                    defaultValue={elem.price}
+                    style={!isDownMd ? { width: "20em" } : null}
+                    size="small"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>
+                      ),
+                    }}
+                    fullWidth={isDownMd}
+                    className={classes.rfqInput}
+                    onChange={(event) => handleRfqListChange(event, key)}
+                  />
+                </Box>
+              ))}
+              {rfqListState.values.length !== maxRfqRows && (
+                <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
+                  Add new product
+                </Button>
+              )}
+            </Box>
+          </Container>
+        </section>
 
-                  {formState.values.company_type === "Other" && (
+        <section className={classes.section}>
+          <Container maxWidth={"lg"} className={classes.mainContainer}>
+            <Box>
+              <p className={classes.title}>Add additional details into your request</p>
+              <TextField
+                style={{ width: "100%" }}
+                name="comment"
+                label={t("column.form_comment")}
+                multiline
+                rows={4}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={formState.values.comment || ""}
+                onChange={handleChange}
+                onBlur={onBlurHandler("comment")}
+                placeholder={t("column.comment_placeholder")}
+                {...errorProps("comment")}
+              />
+            </Box>
+          </Container>
+        </section>
+
+        {!isAuthenticated && (
+          <section className={clsx(classes.section, classes.regSectionColor)}>
+            <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
+              <p className={classes.title}>Please provide an information about yourself </p>
+              <Container maxWidth={"lg"}>
+                <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
+                  <Box className={classes.formRow}>
                     <TextField
-                      style={{ width: "100%" }}
-                      name="company_other_type"
-                      label={`${t("column.company_other_type")} *`}
+                      name="firstName"
+                      label={`${t("form_labels.first_name")} *`}
                       variant="outlined"
                       size="small"
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      value={formState.values.company_other_type}
+                      style={{ width: "100%" }}
+                      value={formState.values.firstName}
+                      onBlur={onBlurHandler("firstName")}
                       onChange={handleChange}
-                      onBlur={onBlurHandler("company_other_type")}
-                      {...errorProps("company_other_type")}
+                      disabled={isAuthenticated}
+                      {...errorProps("firstName")}
                     />
-                  )}
-                </Box>
-                <Box display="flex" flexDirection="column" ml={2}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="receive_updates_confirm"
-                        className={appTheme.checkbox}
-                        checked={formState.values.receive_updates_confirm}
-                        onChange={handleChange}
-                      />
-                    }
-                    label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                  />
+                    <TextField
+                      style={{ width: "100%" }}
+                      name="lastName"
+                      label={`${t("form_labels.last_name")} *`}
+                      variant="outlined"
+                      size="small"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={formState.values.lastName}
+                      onBlur={onBlurHandler("lastName")}
+                      onChange={handleChange}
+                      disabled={isAuthenticated}
+                      {...errorProps("lastName")}
+                    />
+                  </Box>
+                  <Box className={classes.formRow}>
+                    <TextField
+                      style={{ width: "100%" }}
+                      name="email"
+                      label={`${t(
+                        constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                      )} *`}
+                      variant="outlined"
+                      size="small"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={formState.values.email}
+                      onBlur={onBlurHandler("email")}
+                      onChange={handleChange}
+                      disabled={isAuthenticated}
+                      {...errorProps("email")}
+                    />
 
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="policy_confirm"
-                        className={appTheme.checkbox}
-                        checked={formState.values.policy_confirm}
+                    <div className={classes.phone}>
+                      <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
+                    </div>
+                  </Box>
+                  <Box className={classes.formRow}>
+                    <TextField
+                      style={{ textAlign: "start", width: "100%" }}
+                      fullWidth
+                      name="company_type"
+                      label={`${t("column.company_type")} *`}
+                      variant="outlined"
+                      size="small"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={formState.values.company_type}
+                      select
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
+                      <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
+                      <MenuItem value="Design organization">{t("column.design")}</MenuItem>
+                      <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
+                      <MenuItem value="Other">{t("column.other")}</MenuItem>
+                    </TextField>
+
+                    <TextField
+                      variant="outlined"
+                      name="country"
+                      size="small"
+                      label={`${t("form_labels.delivery_to")} *`}
+                      value={formState.values.country}
+                      onBlur={onBlurHandler("country")}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      select
+                      style={{ textAlign: "start", width: "100%" }}
+                      {...errorProps("country")}
+                    >
+                      {countries?.map((i: Record<string, any>) => (
+                        <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                          {i.printable_name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+
+                    {formState.values.company_type === "Other" && (
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="company_other_type"
+                        label={`${t("column.company_other_type")} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.company_other_type}
                         onChange={handleChange}
+                        onBlur={onBlurHandler("company_other_type")}
+                        {...errorProps("company_other_type")}
                       />
-                    }
-                    label={
-                      <>
-                        {t("feedback.form.policy_agree")}
-                        <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                          {t("feedback.form.terms_of_services")}
-                        </Link>
-                        {t("feedback.form.and")}
-                        <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                          {t("feedback.form.privacy_policy")}
-                        </Link>{" "}
-                        *
-                      </>
-                    }
-                  />
-                  {formState.touched?.policy_confirm &&
-                    !!formState.errors?.policy_confirm &&
-                    formState.errors.policy_confirm[0] && (
-                      <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
                     )}
+                  </Box>
                 </Box>
-              </Box>
+                <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                  <Box display="flex" flexDirection="column" ml={2}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          name="receive_updates_confirm"
+                          className={appTheme.checkbox}
+                          checked={formState.values.receive_updates_confirm}
+                          onChange={handleChange}
+                        />
+                      }
+                      label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                    />
+
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          name="policy_confirm"
+                          className={appTheme.checkbox}
+                          checked={formState.values.policy_confirm}
+                          onChange={handleChange}
+                        />
+                      }
+                      label={
+                        <>
+                          {t("feedback.form.policy_agree")}
+                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                            {t("feedback.form.terms_of_services")}
+                          </Link>
+                          {t("feedback.form.and")}
+                          <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                            {t("feedback.form.privacy_policy")}
+                          </Link>{" "}
+                          *
+                        </>
+                      }
+                    />
+                    {formState.touched?.policy_confirm &&
+                      !!formState.errors?.policy_confirm &&
+                      formState.errors.policy_confirm[0] && (
+                        <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
+                      )}
+                  </Box>
+                </Box>
+              </Container>
             </Container>
-          </Container>
+          </section>
+        )}
+        <section className={classes.section}>
+          <Box className={classes.submitButtonContainer}>
+            <Button
+              variant={"contained"}
+              className={appTheme.buttonCreate}
+              onClick={onSendRfqClickHandler}
+              disabled={isLoading}
+            >
+              {isLoading && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
+              {isLoading ? t("common.sending_2") : "Send multiple RFQ"}
+            </Button>
+          </Box>
         </section>
-      )}
-      <section className={classes.section}>
-        <Box className={classes.submitButtonContainer}>
-          <Button variant={"outlined"} onClick={onSendRfqClickHandler}>
-            Send RFQ
-          </Button>
-        </Box>
-      </section>
+      </Container>
     </Page>
   );
 };
