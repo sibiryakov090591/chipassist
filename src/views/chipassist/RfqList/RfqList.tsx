@@ -28,11 +28,16 @@ import InputPhone from "@src/components/InputPhone/InputPhone";
 import MenuItem from "@material-ui/core/MenuItem";
 import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
-import { changeMisc, progressModalOpen } from "@src/store/progressModal/progressModalActions";
+import {
+  changeMisc,
+  progressModalOpen,
+  progressModalSetPartNumber, saveRequestToLocalStorage,
+} from "@src/store/progressModal/progressModalActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
+import progressModal from "../../../components/ProgressModal/ProgressModal";
 
 interface RegInterface {
   country: string;
@@ -428,77 +433,14 @@ export const RfqList = () => {
   };
 
   const createDataRfqList = () => {
-    return rfqListState.values.map((rfq) => ({
-      MPN: rfq.MPN,
-      manufacturer: rfq.manufacturer,
-      quantity: rfq.quantity,
-      price: rfq.price,
-    }));
-  };
-
-  const registrationFunction = () => {
-    const data = createDataRfqList();
-
-    const country =
-      countries?.find((c) => c.url === formState.values.country) ||
-      (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-      defaultCountry;
-    const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
-    let company_type: string;
-    try {
-      company_type = !isAuthenticated
-        ? formState.values.company_type === "Other"
-          ? formState.values.company_other_type
-          : formState.values.company_type
-        : billingAddress?.notes.match(/company_variant: (.+)/) &&
-          billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
-    } catch {
-      company_type = null;
-    }
-    const company_name = !isAuthenticated
-      ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
-      : billingAddress?.company_name;
-
-    dispatch(changeMisc("rfq_list", data, formState.values.email));
-    dispatch(changeMisc("not_activated_request", { ...data, requestType: "rfq_list" }, formState.values.email));
-    setIsLoading(true);
-    let registerData = { ...defaultRegisterData };
-    registerData.email = formState.values.email;
-    registerData.first_name = formState.values.firstName;
-    registerData.last_name = formState.values.lastName;
-    registerData.phone_number_str = phoneValue ? `+${phoneValue}` : null;
-    registerData.company_name = company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "";
-    registerData.company_variant =
-      formState.values.company_type === "Other" ? formState.values.company_other_type : formState.values.company_type;
-    registerData.policy_confirm = formState.values.policy_confirm;
-    registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
-    registerData.country = country?.iso_3166_1_a3;
-    registerData = Object.fromEntries(
-      Object.entries(registerData)
-        .map((i: any) => {
-          if (typeof i[1] === "boolean" || i[1]) return i;
-          return false;
-        })
-        .filter((i: any) => !!i),
-    );
-
-    dispatch(authSignup(registerData, { subj: "rfq" }))
-      .then(() => {
-        batch(() => {
-          localStorage.removeItem("rfq_form_register_data");
-          localStorage.setItem("registered_email", formState.values.email);
-          dispatch(clearRfqItem());
-          setFormState((prevState) => ({
-            ...defaultState(),
-            values: {
-              ...defaultState().values,
-              country: prevState.values.country,
-            },
-          }));
-          dispatch(progressModalOpen());
-        });
-      })
-      .finally(() => setIsLoading(false));
+    return rfqListState.values
+      .filter((elem) => elem.MPN !== "" && elem.quantity !== null)
+      .map((rfq) => ({
+        part_number: rfq.MPN,
+        manufacturer: rfq.manufacturer,
+        quantity: rfq.quantity,
+        price: rfq.price,
+      }));
   };
 
   const checkErrorInRfqList = () => {
@@ -547,10 +489,42 @@ export const RfqList = () => {
       if (isErrorOccurred && checkErrorInRfqList()) {
         return false;
       }
+    }
+    if (checkErrorInRfqList()) {
+      return false;
+    }
+    const data = createDataRfqList();
 
-      registrationFunction();
-    } else if (!checkErrorInRfqList()) {
-      const data = createDataRfqList();
+    const country =
+      countries?.find((c) => c.url === formState.values.country) ||
+      (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
+      defaultCountry;
+    const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
+    let company_type: string;
+    try {
+      company_type = !isAuthenticated
+        ? formState.values.company_type === "Other"
+          ? formState.values.company_other_type
+          : formState.values.company_type
+        : billingAddress?.notes.match(/company_variant: (.+)/) &&
+          billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
+    } catch {
+      company_type = null;
+    }
+    const company_name = !isAuthenticated
+      ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
+      : billingAddress?.company_name;
+    let comment = `Delivery to: ${country?.printable_name};`;
+    if (phone) comment += ` Phone: ${phone};`;
+    if (company_name) comment += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
+    if (company_type) comment += ` Company type: ${company_type};`;
+    if (formState.values.comment) comment += ` ${formState.values.comment};`;
+
+    dispatch(progressModalSetPartNumber(`${[...data].map((rfq) => `${rfq.part_number}`).toString()}`, "rfq_list"));
+
+    dispatch(changeMisc("rfq_list", { ...formState.values, comment, rfq_list: data }, formState.values.email));
+
+    if (isAuthenticated) {
       dispatch(saveRfqListItems(data)).then(() => {
         batch(() => {
           dispatch(clearRfqItem());
@@ -563,8 +537,55 @@ export const RfqList = () => {
           }));
         });
       });
-    }
+    } else {
+      saveRequestToLocalStorage(data, [...data].map((rfq) => `${rfq.part_number}`).toString(), "rfq_list");
+      dispatch(
+        changeMisc(
+          "not_activated_request",
+          { ...{ ...formState.values, rfq_list: data }, requestType: "rfq_list" },
+          formState.values.email,
+        ),
+      );
 
+      setIsLoading(true);
+      let registerData = { ...defaultRegisterData };
+      registerData.email = formState.values.email;
+      registerData.first_name = formState.values.firstName;
+      registerData.last_name = formState.values.lastName;
+      registerData.phone_number_str = phoneValue ? `+${phoneValue}` : null;
+      registerData.company_name = company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "";
+      registerData.company_variant =
+        formState.values.company_type === "Other" ? formState.values.company_other_type : formState.values.company_type;
+      registerData.policy_confirm = formState.values.policy_confirm;
+      registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
+      registerData.country = country?.iso_3166_1_a3;
+      registerData = Object.fromEntries(
+        Object.entries(registerData)
+          .map((i: any) => {
+            if (typeof i[1] === "boolean" || i[1]) return i;
+            return false;
+          })
+          .filter((i: any) => !!i),
+      );
+
+      dispatch(authSignup(registerData, { subj: "rfq_list" }))
+        .then(() => {
+          batch(() => {
+            localStorage.removeItem("rfq_form_register_data");
+            localStorage.setItem("registered_email", formState.values.email);
+            dispatch(clearRfqItem());
+            setFormState((prevState) => ({
+              ...defaultState(),
+              values: {
+                ...defaultState().values,
+                country: prevState.values.country,
+              },
+            }));
+            dispatch(progressModalOpen());
+          });
+        })
+        .finally(() => setIsLoading(false));
+    }
     return true;
   };
   return (
@@ -807,7 +828,7 @@ export const RfqList = () => {
                   </Box>
                 </Box>
                 <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                  <Box display="flex" flexDirection="column" ml={2}>
+                  <Box display="flex" flexDirection="row" ml={2}>
                     <FormControlLabel
                       control={
                         <Checkbox

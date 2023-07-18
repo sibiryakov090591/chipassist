@@ -85,13 +85,14 @@ const ProgressModal: React.FC = () => {
   }, [isAuthenticated, checking, open]);
 
   useEffect(() => {
+    console.log("values: ", values);
     if (values.length === 4) {
       const email = localStorage.getItem("registered_email");
       dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
         if (codeRes?.token) {
           dispatch(loadMiscAction("not_activated_request", email)).then((res: any) => {
             const data = res?.data?.data || res?.data;
-            if (data && ["rfq", "pcb", "sellerMessage"].includes(data.requestType)) {
+            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list"].includes(data.requestType)) {
               setSending(true);
               dispatch(sendQuickRequestUnAuth(res.data, codeRes.token, email)).then(() => {
                 if (!codeRes?.code) dispatch(login({ email }, codeRes.token, navigate, null));
@@ -202,6 +203,21 @@ const ProgressModal: React.FC = () => {
                 <>
                   <h1 className={classes.title}>{t("progress.message_title")}</h1>
                   <h2 className={classes.subTitle}>{t("progress.message_text")}</h2>
+                </>
+              )}
+
+              {requestType === "rfq_list" && (
+                <>
+                  <h1
+                    className={classes.title}
+                    dangerouslySetInnerHTML={{
+                      __html: t("progress.rfq_title", {
+                        interpolation: { escapeValue: false },
+                        partNumber,
+                      }),
+                    }}
+                  />
+                  <h2 className={classes.subTitle}>{t("progress.rfq_text")}</h2>
                 </>
               )}
 

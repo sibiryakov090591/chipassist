@@ -28,8 +28,6 @@ export function sendFeedbackMessageThunk(subject: string, data: { [key: string]:
   });
   formData.append("message", message);
 
-  console.log(formData);
-
   return (dispatch: Dispatch<any>) => {
     return dispatch({
       types: [actionTypes.FEEDBACK_R, actionTypes.FEEDBACK_S, actionTypes.FEEDBACK_F],
