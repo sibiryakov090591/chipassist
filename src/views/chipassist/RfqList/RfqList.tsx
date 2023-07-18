@@ -31,7 +31,8 @@ import clsx from "clsx";
 import {
   changeMisc,
   progressModalOpen,
-  progressModalSetPartNumber, saveRequestToLocalStorage,
+  progressModalSetPartNumber,
+  saveRequestToLocalStorage,
 } from "@src/store/progressModal/progressModalActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
