@@ -85,7 +85,6 @@ const ProgressModal: React.FC = () => {
   }, [isAuthenticated, checking, open]);
 
   useEffect(() => {
-    console.log("values: ", values);
     if (values.length === 4) {
       const email = localStorage.getItem("registered_email");
       dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
@@ -301,6 +300,13 @@ const ProgressModal: React.FC = () => {
                         }}
                       />
                       <p className={classes.p}>{t("success.message_text_2")}</p>
+                    </>
+                  )}
+                  {requestType === "rfq_list" && (
+                    <>
+                      <p className={classes.p}>{t("success.rfq_text_1", { name: constants.title })}</p>
+                      <p className={classes.p}>{t("success.rfq_text_2")}</p>
+                      <p className={classes.p}>{t("success.rfq_text_3")}</p>
                     </>
                   )}
                 </>

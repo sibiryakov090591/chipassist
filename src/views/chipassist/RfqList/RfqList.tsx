@@ -38,7 +38,6 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
-import progressModal from "../../../components/ProgressModal/ProgressModal";
 
 interface RegInterface {
   country: string;
@@ -283,7 +282,6 @@ export const RfqList = () => {
 
   useEffect(() => {
     const rfqFormErrors = rfqListState.values.map((elem) => validate(elem, rfqSchema));
-    console.log(rfqFormErrors);
     setRfqListState((prevState) => ({
       ...prevState,
       isValid: rfqFormErrors.length === 0,
@@ -297,7 +295,6 @@ export const RfqList = () => {
         rfqListState.values,
         (element) => element.MPN !== "" || element.quantity !== null,
       );
-      console.log(lastFilledIndex, rfqListState.values[0]);
 
       if (
         lastFilledIndex >= 0 &&
@@ -357,8 +354,6 @@ export const RfqList = () => {
     const errors = { ...formState.errors };
     if (errors[name]) delete errors[name];
 
-    console.log("errors ", errors);
-
     if (type === "checkbox") {
       return setFormState((prevState) => ({
         ...prevState,
@@ -392,8 +387,6 @@ export const RfqList = () => {
 
     const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
 
-    // console.log("errors: ", isErrorsOccured);
-    // console.log("error.length: ", errors.length);
     return setRfqListState((prevState) => ({
       ...prevState,
       isValid: isErrorsOccured.length === 0,
@@ -450,8 +443,6 @@ export const RfqList = () => {
     );
     if (rfqFormErrors.filter((elem) => elem !== undefined).length !== 0) {
       const firstNotUndefined = rfqFormErrors.indexOf((elem: any) => elem !== undefined);
-      console.log("rfqFormError: ", rfqFormErrors);
-      console.log(firstNotUndefined);
       setRfqListState((prevState) => ({
         ...prevState,
         isValid: firstNotUndefined === -1,
@@ -521,23 +512,26 @@ export const RfqList = () => {
     if (company_type) comment += ` Company type: ${company_type};`;
     if (formState.values.comment) comment += ` ${formState.values.comment};`;
 
-    dispatch(progressModalSetPartNumber(`${[...data].map((rfq) => `${rfq.part_number}`).toString()}`, "rfq_list"));
+    dispatch(progressModalSetPartNumber(`${data[0].part_number}, ... `, "rfq_list"));
 
     dispatch(changeMisc("rfq_list", { ...formState.values, comment, rfq_list: data }, formState.values.email));
 
+    setIsLoading(true);
     if (isAuthenticated) {
-      dispatch(saveRfqListItems(data)).then(() => {
-        batch(() => {
-          dispatch(clearRfqItem());
-          setFormState((prevState) => ({
-            ...defaultState(),
-            values: {
-              ...defaultState().values,
-              country: prevState.values.country,
-            },
-          }));
-        });
-      });
+      dispatch(saveRfqListItems(data))
+        .then(() => {
+          batch(() => {
+            dispatch(clearRfqItem());
+            setFormState((prevState) => ({
+              ...defaultState(),
+              values: {
+                ...defaultState().values,
+                country: prevState.values.country,
+              },
+            }));
+          });
+        })
+        .finally(() => setIsLoading(false));
     } else {
       saveRequestToLocalStorage(data, [...data].map((rfq) => `${rfq.part_number}`).toString(), "rfq_list");
       dispatch(
@@ -548,7 +542,6 @@ export const RfqList = () => {
         ),
       );
 
-      setIsLoading(true);
       let registerData = { ...defaultRegisterData };
       registerData.email = formState.values.email;
       registerData.first_name = formState.values.firstName;
