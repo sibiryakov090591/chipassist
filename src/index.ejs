@@ -20,7 +20,7 @@
       </script>
       <!-- End Google tag (gtag.js) -->
     <% } %>
-    <% if (defaults && defaults.GA && defaults.id === "elfaro") { %>
+    <% if (defaults && defaults.GA) { %>
       <!-- Google Tag Manager -->
       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -121,12 +121,6 @@
 
   <body>
   <% if (defaults && defaults.GA && ["chpassist", "supplier_response"].includes(defaults.id)) { %>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFM5999"
-                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <% } %>
-  <% if (defaults && defaults.GA && defaults.id === "elfaro") { %>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFM5999"
                     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
