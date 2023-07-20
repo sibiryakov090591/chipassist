@@ -91,7 +91,7 @@ const ProgressModal: React.FC = () => {
         if (codeRes?.token) {
           dispatch(loadMiscAction("not_activated_request", email)).then((res: any) => {
             const data = res?.data?.data || res?.data;
-            if (data && ["rfq", "pcb", "sellerMessage"].includes(data.requestType)) {
+            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list"].includes(data.requestType)) {
               setSending(true);
               dispatch(sendQuickRequestUnAuth(res.data, codeRes.token, email)).then(() => {
                 if (!codeRes?.code) dispatch(login({ email }, codeRes.token, navigate, null));
@@ -205,6 +205,21 @@ const ProgressModal: React.FC = () => {
                 </>
               )}
 
+              {requestType === "rfq_list" && (
+                <>
+                  <h1
+                    className={classes.title}
+                    dangerouslySetInnerHTML={{
+                      __html: t("progress.rfq_title", {
+                        interpolation: { escapeValue: false },
+                        partNumber,
+                      }),
+                    }}
+                  />
+                  <h2 className={classes.subTitle}>{t("progress.rfq_text")}</h2>
+                </>
+              )}
+
               {inProgress && !sending && (
                 <div style={{ position: "relative" }}>
                   <OtpInput
@@ -285,6 +300,13 @@ const ProgressModal: React.FC = () => {
                         }}
                       />
                       <p className={classes.p}>{t("success.message_text_2")}</p>
+                    </>
+                  )}
+                  {requestType === "rfq_list" && (
+                    <>
+                      <p className={classes.p}>{t("success.rfq_text_1", { name: constants.title })}</p>
+                      <p className={classes.p}>{t("success.rfq_text_2")}</p>
+                      <p className={classes.p}>{t("success.rfq_text_3")}</p>
                     </>
                   )}
                 </>

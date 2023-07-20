@@ -256,19 +256,23 @@ export const saveRfqItemFromBom = (data: any) => (dispatch: any) => {
   });
 };
 
-export const saveRfqListItems = (data: any) => (dispatch: any) => {
+export const saveRfqListItems = (data: any, token: string = null) => (dispatch: any) => {
   return dispatch({
     types: [false, false, false],
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/list/`, { data: { rfq_list: data } })
+        .post(`/rfqs/list/`, {
+          data: { rfq_list: data },
+          config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
+        })
         .then((res) => {
-          for (const i of data) {
-            localStorage.setItem(i.id, JSON.stringify({ date: Date.now(), value: i.quantity }));
-          }
+          dispatch(progressModalOpen());
+          dispatch(progressModalSuccess());
           return res.data;
         })
-        .catch((e: any) => {
+        .catch((e) => {
+          dispatch(progressModalOpen());
+          dispatch(progressModalError(e.response?.data?.errors ? e.response.data.errors[0].error : ""));
           console.log("***SAVE_RFQ_LIST_ERROR", e);
           throw e;
         }),

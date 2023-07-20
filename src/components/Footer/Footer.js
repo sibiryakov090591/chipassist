@@ -133,6 +133,9 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/privacy_policy"}>
                       Privacy Policy
                     </NavLink>
+                    <NavLink className={classes.navLink} to={"/RfqList"}>
+                      Rfq List
+                    </NavLink>
                     {!isSupplierResponse && (
                       <NavLink className={classes.navLink} to={"/FAQ"}>
                         FAQ
