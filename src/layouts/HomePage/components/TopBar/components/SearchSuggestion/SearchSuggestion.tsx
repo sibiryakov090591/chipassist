@@ -19,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { ID_ELFARO } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
+import clsx from "clsx";
 import { useStyles } from "./searchSuggestionStyles";
 
 interface Props {
@@ -175,7 +176,7 @@ const SearchSuggestion: React.FC<Props> = ({
   }, []);
 
   return (
-    <div className={classes.search} ref={searchRef} style={style}>
+    <div className={clsx("tutorial-search", classes.search)} ref={searchRef} style={style}>
       <Autosuggest
         onSuggestionSelected={onSuggestionSelected}
         theme={suggestTheme as any}
