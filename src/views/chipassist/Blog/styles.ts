@@ -84,6 +84,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
           background: "#f3f3f3",
         },
       },
+      [theme.breakpoints.down("xs")]: {
+        width: "auto",
+      },
     },
     link: {
       // fontStyle: "italic",
