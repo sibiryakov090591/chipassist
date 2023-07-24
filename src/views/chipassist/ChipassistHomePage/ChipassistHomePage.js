@@ -175,7 +175,7 @@ export const ChipassistHomePage = () => {
                 <Box className={classes.heroSearchBlock}>
                   <h1 className={classes.heroTitle}>
                     Global marketplace for <br />
-                    <span className={classes.blueColor}>simple purchases of electronic components.</span>
+                    <span className={classes.blueColor}>simple purchases of electronic components</span>
                   </h1>
                   <h2 className={classes.heroSubTitle}>
                     We believe finding electronic components should be easy. Shop across distributors, manufacturers,
