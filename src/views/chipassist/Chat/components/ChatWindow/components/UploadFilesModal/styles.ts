@@ -117,6 +117,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     inputWrapper: {
       position: "sticky",
+      display: "flex",
+      alignItems: "center",
       bottom: 0,
       background: "#fff",
       padding: "6px 0",

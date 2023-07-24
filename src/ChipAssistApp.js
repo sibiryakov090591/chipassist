@@ -117,6 +117,10 @@ const CatalogResults = lazy(() =>
   ),
 );
 
+const RfqList = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "catalogResults" */ "@src/views/chipassist/RfqList/RfqList")),
+);
+
 export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
   if (!isAuthenticated && !isAuthPage(window.location.pathname)) {
     localStorage.setItem("previousLocation", window.location.pathname + window.location.search);
@@ -485,6 +489,16 @@ const ChipAssistApp = () => {
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <FAQ />
+                  </Suspense>
+                }
+              />
+            )}
+            {constants.id !== ID_ICSEARCH && (
+              <Route
+                path={"/RfqList"}
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <RfqList />
                   </Suspense>
                 }
               />

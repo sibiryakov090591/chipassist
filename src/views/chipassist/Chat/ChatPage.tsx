@@ -35,18 +35,20 @@ const ChatPage: React.FC = () => {
       className={clsx(classes.page, { [classes.chipassistPage]: !isResponses })}
     >
       <section className={classes.section}>
-        <Box display="flex" flexDirection="column" className={classes.header}>
-          <Hidden smDown>
+        <Hidden smDown>
+          <Box m="6px 12px 0">
             <h1 className={requestsClasses.title}>Message center</h1>
-          </Hidden>
-          {partners?.length > 1 && selectedPartner && (
+          </Box>
+        </Hidden>
+        {partners?.length > 1 && selectedPartner && (
+          <Box m="0 12px">
             <SupplierSelect
               selectedPartner={selectedPartner}
               partners={partners}
               onChangePartner={onChangePartnerHandler}
             />
-          )}
-        </Box>
+          </Box>
+        )}
 
         <Chat />
       </section>

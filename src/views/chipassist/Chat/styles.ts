@@ -1,9 +1,9 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
 import { scrollbarWidth } from "@src/config";
-// import { Theme } from "@material-ui/core";
-// import { AppTheme } from "@src/themes/AppTheme";
+import { Theme } from "@material-ui/core";
+import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     page: {
       position: "absolute",
@@ -12,7 +12,9 @@ export const useStyles = makeStyles(() =>
       width: "100vw",
       bottom: 0,
       zIndex: 1,
-      paddingRight: `${scrollbarWidth}px`,
+      [theme.breakpoints.up("md")]: {
+        paddingRight: `${scrollbarWidth}px`,
+      },
     },
     chipassistPage: {
       paddingTop: 133,
@@ -21,10 +23,6 @@ export const useStyles = makeStyles(() =>
       height: "100%",
       display: "flex",
       flexDirection: "column",
-    },
-    header: {
-      alignItems: "flex-start",
-      margin: "6px 12px",
     },
     wrapper: {
       display: "flex",
