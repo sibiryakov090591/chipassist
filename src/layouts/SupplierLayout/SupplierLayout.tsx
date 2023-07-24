@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
   },
   topBar: {
-    zIndex: 999,
+    zIndex: 100,
     position: "fixed",
     width: "100vw",
     paddingRight: `${scrollbarWidth}px`,

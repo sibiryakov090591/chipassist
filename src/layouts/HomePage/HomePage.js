@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   topBar: {
-    zIndex: 999,
+    zIndex: 100,
     position: "fixed",
     transition: "all 250ms ease",
     height: 133,

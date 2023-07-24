@@ -27,6 +27,8 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useNavigate } from "react-router-dom";
 import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
+import Tour, { ReactourStep } from "reactour";
+import img from "@src/images/Screenshot_1.png";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -91,6 +93,53 @@ const SearchResults = () => {
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
+
+  const [isOpenTour, setIsOpenTour] = useState(false);
+  const [steps] = useState<ReactourStep[]>([
+    {
+      selector: ".tutorial-search",
+      content: (
+        <div className={classes.tourContent}>
+          Put a part number in this search bar and you will find a list of results.
+        </div>
+      ),
+      action: () => {
+        // const inputElement = node.children[0].children[0];
+        // if (inputElement) {
+        //   inputElement.focus();
+        // }
+      },
+    },
+    {
+      selector: ".tutorial-create-rfq",
+      position: "left",
+      content: ({ inDOM }) => (
+        <div className={classes.tourContent}>
+          You can send us a request for this product or contact the seller directly.
+          {inDOM && <img className={classes.tourImg} src={img} alt={"test"} />}
+        </div>
+      ),
+    },
+  ]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("tourWasEnd") && !isLoadingSearchResultsInProgress && products?.length) {
+      setIsOpenTour(true);
+    }
+  }, [isLoadingSearchResultsInProgress, products]);
+
+  const onCloseTour = () => {
+    setIsOpenTour(false);
+    localStorage.setItem("tourWasEnd", "true");
+  };
+
+  useEffect(() => {
+    if (isOpenTour) {
+      document.body.style.overflow = "hidden"; // Disable scrolling during tutorial
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling after tutorial
+    }
+  }, [isOpenTour]);
 
   useSearchLoadResults();
 
@@ -173,6 +222,17 @@ const SearchResults = () => {
   return (
     <Page title={t("page_title")} description={t("page_description")}>
       <Container maxWidth="xl">
+        {/* Step-by-step tutorial */}
+        <Tour
+          steps={steps}
+          isOpen={isOpenTour}
+          onRequestClose={onCloseTour}
+          closeWithMask={false}
+          disableInteraction={false}
+          rounded={8}
+          // disableFocusLock={true}
+        />
+
         <div className={classes.main}>
           <div
             className={clsx(classes.searchPageLayout, {
