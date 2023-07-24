@@ -38,6 +38,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
+import PaperPlane from "@src/images/Icons/paper-plane.svg";
 
 interface RegInterface {
   country: string;
@@ -154,6 +155,22 @@ const defaultRfqListState = (): RfqListFormState => ({
       quantity: null,
       price: 0,
     },
+    {
+      index: 3,
+      isDisabled: true,
+      MPN: "",
+      manufacturer: "",
+      quantity: null,
+      price: 0,
+    },
+    {
+      index: 4,
+      isDisabled: true,
+      MPN: "",
+      manufacturer: "",
+      quantity: null,
+      price: 0,
+    },
   ],
   touched: [],
   errors: [],
@@ -178,7 +195,7 @@ export const RfqList = () => {
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const [billingAddress, setBillingAddress] = useState(null);
   const [needToChange, setNeedToChange] = useState(false);
-  const [prevFilledInputIndex, setPrewFilledInputIndex] = useState(0);
+  const [prevFilledInputIndex, setPrevFilledInputIndex] = useState(0);
   const [phoneValue, setPhoneValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -310,7 +327,7 @@ export const RfqList = () => {
             ...prevState.values.slice(lastFilledIndex + 2, prevState.values.length),
           ],
         }));
-        setPrewFilledInputIndex(lastFilledIndex);
+        setPrevFilledInputIndex(lastFilledIndex);
       } else if (lastFilledIndex < prevFilledInputIndex) {
         setRfqListState((prevState) => ({
           ...prevState,
@@ -322,7 +339,7 @@ export const RfqList = () => {
               .map((elem) => ({ ...elem, isDisabled: true })),
           ],
         }));
-        setPrewFilledInputIndex(lastFilledIndex);
+        setPrevFilledInputIndex(lastFilledIndex);
       }
     }
   }, [needToChange]);
@@ -583,12 +600,12 @@ export const RfqList = () => {
     return true;
   };
   return (
-    <Page title={"rfqListPage"} description={"rfqListPageDescription"}>
+    <Page title={"Send group RFQs | ChipAssist"} description={"Send group RFQs to 100+ suppliers with ChipAssist"}>
       <Container maxWidth={"xl"} className={classes.pageContainer}>
         <section className={classes.section}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box className={classes.listBox}>
-              <p className={classes.title}>Enter your quote list</p>
+              <h1 className={classes.titleH1}>Enter your quote list</h1>
               {rfqListState.values.map((elem, key) => (
                 <Box key={key} className={classes.rfqsBox}>
                   <TextField
@@ -677,7 +694,7 @@ export const RfqList = () => {
         <section className={classes.section}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box>
-              <p className={classes.title}>Add additional details into your request</p>
+              <h3 className={classes.titleH3}>Add additional details into your request</h3>
               <TextField
                 style={{ width: "100%" }}
                 name="comment"
@@ -701,7 +718,7 @@ export const RfqList = () => {
         {!isAuthenticated && (
           <section className={clsx(classes.section, classes.regSectionColor)}>
             <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
-              <p className={classes.title}>Please provide an information about yourself </p>
+              <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
               <Container maxWidth={"lg"}>
                 <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
                   <Box className={classes.formRow}>
@@ -735,8 +752,6 @@ export const RfqList = () => {
                       disabled={isAuthenticated}
                       {...errorProps("lastName")}
                     />
-                  </Box>
-                  <Box className={classes.formRow}>
                     <TextField
                       style={{ width: "100%" }}
                       name="email"
@@ -754,12 +769,11 @@ export const RfqList = () => {
                       disabled={isAuthenticated}
                       {...errorProps("email")}
                     />
-
+                  </Box>
+                  <Box className={classes.formRow}>
                     <div className={classes.phone}>
                       <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
                     </div>
-                  </Box>
-                  <Box className={classes.formRow}>
                     <TextField
                       style={{ textAlign: "start", width: "100%" }}
                       fullWidth
@@ -835,34 +849,36 @@ export const RfqList = () => {
                       label={<>{t("feedback.form.receive_updates_confirm")}</>}
                     />
 
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="policy_confirm"
-                          className={appTheme.checkbox}
-                          checked={formState.values.policy_confirm}
-                          onChange={handleChange}
-                        />
-                      }
-                      label={
-                        <>
-                          {t("feedback.form.policy_agree")}
-                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                            {t("feedback.form.terms_of_services")}
-                          </Link>
-                          {t("feedback.form.and")}
-                          <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                            {t("feedback.form.privacy_policy")}
-                          </Link>{" "}
-                          *
-                        </>
-                      }
-                    />
-                    {formState.touched?.policy_confirm &&
-                      !!formState.errors?.policy_confirm &&
-                      formState.errors.policy_confirm[0] && (
-                        <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
-                      )}
+                    <Box display="flex" flexDirection="column" ml={2}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="policy_confirm"
+                            className={appTheme.checkbox}
+                            checked={formState.values.policy_confirm}
+                            onChange={handleChange}
+                          />
+                        }
+                        label={
+                          <>
+                            {t("feedback.form.policy_agree")}
+                            <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                              {t("feedback.form.terms_of_services")}
+                            </Link>
+                            {t("feedback.form.and")}
+                            <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                              {t("feedback.form.privacy_policy")}
+                            </Link>{" "}
+                            *
+                          </>
+                        }
+                      />
+                      {formState.touched?.policy_confirm &&
+                        !!formState.errors?.policy_confirm &&
+                        formState.errors.policy_confirm[0] && (
+                          <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
+                        )}
+                    </Box>
                   </Box>
                 </Box>
               </Container>
@@ -878,7 +894,19 @@ export const RfqList = () => {
               disabled={isLoading}
             >
               {isLoading && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
-              {isLoading ? t("common.sending_2") : "Send multiple RFQ"}
+              {isLoading ? (
+                t("common.sending_2")
+              ) : (
+                <>
+                  <img
+                    alt={"Send icon"}
+                    src={PaperPlane}
+                    width={"35px"}
+                    style={{ color: "white", paddingRight: "1em" }}
+                  />
+                  Send multiple RFQ
+                </>
+              )}
             </Button>
           </Box>
         </section>
