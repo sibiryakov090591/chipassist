@@ -27,7 +27,8 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useNavigate } from "react-router-dom";
 import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
-import Tour from "reactour";
+import Tour, { ReactourStep } from "reactour";
+import img from "@src/images/Screenshot_1.png";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -93,12 +94,15 @@ const SearchResults = () => {
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
 
-  const [tour, setTour] = useState({ isOpen: false, wasEnd: false });
-  const [steps] = useState([
+  const [isOpenTour, setIsOpenTour] = useState(false);
+  const [steps] = useState<ReactourStep[]>([
     {
       selector: ".tutorial-search",
-      content: "This is step one",
-      disableInteraction: true, // Disable interaction with the overlay
+      content: (
+        <div className={classes.tourContent}>
+          Put a part number in this search bar and you will find a list of results.
+        </div>
+      ),
       action: () => {
         // const inputElement = node.children[0].children[0];
         // if (inputElement) {
@@ -108,27 +112,34 @@ const SearchResults = () => {
     },
     {
       selector: ".tutorial-create-rfq",
-      content: "This is step two",
+      position: "left",
+      content: ({ inDOM }) => (
+        <div className={classes.tourContent}>
+          You can send us a request for this product or contact the seller directly.
+          {inDOM && <img className={classes.tourImg} src={img} alt={"test"} />}
+        </div>
+      ),
     },
   ]);
 
   useEffect(() => {
-    if (!tour.wasEnd && !isLoadingSearchResultsInProgress && products?.length) {
-      setTour((prev) => ({ ...prev, isOpen: true }));
+    if (!localStorage.getItem("tourWasEnd") && !isLoadingSearchResultsInProgress && products?.length) {
+      setIsOpenTour(true);
     }
   }, [isLoadingSearchResultsInProgress, products]);
 
   const onCloseTour = () => {
-    setTour((prev) => ({ ...prev, isOpen: false, wasEnd: true }));
+    setIsOpenTour(false);
+    localStorage.setItem("tourWasEnd", "true");
   };
 
   useEffect(() => {
-    if (tour.isOpen) {
+    if (isOpenTour) {
       document.body.style.overflow = "hidden"; // Disable scrolling during tutorial
     } else {
       document.body.style.overflow = "auto"; // Enable scrolling after tutorial
     }
-  }, [tour.isOpen]);
+  }, [isOpenTour]);
 
   useSearchLoadResults();
 
@@ -214,7 +225,7 @@ const SearchResults = () => {
         {/* Step-by-step tutorial */}
         <Tour
           steps={steps}
-          isOpen={tour.isOpen}
+          isOpen={isOpenTour}
           onRequestClose={onCloseTour}
           closeWithMask={false}
           disableInteraction={false}

@@ -288,6 +288,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         paddingLeft: "7px",
       },
     },
+    tourContent: {
+      paddingRight: 16,
+    },
+    tourImg: {
+      maxWidth: "100%",
+    },
   }),
 );
 
