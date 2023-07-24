@@ -1,6 +1,6 @@
 const defaults = {
   title: "ChipAssist",
-  id: "chpassist",
+  id: "chipassist",
   apiPath: "/api",
   apiHost: "api.chipassist.com",
   schema: "https",
