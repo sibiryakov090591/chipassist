@@ -39,6 +39,7 @@ import { authSignup, defaultRegisterData } from "@src/store/authentication/authA
 import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
 import PaperPlane from "@src/images/Icons/paper-plane.svg";
+import { NavLink } from "react-router-dom";
 
 interface RegInterface {
   country: string;
@@ -695,6 +696,7 @@ export const RfqList = () => {
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box>
               <h3 className={classes.titleH3}>Add additional details into your request</h3>
+
               <TextField
                 style={{ width: "100%" }}
                 name="comment"
@@ -719,6 +721,9 @@ export const RfqList = () => {
           <section className={clsx(classes.section, classes.regSectionColor)}>
             <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
               <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
+              <p style={{ color: "#456" }}>
+                If you already have an account you can <NavLink to={"/auth/login"}>login here</NavLink>
+              </p>
               <Container maxWidth={"lg"}>
                 <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
                   <Box className={classes.formRow}>
