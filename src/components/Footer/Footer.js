@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_ICSEARCH, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import InstagramIcon from "@material-ui/icons/Instagram";
@@ -133,9 +133,11 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/privacy_policy"}>
                       Privacy Policy
                     </NavLink>
-                    <NavLink className={classes.navLink} to={"/rfq-list"}>
-                      Rfq List
-                    </NavLink>
+                    {constants.id === ID_MASTER && (
+                      <NavLink className={classes.navLink} to={"/rfq-list"}>
+                        Rfq List
+                      </NavLink>
+                    )}
                     {!isSupplierResponse && (
                       <NavLink className={classes.navLink} to={"/FAQ"}>
                         FAQ
