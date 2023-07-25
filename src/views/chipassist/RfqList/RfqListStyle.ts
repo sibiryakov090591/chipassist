@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     width: "100%",
   },
   section: {
-    marginTop: "5rem",
+    marginTop: "3rem",
     width: "100%",
   },
   titleH1: {
@@ -55,7 +55,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
 
   addButton: {
-    marginTop: "2rem",
     backgroundColor: "#0c7489",
     color: "white",
   },
@@ -116,7 +115,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   pageContainer: {
-    marginTop: "2rem",
     marginBottom: "2rem",
     padding: "2rem",
     width: "100%",
