@@ -685,7 +685,7 @@ export const RfqList = () => {
               ))}
               {rfqListState.values.length !== maxRfqRows && (
                 <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-                  Add new product
+                  + Add new line
                 </Button>
               )}
             </Box>
@@ -897,6 +897,7 @@ export const RfqList = () => {
               className={appTheme.buttonCreate}
               onClick={onSendRfqClickHandler}
               disabled={isLoading}
+              size={"large"}
             >
               {isLoading && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
               {isLoading ? (
