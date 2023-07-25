@@ -35,7 +35,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
     const randVal = getRandomInt(partNumbers.length);
     const partNumber = partNumbers[randVal];
     setRandomPartNumber(partNumber);
-  }, []);
+  }, [partNumbers]);
 
   const onTryHandler = () => {
     const val = randomPartNumber;

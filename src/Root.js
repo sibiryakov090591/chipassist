@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as Sentry from "@sentry/react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
-import { HelmetProvider } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@material-ui/styles";
 import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 import MomentUtils from "@date-io/moment";
@@ -34,6 +34,11 @@ class Root extends Component {
           <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <HelmetProvider>
+                {constants.id === ID_MASTER && (
+                  <Helmet>
+                    <meta name="robots" content="noindex" />
+                  </Helmet>
+                )}
                 <HistoryRouter history={history}>
                   {[ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER, ID_DEV, ID_CLOUD].includes(constants.id) && (
                     <ChipAssistApp />
