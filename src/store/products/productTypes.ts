@@ -66,7 +66,7 @@ export interface Stockrecord {
   product: number;
   errors?: { id: string; message: string; comment?: string }[]; // used in cart
   status: "api" | "order" | null;
-  url: string;
+  product_url: string;
 }
 
 export interface Product {
