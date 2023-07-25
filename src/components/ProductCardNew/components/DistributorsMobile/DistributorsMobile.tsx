@@ -72,7 +72,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
               const dynamicMoq = getDynamicMoq(val);
               const qtyPrice = getQtyPrice(1, val);
               const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-              const isShowProductLink = !!val.url || !!seller;
+              const isShowProductLink = !!val.product_url || !!seller;
               const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1];
 
               return (
@@ -144,10 +144,13 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                   <Box display="flex" justifyContent="center">
                     {isShowProductLink ? (
                       <a
-                        href={val.url || seller.url}
+                        href={val.product_url || seller.url}
                         target="_blank"
                         rel="noreferrer"
-                        onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, val.url || seller.url)}
+                        onClick={visitSellerHandler(
+                          { id: val.partner, name: val.partner_name },
+                          val.product_url || seller.url,
+                        )}
                       >
                         <Button
                           variant="contained"

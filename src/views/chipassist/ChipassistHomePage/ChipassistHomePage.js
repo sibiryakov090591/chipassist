@@ -50,6 +50,7 @@ export const ChipassistHomePage = () => {
   const contactsRef = React.useRef(null);
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const { partNumberExamples } = useAppSelector((state) => state.search);
   // const cart = useAppSelector((state) => state.cart);
 
   const logoLink = (
@@ -189,7 +190,11 @@ export const ChipassistHomePage = () => {
                       searchClearClass={classes.clearSearchIcon}
                       isHomePageSuggestions={true}
                     />
-                    <TrySearchPn partNumbers={partNumbers} textClassName={classes.tryP} pnClassName={classes.trySpan} />
+                    <TrySearchPn
+                      partNumbers={partNumberExamples || partNumbers}
+                      textClassName={classes.tryP}
+                      pnClassName={classes.trySpan}
+                    />
                   </Hidden>
                 </Box>
               </Grid>

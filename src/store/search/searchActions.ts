@@ -708,6 +708,13 @@ export const setSearchFinished = () => {
   };
 };
 
+export const savePartNumberExamples = (partNumbers: string[]) => {
+  return {
+    type: actionTypes.SAVE_PART_NUMBER_EXAMPLES,
+    payload: partNumbers,
+  };
+};
+
 export const saveSearchResultsMaxPrice = (maxPrice: number, minPrice: number) => {
   return {
     type: actionTypes.SAVE_SEARCH_RESULTS_MAX_PRICE,

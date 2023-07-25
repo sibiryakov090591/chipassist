@@ -5,6 +5,7 @@ import { RootState } from "@src/store";
 import constants from "@src/constants/constants";
 import { ID_ELFARO } from "@src/constants/server_constants";
 import { progressModalError, progressModalSuccess } from "@src/store/progressModal/progressModalActions";
+import { savePartNumberExamples } from "@src/store/search/searchActions";
 import * as actionTypes from "./checkoutTypes";
 import { clearCart, clearCartItems, getCart } from "../cart/cartActions";
 import ApiClient, { ApiClientInterface } from "../../services/ApiClient";
@@ -472,9 +473,14 @@ export const getServiceTax = () => (dispatch: any) => {
     types: [null, null, null],
     promise: (client: ApiClientInterface) =>
       client
-        .get(`taxes`)
+        .get(`apiv2/taxes`, {
+          noapi: true,
+        })
         .then((res) => res?.data)
-        .then((response) => dispatch(setServiceTax(response.service_tax)))
+        .then((response) => {
+          dispatch(savePartNumberExamples(response.upcs || []));
+          return dispatch(setServiceTax(response.tax || 0));
+        })
         .catch((e) => {
           console.log("***GET_TAXES_ERROR", e);
           throw e;

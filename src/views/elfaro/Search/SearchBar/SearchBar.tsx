@@ -3,6 +3,7 @@ import React from "react";
 import SearchSuggestion from "@src/layouts/HomePage/components/TopBar/components/SearchSuggestion/SearchSuggestion";
 import clsx from "clsx";
 import TrySearchPn from "@src/components/TrySearchPn/TrySearchPn";
+import useAppSelector from "@src/hooks/useAppSelector";
 import { useStyles } from "./searchBarStyles";
 
 const partNumbers = [
@@ -22,6 +23,8 @@ const partNumbers = [
 
 const SearchBar: React.FC = () => {
   const classes = useStyles();
+
+  const { partNumberExamples } = useAppSelector((state) => state.search);
 
   return (
     <section id="content-bar" className={classes.contentBar}>
@@ -44,7 +47,11 @@ const SearchBar: React.FC = () => {
             searchClearClass={classes.clearSearchIcon}
           />
         </div>
-        <TrySearchPn partNumbers={partNumbers} pnClassName={classes.tryPn} textClassName={classes.tryText} />
+        <TrySearchPn
+          partNumbers={partNumberExamples || partNumbers}
+          pnClassName={classes.tryPn}
+          textClassName={classes.tryText}
+        />
       </div>
       <div className={classes.contentBarRight}>
         {/* <div className={classes.cartButton}>
