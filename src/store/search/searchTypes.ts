@@ -76,6 +76,7 @@ export const REMOVE_OLD_ATTRIBUTES_MAP = "@search/REMOVE_OLD_ATTRIBUTES_MAP";
 export const SAVE_BASE_FILTERS = "@search/SAVE_BASE_FILTERS";
 export const RESET_BASE_FILTERS = "@search/RESET_BASE_FILTERS";
 export const UPDATE_FILTER_INC = "@search/UPDATE_FILTER_INC";
+export const SAVE_PART_NUMBER_EXAMPLES = "@search/SAVE_PART_NUMBER_EXAMPLES";
 
 export const SAVE_SEARCH_RESULTS_MAX_PRICE = "@search/SAVE_SEARCH_RESULTS_MAX_PRICE";
 export interface BaseFilters {
@@ -118,6 +119,7 @@ export interface SearchState {
   searchResultsSellers: []; // TODO types
   searchResultsMaxPrice: number;
   searchResultsMinPrice: number;
+  partNumberExamples: string[];
   filterSize: number;
   filterInc: number;
   baseFilters: BaseFilters;
@@ -286,8 +288,13 @@ export interface SetQueryValueAction {
   type: typeof SET_QUERY_VALUE;
   payload: string;
 }
+export interface SavePartNumberExamplesAction {
+  type: typeof SAVE_PART_NUMBER_EXAMPLES;
+  payload: string[];
+}
 
 export type SearchActionTypes =
+  | SavePartNumberExamplesAction
   | SetQueryValueAction
   | SaveResultAction
   | ClearResultAction

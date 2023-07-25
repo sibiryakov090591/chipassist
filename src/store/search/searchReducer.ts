@@ -45,6 +45,8 @@ const initialState: SearchState = {
   searchResultsMaxPrice: null,
   searchResultsMinPrice: null,
 
+  partNumberExamples: null,
+
   filterSize: 20,
   filterInc: 0,
 
@@ -252,6 +254,10 @@ export default function search(state = initialState, action: actionTypes.SearchA
         newState = { ...newState, baseFilters: { ...newState.baseFilters } };
       }
       return newState;
+    }
+
+    case actionTypes.SAVE_PART_NUMBER_EXAMPLES: {
+      return { ...state, partNumberExamples: action.payload && action.payload.length ? action.payload : null };
     }
 
     default:

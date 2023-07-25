@@ -384,13 +384,13 @@ const DistributorsDesktop: React.FC<Props> = ({
                           <h4 className={classes.tooltipTitle}>{val.partner_name}</h4>
                           {/* <Rating value={4} readOnly /> */}
                           <p>
-                            {val.url
+                            {val.partner_url
                               ? "Check this product on seller`s website or request it on ChipAssist"
                               : "You can request this product directly on ChipAssist"}
                           </p>
-                          {val.url && (
+                          {val.partner_url && (
                             <Box mb={0.5}>
-                              <a href={val.url} target="_blank" rel="noreferrer" className={appTheme.hyperlink}>
+                              <a href={val.partner_url} target="_blank" rel="noreferrer" className={appTheme.hyperlink}>
                                 View on seller`s website
                               </a>
                             </Box>
