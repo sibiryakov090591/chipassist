@@ -134,7 +134,7 @@ const Footer = () => {
                       Privacy Policy
                     </NavLink>
                     {constants.id === ID_MASTER && (
-                      <NavLink className={classes.navLink} to={"/RfqList"}>
+                      <NavLink className={classes.navLink} to={"/rfq-list"}>
                         Rfq List
                       </NavLink>
                     )}

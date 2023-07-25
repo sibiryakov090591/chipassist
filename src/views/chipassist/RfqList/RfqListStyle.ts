@@ -11,9 +11,20 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginTop: "5rem",
     width: "100%",
   },
-  title: {
-    fontSize: "20px",
-    fontWeight: 500,
+  titleH1: {
+    fontSize: "2.2rem",
+    fontWeight: 700,
+    color: "#456",
+  },
+  titleH2: {
+    fontSize: "1.7rem",
+    fontWeight: 700,
+    color: "#456",
+  },
+  titleH3: {
+    fontSize: "1.3rem",
+    fontWeight: 700,
+    color: "#456",
   },
   listBox: {
     display: "flex",
@@ -45,6 +56,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
 
   addButton: {
     marginTop: "2rem",
+    backgroundColor: "#0c7489",
+    color: "white",
   },
 
   submitButtonContainer: {
@@ -70,10 +83,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   regBoxContainer: {
     margin: "0 auto",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     [theme.breakpoints.down("sm")]: {
       width: "auto",
-      flexDirection: "column",
     },
     "& .MuiTextField-root": {
       margin: 13,
@@ -113,8 +125,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     justifyContent: "flex-start",
     flexDirection: "column",
     alignItems: "center",
-    border: `${theme.palette.app.grey200} 1px solid`,
-    borderRadius: "4px",
+    // border: `${theme.palette.app.grey200} 1px solid`,
+    // borderRadius: "4px",
   },
 }));
 
