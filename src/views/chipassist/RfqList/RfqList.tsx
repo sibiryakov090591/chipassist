@@ -718,7 +718,7 @@ export const RfqList = () => {
         </section>
 
         {!isAuthenticated && (
-          <section className={clsx(classes.section, classes.regSectionColor)}>
+          <section className={clsx(classes.section)}>
             <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
               <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
               <p style={{ color: "#456" }}>

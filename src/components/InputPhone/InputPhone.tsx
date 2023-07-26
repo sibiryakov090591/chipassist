@@ -20,17 +20,24 @@ const InputPhone: React.FC<Props> = ({ label, value, onChange, small }) => {
   const geolocation = useAppSelector((state) => state.profile.geolocation);
 
   return (
-    <PhoneInput
-      specialLabel={label || t("phone")}
-      country={geolocation?.country_code.toLowerCase() || "ee"}
-      value={value || ""}
-      onChange={onChange}
-      dropdownClass={classes.phoneSelectMenu}
-      inputClass={clsx(classes.phoneInput, {
-        [classes.small]: !!small,
-      })}
-      containerClass={classes.phoneContainer}
-    />
+    <>
+      <fieldset className={classes.fieldsetObject}>
+        <legend style={{ fontSize: "10px", fontWeight: 400, paddingRight: "7px", paddingLeft: "2px" }}>
+          {label || t("phone")}
+        </legend>
+        <PhoneInput
+          specialLabel={""}
+          country={geolocation?.country_code.toLowerCase() || "ee"}
+          value={value || ""}
+          onChange={onChange}
+          dropdownClass={classes.phoneSelectMenu}
+          inputClass={clsx(classes.phoneInput, {
+            [classes.small]: !!small,
+          })}
+          containerClass={classes.phoneContainer}
+        />
+      </fieldset>
+    </>
   );
 };
 
