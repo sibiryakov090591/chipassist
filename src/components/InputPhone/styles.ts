@@ -65,7 +65,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     bottom: "0",
     margin: "0",
     padding: "0 8px",
-    overflow: "hidden",
     position: "absolute",
     borderRadius: "5px",
     outline: `${theme.palette.secondary.dark} !important`,
