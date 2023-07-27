@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     top: 0,
     width: "100vw",
     paddingRight: `${scrollbarWidth}px`,
-    zIndex: 999,
+    zIndex: 100,
     [theme.breakpoints.down("sm")]: {
       height: 130,
       paddingRight: 0,

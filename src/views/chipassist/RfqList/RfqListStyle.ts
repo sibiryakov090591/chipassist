@@ -8,12 +8,23 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     width: "100%",
   },
   section: {
-    marginTop: "5rem",
+    marginTop: "3rem",
     width: "100%",
   },
-  title: {
-    fontSize: "20px",
-    fontWeight: 500,
+  titleH1: {
+    fontSize: "2.2rem",
+    fontWeight: 700,
+    color: "#456",
+  },
+  titleH2: {
+    fontSize: "1.7rem",
+    fontWeight: 700,
+    color: "#456",
+  },
+  titleH3: {
+    fontSize: "1.3rem",
+    fontWeight: 700,
+    color: "#456",
   },
   listBox: {
     display: "flex",
@@ -44,7 +55,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
 
   addButton: {
-    marginTop: "2rem",
+    backgroundColor: "#0c7489",
+    color: "white",
   },
 
   submitButtonContainer: {
@@ -56,24 +68,23 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   phone: {
     margin: 13,
     width: "100%",
+    position: "relative",
     [theme.breakpoints.down(460)]: {
       margin: "8px 0",
     },
   },
-  regSectionColor: {
-    backgroundColor: theme.palette.app.grey100,
-  },
+
   regContainerStyle: {
-    paddingTop: "2em",
-    paddingBottom: "2em",
+    padding: "2em",
+    backgroundColor: theme.palette.app.grey100,
+    border: "1px solid #F0F0F7",
+    borderRadius: "5px",
   },
   regBoxContainer: {
-    margin: "0 auto",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     [theme.breakpoints.down("sm")]: {
       width: "auto",
-      flexDirection: "column",
     },
     "& .MuiTextField-root": {
       margin: 13,
@@ -104,7 +115,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   pageContainer: {
-    marginTop: "2rem",
     marginBottom: "2rem",
     padding: "2rem",
     width: "100%",
@@ -113,8 +123,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     justifyContent: "flex-start",
     flexDirection: "column",
     alignItems: "center",
-    border: `${theme.palette.app.grey200} 1px solid`,
-    borderRadius: "4px",
   },
 }));
 

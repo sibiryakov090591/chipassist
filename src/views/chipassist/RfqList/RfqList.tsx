@@ -38,6 +38,8 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
+import PaperPlane from "@src/images/Icons/paper-plane.svg";
+import { NavLink } from "react-router-dom";
 
 interface RegInterface {
   country: string;
@@ -154,6 +156,22 @@ const defaultRfqListState = (): RfqListFormState => ({
       quantity: null,
       price: 0,
     },
+    {
+      index: 3,
+      isDisabled: true,
+      MPN: "",
+      manufacturer: "",
+      quantity: null,
+      price: 0,
+    },
+    {
+      index: 4,
+      isDisabled: true,
+      MPN: "",
+      manufacturer: "",
+      quantity: null,
+      price: 0,
+    },
   ],
   touched: [],
   errors: [],
@@ -178,7 +196,7 @@ export const RfqList = () => {
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const [billingAddress, setBillingAddress] = useState(null);
   const [needToChange, setNeedToChange] = useState(false);
-  const [prevFilledInputIndex, setPrewFilledInputIndex] = useState(0);
+  const [prevFilledInputIndex, setPrevFilledInputIndex] = useState(0);
   const [phoneValue, setPhoneValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -310,7 +328,7 @@ export const RfqList = () => {
             ...prevState.values.slice(lastFilledIndex + 2, prevState.values.length),
           ],
         }));
-        setPrewFilledInputIndex(lastFilledIndex);
+        setPrevFilledInputIndex(lastFilledIndex);
       } else if (lastFilledIndex < prevFilledInputIndex) {
         setRfqListState((prevState) => ({
           ...prevState,
@@ -322,7 +340,7 @@ export const RfqList = () => {
               .map((elem) => ({ ...elem, isDisabled: true })),
           ],
         }));
-        setPrewFilledInputIndex(lastFilledIndex);
+        setPrevFilledInputIndex(lastFilledIndex);
       }
     }
   }, [needToChange]);
@@ -583,12 +601,12 @@ export const RfqList = () => {
     return true;
   };
   return (
-    <Page title={"rfqListPage"} description={"rfqListPageDescription"}>
+    <Page title={"Send group RFQs | ChipAssist"} description={"Send group RFQs to 100+ suppliers with ChipAssist"}>
       <Container maxWidth={"xl"} className={classes.pageContainer}>
         <section className={classes.section}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box className={classes.listBox}>
-              <p className={classes.title}>Enter your quote list</p>
+              <h1 className={classes.titleH1}>Enter your quote list</h1>
               {rfqListState.values.map((elem, key) => (
                 <Box key={key} className={classes.rfqsBox}>
                   <TextField
@@ -649,7 +667,7 @@ export const RfqList = () => {
                     label={"Target Price"}
                     placeholder={"ex. 200"}
                     defaultValue={elem.price}
-                    style={!isDownMd ? { width: "20em" } : null}
+                    style={!isDownMd ? { width: "20em", marginRight: 0 } : { marginRight: 0 }}
                     size="small"
                     InputLabelProps={{
                       shrink: true,
@@ -667,7 +685,7 @@ export const RfqList = () => {
               ))}
               {rfqListState.values.length !== maxRfqRows && (
                 <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-                  Add new product
+                  + Add new line
                 </Button>
               )}
             </Box>
@@ -677,7 +695,8 @@ export const RfqList = () => {
         <section className={classes.section}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box>
-              <p className={classes.title}>Add additional details into your request</p>
+              <h3 className={classes.titleH3}>Add additional details into your request</h3>
+
               <TextField
                 style={{ width: "100%" }}
                 name="comment"
@@ -699,173 +718,182 @@ export const RfqList = () => {
         </section>
 
         {!isAuthenticated && (
-          <section className={clsx(classes.section, classes.regSectionColor)}>
-            <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
-              <p className={classes.title}>Please provide an information about yourself </p>
-              <Container maxWidth={"lg"}>
-                <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
-                  <Box className={classes.formRow}>
-                    <TextField
-                      name="firstName"
-                      label={`${t("form_labels.first_name")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      style={{ width: "100%" }}
-                      value={formState.values.firstName}
-                      onBlur={onBlurHandler("firstName")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("firstName")}
-                    />
-                    <TextField
-                      style={{ width: "100%" }}
-                      name="lastName"
-                      label={`${t("form_labels.last_name")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.lastName}
-                      onBlur={onBlurHandler("lastName")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("lastName")}
-                    />
-                  </Box>
-                  <Box className={classes.formRow}>
-                    <TextField
-                      style={{ width: "100%" }}
-                      name="email"
-                      label={`${t(
-                        constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-                      )} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.email}
-                      onBlur={onBlurHandler("email")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("email")}
-                    />
-
-                    <div className={classes.phone}>
-                      <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
-                    </div>
-                  </Box>
-                  <Box className={classes.formRow}>
-                    <TextField
-                      style={{ textAlign: "start", width: "100%" }}
-                      fullWidth
-                      name="company_type"
-                      label={`${t("column.company_type")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.company_type}
-                      select
-                      onChange={handleChange}
-                    >
-                      <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
-                      <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
-                      <MenuItem value="Design organization">{t("column.design")}</MenuItem>
-                      <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
-                      <MenuItem value="Other">{t("column.other")}</MenuItem>
-                    </TextField>
-
-                    <TextField
-                      variant="outlined"
-                      name="country"
-                      size="small"
-                      label={`${t("form_labels.delivery_to")} *`}
-                      value={formState.values.country}
-                      onBlur={onBlurHandler("country")}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      select
-                      style={{ textAlign: "start", width: "100%" }}
-                      {...errorProps("country")}
-                    >
-                      {countries?.map((i: Record<string, any>) => (
-                        <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                          {i.printable_name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-
-                    {formState.values.company_type === "Other" && (
+          <section className={clsx(classes.section)}>
+            <Container maxWidth={"lg"} className={clsx(classes.mainContainer)}>
+              <Box className={classes.regContainerStyle}>
+                <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
+                <p style={{ color: "#456" }}>
+                  If you already have an account you can <NavLink to={"/auth/login"}>login here</NavLink>
+                </p>
+                <Container maxWidth={"lg"}>
+                  <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
+                    <Box className={classes.formRow}>
                       <TextField
-                        style={{ width: "100%" }}
-                        name="company_other_type"
-                        label={`${t("column.company_other_type")} *`}
+                        name="firstName"
+                        label={`${t("form_labels.first_name")} *`}
                         variant="outlined"
                         size="small"
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={formState.values.company_other_type}
+                        style={{ width: "100%" }}
+                        value={formState.values.firstName}
+                        onBlur={onBlurHandler("firstName")}
                         onChange={handleChange}
-                        onBlur={onBlurHandler("company_other_type")}
-                        {...errorProps("company_other_type")}
+                        disabled={isAuthenticated}
+                        {...errorProps("firstName")}
                       />
-                    )}
-                  </Box>
-                </Box>
-                <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                  <Box display="flex" flexDirection="row" ml={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="receive_updates_confirm"
-                          className={appTheme.checkbox}
-                          checked={formState.values.receive_updates_confirm}
-                          onChange={handleChange}
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="lastName"
+                        label={`${t("form_labels.last_name")} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.lastName}
+                        onBlur={onBlurHandler("lastName")}
+                        onChange={handleChange}
+                        disabled={isAuthenticated}
+                        {...errorProps("lastName")}
+                      />
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="email"
+                        label={`${t(
+                          constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                        )} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.email}
+                        onBlur={onBlurHandler("email")}
+                        onChange={handleChange}
+                        disabled={isAuthenticated}
+                        {...errorProps("email")}
+                      />
+                    </Box>
+                    <Box className={classes.formRow}>
+                      <div className={classes.phone}>
+                        <InputPhone
+                          label={t("column.phone")}
+                          value={phoneValue}
+                          onChange={onChangePhoneHandler}
+                          small
                         />
-                      }
-                      label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                    />
+                      </div>
+                      <TextField
+                        style={{ textAlign: "start", width: "100%" }}
+                        fullWidth
+                        name="company_type"
+                        label={`${t("column.company_type")} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.company_type}
+                        select
+                        onChange={handleChange}
+                      >
+                        <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
+                        <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
+                        <MenuItem value="Design organization">{t("column.design")}</MenuItem>
+                        <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
+                        <MenuItem value="Other">{t("column.other")}</MenuItem>
+                      </TextField>
 
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="policy_confirm"
-                          className={appTheme.checkbox}
-                          checked={formState.values.policy_confirm}
+                      <TextField
+                        variant="outlined"
+                        name="country"
+                        size="small"
+                        label={`${t("form_labels.delivery_to")} *`}
+                        value={formState.values.country}
+                        onBlur={onBlurHandler("country")}
+                        onChange={handleChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        select
+                        style={{ textAlign: "start", width: "100%" }}
+                        {...errorProps("country")}
+                      >
+                        {countries?.map((i: Record<string, any>) => (
+                          <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                            {i.printable_name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+
+                      {formState.values.company_type === "Other" && (
+                        <TextField
+                          style={{ width: "100%" }}
+                          name="company_other_type"
+                          label={`${t("column.company_other_type")} *`}
+                          variant="outlined"
+                          size="small"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={formState.values.company_other_type}
                           onChange={handleChange}
+                          onBlur={onBlurHandler("company_other_type")}
+                          {...errorProps("company_other_type")}
                         />
-                      }
-                      label={
-                        <>
-                          {t("feedback.form.policy_agree")}
-                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                            {t("feedback.form.terms_of_services")}
-                          </Link>
-                          {t("feedback.form.and")}
-                          <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                            {t("feedback.form.privacy_policy")}
-                          </Link>{" "}
-                          *
-                        </>
-                      }
-                    />
-                    {formState.touched?.policy_confirm &&
-                      !!formState.errors?.policy_confirm &&
-                      formState.errors.policy_confirm[0] && (
-                        <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
                       )}
+                    </Box>
                   </Box>
-                </Box>
-              </Container>
+                  <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                    <Box display="flex" flexDirection="row" ml={2}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="receive_updates_confirm"
+                            className={appTheme.checkbox}
+                            checked={formState.values.receive_updates_confirm}
+                            onChange={handleChange}
+                          />
+                        }
+                        label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                      />
+
+                      <Box display="flex" flexDirection="column" ml={2}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              name="policy_confirm"
+                              className={appTheme.checkbox}
+                              checked={formState.values.policy_confirm}
+                              onChange={handleChange}
+                            />
+                          }
+                          label={
+                            <>
+                              {t("feedback.form.policy_agree")}
+                              <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                                {t("feedback.form.terms_of_services")}
+                              </Link>
+                              {t("feedback.form.and")}
+                              <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                                {t("feedback.form.privacy_policy")}
+                              </Link>{" "}
+                              *
+                            </>
+                          }
+                        />
+                        {formState.touched?.policy_confirm &&
+                          !!formState.errors?.policy_confirm &&
+                          formState.errors.policy_confirm[0] && (
+                            <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
+                          )}
+                      </Box>
+                    </Box>
+                  </Box>
+                </Container>
+              </Box>
             </Container>
           </section>
         )}
@@ -876,9 +904,22 @@ export const RfqList = () => {
               className={appTheme.buttonCreate}
               onClick={onSendRfqClickHandler}
               disabled={isLoading}
+              size={"large"}
             >
               {isLoading && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
-              {isLoading ? t("common.sending_2") : "Send multiple RFQ"}
+              {isLoading ? (
+                t("common.sending_2")
+              ) : (
+                <>
+                  <img
+                    alt={"Send icon"}
+                    src={PaperPlane}
+                    width={"35px"}
+                    style={{ color: "white", paddingRight: "1em" }}
+                  />
+                  Send multiple RFQ
+                </>
+              )}
             </Button>
           </Box>
         </section>
