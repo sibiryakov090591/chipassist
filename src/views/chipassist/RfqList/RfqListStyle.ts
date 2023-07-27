@@ -75,14 +75,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
 
   regContainerStyle: {
-    paddingTop: "2em",
-    paddingBottom: "2em",
+    padding: "2em",
     backgroundColor: theme.palette.app.grey100,
     border: "1px solid #F0F0F7",
     borderRadius: "5px",
   },
   regBoxContainer: {
-    margin: "0 auto",
     display: "flex",
     flexDirection: "column",
     [theme.breakpoints.down("sm")]: {
@@ -125,8 +123,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     justifyContent: "flex-start",
     flexDirection: "column",
     alignItems: "center",
-    // border: `${theme.palette.app.grey200} 1px solid`,
-    // borderRadius: "4px",
   },
 }));
 
