@@ -50,6 +50,7 @@ export const ChipassistHomePage = () => {
   const contactsRef = React.useRef(null);
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const { partNumberExamples } = useAppSelector((state) => state.search);
   // const cart = useAppSelector((state) => state.cart);
 
   const logoLink = (
@@ -175,7 +176,7 @@ export const ChipassistHomePage = () => {
                 <Box className={classes.heroSearchBlock}>
                   <h1 className={classes.heroTitle}>
                     Global marketplace for <br />
-                    <span className={classes.blueColor}>simple purchases of electronic components.</span>
+                    <span className={classes.blueColor}>simple purchases of electronic components</span>
                   </h1>
                   <h2 className={classes.heroSubTitle}>
                     We believe finding electronic components should be easy. Shop across distributors, manufacturers,
@@ -189,7 +190,11 @@ export const ChipassistHomePage = () => {
                       searchClearClass={classes.clearSearchIcon}
                       isHomePageSuggestions={true}
                     />
-                    <TrySearchPn partNumbers={partNumbers} textClassName={classes.tryP} pnClassName={classes.trySpan} />
+                    <TrySearchPn
+                      partNumbers={partNumberExamples || partNumbers}
+                      textClassName={classes.tryP}
+                      pnClassName={classes.trySpan}
+                    />
                   </Hidden>
                 </Box>
               </Grid>

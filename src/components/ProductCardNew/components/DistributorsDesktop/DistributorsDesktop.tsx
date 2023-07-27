@@ -335,7 +335,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
 
             const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-            const isShowProductLink = !!val.url || !!seller;
+            const isShowProductLink = !!val.product_url || !!seller;
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const MOQ = val.moq;
@@ -384,13 +384,13 @@ const DistributorsDesktop: React.FC<Props> = ({
                           <h4 className={classes.tooltipTitle}>{val.partner_name}</h4>
                           {/* <Rating value={4} readOnly /> */}
                           <p>
-                            {val.url
+                            {val.partner_url
                               ? "Check this product on seller`s website or request it on ChipAssist"
                               : "You can request this product directly on ChipAssist"}
                           </p>
-                          {val.url && (
+                          {val.partner_url && (
                             <Box mb={0.5}>
-                              <a href={val.url} target="_blank" rel="noreferrer" className={appTheme.hyperlink}>
+                              <a href={val.partner_url} target="_blank" rel="noreferrer" className={appTheme.hyperlink}>
                                 View on seller`s website
                               </a>
                             </Box>
@@ -572,11 +572,14 @@ const DistributorsDesktop: React.FC<Props> = ({
                 <td className={classes.tdActions}>
                   {isShowProductLink ? (
                     <a
-                      href={val.url || seller.url}
+                      href={val.product_url || seller.url}
                       target="_blank"
                       rel="noreferrer"
                       className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                      onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, val.url || seller.url)}
+                      onClick={visitSellerHandler(
+                        { id: val.partner, name: val.partner_name },
+                        val.product_url || seller.url,
+                      )}
                     >
                       Visit site
                     </a>

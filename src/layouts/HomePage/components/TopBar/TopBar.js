@@ -65,6 +65,7 @@ const TopBar = (props) => {
   // const Icon = withBaseIcon();
   const maintenance = useAppSelector((state) => state.maintenance);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
+  const { partNumberExamples } = useAppSelector((state) => state.search);
   // const cart = useAppSelector((state) => state.cart);
 
   const [collapse, setСollapse] = useState(false);
@@ -195,7 +196,11 @@ const TopBar = (props) => {
                 {/* <CartBlock /> */}
               </div>
               <Collapse in={!collapse}>
-                <TrySearchPn partNumbers={partNumbers} textClassName={classes.tryP} pnClassName={classes.trySpan} />
+                <TrySearchPn
+                  partNumbers={partNumberExamples || partNumbers}
+                  textClassName={classes.tryP}
+                  pnClassName={classes.trySpan}
+                />
               </Collapse>
             </div>
           </Toolbar>

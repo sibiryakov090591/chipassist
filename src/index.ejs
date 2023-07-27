@@ -7,25 +7,37 @@
 
   <head>
     <% var defaults = require("@src/constants/defaults") %>
-    <% if (defaults && defaults.GA && ["chpassist", "supplier_response"].includes(defaults.id)) { %>
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z44R0VYWLB"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-Z44R0VYWLB');
-      </script>
-      <!-- End Google tag (gtag.js) -->
-      <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-KFM5999');</script>
-      <!-- End Google Tag Manager -->
+    <% if (defaults && defaults.GA && ["chipassist", "supplier_response"].includes(defaults.id)) { %>
+      <% if (defaults.id === "chipassist") { %>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z44R0VYWLB"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'G-Z44R0VYWLB');
+        </script>
+        <!-- End Google tag (gtag.js) -->
+      <% } if (defaults.id === "supplier_response") { %>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDPK3Y7KDV"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag("js", new Date());
+          gtag("config", "G-RDPK3Y7KDV");
+        </script>
+        <!-- End Google tag (gtag.js) -->
+      <% } %>
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-KFM5999');</script>
+        <!-- End Google Tag Manager -->
     <% } %>
 
     <title><%= htmlWebpackPlugin.options.title %></title>
@@ -33,7 +45,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
 
-    <% if (defaults && defaults.id === "chpassist") { %>
+    <% if (defaults && defaults.id === "chipassist") { %>
 <!--    <script>-->
 <!--      window.intercomSettings = {-->
 <!--        app_id: "y6r1xk6l",-->
@@ -73,9 +85,11 @@
 <!--        }-->
 <!--      })();-->
 <!--    </script>-->
-    <% } %><% if (defaults && defaults.jivoChat) { %>
+    <% } %>
+    <% if (defaults && defaults.jivoChat) { %>
     <script src="//code-eu1.jivosite.com/widget/35TThUDBbN" async></script>
-    <% } %> <% if (defaults && defaults.YM) { %>
+    <% } %>
+    <% if (defaults && defaults.YM) { %>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {
@@ -107,7 +121,7 @@
   </head>
 
   <body>
-  <% if (defaults && defaults.GA && ["chpassist", "supplier_response"].includes(defaults.id)) { %>
+  <% if (defaults && defaults.GA && ["chipassist", "supplier_response"].includes(defaults.id)) { %>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFM5999"
                     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

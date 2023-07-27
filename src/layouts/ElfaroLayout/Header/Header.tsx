@@ -39,6 +39,7 @@ const Header = () => {
     (constants.closedRegistration && checkIsAuthenticated()) || (!constants.closedRegistration && isCartEnabled);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
   const cart = useAppSelector((state) => state.cart);
+  const { partNumberExamples } = useAppSelector((state) => state.search);
   const classes = useStyles() as any;
   const searchBarStyles = useSearchBarStyles() as any;
   const topbarClasses = topbarUseStyles() as any;
@@ -95,7 +96,7 @@ const Header = () => {
               />
               <div className={classes.trySearchPn}>
                 <TrySearchPn
-                  partNumbers={partNumbers}
+                  partNumbers={partNumberExamples || partNumbers}
                   pnClassName={searchBarStyles.tryPn}
                   textClassName={searchBarStyles.tryText}
                 />

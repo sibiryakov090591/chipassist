@@ -15,6 +15,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     wrapper: {
       "& img": {
         objectFit: "cover",
+        maxWidth: "100%",
+        height: "auto",
         borderRadius: 10,
         boxShadow: "1px 1px 5px 0px #bcbcbc",
       },
