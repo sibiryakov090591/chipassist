@@ -38,7 +38,7 @@ export const uploadFileThunk = (
     dispatch(setUploadState({ uploading: true, error: "", selected: true }));
 
     return apiClient
-      .put("/upload_supplier_file/", {
+      .post("/upload_supplier_file/", {
         data: formData,
         config: { headers: { "Content-Type": "multipart/form-data" } },
       })
