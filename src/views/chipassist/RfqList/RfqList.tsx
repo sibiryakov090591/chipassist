@@ -24,7 +24,6 @@ import formSchema from "@src/utils/formSchema";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import MenuItem from "@material-ui/core/MenuItem";
 import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
@@ -40,6 +39,7 @@ import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
 import PaperPlane from "@src/images/Icons/paper-plane.svg";
 import { NavLink } from "react-router-dom";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 
 interface RegInterface {
   country: string;
@@ -776,9 +776,13 @@ export const RfqList = () => {
                     />
                   </Box>
                   <Box className={classes.formRow}>
-                    <div className={classes.phone}>
-                      <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
-                    </div>
+                    <PhoneInputWrapper
+                      label={t("column.phone")}
+                      value={phoneValue}
+                      onChange={onChangePhoneHandler}
+                      small
+                      style={{ margin: isDownMd ? "8px 0" : "13px", height: !isDownMd && "auto" }}
+                    />
                     <TextField
                       style={{ textAlign: "start", width: "100%" }}
                       fullWidth

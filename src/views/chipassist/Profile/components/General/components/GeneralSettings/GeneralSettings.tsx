@@ -29,11 +29,11 @@ import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import validate from "validate.js";
 import formSchema from "@src/utils/formSchema";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import SuccessSnackbar from "../SuccessSnackbar";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -322,9 +322,7 @@ const GeneralSettings = () => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <div className={classes.phone}>
-                <InputPhone small={isXsDown} value={phoneValue} onChange={onChangePhoneHandler} />
-              </div>
+              <PhoneInputWrapper value={phoneValue} onChange={onChangePhoneHandler} small={isXsDown} />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
