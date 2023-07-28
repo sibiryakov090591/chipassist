@@ -24,7 +24,6 @@ import formSchema from "@src/utils/formSchema";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import MenuItem from "@material-ui/core/MenuItem";
 import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
@@ -40,6 +39,8 @@ import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
 import PaperPlane from "@src/images/Icons/paper-plane.svg";
 import { NavLink } from "react-router-dom";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import { NumberInput } from "@src/components/Inputs";
 
 interface RegInterface {
   country: string;
@@ -602,7 +603,7 @@ export const RfqList = () => {
   return (
     <Page title={"Send group RFQs | ChipAssist"} description={"Send group RFQs to 100+ suppliers with ChipAssist"}>
       <Container maxWidth={"xl"} className={classes.pageContainer}>
-        <section className={classes.section}>
+        <section className={classes.section} style={isDownMd ? { marginTop: "1rem" } : null}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box className={classes.listBox}>
               <h1 className={classes.titleH1}>Enter your quote list</h1>
@@ -660,14 +661,15 @@ export const RfqList = () => {
                     onBlur={onRfqBlurHandler("quantity", key)}
                     {...rfqErrorProps("quantity", key)}
                   />
-                  <TextField
+
+                  <NumberInput
                     disabled={elem.isDisabled}
                     variant={"outlined"}
                     name={"price"}
                     label={"Target Price"}
                     placeholder={"ex. 200"}
                     defaultValue={elem.price}
-                    style={!isDownMd ? { width: "20em", marginRight: 0 } : { marginRight: 0 }}
+                    style={!isDownMd ? { width: "20em", marginRight: 0 } : null}
                     size="small"
                     InputLabelProps={{
                       shrink: true,
@@ -677,9 +679,10 @@ export const RfqList = () => {
                         <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>
                       ),
                     }}
-                    fullWidth={isDownMd}
-                    className={classes.rfqInput}
-                    onChange={(event) => handleRfqListChange(event, key)}
+                    value={elem.price}
+                    onChange={(event: any) => handleRfqListChange(event, key)}
+                    decimalScale={4}
+                    isAllowedZero={true}
                   />
                 </Box>
               ))}
@@ -777,14 +780,13 @@ export const RfqList = () => {
                       />
                     </Box>
                     <Box className={classes.formRow}>
-                      <div className={classes.phone}>
-                        <InputPhone
-                          label={t("column.phone")}
-                          value={phoneValue}
-                          onChange={onChangePhoneHandler}
-                          small
-                        />
-                      </div>
+                      <PhoneInputWrapper
+                        label={t("column.phone")}
+                        value={phoneValue}
+                        onChange={onChangePhoneHandler}
+                        small
+                        style={{ margin: isDownMd ? "8px 0" : "13px", height: !isDownMd && "auto" }}
+                      />
                       <TextField
                         style={{ textAlign: "start", width: "100%" }}
                         fullWidth
@@ -847,7 +849,7 @@ export const RfqList = () => {
                     </Box>
                   </Box>
                   <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                    <Box display="flex" flexDirection="row" ml={2}>
+                    <Box display="flex" flexDirection={isDownMd ? "column" : "row"} ml={2}>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -860,7 +862,7 @@ export const RfqList = () => {
                         label={<>{t("feedback.form.receive_updates_confirm")}</>}
                       />
 
-                      <Box display="flex" flexDirection="column" ml={2}>
+                      <Box display="flex" flexDirection="column" ml={2} style={{ marginLeft: 0 }}>
                         <FormControlLabel
                           control={
                             <Checkbox

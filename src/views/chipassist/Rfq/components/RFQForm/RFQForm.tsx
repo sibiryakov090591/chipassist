@@ -43,8 +43,10 @@ import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import { NumberInput } from "@src/components/Inputs";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import { useStyles } from "./styles";
 
 // interface Distributor {
@@ -175,13 +177,13 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-
+  const theme = useTheme();
   const [phoneValue, setPhoneValue] = useState("");
   const [formState, setFormState] = useState<FormState>(defaultState());
   const debouncedState = useDebounce(formState, 300);
   const [isLoading, setIsLoading] = useState(false);
   const [billingAddress, setBillingAddress] = useState(null);
-
+  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const currency = useAppSelector((state) => state.currency.selected);
   const rfqItem = useAppSelector((state) => state.rfq.rfqItem);
   const rfqModalOpen = useAppSelector((state) => state.rfq.rfqModalOpen);
@@ -667,9 +669,13 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
               disabled={isAuthenticated}
               {...errorProps("email")}
             />
-            <div className={classes.phone}>
-              <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
-            </div>
+            <PhoneInputWrapper
+              label={t("column.phone")}
+              value={phoneValue}
+              onChange={onChangePhoneHandler}
+              small
+              style={{ height: "37.63px", margin: !isDownMd && "13px" }}
+            />
           </div>
         </>
       )}

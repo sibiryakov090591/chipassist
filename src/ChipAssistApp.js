@@ -495,7 +495,7 @@ const ChipAssistApp = () => {
             )}
             {constants.id !== ID_ICSEARCH && (
               <Route
-                path={"/rfq-list"}
+                path={"/rfq-list-quotes"}
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <RfqList />
