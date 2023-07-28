@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { useMediaQuery, useTheme, Container } from "@material-ui/core";
+import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { setUrlWithFilters } from "@src/utils/setUrl";
@@ -30,6 +30,8 @@ import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progre
 import Tour, { ReactourStep } from "reactour";
 import img from "@src/images/Screenshot_1.png";
 import { ID_MASTER } from "@src/constants/server_constants";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -95,21 +97,26 @@ const SearchResults = () => {
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
 
+  const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
   const [steps] = useState<ReactourStep[]>([
     {
+      selector: "",
+      content: () => <div className={classes.tourContent}>Here you can find and request product what you want.</div>,
+    },
+    {
       selector: ".tutorial-search",
-      content: (
+      content: () => (
         <div className={classes.tourContent}>
           Put a part number in this search bar and you will find a list of results.
         </div>
       ),
-      action: () => {
-        // const inputElement = node.children[0].children[0];
-        // if (inputElement) {
-        //   inputElement.focus();
-        // }
-      },
+      // action: () => {
+      //    const inputElement = node.children[0].children[0];
+      //    if (inputElement) {
+      //      inputElement.focus();
+      //    }
+      // },
     },
     {
       selector: ".tutorial-create-rfq",
@@ -130,22 +137,9 @@ const SearchResults = () => {
       !isLoadingSearchResultsInProgress &&
       products?.length
     ) {
-      setIsOpenTour(true);
+      setOpen(true);
     }
   }, [isLoadingSearchResultsInProgress, products]);
-
-  const onCloseTour = () => {
-    setIsOpenTour(false);
-    localStorage.setItem("tourWasEnd", "true");
-  };
-
-  useEffect(() => {
-    if (isOpenTour) {
-      document.body.style.overflow = "hidden"; // Disable scrolling during tutorial
-    } else {
-      document.body.style.overflow = "auto"; // Enable scrolling after tutorial
-    }
-  }, [isOpenTour]);
 
   useSearchLoadResults();
 
@@ -186,6 +180,28 @@ const SearchResults = () => {
   useEffect(() => {
     dispatch(setRFQQueryUpc(query));
   }, [query]);
+
+  const onStartTour = () => {
+    setIsOpenTour(true);
+    setOpen(false);
+  };
+
+  const onCloseTour = () => {
+    setIsOpenTour(false);
+    setOpen(false);
+    localStorage.setItem("tourWasEnd", "true");
+  };
+
+  const enableBody = () => {
+    const html = document.querySelector("html");
+    html.style.overflow = "inherit"; // Enable scrolling after tutorial;
+  };
+
+  const disableBody = () => {
+    window.scrollTo({ top: 0 });
+    const html = document.querySelector("html");
+    html.style.overflow = "hidden"; // Disable scrolling during tutorial
+  };
 
   const onChangePageSize = (value: string) => {
     setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, baseFilters);
@@ -229,6 +245,20 @@ const SearchResults = () => {
     <Page title={t("page_title")} description={t("page_description")}>
       <Container maxWidth="xl">
         {/* Step-by-step tutorial */}
+        <Dialog className={classes.tourDialog} aria-labelledby="simple-dialog-title" open={open}>
+          <DialogTitle>
+            <h2>First time on ChipAssist?</h2>
+            <p>Check out our quick interactive guide</p>
+          </DialogTitle>
+          <DialogActions>
+            <Button className={appTheme.buttonCreate} onClick={onStartTour} variant="contained">
+              Yes, please
+            </Button>
+            <Button className={classes.skipTourButton} onClick={onCloseTour} variant="outlined">
+              Skip
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Tour
           steps={steps}
           isOpen={isOpenTour}
@@ -236,8 +266,13 @@ const SearchResults = () => {
           closeWithMask={false}
           disableInteraction={false}
           rounded={8}
+          badgeContent={(curr, tot) => `${curr} of ${tot}`}
+          className={classes.tour}
+          onAfterOpen={disableBody}
+          onBeforeClose={enableBody}
           // disableFocusLock={true}
         />
+        {/* Step-by-step tutorial */}
 
         <div className={classes.main}>
           <div
