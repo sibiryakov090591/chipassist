@@ -29,6 +29,7 @@ import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
 import Tour, { ReactourStep } from "reactour";
 import img from "@src/images/Screenshot_1.png";
+import { ID_MASTER } from "@src/constants/server_constants";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -123,7 +124,12 @@ const SearchResults = () => {
   ]);
 
   useEffect(() => {
-    if (!localStorage.getItem("tourWasEnd") && !isLoadingSearchResultsInProgress && products?.length) {
+    if (
+      constants.id === ID_MASTER &&
+      !localStorage.getItem("tourWasEnd") &&
+      !isLoadingSearchResultsInProgress &&
+      products?.length
+    ) {
       setIsOpenTour(true);
     }
   }, [isLoadingSearchResultsInProgress, products]);
