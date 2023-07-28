@@ -215,7 +215,6 @@ export const RfqList = () => {
       newRfq.isDisabled = false;
     }
     setRfqListState((prevState) => ({ ...prevState, values: [...prevState.values, newRfq] }));
-    // setNeedToChange((prevState) => !prevState);
     return 0;
   };
 
@@ -404,7 +403,6 @@ export const RfqList = () => {
     setNeedToChange((prevState) => !prevState);
 
     const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
-
     return setRfqListState((prevState) => ({
       ...prevState,
       isValid: isErrorsOccured.length === 0,
@@ -486,6 +484,7 @@ export const RfqList = () => {
     if (!isAuthenticated) {
       let isErrorOccurred = false;
       const errors = validate(formState.values, schema);
+      console.log(errors);
       if (errors) {
         setFormState((prevState) => ({
           ...prevState,
@@ -496,7 +495,7 @@ export const RfqList = () => {
         isErrorOccurred = true;
       }
 
-      if (isErrorOccurred && checkErrorInRfqList()) {
+      if (isErrorOccurred || checkErrorInRfqList()) {
         return false;
       }
     }
@@ -626,6 +625,7 @@ export const RfqList = () => {
                     onBlur={onRfqBlurHandler("MPN", key)}
                     {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
                   />
+
                   <TextField
                     disabled={elem.isDisabled}
                     variant={"outlined"}

@@ -230,7 +230,9 @@ const PcbForm: React.FC = () => {
           onChange={handleChange}
           value={formState.values.company || ""}
         />
-        <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+        <div className={classes.phone}>
+          <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+        </div>
         <TextField
           error={!!formErrors.message}
           helperText={formErrors.message && formErrors.message[0]}
