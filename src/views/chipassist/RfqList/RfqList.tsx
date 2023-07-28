@@ -406,7 +406,6 @@ export const RfqList = () => {
     setNeedToChange((prevState) => !prevState);
 
     const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
-    console.log("value: ", value, "name: ", name, "index: ", index);
     return setRfqListState((prevState) => ({
       ...prevState,
       isValid: isErrorsOccured.length === 0,
@@ -488,7 +487,7 @@ export const RfqList = () => {
     if (!isAuthenticated) {
       let isErrorOccurred = false;
       const errors = validate(formState.values, schema);
-      console.log(errors)
+      console.log(errors);
       if (errors) {
         setFormState((prevState) => ({
           ...prevState,

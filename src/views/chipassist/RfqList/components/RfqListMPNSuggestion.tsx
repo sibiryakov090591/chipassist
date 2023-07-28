@@ -37,8 +37,9 @@ const PartNumberInput: React.FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const onSuggestionSelected = (e: any, { suggestionValue }: any) => {
-    console.log("event: ", e)
-    console.log("suggestion value: ", suggestionValue)
+    console.log("event: ", e);
+    console.log("suggestion value: ", suggestionValue);
+    console.log("onChange: ", onChange)
     onChange({ ...e, target: { value: suggestionValue, name: "MPN" } });
   };
 

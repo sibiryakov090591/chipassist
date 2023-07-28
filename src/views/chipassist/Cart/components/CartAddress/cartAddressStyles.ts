@@ -57,7 +57,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       height: "37.63px",
       margin: "8px 0",
     },
-  }
+  },
 }));
 
 export default "styles";
