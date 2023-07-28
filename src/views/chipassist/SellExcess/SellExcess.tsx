@@ -8,13 +8,13 @@ import icon from "@src/images/Homepage/chip_computer_cpu.svg";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { SubmitHandler, useForm } from "react-hook-form";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
 import validate from "validate.js";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import useStyles from "./styles";
 
 type FormValues = {
@@ -223,9 +223,13 @@ export const SellExcess = () => {
                       error={!!errors.email?.message}
                       helperText={errors.email?.message}
                     />
-                    <div className={clsx(classes.textField, classes.phone)}>
-                      <InputPhone small value={phoneValue} onChange={onChangePhoneHandler} />
-                    </div>
+                    <PhoneInputWrapper
+                      value={phoneValue}
+                      onChange={onChangePhoneHandler}
+                      small
+                      classes={classes.textField}
+                      style={{ height: "37.63px", margin: 0, marginBottom: "12px" }}
+                    />
                     <TextField
                       className={classes.textField}
                       InputLabelProps={{
