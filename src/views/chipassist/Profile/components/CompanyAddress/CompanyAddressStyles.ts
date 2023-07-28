@@ -77,6 +77,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       lineHeight: "inherit",
     },
   },
+  phone: {
+    margin: 13,
+    width: "100%",
+    position: "relative",
+    [theme.breakpoints.down(460)]: {
+      height: "37.63px",
+      margin: "8px 0",
+    },
+  },
 }));
 
 export default "styled";

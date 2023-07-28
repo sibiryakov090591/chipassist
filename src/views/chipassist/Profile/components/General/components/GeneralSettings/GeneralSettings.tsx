@@ -54,6 +54,15 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   innHelperLink: {
     textDecoration: "underline",
   },
+  phone: {
+    margin: 13,
+    width: "100%",
+    position: "relative",
+    [theme.breakpoints.down(460)]: {
+      height: "37.63px",
+      margin: "8px 0",
+    },
+  },
 }));
 
 const helpEmail = constants.id === ID_ICSEARCH ? "help@icsearch.ru" : "help@chipassist.com";
@@ -313,7 +322,9 @@ const GeneralSettings = () => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <InputPhone small={isXsDown} value={phoneValue} onChange={onChangePhoneHandler} />
+              <div className={classes.phone}>
+                <InputPhone small={isXsDown} value={phoneValue} onChange={onChangePhoneHandler} />
+              </div>
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField

@@ -359,7 +359,9 @@ const Form: React.FC<Props> = ({ showSuccessModal }) => {
           />
         </Grid>
         <Grid item sm={6} xs={12} className={clsx(classes.gridItem, classes.gridItemRightColumn)}>
-          <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+          <div className={classes.phone}>
+            <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+          </div>
         </Grid>
         <Grid item sm={6} xs={12} className={classes.gridItem}>
           <TextField

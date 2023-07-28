@@ -40,6 +40,7 @@ import { batch } from "react-redux";
 import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
 import PaperPlane from "@src/images/Icons/paper-plane.svg";
 import { NavLink } from "react-router-dom";
+import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
 
 interface RegInterface {
   country: string;
@@ -215,7 +216,6 @@ export const RfqList = () => {
       newRfq.isDisabled = false;
     }
     setRfqListState((prevState) => ({ ...prevState, values: [...prevState.values, newRfq] }));
-    // setNeedToChange((prevState) => !prevState);
     return 0;
   };
 
@@ -309,6 +309,7 @@ export const RfqList = () => {
 
   useEffect(() => {
     if (rfqListState.values) {
+      console.log(rfqListState.values);
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
         (element) => element.MPN !== "" || element.quantity !== null,
@@ -399,12 +400,13 @@ export const RfqList = () => {
 
   const handleRfqListChange = (e: any, index: number) => {
     const { value, name } = e.target;
+    console.log(e.target, "index: ", index);
     const errors = [...rfqListState.errors];
     if (errors[index]) if (errors[index][name]) delete errors[index][name];
     setNeedToChange((prevState) => !prevState);
 
     const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
-
+    console.log("value: ", value, "name: ", name, "index: ", index);
     return setRfqListState((prevState) => ({
       ...prevState,
       isValid: isErrorsOccured.length === 0,
@@ -486,6 +488,7 @@ export const RfqList = () => {
     if (!isAuthenticated) {
       let isErrorOccurred = false;
       const errors = validate(formState.values, schema);
+      console.log(errors)
       if (errors) {
         setFormState((prevState) => ({
           ...prevState,
@@ -496,7 +499,7 @@ export const RfqList = () => {
         isErrorOccurred = true;
       }
 
-      if (isErrorOccurred && checkErrorInRfqList()) {
+      if (isErrorOccurred || checkErrorInRfqList()) {
         return false;
       }
     }
@@ -609,23 +612,51 @@ export const RfqList = () => {
               <h1 className={classes.titleH1}>Enter your quote list</h1>
               {rfqListState.values.map((elem, key) => (
                 <Box key={key} className={classes.rfqsBox}>
-                  <TextField
-                    disabled={elem.isDisabled}
-                    variant={"outlined"}
-                    name={"MPN"}
-                    label={"Part Number"}
-                    placeholder={"ex. KNP100"}
-                    defaultValue={elem.MPN}
-                    fullWidth
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    className={classes.rfqInput}
+                  {/* <TextField */}
+                  {/* disabled={elem.isDisabled} */}
+                  {/* variant={"outlined"} */}
+                  {/* name={"MPN"} */}
+                  {/* label={"Part Number"} */}
+                  {/* placeholder={"ex. KNP100"} */}
+                  {/* defaultValue={elem.MPN} */}
+                  {/* fullWidth */}
+                  {/* size="small" */}
+                  {/* InputLabelProps={{ */}
+                  {/*   shrink: true, */}
+                  {/* }} */}
+                  {/* className={classes.rfqInput} */}
+                  {/* onChange={(event) => handleRfqListChange(event, key)} */}
+                  {/* onBlur={onRfqBlurHandler("MPN", key)} */}
+                  {/* {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)} */}
+                  {/* /> */}
+                  <PartNumberInput
+                    value={elem.MPN}
+                    partnumberRef={"Part number"}
                     onChange={(event) => handleRfqListChange(event, key)}
-                    onBlur={onRfqBlurHandler("MPN", key)}
-                    {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
+                    disabled={elem.isDisabled}
+                    errorHandler={{ ...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false) }}
+                    blurHandler={onRfqBlurHandler("MPN", key)}
+                    // component={
+                    //   <TextField
+                    //     disabled={elem.isDisabled}
+                    //     variant={"outlined"}
+                    //     name={"MPN"}
+                    //     label={"Part Number"}
+                    //     placeholder={"ex. KNP100"}
+                    //     defaultValue={elem.MPN}
+                    //     fullWidth
+                    //     size="small"
+                    //     InputLabelProps={{
+                    //       shrink: true,
+                    //     }}
+                    //     className={classes.rfqInput}
+                    //     // onChange={(event) => handleRfqListChange(event, key)}
+                    //     onBlur={onRfqBlurHandler("MPN", key)}
+                    //     {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
+                    //   />
+                    // }
                   />
+
                   <TextField
                     disabled={elem.isDisabled}
                     variant={"outlined"}
