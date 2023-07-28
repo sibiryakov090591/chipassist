@@ -311,7 +311,9 @@ const OrderAddress: React.FC<Props> = ({ type, setStepHandler, openModal }) => {
               </Grid>
 
               <Grid className={classes.gridItem} item xs={12} sm={6} md={6}>
-                <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+                <div className={classes.phone}>
+                  <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+                </div>
               </Grid>
               <Grid className={clsx(classes.gridItem, classes.gridItemRightColumn)} item xs={12} sm={6} md={6}>
                 <TextField

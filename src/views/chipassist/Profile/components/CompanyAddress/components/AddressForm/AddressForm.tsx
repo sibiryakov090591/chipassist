@@ -205,7 +205,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
               />
             </Grid>
             <Grid className={classes.gridItem} item md={6} sm={6} xs={12}>
-              <div style={{ position: "relative" }}>
+              <div style={{ position: "relative" }} className={classes.phone}>
                 <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
               </div>
             </Grid>

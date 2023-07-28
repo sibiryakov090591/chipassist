@@ -223,7 +223,7 @@ export const SellExcess = () => {
                       error={!!errors.email?.message}
                       helperText={errors.email?.message}
                     />
-                    <div className={classes.textField}>
+                    <div className={clsx(classes.textField, classes.phone)}>
                       <InputPhone small value={phoneValue} onChange={onChangePhoneHandler} />
                     </div>
                     <TextField

@@ -20,6 +20,17 @@ export const onSuggestionsFetchRequested = (value: string) => {
   };
 };
 
+export const onSuggestionFetchRequestedManufacturer = (MPN: string) => {
+  return (dispatch: Dispatch<any>) => {
+    if (MPN !== "") {
+      dispatch({
+        types: actionTypes.LOAD_SUGGESTIONS_ARRAY,
+        promise: (client: ApiClientInterface) => client.post(""),
+      });
+    }
+  };
+};
+
 export const onSuggestionsClearRequested = () => {
   return (dispatch: Dispatch<any>) => {
     dispatch({
