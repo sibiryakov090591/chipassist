@@ -289,10 +289,48 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     tourContent: {
-      paddingRight: 16,
+      paddingRight: 26,
+      paddingTop: 8,
     },
     tourImg: {
       maxWidth: "100%",
+    },
+    tour: {
+      "& .reactour__close": {
+        width: 12,
+      },
+    },
+    tourDialog: {
+      "& .MuiDialog-paper": {
+        boxShadow: "none",
+        backgroundColor: "transparent",
+      },
+      "& .MuiBackdrop-root": {
+        backgroundColor: "rgba(15, 1, 33, 0.8)",
+      },
+      "& .MuiDialogActions-root": {
+        justifyContent: "center",
+        marginTop: 12,
+      },
+      "& h2,p": {
+        color: "#fff",
+        fontWeight: 400,
+        textAlign: "center",
+      },
+      "& h2": {
+        fontSize: 34,
+      },
+      "& p": {
+        fontSize: 20,
+      },
+      "& button": {
+        fontWeight: "bold",
+        fontSize: 16,
+      },
+    },
+    skipTourButton: {
+      color: "#fff",
+      border: "none",
     },
   }),
 );
