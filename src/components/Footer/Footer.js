@@ -133,11 +133,9 @@ const Footer = () => {
                     <NavLink className={classes.navLink} to={"/privacy_policy"}>
                       Privacy Policy
                     </NavLink>
-                    {constants.id === ID_MASTER && (
-                      <NavLink className={classes.navLink} to={"/rfq-list"}>
-                        Rfq List
-                      </NavLink>
-                    )}
+                    <NavLink className={classes.navLink} to={"/rfq-list"}>
+                      Rfq List
+                    </NavLink>
                     {!isSupplierResponse && (
                       <NavLink className={classes.navLink} to={"/FAQ"}>
                         FAQ
