@@ -124,6 +124,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     justifyContent: "flex-start",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.down("md")]: {
+      padding: 0,
+    },
   },
 }));
 

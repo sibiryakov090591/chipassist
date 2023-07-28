@@ -40,6 +40,7 @@ import { clearRfqItem, saveRfqListItems } from "@src/store/rfq/rfqActions";
 import PaperPlane from "@src/images/Icons/paper-plane.svg";
 import { NavLink } from "react-router-dom";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import { NumberInput } from "@src/components/Inputs";
 
 interface RegInterface {
   country: string;
@@ -602,7 +603,7 @@ export const RfqList = () => {
   return (
     <Page title={"Send group RFQs | ChipAssist"} description={"Send group RFQs to 100+ suppliers with ChipAssist"}>
       <Container maxWidth={"xl"} className={classes.pageContainer}>
-        <section className={classes.section}>
+        <section className={classes.section} style={isDownMd ? { marginTop: "1rem" } : null}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box className={classes.listBox}>
               <h1 className={classes.titleH1}>Enter your quote list</h1>
@@ -660,14 +661,15 @@ export const RfqList = () => {
                     onBlur={onRfqBlurHandler("quantity", key)}
                     {...rfqErrorProps("quantity", key)}
                   />
-                  <TextField
+
+                  <NumberInput
                     disabled={elem.isDisabled}
                     variant={"outlined"}
                     name={"price"}
                     label={"Target Price"}
                     placeholder={"ex. 200"}
                     defaultValue={elem.price}
-                    style={!isDownMd ? { width: "20em" } : null}
+                    style={!isDownMd ? { width: "20em", marginRight: 0 } : null}
                     size="small"
                     InputLabelProps={{
                       shrink: true,
@@ -677,9 +679,10 @@ export const RfqList = () => {
                         <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>
                       ),
                     }}
-                    fullWidth={isDownMd}
-                    className={classes.rfqInput}
-                    onChange={(event) => handleRfqListChange(event, key)}
+                    value={elem.price}
+                    onChange={(event: any) => handleRfqListChange(event, key)}
+                    decimalScale={4}
+                    isAllowedZero={true}
                   />
                 </Box>
               ))}
@@ -719,178 +722,180 @@ export const RfqList = () => {
 
         {!isAuthenticated && (
           <section className={clsx(classes.section)}>
-            <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainerStyle)}>
-              <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
-              <p style={{ color: "#456" }}>
-                If you already have an account you can <NavLink to={"/auth/login"}>login here</NavLink>
-              </p>
-              <Container maxWidth={"lg"}>
-                <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
-                  <Box className={classes.formRow}>
-                    <TextField
-                      name="firstName"
-                      label={`${t("form_labels.first_name")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      style={{ width: "100%" }}
-                      value={formState.values.firstName}
-                      onBlur={onBlurHandler("firstName")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("firstName")}
-                    />
-                    <TextField
-                      style={{ width: "100%" }}
-                      name="lastName"
-                      label={`${t("form_labels.last_name")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.lastName}
-                      onBlur={onBlurHandler("lastName")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("lastName")}
-                    />
-                    <TextField
-                      style={{ width: "100%" }}
-                      name="email"
-                      label={`${t(
-                        constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-                      )} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.email}
-                      onBlur={onBlurHandler("email")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("email")}
-                    />
-                  </Box>
-                  <Box className={classes.formRow}>
-                    <PhoneInputWrapper
-                      label={t("column.phone")}
-                      value={phoneValue}
-                      onChange={onChangePhoneHandler}
-                      small
-                      style={{ margin: isDownMd ? "8px 0" : "13px", height: !isDownMd && "auto" }}
-                    />
-                    <TextField
-                      style={{ textAlign: "start", width: "100%" }}
-                      fullWidth
-                      name="company_type"
-                      label={`${t("column.company_type")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.company_type}
-                      select
-                      onChange={handleChange}
-                    >
-                      <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
-                      <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
-                      <MenuItem value="Design organization">{t("column.design")}</MenuItem>
-                      <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
-                      <MenuItem value="Other">{t("column.other")}</MenuItem>
-                    </TextField>
-
-                    <TextField
-                      variant="outlined"
-                      name="country"
-                      size="small"
-                      label={`${t("form_labels.delivery_to")} *`}
-                      value={formState.values.country}
-                      onBlur={onBlurHandler("country")}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      select
-                      style={{ textAlign: "start", width: "100%" }}
-                      {...errorProps("country")}
-                    >
-                      {countries?.map((i: Record<string, any>) => (
-                        <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                          {i.printable_name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-
-                    {formState.values.company_type === "Other" && (
+            <Container maxWidth={"lg"} className={clsx(classes.mainContainer)}>
+              <Box className={classes.regContainerStyle}>
+                <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
+                <p style={{ color: "#456" }}>
+                  If you already have an account you can <NavLink to={"/auth/login"}>login here</NavLink>
+                </p>
+                <Container maxWidth={"lg"}>
+                  <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
+                    <Box className={classes.formRow}>
                       <TextField
-                        style={{ width: "100%" }}
-                        name="company_other_type"
-                        label={`${t("column.company_other_type")} *`}
+                        name="firstName"
+                        label={`${t("form_labels.first_name")} *`}
                         variant="outlined"
                         size="small"
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={formState.values.company_other_type}
+                        style={{ width: "100%" }}
+                        value={formState.values.firstName}
+                        onBlur={onBlurHandler("firstName")}
                         onChange={handleChange}
-                        onBlur={onBlurHandler("company_other_type")}
-                        {...errorProps("company_other_type")}
+                        disabled={isAuthenticated}
+                        {...errorProps("firstName")}
                       />
-                    )}
-                  </Box>
-                </Box>
-                <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                  <Box display="flex" flexDirection="row" ml={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="receive_updates_confirm"
-                          className={appTheme.checkbox}
-                          checked={formState.values.receive_updates_confirm}
-                          onChange={handleChange}
-                        />
-                      }
-                      label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                    />
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="lastName"
+                        label={`${t("form_labels.last_name")} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.lastName}
+                        onBlur={onBlurHandler("lastName")}
+                        onChange={handleChange}
+                        disabled={isAuthenticated}
+                        {...errorProps("lastName")}
+                      />
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="email"
+                        label={`${t(
+                          constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                        )} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.email}
+                        onBlur={onBlurHandler("email")}
+                        onChange={handleChange}
+                        disabled={isAuthenticated}
+                        {...errorProps("email")}
+                      />
+                    </Box>
+                    <Box className={classes.formRow}>
+                      <PhoneInputWrapper
+                        label={t("column.phone")}
+                        value={phoneValue}
+                        onChange={onChangePhoneHandler}
+                        small
+                        style={{ margin: isDownMd ? "8px 0" : "13px", height: !isDownMd && "auto" }}
+                      />
+                      <TextField
+                        style={{ textAlign: "start", width: "100%" }}
+                        fullWidth
+                        name="company_type"
+                        label={`${t("column.company_type")} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.company_type}
+                        select
+                        onChange={handleChange}
+                      >
+                        <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
+                        <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
+                        <MenuItem value="Design organization">{t("column.design")}</MenuItem>
+                        <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
+                        <MenuItem value="Other">{t("column.other")}</MenuItem>
+                      </TextField>
 
-                    <Box display="flex" flexDirection="column" ml={2}>
+                      <TextField
+                        variant="outlined"
+                        name="country"
+                        size="small"
+                        label={`${t("form_labels.delivery_to")} *`}
+                        value={formState.values.country}
+                        onBlur={onBlurHandler("country")}
+                        onChange={handleChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        select
+                        style={{ textAlign: "start", width: "100%" }}
+                        {...errorProps("country")}
+                      >
+                        {countries?.map((i: Record<string, any>) => (
+                          <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                            {i.printable_name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+
+                      {formState.values.company_type === "Other" && (
+                        <TextField
+                          style={{ width: "100%" }}
+                          name="company_other_type"
+                          label={`${t("column.company_other_type")} *`}
+                          variant="outlined"
+                          size="small"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          value={formState.values.company_other_type}
+                          onChange={handleChange}
+                          onBlur={onBlurHandler("company_other_type")}
+                          {...errorProps("company_other_type")}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                  <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                    <Box display="flex" flexDirection={isDownMd ? "column" : "row"} ml={2}>
                       <FormControlLabel
                         control={
                           <Checkbox
-                            name="policy_confirm"
+                            name="receive_updates_confirm"
                             className={appTheme.checkbox}
-                            checked={formState.values.policy_confirm}
+                            checked={formState.values.receive_updates_confirm}
                             onChange={handleChange}
                           />
                         }
-                        label={
-                          <>
-                            {t("feedback.form.policy_agree")}
-                            <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                              {t("feedback.form.terms_of_services")}
-                            </Link>
-                            {t("feedback.form.and")}
-                            <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                              {t("feedback.form.privacy_policy")}
-                            </Link>{" "}
-                            *
-                          </>
-                        }
+                        label={<>{t("feedback.form.receive_updates_confirm")}</>}
                       />
-                      {formState.touched?.policy_confirm &&
-                        !!formState.errors?.policy_confirm &&
-                        formState.errors.policy_confirm[0] && (
-                          <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
-                        )}
+
+                      <Box display="flex" flexDirection="column" ml={2} style={{ marginLeft: 0 }}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              name="policy_confirm"
+                              className={appTheme.checkbox}
+                              checked={formState.values.policy_confirm}
+                              onChange={handleChange}
+                            />
+                          }
+                          label={
+                            <>
+                              {t("feedback.form.policy_agree")}
+                              <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                                {t("feedback.form.terms_of_services")}
+                              </Link>
+                              {t("feedback.form.and")}
+                              <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                                {t("feedback.form.privacy_policy")}
+                              </Link>{" "}
+                              *
+                            </>
+                          }
+                        />
+                        {formState.touched?.policy_confirm &&
+                          !!formState.errors?.policy_confirm &&
+                          formState.errors.policy_confirm[0] && (
+                            <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
+                          )}
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              </Container>
+                </Container>
+              </Box>
             </Container>
           </section>
         )}
