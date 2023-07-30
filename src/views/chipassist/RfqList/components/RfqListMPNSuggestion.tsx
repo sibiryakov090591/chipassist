@@ -40,7 +40,8 @@ const PartNumberInput: React.FC<Props> = ({
     console.log("event: ", e);
     console.log("suggestion value: ", suggestionValue);
     console.log("onChange: ", onChange);
-    onChange({ ...e, target: { value: suggestionValue, name: "MPN" } });
+    console.log({ ...e, target: { value: suggestionValue, name: "MPN" } });
+    onChange({ ...e, target: { ...e.target, value: suggestionValue, name: "MPN" } });
   };
 
   const onSuggestionsFetchRequestedHandler = (e: any) => {

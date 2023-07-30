@@ -41,6 +41,7 @@ import PaperPlane from "@src/images/Icons/paper-plane.svg";
 import { NavLink } from "react-router-dom";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { NumberInput } from "@src/components/Inputs";
+import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
 
 interface RegInterface {
   country: string;
@@ -307,8 +308,17 @@ export const RfqList = () => {
     }));
   }, [debouncedRfqState.values]);
 
+  useEffect(()=>{
+    console.log("CHANGED IN 1: ", rfqListState.values);
+  }, [debouncedRfqState.values])
+
+  useEffect(() => {
+    console.log("NEED TO CHANGE")
+  }, [needToChange])
+
   useEffect(() => {
     if (rfqListState.values) {
+      console.log("CHANGED IN 2: ", rfqListState.values);
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
         (element) => element.MPN !== "" || element.quantity !== null,
@@ -399,14 +409,21 @@ export const RfqList = () => {
 
   const handleRfqListChange = (e: any, index: number) => {
     const { value, name } = e.target;
+    console.log(e.target)
     const errors = [...rfqListState.errors];
-    if (errors[index]) if (errors[index][name]) delete errors[index][name];
-    setNeedToChange((prevState) => !prevState);
 
-    const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
+    // console.log( "index: ", index, "value: ", value, "name: ", name, "What in state: ", rfqListState.values[index][name]);
+    if (errors[index]) if (errors[index][name]) delete errors[index][name];
+    setNeedToChange((prevState) => {
+      console.log("setNeedToChange called!");
+      return !prevState
+    } );
+
+    const isErrorsOccurred = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
+    console.log("setNEEDtoCHAnge DONE!!!");
     return setRfqListState((prevState) => ({
       ...prevState,
-      isValid: isErrorsOccured.length === 0,
+      isValid: isErrorsOccurred.length === 0,
       values: [
         ...prevState.values.slice(0, index),
         { ...prevState.values[index], [name]: value },
@@ -609,22 +626,13 @@ export const RfqList = () => {
               <h1 className={classes.titleH1}>Enter your quote list</h1>
               {rfqListState.values.map((elem, key) => (
                 <Box key={key} className={classes.rfqsBox}>
-                  <TextField
-                    disabled={elem.isDisabled}
-                    variant={"outlined"}
-                    name={"MPN"}
-                    label={"Part Number"}
-                    placeholder={"ex. KNP100"}
-                    defaultValue={elem.MPN}
-                    fullWidth
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    className={classes.rfqInput}
+                  <PartNumberInput
+                    value={elem.MPN}
+                    partnumberRef={"Part number"}
                     onChange={(event) => handleRfqListChange(event, key)}
-                    onBlur={onRfqBlurHandler("MPN", key)}
-                    {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
+                    disabled={elem.isDisabled}
+                    errorHandler={{ ...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false) }}
+                    blurHandler={onRfqBlurHandler("MPN", key)}
                   />
 
                   <TextField
@@ -663,6 +671,7 @@ export const RfqList = () => {
                   />
 
                   <NumberInput
+                    className={classes.rfqInput}
                     disabled={elem.isDisabled}
                     variant={"outlined"}
                     name={"price"}
