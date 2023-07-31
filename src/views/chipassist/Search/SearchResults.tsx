@@ -132,8 +132,8 @@ const SearchResults = () => {
 
   useEffect(() => {
     if (
-      // constants.id === ID_MASTER &&
-      // !localStorage.getItem("tourWasEnd") &&
+      constants.id === ID_MASTER &&
+      !localStorage.getItem("tutorialCompleted") &&
       !isLoadingSearchResultsInProgress &&
       products?.length
     ) {
@@ -190,7 +190,7 @@ const SearchResults = () => {
   const onCloseTour = () => {
     setIsOpenTour(false);
     setOpen(false);
-    localStorage.setItem("tourWasEnd", "true");
+    localStorage.setItem("tutorialCompleted", "true");
   };
 
   const enableBody = () => {
