@@ -37,10 +37,7 @@ const PartNumberInput: React.FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const onSuggestionSelected = (e: any, { suggestionValue }: any) => {
-    console.log("event: ", e);
-    console.log("suggestion value: ", suggestionValue);
-    console.log("onChange: ", onChange);
-    onChange({ ...e, target: { value: suggestionValue, name: "MPN" } });
+    onChange({ ...e, target: { ...e.target, value: suggestionValue, name: "MPN" } });
   };
 
   const onSuggestionsFetchRequestedHandler = (e: any) => {
@@ -87,21 +84,6 @@ const PartNumberInput: React.FC<Props> = ({
           onBlur: onFieldBlur,
         }}
         renderInputComponent={(inputProps: any) => (
-          // <TextField
-          //   title={partnumberRef && partnumberRef.length > 25 ? partnumberRef : ""}
-          //   variant="outlined"
-          //   placeholder={"ex. KNP100"}
-          //   name="MPN"
-          //   fullWidth
-          //   className={classes.field}
-          //   autoFocus
-          //   defaultValue={value}
-          //   disabled={disabled}
-          //   size="small"
-          //   InputLabelProps={{ shrink: true }}
-          //   label={partnumberRefLabel}
-          //   {...inputProps}
-          // />
           <TextField
             title={partnumberRef && partnumberRef.length > 25 ? partnumberRef : ""}
             disabled={disabled}
@@ -115,7 +97,6 @@ const PartNumberInput: React.FC<Props> = ({
               shrink: true,
             }}
             className={rfqListClasses.rfqInput}
-            // onChange={(event) => handleRfqListChange(event, key)}
             {...inputProps}
             {...errorHandler}
           />
