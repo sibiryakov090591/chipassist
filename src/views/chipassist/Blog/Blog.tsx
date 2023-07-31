@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 import useAppTheme from "@src/theme/useAppTheme";
 import InfiniteScroll from "react-infinite-scroller";
 import { clsx } from "clsx";
-import FallbackImage from "@src/components/FallbackImage/FallbackImage";
-import placeholderImg from "@src/images/no-article-image.png";
+// import FallbackImage from "@src/components/FallbackImage/FallbackImage";
+// import placeholderImg from "@src/images/no-article-image.png";
 import { useStyles } from "./styles";
 
 const Blog: React.FC = () => {
@@ -92,7 +92,12 @@ const Blog: React.FC = () => {
               return (
                 <Link key={item.id} to={`${item.slug}`}>
                   <div className={classes.article}>
-                    <FallbackImage src={item.img} fallbackSrc={placeholderImg} alt="image of article" />
+                    {/* <FallbackImage src={item.img} fallbackSrc={placeholderImg} alt="image of article" /> */}
+                    <img
+                      src={item.img}
+                      onError={() => console.log(item.img, " - loaded with error")}
+                      onLoad={() => console.log(item.img, " - loaded successfully")}
+                    />
                     <div className={classes.content}>
                       <div>
                         <h1 className={classes.title}>{item.title}</h1>
