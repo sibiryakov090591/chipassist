@@ -80,6 +80,8 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
         >
           {chatList.results.map((item, index) => {
             const lastMessage = item.messages[0];
+            if (!lastMessage) return null;
+
             const lastMessageDate =
               Date.now() - new Date(lastMessage.created).getTime() > 86400000
                 ? new Date(lastMessage.created).toLocaleDateString()
