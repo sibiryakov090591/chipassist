@@ -100,10 +100,10 @@ const SearchResults = () => {
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
   const [steps] = useState<ReactourStep[]>([
-    {
-      selector: "",
-      content: () => <div className={classes.tourContent}>Here you can find and request product what you want.</div>,
-    },
+    // {
+    //   selector: "",
+    //   content: () => <div className={classes.tourContent}>Here you can find and request product what you want.</div>,
+    // },
     {
       selector: ".tutorial-search",
       content: () => (
@@ -132,8 +132,8 @@ const SearchResults = () => {
 
   useEffect(() => {
     if (
-      constants.id === ID_MASTER &&
-      !localStorage.getItem("tourWasEnd") &&
+      // constants.id === ID_MASTER &&
+      // !localStorage.getItem("tourWasEnd") &&
       !isLoadingSearchResultsInProgress &&
       products?.length
     ) {
@@ -182,8 +182,9 @@ const SearchResults = () => {
   }, [query]);
 
   const onStartTour = () => {
-    setIsOpenTour(true);
+    disableBody();
     setOpen(false);
+    setTimeout(() => setIsOpenTour(true), 400);
   };
 
   const onCloseTour = () => {
@@ -198,7 +199,6 @@ const SearchResults = () => {
   };
 
   const disableBody = () => {
-    window.scrollTo({ top: 0 });
     const html = document.querySelector("html");
     html.style.overflow = "hidden"; // Disable scrolling during tutorial
   };
@@ -268,7 +268,6 @@ const SearchResults = () => {
           rounded={8}
           badgeContent={(curr, tot) => `${curr} of ${tot}`}
           className={classes.tour}
-          onAfterOpen={disableBody}
           onBeforeClose={enableBody}
           // disableFocusLock={true}
         />
