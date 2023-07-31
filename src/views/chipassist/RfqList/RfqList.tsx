@@ -41,6 +41,7 @@ import PaperPlane from "@src/images/Icons/paper-plane.svg";
 import { NavLink } from "react-router-dom";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { NumberInput } from "@src/components/Inputs";
+import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
 
 interface RegInterface {
   country: string;
@@ -311,7 +312,7 @@ export const RfqList = () => {
     if (rfqListState.values) {
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
-        (element) => element.MPN !== "" || element.quantity !== null,
+        (element) => element.MPN !== "" && element.quantity !== null,
       );
 
       if (
@@ -400,13 +401,14 @@ export const RfqList = () => {
   const handleRfqListChange = (e: any, index: number) => {
     const { value, name } = e.target;
     const errors = [...rfqListState.errors];
+
     if (errors[index]) if (errors[index][name]) delete errors[index][name];
     setNeedToChange((prevState) => !prevState);
 
-    const isErrorsOccured = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
+    const isErrorsOccurred = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
     return setRfqListState((prevState) => ({
       ...prevState,
-      isValid: isErrorsOccured.length === 0,
+      isValid: isErrorsOccurred.length === 0,
       values: [
         ...prevState.values.slice(0, index),
         { ...prevState.values[index], [name]: value },
@@ -485,7 +487,6 @@ export const RfqList = () => {
     if (!isAuthenticated) {
       let isErrorOccurred = false;
       const errors = validate(formState.values, schema);
-      console.log(errors);
       if (errors) {
         setFormState((prevState) => ({
           ...prevState,
@@ -495,15 +496,15 @@ export const RfqList = () => {
         }));
         isErrorOccurred = true;
       }
-
-      if (isErrorOccurred || checkErrorInRfqList()) {
+      const errorsInRfqList = checkErrorInRfqList();
+      if (isErrorOccurred || errorsInRfqList) {
         return false;
       }
     }
     if (checkErrorInRfqList()) {
       return false;
     }
-    const data = createDataRfqList();
+    let data = createDataRfqList();
 
     const country =
       countries?.find((c) => c.url === formState.values.country) ||
@@ -524,15 +525,17 @@ export const RfqList = () => {
     const company_name = !isAuthenticated
       ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
       : billingAddress?.company_name;
-    let comment = `Delivery to: ${country?.printable_name};`;
-    if (phone) comment += ` Phone: ${phone};`;
-    if (company_name) comment += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
-    if (company_type) comment += ` Company type: ${company_type};`;
-    if (formState.values.comment) comment += ` ${formState.values.comment};`;
+    let details = `Delivery to: ${country?.printable_name};`;
+    if (phone) details += ` Phone: ${phone};`;
+    if (company_name) details += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
+    if (company_type) details += ` Company type: ${company_type};`;
+    if (formState.values.comment) details += ` ${formState.values.comment};`;
+
+    data = data.map((elem) => ({ ...elem, comment: details }));
 
     dispatch(progressModalSetPartNumber(`${data[0].part_number}, ... `, "rfq_list"));
 
-    dispatch(changeMisc("rfq_list", { ...formState.values, comment, rfq_list: data }, formState.values.email));
+    dispatch(changeMisc("rfq_list", { ...formState.values, comment: details, rfq_list: data }, formState.values.email));
 
     setIsLoading(true);
     if (isAuthenticated) {
@@ -609,22 +612,13 @@ export const RfqList = () => {
               <h1 className={classes.titleH1}>Enter your quote list</h1>
               {rfqListState.values.map((elem, key) => (
                 <Box key={key} className={classes.rfqsBox}>
-                  <TextField
-                    disabled={elem.isDisabled}
-                    variant={"outlined"}
-                    name={"MPN"}
-                    label={"Part Number"}
-                    placeholder={"ex. KNP100"}
-                    defaultValue={elem.MPN}
-                    fullWidth
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    className={classes.rfqInput}
+                  <PartNumberInput
+                    value={elem.MPN}
+                    partnumberRef={"Part number"}
                     onChange={(event) => handleRfqListChange(event, key)}
-                    onBlur={onRfqBlurHandler("MPN", key)}
-                    {...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false)}
+                    disabled={elem.isDisabled}
+                    errorHandler={{ ...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false) }}
+                    blurHandler={onRfqBlurHandler("MPN", key)}
                   />
 
                   <TextField
@@ -663,6 +657,7 @@ export const RfqList = () => {
                   />
 
                   <NumberInput
+                    className={classes.rfqInput}
                     disabled={elem.isDisabled}
                     variant={"outlined"}
                     name={"price"}
@@ -907,6 +902,7 @@ export const RfqList = () => {
               onClick={onSendRfqClickHandler}
               disabled={isLoading}
               size={"large"}
+              style={{ minWidth: "206.25px" }}
             >
               {isLoading && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
               {isLoading ? (
