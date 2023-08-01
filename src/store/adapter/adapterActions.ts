@@ -2,6 +2,7 @@ import { RootState } from "@src/store";
 import ApiClient, { ApiClientInterface } from "@src/services/ApiClient";
 import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
+import { push } from "react-router-redux";
 import * as actionTypes from "./adapterTypes";
 
 const apiClient = new ApiClient();
@@ -44,8 +45,7 @@ export const uploadFileThunk = (
       })
       .then((response) => {
         if (response.status === 200) {
-          // const searchId = response.data.search_id;
-          // const bomId = response.data.id;
+          const searchId = response.data.id;
           if (returnRes) {
             dispatch(setUploadState({ uploading: false, error: "", selected: false }));
             dispatch(
@@ -56,7 +56,7 @@ export const uploadFileThunk = (
             );
             return response.data;
           }
-          // return dispatch(checkFileParsingState(searchId, bomId));
+          return dispatch(checkFileState(searchId));
         }
 
         return dispatch(
@@ -75,6 +75,51 @@ export const uploadFileThunk = (
             selected: false,
           }),
         );
+      });
+  };
+};
+
+export const checkFileStateThunk = (fileId: number) => {
+  return {
+    types: [false, false, false],
+    promise: (client: ApiClientInterface) =>
+      client
+        .get(`/upload_supplier_file/${fileId}/`)
+        .then((res) => res.data)
+        .catch((error) => {
+          console.log("***CHECK_PARSING_SUPPLIER_FILE_ERROR", error);
+          throw error;
+        }),
+  };
+};
+
+export const checkFileState = (fileId: number) => {
+  return (dispatch: any) => {
+    dispatch(checkFileStateThunk(fileId))
+      .then((response: any) => {
+        switch (response.status) {
+          case "ERROR": {
+            dispatch(setUploadState({ uploading: false, error: t("error_file_upload_backend"), selected: false }));
+            break;
+          }
+          case "PENDING" || "null" || "": {
+            setTimeout(() => dispatch(checkFileState(fileId)), 1000);
+            break;
+          }
+          default: {
+            dispatch(setUploadState({ uploading: false, error: "", selected: false }));
+            dispatch(push(`/file-upload`));
+            dispatch(
+              showBottomLeftMessageAlertAction({
+                text: t("file_uploaded"),
+                severity: "success",
+              }),
+            );
+          }
+        }
+      })
+      .catch(() => {
+        dispatch(setUploadState({ uploading: false, error: t("error_file_upload_backend"), selected: false }));
       });
   };
 };

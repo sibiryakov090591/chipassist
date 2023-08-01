@@ -187,7 +187,9 @@ const AdapterUpload = () => {
   };
 
   const onUpload = () => {
-    dispatch(uploadFileThunk(file, selectedSheet, { ...fields, ...columnsIndexes }, startingRow - 1, true, fullexport));
+    dispatch(
+      uploadFileThunk(file, selectedSheet, { ...fields, ...columnsIndexes }, startingRow - 1, false, fullexport),
+    );
   };
 
   const onColumnChange = (column, columnIndex, value) => {
