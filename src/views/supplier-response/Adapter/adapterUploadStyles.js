@@ -280,6 +280,12 @@ export const useStyles = makeStyles((theme) => ({
   fileSuccess: {
     color: "#8BC34A",
   },
+  fileErrorsList: {
+    paddingLeft: 16,
+    "& span": {
+      fontWeight: "bold",
+    },
+  },
 }));
 
 export default "styles";
