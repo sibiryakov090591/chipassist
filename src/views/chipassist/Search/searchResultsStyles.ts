@@ -74,7 +74,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     stickyContainer: {
       minHeight: "auto !important",
       "& > div": {
-        zIndex: 100,
+        zIndex: 10,
         "&.sticky": {
           left: 0,
           right: 0,
