@@ -36,7 +36,7 @@ export const uploadFileThunk = (
   if (fullexport) formData.append("noheader_row", fullexport);
 
   return (dispatch: any) => {
-    dispatch(setUploadState({ uploading: true, error: "", selected: true }));
+    dispatch(setUploadState({ uploading: true, error: "", fileErrors: null, selected: true }));
 
     return apiClient
       .put("/file_upload/", {
@@ -47,7 +47,7 @@ export const uploadFileThunk = (
         if (response.status === 200) {
           const searchId = response.data.id;
           if (returnRes) {
-            dispatch(setUploadState({ uploading: false, error: "", selected: false }));
+            dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: false }));
             dispatch(
               showBottomLeftMessageAlertAction({
                 text: t("file_uploaded"),
@@ -63,6 +63,7 @@ export const uploadFileThunk = (
           setUploadState({
             uploading: false,
             error: response.data?.error || t("error_file_upload_backend"),
+            fileErrors: null,
             selected: false,
           }),
         );
@@ -72,6 +73,7 @@ export const uploadFileThunk = (
           setUploadState({
             uploading: false,
             error: e.response?.data?.error || t("error_file_upload"),
+            fileErrors: null,
             selected: false,
           }),
         );
@@ -99,7 +101,15 @@ export const checkFileState = (fileId: number) => {
       .then((response: any) => {
         switch (response.status) {
           case "ERROR": {
-            dispatch(setUploadState({ uploading: false, error: t("error_file_upload_backend"), selected: false }));
+            const fileErrors = response.errors;
+            dispatch(
+              setUploadState({
+                uploading: false,
+                fileErrors: fileErrors || null,
+                error: fileErrors ? "" : t("error_file_upload_backend"),
+                selected: false,
+              }),
+            );
             break;
           }
           case "PENDING" || "null" || "": {
@@ -107,19 +117,37 @@ export const checkFileState = (fileId: number) => {
             break;
           }
           default: {
-            dispatch(setUploadState({ uploading: false, error: "", selected: false }));
-            dispatch(push(`/file-upload`));
-            dispatch(
-              showBottomLeftMessageAlertAction({
-                text: t("file_uploaded"),
-                severity: "success",
-              }),
-            );
+            if (response.errors?.length) {
+              dispatch(
+                setUploadState({
+                  uploading: false,
+                  fileErrors: response.errors,
+                  error: "",
+                  selected: false,
+                }),
+              );
+            } else {
+              dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: false }));
+              dispatch(push(`/file-upload`));
+              dispatch(
+                showBottomLeftMessageAlertAction({
+                  text: t("file_uploaded"),
+                  severity: "success",
+                }),
+              );
+            }
           }
         }
       })
       .catch(() => {
-        dispatch(setUploadState({ uploading: false, error: t("error_file_upload_backend"), selected: false }));
+        dispatch(
+          setUploadState({
+            uploading: false,
+            error: t("error_file_upload_backend"),
+            fileErrors: null,
+            selected: false,
+          }),
+        );
       });
   };
 };

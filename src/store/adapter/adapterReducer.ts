@@ -5,6 +5,7 @@ const initialState: AdapterState = {
   upload: {
     uploading: false,
     error: "",
+    fileErrors: null,
     selected: false,
   },
   items: [],

@@ -142,7 +142,7 @@ const AdapterUpload = () => {
   }, [storageFileName]);
 
   useEffect(() => {
-    if (!upload.uploading && !upload.error && file) {
+    if (!upload.uploading && !upload.error && !upload.fileErrors && file) {
       setUploadedFiles([...uploadedFiles, file.name]);
       setFile(null);
       setColumns({ ...columnsInitialState });
@@ -160,7 +160,7 @@ const AdapterUpload = () => {
       console.log("EXISTS:", file.name);
       setFile(null);
     }
-    dispatch(setUploadState({ uploading: false, error: "", selected: true }));
+    dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: true }));
     setFileError(null);
     setFile(acceptedFiles[0]);
     setHasFocus(false);
@@ -175,7 +175,7 @@ const AdapterUpload = () => {
 
   const onFileRemove = () => {
     setFile(null);
-    dispatch(setUploadState({ uploading: false, error: "", selected: false }));
+    dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: false }));
   };
 
   const onFocus = () => {
@@ -288,19 +288,44 @@ const AdapterUpload = () => {
             </Box>
           )}
           {file !== null && (
-            <FileViewer
-              file={file}
-              columns={columns}
-              fields={fields}
-              fullexport={fullexport}
-              startingRow={startingRow}
-              selectedSheet={selectedSheet}
-              setSelectedSheet={setSelectedSheet}
-              onColumnChange={onColumnChange}
-              onInputChange={onInputChange}
-              onFullexportChange={() => setFullexport((prevState) => !prevState)}
-              onStartingRowChange={onStartingRowChange}
-            />
+            <>
+              {!!upload.fileErrors?.length && (
+                <Alert severity="error" style={{ marginTop: 15 }}>
+                  <ul className={classes.fileErrorsList}>
+                    {upload.fileErrors.map((err, i) => {
+                      return (
+                        <li key={i}>
+                          <Box display="flex" gridGap="12px">
+                            <div>
+                              <span>Column:</span> {err.col};
+                            </div>
+                            <div>
+                              <span>Rows:</span> {err.rows};
+                            </div>
+                            <div>
+                              <span>Error:</span> {err.rule};
+                            </div>
+                          </Box>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Alert>
+              )}
+              <FileViewer
+                file={file}
+                columns={columns}
+                fields={fields}
+                fullexport={fullexport}
+                startingRow={startingRow}
+                selectedSheet={selectedSheet}
+                setSelectedSheet={setSelectedSheet}
+                onColumnChange={onColumnChange}
+                onInputChange={onInputChange}
+                onFullexportChange={() => setFullexport((prevState) => !prevState)}
+                onStartingRowChange={onStartingRowChange}
+              />
+            </>
           )}
           {!file && (
             <Box>
