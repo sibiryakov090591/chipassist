@@ -26,6 +26,12 @@ export interface AdapterItem {
   value_dec: number;
   system_coeff: number;
 }
+export interface AdapterFileError {
+  col: string;
+  rows: string;
+  rule: string;
+  err_count: number;
+}
 export interface AdapterState {
   items: AdapterItem[];
   itemsPagination: {
@@ -39,6 +45,7 @@ export interface AdapterState {
   upload: {
     uploading: boolean;
     error: string;
+    fileErrors: AdapterFileError[];
     selected: boolean;
   };
   settings: any[];
