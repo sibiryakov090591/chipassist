@@ -99,7 +99,7 @@
       "un_auth": {
         "title": "Your account needs to be confirmed",
         "text_1": "Please activate your account",
-        "text_2": "We have sent you verification code to ",
+        "text_2": "We have sent you a verification code to ",
         "text_3": "The code is valid for 24 hours",
         "text_4": "You can resend the code in: <span>{{sec}}</span> sec.",
         "send_link": "Send code again"
@@ -293,7 +293,7 @@
       "success_title": "Thank you!",
       "error_title": "Something is wrong!",
       "error_message": "Please try to submit your request later.",
-      "sent_email": "We have sent you verification code to ",
+      "sent_email": "We have sent you a verification code to ",
       "link_valid": "The code is valid for 24 hours",
       "send_again": "You can resend the code in: <span>{{sec}}</span> sec.",
       "send_link": "Send code again",
