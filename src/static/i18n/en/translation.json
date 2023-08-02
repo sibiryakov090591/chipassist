@@ -66,7 +66,7 @@
     },
     "column": {
       "file_name": "File name",
-      "noheader_row": "No header",
+      "noheader_row": "No header - the selected start row of the file does not contain headers",
       "supplier": "Supplier",
       "partner_name": "Partner name",
       "currency": "Currency",
@@ -84,6 +84,7 @@
       "price_col": "Price 1",
       "price_2_col": "Price 2",
       "price_3_col": "Price 3",
+      "datecode": "Date code",
       "manufacturer_col": "Manufacturer"
     }
   },

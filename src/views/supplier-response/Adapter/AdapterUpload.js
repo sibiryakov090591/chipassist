@@ -49,6 +49,7 @@ const columnsInitialState = {
   price_2_col: "",
   price_3_col: "",
   manufacturer_col: "",
+  datecode_col: "",
 };
 const columnIndexes = {
   0: "A",
@@ -162,6 +163,7 @@ const AdapterUpload = () => {
     }
     dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: true }));
     setFileError(null);
+    setSelectedSheet(null);
     setFile(acceptedFiles[0]);
     setHasFocus(false);
     setColumns({ ...columnsInitialState });

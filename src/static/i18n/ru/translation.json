@@ -67,7 +67,7 @@
       "hint": "Строка, с которой начнется чтение данных. Чтобы выбрать другую, нажмите на строку в таблице.",
       "hint_start_row": "Первая строка файла импорта должна содержать заголовоки столбцов. Проверьте правильность формата файла"
     },
-    "columns": {
+    "column": {
       "file_name": "File name",
       "noheader_row": "No header",
       "supplier": "Supplier",
@@ -87,6 +87,7 @@
       "price_col": "Price 1",
       "price_2_col": "Price 2",
       "price_3_col": "Price 3",
+      "datecode": "Date code",
       "manufacturer_col": "Manufacturer"
     }
   },
