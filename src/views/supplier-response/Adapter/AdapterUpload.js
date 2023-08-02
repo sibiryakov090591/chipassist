@@ -49,6 +49,7 @@ const columnsInitialState = {
   price_2_col: "",
   price_3_col: "",
   manufacturer_col: "",
+  datecode_col: "",
 };
 const columnIndexes = {
   0: "A",

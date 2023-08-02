@@ -298,7 +298,7 @@ const FileViewer = ({
             {/* </div> */}
           </div>
           <br />
-          <br />
+          <strong>General:</strong>
           <div className={`${classes.selectors} test-file-columns`}>
             <div>
               <Typography variant="caption" display="block" gutterBottom>
@@ -352,6 +352,7 @@ const FileViewer = ({
             <div>
               <Typography variant="caption" display="block" gutterBottom>
                 {t("column.amount_col")}
+                <span style={{ color: red[500] }}>*</span>
               </Typography>
               <CustomSelect
                 placeholder={t("file.choose_column")}
@@ -387,7 +388,22 @@ const FileViewer = ({
                 onClear={onColumnSelectClear("manufacturer_col")}
               />
             </div>
-            <br />
+            <div>
+              <Typography variant="caption" display="block" gutterBottom>
+                {t("column.datecode")}
+              </Typography>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.datecode_col}
+                options={getColumnsSelectOptions("datecode_col")}
+                onChange={onColumnSelect("datecode_col")}
+                onClear={onColumnSelectClear("datecode_col")}
+              />
+            </div>
+          </div>
+          <br />
+          <strong>Pricing:</strong>
+          <div className={`${classes.selectors} test-file-columns`}>
             <div>
               <Typography variant="caption" display="block" gutterBottom>
                 {t("column.quantity_col")}
@@ -402,31 +418,6 @@ const FileViewer = ({
             </div>
             <div>
               <Typography variant="caption" display="block" gutterBottom>
-                {t("column.quantity_2_col")}
-              </Typography>
-              <CustomSelect
-                placeholder={t("file.choose_column")}
-                value={columns.quantity_2_col}
-                options={getColumnsSelectOptions("quantity_2_col")}
-                onChange={onColumnSelect("quantity_2_col")}
-                onClear={onColumnSelectClear("quantity_2_col")}
-              />
-            </div>
-            <div>
-              <Typography variant="caption" display="block" gutterBottom>
-                {t("column.quantity_3_col")}
-              </Typography>
-              <CustomSelect
-                placeholder={t("file.choose_column")}
-                value={columns.quantity_3_col}
-                options={getColumnsSelectOptions("quantity_3_col")}
-                onChange={onColumnSelect("quantity_3_col")}
-                onClear={onColumnSelectClear("quantity_3_col")}
-              />
-            </div>
-            <br />
-            <div>
-              <Typography variant="caption" display="block" gutterBottom>
                 {t("column.price_col")}
               </Typography>
               <CustomSelect
@@ -435,6 +426,20 @@ const FileViewer = ({
                 options={getColumnsSelectOptions("price_col")}
                 onChange={onColumnSelect("price_col")}
                 onClear={onColumnSelectClear("price_col")}
+              />
+            </div>
+            <div />
+            <div />
+            <div>
+              <Typography variant="caption" display="block" gutterBottom>
+                {t("column.quantity_2_col")}
+              </Typography>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.quantity_2_col}
+                options={getColumnsSelectOptions("quantity_2_col")}
+                onChange={onColumnSelect("quantity_2_col")}
+                onClear={onColumnSelectClear("quantity_2_col")}
               />
             </div>
             <div>
@@ -449,6 +454,20 @@ const FileViewer = ({
                 onClear={onColumnSelectClear("price_2_col")}
               />
             </div>
+            <div />
+            <div />
+            <div>
+              <Typography variant="caption" display="block" gutterBottom>
+                {t("column.quantity_3_col")}
+              </Typography>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.quantity_3_col}
+                options={getColumnsSelectOptions("quantity_3_col")}
+                onChange={onColumnSelect("quantity_3_col")}
+                onClear={onColumnSelectClear("quantity_3_col")}
+              />
+            </div>
             <div>
               <Typography variant="caption" display="block" gutterBottom>
                 {t("column.price_3_col")}
@@ -461,6 +480,8 @@ const FileViewer = ({
                 onClear={onColumnSelectClear("price_3_col")}
               />
             </div>
+            <div />
+            <div />
           </div>
           <div className={classes.startingRowInfo}>
             <FormControlLabel
