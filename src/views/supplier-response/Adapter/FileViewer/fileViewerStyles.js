@@ -115,10 +115,11 @@ export const useStyles = makeStyles(() => ({
     },
   },
   tabSelectedHint: {
-    color: "initial",
+    color: "#0dbb31",
     letterSpacing: "unset",
     lineHeight: 1.4,
     fontSize: "0.6em",
+    fontWeight: "bold",
     textTransform: "lowercase",
   },
 }));
