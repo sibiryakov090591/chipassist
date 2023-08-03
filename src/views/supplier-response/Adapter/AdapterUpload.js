@@ -24,8 +24,10 @@ import {
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import useAppTheme from "@src/theme/useAppTheme";
 import Preloader from "@src/components/Preloader/Preloader";
+import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import FileViewer from "./FileViewer/FileViewer";
 import { useStyles } from "./adapterUploadStyles";
+import Page from "../../../components/Page";
 
 const fieldsInitialState = {
   noheader_row: "",
@@ -101,6 +103,7 @@ const AdapterUpload = () => {
   const settings = useAppSelector((state) => state.adapter.settings);
 
   const classes = useStyles();
+  const requestsClasses = useRequestsStyles();
   const appTheme = useAppTheme();
   const dispatch = useDispatch();
   const { t } = useI18n("adapter");
@@ -236,139 +239,143 @@ const AdapterUpload = () => {
   };
 
   return (
-    <Container maxWidth={"lg"} style={{ padding: "2rem 0" }}>
-      <h1 className={classes.title}>Data File Upload</h1>
-      {!settings && <Preloader title={""} />}
-      {settings && (
-        <>
-          {uploadedFiles.map((item, index) => (
-            <Box key={index}>
-              <div className={`${classes.file} ${classes.fileUploaded}`}>
-                <div className={classes.fileName}>
-                  <AttachFileIcon className={classes.fileIc} />
-                  {`File "${item}" uploaded successfully.`}
-                </div>
-                <DoneIcon className={classes.fileSuccess} />
-              </div>
-            </Box>
-          ))}
-          {file !== null && (
-            <Box>
-              <div className={classes.file}>
-                <div className={classes.fileName}>
-                  <AttachFileIcon className={classes.fileIc} />
-                  {file.name}
-                </div>
-                {upload.uploading && (
-                  <div className={classes.fileUploadingWindow}>
-                    <div className={classes.fileUploadingWindowHeader}>
-                      <DataUsageIcon className={classes.fileUploading} />
-                      <span>{t("upload.uploading")}</span>
-                    </div>
-                    <div className={classes.fileUploadingWindowDesc}>
-                      <span>{t("upload.uploading_description")}</span>
-                    </div>
+    <Page style={{ padding: "2em 0" }} title={"File upload"} description={"Uploading suppliers file"}>
+      <Container maxWidth={"xl"}>
+        <h1 style={{ marginBottom: 12 }} className={requestsClasses.title}>
+          Data file upload
+        </h1>
+        {!settings && <Preloader title={""} />}
+        {settings && (
+          <>
+            {uploadedFiles.map((item, index) => (
+              <Box key={index}>
+                <div className={`${classes.file} ${classes.fileUploaded}`}>
+                  <div className={classes.fileName}>
+                    <AttachFileIcon className={classes.fileIc} />
+                    {`File "${item}" uploaded successfully.`}
                   </div>
-                )}
-                {!!upload.error && (
-                  <Alert severity="error">
-                    <span className={classes.fileUploadError}>{upload.error}</span>
+                  <DoneIcon className={classes.fileSuccess} />
+                </div>
+              </Box>
+            ))}
+            {file !== null && (
+              <Box>
+                <div className={classes.file}>
+                  <div className={classes.fileName}>
+                    <AttachFileIcon className={classes.fileIc} />
+                    {file.name}
+                  </div>
+                  {upload.uploading && (
+                    <div className={classes.fileUploadingWindow}>
+                      <div className={classes.fileUploadingWindowHeader}>
+                        <DataUsageIcon className={classes.fileUploading} />
+                        <span>{t("upload.uploading")}</span>
+                      </div>
+                      <div className={classes.fileUploadingWindowDesc}>
+                        <span>{t("upload.uploading_description")}</span>
+                      </div>
+                    </div>
+                  )}
+                  {!!upload.error && (
+                    <Alert severity="error">
+                      <span className={classes.fileUploadError}>{upload.error}</span>
+                    </Alert>
+                  )}
+                  {
+                    <Button
+                      style={{ marginLeft: 12, minWidth: 100 }}
+                      variant="contained"
+                      className={appTheme.buttonCreate}
+                      onClick={onUpload}
+                    >
+                      <PublishIcon className={classes.fileUploadIc} /> {t("upload.upload")}
+                    </Button>
+                  }
+                  <HighlightOffIcon className={classes.fileRemove} onClick={onFileRemove} />
+                </div>
+              </Box>
+            )}
+            {file !== null && (
+              <>
+                {!!upload.fileErrors?.length && (
+                  <Alert severity="error" style={{ marginTop: 15 }}>
+                    <ul className={classes.fileErrorsList}>
+                      {upload.fileErrors.map((err, i) => {
+                        return (
+                          <li key={i}>
+                            <Box display="flex" gridGap="12px">
+                              <div>
+                                <span>Column:</span> {err.col};
+                              </div>
+                              <div>
+                                <span>Rows:</span> {err.rows};
+                              </div>
+                              <div>
+                                <span>Error:</span> {err.rule};
+                              </div>
+                            </Box>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </Alert>
                 )}
-                {
-                  <Button
-                    style={{ marginLeft: 12 }}
-                    variant="contained"
-                    className={appTheme.buttonCreate}
-                    onClick={onUpload}
-                  >
-                    <PublishIcon className={classes.fileUploadIc} /> {t("upload.upload")}
-                  </Button>
-                }
-                <HighlightOffIcon className={classes.fileRemove} onClick={onFileRemove} />
-              </div>
-            </Box>
-          )}
-          {file !== null && (
-            <>
-              {!!upload.fileErrors?.length && (
-                <Alert severity="error" style={{ marginTop: 15 }}>
-                  <ul className={classes.fileErrorsList}>
-                    {upload.fileErrors.map((err, i) => {
-                      return (
-                        <li key={i}>
-                          <Box display="flex" gridGap="12px">
-                            <div>
-                              <span>Column:</span> {err.col};
-                            </div>
-                            <div>
-                              <span>Rows:</span> {err.rows};
-                            </div>
-                            <div>
-                              <span>Error:</span> {err.rule};
-                            </div>
-                          </Box>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </Alert>
-              )}
-              <FileViewer
-                file={file}
-                columns={columns}
-                fields={fields}
-                fullexport={fullexport}
-                startingRow={startingRow}
-                selectedSheet={selectedSheet}
-                setSelectedSheet={setSelectedSheet}
-                onColumnChange={onColumnChange}
-                onInputChange={onInputChange}
-                onFullexportChange={() => setFullexport((prevState) => !prevState)}
-                onStartingRowChange={onStartingRowChange}
-              />
-            </>
-          )}
-          {!file && (
-            <Box>
-              <Dropzone
-                accept=".csv, text/csv, application/vnd.ms-excel, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                onDrop={onFileAccept}
-                onDragEnter={onFocus}
-                onDragLeave={onBlur}
-                onDropRejected={(filesRejected) => {
-                  if (filesRejected && filesRejected[0] && filesRejected[0].errors[0]) {
-                    setFileError(filesRejected[0].errors[0]);
-                  }
-                }}
-                maxSize={FILE_SIZE * 1000 * 1000}
-              >
-                {({ getRootProps, getInputProps }) => (
-                  <div {...getRootProps()} className={`${classes.uploadFrame} ${hasFocus && "has-focus"}`}>
-                    <input {...getInputProps()} name="file" />
-                    <div className={`${classes.uploadDefaultState} ${hasFocus && "has-focus"}`}>
-                      <CloudUploadIcon className={classes.uploadIcon} />
-                      <div className={classes.uploadFrameText}>
-                        <span dangerouslySetInnerHTML={{ __html: t("upload.drag") }}></span>
-                        <button className={classes.uploadBrowse}>{t("upload.click_select")}</button>
-                      </div>
-                      {fileError && (
-                        <div style={{ color: "red", fontWeight: "bold" }}>
-                          {t(`upload.errors.${fileError.code}`, { size: FILE_SIZE })}
+                <FileViewer
+                  file={file}
+                  columns={columns}
+                  fields={fields}
+                  fullexport={fullexport}
+                  startingRow={startingRow}
+                  selectedSheet={selectedSheet}
+                  setSelectedSheet={setSelectedSheet}
+                  onColumnChange={onColumnChange}
+                  onInputChange={onInputChange}
+                  onFullexportChange={() => setFullexport((prevState) => !prevState)}
+                  onStartingRowChange={onStartingRowChange}
+                />
+              </>
+            )}
+            {!file && (
+              <Box>
+                <Dropzone
+                  accept=".csv, text/csv, application/vnd.ms-excel, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  onDrop={onFileAccept}
+                  onDragEnter={onFocus}
+                  onDragLeave={onBlur}
+                  onDropRejected={(filesRejected) => {
+                    if (filesRejected && filesRejected[0] && filesRejected[0].errors[0]) {
+                      setFileError(filesRejected[0].errors[0]);
+                    }
+                  }}
+                  maxSize={FILE_SIZE * 1000 * 1000}
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div {...getRootProps()} className={`${classes.uploadFrame} ${hasFocus && "has-focus"}`}>
+                      <input {...getInputProps()} name="file" />
+                      <div className={`${classes.uploadDefaultState} ${hasFocus && "has-focus"}`}>
+                        <CloudUploadIcon className={classes.uploadIcon} />
+                        <div className={classes.uploadFrameText}>
+                          <span dangerouslySetInnerHTML={{ __html: t("upload.drag") }}></span>
+                          <button className={classes.uploadBrowse}>{t("upload.click_select")}</button>
                         </div>
-                      )}
+                        {fileError && (
+                          <div style={{ color: "red", fontWeight: "bold" }}>
+                            {t(`upload.errors.${fileError.code}`, { size: FILE_SIZE })}
+                          </div>
+                        )}
+                      </div>
+                      <div className={`${classes.uploadFocusState} ${hasFocus && "has-focus"}`}>
+                        <AddCircleIcon className={`${classes.uploadFocusIcon} ${hasFocus && "has-focus"}`} />
+                      </div>
                     </div>
-                    <div className={`${classes.uploadFocusState} ${hasFocus && "has-focus"}`}>
-                      <AddCircleIcon className={`${classes.uploadFocusIcon} ${hasFocus && "has-focus"}`} />
-                    </div>
-                  </div>
-                )}
-              </Dropzone>
-            </Box>
-          )}
-        </>
-      )}
-    </Container>
+                  )}
+                </Dropzone>
+              </Box>
+            )}
+          </>
+        )}
+      </Container>
+    </Page>
   );
 };
 

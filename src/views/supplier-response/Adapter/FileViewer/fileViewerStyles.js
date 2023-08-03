@@ -1,12 +1,21 @@
 import { makeStyles } from "@material-ui/styles";
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles((theme) => ({
   fileView: {
     padding: 20,
     marginTop: 15,
     border: "1px solid #efefef",
     boxShadow: "0 0 30px 0 rgba(0,0,0,0.03)",
     borderRadius: 5,
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "none",
+      border: "none",
+      padding: 0,
+    },
+  },
+  title: {
+    fontSize: 16,
+    marginBottom: 18,
   },
   tableScroll: {
     maxHeight: 400,
@@ -45,6 +54,10 @@ export const useStyles = makeStyles(() => ({
       cursor: "pointer",
     },
   },
+  header: {
+    background: "#e6e6e6",
+    color: "#bfbfbf",
+  },
   startingRow: {
     "& td": {
       background: "#0277bd29",
@@ -75,9 +88,12 @@ export const useStyles = makeStyles(() => ({
   selectors: {
     display: "grid",
     gridTemplateColumns: "repeat(4, 1fr)",
-    gridGap: 20,
+    gridGap: 24,
     maxWidth: 800,
     margin: "10px 0 15px",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
   },
   startingRowInfo: {
     display: "flex",
@@ -87,7 +103,6 @@ export const useStyles = makeStyles(() => ({
     "& i": {
       display: "inline-flex",
       justifyContent: "center",
-      height: 20,
       minWidth: 20,
       padding: "0 5px",
       background: "#0277BD",
