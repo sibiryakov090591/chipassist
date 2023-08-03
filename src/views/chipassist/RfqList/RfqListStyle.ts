@@ -15,6 +15,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontSize: "2.2rem",
     fontWeight: 700,
     color: "#456",
+    [theme.breakpoints.down(460)]: {
+      fontSize: "1.8rem",
+    },
   },
   titleH2: {
     fontSize: "1.7rem",
@@ -126,6 +129,36 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     [theme.breakpoints.down("md")]: {
       padding: 0,
+    },
+  },
+  langBlock: {
+    fontSize: "12px",
+    width: "10%",
+    margin: "0px 0 0 7px",
+    padding: "0 0 0 18px",
+    lineHeight: "18px",
+    textTransform: "uppercase",
+    "&:hover": {
+      cursor: "pointer",
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 0 0 0",
+    },
+  },
+
+  quantityTextField: {
+    width: "50%",
+    [theme.breakpoints.up("lg")]: {
+      width: "20em",
+    },
+  },
+
+  priceTextField: {
+    marginRight: 0,
+    width: "50%",
+    [theme.breakpoints.up("lg")]: {
+      width: "20em",
+      marginRight: 0,
     },
   },
 }));
