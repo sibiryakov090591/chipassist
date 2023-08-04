@@ -256,7 +256,7 @@ export const saveRfqItemFromBom = (data: any) => (dispatch: any) => {
   });
 };
 
-export const saveRfqListItems = (data: any, token: string = null) => (dispatch: any) => {
+export const saveRfqListItems = (data: any, token: string = null, disableProgressModal = false) => (dispatch: any) => {
   return dispatch({
     types: [false, false, false],
     promise: (client: ApiClientInterface) =>
@@ -266,13 +266,17 @@ export const saveRfqListItems = (data: any, token: string = null) => (dispatch: 
           config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
         })
         .then((res) => {
-          dispatch(progressModalOpen());
-          dispatch(progressModalSuccess());
+          if (!disableProgressModal) {
+            dispatch(progressModalOpen());
+            dispatch(progressModalSuccess());
+          }
           return res.data;
         })
         .catch((e) => {
-          dispatch(progressModalOpen());
-          dispatch(progressModalError(e.response?.data?.errors ? e.response.data.errors[0].error : ""));
+          if (!disableProgressModal) {
+            dispatch(progressModalOpen());
+            dispatch(progressModalError(e.response?.data?.errors ? e.response.data.errors[0].error : ""));
+          }
           console.log("***SAVE_RFQ_LIST_ERROR", e);
           throw e;
         }),
