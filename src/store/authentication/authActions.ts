@@ -6,7 +6,7 @@ import { ApiClientInterface } from "@src/services/ApiClient";
 import { RootState } from "@src/store";
 import { Dispatch } from "redux";
 import checkIsAuthenticated, { getAuthToken, removeAuthToken, setAuthToken } from "@src/utils/auth";
-import { saveRfqItem, saveRfqListItems, sendSellerMessage} from "@src/store/rfq/rfqActions";
+import { saveRfqItem, saveRfqListItems, sendSellerMessage } from "@src/store/rfq/rfqActions";
 import { updatePrevEmail } from "@src/store/profile/profileActions";
 // import { CurrencyPrice } from "@src/store/common/commonTypes";
 import {

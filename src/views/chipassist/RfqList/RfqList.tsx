@@ -46,6 +46,7 @@ import CurrencyMenu from "@src/layouts/HomePage/components/TopBar/components/Cur
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import ManufacturerInput from "@src/views/chipassist/RfqList/components/RfqListManufacturerSuggestion";
+import {getAllManufacturers} from "@src/store/manufacturers/manufacturersActions";
 
 interface RegInterface {
   country: string;
@@ -212,6 +213,7 @@ export const RfqList = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    dispatch(getAllManufacturers());
   }, []);
 
   useLayoutEffect(() => {
@@ -647,7 +649,11 @@ export const RfqList = () => {
                   {/*  className={classes.rfqInput} */}
                   {/*  onChange={(event) => handleRfqListChange(event, key)} */}
                   {/* /> */}
-                  <ManufacturerInput styleClasses={classes.rfqInput} style={{ width: "100%" }} globalOnChange={(event:any) => handleRfqListChange(event, key)}/>
+                  <ManufacturerInput
+                    styleClasses={classes.rfqInput}
+                    style={{ width: "100%" }}
+                    globalOnChange={(event: any) => handleRfqListChange(event, key)}
+                  />
                   {!isDownMd ? (
                     <>
                       <TextField

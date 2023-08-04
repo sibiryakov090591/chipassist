@@ -50,22 +50,12 @@ const ManufacturerInput: React.FC<Props> = ({ styleClasses, style, globalOnChang
   const selectedManufacturers = returnSelectedItems(all_manufacturers, item.manufacturers);
   //
   // const selectedSellers: any = null;
-  useEffect(() => {
-    if (item) {
-      dispatch(getAllManufacturers());
-    }
-  }, [item]);
-
-  useEffect(() => {
-    console.log(all_manufacturers);
-  }, [all_manufacturers]);
 
   const handleHiddenInputChange = () => {
     return true;
   };
 
   useEffect(() => {
-    console.log(selectedManufacturers);
     globalOnChange({
       target: { name: "manufacturer", value: selectedManufacturers.map((elem) => elem.name).toString() },
     });
@@ -92,7 +82,7 @@ const ManufacturerInput: React.FC<Props> = ({ styleClasses, style, globalOnChang
       <div className={`${styleClasses}`}>
         <input
           className={classes.hiddenInput}
-          style={{height: 0}}
+          style={{ height: 0 }}
           onChange={handleHiddenInputChange}
           value={selectedManufacturers.length ? "yes" : ""}
         />
