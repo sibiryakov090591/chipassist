@@ -4,6 +4,8 @@ export const HIDE_BOTTOM_LEFT_MESSAGE = "@alerts/HIDE_BOTTOM_LEFT_MESSAGE";
 export const SHOW_REGISTER_MODAL = "@alerts/SHOW_REGISTER_MODAL";
 export const HIDE_REGISTER_MODAL = "@alerts/HIDE_REGISTER_MODAL";
 
+export const SHOW_BEFORE_UNLOAD_MODAL = "@alerts/SHOW_BEFORE_UNLOAD_MODAL";
+
 export const SHOW_TOP_RIGHT_MESSAGE = "@alerts/SHOW_TOP_RIGHT_MESSAGE";
 export const HIDE_TOP_RIGHT_MESSAGE = "@alerts/HIDE_TOP_RIGHT_MESSAGE";
 
@@ -36,6 +38,7 @@ export interface AlertsState {
   showAlertBottomLeft: boolean;
   showAlertTopRight: boolean;
   showAlertModal: boolean;
+  showAlertBeforeUnload: boolean;
   showQuickOrderConfirmModal: boolean;
   showRegisterModal: boolean;
   alertBottomLeftMessage: AlertMessage;
@@ -65,6 +68,10 @@ interface ShowAlertsModalMessageAction {
 interface HideAlertsModalMessageAction {
   type: typeof HIDE_MODAL_MESSAGE;
 }
+interface ShowAlertBeforeUnloadAction {
+  type: typeof SHOW_BEFORE_UNLOAD_MODAL;
+  payload: boolean;
+}
 interface ShowRegisterModalAction {
   type: typeof SHOW_REGISTER_MODAL;
 }
@@ -83,6 +90,7 @@ interface HideAddToListModalAction {
 }
 
 export type AlertsActionTypes =
+  | ShowAlertBeforeUnloadAction
   | HideRegisterModalAction
   | ShowRegisterModalAction
   | QuickOrderConfirmModalAction
