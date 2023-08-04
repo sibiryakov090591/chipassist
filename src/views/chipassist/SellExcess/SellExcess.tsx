@@ -78,6 +78,7 @@ export const SellExcess = () => {
   }, [checkout, geolocation]);
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
+    console.log(data);
     const validErrors = validate(data, schema);
     if (validErrors) {
       return Object.entries(validErrors).forEach(([i, v]: any) => {
@@ -106,12 +107,16 @@ export const SellExcess = () => {
     return setPhoneValue(e);
   };
 
-  const onChangeStock = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "0") e.target.value = "";
-    e.target.value = e.target.value.replace(/\D/gi, "");
-    if (errors?.stock) {
-      setError("stock", null);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    if (name === "stock") {
+      e.target.value = e.target.value.replace(/\D/gi, "");
+      if (Number(e.target.value) < 1) e.target.value = "";
     }
+    if (name === "email") {
+      e.target.value = e.target.value.replace(/\s/gi, "");
+    }
+    setValue(name, e.target.value);
   };
 
   return (
@@ -222,6 +227,7 @@ export const SellExcess = () => {
                       defaultValue={getValues().email || ""}
                       error={!!errors.email?.message}
                       helperText={errors.email?.message}
+                      onChange={onChange}
                     />
                     <PhoneInputWrapper
                       value={phoneValue}
@@ -263,10 +269,10 @@ export const SellExcess = () => {
                       variant="outlined"
                       fullWidth
                       size="small"
-                      onChange={onChangeStock}
                       defaultValue={getValues().stock || ""}
                       error={!!errors.stock?.message}
                       helperText={errors.stock?.message}
+                      onChange={onChange}
                     />
                     <Button
                       type="submit"
