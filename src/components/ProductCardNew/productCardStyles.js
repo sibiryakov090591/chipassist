@@ -174,6 +174,16 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     height: 38,
   },
+  requestButtonHelpText: {
+    maxWidth: 200,
+    textAlign: "center",
+    paddingTop: 5,
+    color: "#456",
+    fontSize: "0.95rem",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "none",
+    },
+  },
   helpIcon: {
     marginLeft: "5px",
     fontSize: 14,
