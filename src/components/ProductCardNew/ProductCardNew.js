@@ -184,34 +184,39 @@ const ProductCardNew = (props) => {
   }, [shouldUpdateCard]);
 
   const requestButton = (className) => {
-    return isAuthenticated && !className && !!requestedQty ? (
-      <Tooltip
-        classes={{ tooltip: commonClasses.tooltip }}
-        title={
-          <div>
-            {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
-          </div>
-        }
-      >
-        <Button
-          variant="contained"
-          className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
-          onClick={sendRfqOpenModal}
-        >
-          <Box display="flex" alignItems={"center"}>
-            Requested
-            <HelpOutlineOutlinedIcon className={classes.helpIcon} />
-          </Box>
-        </Button>
-      </Tooltip>
-    ) : (
-      <Button
-        variant="contained"
-        className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
-        onClick={sendRfqOpenModal}
-      >
-        {"Get more quotes"}
-      </Button>
+    return (
+      <>
+        {isAuthenticated && !className && !!requestedQty ? (
+          <Tooltip
+            classes={{ tooltip: commonClasses.tooltip }}
+            title={
+              <div>
+                {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
+              </div>
+            }
+          >
+            <Button
+              variant="contained"
+              className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
+              onClick={sendRfqOpenModal}
+            >
+              <Box display="flex" alignItems={"center"}>
+                Requested
+                <HelpOutlineOutlinedIcon className={classes.helpIcon} />
+              </Box>
+            </Button>
+          </Tooltip>
+        ) : (
+          <Button
+            variant="contained"
+            className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
+            onClick={sendRfqOpenModal}
+          >
+            {"Get more quotes"}
+          </Button>
+        )}
+        <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
+      </>
     );
   };
 

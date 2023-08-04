@@ -5,6 +5,7 @@ const initialState: AlertsState = {
   showAlertBottomLeft: false,
   showAlertTopRight: false,
   showAlertModal: false,
+  showAlertBeforeUnload: false,
   showQuickOrderConfirmModal: false,
   showRegisterModal: false,
   alertBottomLeftMessage: {
@@ -48,6 +49,9 @@ const alertsReducer = (state = initialState, action: AlertsActionTypes) => {
       return { ...state, showAlertModal: true, alertModalMessage: action.payload };
     case actionTypes.HIDE_MODAL_MESSAGE:
       return { ...state, showAlertModal: false };
+
+    case actionTypes.SHOW_BEFORE_UNLOAD_MODAL:
+      return { ...state, showAlertBeforeUnload: action.payload };
 
     case actionTypes.SHOW_REGISTER_MODAL:
       return { ...state, showRegisterModal: true };

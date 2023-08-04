@@ -90,7 +90,7 @@ const CheckoutModal: React.FC<Props> = ({ onCloseModal, bom, setIsSending }) => 
         rfqsList.push(listItem);
       });
     if (rfqsList.length) setIsSending(true);
-    dispatch(saveRfqListItems(rfqsList))
+    dispatch(saveRfqListItems(rfqsList, null, true))
       .then(() => {
         dispatch(
           showAlertsModalMessageAction({
