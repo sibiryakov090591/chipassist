@@ -45,6 +45,12 @@ export const hideAlertsModalMessageAction = (): AlertsActionTypes => {
     type: actionTypes.HIDE_MODAL_MESSAGE,
   };
 };
+export const showAlertBeforeUnloadAction = (isOpen: boolean) => {
+  return {
+    type: actionTypes.SHOW_BEFORE_UNLOAD_MODAL,
+    payload: isOpen,
+  };
+};
 export const showRegisterModalAction = (): AlertsActionTypes => {
   return {
     type: actionTypes.SHOW_REGISTER_MODAL,
