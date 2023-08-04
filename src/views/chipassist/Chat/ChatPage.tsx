@@ -1,9 +1,8 @@
 import React from "react";
-import { Box, Hidden } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
 import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
-import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import { onChangePartner } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import constants from "@src/constants/constants";
@@ -14,7 +13,6 @@ import { useStyles } from "./styles";
 
 const ChatPage: React.FC = () => {
   const classes = useStyles();
-  const requestsClasses = useRequestsStyles();
   const dispatch = useAppDispatch();
   const isResponses = constants.id === ID_SUPPLIER_RESPONSE;
 
@@ -35,11 +33,6 @@ const ChatPage: React.FC = () => {
       className={clsx(classes.page, { [classes.chipassistPage]: !isResponses })}
     >
       <section className={classes.section}>
-        <Hidden smDown>
-          <Box m="6px 12px 0">
-            <h1 className={requestsClasses.title}>Message center</h1>
-          </Box>
-        </Hidden>
         {partners?.length > 1 && selectedPartner && (
           <Box m="0 12px">
             <SupplierSelect
