@@ -42,11 +42,8 @@ import { NavLink } from "react-router-dom";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { NumberInput } from "@src/components/Inputs";
 import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
-import CurrencyMenu from "@src/layouts/HomePage/components/TopBar/components/CurrencyMenu/CurrencyMenu";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
-import ManufacturerInput from "@src/views/chipassist/RfqList/components/RfqListManufacturerSuggestion";
-import {getAllManufacturers} from "@src/store/manufacturers/manufacturersActions";
+import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 
 interface RegInterface {
   country: string;
@@ -180,7 +177,7 @@ export const RfqList = () => {
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
-  const currencyField = useAppSelector((state) => state.currency);
+  // const currencyField = useAppSelector((state) => state.currency);
   const [formState, setFormState] = useState<FormState>(defaultState());
   const [rfqListState, setRfqListState] = useState<RfqListFormState>(defaultRfqListState());
   const debouncedState = useDebounce(formState, 300);
@@ -649,11 +646,11 @@ export const RfqList = () => {
                   {/*  className={classes.rfqInput} */}
                   {/*  onChange={(event) => handleRfqListChange(event, key)} */}
                   {/* /> */}
-                  <ManufacturerInput
-                    styleClasses={classes.rfqInput}
-                    style={{ width: "100%" }}
-                    globalOnChange={(event: any) => handleRfqListChange(event, key)}
-                  />
+                  {/* <ManufacturerInput */}
+                  {/*  styleClasses={classes.rfqInput} */}
+                  {/*  style={{ width: "100%" }} */}
+                  {/*  globalOnChange={(event: any) => handleRfqListChange(event, key)} */}
+                  {/* /> */}
                   {!isDownMd ? (
                     <>
                       <TextField
@@ -743,12 +740,15 @@ export const RfqList = () => {
                       />
                     </Box>
                   )}
+                  {key !== rfqListState.values.length - 1 && <hr className={classes.hrStyle} />}
                 </Box>
               ))}
               {rfqListState.values.length !== maxRfqRows && (
-                <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-                  {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
-                </Button>
+                <div style={isDownMd ? { display: "flex", justifyContent: "center", width: "100%" } : null}>
+                  <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
+                    {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
+                  </Button>
+                </div>
               )}
             </Box>
           </Container>
@@ -781,7 +781,7 @@ export const RfqList = () => {
 
         {!isAuthenticated && (
           <section className={clsx(classes.section)}>
-            <Container maxWidth={"lg"} className={clsx(classes.mainContainer)}>
+            <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainer)}>
               <Box className={classes.regContainerStyle}>
                 <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
                 <p style={{ color: "#456" }}>
