@@ -676,7 +676,7 @@ export const RfqList = () => {
                         name={"quantity"}
                         label={"Quantity *"}
                         placeholder={"ex. 100"}
-                        defaultValue={elem.quantity}
+                        value={elem.quantity}
                         size="small"
                         InputLabelProps={{
                           shrink: true,
@@ -697,7 +697,6 @@ export const RfqList = () => {
                         name={"price"}
                         label={"Target Price"}
                         placeholder={"ex. 200"}
-                        defaultValue={elem.price}
                         size="small"
                         InputLabelProps={{
                           shrink: true,
@@ -726,7 +725,7 @@ export const RfqList = () => {
                         name={"quantity"}
                         label={"Quantity *"}
                         placeholder={"ex. 100"}
-                        defaultValue={elem.quantity}
+                        value={elem.quantity}
                         size="small"
                         InputLabelProps={{
                           shrink: true,
@@ -747,7 +746,6 @@ export const RfqList = () => {
                         name={"price"}
                         label={"Target Price"}
                         placeholder={"ex. 200"}
-                        defaultValue={elem.price}
                         size="small"
                         InputLabelProps={{
                           shrink: true,
