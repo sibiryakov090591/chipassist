@@ -41,7 +41,7 @@ const ProductCardNew = (props) => {
 
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
-  const [rfqStockrecords, setRfqStockrecords] = useState([]);
+  const [rfqStockrecords] = useState([]);
   const [showRfqStocks, setShowRfqStocks] = useState(false);
   const [searchQueryArray, setSearchQueryArray] = useState([]);
   const [mainImage, setMainImg] = useState(null);
