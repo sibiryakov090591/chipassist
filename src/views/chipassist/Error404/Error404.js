@@ -41,15 +41,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const { t } = staticI18n("menu");
+const { t: _t } = staticI18n("menu");
 const topMenuList = [
-  { name: "home", url: "/", label: t("home") },
-  { name: "parts", url: "/parts", label: t("parts") },
-  { name: "bom-create", url: "/bom/create-file", label: t("bom") },
+  { name: "home", url: "/", label: _t("home") },
+  { name: "parts", url: "/parts", label: _t("parts") },
+  { name: "bom-create", url: "/bom/create-file", label: _t("bom") },
   { name: "rfq", url: "/rfq-list-quotes", label: "RFQ List" },
-  { name: "messages", url: "/messages", label: t("chat") },
-  { name: "general", url: "/profile/general", label: t("profile") },
-  { name: "blog", url: "/blog", label: t("blog") },
+  { name: "messages", url: "/messages", label: _t("chat") },
+  { name: "general", url: "/profile/general", label: _t("profile") },
+  { name: "blog", url: "/blog", label: _t("blog") },
 ];
 
 const Error404 = () => {
