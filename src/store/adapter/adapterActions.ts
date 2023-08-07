@@ -86,7 +86,7 @@ export const checkFileStateThunk = (fileId: number) => {
     types: [false, false, false],
     promise: (client: ApiClientInterface) =>
       client
-        .get(`/upload_supplier_file/${fileId}/`)
+        .get(`/upload_file/${fileId}/`)
         .then((res) => res.data)
         .catch((error) => {
           console.log("***CHECK_PARSING_SUPPLIER_FILE_ERROR", error);

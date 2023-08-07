@@ -62,7 +62,7 @@ interface RfqItem {
   MPN: string;
   manufacturer: string;
   quantity: string;
-  price: number;
+  price: string;
 }
 
 interface RfqTouched {
@@ -149,7 +149,7 @@ const defaultRfqListState = (): RfqListFormState => ({
       MPN: "",
       manufacturer: "",
       quantity: "",
-      price: 0,
+      price: "",
     },
     {
       index: 2,
@@ -157,7 +157,7 @@ const defaultRfqListState = (): RfqListFormState => ({
       MPN: "",
       manufacturer: "",
       quantity: "",
-      price: 0,
+      price: "",
     },
   ],
   touched: [],
@@ -195,7 +195,7 @@ export const RfqList = () => {
       index: rfqListState.values.length,
       manufacturer: "",
       quantity: "",
-      price: 0,
+      price: "",
       isDisabled: true,
     };
     const lastRfq = rfqListState.values[rfqListState.values.length - 1];
@@ -219,7 +219,7 @@ export const RfqList = () => {
         index: rfqListState.values.length,
         manufacturer: "",
         quantity: null,
-        price: 0,
+        price: "",
         isDisabled: true,
       });
       setRfqListState((prevState) => ({

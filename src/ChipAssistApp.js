@@ -58,6 +58,7 @@ import { loadSellersWithProductLink } from "@src/store/products/productsActions"
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
+import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -530,6 +531,7 @@ const ChipAssistApp = () => {
         <ScrollUpButton />
         <RFQModal />
         <SellerMessageModal />
+        <BeforeUnloadModal />
         <ProgressModal />
       </ProvidedErrorBoundary>
 
