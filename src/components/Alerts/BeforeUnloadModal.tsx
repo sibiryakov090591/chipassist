@@ -20,8 +20,10 @@ const BeforeUnloadModal = () => {
 
   React.useEffect(() => {
     document.body.addEventListener("mouseleave", (event) => {
-      const mouseY = event.clientY;
-      if (mouseY <= 0) dispatch(showAlertBeforeUnloadAction(true));
+      if (!sessionStorage.getItem("before_unload_alert_disabled")) {
+        const mouseY = event.clientY;
+        if (mouseY <= 0) dispatch(showAlertBeforeUnloadAction(true));
+      }
     });
   }, []);
 
