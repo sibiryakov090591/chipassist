@@ -19,6 +19,16 @@ const BeforeUnloadModal = () => {
 
   const showAlertBeforeUnload = useAppSelector((state) => state.alerts.showAlertBeforeUnload);
 
+  React.useEffect(() => {
+    document.body.addEventListener("mousemove", (event) => {
+      // Get the mouse coordinates from the event object
+      const mouseY = event.clientY;
+
+      // Display the coordinates in the console or anywhere you want
+      console.log("Mouse Y:", mouseY);
+    });
+  }, []);
+
   const handleClose = () => {
     sessionStorage.setItem("before_unload_alert_disabled", "true");
     dispatch(showAlertBeforeUnloadAction(false));
