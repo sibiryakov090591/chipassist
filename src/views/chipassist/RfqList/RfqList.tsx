@@ -43,7 +43,6 @@ import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapp
 import { NumberInput } from "@src/components/Inputs";
 import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
-import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 
 interface RegInterface {
   country: string;
@@ -62,7 +61,7 @@ interface RfqItem {
   index: number;
   MPN: string;
   manufacturer: string;
-  quantity: number;
+  quantity: string;
   price: number;
 }
 
@@ -149,7 +148,7 @@ const defaultRfqListState = (): RfqListFormState => ({
       isDisabled: false,
       MPN: "",
       manufacturer: "",
-      quantity: null,
+      quantity: "",
       price: 0,
     },
     {
@@ -157,7 +156,7 @@ const defaultRfqListState = (): RfqListFormState => ({
       isDisabled: true,
       MPN: "",
       manufacturer: "",
-      quantity: null,
+      quantity: "",
       price: 0,
     },
   ],
@@ -195,7 +194,7 @@ export const RfqList = () => {
       MPN: "",
       index: rfqListState.values.length,
       manufacturer: "",
-      quantity: null,
+      quantity: "",
       price: 0,
       isDisabled: true,
     };
@@ -210,7 +209,6 @@ export const RfqList = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    dispatch(getAllManufacturers());
   }, []);
 
   useLayoutEffect(() => {
@@ -319,7 +317,7 @@ export const RfqList = () => {
     if (rfqListState.values) {
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
-        (element) => element.MPN !== "" && element.quantity !== null,
+        (element) => element.MPN !== "" && element.quantity !== "",
       );
 
       if (
@@ -454,7 +452,7 @@ export const RfqList = () => {
 
   const createDataRfqList = () => {
     return rfqListState.values
-      .filter((elem) => elem.MPN !== "" && elem.quantity !== null)
+      .filter((elem) => elem.MPN !== "" && elem.quantity !== "")
       .map((rfq) => ({
         part_number: rfq.MPN,
         manufacturer: rfq.manufacturer,
@@ -465,7 +463,7 @@ export const RfqList = () => {
 
   const checkErrorInRfqList = () => {
     const rfqFormErrors = rfqListState.values.map((elem, index) =>
-      index === 0 || elem.MPN !== "" || elem.quantity !== null ? validate(elem, rfqSchema) : undefined,
+      index === 0 || elem.MPN !== "" || elem.quantity !== "" ? validate(elem, rfqSchema) : undefined,
     );
     if (rfqFormErrors.filter((elem) => elem !== undefined).length !== 0) {
       const firstNotUndefined = rfqFormErrors.indexOf((elem: any) => elem !== undefined);
@@ -557,6 +555,7 @@ export const RfqList = () => {
                 country: prevState.values.country,
               },
             }));
+            setRfqListState({ ...defaultRfqListState() });
           });
         })
         .finally(() => setIsLoading(false));
@@ -603,6 +602,7 @@ export const RfqList = () => {
                 country: prevState.values.country,
               },
             }));
+            setRfqListState({ ...defaultRfqListState() });
             dispatch(progressModalOpen());
           });
         })
@@ -653,7 +653,24 @@ export const RfqList = () => {
                   {/* /> */}
                   {!isDownMd ? (
                     <>
-                      <TextField
+                      {/* <TextField */}
+                      {/*  disabled={elem.isDisabled} */}
+                      {/*  variant={"outlined"} */}
+                      {/*  name={"quantity"} */}
+                      {/*  label={"Quantity *"} */}
+                      {/*  placeholder={"ex. 100"} */}
+                      {/*  defaultValue={elem.quantity} */}
+                      {/*  size="small" */}
+                      {/*  InputLabelProps={{ */}
+                      {/*    shrink: true, */}
+                      {/*  }} */}
+                      {/*  fullWidth={isDownMd} */}
+                      {/*  className={clsx(classes.rfqInput, classes.quantityTextField)} */}
+                      {/*  onChange={(event) => handleRfqListChange(event, key)} */}
+                      {/*  onBlur={onRfqBlurHandler("quantity", key)} */}
+                      {/*  {...rfqErrorProps("quantity", key)} */}
+                      {/* /> */}
+                      <NumberInput
                         disabled={elem.isDisabled}
                         variant={"outlined"}
                         name={"quantity"}
@@ -666,9 +683,12 @@ export const RfqList = () => {
                         }}
                         fullWidth={isDownMd}
                         className={clsx(classes.rfqInput, classes.quantityTextField)}
-                        onChange={(event) => handleRfqListChange(event, key)}
+                        onChange={(event: any) => handleRfqListChange(event, key)}
                         onBlur={onRfqBlurHandler("quantity", key)}
                         {...rfqErrorProps("quantity", key)}
+                        onFocus={(e: any) => e.target.select()}
+                        decimalScale={0}
+                        isAllowedZero={false}
                       />
                       <NumberInput
                         className={clsx(classes.rfqInput, classes.priceTextField)}
@@ -700,7 +720,7 @@ export const RfqList = () => {
                       flexDirection={"row"}
                       display={"flex"}
                     >
-                      <TextField
+                      <NumberInput
                         disabled={elem.isDisabled}
                         variant={"outlined"}
                         name={"quantity"}
@@ -711,10 +731,14 @@ export const RfqList = () => {
                         InputLabelProps={{
                           shrink: true,
                         }}
+                        fullWidth={isDownMd}
                         className={clsx(classes.rfqInput, classes.quantityTextField)}
-                        onChange={(event) => handleRfqListChange(event, key)}
+                        onChange={(event: any) => handleRfqListChange(event, key)}
                         onBlur={onRfqBlurHandler("quantity", key)}
                         {...rfqErrorProps("quantity", key)}
+                        onFocus={(e: any) => e.target.select()}
+                        decimalScale={0}
+                        isAllowedZero={false}
                       />
                       <NumberInput
                         className={clsx(classes.rfqInput, classes.priceTextField)}
