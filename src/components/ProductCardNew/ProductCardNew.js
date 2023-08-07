@@ -151,8 +151,9 @@ const ProductCardNew = (props) => {
 
   useEffect(() => {
     if (sortedStockrecords) {
-      setAvailableStockrecords(sortedStockrecords.filter((sr) => isProductAvailable(sr, 1, ["No price"])));
-      setRfqStockrecords(sortedStockrecords.filter((sr) => !isProductAvailable(sr, 1, ["No price"])));
+      // setAvailableStockrecords(sortedStockrecords.filter((sr) => isProductAvailable(sr, 1, ["No price"])));
+      // setRfqStockrecords(sortedStockrecords.filter((sr) => !isProductAvailable(sr, 1, ["No price"])));
+      setAvailableStockrecords(sortedStockrecords);
     }
   }, [sortedStockrecords]);
 
