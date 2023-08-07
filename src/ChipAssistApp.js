@@ -58,7 +58,6 @@ import { loadSellersWithProductLink } from "@src/store/products/productsActions"
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
-import { showAlertBeforeUnloadAction } from "@src/store/alerts/alertsActions";
 import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
@@ -175,22 +174,6 @@ const ChipAssistApp = () => {
   //     navigate(localStorage.getItem("previousLocation"));
   //   }
   // }, []);
-
-  useEffect(() => {
-    const preventUnload = (event) => {
-      if (!sessionStorage.getItem("before_unload_alert_disabled")) {
-        event.preventDefault();
-        // eslint-disable-next-line no-param-reassign
-        event.returnValue = "Haven't find necessary product? Leave a free request!"; // Some browsers don't show the custom message
-        dispatch(showAlertBeforeUnloadAction(true));
-      }
-    };
-
-    window.addEventListener("beforeunload", preventUnload, true);
-    return () => {
-      window.removeEventListener("beforeunload", preventUnload, true);
-    };
-  }, []);
 
   useEffect(() => {
     if (!isAuthPage(window.location.pathname)) {
