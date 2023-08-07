@@ -958,7 +958,7 @@ export const RfqList = () => {
             </Container>
           </section>
         )}
-        <section className={classes.section}>
+        <section className={clsx(classes.section, classes.mobileSendButton)}>
           <Box className={classes.submitButtonContainer}>
             <Button
               variant={"contained"}

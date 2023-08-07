@@ -87,6 +87,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     backgroundColor: theme.palette.app.grey100,
     border: "1px solid #F0F0F7",
     borderRadius: "5px",
+    [theme.breakpoints.down("md")]: {
+      borderRadius: 0,
+      border: "none",
+    },
   },
   regBoxContainer: {
     display: "flex",
@@ -133,6 +137,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     [theme.breakpoints.down("md")]: {
       padding: 0,
+      marginBottom: 0,
     },
   },
   langBlock: {
@@ -203,8 +208,21 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   hrStyle: {
     marginBottom: "1rem",
+    backgroundColor: `#C6C6C6`,
+    border: "none",
+    height: "1px",
     [theme.breakpoints.up("md")]: {
       display: "none",
+    },
+  },
+
+  mobileSendButton: {
+    [theme.breakpoints.down("md")]: {
+      backgroundColor: "#F7F7F7",
+      marginTop: 0,
+      paddingTop: "3rem",
+      height: "100%",
+      paddingBottom: "2rem",
     },
   },
 }));
