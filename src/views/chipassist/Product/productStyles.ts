@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   main: {
     height: "100%",
     width: "100%",
-    padding: "2em",
+    padding: "2em 0",
     backgroundColor: theme.palette.white,
     [theme.breakpoints.down("sm")]: { padding: "1em" },
     [theme.breakpoints.down("xs")]: { padding: "0" },

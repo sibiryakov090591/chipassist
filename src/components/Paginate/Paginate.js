@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   next: {
     marginLeft: theme.spacing(1),
   },
+  hidden: {
+    display: "none",
+  },
   nextLink: {
     padding: "6px 16px",
     outline: "none",
@@ -84,7 +87,7 @@ const Paginate = (props) => {
       containerClassName={clsx(classes.root, className)}
       disabledClassName={classes.disabled}
       marginPagesDisplayed={2}
-      nextClassName={classes.next}
+      nextClassName={clsx(classes.next, { [classes.hidden]: activePage >= pageCount })}
       nextLabel={isSmDown ? false : t("next")}
       nextLinkClassName={classes.nextLink}
       onPageChange={onPageChange}
@@ -92,7 +95,7 @@ const Paginate = (props) => {
       pageCount={pageCount}
       pageLinkClassName={classes.pageLink}
       pageRangeDisplayed={isSmDown ? 2 : pageRangeDisplayed}
-      previousClassName={classes.previous}
+      previousClassName={clsx(classes.previous, { [classes.hidden]: activePage <= 1 })}
       previousLabel={isSmDown ? false : t("previous")}
       previousLinkClassName={classes.previousLink}
       subContainerClassName="pages pagination"
