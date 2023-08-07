@@ -531,7 +531,7 @@ const ChipAssistApp = () => {
         <ScrollUpButton />
         <RFQModal />
         <SellerMessageModal />
-        <BeforeUnloadModal />
+        {ID_MASTER === constants.id && <BeforeUnloadModal />}
         <ProgressModal />
       </ProvidedErrorBoundary>
 
