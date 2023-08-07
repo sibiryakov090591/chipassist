@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Page } from "@src/components";
 import {
   Box,
@@ -42,6 +42,8 @@ import { NavLink } from "react-router-dom";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { NumberInput } from "@src/components/Inputs";
 import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 
 interface RegInterface {
   country: string;
@@ -158,22 +160,6 @@ const defaultRfqListState = (): RfqListFormState => ({
       quantity: null,
       price: 0,
     },
-    {
-      index: 3,
-      isDisabled: true,
-      MPN: "",
-      manufacturer: "",
-      quantity: null,
-      price: 0,
-    },
-    {
-      index: 4,
-      isDisabled: true,
-      MPN: "",
-      manufacturer: "",
-      quantity: null,
-      price: 0,
-    },
   ],
   touched: [],
   errors: [],
@@ -190,6 +176,8 @@ export const RfqList = () => {
   const currency = useAppSelector((state) => state.currency.selected);
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
+  const isDownKey = useMediaQuery(theme.breakpoints.down(460));
+  // const currencyField = useAppSelector((state) => state.currency);
   const [formState, setFormState] = useState<FormState>(defaultState());
   const [rfqListState, setRfqListState] = useState<RfqListFormState>(defaultRfqListState());
   const debouncedState = useDebounce(formState, 300);
@@ -222,7 +210,26 @@ export const RfqList = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    dispatch(getAllManufacturers());
   }, []);
+
+  useLayoutEffect(() => {
+    if (isDownMd) {
+      const filledRows = rfqListState.values.filter((elem) => !elem.isDisabled);
+      filledRows.push({
+        MPN: "",
+        index: rfqListState.values.length,
+        manufacturer: "",
+        quantity: null,
+        price: 0,
+        isDisabled: true,
+      });
+      setRfqListState((prevState) => ({
+        ...prevState,
+        values: filledRows,
+      }));
+    }
+  }, [isDownKey]);
 
   useEffect(() => {
     if (profileInfo) {
@@ -609,7 +616,10 @@ export const RfqList = () => {
         <section className={classes.section} style={isDownMd ? { marginTop: "1rem" } : null}>
           <Container maxWidth={"lg"} className={classes.mainContainer}>
             <Box className={classes.listBox}>
-              <h1 className={classes.titleH1}>Enter your quote list</h1>
+              <Box display={"flex"} justifyContent={"space-between"} flexDirection={"row"} style={{ width: "100%" }}>
+                <h1 className={classes.titleH1}>Enter your quote list</h1>
+                <FilterCurrency />
+              </Box>
               {rfqListState.values.map((elem, key) => (
                 <Box key={key} className={classes.rfqsBox}>
                   <PartNumberInput
@@ -621,70 +631,124 @@ export const RfqList = () => {
                     blurHandler={onRfqBlurHandler("MPN", key)}
                   />
 
-                  <TextField
-                    disabled={elem.isDisabled}
-                    variant={"outlined"}
-                    name={"manufacturer"}
-                    label={"Manufacturer"}
-                    placeholder={"ex. Schneider Electric"}
-                    defaultValue={elem.manufacturer}
-                    size="small"
-                    fullWidth
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    className={classes.rfqInput}
-                    onChange={(event) => handleRfqListChange(event, key)}
-                  />
-
-                  <TextField
-                    disabled={elem.isDisabled}
-                    variant={"outlined"}
-                    name={"quantity"}
-                    label={"Quantity"}
-                    placeholder={"ex. 100"}
-                    defaultValue={elem.quantity}
-                    style={!isDownMd ? { width: "20em" } : null}
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    fullWidth={isDownMd}
-                    className={classes.rfqInput}
-                    onChange={(event) => handleRfqListChange(event, key)}
-                    onBlur={onRfqBlurHandler("quantity", key)}
-                    {...rfqErrorProps("quantity", key)}
-                  />
-
-                  <NumberInput
-                    className={classes.rfqInput}
-                    disabled={elem.isDisabled}
-                    variant={"outlined"}
-                    name={"price"}
-                    label={"Target Price"}
-                    placeholder={"ex. 200"}
-                    defaultValue={elem.price}
-                    style={!isDownMd ? { width: "20em", marginRight: 0 } : null}
-                    size="small"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>
-                      ),
-                    }}
-                    value={elem.price}
-                    onChange={(event: any) => handleRfqListChange(event, key)}
-                    decimalScale={4}
-                    isAllowedZero={true}
-                  />
+                  {/* <TextField */}
+                  {/*  disabled={elem.isDisabled} */}
+                  {/*  variant={"outlined"} */}
+                  {/*  name={"manufacturer"} */}
+                  {/*  label={"Manufacturer"} */}
+                  {/*  placeholder={"ex. Schneider Electric"} */}
+                  {/*  defaultValue={elem.manufacturer} */}
+                  {/*  size="small" */}
+                  {/*  fullWidth */}
+                  {/*  InputLabelProps={{ */}
+                  {/*    shrink: true, */}
+                  {/*  }} */}
+                  {/*  className={classes.rfqInput} */}
+                  {/*  onChange={(event) => handleRfqListChange(event, key)} */}
+                  {/* /> */}
+                  {/* <ManufacturerInput */}
+                  {/*  styleClasses={classes.rfqInput} */}
+                  {/*  style={{ width: "100%" }} */}
+                  {/*  globalOnChange={(event: any) => handleRfqListChange(event, key)} */}
+                  {/* /> */}
+                  {!isDownMd ? (
+                    <>
+                      <TextField
+                        disabled={elem.isDisabled}
+                        variant={"outlined"}
+                        name={"quantity"}
+                        label={"Quantity *"}
+                        placeholder={"ex. 100"}
+                        defaultValue={elem.quantity}
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        fullWidth={isDownMd}
+                        className={clsx(classes.rfqInput, classes.quantityTextField)}
+                        onChange={(event) => handleRfqListChange(event, key)}
+                        onBlur={onRfqBlurHandler("quantity", key)}
+                        {...rfqErrorProps("quantity", key)}
+                      />
+                      <NumberInput
+                        className={clsx(classes.rfqInput, classes.priceTextField)}
+                        disabled={elem.isDisabled}
+                        variant={"outlined"}
+                        name={"price"}
+                        label={"Target Price"}
+                        placeholder={"ex. 200"}
+                        defaultValue={elem.price}
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>
+                          ),
+                        }}
+                        value={elem.price}
+                        onChange={(event: any) => handleRfqListChange(event, key)}
+                        decimalScale={4}
+                        isAllowedZero={true}
+                      />
+                    </>
+                  ) : (
+                    <Box
+                      style={{ width: "100%" }}
+                      justifyContent={"space-between"}
+                      flexDirection={"row"}
+                      display={"flex"}
+                    >
+                      <TextField
+                        disabled={elem.isDisabled}
+                        variant={"outlined"}
+                        name={"quantity"}
+                        label={"Quantity *"}
+                        placeholder={"ex. 100"}
+                        defaultValue={elem.quantity}
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        className={clsx(classes.rfqInput, classes.quantityTextField)}
+                        onChange={(event) => handleRfqListChange(event, key)}
+                        onBlur={onRfqBlurHandler("quantity", key)}
+                        {...rfqErrorProps("quantity", key)}
+                      />
+                      <NumberInput
+                        className={clsx(classes.rfqInput, classes.priceTextField)}
+                        disabled={elem.isDisabled}
+                        variant={"outlined"}
+                        name={"price"}
+                        label={"Target Price"}
+                        placeholder={"ex. 200"}
+                        defaultValue={elem.price}
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>
+                          ),
+                        }}
+                        value={elem.price}
+                        onChange={(event: any) => handleRfqListChange(event, key)}
+                        decimalScale={4}
+                        isAllowedZero={true}
+                      />
+                    </Box>
+                  )}
+                  {key !== rfqListState.values.length - 1 && <hr className={classes.hrStyle} />}
                 </Box>
               ))}
               {rfqListState.values.length !== maxRfqRows && (
-                <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-                  + Add new line
-                </Button>
+                <div style={isDownMd ? { display: "flex", justifyContent: "center", width: "100%" } : null}>
+                  <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
+                    {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
+                  </Button>
+                </div>
               )}
             </Box>
           </Container>
@@ -717,7 +781,7 @@ export const RfqList = () => {
 
         {!isAuthenticated && (
           <section className={clsx(classes.section)}>
-            <Container maxWidth={"lg"} className={clsx(classes.mainContainer)}>
+            <Container maxWidth={"lg"} className={clsx(classes.mainContainer, classes.regContainer)}>
               <Box className={classes.regContainerStyle}>
                 <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
                 <p style={{ color: "#456" }}>
@@ -780,7 +844,7 @@ export const RfqList = () => {
                         value={phoneValue}
                         onChange={onChangePhoneHandler}
                         small
-                        style={{ margin: isDownMd ? "8px 0" : "13px", height: !isDownMd && "auto" }}
+                        style={{ margin: isDownKey ? "8px 0" : "13px", height: !isDownKey && "auto" }}
                       />
                       <TextField
                         style={{ textAlign: "start", width: "100%" }}
@@ -844,7 +908,7 @@ export const RfqList = () => {
                     </Box>
                   </Box>
                   <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                    <Box display="flex" flexDirection={isDownMd ? "column" : "row"} ml={2}>
+                    <Box display="flex" flexDirection={isDownKey ? "column" : "row"} ml={2}>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -894,7 +958,7 @@ export const RfqList = () => {
             </Container>
           </section>
         )}
-        <section className={classes.section}>
+        <section className={clsx(classes.section, classes.mobileSendButton)}>
           <Box className={classes.submitButtonContainer}>
             <Button
               variant={"contained"}

@@ -143,6 +143,9 @@ export const ChipassistHomePage = () => {
                   <NavLink className={`${classes.heroMenuLink}`} to={`/bom/create-file`}>
                     {t("menu.bom")}
                   </NavLink>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/rfq-list-quotes`}>
+                    {"RFQ List"}
+                  </NavLink>
                   {isAuthenticated && (
                     <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
                       {t("menu.profile")}

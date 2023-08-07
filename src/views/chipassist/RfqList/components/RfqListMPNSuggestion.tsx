@@ -4,8 +4,8 @@ import { TextField } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { onSuggestionsClearRequested, onSuggestionsFetchRequested } from "@src/store/suggestions/suggestionsActions";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { useStyles } from "@src/views/chipassist/Bom/components/BomViewNew/BomEditor/PartNumberInput/partNumberInputStyles";
 import { useStyles as rfqListStyles } from "@src/views/chipassist/RfqList/RfqListStyle";
+import clsx from "clsx";
 
 interface Props {
   value: string;
@@ -30,7 +30,6 @@ const PartNumberInput: React.FC<Props> = ({
   errorHandler,
   blurHandler,
 }) => {
-  const classes = useStyles();
   const rfqListClasses = rfqListStyles();
   const suggestions = useAppSelector((state) => state.suggestions.suggestions);
   const [hasFocus, setHasFocus] = useState(false);
@@ -66,7 +65,7 @@ const PartNumberInput: React.FC<Props> = ({
   };
 
   return (
-    <div className={classes.autosuggest} style={{ width: "100%", marginRight: "2em" }}>
+    <div className={clsx(rfqListClasses.autoSuggestField)}>
       <Autosuggest
         onSuggestionSelected={onSuggestionSelected}
         theme={suggestTheme}
@@ -89,10 +88,10 @@ const PartNumberInput: React.FC<Props> = ({
             disabled={disabled}
             variant={"outlined"}
             name={"MPN"}
-            label={"Part Number"}
+            label={"Part Number *"}
             placeholder={"ex. KNP100"}
-            fullWidth
             size="small"
+            fullWidth
             InputLabelProps={{
               shrink: true,
             }}
