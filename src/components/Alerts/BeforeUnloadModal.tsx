@@ -26,6 +26,7 @@ const BeforeUnloadModal = () => {
 
       // Display the coordinates in the console or anywhere you want
       console.log("Mouse Y:", mouseY);
+      if (mouseY <= 1) dispatch(showAlertBeforeUnloadAction(true));
     });
   }, []);
 
