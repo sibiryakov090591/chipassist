@@ -91,6 +91,15 @@ const TopMenu = ({ isMobile }) => {
       {/* </div> */}
       <div className={itemClasses}>
         <NavLink
+          className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/bom/") })}
+          to={`/rfq-list-quotes`}
+        >
+          {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+          {"RFQ List"}
+        </NavLink>
+      </div>
+      <div className={itemClasses}>
+        <NavLink
           className={clsx(classes.topMenuItemLink, {
             [classes.active]: window.location.pathname.includes("/messages"),
           })}

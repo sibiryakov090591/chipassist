@@ -183,7 +183,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   const debouncedState = useDebounce(formState, 300);
   const [isLoading, setIsLoading] = useState(false);
   const [billingAddress, setBillingAddress] = useState(null);
-  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
+  const isDownKey = useMediaQuery(theme.breakpoints.down(460));
   const currency = useAppSelector((state) => state.currency.selected);
   const rfqItem = useAppSelector((state) => state.rfq.rfqItem);
   const rfqModalOpen = useAppSelector((state) => state.rfq.rfqModalOpen);
@@ -674,7 +674,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
               value={phoneValue}
               onChange={onChangePhoneHandler}
               small
-              style={{ height: "37.63px", margin: !isDownMd && "13px" }}
+              style={{ height: "37.63px", margin: !isDownKey && "13px" }}
             />
           </div>
         </>
