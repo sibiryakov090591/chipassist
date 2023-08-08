@@ -41,6 +41,7 @@ import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapp
 import { NumberInput } from "@src/components/Inputs";
 import PartNumberInput from "@src/views/chipassist/RfqList/components/PartNumberInput/PartNumberInput";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import saveNewState from "@src/store/rfqList/rfqListActions";
 import { useStyles } from "./styles";
 
 interface RegInterface {
@@ -175,6 +176,7 @@ export const RFQListForm = () => {
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
+  const rfqListReduxState = useAppSelector((state) => state.rfqList.formState);
   // const currencyField = useAppSelector((state) => state.currency);
   const [formState, setFormState] = useState<FormState>(defaultState());
   const [rfqListState, setRfqListState] = useState<RfqListFormState>(defaultRfqListState());
@@ -205,6 +207,13 @@ export const RFQListForm = () => {
     setRfqListState((prevState) => ({ ...prevState, values: [...prevState.values, newRfq] }));
     return 0;
   };
+
+  useEffect(() => {
+    console.log("setUpDefault", rfqListReduxState);
+    setRfqListState((prevState) => ({ ...prevState, values: rfqListReduxState.values }));
+    setPrevFilledInputIndex(rfqListReduxState.lastFilledIndex);
+    setNeedToChange((prevState) => !prevState);
+  }, []);
 
   useLayoutEffect(() => {
     if (isDownMd) {
@@ -309,7 +318,15 @@ export const RFQListForm = () => {
   }, [debouncedRfqState.values]);
 
   useEffect(() => {
+    if (prevFilledInputIndex >= 0) {
+      console.log("in use efccet dispatch: ", rfqListState, prevFilledInputIndex);
+      dispatch(saveNewState({ form: rfqListState, lastFilledIndex: prevFilledInputIndex }));
+    }
+  }, [prevFilledInputIndex, debouncedRfqState.values]);
+
+  useEffect(() => {
     if (rfqListState.values) {
+      console.log("lastFilledIndex: ", rfqListState);
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
         (element) => element.MPN !== "" && element.quantity !== "",

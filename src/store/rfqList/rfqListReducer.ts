@@ -10,7 +10,7 @@ const initialState: any = {
         MPN: "",
         manufacturer: "",
         quantity: "",
-        price: 0,
+        price: "",
       },
       {
         index: 2,
@@ -18,20 +18,22 @@ const initialState: any = {
         MPN: "",
         manufacturer: "",
         quantity: "",
-        price: 0,
+        price: "",
       },
     ],
     touched: [],
     errors: [],
+    lastFilledIndex: 0,
   },
 };
 
 export default function rfqListReducer(state = initialState, action: any): any {
-  switch (action.types) {
+  switch (action.type) {
     case actionTypes.SAVE_RFQ_LIST_FORM_STATE:
-      console.log(action.payload);
-      return { ...state, formState: action.payload };
+      console.log("action payload: ", action.payload);
+      return { ...state, formState: { ...action.payload.form, lastFilledIndex: action.payload.lastFilledIndex } };
     default:
+      console.log("default");
       return state;
   }
 }
