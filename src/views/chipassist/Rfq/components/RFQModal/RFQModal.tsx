@@ -16,11 +16,13 @@ import { Link, useLocation } from "react-router-dom";
 import useAppTheme from "@src/theme/useAppTheme";
 import { ID_ELFARO } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./RFQModalStyles";
 
 export default function RFQModalModal() {
   const classes = useStyles();
   const registerClasses = useRegisterStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
   const location = useLocation();
@@ -48,7 +50,7 @@ export default function RFQModalModal() {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={classes.modal}
+      className={commonClasses.modal}
       open={rfqModalOpen}
       onClose={handleClose}
       closeAfterTransition
@@ -58,7 +60,7 @@ export default function RFQModalModal() {
       }}
     >
       <Fade in={rfqModalOpen}>
-        <div className={classes.paper}>
+        <div className={commonClasses.paper}>
           <h2
             className={classes.header}
             dangerouslySetInnerHTML={{

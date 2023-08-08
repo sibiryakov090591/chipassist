@@ -22,11 +22,13 @@ import { deleteMiscAction, loadMiscAction } from "@src/store/misc/miscActions";
 import { batch } from "react-redux";
 import { getCart } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
 const ProgressModal: React.FC = () => {
   const classes = useStyles();
   const registerClasses = useRegisterStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const { t } = useI18n("progress_modal");
@@ -160,7 +162,7 @@ const ProgressModal: React.FC = () => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
-      className={classes.modal}
+      className={commonClasses.modal}
       onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
