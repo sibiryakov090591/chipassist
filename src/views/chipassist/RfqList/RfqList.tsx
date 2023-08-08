@@ -211,7 +211,7 @@ export const RfqList = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    console.log(rfqListForm)
+    console.log(rfqListForm);
     setRfqListState(rfqListForm);
   }, []);
 
