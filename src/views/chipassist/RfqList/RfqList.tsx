@@ -116,7 +116,7 @@ interface FormState {
   errors: RegErrors;
 }
 
-interface RfqListFormState {
+export interface RfqListFormState {
   isValid: boolean;
   values: RfqItem[];
   touched: RfqTouched[];
