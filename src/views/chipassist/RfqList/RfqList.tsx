@@ -43,6 +43,7 @@ import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapp
 import { NumberInput } from "@src/components/Inputs";
 import PartNumberInput from "@src/views/chipassist/RfqList/components/RfqListMPNSuggestion";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import saveNewState from "@src/store/rfqList/rfqListActions";
 
 interface RegInterface {
   country: string;
@@ -173,6 +174,7 @@ export const RfqList = () => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const currency = useAppSelector((state) => state.currency.selected);
+  const rfqListForm = useAppSelector((state) => state.rfqList.formState);
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
@@ -209,6 +211,8 @@ export const RfqList = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    console.log(rfqListForm)
+    setRfqListState(rfqListForm);
   }, []);
 
   useLayoutEffect(() => {
@@ -350,6 +354,10 @@ export const RfqList = () => {
       }
     }
   }, [needToChange]);
+
+  useEffect(() => {
+    dispatch(saveNewState(rfqListState));
+  }, [debouncedRfqState]);
 
   const onBlurHandler = (name: string) => () => {
     return setFormState((prevState) => ({

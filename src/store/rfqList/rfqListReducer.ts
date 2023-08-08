@@ -29,6 +29,7 @@ const initialState: any = {
 export default function rfqListReducer(state = initialState, action: any): any {
   switch (action.types) {
     case actionTypes.SAVE_RFQ_LIST_FORM_STATE:
+      console.log(action.payload);
       return { ...state, formState: action.payload };
     default:
       return state;
