@@ -1,7 +1,7 @@
 import React from "react";
 import { batch } from "react-redux";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop } from "@material-ui/core";
+import { Backdrop, Hidden } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { clearRfqItem, rfqModalClose, rfqModalOpenAgainAfterLogin } from "@src/store/rfq/rfqActions";
@@ -14,17 +14,22 @@ import RFQForm from "@src/views/chipassist/Rfq/components/RFQForm/RFQForm";
 import { useStyles as useRegisterStyles } from "@src/views/chipassist/HomeRestricted/styles";
 import { Link, useLocation } from "react-router-dom";
 import useAppTheme from "@src/theme/useAppTheme";
-import { ID_ELFARO } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_ELFARO, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import logo from "@src/images/logo/chipassist_logo_white.svg";
+import { clsx } from "clsx";
 import { useStyles } from "./RFQModalStyles";
 
 export default function RFQModalModal() {
   const classes = useStyles();
   const registerClasses = useRegisterStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
   const location = useLocation();
   const isElfaro = constants.id === ID_ELFARO;
+  const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
 
   const { rfqModalOpen, rfqItem } = useAppSelector((state) => state.rfq);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -48,7 +53,7 @@ export default function RFQModalModal() {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={classes.modal}
+      className={commonClasses.modal}
       open={rfqModalOpen}
       onClose={handleClose}
       closeAfterTransition
@@ -58,44 +63,53 @@ export default function RFQModalModal() {
       }}
     >
       <Fade in={rfqModalOpen}>
-        <div className={classes.paper}>
-          <h2
-            className={classes.header}
-            dangerouslySetInnerHTML={{
-              __html: t("modal_header", {
-                interpolation: { escapeValue: false },
-                partNumber: partNumber.length > 20 ? `${partNumber.slice(0, 17)}...` : partNumber,
-                partNumberTitle: partNumber.length > 20 ? partNumber : null,
-                title: rfqItem.title === "order" ? t("order") : t("request"),
-              }),
-            }}
-          />
-          {!isElfaro && (
-            <p
-              className={classes.text}
+        <div className={clsx(commonClasses.paper, classes.container)}>
+          {isChipAssist && (
+            <Hidden smDown>
+              <div className={classes.logoContainer}>
+                <img className={classes.logo} src={logo} alt="chipassist logo" />
+              </div>
+            </Hidden>
+          )}
+          <div className={classes.content}>
+            <h2
+              className={classes.header}
               dangerouslySetInnerHTML={{
-                __html: t("modal_text", {
+                __html: t("modal_header", {
                   interpolation: { escapeValue: false },
-                  partNumber: rfqItem.prevPartNumber || rfqItem.partNumber,
+                  partNumber: partNumber.length > 20 ? `${partNumber.slice(0, 17)}...` : partNumber,
+                  partNumberTitle: partNumber.length > 20 ? partNumber : null,
+                  title: rfqItem.title === "order" ? t("order") : t("request"),
                 }),
               }}
             />
-          )}
-          {!isAuthenticated && (
-            <div className={classes.signIn}>
-              {t("restricted.description_1")}
-              <Link
-                onClick={singInHandler}
-                to={"/auth/login"}
-                className={`${appTheme.hyperlink} ${registerClasses.link}`}
-                state={{ background: location.state?.background || location }}
-              >
-                {t("restricted.sign_in")}
-              </Link>
-              {". "}
-            </div>
-          )}
-          <RFQForm onCloseModalHandler={handleClose} />
+            {!isElfaro && (
+              <p
+                className={classes.text}
+                dangerouslySetInnerHTML={{
+                  __html: t("modal_text", {
+                    interpolation: { escapeValue: false },
+                    partNumber: rfqItem.prevPartNumber || rfqItem.partNumber,
+                  }),
+                }}
+              />
+            )}
+            {!isAuthenticated && (
+              <div className={classes.signIn}>
+                {t("restricted.description_1")}
+                <Link
+                  onClick={singInHandler}
+                  to={"/auth/login"}
+                  className={`${appTheme.hyperlink} ${registerClasses.link}`}
+                  state={{ background: location.state?.background || location }}
+                >
+                  {t("restricted.sign_in")}
+                </Link>
+                {". "}
+              </div>
+            )}
+            <RFQForm onCloseModalHandler={handleClose} />
+          </div>
         </div>
       </Fade>
     </Modal>

@@ -3,11 +3,6 @@ import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   paper: {
     width: "100%",
     maxWidth: "600px",

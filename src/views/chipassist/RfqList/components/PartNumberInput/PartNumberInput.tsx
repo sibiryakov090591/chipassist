@@ -4,8 +4,7 @@ import { TextField } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { onSuggestionsClearRequested, onSuggestionsFetchRequested } from "@src/store/suggestions/suggestionsActions";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { useStyles as rfqListStyles } from "@src/views/chipassist/RfqList/RfqListStyle";
-import clsx from "clsx";
+import { useStyles } from "./styles";
 
 interface Props {
   value: string;
@@ -30,7 +29,7 @@ const PartNumberInput: React.FC<Props> = ({
   errorHandler,
   blurHandler,
 }) => {
-  const rfqListClasses = rfqListStyles();
+  const classes = useStyles();
   const suggestions = useAppSelector((state) => state.suggestions.suggestions);
   const [hasFocus, setHasFocus] = useState(false);
   const dispatch = useAppDispatch();
@@ -65,7 +64,7 @@ const PartNumberInput: React.FC<Props> = ({
   };
 
   return (
-    <div className={clsx(rfqListClasses.autoSuggestField)}>
+    <div className={classes.autoSuggestField}>
       <Autosuggest
         onSuggestionSelected={onSuggestionSelected}
         theme={suggestTheme}
@@ -95,7 +94,7 @@ const PartNumberInput: React.FC<Props> = ({
             InputLabelProps={{
               shrink: true,
             }}
-            className={rfqListClasses.rfqInput}
+            className={classes.rfqInput}
             {...inputProps}
             {...errorHandler}
           />

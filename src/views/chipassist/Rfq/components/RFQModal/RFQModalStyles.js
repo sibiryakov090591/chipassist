@@ -1,31 +1,35 @@
 import { makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    "& .MuiButton-root + div": {
-      width: "100%",
-      minWidth: "100%",
-    },
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: 3,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    maxWidth: "92vw",
-    overflowY: "auto",
-    maxHeight: "92vh",
-    [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(2, 3),
-    },
-  },
   root: {
     "& .MuiTextField-root": {
       margin: 13,
       width: "25ch",
+    },
+  },
+  container: {
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+      padding: 0,
+      overflow: "hidden",
+    },
+  },
+  logoContainer: {
+    display: "flex",
+    alignItems: "flex-end",
+    backgroundColor: theme.palette.app.red500,
+    padding: 20,
+    position: "sticky",
+    top: 0,
+  },
+  logo: {
+    width: "100%",
+    maxWidth: "235px",
+  },
+  content: {
+    [theme.breakpoints.up("md")]: {
+      overflowY: "auto",
+      padding: 12,
     },
   },
   header: {
