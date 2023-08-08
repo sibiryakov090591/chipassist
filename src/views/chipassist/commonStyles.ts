@@ -39,19 +39,30 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     justifyContent: "center",
     "& .MuiBackdrop-root": {
       backdropFilter: "blur(6px)",
+      [theme.breakpoints.down("xs")]: {
+        backdropFilter: "none",
+        backgroundColor: "transparent",
+      },
     },
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(3, 4, 3),
+    padding: theme.spacing(2, 3, 2),
     textAlign: "center",
     color: "rgba(0,0,0,0.7)",
     maxHeight: "90vh",
     maxWidth: "95vw",
     overflow: "auto",
     position: "relative",
+    [theme.breakpoints.down("xs")]: {
+      borderRadius: 0,
+      height: "100%",
+      width: "100%",
+      maxHeight: "none",
+      maxWidth: "none",
+    },
   },
   tooltip: {
     backgroundColor: "#f5f5f9",
