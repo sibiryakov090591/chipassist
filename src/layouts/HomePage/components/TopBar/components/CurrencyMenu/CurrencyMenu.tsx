@@ -110,7 +110,7 @@ const CurrencyMenu: React.FC<Props> = ({ containerClassName, buttonComponent, pl
         placement={placement || "bottom-start"}
         role={undefined}
         transition
-        style={{ zIndex: 100 }}
+        style={{ zIndex: 100000 }}
       >
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>

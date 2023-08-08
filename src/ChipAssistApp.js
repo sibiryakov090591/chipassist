@@ -119,7 +119,7 @@ const CatalogResults = lazy(() =>
 );
 
 const RfqList = lazy(() =>
-  lazyLoader(() => import(/* webpackChunkName: "rfqList" */ "@src/views/chipassist/RfqList/RfqList")),
+  lazyLoader(() => import(/* webpackChunkName: "rfqList" */ "@src/views/chipassist/RfqList/RFQList")),
 );
 
 export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
@@ -531,7 +531,7 @@ const ChipAssistApp = () => {
         <ScrollUpButton />
         <RFQModal />
         <SellerMessageModal />
-        <BeforeUnloadModal />
+        {ID_MASTER === constants.id && <BeforeUnloadModal />}
         <ProgressModal />
       </ProvidedErrorBoundary>
 

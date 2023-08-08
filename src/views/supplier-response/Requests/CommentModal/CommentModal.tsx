@@ -4,6 +4,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Box, Button, TextField } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "../ResponseItem/responseItemStyles";
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 
 const CommentModal: React.FC<Props> = ({ comment, onSaveHandler, open, onClose }) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
 
   const [value, setValue] = useState(comment || "");
@@ -23,7 +25,7 @@ const CommentModal: React.FC<Props> = ({ comment, onSaveHandler, open, onClose }
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={classes.modal}
+      className={commonClasses.modal}
       open={open}
       onClose={onClose}
       closeAfterTransition

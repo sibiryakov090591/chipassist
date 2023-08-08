@@ -126,20 +126,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       },
     },
   },
-  pageContainer: {
-    marginBottom: "2rem",
-    padding: "2rem",
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-    alignItems: "center",
-    [theme.breakpoints.down("md")]: {
-      padding: 0,
-      marginBottom: 0,
-    },
-  },
   langBlock: {
     fontSize: "12px",
     width: "10%",
