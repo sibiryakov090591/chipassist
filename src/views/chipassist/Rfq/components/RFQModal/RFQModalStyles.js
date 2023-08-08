@@ -7,6 +7,31 @@ export const useStyles = makeStyles((theme) => ({
       width: "25ch",
     },
   },
+  container: {
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+      padding: 0,
+      overflow: "hidden",
+    },
+  },
+  logoContainer: {
+    display: "flex",
+    alignItems: "flex-end",
+    backgroundColor: theme.palette.app.red500,
+    padding: 20,
+    position: "sticky",
+    top: 0,
+  },
+  logo: {
+    width: "100%",
+    maxWidth: "235px",
+  },
+  content: {
+    [theme.breakpoints.up("md")]: {
+      overflowY: "auto",
+      padding: 12,
+    },
+  },
   header: {
     textAlign: "center",
     paddingTop: 15,
