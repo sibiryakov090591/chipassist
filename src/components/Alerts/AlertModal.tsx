@@ -9,10 +9,12 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./alertModalStyles";
 
 const AlertModal = () => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const { t } = useI18n("progress_modal");
   const dispatch = useAppDispatch();
   const appTheme = useAppTheme();
@@ -29,7 +31,7 @@ const AlertModal = () => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={commonClasses.modal}
         open={showedMessageAlert}
         onClose={handleClose}
         closeAfterTransition
@@ -39,7 +41,7 @@ const AlertModal = () => {
         }}
       >
         <Fade in={showedMessageAlert}>
-          <div className={classes.paper}>
+          <div className={commonClasses.paper}>
             {message?.severity === "success" && <h1 className={classes.title}>{t("success_title")}</h1>}
             <h2 dangerouslySetInnerHTML={{ __html: message?.title }} />
             <p className={classes.description} dangerouslySetInnerHTML={{ __html: message?.description }} />

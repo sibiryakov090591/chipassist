@@ -37,6 +37,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    "& .MuiBackdrop-root": {
+      backdropFilter: "blur(6px)",
+    },
   },
   paper: {
     backgroundColor: theme.palette.background.paper,

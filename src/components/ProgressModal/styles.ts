@@ -4,15 +4,6 @@ import { AppTheme } from "@src/themes/AppTheme";
 import { red } from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    "& .MuiButton-root + div": {
-      width: "100%",
-      minWidth: "100%",
-    },
-  },
   paper: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: 3,

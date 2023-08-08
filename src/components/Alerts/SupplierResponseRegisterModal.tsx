@@ -9,10 +9,12 @@ import useAppSelector from "@src/hooks/useAppSelector";
 // import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./suppliersRegisterModalStyles";
 
 const RegisterModal = () => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   // const { t } = useI18n("progress_modal");
   const dispatch = useAppDispatch();
   const appTheme = useAppTheme();
@@ -28,7 +30,7 @@ const RegisterModal = () => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={commonClasses.modal}
         open={showedMessageAlert}
         onClose={handleClose}
         closeAfterTransition
@@ -38,7 +40,7 @@ const RegisterModal = () => {
         }}
       >
         <Fade in={showedMessageAlert}>
-          <div className={classes.paper}>
+          <div className={commonClasses.paper}>
             <h1>Register</h1>
             <p className={classes.description}>
               То register as a supplier please send us a mail to{" "}

@@ -11,10 +11,12 @@ import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
 import { addCartItem } from "@src/store/cart/cartActions";
 import { NumberInput } from "@src/components/Inputs";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./alertModalStyles";
 
 const AddProductToListModal = () => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const { t } = useI18n("cart");
   const dispatch = useAppDispatch();
   const appTheme = useAppTheme();
@@ -44,7 +46,7 @@ const AddProductToListModal = () => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={commonClasses.modal}
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -54,7 +56,7 @@ const AddProductToListModal = () => {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
+          <div className={commonClasses.paper}>
             <h1 className={classes.title} dangerouslySetInnerHTML={{ __html: t("added_list_title") }} />
             <p className={classes.description} dangerouslySetInnerHTML={{ __html: t("added_list_message") }} />
             <div className={classes.input}>
