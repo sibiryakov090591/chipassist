@@ -7,7 +7,7 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { showAlertBeforeUnloadAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import RfqList from "@src/views/chipassist/RfqList/RfqList";
+import RFQListForm from "@src/views/chipassist/RfqList/components/Form/RFQListForm";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -47,7 +47,7 @@ const BeforeUnloadModal = () => {
         }}
       >
         <Fade in={showAlertBeforeUnload}>
-          <div className={commonClasses.paper}>
+          <div style={{ maxWidth: 950 }} className={commonClasses.paper}>
             <IconButton aria-label="close" className={commonClasses.closeButton} onClick={handleClose}>
               <CloseIcon />
             </IconButton>
@@ -56,8 +56,8 @@ const BeforeUnloadModal = () => {
               Leave a request for quotation and we&apos;ll check it against the offers from 100+ connected sellers.
               You&apos;ll receive the responses in your mailbox.
             </p>
-            <div style={{ marginTop: "-65px" }}>
-              <RfqList />
+            <div>
+              <RFQListForm />
             </div>
           </div>
         </Fade>
