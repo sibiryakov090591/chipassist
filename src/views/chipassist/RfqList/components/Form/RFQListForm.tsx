@@ -179,6 +179,7 @@ export const RFQListForm = () => {
   const rfqListReduxState = useAppSelector((state) => state.rfqList.formState);
   // const currencyField = useAppSelector((state) => state.currency);
   const [formState, setFormState] = useState<FormState>(defaultState());
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [rfqListState, setRfqListState] = useState<RfqListFormState>(defaultRfqListState());
   const debouncedState = useDebounce(formState, 300);
   const debouncedRfqState = useDebounce(rfqListState, 300);
@@ -318,14 +319,14 @@ export const RFQListForm = () => {
   }, [debouncedRfqState.values]);
 
   useEffect(() => {
-    if (prevFilledInputIndex >= 0) {
+    if (!isFirstRender && prevFilledInputIndex >= 0) {
       console.log("in use efccet dispatch: ", rfqListState, prevFilledInputIndex);
       dispatch(saveNewState({ form: rfqListState, lastFilledIndex: prevFilledInputIndex }));
     }
   }, [prevFilledInputIndex, debouncedRfqState.values]);
 
   useEffect(() => {
-    if (rfqListState.values) {
+    if (rfqListState.values && !isFirstRender) {
       console.log("lastFilledIndex: ", rfqListState);
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
@@ -385,6 +386,8 @@ export const RFQListForm = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isFirstRender) setIsFirstRender(false);
+
     const { value, name, type, checked } = e.target;
 
     const errors = { ...formState.errors };
@@ -416,6 +419,8 @@ export const RFQListForm = () => {
   };
 
   const handleRfqListChange = (e: any, index: number) => {
+    if (isFirstRender) setIsFirstRender(false);
+
     const { value, name } = e.target;
     const errors = [...rfqListState.errors];
 
@@ -622,6 +627,7 @@ export const RFQListForm = () => {
     }
     return true;
   };
+  console.log(rfqListState);
   return (
     <>
       <section className={classes.section} style={isDownMd ? { marginTop: "1rem" } : null}>
