@@ -23,8 +23,6 @@ import { batch } from "react-redux";
 import { getCart } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import CloseIcon from "@material-ui/icons/Close";
-import IconButton from "@material-ui/core/IconButton";
 import { useStyles } from "./styles";
 
 const ProgressModal: React.FC = () => {

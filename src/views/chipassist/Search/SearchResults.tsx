@@ -32,6 +32,7 @@ import img from "@src/images/Screenshot_1.png";
 import { ID_MASTER } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
+import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -470,6 +471,8 @@ const SearchResults = () => {
           </div>
         </div>
       </Container>
+
+      {ID_MASTER === constants.id && <BeforeUnloadModal />}
     </Page>
   );
 };

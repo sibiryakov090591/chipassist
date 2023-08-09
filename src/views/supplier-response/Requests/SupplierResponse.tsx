@@ -25,7 +25,6 @@ import {
   useMediaQuery,
   useTheme,
   Container,
-  Paper,
   Tooltip,
 } from "@material-ui/core";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
@@ -40,10 +39,6 @@ import FiltersContainer, {
 import Alert from "@material-ui/lab/Alert";
 import importIcon from "@src/images/suppliers_response/import-icon-images.svg";
 import exportIcon from "@src/images/suppliers_response/export_data.svg";
-import ImportExportIcon from "@material-ui/icons/ImportExport";
-import Popper from "@material-ui/core/Popper";
-import Grow from "@material-ui/core/Grow";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import HelpIcon from "@material-ui/icons/Help";
 import { loadMiscAction, saveMiscAction, updateMiscAction } from "@src/store/misc/miscActions";
 import Paginate from "@src/components/Paginate/Paginate";
@@ -80,7 +75,6 @@ const SupplierResponse: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
-  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const page = useURLSearchParams("page", false, 1, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("rfq_response_page_size") || 15, false);
@@ -111,7 +105,6 @@ const SupplierResponse: React.FC = () => {
   const [openPopper, setOpenPopper] = useState(false);
   const [openErrorsModal, setOpenErrorsModal] = useState(false);
   const [filters, setFilters] = useState<Filters>(null);
-  const anchorRef = useRef(null);
 
   useEffect(() => () => dispatch(clearSupplierResponseData()), []);
 
