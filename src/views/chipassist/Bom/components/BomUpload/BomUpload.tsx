@@ -16,7 +16,7 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useSocketClient } from "@src/services/SocketClient";
 import { uploadFileThunk, setUploadState, saveSocketUploadFile } from "@src/store/bom/bomActions";
 import { loadMiscAction, updateMiscAction, saveMiscAction } from "@src/store/misc/miscActions";
-import { slugify } from "@src/utils/utility";
+import { slugify, delay } from "@src/utils/utility";
 import { invokeRestTransport, invokeWebsocketTransport } from "@src/services/useTransport";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -261,7 +261,8 @@ const BomUpload: React.FC = () => {
     }
   };
 
-  const scrollToFileViewer = () => {
+  const scrollToFileViewer = async () => {
+    await delay(1);
     if (fileViewerRef.current) {
       window.scrollTo({ top: fileViewerRef.current.offsetTop + 30, behavior: "smooth" });
     }
@@ -375,8 +376,8 @@ const BomUpload: React.FC = () => {
         ))}
         {file !== null && !isFileParsing && (
           <Box mt={2}>
-            <div ref={fileViewerRef} className={classes.file}>
-              <div className={classes.fileName}>
+            <div className={classes.file}>
+              <div ref={fileViewerRef} className={classes.fileName}>
                 <AttachFileIcon className={classes.fileIc} />
                 {file.name}
               </div>

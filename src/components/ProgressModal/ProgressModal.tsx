@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop, Box, Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Backdrop, Box, Button, useMediaQuery, useTheme, Hidden } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -171,7 +171,7 @@ const ProgressModal: React.FC = () => {
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>
+        <div className={commonClasses.paper}>
           {!isAuthenticated && !success && !error && partNumber && (
             <div className={classes.content}>
               {requestType === "rfq" && (
@@ -330,6 +330,13 @@ const ProgressModal: React.FC = () => {
               </Button>
             </div>
           )}
+          <Hidden smUp>
+            <div className={commonClasses.actionsRow}>
+              <Button variant="contained" className={appTheme.buttonPrimary} onClick={handleClose}>
+                {t("common.close")}
+              </Button>
+            </div>
+          </Hidden>
         </div>
       </Fade>
     </Modal>

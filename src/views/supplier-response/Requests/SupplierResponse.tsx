@@ -25,7 +25,6 @@ import {
   useMediaQuery,
   useTheme,
   Container,
-  Paper,
   Tooltip,
 } from "@material-ui/core";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
@@ -40,10 +39,6 @@ import FiltersContainer, {
 import Alert from "@material-ui/lab/Alert";
 import importIcon from "@src/images/suppliers_response/import-icon-images.svg";
 import exportIcon from "@src/images/suppliers_response/export_data.svg";
-import ImportExportIcon from "@material-ui/icons/ImportExport";
-import Popper from "@material-ui/core/Popper";
-import Grow from "@material-ui/core/Grow";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import HelpIcon from "@material-ui/icons/Help";
 import { loadMiscAction, saveMiscAction, updateMiscAction } from "@src/store/misc/miscActions";
 import Paginate from "@src/components/Paginate/Paginate";
@@ -80,7 +75,6 @@ const SupplierResponse: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
-  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const page = useURLSearchParams("page", false, 1, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("rfq_response_page_size") || 15, false);
@@ -111,7 +105,6 @@ const SupplierResponse: React.FC = () => {
   const [openPopper, setOpenPopper] = useState(false);
   const [openErrorsModal, setOpenErrorsModal] = useState(false);
   const [filters, setFilters] = useState<Filters>(null);
-  const anchorRef = useRef(null);
 
   useEffect(() => () => dispatch(clearSupplierResponseData()), []);
 
@@ -434,7 +427,7 @@ const SupplierResponse: React.FC = () => {
             </Alert>
           )}
           {isSmDown && (
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-start" mt="6px">
               {/* <Box className={classes.dateFilter}> */}
               {/*  <Tabs value={filters?.days || 3} onChange={onChangeDateFilter}> */}
               {/*    <Tab disabled={isLoading} label="3 days" value={3} /> */}
@@ -442,95 +435,38 @@ const SupplierResponse: React.FC = () => {
               {/*    <Tab disabled={isLoading} label="14 days" value={14} /> */}
               {/*  </Tabs> */}
               {/* </Box> */}
-              {!isXsDown && (
-                <div className={classes.fileActions}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                    onClick={onExportFile}
-                    disabled={!selectedPartner}
-                  >
-                    Export to XLS
-                  </Button>
-                  <Button
-                    component="label"
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                    disabled={!selectedPartner}
-                  >
-                    Import from XLS
-                    <input
-                      onChange={onImportFile}
-                      onClick={(e: any) => {
-                        e.target.value = null;
-                        return false;
-                      }}
-                      type="file"
-                      accept=".xls, .xlsx, application/vnd.ms-excel"
-                      hidden
-                    />
-                  </Button>
-                </div>
-              )}
-
-              {isXsDown && (
-                <>
-                  <Button className={classes.mobileImportButton} ref={anchorRef} onClick={() => setOpenPopper(true)}>
-                    <ImportExportIcon />
-                  </Button>
-                  <Popper open={openPopper} anchorEl={anchorRef.current} style={{ zIndex: 100 }} transition>
-                    {({ TransitionProps, placement }) => (
-                      <Grow
-                        {...TransitionProps}
-                        style={{
-                          transformOrigin: placement === "bottom" ? "center top" : "center bottom",
-                        }}
-                      >
-                        <Paper>
-                          <ClickAwayListener onClickAway={() => setOpenPopper(false)}>
-                            <div className={classes.fileActions}>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                                onClick={onExportFile}
-                                disabled={!selectedPartner}
-                              >
-                                Export to XLS
-                              </Button>
-                              <Button
-                                component="label"
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                                disabled={!selectedPartner}
-                              >
-                                Import from XLS
-                                <input
-                                  onClick={(e: any) => {
-                                    e.target.value = null;
-                                    return false;
-                                  }}
-                                  onChange={onImportFile}
-                                  type="file"
-                                  accept=".xls, .xlsx, application/vnd.ms-excel"
-                                  hidden
-                                />
-                              </Button>
-                            </div>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Grow>
-                    )}
-                  </Popper>
-                </>
-              )}
+              <div className={classes.fileActions}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={clsx(appTheme.buttonPrimary, classes.fileButton)}
+                  onClick={onExportFile}
+                  disabled={!selectedPartner}
+                >
+                  Export to XLS
+                </Button>
+                <Button
+                  component="label"
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={clsx(appTheme.buttonPrimary, classes.fileButton)}
+                  disabled={!selectedPartner}
+                >
+                  Import from XLS
+                  <input
+                    onChange={onImportFile}
+                    onClick={(e: any) => {
+                      e.target.value = null;
+                      return false;
+                    }}
+                    type="file"
+                    accept=".xls, .xlsx, application/vnd.ms-excel"
+                    hidden
+                  />
+                </Button>
+              </div>
             </Box>
           )}
           <div
