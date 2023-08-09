@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop, Box, Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Backdrop, Box, Button, useMediaQuery, useTheme, Hidden } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -23,6 +23,8 @@ import { batch } from "react-redux";
 import { getCart } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
 import { useStyles } from "./styles";
 
 const ProgressModal: React.FC = () => {
@@ -171,7 +173,12 @@ const ProgressModal: React.FC = () => {
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>
+        <div className={commonClasses.paper}>
+          <Hidden smUp>
+            <IconButton aria-label="close" className={commonClasses.closeButton} onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Hidden>
           {!isAuthenticated && !success && !error && partNumber && (
             <div className={classes.content}>
               {requestType === "rfq" && (
