@@ -38,9 +38,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     justifyContent: "center",
     "& .MuiBackdrop-root": {
-      backdropFilter: "blur(6px)",
       [theme.breakpoints.down("xs")]: {
-        backdropFilter: "none",
         backgroundColor: "transparent",
       },
     },

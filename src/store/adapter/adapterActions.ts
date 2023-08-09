@@ -112,11 +112,11 @@ export const checkFileState = (fileId: number) => {
             );
             break;
           }
-          case "PENDING" || "null" || "": {
+          case "PROCESSING": {
             setTimeout(() => dispatch(checkFileState(fileId)), 1000);
             break;
           }
-          default: {
+          case "COMPLETED": {
             if (response.errors?.length) {
               dispatch(
                 setUploadState({
@@ -136,7 +136,10 @@ export const checkFileState = (fileId: number) => {
                 }),
               );
             }
+            break;
           }
+          default:
+            throw new Error("Unexpected file upload status");
         }
       })
       .catch(() => {

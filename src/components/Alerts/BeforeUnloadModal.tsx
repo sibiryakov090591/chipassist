@@ -19,12 +19,19 @@ const BeforeUnloadModal = () => {
   const showAlertBeforeUnload = useAppSelector((state) => state.alerts.showAlertBeforeUnload);
 
   React.useEffect(() => {
-    document.body.addEventListener("mouseleave", (event) => {
+    const listener = (event: any) => {
       if (!sessionStorage.getItem("before_unload_alert_disabled")) {
         const mouseY = event.clientY;
         if (mouseY <= 0) dispatch(showAlertBeforeUnloadAction(true));
       }
-    });
+    };
+    const timeoutId = setTimeout(() => {
+      document.body.addEventListener("mouseleave", listener);
+    }, 30000);
+    return () => {
+      clearTimeout(timeoutId);
+      document.body.removeEventListener("mouseleave", listener);
+    };
   }, []);
 
   const handleClose = () => {

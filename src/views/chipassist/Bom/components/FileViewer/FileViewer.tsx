@@ -5,7 +5,6 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { Typography } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
 import { CustomSelect } from "@src/components/index";
 import Alert from "@material-ui/lab/Alert";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
@@ -251,7 +250,7 @@ const FileViewer: React.FC<Props> = ({
             <div>
               <Typography variant="caption" display="block" gutterBottom>
                 {t("column.part_number")}
-                <span style={{ color: red[500] }}>*</span>
+                <span>*</span>
               </Typography>
               <CustomSelect
                 error={selectErrors.part_number && classes.selectError}
@@ -269,7 +268,7 @@ const FileViewer: React.FC<Props> = ({
             <div>
               <Typography variant="caption" display="block" gutterBottom>
                 {t("column.qty")}
-                <span style={{ color: red[500] }}>*</span>
+                <span>*</span>
               </Typography>
               <CustomSelect
                 error={selectErrors.quantity && classes.selectError}
