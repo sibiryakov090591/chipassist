@@ -123,3 +123,9 @@ export const lazyLoader = (lazyComponent, attemptsLeft = 1) => {
       });
   });
 };
+
+export async function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
