@@ -174,11 +174,6 @@ const ProgressModal: React.FC = () => {
     >
       <Fade in={open}>
         <div className={commonClasses.paper}>
-          <Hidden smUp>
-            <IconButton aria-label="close" className={commonClasses.closeButton} onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Hidden>
           {!isAuthenticated && !success && !error && partNumber && (
             <div className={classes.content}>
               {requestType === "rfq" && (
@@ -337,6 +332,13 @@ const ProgressModal: React.FC = () => {
               </Button>
             </div>
           )}
+          <Hidden smUp>
+            <div className={commonClasses.actionsRow}>
+              <Button variant="contained" className={appTheme.buttonPrimary} onClick={handleClose}>
+                {t("common.close")}
+              </Button>
+            </div>
+          </Hidden>
         </div>
       </Fade>
     </Modal>
