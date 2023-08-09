@@ -434,7 +434,7 @@ const SupplierResponse: React.FC = () => {
             </Alert>
           )}
           {isSmDown && (
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-start" mt="6px">
               {/* <Box className={classes.dateFilter}> */}
               {/*  <Tabs value={filters?.days || 3} onChange={onChangeDateFilter}> */}
               {/*    <Tab disabled={isLoading} label="3 days" value={3} /> */}
@@ -442,95 +442,38 @@ const SupplierResponse: React.FC = () => {
               {/*    <Tab disabled={isLoading} label="14 days" value={14} /> */}
               {/*  </Tabs> */}
               {/* </Box> */}
-              {!isXsDown && (
-                <div className={classes.fileActions}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                    onClick={onExportFile}
-                    disabled={!selectedPartner}
-                  >
-                    Export to XLS
-                  </Button>
-                  <Button
-                    component="label"
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                    disabled={!selectedPartner}
-                  >
-                    Import from XLS
-                    <input
-                      onChange={onImportFile}
-                      onClick={(e: any) => {
-                        e.target.value = null;
-                        return false;
-                      }}
-                      type="file"
-                      accept=".xls, .xlsx, application/vnd.ms-excel"
-                      hidden
-                    />
-                  </Button>
-                </div>
-              )}
-
-              {isXsDown && (
-                <>
-                  <Button className={classes.mobileImportButton} ref={anchorRef} onClick={() => setOpenPopper(true)}>
-                    <ImportExportIcon />
-                  </Button>
-                  <Popper open={openPopper} anchorEl={anchorRef.current} style={{ zIndex: 100 }} transition>
-                    {({ TransitionProps, placement }) => (
-                      <Grow
-                        {...TransitionProps}
-                        style={{
-                          transformOrigin: placement === "bottom" ? "center top" : "center bottom",
-                        }}
-                      >
-                        <Paper>
-                          <ClickAwayListener onClickAway={() => setOpenPopper(false)}>
-                            <div className={classes.fileActions}>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                                onClick={onExportFile}
-                                disabled={!selectedPartner}
-                              >
-                                Export to XLS
-                              </Button>
-                              <Button
-                                component="label"
-                                variant="contained"
-                                color="primary"
-                                size="small"
-                                className={clsx(appTheme.buttonPrimary, classes.fileButton)}
-                                disabled={!selectedPartner}
-                              >
-                                Import from XLS
-                                <input
-                                  onClick={(e: any) => {
-                                    e.target.value = null;
-                                    return false;
-                                  }}
-                                  onChange={onImportFile}
-                                  type="file"
-                                  accept=".xls, .xlsx, application/vnd.ms-excel"
-                                  hidden
-                                />
-                              </Button>
-                            </div>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Grow>
-                    )}
-                  </Popper>
-                </>
-              )}
+              <div className={classes.fileActions}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={clsx(appTheme.buttonPrimary, classes.fileButton)}
+                  onClick={onExportFile}
+                  disabled={!selectedPartner}
+                >
+                  Export to XLS
+                </Button>
+                <Button
+                  component="label"
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={clsx(appTheme.buttonPrimary, classes.fileButton)}
+                  disabled={!selectedPartner}
+                >
+                  Import from XLS
+                  <input
+                    onChange={onImportFile}
+                    onClick={(e: any) => {
+                      e.target.value = null;
+                      return false;
+                    }}
+                    type="file"
+                    accept=".xls, .xlsx, application/vnd.ms-excel"
+                    hidden
+                  />
+                </Button>
+              </div>
             </Box>
           )}
           <div
