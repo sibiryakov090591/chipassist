@@ -323,20 +323,21 @@ const ProgressModal: React.FC = () => {
               )}
             </div>
           )}
-          {(success || error) && (
+          {success || error ? (
             <div className={classes.buttonContainer}>
               <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
                 {t("close_button")}
               </Button>
             </div>
+          ) : (
+            <Hidden smUp>
+              <div className={commonClasses.actionsRow}>
+                <Button variant="contained" className={appTheme.buttonPrimary} onClick={handleClose}>
+                  {t("common.close")}
+                </Button>
+              </div>
+            </Hidden>
           )}
-          <Hidden smUp>
-            <div className={commonClasses.actionsRow}>
-              <Button variant="contained" className={appTheme.buttonPrimary} onClick={handleClose}>
-                {t("common.close")}
-              </Button>
-            </div>
-          </Hidden>
         </div>
       </Fade>
     </Modal>

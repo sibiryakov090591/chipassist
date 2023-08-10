@@ -35,6 +35,7 @@ import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
 import InputPhone from "@src/components/InputPhone/InputPhone";
+import clsx from "clsx";
 
 interface FormStateValues {
   email?: string;
@@ -290,7 +291,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={commonClasses.modal}
+      className={clsx(commonClasses.modal, "fullScreen")}
       open={true}
       onClose={onClose}
       closeAfterTransition
@@ -300,7 +301,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
       }}
     >
       <Fade in={true}>
-        <div className={commonClasses.paper}>
+        <div className={clsx(commonClasses.paper, "fullScreen")}>
           <h2>{t("confirm_modal.title")}</h2>
           <p style={{ fontSize: 16 }}>{t("confirm_modal.sub_title")}</p>
           {!isAuthenticated && (

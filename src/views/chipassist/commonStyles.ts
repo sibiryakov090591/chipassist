@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    "& .MuiBackdrop-root": {
+    "&.fullScreen .MuiBackdrop-root": {
       [theme.breakpoints.down("xs")]: {
         backgroundColor: "transparent",
       },
@@ -54,12 +54,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     maxWidth: "95vw",
     overflow: "auto",
     position: "relative",
-    [theme.breakpoints.down("xs")]: {
-      borderRadius: 0,
-      height: "100%",
-      width: "100%",
-      maxHeight: "none",
-      maxWidth: "none",
+    "&.fullScreen": {
+      [theme.breakpoints.down("xs")]: {
+        borderRadius: 0,
+        height: "100%",
+        width: "100%",
+        maxHeight: "none",
+        maxWidth: "none",
+      },
     },
   },
   tooltip: {
