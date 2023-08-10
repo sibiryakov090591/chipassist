@@ -10,6 +10,10 @@ const Page = (props) => {
   const { title, description, children, ...rest } = props;
 
   useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
+  useEffect(() => {
     if (NODE_ENV !== "production") {
       return;
     }

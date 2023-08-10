@@ -43,6 +43,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         borderTopRightRadius: 0,
         borderBottomLeftRadius: 4,
       },
+      [theme.breakpoints.down("xs")]: {
+        backgroundColor: "#fff",
+        paddingTop: 0,
+      },
     },
     media: {
       borderTopRightRadius: 4,
@@ -67,6 +71,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       [theme.breakpoints.down("md")]: {
         borderTopRightRadius: 4,
         borderBottomLeftRadius: 0,
+      },
+      [theme.breakpoints.down("xs")]: {
+        paddingBottom: 0,
+        "& h1": {
+          fontSize: 24,
+        },
       },
     },
     list: {
