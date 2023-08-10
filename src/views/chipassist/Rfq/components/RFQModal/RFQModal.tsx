@@ -17,7 +17,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { ID_CHIPASSIST, ID_ELFARO, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import logo from "@src/images/logo/chipassist_logo_white.svg";
+import logo from "@src/images/logo/on_red.png";
 import { clsx } from "clsx";
 import { useStyles } from "./RFQModalStyles";
 

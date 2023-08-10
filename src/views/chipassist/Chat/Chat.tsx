@@ -25,6 +25,7 @@ const Chat: React.FC = () => {
 
   React.useEffect(() => {
     window.scrollTo({ top: 0 });
+    // Bug: fixed scrolling that appears in mobile browsers
     const html = document.querySelector("html");
     setTimeout(() => {
       html.style.overflow = "hidden";
