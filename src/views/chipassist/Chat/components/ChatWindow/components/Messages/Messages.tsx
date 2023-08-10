@@ -63,7 +63,13 @@ const Messages: React.FC = () => {
         if (firstUnreadMessage) {
           setFirstUnreadMessageId((prev) => prev || firstUnreadMessage.id);
         } else {
+          // Bug: When we have images we're moving to last message before setting images up into the DOM so scrollHeight calc not correct
+          // The first scrolling is moving us to last message
           messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+          // The second scrolling is moving us to bottom after setting images up in DOM
+          setTimeout(() => {
+            messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+          }, 10);
         }
       });
     }
@@ -123,7 +129,8 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadLabelRef.current) {
-      unreadLabelRef.current.scrollIntoView({ block: "center" });
+      // unreadLabelRef.current.scrollIntoView({ block: "center" });
+      messagesWindowRef.current.scrollTo({ top: unreadLabelRef.current.offsetTop - 50 });
     }
   }, [unreadLabelRef.current, firstUnreadMessageId]);
 

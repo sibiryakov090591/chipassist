@@ -53,7 +53,7 @@ export default function RFQModalModal() {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={commonClasses.modal}
+      className={clsx(commonClasses.modal, "fullScreen")}
       open={rfqModalOpen}
       onClose={handleClose}
       closeAfterTransition
@@ -63,7 +63,7 @@ export default function RFQModalModal() {
       }}
     >
       <Fade in={rfqModalOpen}>
-        <div className={clsx(commonClasses.paper, classes.container)}>
+        <div className={clsx(commonClasses.paper, "fullScreen", classes.container)}>
           {isChipAssist && (
             <Hidden smDown>
               <div className={classes.logoContainer}>

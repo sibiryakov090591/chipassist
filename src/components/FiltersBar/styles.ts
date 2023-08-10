@@ -81,7 +81,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     filterStockBar: {
       margin: "0 0 0 0 !important",
-      "& .MuiCheckbox-root": { padding: "0px 4px 1px 0px" },
+      "& .MuiCheckbox-root": { padding: "0px 4px 1px 0px", top: 0 },
       "& .MuiFormControlLabel-label": { fontSize: 12 },
       [theme.breakpoints.down("sm")]: {
         marginLeft: "-2px",

@@ -1046,9 +1046,9 @@ function PcbRequest() {
           timeout: 500,
         }}
         open={showDetails}
-        className={commonClasses.modal}
+        className={clsx(commonClasses.modal, "fullScreen")}
       >
-        <Fade in={showDetails} style={{ textAlign: "start" }} className={commonClasses.paper}>
+        <Fade in={showDetails} style={{ textAlign: "start" }} className={clsx(commonClasses.paper, "fullScreen")}>
           <div>
             <PcbCalculator
               handleChange={handleChange}
@@ -1082,12 +1082,12 @@ function PcbRequest() {
           timeout: 500,
         }}
         open={showRegisterForm}
-        className={commonClasses.modal}
+        className={clsx(commonClasses.modal, "fullScreen")}
       >
         <Fade
           in={showRegisterForm}
           style={{ textAlign: "start" }}
-          className={clsx(commonClasses.paper, classes.registerForm)}
+          className={clsx(commonClasses.paper, "fullScreen", classes.registerForm)}
         >
           <div>
             <div className={classes.signIn}>

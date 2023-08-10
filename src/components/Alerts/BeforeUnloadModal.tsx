@@ -10,6 +10,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import RFQListForm from "@src/views/chipassist/RfqList/components/Form/RFQListForm";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
+import { clsx } from "clsx";
 
 const BeforeUnloadModal = () => {
   const commonClasses = useCommonStyles();
@@ -44,7 +45,7 @@ const BeforeUnloadModal = () => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={commonClasses.modal}
+        className={clsx(commonClasses.modal, "fullScreen")}
         open={showAlertBeforeUnload}
         onClose={handleClose}
         closeAfterTransition
@@ -54,7 +55,7 @@ const BeforeUnloadModal = () => {
         }}
       >
         <Fade in={showAlertBeforeUnload}>
-          <div style={{ maxWidth: 950 }} className={commonClasses.paper}>
+          <div style={{ maxWidth: 950 }} className={clsx(commonClasses.paper, "fullScreen")}>
             <IconButton aria-label="close" className={commonClasses.closeButton} onClick={handleClose}>
               <CloseIcon />
             </IconButton>
