@@ -6,7 +6,7 @@ import { useStyles } from "./styles";
 const ChatUnreadTotalCount: React.FC<{ className?: string }> = ({ className }) => {
   const classes = useStyles();
 
-  const chatUnreadCount = useAppSelector((state) => state.chat.chatList.unread_total) || 10;
+  const chatUnreadCount = useAppSelector((state) => state.chat.chatList.unread_total);
 
   if (!chatUnreadCount) return null;
   return <div className={clsx(classes.unreadCount, className)}>{chatUnreadCount > 99 ? "99+" : chatUnreadCount}</div>;

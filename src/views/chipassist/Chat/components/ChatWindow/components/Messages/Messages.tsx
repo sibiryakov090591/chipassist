@@ -129,7 +129,8 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadLabelRef.current) {
-      unreadLabelRef.current.scrollIntoView({ block: "center" });
+      // unreadLabelRef.current.scrollIntoView({ block: "center" });
+      messagesWindowRef.current.scrollTo({ top: unreadLabelRef.current.offsetTop - 50 });
     }
   }, [unreadLabelRef.current, firstUnreadMessageId]);
 

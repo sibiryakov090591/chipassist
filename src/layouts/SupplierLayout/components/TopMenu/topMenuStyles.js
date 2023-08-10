@@ -46,7 +46,7 @@ export const useStyles = makeStyles((theme) => ({
   chatUnreadCount: {
     position: "absolute",
     top: "-10px",
-    left: "95%",
+    left: "98%",
   },
 }));
 
