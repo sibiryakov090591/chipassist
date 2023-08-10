@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink, useLocation, useParams, useNavigate } from "react-router-dom";
-import { Box, Card, CardContent, CardMedia, Divider, Link, Typography } from "@material-ui/core";
+import { Box, Card, CardContent, CardMedia, Divider, Hidden, Link, Typography } from "@material-ui/core";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import checkIsAuthenticated from "@src/utils/auth";
@@ -49,15 +49,17 @@ const Reset = () => {
             <Typography color="inherit" variant="h1" style={{ marginBottom: 10 }}>
               {t("after_request.title")}
             </Typography>
-            <Typography color="inherit" variant="h3" style={{ fontSize: 18, marginBottom: 7 }}>
-              {t("after_request.description")}
-            </Typography>
-            <ul className={classes.list}>
-              <li>{t("after_request.li_1")}</li>
-              <li>{t("after_request.li_2")}</li>
-              <li>{t("after_request.li_3")}</li>
-              <li>{t("after_request.li_4", { name: constants.title })}</li>
-            </ul>
+            <Hidden xsDown>
+              <Typography color="inherit" variant="h3" style={{ fontSize: 18, marginBottom: 7 }}>
+                {t("after_request.description")}
+              </Typography>
+              <ul className={classes.list}>
+                <li>{t("after_request.li_1")}</li>
+                <li>{t("after_request.li_2")}</li>
+                <li>{t("after_request.li_3")}</li>
+                <li>{t("after_request.li_4", { name: constants.title })}</li>
+              </ul>
+            </Hidden>
           </CardMedia>
           <CardContent className={classes.requestContent}>
             <LockOpenIcon className={loginClasses.icon} />
