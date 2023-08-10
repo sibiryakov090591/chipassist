@@ -109,8 +109,8 @@ const Help: React.FC = () => {
       <section className={classes.section}>
         <Container maxWidth="md">
           <img
-            style={{ maxWidth: 600, marginBottom: 12 }}
-            className={classes.img}
+            style={{ marginBottom: 12 }}
+            className={clsx(classes.img, classes.priceImg)}
             src={better_price}
             alt="better price hint image"
           />
