@@ -108,8 +108,10 @@ const TopMenu = ({ isMobile }) => {
           to={`/messages`}
         >
           {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          {t("chat")}
-          <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+          <span style={{ position: "relative" }}>
+            {t("chat")}
+            <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+          </span>
         </NavLink>
       </div>
       {isAuthenticated && (
