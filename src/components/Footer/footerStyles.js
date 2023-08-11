@@ -94,7 +94,7 @@ export const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
       width: "100%",
     },
-    [theme.breakpoints.down(400)]: {
+    [theme.breakpoints.down(420)]: {
       flexDirection: "column",
       "& > div": {
         flexDirection: "column",
@@ -172,6 +172,36 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: 30,
     "&:hover": {
       color: theme.palette.app.grey400,
+    },
+  },
+  containerForFunctions: {
+    display: "flex",
+    flexDirection: "initial",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+  },
+  contactInfoBox: {
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "0.1rem",
+      display: "flex",
+      width: "100%",
+      flexDirection: "column",
+      marginLeft: 0,
+    },
+  },
+  titleClass: {
+    fontSize: 13,
+    color: "#d8d5df",
+    fontWeight: "bold",
+  },
+  contactClass: {
+    display: "flex",
+    justifyContent: "flex-start",
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column",
     },
   },
 }));

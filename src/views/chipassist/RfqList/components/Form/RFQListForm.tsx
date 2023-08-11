@@ -5,6 +5,7 @@ import {
   Checkbox,
   CircularProgress,
   Container,
+  Divider,
   FormControlLabel,
   FormHelperText,
   InputAdornment,
@@ -193,12 +194,12 @@ export const RFQListForm = () => {
 
   const addButtonClickHandler = () => {
     const newRfq: RfqItem = {
-      MPN: "",
       index: rfqListState.values.length,
+      isDisabled: true,
+      MPN: "",
       manufacturer: "",
       quantity: "",
       price: "",
-      isDisabled: true,
     };
     const lastRfq = rfqListState.values[rfqListState.values.length - 1];
 
@@ -210,7 +211,6 @@ export const RFQListForm = () => {
   };
 
   useEffect(() => {
-    console.log("setUpDefault", rfqListReduxState);
     setRfqListState((prevState) => ({ ...prevState, values: rfqListReduxState.values }));
     setPrevFilledInputIndex(rfqListReduxState.lastFilledIndex);
     setNeedToChange((prevState) => !prevState);
@@ -320,14 +320,12 @@ export const RFQListForm = () => {
 
   useEffect(() => {
     if (!isFirstRender && prevFilledInputIndex >= 0) {
-      console.log("in use efccet dispatch: ", rfqListState, prevFilledInputIndex);
       dispatch(saveNewState({ form: rfqListState, lastFilledIndex: prevFilledInputIndex }));
     }
   }, [prevFilledInputIndex, debouncedRfqState.values]);
 
   useEffect(() => {
     if (rfqListState.values && !isFirstRender) {
-      console.log("lastFilledIndex: ", rfqListState);
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
         (element) => element.MPN !== "" && element.quantity !== "",
@@ -474,7 +472,7 @@ export const RFQListForm = () => {
         part_number: rfq.MPN,
         manufacturer: rfq.manufacturer,
         quantity: rfq.quantity,
-        price: rfq.price,
+        price: rfq.price !== "" ? rfq.price : 0,
       }));
   };
 
@@ -627,7 +625,6 @@ export const RFQListForm = () => {
     }
     return true;
   };
-  console.log(rfqListState);
   return (
     <>
       <section className={classes.section} style={isDownMd ? { marginTop: "1rem" } : null}>
@@ -645,7 +642,9 @@ export const RFQListForm = () => {
                   onChange={(event) => handleRfqListChange(event, key)}
                   disabled={elem.isDisabled}
                   errorHandler={{ ...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false) }}
-                  blurHandler={onRfqBlurHandler("MPN", key)}
+                  blurHandler={() => {
+                    return false;
+                  }}
                 />
 
                 {/* <TextField */}
@@ -712,7 +711,7 @@ export const RFQListForm = () => {
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"price"}
-                      label={"Target Price"}
+                      label={"Target price"}
                       placeholder={"ex. 200"}
                       size="small"
                       InputLabelProps={{
@@ -761,7 +760,7 @@ export const RFQListForm = () => {
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"price"}
-                      label={"Target Price"}
+                      label={"Target price"}
                       placeholder={"ex. 200"}
                       size="small"
                       InputLabelProps={{
@@ -779,16 +778,26 @@ export const RFQListForm = () => {
                     />
                   </Box>
                 )}
-                {key !== rfqListState.values.length - 1 && <hr className={classes.hrStyle} />}
+                {key !== rfqListState.values.length - 1 && <Divider className={classes.hrStyle} />}
               </Box>
             ))}
-            {rfqListState.values.length !== maxRfqRows && (
-              <div style={isDownMd ? { display: "flex", justifyContent: "center", width: "100%" } : null}>
-                <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-                  {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
-                </Button>
-              </div>
-            )}
+            <div
+              style={
+                isDownMd
+                  ? { display: "flex", justifyContent: "center", width: "100%" }
+                  : { display: "flex", justifyContent: "space-between", width: "100%" }
+              }
+            >
+              <Button
+                variant={"contained"}
+                className={classes.addButton}
+                onClick={addButtonClickHandler}
+                disabled={rfqListState.values.length === maxRfqRows}
+              >
+                {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
+              </Button>
+              {!isDownMd && <span>{`${rfqListState.values.length}/${maxRfqRows}`}</span>}
+            </div>
           </Box>
         </Container>
       </section>
