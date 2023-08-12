@@ -6,18 +6,13 @@ import { AppTheme } from "@src/themes/AppTheme";
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     page: {
-      position: "absolute",
-      paddingTop: 80,
-      top: 0,
       width: "100vw",
+      height: "100%",
       bottom: 0,
       zIndex: 1,
       [theme.breakpoints.up("md")]: {
         paddingRight: `${scrollbarWidth}px`,
       },
-    },
-    chipassistPage: {
-      paddingTop: 133,
     },
     section: {
       height: "100%",

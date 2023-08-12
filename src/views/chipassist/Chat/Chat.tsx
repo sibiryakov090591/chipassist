@@ -23,17 +23,6 @@ const Chat: React.FC = () => {
     if (betweenSmMd) setShowDetails(!open);
   };
 
-  React.useEffect(() => {
-    // Bug: fixed scrolling that appears in mobile browsers
-    const html = document.querySelector("html");
-    setTimeout(() => {
-      html.style.overflow = "hidden";
-    }, 100);
-    return () => {
-      html.style.overflow = "inherit";
-    };
-  }, []);
-
   return (
     <div className={classes.wrapper}>
       <ChatList onShowList={onShowListHandler} showList={showList} />
