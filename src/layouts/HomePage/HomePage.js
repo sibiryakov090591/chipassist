@@ -18,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   wrapper: {
-    minHeight: "100vh",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "space-between",
   },
   topBar: {
     zIndex: 100,
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: 133,
     display: "flex",
-    flex: "1 1 auto",
+    flexGrow: 1,
     width: "100vw",
   },
   navBar: {
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     flex: "0 0 auto",
   },
   content: {
-    flex: "1 1 auto",
+    flexGrow: 1,
     maxWidth: "100%",
     paddingRight: `${scrollbarWidth}px`,
     background: "white !important",

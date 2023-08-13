@@ -6,6 +6,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     leftColumn: {
       width: "25vw",
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      left: 0,
       display: "flex",
       flexDirection: "column",
       borderRight: "1px solid #D4D4D4",
@@ -13,10 +17,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       background: "#ffffff",
       [theme.breakpoints.down("md")]: {
         width: "35vw",
-        position: "absolute",
-        top: 0,
-        bottom: 0,
-        left: 0,
         pointerEvents: "none",
         transform: "translateX(-102%)",
         transition: "transform 550ms cubic-bezier(0.25, 1, 0.5, 1)",

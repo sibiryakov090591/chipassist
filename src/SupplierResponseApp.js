@@ -130,7 +130,7 @@ const SupplierResponseApp = () => {
   }
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>
         <SupplierLayout>
           <Routes location={location}>
