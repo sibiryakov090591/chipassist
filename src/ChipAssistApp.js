@@ -243,7 +243,7 @@ const ChipAssistApp = () => {
   }
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>
         <HomePage>
           <Routes location={location}>

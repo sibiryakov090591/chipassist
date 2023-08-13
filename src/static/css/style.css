@@ -954,13 +954,6 @@ a.btn:hover {
   border-color: #dc3545;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
-}
-
 .main-catalog-types .catalog-item {
   min-height: 0;
   background-color: #fff;

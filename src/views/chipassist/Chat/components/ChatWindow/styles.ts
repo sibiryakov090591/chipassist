@@ -13,6 +13,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         flexGrow: 1,
       },
       [theme.breakpoints.up("lg")]: {
+        "&.chatListActive": {
+          paddingLeft: "25vw",
+        },
         "&.detailsActive": {
           paddingRight: "25vw",
         },
