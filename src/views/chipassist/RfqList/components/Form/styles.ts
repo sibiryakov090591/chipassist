@@ -62,8 +62,21 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
 
   addButton: {
-    backgroundColor: "#0c7489",
-    color: "white",
+    color: theme.palette.white,
+    backgroundColor: theme.palette.app.blue700,
+    "&.Mui-disabled": {
+      color: theme.palette.app.grey300,
+      backgroundColor: theme.palette.app.grey200,
+    },
+    "&:hover": {
+      backgroundColor: "rgba(0, 129, 167, 0.8)", // blue700
+    },
+    "&:active": {
+      backgroundColor: theme.palette.app.blue700,
+    },
+    "&:focus": {
+      backgroundColor: theme.palette.app.blue700,
+    },
   },
 
   submitButtonContainer: {

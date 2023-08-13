@@ -12,6 +12,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     flexDirection: "column",
     alignItems: "center",
     width: "70%",
+    overflowX: "hidden",
     [theme.breakpoints.down("md")]: {
       padding: 0,
       marginBottom: 0,

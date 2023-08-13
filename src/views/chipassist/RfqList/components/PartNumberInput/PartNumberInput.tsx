@@ -87,7 +87,7 @@ const PartNumberInput: React.FC<Props> = ({
             disabled={disabled}
             variant={"outlined"}
             name={"MPN"}
-            label={"Part Number *"}
+            label={"Part number *"}
             placeholder={"ex. KNP100"}
             size="small"
             fullWidth
