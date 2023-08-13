@@ -8,7 +8,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     page: {
       width: "100vw",
       height: "100%",
-      bottom: 0,
       zIndex: 1,
       [theme.breakpoints.up("md")]: {
         paddingRight: `${scrollbarWidth}px`,
