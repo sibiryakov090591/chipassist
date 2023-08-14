@@ -9,6 +9,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -45,11 +46,13 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   }, [selectedChat]);
 
   return (
-    <div
+    <SwipeWrapper
       className={clsx(classes.middleColumn, {
         detailsActive: showDetails,
         chatListActive: showList,
       })}
+      leftSwipeAction={onShowDetailsHandler}
+      rightSwipeAction={onShowChatListHandler}
     >
       <Box display="flex" flexDirection="column">
         <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
@@ -72,7 +75,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
 
         <Messages />
       </Box>
-    </div>
+    </SwipeWrapper>
   );
 };
 

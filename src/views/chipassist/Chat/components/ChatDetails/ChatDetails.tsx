@@ -5,6 +5,7 @@ import clsx from "clsx";
 // import Status from "@src/views/chipassist/Chat/components/Status/Status";
 import { formatMoney } from "@src/utils/formatters";
 import useAppSelector from "@src/hooks/useAppSelector";
+import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -21,7 +22,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
   return (
-    <div className={clsx(classes.rightColumn, { active: showDetails })}>
+    <SwipeWrapper rightSwipeAction={onCloseDetails} className={clsx(classes.rightColumn, { active: showDetails })}>
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         <h2>Details</h2>
         <CloseIcon className={classes.closeIcon} onClick={onCloseDetails} />
@@ -49,7 +50,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
           </Box>
         </div>
       </div>
-    </div>
+    </SwipeWrapper>
   );
 };
 

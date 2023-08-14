@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
+import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -54,8 +55,12 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
     }
   };
 
+  const leftSwipeAction = () => {
+    if (selectedChat?.id) onShowList(false);
+  };
+
   return (
-    <div className={clsx(classes.leftColumn, { active: showList })}>
+    <SwipeWrapper leftSwipeAction={leftSwipeAction} className={clsx(classes.leftColumn, { active: showList })}>
       <div className={classes.header}>
         <Filters />
       </div>
@@ -138,7 +143,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
           })}
         </InfiniteScroll>
       </div>
-    </div>
+    </SwipeWrapper>
   );
 };
 
