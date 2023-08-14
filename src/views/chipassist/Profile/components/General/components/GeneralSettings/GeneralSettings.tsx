@@ -74,7 +74,7 @@ const GeneralSettings = () => {
   const { t } = useI18n("profile");
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const profile = useAppSelector((state) => state.profile);
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo, showUpdateSuccess } = profile;
@@ -322,7 +322,12 @@ const GeneralSettings = () => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <PhoneInputWrapper value={phoneValue} onChange={onChangePhoneHandler} small={isXsDown} />
+              <PhoneInputWrapper
+                value={phoneValue}
+                onChange={onChangePhoneHandler}
+                small={isXsDown}
+                style={isSmDown && !isXsDown ? { height: "53.63px" } : null}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField

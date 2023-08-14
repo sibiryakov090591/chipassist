@@ -1006,7 +1006,10 @@ export const RFQListForm = () => {
           </Container>
         </section>
       )}
-      <section className={clsx(classes.section, classes.mobileSendButton)}>
+      <section
+        className={clsx(classes.section, classes.mobileSendButton)}
+        style={isAuthenticated ? { backgroundColor: "transparent" } : null}
+      >
         <Box className={classes.submitButtonContainer}>
           <Button
             variant={"contained"}
