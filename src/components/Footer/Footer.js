@@ -8,6 +8,9 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 
+import clsx from "clsx";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import { useStyles } from "./footerStyles";
 
 const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
@@ -26,7 +29,11 @@ const Footer = () => {
     build = "any";
   }
 
+  const theme = useTheme();
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <div className={classes.root}>
@@ -38,113 +45,161 @@ const Footer = () => {
                 <a href="/">
                   <img alt="Logo" className={classes.logoImg} src={logo} />
                 </a>
+                {isDownSm && (
+                  <Box className={clsx(classes.navGroup)} style={{ marginTop: "12px" }}>
+                    <a className={classes.navLink} style={{ fontWeight: "normal" }} href="mailto:info@chipassist.com">
+                      info@chipassist.com
+                    </a>
+                    <a className={classes.navLink} style={{ fontWeight: "normal" }} href="tel:+41797137881">
+                      +41 79 713 7881
+                    </a>
+                  </Box>
+                )}
                 <div className={classes.copy}>Copyright © {new Date().toISOString().slice(0, 4)} ChipAssist AG</div>
               </Box>
               <Box display="flex" className={classes.nav}>
                 <Box display="flex" flexWrap="wrap">
-                  <Box className={classes.navGroup}>
-                    <p style={{ fontSize: 13, color: "#d8d5df", fontWeight: "bold" }}>Follow us</p>
-                    <Grid container direction={"row"} spacing={1} wrap={"nowrap"}>
-                      <Grid item>
-                        <a
-                          href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
-                          title="Chipassist on Instagram"
-                          target={"_blank"}
-                          rel={"noreferrer"}
-                          className={classes.navLink}
-                        >
-                          <InstagramIcon className={classes.socialIcon} />
-                        </a>
+                  <Box className={clsx(classes.navGroup, classes.contactClass)}>
+                    <Box display={"flex"} flexDirection={"column"} style={{ marginBottom: isDownSm ? "2rem" : 0 }}>
+                      <p className={classes.titleClass}>Follow us</p>
+                      <Grid container direction={"row"} spacing={1} wrap={"nowrap"}>
+                        <Grid item>
+                          <a
+                            href="https://instagram.com/chipassistcom?igshid=NTc4MTIwNjQ2YQ=="
+                            title="Chipassist on Instagram"
+                            target={"_blank"}
+                            rel={"noreferrer"}
+                            className={classes.navLink}
+                          >
+                            <InstagramIcon className={classes.socialIcon} />
+                          </a>
+                        </Grid>
+                        <Grid item>
+                          <a
+                            href="https://www.facebook.com/ChipAssist/"
+                            title="Chipassist on Facebook"
+                            target={"_blank"}
+                            rel={"noreferrer"}
+                            className={classes.navLink}
+                          >
+                            <FacebookIcon className={classes.socialIcon} />
+                          </a>
+                        </Grid>
+                        <Grid item>
+                          <a
+                            href="https://www.linkedin.com/company/54117339"
+                            title="Chipassist on LinkedIn"
+                            target={"_blank"}
+                            rel={"noreferrer"}
+                            className={classes.navLink}
+                          >
+                            <LinkedInIcon className={classes.socialIcon} />
+                          </a>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <a
-                          href="https://www.facebook.com/ChipAssist/"
-                          title="Chipassist on Facebook"
-                          target={"_blank"}
-                          rel={"noreferrer"}
-                          className={classes.navLink}
-                        >
-                          <FacebookIcon className={classes.socialIcon} />
-                        </a>
-                      </Grid>
-                      <Grid item>
-                        <a
-                          href="https://www.linkedin.com/company/54117339"
-                          title="Chipassist on LinkedIn"
-                          target={"_blank"}
-                          rel={"noreferrer"}
-                          className={classes.navLink}
-                        >
-                          <LinkedInIcon className={classes.socialIcon} />
-                        </a>
-                      </Grid>
-                    </Grid>
+                    </Box>
                   </Box>
                 </Box>
-                {isSupplierResponse && (
-                  <Box className={classes.navGroup}>
-                    <NavLink className={classes.navLink} to={"/supplier-response"}>
-                      Requests
-                    </NavLink>
-                    <NavLink className={classes.navLink} to={"/statistics"}>
-                      Statistics
-                    </NavLink>
-                    <NavLink className={classes.navLink} to={"/messages"}>
-                      Messages
-                    </NavLink>
-                    <NavLink className={classes.navLink} to={"/help"}>
-                      Help
-                    </NavLink>
-                  </Box>
-                )}
-                {!isSupplierResponse && (
+                <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
+                  {isSupplierResponse && (
+                    <Box className={classes.navGroup}>
+                      <NavLink className={classes.navLink} to={"/supplier-response"}>
+                        Requests
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/statistics"}>
+                        Statistics
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/messages"}>
+                        Messages
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/help"}>
+                        Help
+                      </NavLink>
+                    </Box>
+                  )}
+                  {!isSupplierResponse && (
+                    <Box display="flex" flexWrap="wrap">
+                      {isDownXs ? (
+                        <>
+                          <Box className={classes.navGroup}>
+                            <NavLink className={classes.navLink} to={"/about_company"}>
+                              About us
+                            </NavLink>
+                            <NavLink className={classes.navLink} to={"/parts"}>
+                              Products
+                            </NavLink>
+                            <Hidden smDown>
+                              <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                                BOM Tool
+                              </NavLink>
+                            </Hidden>
+                            <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                              RFQ List
+                            </NavLink>
+                            <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
+                              Sell on ChipAssist
+                            </NavLink>
+                            <NavLink className={classes.navLink} to={"/pcb"}>
+                              Request PCB
+                            </NavLink>
+                          </Box>
+                        </>
+                      ) : (
+                        <>
+                          <Box className={classes.navGroup}>
+                            <NavLink className={classes.navLink} to={"/about_company"}>
+                              About us
+                            </NavLink>
+                            <NavLink className={classes.navLink} to={"/parts"}>
+                              Products
+                            </NavLink>
+                            <Hidden smDown>
+                              <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                                BOM Tool
+                              </NavLink>
+                            </Hidden>
+                          </Box>
+                          <Box className={classes.navGroup}>
+                            <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                              RFQ List
+                            </NavLink>
+                            <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
+                              Sell on ChipAssist
+                            </NavLink>
+                            <NavLink className={classes.navLink} to={"/pcb"}>
+                              Request PCB
+                            </NavLink>
+                          </Box>
+                        </>
+                      )}
+                    </Box>
+                  )}
                   <Box display="flex" flexWrap="wrap">
                     <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLink} to={"/about_company"}>
-                        About us
+                      <NavLink className={classes.navLink} to={"/terms_of_services"}>
+                        Terms & Conditions
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/parts"}>
-                        Products
+                      <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                        Privacy Policy
                       </NavLink>
-                      <Hidden smDown>
-                        <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                          BOM Tool
-                        </NavLink>
-                      </Hidden>
-                    </Box>
-                    <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
-                        Sell on ChipAssist
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={"/pcb"}>
-                        Request PCB
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={`/blog`}>
-                        Blog
-                      </NavLink>
+                      {!isSupplierResponse && (
+                        <>
+                          <NavLink className={classes.navLink} to={`/blog`}>
+                            Blog
+                          </NavLink>
+                          <NavLink className={classes.navLink} to={"/FAQ"}>
+                            FAQ
+                          </NavLink>
+                        </>
+                      )}
                     </Box>
                   </Box>
-                )}
-                <Box display="flex" flexWrap="wrap">
-                  <Box className={classes.navGroup}>
-                    <NavLink className={classes.navLink} to={"/terms_of_services"}>
-                      Terms & Conditions
-                    </NavLink>
-                    <NavLink className={classes.navLink} to={"/privacy_policy"}>
-                      Privacy Policy
-                    </NavLink>
-                    {!isSupplierResponse && (
-                      <>
-                        <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
-                          RFQ List
-                        </NavLink>
-                        <NavLink className={classes.navLink} to={"/FAQ"}>
-                          FAQ
-                        </NavLink>
-                      </>
-                    )}
-                  </Box>
-                  <Box className={classes.navGroup}>
+                </Box>
+                {!isDownSm && (
+                  <Box className={clsx(classes.navGroup, classes.contactInfoBox)}>
+                    <p className={classes.titleClass} style={{ marginBottom: "3px" }}>
+                      Contact us:{" "}
+                    </p>
                     <a className={classes.navLink} href="mailto:info@chipassist.com">
                       info@chipassist.com
                     </a>
@@ -152,7 +207,7 @@ const Footer = () => {
                       +41 79 713 7881
                     </a>
                   </Box>
-                </Box>
+                )}
               </Box>
             </Box>
             <div className={classes.commit}>

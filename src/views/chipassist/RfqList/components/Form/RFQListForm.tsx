@@ -5,6 +5,7 @@ import {
   Checkbox,
   CircularProgress,
   Container,
+  Divider,
   FormControlLabel,
   FormHelperText,
   InputAdornment,
@@ -41,6 +42,7 @@ import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapp
 import { NumberInput } from "@src/components/Inputs";
 import PartNumberInput from "@src/views/chipassist/RfqList/components/PartNumberInput/PartNumberInput";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import saveNewState from "@src/store/rfqList/rfqListActions";
 import { useStyles } from "./styles";
 
 interface RegInterface {
@@ -175,8 +177,10 @@ export const RFQListForm = () => {
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
+  const rfqListReduxState = useAppSelector((state) => state.rfqList.formState);
   // const currencyField = useAppSelector((state) => state.currency);
   const [formState, setFormState] = useState<FormState>(defaultState());
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [rfqListState, setRfqListState] = useState<RfqListFormState>(defaultRfqListState());
   const debouncedState = useDebounce(formState, 300);
   const debouncedRfqState = useDebounce(rfqListState, 300);
@@ -190,12 +194,12 @@ export const RFQListForm = () => {
 
   const addButtonClickHandler = () => {
     const newRfq: RfqItem = {
-      MPN: "",
       index: rfqListState.values.length,
+      isDisabled: true,
+      MPN: "",
       manufacturer: "",
       quantity: "",
       price: "",
-      isDisabled: true,
     };
     const lastRfq = rfqListState.values[rfqListState.values.length - 1];
 
@@ -205,6 +209,12 @@ export const RFQListForm = () => {
     setRfqListState((prevState) => ({ ...prevState, values: [...prevState.values, newRfq] }));
     return 0;
   };
+
+  useEffect(() => {
+    setRfqListState((prevState) => ({ ...prevState, values: rfqListReduxState.values }));
+    setPrevFilledInputIndex(rfqListReduxState.lastFilledIndex);
+    setNeedToChange((prevState) => !prevState);
+  }, []);
 
   useLayoutEffect(() => {
     if (isDownMd) {
@@ -309,7 +319,13 @@ export const RFQListForm = () => {
   }, [debouncedRfqState.values]);
 
   useEffect(() => {
-    if (rfqListState.values) {
+    if (!isFirstRender && prevFilledInputIndex >= 0) {
+      dispatch(saveNewState({ form: rfqListState, lastFilledIndex: prevFilledInputIndex }));
+    }
+  }, [prevFilledInputIndex, debouncedRfqState.values]);
+
+  useEffect(() => {
+    if (rfqListState.values && !isFirstRender) {
       const lastFilledIndex = findLastIndex(
         rfqListState.values,
         (element) => element.MPN !== "" && element.quantity !== "",
@@ -368,6 +384,8 @@ export const RFQListForm = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isFirstRender) setIsFirstRender(false);
+
     const { value, name, type, checked } = e.target;
 
     const errors = { ...formState.errors };
@@ -399,6 +417,8 @@ export const RFQListForm = () => {
   };
 
   const handleRfqListChange = (e: any, index: number) => {
+    if (isFirstRender) setIsFirstRender(false);
+
     const { value, name } = e.target;
     const errors = [...rfqListState.errors];
 
@@ -452,7 +472,7 @@ export const RFQListForm = () => {
         part_number: rfq.MPN,
         manufacturer: rfq.manufacturer,
         quantity: rfq.quantity,
-        price: rfq.price,
+        price: rfq.price !== "" ? rfq.price : 0,
       }));
   };
 
@@ -622,7 +642,9 @@ export const RFQListForm = () => {
                   onChange={(event) => handleRfqListChange(event, key)}
                   disabled={elem.isDisabled}
                   errorHandler={{ ...(!elem.isDisabled ? { ...rfqErrorProps("MPN", key) } : false) }}
-                  blurHandler={onRfqBlurHandler("MPN", key)}
+                  blurHandler={() => {
+                    return false;
+                  }}
                 />
 
                 {/* <TextField */}
@@ -689,7 +711,7 @@ export const RFQListForm = () => {
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"price"}
-                      label={"Target Price"}
+                      label={"Target price"}
                       placeholder={"ex. 200"}
                       size="small"
                       InputLabelProps={{
@@ -738,7 +760,7 @@ export const RFQListForm = () => {
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"price"}
-                      label={"Target Price"}
+                      label={"Target price"}
                       placeholder={"ex. 200"}
                       size="small"
                       InputLabelProps={{
@@ -756,16 +778,26 @@ export const RFQListForm = () => {
                     />
                   </Box>
                 )}
-                {key !== rfqListState.values.length - 1 && <hr className={classes.hrStyle} />}
+                {key !== rfqListState.values.length - 1 && <Divider className={classes.hrStyle} />}
               </Box>
             ))}
-            {rfqListState.values.length !== maxRfqRows && (
-              <div style={isDownMd ? { display: "flex", justifyContent: "center", width: "100%" } : null}>
-                <Button variant={"contained"} className={classes.addButton} onClick={addButtonClickHandler}>
-                  {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
-                </Button>
-              </div>
-            )}
+            <div
+              style={
+                isDownMd
+                  ? { display: "flex", justifyContent: "center", width: "100%" }
+                  : { display: "flex", justifyContent: "space-between", width: "100%" }
+              }
+            >
+              <Button
+                variant={"contained"}
+                className={classes.addButton}
+                onClick={addButtonClickHandler}
+                disabled={rfqListState.values.length === maxRfqRows}
+              >
+                {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
+              </Button>
+              {!isDownMd && <span>{`${rfqListState.values.length}/${maxRfqRows}`}</span>}
+            </div>
           </Box>
         </Container>
       </section>
