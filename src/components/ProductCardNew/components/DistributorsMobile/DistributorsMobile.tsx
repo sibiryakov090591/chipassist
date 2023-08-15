@@ -1,22 +1,12 @@
 import React from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Tooltip,
-  Button,
-  Box,
-  Collapse,
-} from "@material-ui/core";
+import { Tooltip, Button, Box, Collapse } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
-import { Stockrecord } from "@src/store/products/productTypes";
-import { getDynamicMoq, getPrice, getQtyPrice } from "@src/utils/product";
-import Price from "@src/components/Price/Price";
+import { Product, Stockrecord } from "@src/store/products/productTypes";
+import { getDynamicMoq, getPrice } from "@src/utils/product";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -26,11 +16,12 @@ import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
+  product: Product;
   sortedStockrecords: Stockrecord[];
   sellerMessageOpenModal: (sellerId: number, sellerName: string) => () => void;
 }
 
-const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal }) => {
+const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal, product }) => {
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
 
   const { t } = useI18n("product");
@@ -47,7 +38,9 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
   };
 
   // const datacodeAttribute = product.attributes?.find((v) => v.code === "datecode" || v.name === "Date Code");
-  const showDC = true;
+  const packageAttribute = product?.attributes?.find(
+    (v) => (v.name === "Case/Package" && !!v.value) || v.name === "Packaging",
+  );
 
   const visitSellerHandler = (seller: Seller, url: string) => () => {
     dispatch(
@@ -74,10 +67,10 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
           {sortedStockrecords &&
             sortedStockrecords.map((val, index) => {
               const dynamicMoq = getDynamicMoq(val);
-              const qtyPrice = getQtyPrice(1, val);
               const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
               const isShowProductLink = !!val.product_url || !!seller;
               const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1];
+              const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
 
               return (
@@ -93,7 +86,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                     <td className={classes.tdPrice}>
                       {(getPrice(1, val, false) &&
                         `${formatMoney(currencyPrice(getPrice(1, val, false), val.price_currency))} ${
-                          currency?.code
+                          currency?.symbol
                         }`) ||
                         t("distributor.price_by_request")}
                     </td>
@@ -105,7 +98,95 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                   <tr>
                     <td colSpan={4}>
                       <Collapse in={!!expanded[val.id]}>
-                        <div className={classes.details}>test</div>
+                        <div className={classes.details}>
+                          <Box p="5px 10px" display="flex" flexWrap="wrap" justifyContent="space-between">
+                            <div>
+                              <div className={classes.detailsLabel}>{t("distributor.moq")}</div>
+                              <div>{formatMoney(dynamicMoq, 0, ".", "`") || "-"}</div>
+                            </div>
+                            <div>
+                              <div className={classes.detailsLabel}>{t("distributor.mpq")}</div>
+                              <div>{val.mpq || "-"}</div>
+                            </div>
+                            <div>
+                              <div className={classes.detailsLabel}>DC</div>
+                              <div>
+                                {dateCode ? (
+                                  dateCode.length > 10 ? (
+                                    <Tooltip
+                                      enterTouchDelay={1}
+                                      classes={{ tooltip: commonClasses.tooltip }}
+                                      title={<div>{dateCode}</div>}
+                                    >
+                                      <span>{`${dateCode.slice(0, 10)}...`}</span>
+                                    </Tooltip>
+                                  ) : (
+                                    dateCode
+                                  )
+                                ) : (
+                                  "-"
+                                )}
+                              </div>
+                            </div>
+                            <div>
+                              <div className={classes.detailsLabel}>Package</div>
+                              <div>{packageAttribute?.value || "-"}</div>
+                            </div>
+                            <div className={classes.buttonColumn}>
+                              {isShowProductLink ? (
+                                <a
+                                  href={val.product_url || seller.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={visitSellerHandler(
+                                    { id: val.partner, name: val.partner_name },
+                                    val.product_url || seller.url,
+                                  )}
+                                >
+                                  <Button
+                                    variant="contained"
+                                    className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                                    size="small"
+                                  >
+                                    Visit site
+                                  </Button>
+                                </a>
+                              ) : (
+                                <Button
+                                  variant="contained"
+                                  className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                                  onClick={sellerMessageOpenModal(val.partner, val.partner_name)}
+                                  size="small"
+                                >
+                                  Contact seller
+                                </Button>
+                              )}
+                            </div>
+                          </Box>
+                          {!!sortedPrices.length && (
+                            <Box p="5px 10px">
+                              <div className={classes.detailsLabel}>Price breaks</div>
+                              <table className={classes.table}>
+                                <tbody>
+                                  {sortedPrices.map((price) => {
+                                    if (!price.price || !price.amount) return null;
+                                    return (
+                                      <tr key={price.id} className={classes.detailsPriceRow}>
+                                        <td className={classes.detailsAmount}>
+                                          {formatMoney(price.amount, 0, ".", "`")}
+                                        </td>
+                                        <td className={classes.detailsCurrency}>{currency?.symbol}</td>
+                                        <td className={classes.detailsPrice}>
+                                          {formatMoney(currencyPrice(price.price, val.price_currency))}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </Box>
+                          )}
+                        </div>
                       </Collapse>
                     </td>
                   </tr>

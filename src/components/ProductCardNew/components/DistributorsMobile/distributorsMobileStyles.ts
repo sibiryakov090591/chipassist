@@ -14,14 +14,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "& th": {
         fontSize: "0.9rem",
         fontWeight: "bold",
-        padding: "2px 8px",
+        padding: "2px 10px",
         textAlign: "start",
       },
     },
     tableRow: {
       height: "38px",
       "& td": {
-        padding: "2px 8px",
+        padding: "2px 10px",
       },
       "&.odd": {
         backgroundColor: "#fafafa",
@@ -60,6 +60,40 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     details: {
       backgroundColor: "#f8f4e3",
       width: "100%",
+      borderBottom: "1px solid #ddd",
+    },
+    detailsLabel: {
+      marginBottom: 2,
+      fontSize: "0.8rem",
+      fontWeight: "bold",
+    },
+    buttonColumn: {
+      display: "flex",
+      alignItems: "center",
+      paddingRight: 10,
+    },
+    contactSellerButton: {
+      textTransform: "none",
+      fontWeight: "bold",
+      whiteSpace: "nowrap",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
+    },
+    detailsPriceRow: {
+      borderTop: "1px solid #ddd",
+      "& > td": {
+        padding: "3px 0",
+      },
+    },
+    detailsAmount: {
+      width: "40%",
+    },
+    detailsCurrency: {
+      width: "50px",
+    },
+    detailsPrice: {
+      width: "45%",
     },
 
     checkIconWrapper: {
@@ -189,15 +223,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     addToBomIcon: {
       fontSize: "16px",
       marginRight: "3px",
-    },
-    contactSellerButton: {
-      minWidth: 230,
-      textTransform: "none",
-      fontWeight: "bold",
-      whiteSpace: "nowrap",
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
     },
   }),
 );
