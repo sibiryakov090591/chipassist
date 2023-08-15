@@ -269,7 +269,7 @@ const ProductCardNew = (props) => {
         [classes.productCardElfaro]: viewType === ID_ELFARO,
       })}
     >
-      <div className={classes.row} style={{ paddingTop: 21 }}>
+      <div className={classes.row}>
         <Box display="flex" justifyContent="space-between">
           <div className={classes.imageColumn}>
             <Link
@@ -332,12 +332,6 @@ const ProductCardNew = (props) => {
           </Box>
         </Hidden>
       </div>
-      <Hidden smUp>
-        <div className={classes.mobileActions}>
-          {requestButton()}
-          {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
-        </div>
-      </Hidden>
       {!!availableStockrecords.length && (
         <div style={{ position: "relative" }}>
           <Hidden smDown>
@@ -350,12 +344,20 @@ const ProductCardNew = (props) => {
           </Hidden>
           <Hidden mdUp>
             <DistributorsMobile
+              product={product}
               sortedStockrecords={availableStockrecords}
               sellerMessageOpenModal={sellerMessageOpenModal}
             />
           </Hidden>
         </div>
       )}
+
+      <Hidden smUp>
+        <div className={classes.mobileActions}>
+          {requestButton()}
+          {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
+        </div>
+      </Hidden>
 
       {!availableStockrecords.length && (
         <>
