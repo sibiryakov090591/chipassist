@@ -25,6 +25,8 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import useAppTheme from "@src/theme/useAppTheme";
 import Preloader from "@src/components/Preloader/Preloader";
 import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
+import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
+import { onChangePartner } from "@src/store/profile/profileActions";
 import FileViewer from "./FileViewer/FileViewer";
 import { useStyles } from "./adapterUploadStyles";
 import Page from "../../../components/Page";
@@ -83,6 +85,17 @@ const columnIndexes = {
 };
 
 const AdapterUpload = () => {
+  const classes = useStyles();
+  const requestsClasses = useRequestsStyles();
+  const appTheme = useAppTheme();
+  const dispatch = useDispatch();
+  const { t } = useI18n("adapter");
+
+  const upload = useAppSelector((state) => state.adapter.upload);
+  const settings = useAppSelector((state) => state.adapter.settings);
+  const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
+  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
+
   const [miscCreated, setMiscCreated] = useState(false);
   const [misc, setMisc] = useState(null);
   const [file, setFile] = useState(null);
@@ -98,15 +111,6 @@ const AdapterUpload = () => {
   });
   const [startingRow, setStartingRow] = useState(1);
   const [storageFileName, setStorageFileName] = useState(null);
-
-  const upload = useAppSelector((state) => state.adapter.upload);
-  const settings = useAppSelector((state) => state.adapter.settings);
-
-  const classes = useStyles();
-  const requestsClasses = useRequestsStyles();
-  const appTheme = useAppTheme();
-  const dispatch = useDispatch();
-  const { t } = useI18n("adapter");
 
   useEffect(() => {
     dispatch(loadFileSettings());
@@ -193,7 +197,14 @@ const AdapterUpload = () => {
 
   const onUpload = () => {
     dispatch(
-      uploadFileThunk(file, selectedSheet, { ...fields, ...columnsIndexes }, startingRow - 1, false, fullexport),
+      uploadFileThunk(
+        file,
+        selectedSheet,
+        { ...fields, ...columnsIndexes, supplier: `${selectedPartner.id}` },
+        startingRow - 1,
+        false,
+        fullexport,
+      ),
     );
   };
 
@@ -238,12 +249,28 @@ const AdapterUpload = () => {
     setStartingRow(row);
   };
 
+  const onChangePartnerHandler = (id) => {
+    const partner = partners?.find((p) => p.id === id);
+    if (partner) {
+      dispatch(onChangePartner(partner));
+    }
+  };
+
   return (
     <Page style={{ padding: "2em 0" }} title={"File upload"} description={"Uploading suppliers file"}>
       <Container maxWidth={"xl"}>
-        <h1 style={{ marginBottom: 12 }} className={requestsClasses.title}>
-          Data file upload
-        </h1>
+        <Box display="flex" flexDirection="column" alignItems="flex-start">
+          <h1 style={{ marginBottom: 12 }} className={requestsClasses.title}>
+            Data file upload
+          </h1>
+          {selectedPartner && (
+            <SupplierSelect
+              selectedPartner={selectedPartner}
+              partners={partners}
+              onChangePartner={onChangePartnerHandler}
+            />
+          )}
+        </Box>
         {!settings && <Preloader title={""} />}
         {settings && (
           <>
@@ -335,7 +362,7 @@ const AdapterUpload = () => {
                 />
               </>
             )}
-            {!file && (
+            {!file && selectedPartner && (
               <Box>
                 <Dropzone
                   accept=".csv, text/csv, application/vnd.ms-excel, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
