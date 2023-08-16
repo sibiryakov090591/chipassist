@@ -60,7 +60,6 @@ const PartNumberInput: React.FC<Props> = ({
   };
 
   const onFieldChange = (e: any) => {
-    e.target.value = e.target.value.toUpperCase();
     onChange(e);
   };
 
