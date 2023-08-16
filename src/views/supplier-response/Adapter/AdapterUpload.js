@@ -91,6 +91,7 @@ const AdapterUpload = () => {
   const dispatch = useDispatch();
   const { t } = useI18n("adapter");
 
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const upload = useAppSelector((state) => state.adapter.upload);
   const settings = useAppSelector((state) => state.adapter.settings);
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
@@ -263,6 +264,11 @@ const AdapterUpload = () => {
           <h1 style={{ marginBottom: 12 }} className={requestsClasses.title}>
             Data file upload
           </h1>
+          {isAuthenticated && !partners?.length && (
+            <Box p="60px 0" style={{ textAlign: "center", fontWeight: "bold" }}>
+              You can&apos;t upload files as you are not a supplier
+            </Box>
+          )}
           {selectedPartner && (
             <SupplierSelect
               selectedPartner={selectedPartner}
