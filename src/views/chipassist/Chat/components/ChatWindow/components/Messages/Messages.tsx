@@ -221,7 +221,7 @@ const Messages: React.FC = () => {
   };
 
   return (
-    <div className={classes.container}>
+    <div id="chat-messages" className={classes.container}>
       {!Object.keys(messages.results).length && (
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
           {messages.isLoading ? (

@@ -56,7 +56,13 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   };
 
   const leftSwipeAction = () => {
-    if (selectedChat?.id) onShowList(false);
+    if (selectedChat?.id) {
+      if (isXsDown) {
+        const messagesElem = document.getElementById("chat-messages");
+        if (messagesElem) messagesElem.style.display = "inherit";
+      }
+      onShowList(false);
+    }
   };
 
   return (
