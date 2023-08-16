@@ -11,6 +11,7 @@ import {
   Box,
   TableSortLabel,
   CircularProgress,
+  Tooltip,
 } from "@material-ui/core";
 // import FilterNoneIcon from "@material-ui/icons/FilterNone";
 // import CreateIcon from "@material-ui/icons/Create";
@@ -485,11 +486,17 @@ const BomList: React.FC = () => {
                         )}
                         <TableCell className="col-id">{item.id}</TableCell>
                         <TableCell className={classes.name}>
-                          <Link to={`/bom/${item.id}`} className={appTheme.hyperlink}>
-                            <div className={classes.bomName}>
-                              {item.name.length < 30 ? item.name : `${item.name.slice(0, 30)}...`}
-                            </div>
-                          </Link>
+                          {item.name.length < 30 ? (
+                            <Link to={`/bom/${item.id}`} className={appTheme.hyperlink}>
+                              <div className={classes.bomName}>{item.name}</div>
+                            </Link>
+                          ) : (
+                            <Tooltip title={item.name}>
+                              <Link to={`/bom/${item.id}`} className={appTheme.hyperlink}>
+                                <div className={classes.bomName}>{`${item.name.slice(0, 30)}...`}</div>
+                              </Link>
+                            </Tooltip>
+                          )}
                         </TableCell>
                         <TableCell className={classes.status}>
                           <span className={classes.statusValue}>
