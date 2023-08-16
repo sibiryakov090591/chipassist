@@ -486,7 +486,9 @@ const BomList: React.FC = () => {
                         <TableCell className="col-id">{item.id}</TableCell>
                         <TableCell className={classes.name}>
                           <Link to={`/bom/${item.id}`} className={appTheme.hyperlink}>
-                            <div className={classes.bomName}>{item.name}</div>
+                            <div className={classes.bomName}>
+                              {item.name.length < 30 ? item.name : `${item.name.slice(0, 30)}...`}
+                            </div>
                           </Link>
                         </TableCell>
                         <TableCell className={classes.status}>
