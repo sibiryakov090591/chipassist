@@ -21,8 +21,14 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
+  const onCloseHandler = () => {
+    const messagesElem = document.getElementById("chat-messages");
+    if (messagesElem) messagesElem.style.display = "inherit";
+    onCloseDetails();
+  };
+
   return (
-    <SwipeWrapper rightSwipeAction={onCloseDetails} className={clsx(classes.rightColumn, { active: showDetails })}>
+    <SwipeWrapper rightSwipeAction={onCloseHandler} className={clsx(classes.rightColumn, { active: showDetails })}>
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         <h2>Details</h2>
         <CloseIcon className={classes.closeIcon} onClick={onCloseDetails} />
