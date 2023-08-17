@@ -16,16 +16,24 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     textAlign: "center",
     flexDirection: "column",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       flexDirection: "row",
     },
   },
   contactData: {
     marginTop: 12,
     wordBreak: "break-word",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 0,
+      marginLeft: 12,
+      textAlign: "start",
+    },
   },
   name: {
-    marginTop: theme.spacing(1),
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 20,
+      marginBottom: 2,
+    },
   },
   email: {
     color: theme.palette.app.blue800,
@@ -36,9 +44,9 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     cursor: "pointer",
     height: 100,
     width: 100,
-    [theme.breakpoints.down("sm")]: {
-      height: 70,
-      width: 70,
+    [theme.breakpoints.down("xs")]: {
+      height: 55,
+      width: 55,
     },
   },
   removeBotton: {
