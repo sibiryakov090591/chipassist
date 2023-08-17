@@ -277,7 +277,14 @@ const ChipAssistApp = () => {
                 </Suspense>
               }
             />
-            <Route path="/messages" element={<ChatPage />} />
+            <Route
+              path="/messages"
+              element={
+                <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
+                  <ChatPage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/parts/*"
               element={
