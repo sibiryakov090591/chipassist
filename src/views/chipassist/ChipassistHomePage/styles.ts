@@ -242,7 +242,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       color: "#7cafdf",
-      fontWeight: 400,
       fontSize: 15,
       borderBottom: "1px solid #7cafdf",
     },
