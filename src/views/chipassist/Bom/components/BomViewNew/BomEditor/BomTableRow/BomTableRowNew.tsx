@@ -53,7 +53,7 @@ const BomTableRow: React.FC<Props> = ({
   };
 
   const toggleApproved = (row: Row) => () => {
-    if (row.part_number.split(" ").length === 1 && !row.errors) toggleRfqApproved();
+    if (!row.errors) toggleRfqApproved();
   };
 
   return (

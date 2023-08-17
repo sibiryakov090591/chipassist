@@ -175,9 +175,10 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                                         <td className={classes.detailsAmount}>
                                           {formatMoney(price.amount, 0, ".", "`")}
                                         </td>
-                                        <td className={classes.detailsCurrency}>{currency?.symbol}</td>
                                         <td className={classes.detailsPrice}>
-                                          {formatMoney(currencyPrice(price.price, val.price_currency))}
+                                          {`${currency?.symbol} ${formatMoney(
+                                            currencyPrice(price.price, val.price_currency),
+                                          )}`}
                                         </td>
                                       </tr>
                                     );

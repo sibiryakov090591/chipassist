@@ -48,6 +48,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   hero: {
     background: "radial-gradient(circle at top left, #372859 20%, #1d1530 50%)",
     padding: "20px 0 40px",
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 2,
+    },
   },
   heroMenu: {
     display: "flex",
@@ -145,6 +148,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       lineHeight: "3.3rem",
       textAlign: "center",
     },
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: 355,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
   },
   heroSubTitle: {
     maxWidth: 440,
@@ -169,6 +177,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       width: "90%",
+      marginTop: 12,
     },
   },
   searchInput: {
@@ -210,17 +219,31 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   tryP: {
     color: "#7cafdf",
-    fontSize: "13px",
-    paddingTop: "5px",
+    fontSize: 13,
+    paddingTop: 5,
     marginLeft: 16,
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: 14,
+      marginLeft: 0,
+      textAlign: "center",
+      color: theme.palette.white,
+      fontSize: 15,
+    },
   },
   trySpan: {
     color: theme.palette.white,
     fontWeight: 700,
-    paddingLeft: "7px",
-    "&:hover": {
-      cursor: "pointer",
-      textDecoration: "underline",
+    marginLeft: "7px",
+    [theme.breakpoints.up("md")]: {
+      "&:hover": {
+        cursor: "pointer",
+        textDecoration: "underline",
+      },
+    },
+    [theme.breakpoints.down("sm")]: {
+      color: "#7cafdf",
+      fontSize: 15,
+      borderBottom: "1px solid #7cafdf",
     },
   },
   title: {
@@ -244,6 +267,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginTop: 96,
     [theme.breakpoints.down("sm")]: {
       marginTop: 68,
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 48,
     },
   },
   countsTitle: {
@@ -269,6 +295,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: 0,
     },
   },
   count: {

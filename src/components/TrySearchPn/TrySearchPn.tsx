@@ -9,6 +9,8 @@ import { Box } from "@material-ui/core";
 import { onTryClickAction, saveSearchQueryAction, setQueryValue } from "@src/store/search/searchActions";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface Props {
   textClassName: string;
@@ -25,6 +27,8 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
   const { t } = useI18n("menu");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
@@ -47,7 +51,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
   return (
     <Box visibility={!checkIsAuthenticated() && constants.closedRegistration ? "hidden" : "visible"}>
       <p className={textClassName}>
-        {t("try_search")}
+        {isSmDown ? t("try_search_mobile") : t("try_search")}
         <span onClick={onTryHandler} className={pnClassName}>
           {randomPartNumber}
         </span>
