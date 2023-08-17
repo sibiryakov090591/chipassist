@@ -419,6 +419,7 @@ export const RFQListForm = () => {
   const handleRfqListChange = (e: any, index: number) => {
     if (isFirstRender) setIsFirstRender(false);
 
+    if (e.target.name === "MPN") e.target.value = e.target.value.toUpperCase();
     const { value, name } = e.target;
     const errors = [...rfqListState.errors];
 
