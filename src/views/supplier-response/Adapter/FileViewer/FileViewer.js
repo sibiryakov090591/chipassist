@@ -8,7 +8,6 @@ import { Tabs, Tab } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import CustomSelect from "@src/components/Select/Select";
 import Alert from "@material-ui/lab/Alert";
-import useAppSelector from "@src/hooks/useAppSelector";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import clsx from "clsx";
 import { useStyles } from "./fileViewerStyles";
@@ -38,7 +37,7 @@ const FileViewer = ({
   // const [isHeader, setIsHeader] = useState(true);
   const [thereIsHeaders, setThereIsHeaders] = useState(false);
   const [timer, setTimer] = useState(null);
-  const partners = useAppSelector((state) => state.profile?.profileInfo?.partners || []);
+  // const partners = useAppSelector((state) => state.profile?.profileInfo?.partners || []);
   const dispatch = useDispatch();
   const classes = useStyles();
   const { t } = useI18n("adapter");
@@ -236,21 +235,21 @@ const FileViewer = ({
       <h2 style={{ fontSize: 20, marginBottom: 25 }}>Choose columns</h2>
       <div>
         <div className={`${classes.selectors} test-file-columns`}>
-          <div>
-            <CustomSelect
-              id="supplier"
-              placeholder={t("file.choose_supplier")}
-              value={fields.supplier}
-              label={
-                <>
-                  {t("column.supplier")} <span style={{ color: red[500] }}>*</span>
-                </>
-              }
-              options={partners.map((val) => ({ title: val.name, value: val.id }))}
-              onChange={onFieldChange("supplier")}
-              onClear={onFieldClear("supplier")}
-            />
-          </div>
+          {/* <div> */}
+          {/*  <CustomSelect */}
+          {/*    id="supplier" */}
+          {/*    placeholder={t("file.choose_supplier")} */}
+          {/*    value={fields.supplier} */}
+          {/*    label={ */}
+          {/*      <> */}
+          {/*        {t("column.supplier")} <span style={{ color: red[500] }}>*</span> */}
+          {/*      </> */}
+          {/*    } */}
+          {/*    options={partners.map((val) => ({ title: val.name, value: val.id }))} */}
+          {/*    onChange={onFieldChange("supplier")} */}
+          {/*    onClear={onFieldClear("supplier")} */}
+          {/*  /> */}
+          {/* </div> */}
           {/* <div>
               <Typography variant="caption" display="block" gutterBottom>
                 {t("column.partner_name")}

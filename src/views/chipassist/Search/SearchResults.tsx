@@ -319,11 +319,13 @@ const SearchResults = () => {
                           <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
                         )}
                         <FilterCurrency />
-                        <FilterPageSizeChoiceBar
-                          storageKey={`searchShowBy`}
-                          action={onChangePageSize}
-                          disable={isLoadingSearchResultsInProgress}
-                        />
+                        {!isSmDown && (
+                          <FilterPageSizeChoiceBar
+                            storageKey={`searchShowBy`}
+                            action={onChangePageSize}
+                            disable={isLoadingSearchResultsInProgress}
+                          />
+                        )}
                         {/* <FilterOrderByBar */}
                         {/*  value={orderBy} */}
                         {/*  onChange={onOrderChange} */}

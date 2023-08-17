@@ -23,15 +23,28 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const classes = useStyles();
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(800));
 
   const { selectedChat } = useAppSelector((state) => state.chat);
 
   const onShowChatListHandler = () => {
     onShowList(!showList);
+    if (isXsDown) {
+      setTimeout(() => {
+        const messagesElem = document.getElementById("chat-messages");
+        if (messagesElem) messagesElem.style.display = "none";
+      }, 350);
+    }
   };
 
   const onShowDetailsHandler = () => {
     onShowDetails(!showDetails);
+    if (isXsDown) {
+      setTimeout(() => {
+        const messagesElem = document.getElementById("chat-messages");
+        if (messagesElem) messagesElem.style.display = "none";
+      }, 350);
+    }
   };
 
   const name = React.useMemo(() => {
