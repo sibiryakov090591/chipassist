@@ -42,6 +42,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     tdPrice: {
       width: "25%",
+      whiteSpace: "nowrap",
     },
     tdStock: {
       width: "25%",
