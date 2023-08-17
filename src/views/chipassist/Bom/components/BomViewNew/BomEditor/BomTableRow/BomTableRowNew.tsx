@@ -44,6 +44,7 @@ const BomTableRow: React.FC<Props> = ({
         qtyChangeHandler(e, rowKey);
         break;
       case "part_number":
+        e.target.value = e.target.value.toUpperCase();
         partNumberChangeHandler(e, rowKey);
         break;
       default:
