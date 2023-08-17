@@ -541,7 +541,7 @@ const ChipAssistApp = () => {
           </Routes>
         </HomePage>
         {/* <FeedbackButton /> */}
-        <ScrollUpButton />
+        {window.location.pathname !== "/messages" && <ScrollUpButton />}
         <RFQModal />
         <SellerMessageModal />
         <ProgressModal />
