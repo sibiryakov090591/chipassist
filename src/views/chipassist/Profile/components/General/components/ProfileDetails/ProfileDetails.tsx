@@ -14,8 +14,15 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   content: {
     display: "flex",
     alignItems: "center",
+    textAlign: "center",
     flexDirection: "column",
-    textAlgin: "center",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "row",
+    },
+  },
+  contactData: {
+    marginTop: 12,
+    wordBreak: "break-word",
   },
   name: {
     marginTop: theme.spacing(1),
@@ -29,6 +36,10 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     cursor: "pointer",
     height: 100,
     width: 100,
+    [theme.breakpoints.down("sm")]: {
+      height: 70,
+      width: 70,
+    },
   },
   removeBotton: {
     width: "100%",
@@ -62,21 +73,23 @@ const ProfileDetails = () => {
           <input {...getInputProps()} />
           <Avatar className={classes.avatar} src={profileInfo.avatar} />
         </div>
-        <Typography className={classes.name} gutterBottom variant="h3">
-          {profileInfo.firstName} {profileInfo.lastName}
-        </Typography>
-        <Typography className={classes.email} gutterBottom>
-          {profileInfo.email}
-        </Typography>
+        <div className={classes.contactData}>
+          <Typography className={classes.name} gutterBottom variant="h3">
+            {profileInfo.firstName} {profileInfo.lastName}
+          </Typography>
+          <Typography className={classes.email} gutterBottom>
+            {profileInfo.email}
+          </Typography>
+        </div>
       </CardContent>
 
-      <CardActions>
-        {profileInfo && profileInfo.avatar && (
+      {profileInfo && profileInfo.avatar && (
+        <CardActions>
           <Button className={classes.removeBotton} variant="text" disabled={isRemovingAvatar} onClick={handleRemove}>
             {isRemovingAvatar ? t("removing") : t("remove_pic")}
           </Button>
-        )}
-      </CardActions>
+        </CardActions>
+      )}
     </Card>
   );
 };
