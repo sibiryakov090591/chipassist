@@ -353,7 +353,11 @@ const BomEditor: React.FC<Props> = (props) => {
               <Checkbox
                 className={classes.headerCheckbox}
                 onChange={onApproveAllItems}
-                checked={!rows.some((item) => !item.errors && !item.approved)}
+                checked={
+                  !rows
+                    .filter((item) => item.part_number && item.quantity)
+                    .some((item) => !item.errors && !item.approved)
+                }
                 name="approved"
                 disabled={disabledCheckbox}
               />
