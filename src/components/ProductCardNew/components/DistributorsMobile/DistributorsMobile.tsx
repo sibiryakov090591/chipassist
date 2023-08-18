@@ -5,7 +5,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
-import { Product, Stockrecord } from "@src/store/products/productTypes";
+import { Stockrecord } from "@src/store/products/productTypes";
 import { getDynamicMoq, getPrice } from "@src/utils/product";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
@@ -16,12 +16,11 @@ import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
-  product: Product;
   sortedStockrecords: Stockrecord[];
   sellerMessageOpenModal: (sellerId: number, sellerName: string) => () => void;
 }
 
-const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal, product }) => {
+const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal }) => {
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
 
   const { t } = useI18n("product");
@@ -36,11 +35,6 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
   const handleChange = (id: number) => () => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-
-  // const datacodeAttribute = product.attributes?.find((v) => v.code === "datecode" || v.name === "Date Code");
-  const packageAttribute = product?.attributes?.find(
-    (v) => (v.name === "Case/Package" && !!v.value) || v.name === "Packaging",
-  );
 
   const visitSellerHandler = (seller: Seller, url: string) => () => {
     dispatch(
@@ -130,7 +124,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             </div>
                             <div>
                               <div className={classes.detailsLabel}>Package</div>
-                              <div>{packageAttribute?.value || "-"}</div>
+                              <div>{val.packaging || "-"}</div>
                             </div>
                             <div className={classes.buttonColumn}>
                               {isShowProductLink ? (
