@@ -8,12 +8,23 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import constants from "@src/constants/constants";
 import { ID_MASTER } from "@src/constants/server_constants";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
+import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
+import useAppSelector from "@src/hooks/useAppSelector";
+import { logout } from "@src/store/authentication/authActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   const itemClasses = [classes.topMenuItem, isMobile ? classes.topMenuItemMobile : ""].join(" ");
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
@@ -52,6 +63,14 @@ const TopMenu = ({ isMobile }) => {
           Help
         </NavLink>
       </div>
+      {isMobile && isAuthenticated && (
+        <div className={itemClasses}>
+          <div className={`${classes.topMenuItemLink} top-menu-logout`} onClick={logoutHandler}>
+            <ExitToAppOutlinedIcon className={`${classes.topMenuItemIcon}`} />
+            Logout
+          </div>
+        </div>
+      )}
     </div>
   );
 };
