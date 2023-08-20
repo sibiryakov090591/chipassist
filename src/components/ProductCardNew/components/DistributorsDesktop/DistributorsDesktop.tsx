@@ -73,10 +73,6 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const { sellersWithProductLink } = useAppSelector((state) => state.products);
-  const packageAttribute = product.attributes?.find(
-    (v) => (v.name === "Case/Package" && !!v.value) || v.name === "Packaging",
-  );
-  // const productDateCode = product.attributes?.find((v) => v.code === "datecode" || v.name === "Date Code");
 
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
@@ -445,9 +441,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                   <span>{formatMoney(MOQ, 0, ".", "`")}</span>
                 </td>
                 <td className={`${classes.trMpq} product-card-mpq`}>{val.mpq}</td>
-                <td className={`${!showDC ? classes.trPkg : classes.trPkgWithoutBorder}`}>
-                  {packageAttribute?.value || "-"}
-                </td>
+                <td className={`${!showDC ? classes.trPkg : classes.trPkgWithoutBorder}`}>{val.packaging || "-"}</td>
                 {showDC && (
                   <td className={`${classes.trPkg}`}>
                     {dateCode ? (

@@ -192,7 +192,7 @@ export const ChipassistHomePage = () => {
                   ) : (
                     <>
                       <h1 className={classes.heroTitle}>
-                        Request any partnumber <span className={classes.blueColor}>in few clicks</span>
+                        Request any part number <span className={classes.blueColor}>in few clicks</span>
                       </h1>
                       <h2 className={classes.heroSubTitle}>
                         Shop across distributors, manufacturers, and parts. Compare pricing and monitor inventory.
