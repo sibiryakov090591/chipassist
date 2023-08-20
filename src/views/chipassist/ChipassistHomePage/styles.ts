@@ -149,7 +149,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       textAlign: "center",
     },
     [theme.breakpoints.down("xs")]: {
-      maxWidth: 355,
+      maxWidth: 400,
       marginLeft: "auto",
       marginRight: "auto",
     },
