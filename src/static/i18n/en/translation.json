@@ -1327,7 +1327,7 @@
     },
     "after_request": {
       "title": "Set your password",
-      "description": "Protect your account with the password and get the following:",
+      "description": "Protect your account with a password and get the following:",
       "li_1": "Keep track of your requests and orders",
       "li_2": "Send requests without entering additional details",
       "li_3": "Request quotes for Printed Boards (PCBs)",
