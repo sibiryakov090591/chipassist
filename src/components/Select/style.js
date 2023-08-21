@@ -5,6 +5,7 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     width: "100%",
+    maxWidth: 200,
     "& > div": {
       width: "100%",
     },

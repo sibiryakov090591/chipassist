@@ -1,4 +1,5 @@
 import React from "react";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 interface Props {
   leftSwipeAction?: any;
@@ -9,6 +10,9 @@ interface Props {
 const SwipeWrapper: React.FC<Props> = ({ children, leftSwipeAction, rightSwipeAction, ...rest }) => {
   const touchStart = React.useRef(0);
   const touchEnd = React.useRef(0);
+
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   // the required distance between touchStart and touchEnd to be detected as a swipe
   const minSwipeDistance = 50;
@@ -32,7 +36,12 @@ const SwipeWrapper: React.FC<Props> = ({ children, leftSwipeAction, rightSwipeAc
     if (isRightSwipe && rightSwipeAction) rightSwipeAction();
   };
   return (
-    <div onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} {...rest}>
+    <div
+      onTouchStart={isSmDown && onTouchStart}
+      onTouchMove={isSmDown && onTouchMove}
+      onTouchEnd={isSmDown && onTouchEnd}
+      {...rest}
+    >
       {children}
     </div>
   );
