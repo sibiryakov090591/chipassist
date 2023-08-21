@@ -14,11 +14,25 @@ interface Props {
   onClear?: any;
   size?: any;
   className?: any;
+  style?: any;
+  disabled?: boolean;
   error?: string;
   label?: string | JSX.Element;
 }
 
-const Select: React.FC<Props> = ({ options, placeholder, value, onChange, onClear, size, className, error, label }) => {
+const Select: React.FC<Props> = ({
+  options,
+  placeholder,
+  value,
+  onChange,
+  onClear,
+  size,
+  className,
+  disabled,
+  style,
+  error,
+  label,
+}) => {
   const classes = useStyles();
 
   const onChangeHandler = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
@@ -26,8 +40,8 @@ const Select: React.FC<Props> = ({ options, placeholder, value, onChange, onClea
   };
 
   return (
-    <div className={`${classes.selectWrap} ${className || ""}`}>
-      <FormControl variant="outlined" size="small">
+    <div style={style} className={`${classes.selectWrap} ${className || ""}`}>
+      <FormControl disabled={disabled} variant="outlined" size="small">
         {!!label && <InputLabel htmlFor="outlined-age-native-simple">{label}</InputLabel>}
         <MaterialSelect
           className={clsx(classes.select, {
@@ -59,7 +73,7 @@ const Select: React.FC<Props> = ({ options, placeholder, value, onChange, onClea
         </MaterialSelect>
       </FormControl>
       {!!value && onClear && (
-        <button className={classes.clearBtn} onClick={onClear} title="Clear">
+        <button disabled={disabled} className={classes.clearBtn} onClick={onClear} title="Clear">
           <BackspaceOutlinedIcon className={classes.clearBtnIc} />
         </button>
       )}
