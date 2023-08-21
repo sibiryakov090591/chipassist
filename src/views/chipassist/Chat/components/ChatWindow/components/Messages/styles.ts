@@ -158,6 +158,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: 14,
       color: "#384054",
     },
+    chatImage: {
+      maxWidth: "90px",
+    },
+    emptyText: {
+      marginTop: 12,
+      fontWeight: 400,
+      maxWidth: 365,
+      textAlign: "center",
+    },
   }),
 );
 

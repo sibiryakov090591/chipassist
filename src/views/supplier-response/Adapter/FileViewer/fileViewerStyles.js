@@ -87,12 +87,50 @@ export const useStyles = makeStyles((theme) => ({
   },
   selectors: {
     display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gridGap: 24,
-    maxWidth: 800,
+    gridTemplateColumns: "1fr 1fr 1fr 1.8fr",
+    gridGap: 8,
+    maxWidth: 1000,
     margin: "10px 0 15px",
     [theme.breakpoints.down("sm")]: {
       gridTemplateColumns: "repeat(2, 1fr)",
+    },
+  },
+  field: {
+    padding: 10,
+  },
+  priceField: {
+    backgroundColor: "#f4f5f7",
+    borderRadius: 6,
+    padding: 10,
+    // width: "max-content",
+  },
+  priceButton: {
+    whiteSpace: "nowrap",
+    paddingRight: "8px !important",
+    textTransform: "none",
+  },
+  priceArrow: {
+    marginLeft: 6,
+    "&.active": {
+      transform: "rotate(180deg)",
+    },
+  },
+  fileUploadIc: {
+    marginRight: 5,
+    fontSize: 16,
+  },
+  fileUploadError: {
+    marginRight: 5,
+    fontSize: 14,
+  },
+  fileRemove: {
+    marginLeft: 12,
+    fontSize: 26,
+    color: theme.palette.app.red400,
+    cursor: "pointer",
+    transition: "all 0.2s",
+    "&:hover": {
+      color: theme.palette.app.red500,
     },
   },
   startingRowInfo: {

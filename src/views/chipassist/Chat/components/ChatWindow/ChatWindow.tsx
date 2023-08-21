@@ -28,7 +28,8 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const { selectedChat } = useAppSelector((state) => state.chat);
 
   const onShowChatListHandler = () => {
-    onShowList(!showList);
+    if (isMdDown) onShowDetails(false);
+    onShowList(true);
     if (isXsDown) {
       setTimeout(() => {
         const messagesElem = document.getElementById("chat-messages");
@@ -38,7 +39,8 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   };
 
   const onShowDetailsHandler = () => {
-    onShowDetails(!showDetails);
+    onShowDetails(true);
+    if (isMdDown) onShowList(false);
     if (isXsDown) {
       setTimeout(() => {
         const messagesElem = document.getElementById("chat-messages");
