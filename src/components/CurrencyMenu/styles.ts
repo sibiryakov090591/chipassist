@@ -18,6 +18,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: 14,
       fontWeight: 600,
       color: "#555555",
+      border: "1px solid rgba(0,0,0,0.15)",
       paddingTop: "3px",
       paddingBottom: "1px",
       paddingRight: "2px",

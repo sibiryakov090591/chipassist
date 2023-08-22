@@ -44,7 +44,7 @@ const defaults = {
   isPossibleCardPay: false,
   CART_ITEM_PERIOD_OF_RELEVANCE: 72, // hours
   isNewSearchPage: false,
-  activateCorporateEmailValidation: true,
+  activateCorporateEmailValidation: false,
   bannedEmailServices: ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "qq.com"], // for activateCorporateEmailValidation: true
 };
 module.exports = defaults;

@@ -33,8 +33,8 @@ const Article: React.FC = () => {
   const isDisabledNext = isLoading || !selected || !selected.next || selected.next.title === selected.title;
   const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.title === selected.title;
 
-  const previousLink = selected && `/blog/${selected.previous.slug}`;
-  const nextLink = selected && `/blog/${selected.next.slug}`;
+  const previousLink = selected?.previous && `/blog/${selected.previous.slug}`;
+  const nextLink = selected?.next && `/blog/${selected.next.slug}`;
 
   return (
     <Page title="Article" description={`${selected?.intro}`}>
@@ -42,12 +42,12 @@ const Article: React.FC = () => {
         <div className={classes.content}>
           <div className={classes.wrapper}>
             {isLoading && <Preloader title="Article is loading..." />}
-            {!isLoading && !selected && (
+            {!isLoading && !selected?.id && (
               <Box display="flex" justifyContent="center" p="32px 0">
                 <h5>The article does not exist</h5>
               </Box>
             )}
-            {!isLoading && selected && (
+            {!isLoading && !!selected?.id && (
               <>
                 <h1 className={classes.title}>{selected.title}</h1>
                 <p className={classes.paragraph} dangerouslySetInnerHTML={{ __html: selected.body }} />
@@ -58,21 +58,25 @@ const Article: React.FC = () => {
             )}
           </div>
           <Box className={classes.pagination}>
-            <Link
-              className={clsx(classes.paginationLink, { disabled: isDisabledPrevious })}
-              to={!isDisabledPrevious && previousLink}
-            >
-              {selected?.previous?.title}
-            </Link>
+            {!!selected?.previous?.title && (
+              <Link
+                className={clsx(classes.paginationLink, { disabled: isDisabledPrevious })}
+                to={!isDisabledPrevious && previousLink}
+              >
+                {selected.previous.title}
+              </Link>
+            )}
             <Link className={classes.paginationLink} to={`/blog`}>
               Return to blog
             </Link>
-            <Link
-              className={clsx(classes.paginationLink, { disabled: isDisabledNext })}
-              to={!isDisabledNext && nextLink}
-            >
-              {selected?.next?.title}
-            </Link>
+            {!!selected?.next?.title && (
+              <Link
+                className={clsx(classes.paginationLink, { disabled: isDisabledNext })}
+                to={!isDisabledNext && nextLink}
+              >
+                {selected.next.title}
+              </Link>
+            )}
           </Box>
         </div>
         {!isSmDown && !!list.results.length && (

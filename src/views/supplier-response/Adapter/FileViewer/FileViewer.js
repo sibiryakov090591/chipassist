@@ -299,7 +299,9 @@ const FileViewer = ({
                   onChange={onColumnSelect("price_col")}
                   onClear={onColumnSelectClear("price_col")}
                 />
-                <CurrencyMenu setCurrencyHandler={onFieldChange("currency")} selected={fields.currency} />
+                <Box display="flex" justifyContent="center" style={{ flexGrow: 1 }}>
+                  <CurrencyMenu setCurrencyHandler={onFieldChange("currency")} selected={fields.currency} />
+                </Box>
               </Box>
             </div>
 
@@ -342,7 +344,7 @@ const FileViewer = ({
                 onChange={onColumnSelect("desc_col")}
                 onClear={onColumnSelectClear("desc_col")}
               />
-              <div>
+              <Box display="flex" justifyContent="center" style={{ flexGrow: 1 }}>
                 <Button
                   variant="contained"
                   className={clsx(appTheme.buttonCreate, classes.priceButton)}
@@ -351,7 +353,7 @@ const FileViewer = ({
                   Price breaks
                   <KeyboardArrowDownIcon className={clsx(classes.priceArrow, { active: isShowPriceBreaks })} />
                 </Button>
-              </div>
+              </Box>
             </Box>
             <div />
             {/* <div> */}
@@ -457,14 +459,14 @@ const FileViewer = ({
         </div>
 
         <div>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" justifyContent="flex-end">
             {!!upload.error && (
               <Alert severity="error">
                 <span className={classes.fileUploadError}>{upload.error}</span>
               </Alert>
             )}
             <Button
-              style={{ marginLeft: 12, minWidth: 100 }}
+              style={{ marginLeft: 12, minWidth: 150 }}
               variant="contained"
               className={appTheme.buttonCreate}
               onClick={onUpload}
@@ -472,8 +474,8 @@ const FileViewer = ({
               <PublishIcon className={classes.fileUploadIc} /> {t("upload.upload")}
             </Button>
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="flex-end" mt="8px">
-            {file.name}
+          <Box display="flex" alignItems="center" justifyContent="flex-end" mt="8px" ml="8px">
+            <span style={{ wordBreak: "break-word" }}>{file.name}</span>
             <HighlightOffIcon className={classes.fileRemove} onClick={onFileRemove} />
           </Box>
         </div>
