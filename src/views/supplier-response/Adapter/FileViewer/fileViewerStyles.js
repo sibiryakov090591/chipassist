@@ -87,7 +87,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   selectors: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1.8fr",
+    gridTemplateColumns: "1fr 1fr 1fr 1.7fr",
     gridGap: 8,
     maxWidth: 1000,
     margin: "10px 0 15px",
