@@ -55,7 +55,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         ) : (
           <h2>Details</h2>
         )}
-        <CloseIcon className={classes.closeIcon} onClick={onCloseDetails} />
+        <CloseIcon className={classes.closeIcon} onClick={onCloseHandler} />
       </Box>
 
       <div className={classes.details}>
