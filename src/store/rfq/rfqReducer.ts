@@ -19,6 +19,7 @@ const initialState: RfqState = {
     open: false,
     isNeedModalOpenAgain: false,
     partNumber: "",
+    stockrecordId: null,
     sellerId: null,
     sellerName: null,
     isSending: false,
@@ -124,6 +125,7 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
           partNumber: action.payload.partNumber,
           sellerId: action.payload.sellerId,
           sellerName: action.payload.sellerName,
+          stockrecordId: action.payload.stockrecordId,
         },
       };
     case actionTypes.SELLER_MESSAGE_MODAL_OPEN_AGAIN_AFTER_LOGIN:

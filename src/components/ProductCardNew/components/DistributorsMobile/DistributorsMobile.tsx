@@ -17,7 +17,7 @@ import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
   sortedStockrecords: Stockrecord[];
-  sellerMessageOpenModal: (sellerId: number, sellerName: string) => () => void;
+  sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
 }
 
 const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal }) => {
@@ -149,7 +149,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                                 <Button
                                   variant="contained"
                                   className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                                  onClick={sellerMessageOpenModal(val.partner, val.partner_name)}
+                                  onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
                                   size="small"
                                 >
                                   Contact seller

@@ -11,6 +11,8 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -32,6 +34,7 @@ const MessageInput: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
@@ -140,6 +143,11 @@ const MessageInput: React.FC<Props> = ({
   return (
     <div className={classes.root}>
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
+      {isSupplierResponse && (
+        <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
+          Please send your response directly to the customer:
+        </div>
+      )}
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
         <Hidden mdUp>

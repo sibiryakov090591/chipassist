@@ -39,12 +39,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         marginBottom: 4,
       },
     },
+    text: {
+      color: "#456",
+      fontSize: 14,
+    },
     closeIcon: {
       cursor: "pointer",
     },
     details: {
       overflowY: "auto",
-      padding: 20,
+      padding: 10,
       "&::-webkit-scrollbar": {
         width: "6px",
       },
@@ -71,6 +75,37 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       [theme.breakpoints.down("md")]: {
         flexDirection: "column",
         gap: "16px",
+      },
+    },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      "& > div": {
+        padding: 5,
+      },
+    },
+    label: {
+      fontWeight: "bold",
+      marginBottom: 2,
+      color: "#456",
+    },
+    updateButton: {
+      width: "100%",
+      textTransform: "none",
+      fontSize: "1.1rem",
+    },
+    priceButton: {
+      width: "100%",
+      textTransform: "none",
+      fontSize: "1.1rem",
+      "& .MuiButton-label": {
+        justifyContent: "space-between",
+      },
+    },
+    priceArrow: {
+      marginLeft: 6,
+      "&.active": {
+        transform: "rotate(180deg)",
       },
     },
   }),

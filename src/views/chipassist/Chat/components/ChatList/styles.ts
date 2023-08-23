@@ -75,11 +75,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: 14,
       overflow: "hidden",
     },
-    sellerName: {
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
     unreadCount: {
       marginLeft: 4,
       padding: "0 5px",
@@ -99,7 +94,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       lineHeight: "12px",
       fontSize: 12,
     },
-    message: {
+    ellipsisText: {
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -107,6 +102,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     info: {
       fontSize: 12,
       color: "#737373",
+      "& > *": {
+        whiteSpace: "nowrap",
+      },
     },
   }),
 );
