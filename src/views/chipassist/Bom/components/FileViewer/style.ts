@@ -89,7 +89,7 @@ export const useStyles = makeStyles(() => ({
   },
   selectors: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
     gridGap: 20,
     maxWidth: 800,
     margin: "10px 0 15px",
