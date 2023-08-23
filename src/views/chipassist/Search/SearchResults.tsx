@@ -89,7 +89,7 @@ const SearchResults = () => {
   const totalPages = useAppSelector((state) => state.search.totalPages);
   const rfqItem = useAppSelector((state) => state.rfq.rfqItem);
   const isNeedRfqModalOpenAgain = useAppSelector((state) => state.rfq.isNeedRfqModalOpenAgain);
-  const { isNeedModalOpenAgain, sellerId, sellerName, partNumber } = useAppSelector(
+  const { isNeedModalOpenAgain, sellerId, sellerName, partNumber, stockrecordId } = useAppSelector(
     (state) => state.rfq.sellerMessageModal,
   );
   // const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -152,7 +152,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     if (isNeedModalOpenAgain) {
-      dispatch(setSellerMessageData(true, partNumber, sellerId, sellerName));
+      dispatch(setSellerMessageData(true, partNumber, sellerId, sellerName, stockrecordId));
     }
   }, [isNeedModalOpenAgain]);
 

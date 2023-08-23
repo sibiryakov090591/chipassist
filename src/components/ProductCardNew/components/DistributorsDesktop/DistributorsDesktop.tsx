@@ -25,7 +25,7 @@ interface Props {
   product: Product;
   sortedStockrecords: SortedStockrecord[];
   rfqOpenModal: () => void;
-  sellerMessageOpenModal: (sellerId: number, sellerName: string) => () => void;
+  sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
 }
 
 interface SortedStockrecord extends Stockrecord {
@@ -582,7 +582,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                       variant="contained"
                       size="small"
                       className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                      onClick={sellerMessageOpenModal(val.partner, val.partner_name)}
+                      onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
                     >
                       Contact seller
                     </Button>
