@@ -6,14 +6,16 @@ import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
 import useAppSelector from "@src/hooks/useAppSelector";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
-import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+// import constants from "@src/constants/constants";
+// import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles as useChatWindowStyles } from "@src/views/chipassist/Chat/components/ChatWindow/styles";
 import { NumberInput } from "@src/components/Inputs";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { MenuItem, Select, FormControl } from "@material-ui/core";
+import { Currency } from "@src/store/currency/currencyTypes";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -25,14 +27,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const chatWindowClasses = useChatWindowStyles();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = false; // constants.id === ID_SUPPLIER_RESPONSE;
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+  const currencyList = useAppSelector((state) => state.currency.currencyList);
 
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
   const [isShowPrices, setIsShowPrices] = React.useState(false);
+  const [currency, setCurrency] = React.useState<Currency>({
+    symbol: "$",
+    code: "USD",
+  });
+  const [priceBreaks, setPriceBreaks] = React.useState<{ qty: number; price: number }[]>([{ qty: 1, price: null }]);
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -42,6 +50,14 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
   const onShowPrices = () => {
     setIsShowPrices((prev) => !prev);
+  };
+
+  const handleCurrencyChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setCurrency(currencyList.find((curr) => curr.code === event.target.value));
+  };
+
+  const createPriceBreak = () => {
+    setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
   };
 
   return (
@@ -67,12 +83,24 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <NumberInput name="quantity" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
               </div>
               <div>
-                <div className={classes.label}>Unit price ($): USD</div>
-                <NumberInput name="price" variant="outlined" size="small" decimalScale={4} isAllowedZero={false} />
+                <div className={classes.label}>Currency:</div>
+                <FormControl variant="outlined" size="small" fullWidth>
+                  <Select value={currency.code} onChange={handleCurrencyChange}>
+                    {currencyList.map((val) => {
+                      return (
+                        <MenuItem className={appTheme.selectMenuItem} key={val.code} value={val.code}>
+                          <div>
+                            {val.symbol} {val.code}
+                          </div>
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
               </div>
               <div>
-                <div className={classes.label}>Date code (DC):</div>
-                <TextField name="datecode" variant="outlined" size="small" />
+                <div className={classes.label}>Packaging:</div>
+                <TextField name="packaging" variant="outlined" size="small" />
               </div>
               <div>
                 <div className={classes.label}>MOQ:</div>
@@ -99,22 +127,39 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             </Box>
             {isShowPrices && (
               <div className={classes.grid}>
-                <div>
-                  <div className={classes.label}>Quantity break #1:</div>
-                  <NumberInput name="amount_1" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
-                </div>
-                <div>
-                  <div className={classes.label}>Unit price ($):</div>
-                  <NumberInput name="price_1" variant="outlined" size="small" decimalScale={4} isAllowedZero={false} />
-                </div>
-                <div>
-                  <div className={classes.label}>Quantity break #2:</div>
-                  <NumberInput name="amount_2" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
-                </div>
-                <div>
-                  <div className={classes.label}>Unit price ($):</div>
-                  <NumberInput name="price_2" variant="outlined" size="small" decimalScale={4} isAllowedZero={false} />
-                </div>
+                {priceBreaks.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <div>
+                        <div className={classes.label}>Quantity break #{index + 1}:</div>
+                        <NumberInput
+                          name="amount_1"
+                          variant="outlined"
+                          size="small"
+                          decimalScale={0}
+                          isAllowedZero={false}
+                        />
+                      </div>
+                      <div>
+                        <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                        <NumberInput
+                          name="price_1"
+                          variant="outlined"
+                          size="small"
+                          decimalScale={4}
+                          isAllowedZero={false}
+                        />
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+                <span
+                  style={{ padding: "2px 5px", width: "max-content" }}
+                  className={appTheme.hyperlink}
+                  onClick={createPriceBreak}
+                >
+                  Add more
+                </span>
               </div>
             )}
             <Box p="5px" mt="3px">
