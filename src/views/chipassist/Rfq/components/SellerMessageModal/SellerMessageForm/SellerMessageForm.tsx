@@ -102,7 +102,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   const dispatch = useAppDispatch();
   const { t } = useI18n("rfq");
 
-  const { open, partNumber, sellerId, sellerName, isSending } = useAppSelector((state) => state.rfq.sellerMessageModal);
+  const { open, partNumber, sellerId, sellerName, stockrecordId, isSending } = useAppSelector(
+    (state) => state.rfq.sellerMessageModal,
+  );
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const countries = useAppSelector((state) => state.checkout.countries);
@@ -288,6 +290,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
 
     const data = {
       part_number: partNumber,
+      stockrecord: stockrecordId,
       quantity: formState.values.quantity,
       price: formState.values.price,
       currency: currency.code,

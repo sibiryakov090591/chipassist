@@ -24,11 +24,12 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
   const isXsDown = useMediaQuery(theme.breakpoints.down(800));
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);
 
   const onShowChatListHandler = () => {
-    if (isMdDown) onShowDetails(false);
+    if (isMdDown && !isXsDown) onShowDetails(false);
     onShowList(true);
     if (isXsDown) {
       setTimeout(() => {
@@ -40,7 +41,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
 
   const onShowDetailsHandler = () => {
     onShowDetails(true);
-    if (isMdDown) onShowList(false);
+    if (isMdDown && !isXsDown) onShowList(false);
     if (isXsDown) {
       setTimeout(() => {
         const messagesElem = document.getElementById("chat-messages");
@@ -50,7 +51,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   };
 
   const name = React.useMemo(() => {
-    return constants.id === ID_SUPPLIER_RESPONSE
+    return isSupplierResponse
       ? selectedChat?.partner &&
           Object.entries(selectedChat.partner).reduce((acc, item) => {
             const [key, value] = item;
@@ -78,8 +79,14 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               </Box>
             )}
             <div>
-              <h2 className={classes.upc}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
-              <div className={classes.seller}>{name}</div>
+              <h2 className={classes.title}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
+              {isSupplierResponse && selectedChat ? (
+                <div className={classes.customer}>
+                  Customer: <span>{name}</span>
+                </div>
+              ) : (
+                <div className={classes.seller}>{name}</div>
+              )}
             </div>
           </div>
           <MoreVertIcon
