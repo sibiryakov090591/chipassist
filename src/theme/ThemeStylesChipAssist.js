@@ -247,6 +247,12 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       backgroundColor: theme.palette.tableHeader,
       color: "white",
       fontWeight: "bold",
+      "& .MuiTableSortLabel-active": {
+        color: `${theme.palette.app.blue200} !important`,
+        "& svg": {
+          color: `${theme.palette.app.blue200} !important`,
+        },
+      },
     },
   },
   tableRow: {
