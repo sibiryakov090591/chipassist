@@ -326,6 +326,11 @@ const AdapterUpload = () => {
             {/* )} */}
             {file !== null && (
               <>
+                {!!upload.error && (
+                  <Alert severity="error">
+                    <span className={classes.fileUploadError}>{upload.error}</span>
+                  </Alert>
+                )}
                 {!!upload.fileErrors?.length && (
                   <Alert severity="error" style={{ marginTop: 15 }}>
                     <ul className={classes.fileErrorsList}>

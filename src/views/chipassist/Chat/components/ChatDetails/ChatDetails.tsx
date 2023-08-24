@@ -27,7 +27,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const chatWindowClasses = useChatWindowStyles();
-  const isSupplierResponse = false; // constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = true; // constants.id === ID_SUPPLIER_RESPONSE;
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const currencyList = useAppSelector((state) => state.currency.currencyList);
