@@ -100,18 +100,6 @@ export const checkFileState = (fileId: number) => {
     dispatch(checkFileStateThunk(fileId))
       .then((response: any) => {
         switch (response.status) {
-          case "ERROR": {
-            const fileErrors = response.errors;
-            dispatch(
-              setUploadState({
-                uploading: false,
-                fileErrors: fileErrors || null,
-                error: fileErrors ? "" : t("error_file_upload_backend"),
-                selected: false,
-              }),
-            );
-            break;
-          }
           case "PROCESSING": {
             setTimeout(() => dispatch(checkFileState(fileId)), 1000);
             break;
@@ -138,8 +126,17 @@ export const checkFileState = (fileId: number) => {
             }
             break;
           }
-          default:
-            throw new Error("Unexpected file upload status");
+          default: {
+            const fileErrors = response.errors;
+            dispatch(
+              setUploadState({
+                uploading: false,
+                fileErrors: fileErrors || null,
+                error: fileErrors ? "" : t("error_file_upload_backend"),
+                selected: false,
+              }),
+            );
+          }
         }
       })
       .catch(() => {

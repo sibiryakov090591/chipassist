@@ -12,7 +12,6 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import clsx from "clsx";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import PublishIcon from "@material-ui/icons/Publish";
-import useAppSelector from "@src/hooks/useAppSelector";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import CurrencyMenu from "@src/components/CurrencyMenu/CurrencyMenu";
@@ -39,7 +38,6 @@ const FileViewer = ({
   onUpload,
   onFileRemove,
 }) => {
-  const upload = useAppSelector((state) => state.adapter.upload);
   const [data, setData] = useState({ columnsNames: [], rows: [] });
   const [sheetNames, setSheetNames] = useState([]);
   const [selectedColumn, setSelectedColumn] = useState(null);
@@ -460,11 +458,6 @@ const FileViewer = ({
 
         <div>
           <Box display="flex" alignItems="center" justifyContent="flex-end">
-            {!!upload.error && (
-              <Alert severity="error">
-                <span className={classes.fileUploadError}>{upload.error}</span>
-              </Alert>
-            )}
             <Button
               style={{ marginLeft: 12, minWidth: 150 }}
               variant="contained"
