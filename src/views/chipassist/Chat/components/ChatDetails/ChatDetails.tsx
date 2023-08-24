@@ -40,7 +40,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     symbol: "$",
     code: "USD",
   });
-  const [priceBreaks, setPriceBreaks] = React.useState<{ qty: number; price: number }[]>([{ qty: 1, price: null }]);
+  const [priceBreaks, setPriceBreaks] = React.useState<{ qty: number; price: number }[]>([
+    { qty: 1, price: null },
+    { qty: 1, price: null },
+  ]);
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -99,20 +102,12 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 </FormControl>
               </div>
               <div>
-                <div className={classes.label}>Packaging:</div>
-                <TextField name="packaging" variant="outlined" size="small" />
+                <div className={classes.label}>Quantity break #1:</div>
+                <NumberInput name="amount_1" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
               </div>
               <div>
-                <div className={classes.label}>MOQ:</div>
-                <NumberInput name="moq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
-              </div>
-              <div>
-                <div className={classes.label}>MPQ:</div>
-                <NumberInput name="mpq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
-              </div>
-              <div>
-                <div className={classes.label}>Shipping time (days):</div>
-                <NumberInput name="leadtime" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                <NumberInput name="price_1" variant="outlined" size="small" decimalScale={4} isAllowedZero={false} />
               </div>
             </div>
             <Box p="5px">
@@ -125,15 +120,16 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <KeyboardArrowDownIcon className={clsx(classes.priceArrow, { active: isShowPrices })} />
               </Button>
             </Box>
-            {isShowPrices && (
+            {isShowPrices && priceBreaks.length > 1 && (
               <div className={classes.grid}>
                 {priceBreaks.map((item, index) => {
+                  if (index === 0) return null;
                   return (
                     <React.Fragment key={index}>
                       <div>
                         <div className={classes.label}>Quantity break #{index + 1}:</div>
                         <NumberInput
-                          name="amount_1"
+                          name={`amount_${index + 1}`}
                           variant="outlined"
                           size="small"
                           decimalScale={0}
@@ -143,7 +139,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                       <div>
                         <div className={classes.label}>Unit price ({currency.symbol}):</div>
                         <NumberInput
-                          name="price_1"
+                          name={`price_${index + 1}`}
                           variant="outlined"
                           size="small"
                           decimalScale={4}
@@ -162,6 +158,24 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 </span>
               </div>
             )}
+            <div className={classes.grid}>
+              <div>
+                <div className={classes.label}>Packaging:</div>
+                <TextField name="packaging" variant="outlined" size="small" />
+              </div>
+              <div>
+                <div className={classes.label}>MOQ:</div>
+                <NumberInput name="moq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+              </div>
+              <div>
+                <div className={classes.label}>MPQ:</div>
+                <NumberInput name="mpq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+              </div>
+              <div>
+                <div className={classes.label}>Shipping time (days):</div>
+                <NumberInput name="leadtime" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+              </div>
+            </div>
             <Box p="5px" mt="3px">
               <Button className={clsx(appTheme.buttonCreate, classes.updateButton)} variant="contained">
                 Update

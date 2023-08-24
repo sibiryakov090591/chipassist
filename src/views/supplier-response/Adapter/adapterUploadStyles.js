@@ -121,7 +121,6 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
   },
   fileUploadError: {
-    marginRight: 5,
     fontSize: 14,
   },
   fileUploadingWindow: {
