@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
@@ -21,12 +21,14 @@ import { formatMoney } from "@src/utils/formatters";
 // import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import { useInView } from "react-intersection-observer";
+import CustomPopper from "@src/components/CustomPopper/CustomPopper";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
 
 const ProductCardNew = (props) => {
-  const { product, searchQuery, viewType } = props;
+  const { product, searchQuery, viewType, onChangeHandler, showPopup, handleClosePopper } = props;
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -55,6 +57,22 @@ const ProductCardNew = (props) => {
   //   setInCart(!!cartItem);
   //   setInCartCount(cartItem?.quantity || 0);
   // }, [cartItems]);
+
+  const arrowRef = useRef();
+
+  const [arrow, setArrow] = useState(null);
+
+  const { ref } = useInView({
+    threshold: 1.0,
+    // triggerOnce: true,
+    onChange: (inView, entry) => {
+      if (inView) {
+        onChangeHandler(true);
+      } else {
+        onChangeHandler(false);
+      }
+    },
+  });
 
   useEffect(() => {
     if (!rfq && rfqStockrecords.length) {
@@ -209,13 +227,25 @@ const ProductCardNew = (props) => {
             </Button>
           </Tooltip>
         ) : (
-          <Button
-            variant="contained"
-            className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
-            onClick={sendRfqOpenModal}
-          >
-            {"Get more quotes"}
-          </Button>
+          <>
+            <Button
+              aria-describedby={"popper"}
+              variant="contained"
+              className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
+              onClick={sendRfqOpenModal}
+              ref={arrowRef}
+            >
+              {"Get more quotes"}
+            </Button>
+
+            <CustomPopper
+              showPopup={showPopup}
+              arrowRef={arrowRef}
+              arrow={arrow}
+              setArrow={setArrow}
+              handleClosePopper={handleClosePopper}
+            ></CustomPopper>
+          </>
         )}
         <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
       </>
@@ -269,6 +299,7 @@ const ProductCardNew = (props) => {
         [classes.productCard]: true,
         [classes.productCardElfaro]: viewType === ID_ELFARO,
       })}
+      ref={ref}
     >
       <div className={classes.row}>
         <Box display="flex" justifyContent="space-between">

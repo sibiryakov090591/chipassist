@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui/core";
 import constants from "@src/constants/constants";
@@ -131,6 +131,40 @@ const SearchResults = () => {
     },
   ]);
 
+  const [inViewArray, setInViewArray] = useState([...new Array(products.length).fill(false)]);
+  const startTimer = useRef<any>(null);
+  const [firstOnTheScreen, setFirstOnTheScreen] = useState(-1);
+  const [needToSHow, setNeedToShow] = useState(false);
+
+  useEffect(() => {
+    const isDisabled = sessionStorage.getItem("disable-popper");
+    setNeedToShow(false);
+    if (!isDisabled)
+      if (inViewArray) {
+        const firstNum = inViewArray.indexOf(true);
+        setNeedToShow(false);
+        if (firstNum !== firstOnTheScreen) {
+          setFirstOnTheScreen(firstNum);
+        }
+      }
+  }, [inViewArray]);
+
+  useEffect(() => {
+    const isDisabled = sessionStorage.getItem("disable-popper");
+    if (!isDisabled) {
+      if (startTimer.current) {
+        clearTimeout(startTimer.current);
+      }
+      startTimer.current = setTimeout(() => {
+        setNeedToShow(true);
+      }, 3000);
+    }
+  }, [firstOnTheScreen]);
+
+  const handleClosePopper = (event: any) => {
+    sessionStorage.setItem("disable-popper", "true");
+    setNeedToShow(false);
+  };
   useEffect(() => {
     if (
       constants.id === ID_MASTER &&
@@ -345,12 +379,27 @@ const SearchResults = () => {
               {isLoadingSearchResultsInProgress ? (
                 <Skeletons />
               ) : (
-                <div>
+                <div id={"productList"}>
                   <ProductsSegment>
-                    {products?.map((product) => {
+                    {products?.map((product, key) => {
                       const rfq = rfqData.results.find((item) => item.id === product.id);
                       return constants.isNewSearchPage ? (
-                        <ProductCardNew key={product.id} product={product} rfqData={rfq} searchQuery={query} />
+                        <ProductCardNew
+                          key={product.id}
+                          product={product}
+                          rfqData={rfq}
+                          searchQuery={query}
+                          id={`product-item-${key}`}
+                          onChangeHandler={(inView: boolean) => {
+                            setInViewArray((prevState) => [
+                              ...prevState.slice(0, key),
+                              inView,
+                              ...prevState.slice(key + 1, prevState.length),
+                            ]);
+                          }}
+                          showPopup={key === firstOnTheScreen && needToSHow}
+                          handleClosePopper={handleClosePopper}
+                        />
                       ) : (
                         <ProductCard key={product.id} product={product} searchQuery={query} />
                       );
