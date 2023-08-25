@@ -92,8 +92,8 @@ const FAQ = () => {
                             You have two options. You can use our{" "}
                             <Link to={`/rfq-list-quotes`} className={appTheme.hyperlink}>
                               group RFQ feature
-                            </Link>
-                            , sending the request for up to 20 products at once. Also, you can upload your{" "}
+                            </Link>{" "}
+                            sending a request for up to 20 products at once. Also you can upload your{" "}
                             <Link to={`/bom/create-file`} className={appTheme.hyperlink}>
                               BOM list
                             </Link>{" "}
