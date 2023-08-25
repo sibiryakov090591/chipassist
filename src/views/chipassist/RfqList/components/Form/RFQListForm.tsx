@@ -223,7 +223,7 @@ export const RFQListForm = () => {
         MPN: "",
         index: rfqListState.values.length,
         manufacturer: "",
-        quantity: null,
+        quantity: "",
         price: "",
         isDisabled: true,
       });
