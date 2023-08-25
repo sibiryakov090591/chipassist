@@ -24,10 +24,6 @@ export const CustomPopper = (props: any) => {
         flip: {
           enabled: false,
         },
-        preventOverflow: {
-          enabled: false,
-          boundariesElement: "scrollParent",
-        },
         arrow: {
           enabled: true,
           element: arrow,

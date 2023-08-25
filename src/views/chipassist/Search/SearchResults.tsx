@@ -161,7 +161,7 @@ const SearchResults = () => {
     }
   }, [firstOnTheScreen]);
 
-  const handleClosePopper = (event: any) => {
+  const handleClosePopper = () => {
     sessionStorage.setItem("disable-popper", "true");
     setNeedToShow(false);
   };
