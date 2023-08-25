@@ -65,7 +65,7 @@ const ProductCardNew = (props) => {
   const { ref } = useInView({
     threshold: 1.0,
     // triggerOnce: true,
-    onChange: (inView, entry) => {
+    onChange: (inView) => {
       if (inView) {
         onChangeHandler(true);
       } else {
