@@ -15,8 +15,6 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
-import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
 import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
@@ -285,16 +283,6 @@ const Messages: React.FC = () => {
 
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
-                  const name =
-                    constants.id === ID_SUPPLIER_RESPONSE
-                      ? selectedChat?.partner &&
-                        Object.entries(selectedChat.partner).reduce((acc, idx) => {
-                          const [key, value] = idx;
-                          if (value)
-                            return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-                          return acc;
-                        }, "")
-                      : selectedChat?.partner.first_name;
 
                   return (
                     <div key={item.id}>
@@ -305,7 +293,9 @@ const Messages: React.FC = () => {
                       )}
                       <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
                         <div className={classes.messageInfo}>
-                          <span className={classes.messageFrom}>{item.sender === "You" ? "You" : name}</span>
+                          <span className={classes.messageFrom}>
+                            {item.sender === "You" ? "You" : selectedChat.partner_name}
+                          </span>
                           <span className={classes.messageDate}>
                             {time}
                             {item.sender === "You" && item.read_by_partner && (

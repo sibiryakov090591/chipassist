@@ -1,3 +1,5 @@
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import * as actionTypes from "./chatTypes";
 import { ChatListItem, ChatListMessage } from "./chatTypes";
 
@@ -67,7 +69,18 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           page,
           total_pages,
           unread_total,
-          results,
+          results: results.map((i: any) => {
+            const name =
+              constants.id === ID_SUPPLIER_RESPONSE
+                ? i.partner &&
+                  Object.entries(i.partner).reduce((acc: string, entry: any) => {
+                    const [key, value] = entry;
+                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                    return acc;
+                  }, "")
+                : i.partner.first_name;
+            return { ...i, partner_name: name };
+          }),
           loadedPages: [page],
         },
       };
@@ -81,7 +94,21 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           isLoading: false,
           page,
           total_pages,
-          results: [...state.chatList.results, ...results],
+          results: [
+            ...state.chatList.results,
+            ...results.map((i: any) => {
+              const name =
+                constants.id === ID_SUPPLIER_RESPONSE
+                  ? i.partner &&
+                    Object.entries(i.partner).reduce((acc: string, entry: any) => {
+                      const [key, value] = entry;
+                      if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                      return acc;
+                    }, "")
+                  : i.partner.first_name;
+              return { ...i, partner_name: name };
+            }),
+          ],
           loadedPages: [...state.chatList.loadedPages, page],
         },
       };

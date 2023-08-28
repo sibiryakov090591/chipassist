@@ -83,6 +83,7 @@ export interface ChatListItem {
     last_name: string;
     company_name: string;
   };
+  partner_name: string;
   title: string;
   details: {
     quantity: number;

@@ -40,6 +40,7 @@ const MessageInput: React.FC<Props> = ({
   const inputWrapperRef = useRef(null);
 
   const errorMessage = useAppSelector((state) => state.chat.messages.error);
+  const { partner, rfq } = useAppSelector((state) => state.chat.selectedChat);
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
@@ -140,13 +141,42 @@ const MessageInput: React.FC<Props> = ({
     }
   };
 
+  const onSetHintMessage = (type: "confirm" | "update" | "later") => () => {
+    const name = `${partner.first_name} ${partner.last_name}`;
+    let value = "";
+    if (type === "confirm") {
+      value = `Dear ${name}! We have ${rfq.upc} available. We can ship up to ${rfq.quantity}pcs at ${rfq.price}€ unit price in [DELIVERY_TIME] days. If you are interested, please send us a Purchase Order (PO).`;
+    }
+    if (type === "update") {
+      value = `Dear ${name}! Unfortunately, the unit price for ${rfq.upc} was updated. Now we can ship up to ${rfq.quantity}pcs at ${rfq.price}€ unit price in [DELIVERY_TIME] days. If you are interested, please send us a Purchase Order (PO).`;
+    }
+    if (type === "later") {
+      value = `Dear ${name}! Thank you for your request. We will provide you the details a bit later. Thank you!`;
+    }
+    setMessage(value);
+    if (error) setError("");
+  };
+
   return (
     <div className={classes.root}>
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
       {isSupplierResponse && (
-        <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
-          Please send your response directly to the customer:
-        </div>
+        <>
+          <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
+            Please send your response directly to the customer:
+          </div>
+          <Box display="flex" flexWrap="wrap" gridGap="6px" m="0 12px 8px">
+            <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
+              Confirm stock
+            </div>
+            <div className={classes.hint} onClick={onSetHintMessage("update")}>
+              Update price
+            </div>
+            <div className={classes.hint} onClick={onSetHintMessage("later")}>
+              Reply later
+            </div>
+          </Box>
+        </>
       )}
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
