@@ -16,6 +16,9 @@ import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { MenuItem, Select, FormControl } from "@material-ui/core";
 import { Currency } from "@src/store/currency/currencyTypes";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import useAppDispatch from "@src/hooks/useAppDispatch";
+import { updateStockrecord } from "@src/store/chat/chatActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -23,10 +26,20 @@ interface Props {
   onCloseDetails: () => void;
 }
 
+type FormValues = {
+  stock: number;
+  lead_time: number;
+  packaging: string;
+  moq: number;
+  mpq: number;
+  [key: string]: any;
+};
+
 const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const chatWindowClasses = useChatWindowStyles();
+  const dispatch = useAppDispatch();
   const isSupplierResponse = true; // constants.id === ID_SUPPLIER_RESPONSE;
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
@@ -44,6 +57,14 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     { qty: 1, price: null },
     { qty: 1, price: null },
   ]);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    // setError,
+  } = useForm<FormValues>();
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -63,6 +84,31 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
   };
 
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    const part_number = selectedChat?.rfq?.upc;
+    if (!isValid || !part_number) return false;
+
+    const result: any = { currency: currency.code };
+    const prices: any = {};
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (key.includes("amount_") || key.includes("price_")) {
+        prices[key] = value;
+      } else {
+        result[key] = value;
+      }
+    });
+
+    dispatch(updateStockrecord({ [part_number]: { ...result, prices } }));
+
+    // prevent reset form
+    await handleSubmit(
+      () => false,
+      () => false,
+    )();
+    return false;
+  };
+
   return (
     <SwipeWrapper rightSwipeAction={onCloseHandler} className={clsx(classes.rightColumn, { active: showDetails })}>
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
@@ -79,11 +125,32 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
       <div className={classes.details}>
         {isSupplierResponse ? (
-          <>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>
                 <div className={classes.label}>In stock (Qty):</div>
-                <NumberInput name="quantity" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="stock"
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.stock}
+                      helperText={errors.stock?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>Currency:</div>
@@ -103,11 +170,53 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               </div>
               <div>
                 <div className={classes.label}>Quantity break #1:</div>
-                <NumberInput name="amount_1" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="amount_1"
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.amount_1}
+                      helperText={errors.amount_1?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                <NumberInput name="price_1" variant="outlined" size="small" decimalScale={4} isAllowedZero={false} />
+                <Controller
+                  name="price_1"
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.price_1}
+                      helperText={errors.price_1?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={4}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
             </div>
             <Box p="5px">
@@ -128,22 +237,52 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                     <React.Fragment key={index}>
                       <div>
                         <div className={classes.label}>Quantity break #{index + 1}:</div>
-                        <NumberInput
+                        <Controller
                           name={`amount_${index + 1}`}
-                          variant="outlined"
-                          size="small"
-                          decimalScale={0}
-                          isAllowedZero={false}
+                          control={control}
+                          defaultValue={""}
+                          rules={{
+                            min: {
+                              value: 1,
+                              message: "At least 1",
+                            },
+                          }}
+                          render={({ field }) => (
+                            <NumberInput
+                              {...field}
+                              error={errors[`amount_${index + 1}`]}
+                              helperText={errors[`amount_${index + 1}`]?.message}
+                              variant="outlined"
+                              size="small"
+                              decimalScale={0}
+                              isAllowedZero={false}
+                            />
+                          )}
                         />
                       </div>
                       <div>
                         <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                        <NumberInput
+                        <Controller
                           name={`price_${index + 1}`}
-                          variant="outlined"
-                          size="small"
-                          decimalScale={4}
-                          isAllowedZero={false}
+                          control={control}
+                          defaultValue={""}
+                          rules={{
+                            min: {
+                              value: 1,
+                              message: "At least 1",
+                            },
+                          }}
+                          render={({ field }) => (
+                            <NumberInput
+                              {...field}
+                              error={errors[`price_${index + 1}`]}
+                              helperText={errors[`price_${index + 1}`]?.message}
+                              variant="outlined"
+                              size="small"
+                              decimalScale={4}
+                              isAllowedZero={false}
+                            />
+                          )}
                         />
                       </div>
                     </React.Fragment>
@@ -161,23 +300,86 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             <div className={classes.grid}>
               <div>
                 <div className={classes.label}>Packaging:</div>
-                <TextField name="packaging" variant="outlined" size="small" />
+                <TextField {...register("packaging")} variant="outlined" size="small" />
               </div>
               <div>
                 <div className={classes.label}>MOQ:</div>
-                <NumberInput name="moq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="moq"
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.moq}
+                      helperText={errors.moq?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>MPQ:</div>
-                <NumberInput name="mpq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="mpq"
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.mpq}
+                      helperText={errors.mpq?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>Shipping time (days):</div>
-                <NumberInput name="leadtime" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="lead_time"
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.lead_time}
+                      helperText={errors.lead_time?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
             </div>
             <Box p="5px" mt="3px">
-              <Button className={clsx(appTheme.buttonCreate, classes.updateButton)} variant="contained">
+              <Button type="submit" className={clsx(appTheme.buttonCreate, classes.updateButton)} variant="contained">
                 Update
               </Button>
             </Box>
@@ -193,7 +395,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 </a>
               </Box>
             )}
-          </>
+          </form>
         ) : (
           <div className={classes.requestCard}>
             {/* <Box display="flex" alignItems="center" justifyContent="space-between"> */}

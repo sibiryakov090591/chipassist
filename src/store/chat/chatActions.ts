@@ -321,6 +321,27 @@ export const downloadFile = (fileId: number) => {
   };
 };
 
+export const updateStockrecord = (data: any) => (dispatch: any, getState: () => RootState) => {
+  const { selectedPartner } = getState().profile;
+  if (!selectedPartner) return false;
+  return dispatch({
+    types: [false, false, false],
+    promise: (client: ApiClientInterface) =>
+      client
+        .post(`/rfqs/response/`, {
+          data: {
+            seller: selectedPartner.id,
+            data,
+          },
+        })
+        .then((res) => res.data)
+        .catch((e) => {
+          console.log("***UPDATE_RESPONSE_FROM_CHAT_ERROR", e);
+          throw e;
+        }),
+  });
+};
+
 export const selectChat = (item: any) => ({
   type: actionTypes.SELECT_CHAT,
   payload: item,
