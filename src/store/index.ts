@@ -12,6 +12,7 @@ import { AuthState } from "@src/store/authentication/authTypes";
 import { ProgressModalState } from "@src/store/progressModal/progressModalTypes";
 import { CategoriesState } from "@src/store/categories/categoriesTypes";
 import { AdapterState } from "@src/store/adapter/adapterTypes";
+import popper from "@src/store/popper/popperReducer";
 import auth from "./authentication/authReducer";
 import categories from "./categories/categoriesReducer";
 import treeMenuReducer from "./treeMenu/treeMenuReducer";
@@ -71,6 +72,7 @@ const rootReducer = () =>
     supplierStatistics,
     treeMenu: treeMenuReducer,
     rfqList,
+    popper,
   });
 
 export default rootReducer;
@@ -101,4 +103,5 @@ export interface RootState {
   chart: ChartState;
   progressModal: ProgressModalState;
   rfqList: any;
+  popper: any;
 }

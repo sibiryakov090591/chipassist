@@ -23,12 +23,13 @@ import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useInView } from "react-intersection-observer";
 import CustomPopper from "@src/components/CustomPopper/CustomPopper";
+import popperActions from "@src/store/popper/popperActions";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
 
 const ProductCardNew = (props) => {
-  const { product, searchQuery, viewType, onChangeHandler, showPopup, handleClosePopper } = props;
+  const { product, searchQuery, viewType, showPopup, handleClosePopper, numInArray } = props;
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -40,7 +41,6 @@ const ProductCardNew = (props) => {
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
-
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
   const [rfqStockrecords] = useState([]);
@@ -64,13 +64,9 @@ const ProductCardNew = (props) => {
 
   const { ref } = useInView({
     threshold: 1.0,
-    // triggerOnce: true,
+    triggerOnce: true,
     onChange: (inView) => {
-      if (inView) {
-        onChangeHandler(true);
-      } else {
-        onChangeHandler(false);
-      }
+      dispatch(popperActions.updateInViewArray(numInArray, inView));
     },
   });
 
