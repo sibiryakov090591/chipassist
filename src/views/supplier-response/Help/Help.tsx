@@ -1,11 +1,11 @@
 import React from "react";
 import Page from "@src/components/Page";
-import letter from "@src/images/suppliers_response/letter.png";
+// import letter from "@src/images/suppliers_response/letter.png";
 import requests_page from "@src/images/suppliers_response/requests_page.png";
 import export_img from "@src/images/suppliers_response/export.png";
 import exel from "@src/images/suppliers_response/exel.png";
 import better_price from "@src/images/suppliers_response/better_price.png";
-import SendIcon from "@material-ui/icons/Send";
+// import SendIcon from "@material-ui/icons/Send";
 import { Container, Grid } from "@material-ui/core";
 import clsx from "clsx";
 import { useStyles } from "./helpStyles";
