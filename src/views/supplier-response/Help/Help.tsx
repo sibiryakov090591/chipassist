@@ -24,21 +24,21 @@ const Help: React.FC = () => {
               and receive hundreds of selected RFQs from ChipAssist customers every day.
             </p>
           </div>
-          <h2 className={classes.title}>How does it work?</h2>
-          <Grid container spacing={4} className={classes.gridContainer}>
-            <Grid item sm={6} className={classes.gridItem}>
-              <div className={classes.icon}>
-                <SendIcon />
-              </div>
-              <p>
-                All our partners subscribed to our active RFQs list get a daily email with actual requests from our
-                partnering company <a href="https://elfaro.ee/">ELFARO</a>.
-              </p>
-            </Grid>
-            <Grid item sm={6} className={classes.rightColumn}>
-              <img className={clsx(classes.img, classes.letterImg)} src={letter} alt="letter" />
-            </Grid>
-          </Grid>
+          {/* <h2 className={classes.title}>How does it work?</h2> */}
+          {/* <Grid container spacing={4} className={classes.gridContainer}> */}
+          {/*  <Grid item sm={6} className={classes.gridItem}> */}
+          {/*    <div className={classes.icon}> */}
+          {/*      <SendIcon /> */}
+          {/*    </div> */}
+          {/*    <p> */}
+          {/*      All our partners subscribed to our active RFQs list get a daily email with actual requests from our */}
+          {/*      partnering company <a href="https://elfaro.ee/">ELFARO</a>. */}
+          {/*    </p> */}
+          {/*  </Grid> */}
+          {/*  <Grid item sm={6} className={classes.rightColumn}> */}
+          {/*    <img className={clsx(classes.img, classes.letterImg)} src={letter} alt="letter" /> */}
+          {/*  </Grid> */}
+          {/* </Grid> */}
         </Container>
       </section>
       <section className={classes.section}>
