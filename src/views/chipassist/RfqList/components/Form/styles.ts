@@ -14,10 +14,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginTop: "3rem",
     width: "100%",
   },
+  modalTitle: {
+    fontWeight: 700,
+    fontSize: "1.5rem",
+    [theme.breakpoints.down(460)]: {
+      fontSize: "1.3rem",
+    },
+  },
   titleH1: {
     fontSize: "2.2rem",
     fontWeight: 700,
-    color: "#456",
     [theme.breakpoints.down(460)]: {
       fontSize: "1.8rem",
     },
@@ -94,7 +100,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       margin: "8px 0",
     },
   },
-
   regContainerStyle: {
     padding: "1em",
     backgroundColor: theme.palette.app.grey100,

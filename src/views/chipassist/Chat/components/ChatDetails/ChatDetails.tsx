@@ -68,7 +68,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
-    if (messagesElem) messagesElem.style.display = "inherit";
+    if (messagesElem) messagesElem.style.display = "flex";
     onCloseDetails();
   };
 

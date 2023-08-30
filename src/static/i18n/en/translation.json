@@ -14,8 +14,8 @@
     "privacy_policy": "You must agree to the terms of service",
     "email": "This is not a valid email",
     "corporate_email": "Please use a corporate email address (not gmail.com etc)",
-    "too_long": "is too long (maximum is {{count}} character)",
-    "too_long_plural": "is too long (maximum is {{count}} characters)",
+    "too_long": "is too long (max {{count}} character)",
+    "too_long_plural": "is too long (max {{count}} characters)",
     "required": "is required",
     "not_greater_than": "must be greater than {{count}}",
     "not_less_than": "must be less then {{count}}"

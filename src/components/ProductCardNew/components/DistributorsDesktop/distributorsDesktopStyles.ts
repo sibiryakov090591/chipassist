@@ -17,21 +17,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: theme.palette.app.blue200,
       margin: "0 4px 0 2px",
     },
-    tableSort: {
-      "&:hover": {
-        color: `${theme.palette.app.blue200} !important`,
-      },
-      "&.MuiTableSortLabel-active": {
-        color: `${theme.palette.app.blue200} !important`,
-      },
-      "& svg": {
-        width: "12px",
-        height: "12px",
-        color: `${theme.palette.app.blue200} !important`,
-        opacity: 0.5,
-        margin: "0 0 0 2px",
-      },
-    },
     trTh: {
       fontWeight: 700,
       borderBottom: "1px solid #c6c6c6",
