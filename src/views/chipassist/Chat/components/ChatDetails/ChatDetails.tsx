@@ -88,18 +88,21 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     const part_number = selectedChat?.rfq?.upc;
     if (!isValid || !part_number) return false;
 
-    const result: any = { currency: currency.code, price: data.price_1 };
-    const prices: any = {};
-
+    const overallData = Object.fromEntries(
+      Object.entries(data).filter(([key]) => !key.includes("amount_") && !key.includes("price_")),
+    );
+    const prices: any = [];
     Object.entries(data).forEach(([key, value]) => {
-      if (key.includes("amount_") || key.includes("price_")) {
-        prices[key] = value;
-      } else {
-        result[key] = value;
+      if (key.includes("amount_")) {
+        const index = key.split("_")[1];
+        const breakPrice = data[`price_${index}`];
+        if (value && breakPrice) prices.push({ amount: value, price: breakPrice });
       }
     });
 
-    dispatch(updateStockrecord({ [part_number]: { ...result, prices } }));
+    dispatch(
+      updateStockrecord({ [part_number]: { ...overallData, currency: currency.code, price: data.price_1, prices } }),
+    );
 
     // prevent reset form
     await handleSubmit(
