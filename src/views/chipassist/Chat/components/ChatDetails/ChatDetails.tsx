@@ -88,7 +88,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     const part_number = selectedChat?.rfq?.upc;
     if (!isValid || !part_number) return false;
 
-    const result: any = { currency: currency.code };
+    const result: any = { currency: currency.code, price: data.price_1 };
     const prices: any = {};
 
     Object.entries(data).forEach(([key, value]) => {
