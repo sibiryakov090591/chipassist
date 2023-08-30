@@ -48,7 +48,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
     if (item.id !== selectedChat?.id) dispatch(selectChat(item));
     if (isXsDown) {
       const messagesElem = document.getElementById("chat-messages");
-      if (messagesElem) messagesElem.style.display = "inherit";
+      if (messagesElem) messagesElem.style.display = "flex";
       onShowList(false);
     }
   };
@@ -63,7 +63,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
     if (selectedChat?.id) {
       if (isXsDown) {
         const messagesElem = document.getElementById("chat-messages");
-        if (messagesElem) messagesElem.style.display = "inherit";
+        if (messagesElem) messagesElem.style.display = "flex";
       }
       onShowList(false);
     }
