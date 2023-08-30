@@ -150,18 +150,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   tableSort: {
     whiteSpace: "nowrap",
-    "& svg": {
-      width: "0.7em",
-      height: "0.7em",
-      color: "white !important",
-      opacity: 0.3,
-    },
-    "&.MuiTableSortLabel-active": {
-      color: theme.palette.app.grey300,
-    },
-    "&:hover": {
-      color: "white",
-    },
   },
   tableContentWhiteSpace: {
     position: "relative",

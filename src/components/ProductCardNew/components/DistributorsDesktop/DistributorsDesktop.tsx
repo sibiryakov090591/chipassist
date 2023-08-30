@@ -179,12 +179,11 @@ const DistributorsDesktop: React.FC<Props> = ({
   return (
     <table className={classes.table}>
       <thead>
-        <tr className={classes.trTh}>
+        <tr className={clsx(appTheme.tableHeader, classes.trTh)}>
           <th className={classes.thDistributor}>
             <TableSortLabel
               active={sortBy?.name === "partner_name"}
               direction={(sortBy?.name === "partner_name" && sortBy?.direction) || "asc"}
-              className={classes.tableSort}
               onClick={() => changeSort("partner_name")}
             >
               Seller
@@ -192,7 +191,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "updatedTime"}
               direction={(sortBy?.name === "updatedTime" && sortBy?.direction) || "asc"}
-              className={classes.tableSort}
               onClick={() => changeSort("updatedTime")}
             >
               <span className={classes.divider}>/</span>
@@ -203,7 +201,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "num_in_stock"}
               direction={(sortBy?.name === "num_in_stock" && sortBy?.direction) || "desc"}
-              className={classes.tableSort}
               onClick={() => changeSort("num_in_stock")}
             >
               {t("distributor.in_stock")}
@@ -214,7 +211,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "delivery_sort_value"}
               direction={(sortBy?.name === "delivery_sort_value" && sortBy?.direction) || "desc"}
-              className={classes.tableSort}
               onClick={() => changeSort("delivery_sort_value")}
             >
               {t("distributor.lead_period")}
@@ -224,7 +220,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "moq"}
               direction={(sortBy?.name === "moq" && sortBy?.direction) || "desc"}
-              className={classes.tableSort}
               onClick={() => changeSort("moq")}
             >
               {t("distributor.moq")}
@@ -237,7 +232,6 @@ const DistributorsDesktop: React.FC<Props> = ({
               <TableSortLabel
                 active={sortBy?.name === "datecode_sort_value"}
                 direction={(sortBy?.name === "datecode_sort_value" && sortBy?.direction) || "desc"}
-                className={classes.tableSort}
                 onClick={() => changeSort("datecode_sort_value")}
               >
                 DC
@@ -255,7 +249,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "price_1"}
               direction={(sortBy?.name === "price_1" && sortBy?.direction) || "asc"}
-              className={classes.tableSort}
               onClick={() => changeSort("price_1")}
             >
               {formatMoney(1, 0, ".", "`")}
@@ -265,7 +258,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "price_10"}
               direction={(sortBy?.name === "price_10" && sortBy?.direction) || "asc"}
-              className={classes.tableSort}
               onClick={() => changeSort("price_10")}
             >
               {formatMoney(10, 0, ".", "`")}
@@ -275,7 +267,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <TableSortLabel
               active={sortBy?.name === "price_100"}
               direction={(sortBy?.name === "price_100" && sortBy?.direction) || "asc"}
-              className={classes.tableSort}
               onClick={() => changeSort("price_100")}
             >
               {formatMoney(100, 0, ".", "`")}
@@ -286,7 +277,6 @@ const DistributorsDesktop: React.FC<Props> = ({
               <TableSortLabel
                 active={sortBy?.name === "price_1000"}
                 direction={(sortBy?.name === "price_1000" && sortBy?.direction) || "asc"}
-                className={classes.tableSort}
                 onClick={() => changeSort("price_1000")}
               >
                 {formatMoney(1000, 0, ".", "`")}
@@ -296,7 +286,6 @@ const DistributorsDesktop: React.FC<Props> = ({
               <TableSortLabel
                 active={sortBy?.name === "price_10000"}
                 direction={(sortBy?.name === "price_10000" && sortBy?.direction) || "asc"}
-                className={classes.tableSort}
                 onClick={() => changeSort("price_10000")}
               >
                 {formatMoney(10000, 0, ".", "`")}
