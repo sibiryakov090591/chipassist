@@ -62,7 +62,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
             sortedStockrecords.map((val, index) => {
               const dynamicMoq = getDynamicMoq(val);
               const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-              const isShowProductLink = !!val.product_url || !!seller;
+              const isShowProductLink = !!val.product_url || !!seller?.url;
               const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1];
               const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
