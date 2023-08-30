@@ -9,11 +9,14 @@ import { showAlertBeforeUnloadAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import RFQListForm from "@src/views/chipassist/RfqList/components/Form/RFQListForm";
 import CloseIcon from "@material-ui/icons/Close";
-import IconButton from "@material-ui/core/IconButton";
 import { clsx } from "clsx";
+import { Button } from "@material-ui/core";
+import useAppTheme from "@src/theme/useAppTheme";
+import { changeMisc } from "@src/store/progressModal/progressModalActions";
 
 const BeforeUnloadModal = () => {
   const commonClasses = useCommonStyles();
+  const appTheme = useAppTheme();
   // const { t } = useI18n("progress_modal");
   const dispatch = useAppDispatch();
 
@@ -23,7 +26,10 @@ const BeforeUnloadModal = () => {
     const listener = (event: any) => {
       if (!sessionStorage.getItem("before_unload_alert_disabled")) {
         const mouseY = event.clientY;
-        if (mouseY <= 0) dispatch(showAlertBeforeUnloadAction(true));
+        if (mouseY <= 0) {
+          dispatch(showAlertBeforeUnloadAction(true));
+          dispatch(changeMisc("before_unload_modal_has_shown", "true"));
+        }
       }
     };
     const timeoutId = setTimeout(() => {
@@ -55,17 +61,15 @@ const BeforeUnloadModal = () => {
         }}
       >
         <Fade in={showAlertBeforeUnload}>
-          <div style={{ maxWidth: 950 }} className={clsx(commonClasses.paper, "fullScreen")}>
-            <IconButton aria-label="close" className={commonClasses.closeButton} onClick={handleClose}>
+          <div style={{ maxWidth: 800 }} className={clsx(commonClasses.paper, "fullScreen")}>
+            <Button className={clsx(appTheme.buttonCreate, commonClasses.closeButton)} onClick={handleClose}>
+              close
               <CloseIcon />
-            </IconButton>
-            <h1>Haven&apos;t find necessary product? Leave a free request!</h1>
-            <p>
-              Leave a request for quotation and we&apos;ll check it against the offers from 100+ connected sellers.
-              You&apos;ll receive the responses in your mailbox.
-            </p>
+            </Button>
+            <h1>No good offers? Leave a free request!</h1>
+            <p>Leave a request for quotation and we&apos;ll check it against the offers from 100+ connected sellers.</p>
             <div>
-              <RFQListForm />
+              <RFQListForm isModalMode={true} />
             </div>
           </div>
         </Fade>
