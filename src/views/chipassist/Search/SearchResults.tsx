@@ -474,7 +474,7 @@ const SearchResults = () => {
         </div>
       </Container>
 
-      {ID_MASTER === constants.id && <BeforeUnloadModal />}
+      <BeforeUnloadModal />
     </Page>
   );
 };
