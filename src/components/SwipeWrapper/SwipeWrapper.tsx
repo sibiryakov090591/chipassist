@@ -37,9 +37,9 @@ const SwipeWrapper: React.FC<Props> = ({ children, leftSwipeAction, rightSwipeAc
   };
   return (
     <div
-      onTouchStart={isSmDown && onTouchStart}
-      onTouchMove={isSmDown && onTouchMove}
-      onTouchEnd={isSmDown && onTouchEnd}
+      onTouchStart={isSmDown ? onTouchStart : null}
+      onTouchMove={isSmDown ? onTouchMove : null}
+      onTouchEnd={isSmDown ? onTouchEnd : null}
       {...rest}
     >
       {children}
