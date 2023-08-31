@@ -150,6 +150,7 @@ export interface RfqState {
     open: boolean;
     isNeedModalOpenAgain: boolean;
     partNumber: string;
+    stockrecordId: number;
     sellerId: number;
     sellerName: string;
     isSending: boolean;
@@ -264,6 +265,7 @@ interface SetSellerMessageData {
     partNumber: string;
     sellerId: number;
     sellerName: string;
+    stockrecordId: number;
   };
 }
 

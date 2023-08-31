@@ -4,12 +4,17 @@ import XLSX from "xlsx";
 import { batch, useDispatch } from "react-redux";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
-import { Tabs, Tab } from "@material-ui/core";
+import { Tabs, Tab, Box, Button } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import CustomSelect from "@src/components/Select/Select";
 import Alert from "@material-ui/lab/Alert";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import clsx from "clsx";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import PublishIcon from "@material-ui/icons/Publish";
+import useAppTheme from "@src/theme/useAppTheme";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import CurrencyMenu from "@src/components/CurrencyMenu/CurrencyMenu";
 import { useStyles } from "./fileViewerStyles";
 
 const csvFormats = ["csv"];
@@ -30,16 +35,20 @@ const FileViewer = ({
   onInputChange,
   // onFullexportChange,
   onStartingRowChange,
+  onUpload,
+  onFileRemove,
 }) => {
   const [data, setData] = useState({ columnsNames: [], rows: [] });
   const [sheetNames, setSheetNames] = useState([]);
   const [selectedColumn, setSelectedColumn] = useState(null);
+  const [isShowPriceBreaks, setIsShowPriceBreaks] = useState(false);
   // const [isHeader, setIsHeader] = useState(true);
   const [thereIsHeaders, setThereIsHeaders] = useState(false);
   const [timer, setTimer] = useState(null);
   // const partners = useAppSelector((state) => state.profile?.profileInfo?.partners || []);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const appTheme = useAppTheme();
   const { t } = useI18n("adapter");
   const rowsCount = 100;
 
@@ -58,6 +67,8 @@ const FileViewer = ({
 
     return fileFormat;
   };
+
+  const onShowPriceBreaks = () => setIsShowPriceBreaks((prev) => !prev);
 
   const getColumnsNames = (rows) => {
     const letters = [..."abcdefghijklmnopqrstuvwxyz"];
@@ -154,9 +165,9 @@ const FileViewer = ({
     onInputChange(field, typeof value === "object" ? value.currentTarget.value : value);
   };
 
-  const onFieldClear = (field) => () => {
-    onInputChange(field, "");
-  };
+  // const onFieldClear = (field) => () => {
+  //   onInputChange(field, "");
+  // };
 
   const onRowClick = (index) => () => {
     onStartingRowChange(index);
@@ -232,262 +243,236 @@ const FileViewer = ({
 
   return (
     <div className={classes.fileView}>
-      <h2 style={{ fontSize: 20, marginBottom: 25 }}>Choose columns</h2>
-      <div>
-        <div className={`${classes.selectors} test-file-columns`}>
-          {/* <div> */}
-          {/*  <CustomSelect */}
-          {/*    id="supplier" */}
-          {/*    placeholder={t("file.choose_supplier")} */}
-          {/*    value={fields.supplier} */}
-          {/*    label={ */}
-          {/*      <> */}
-          {/*        {t("column.supplier")} <span style={{ color: red[500] }}>*</span> */}
-          {/*      </> */}
-          {/*    } */}
-          {/*    options={partners.map((val) => ({ title: val.name, value: val.id }))} */}
-          {/*    onChange={onFieldChange("supplier")} */}
-          {/*    onClear={onFieldClear("supplier")} */}
-          {/*  /> */}
-          {/* </div> */}
-          {/* <div>
-              <Typography variant="caption" display="block" gutterBottom>
-                {t("column.partner_name")}
-              </Typography>
-              <TextField
-                label={false}
-                name="partner_name"
-                className={classes.columnInput}
-                onChange={onFieldChange("partner_name")}
-                value={fields.partner_name}
-                size="small"
-                variant="outlined"
+      <Box display="flex" justifyContent="space-between">
+        <div>
+          <h2 style={{ fontSize: 20, marginBottom: 25 }}>Choose columns</h2>
+          <div className={`${classes.selectors} test-file-columns`}>
+            <div className={classes.field}>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.mpn_col}
+                label={
+                  <>
+                    {t("column.mpn_col")} <span style={{ color: red[500] }}>*</span>
+                  </>
+                }
+                options={getColumnsSelectOptions("mpn_col")}
+                onChange={onColumnSelect("mpn_col")}
+                onClear={onColumnSelectClear("mpn_col")}
               />
-            </div> */}
-          <div>
-            <CustomSelect
-              id="currency"
-              placeholder={t("file.choose_currency")}
-              value={fields.currency}
-              label={t("column.currency")}
-              options={[
-                { title: "EUR", value: "EUR" },
-                { title: "USD", value: "USD" },
-                { title: "RMB", value: "RMB" },
-                // { title: "RUB", value: "RUB" },
-              ]}
-              onChange={onFieldChange("currency")}
-              onClear={onFieldClear("currency")}
-            />
-          </div>
-          {/* <div> */}
-          {/*  <Typography variant="caption" display="block" gutterBottom> */}
-          {/*    {t("column.separator")} */}
-          {/*  </Typography> */}
-          {/*  <TextField */}
-          {/*    label={false} */}
-          {/*    name="separator" */}
-          {/*    className={classes.columnInput} */}
-          {/*    onChange={onFieldChange("separator")} */}
-          {/*    value={fields.separator} */}
-          {/*    size="small" */}
-          {/*    variant="outlined" */}
-          {/*  /> */}
-          {/* </div> */}
-          {/* <div> */}
-          {/*  <Typography variant="caption" display="block" gutterBottom> */}
-          {/*    {t("column.encoding")} */}
-          {/*  </Typography> */}
-          {/*  <CustomSelect */}
-          {/*    id="currency" */}
-          {/*    placeholder={t("file.choose_encoding")} */}
-          {/*    value={fields.encoding} */}
-          {/*    options={[ */}
-          {/*      { title: "utf8", value: "utf8" }, */}
-          {/*      { title: "cp1251", value: "cp1251" }, */}
-          {/*    ]} */}
-          {/*    onChange={onFieldChange("encoding")} */}
-          {/*    onClear={onFieldClear("encoding")} */}
-          {/*  /> */}
-          {/* </div> */}
-        </div>
-        <h3 className={classes.title}>General:</h3>
-        <div className={`${classes.selectors} test-file-columns`}>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.mpn_col}
-              label={
-                <>
-                  {t("column.mpn_col")} <span style={{ color: red[500] }}>*</span>
-                </>
-              }
-              options={getColumnsSelectOptions("mpn_col")}
-              onChange={onColumnSelect("mpn_col")}
-              onClear={onColumnSelectClear("mpn_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.sku_col}
-              label={t("column.sku_col")}
-              options={getColumnsSelectOptions("sku_col")}
-              onChange={onColumnSelect("sku_col")}
-              onClear={onColumnSelectClear("sku_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.moq_col}
-              label={t("column.moq_col")}
-              options={getColumnsSelectOptions("moq_col")}
-              onChange={onColumnSelect("moq_col")}
-              onClear={onColumnSelectClear("moq_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.mpq_col}
-              label={t("column.mpq_col")}
-              options={getColumnsSelectOptions("mpq_col")}
-              onChange={onColumnSelect("mpq_col")}
-              onClear={onColumnSelectClear("mpq_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.amount_col}
-              label={
-                <>
-                  {t("column.amount_col")} <span style={{ color: red[500] }}>*</span>
-                </>
-              }
-              options={getColumnsSelectOptions("amount_col")}
-              onChange={onColumnSelect("amount_col")}
-              onClear={onColumnSelectClear("amount_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.desc_col}
-              label={t("column.desc_col")}
-              options={getColumnsSelectOptions("desc_col")}
-              onChange={onColumnSelect("desc_col")}
-              onClear={onColumnSelectClear("desc_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.manufacturer_col}
-              label={t("column.manufacturer_col")}
-              options={getColumnsSelectOptions("manufacturer_col")}
-              onChange={onColumnSelect("manufacturer_col")}
-              onClear={onColumnSelectClear("manufacturer_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.datecode_col}
-              label={t("column.datecode")}
-              options={getColumnsSelectOptions("datecode_col")}
-              onChange={onColumnSelect("datecode_col")}
-              onClear={onColumnSelectClear("datecode_col")}
-            />
-          </div>
-        </div>
-        <h3 className={classes.title}>Price breaks:</h3>
-        <div className={`${classes.selectors} test-file-columns`}>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.quantity_col}
-              label={t("column.quantity_col")}
-              options={getColumnsSelectOptions("quantity_col")}
-              onChange={onColumnSelect("quantity_col")}
-              onClear={onColumnSelectClear("quantity_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.price_col}
-              label={t("column.price_col")}
-              options={getColumnsSelectOptions("price_col")}
-              onChange={onColumnSelect("price_col")}
-              onClear={onColumnSelectClear("price_col")}
-            />
-          </div>
-          <div />
-          <div />
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.quantity_2_col}
-              label={t("column.quantity_2_col")}
-              options={getColumnsSelectOptions("quantity_2_col")}
-              onChange={onColumnSelect("quantity_2_col")}
-              onClear={onColumnSelectClear("quantity_2_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.price_2_col}
-              label={t("column.price_2_col")}
-              options={getColumnsSelectOptions("price_2_col")}
-              onChange={onColumnSelect("price_2_col")}
-              onClear={onColumnSelectClear("price_2_col")}
-            />
-          </div>
-          <div />
-          <div />
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.quantity_3_col}
-              label={t("column.quantity_3_col")}
-              options={getColumnsSelectOptions("quantity_3_col")}
-              onChange={onColumnSelect("quantity_3_col")}
-              onClear={onColumnSelectClear("quantity_3_col")}
-            />
-          </div>
-          <div>
-            <CustomSelect
-              placeholder={t("file.choose_column")}
-              value={columns.price_3_col}
-              label={t("column.price_3_col")}
-              options={getColumnsSelectOptions("price_3_col")}
-              onChange={onColumnSelect("price_3_col")}
-              onClear={onColumnSelectClear("price_3_col")}
-            />
-          </div>
-          <div />
-          <div />
-        </div>
-        {/* <div className={classes.startingRowInfo}> */}
-        {/*  <FormControlLabel */}
-        {/*    control={<Checkbox name="noheader_row" onChange={onFullexportChange} checked={fullexport} />} */}
-        {/*    label={t("column.noheader_row")} */}
-        {/*  /> */}
-        {/* </div> */}
-        <div className={classes.startingRowInfo}>
-          <Alert icon={<ErrorOutlineIcon />} severity="success">
-            <div>
-              <span>
-                <i>{startingRow}</i> —{" "}
-              </span>
-              <span style={{ fontWeight: 600 }}>{t("file.hint")}</span>
             </div>
-          </Alert>
+            <div className={classes.field}>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.amount_col}
+                label={
+                  <>
+                    {t("column.amount_col")} <span style={{ color: red[500] }}>*</span>
+                  </>
+                }
+                options={getColumnsSelectOptions("amount_col")}
+                onChange={onColumnSelect("amount_col")}
+                onClear={onColumnSelectClear("amount_col")}
+              />
+            </div>
+            <div className={classes.field}>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.datecode_col}
+                label={t("column.datecode")}
+                options={getColumnsSelectOptions("datecode_col")}
+                onChange={onColumnSelect("datecode_col")}
+                onClear={onColumnSelectClear("datecode_col")}
+              />
+            </div>
+            <div>
+              <Box className={classes.priceField} display="flex" alignItems="center" gridGap="12px">
+                <CustomSelect
+                  disabled={isShowPriceBreaks}
+                  style={{ backgroundColor: "#f4f6f8" }}
+                  placeholder={t("file.choose_column")}
+                  value={columns.price_col}
+                  label={t("column.price_col")}
+                  options={getColumnsSelectOptions("price_col")}
+                  onChange={onColumnSelect("price_col")}
+                  onClear={onColumnSelectClear("price_col")}
+                />
+                <Box display="flex" justifyContent="center" style={{ flexGrow: 1 }}>
+                  <CurrencyMenu setCurrencyHandler={onFieldChange("currency")} selected={fields.currency} />
+                </Box>
+              </Box>
+            </div>
+
+            <div className={classes.field}>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.moq_col}
+                label={t("column.moq_col")}
+                options={getColumnsSelectOptions("moq_col")}
+                onChange={onColumnSelect("moq_col")}
+                onClear={onColumnSelectClear("moq_col")}
+              />
+            </div>
+            <div className={classes.field}>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.mpq_col}
+                label={t("column.mpq_col")}
+                options={getColumnsSelectOptions("mpq_col")}
+                onChange={onColumnSelect("mpq_col")}
+                onClear={onColumnSelectClear("mpq_col")}
+              />
+            </div>
+            <div className={classes.field}>
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.manufacturer_col}
+                label={t("column.manufacturer_col")}
+                options={getColumnsSelectOptions("manufacturer_col")}
+                onChange={onColumnSelect("manufacturer_col")}
+                onClear={onColumnSelectClear("manufacturer_col")}
+              />
+            </div>
+            <Box className={classes.field} display="flex" alignItems="center" gridGap="12px">
+              <CustomSelect
+                placeholder={t("file.choose_column")}
+                value={columns.desc_col}
+                label={t("column.desc_col")}
+                options={getColumnsSelectOptions("desc_col")}
+                onChange={onColumnSelect("desc_col")}
+                onClear={onColumnSelectClear("desc_col")}
+              />
+              <Box display="flex" justifyContent="center" style={{ flexGrow: 1 }}>
+                <Button
+                  variant="contained"
+                  className={clsx(appTheme.buttonCreate, classes.priceButton)}
+                  onClick={onShowPriceBreaks}
+                >
+                  Price breaks
+                  <KeyboardArrowDownIcon className={clsx(classes.priceArrow, { active: isShowPriceBreaks })} />
+                </Button>
+              </Box>
+            </Box>
+            <div />
+            {/* <div> */}
+            {/*  <CustomSelect */}
+            {/*    placeholder={t("file.choose_column")} */}
+            {/*    value={columns.sku_col} */}
+            {/*    label={t("column.sku_col")} */}
+            {/*    options={getColumnsSelectOptions("sku_col")} */}
+            {/*    onChange={onColumnSelect("sku_col")} */}
+            {/*    onClear={onColumnSelectClear("sku_col")} */}
+            {/*  /> */}
+            {/* </div> */}
+          </div>
+          {isShowPriceBreaks && (
+            <>
+              <h3 className={classes.title}>Price breaks:</h3>
+              <div className={`${classes.selectors} test-file-columns`}>
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.quantity_col}
+                    label={t("column.quantity_col")}
+                    options={getColumnsSelectOptions("quantity_col")}
+                    onChange={onColumnSelect("quantity_col")}
+                    onClear={onColumnSelectClear("quantity_col")}
+                  />
+                </div>
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.price_col}
+                    label={`${t("column.price_col")} 1`}
+                    options={getColumnsSelectOptions("price_col")}
+                    onChange={onColumnSelect("price_col")}
+                    onClear={onColumnSelectClear("price_col")}
+                  />
+                </div>
+                <div />
+                <div />
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.quantity_2_col}
+                    label={t("column.quantity_2_col")}
+                    options={getColumnsSelectOptions("quantity_2_col")}
+                    onChange={onColumnSelect("quantity_2_col")}
+                    onClear={onColumnSelectClear("quantity_2_col")}
+                  />
+                </div>
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.price_2_col}
+                    label={t("column.price_2_col")}
+                    options={getColumnsSelectOptions("price_2_col")}
+                    onChange={onColumnSelect("price_2_col")}
+                    onClear={onColumnSelectClear("price_2_col")}
+                  />
+                </div>
+                <div />
+                <div />
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.quantity_3_col}
+                    label={t("column.quantity_3_col")}
+                    options={getColumnsSelectOptions("quantity_3_col")}
+                    onChange={onColumnSelect("quantity_3_col")}
+                    onClear={onColumnSelectClear("quantity_3_col")}
+                  />
+                </div>
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.price_3_col}
+                    label={t("column.price_3_col")}
+                    options={getColumnsSelectOptions("price_3_col")}
+                    onChange={onColumnSelect("price_3_col")}
+                    onClear={onColumnSelectClear("price_3_col")}
+                  />
+                </div>
+                <div />
+                <div />
+              </div>
+            </>
+          )}
+          {/* <div className={classes.startingRowInfo}> */}
+          {/*  <FormControlLabel */}
+          {/*    control={<Checkbox name="noheader_row" onChange={onFullexportChange} checked={fullexport} />} */}
+          {/*    label={t("column.noheader_row")} */}
+          {/*  /> */}
+          {/* </div> */}
+          <div className={classes.startingRowInfo}>
+            <Alert icon={<ErrorOutlineIcon />} severity="success">
+              <div>
+                <span>
+                  <i>{startingRow}</i> —{" "}
+                </span>
+                <span style={{ fontWeight: 600 }}>{t("file.hint")}</span>
+              </div>
+            </Alert>
+          </div>
         </div>
-      </div>
+
+        <div>
+          <Box display="flex" alignItems="center" justifyContent="flex-end">
+            <Button
+              style={{ marginLeft: 12, minWidth: 150 }}
+              variant="contained"
+              className={appTheme.buttonCreate}
+              onClick={onUpload}
+            >
+              <PublishIcon className={classes.fileUploadIc} /> {t("upload.upload")}
+            </Button>
+          </Box>
+          <Box display="flex" alignItems="center" justifyContent="flex-end" mt="8px" ml="8px">
+            <span style={{ wordBreak: "break-word" }}>{file.name}</span>
+            <HighlightOffIcon className={classes.fileRemove} onClick={onFileRemove} />
+          </Box>
+        </div>
+      </Box>
       {/* Using tabs is temporary hidden, a first tab is selected automatically */}
       {false && !!sheetNames.length && (
         <Tabs

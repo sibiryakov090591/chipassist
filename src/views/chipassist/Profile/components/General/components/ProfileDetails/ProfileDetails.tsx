@@ -14,11 +14,26 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   content: {
     display: "flex",
     alignItems: "center",
+    textAlign: "center",
     flexDirection: "column",
-    textAlgin: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "row",
+    },
+  },
+  contactData: {
+    marginTop: 12,
+    wordBreak: "break-word",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 0,
+      marginLeft: 12,
+      textAlign: "start",
+    },
   },
   name: {
-    marginTop: theme.spacing(1),
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 20,
+      marginBottom: 2,
+    },
   },
   email: {
     color: theme.palette.app.blue800,
@@ -29,6 +44,10 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     cursor: "pointer",
     height: 100,
     width: 100,
+    [theme.breakpoints.down("xs")]: {
+      height: 55,
+      width: 55,
+    },
   },
   removeBotton: {
     width: "100%",
@@ -62,21 +81,23 @@ const ProfileDetails = () => {
           <input {...getInputProps()} />
           <Avatar className={classes.avatar} src={profileInfo.avatar} />
         </div>
-        <Typography className={classes.name} gutterBottom variant="h3">
-          {profileInfo.firstName} {profileInfo.lastName}
-        </Typography>
-        <Typography className={classes.email} gutterBottom>
-          {profileInfo.email}
-        </Typography>
+        <div className={classes.contactData}>
+          <Typography className={classes.name} gutterBottom variant="h3">
+            {profileInfo.firstName} {profileInfo.lastName}
+          </Typography>
+          <Typography className={classes.email} gutterBottom>
+            {profileInfo.email}
+          </Typography>
+        </div>
       </CardContent>
 
-      <CardActions>
-        {profileInfo && profileInfo.avatar && (
+      {profileInfo && profileInfo.avatar && (
+        <CardActions>
           <Button className={classes.removeBotton} variant="text" disabled={isRemovingAvatar} onClick={handleRemove}>
             {isRemovingAvatar ? t("removing") : t("remove_pic")}
           </Button>
-        )}
-      </CardActions>
+        </CardActions>
+      )}
     </Card>
   );
 };

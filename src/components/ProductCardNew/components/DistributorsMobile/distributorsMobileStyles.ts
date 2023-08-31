@@ -38,10 +38,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     tdSeller: {
+      wordBreak: "break-word",
       width: "50%",
     },
     tdPrice: {
       width: "25%",
+      whiteSpace: "nowrap",
     },
     tdStock: {
       width: "25%",

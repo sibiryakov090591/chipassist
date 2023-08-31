@@ -4,7 +4,11 @@ export const useStyles = makeStyles((theme) => ({
   selectWrap: {
     display: "flex",
     alignItems: "center",
-    width: "100%",
+    width: 185,
+    maxWidth: 200,
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
     "& > div": {
       width: "100%",
     },

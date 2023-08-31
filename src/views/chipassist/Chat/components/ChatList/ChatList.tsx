@@ -46,7 +46,11 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
 
   const selectItemHandler = (item: any) => () => {
     if (item.id !== selectedChat?.id) dispatch(selectChat(item));
-    if (isXsDown) onShowList(false);
+    if (isXsDown) {
+      const messagesElem = document.getElementById("chat-messages");
+      if (messagesElem) messagesElem.style.display = "flex";
+      onShowList(false);
+    }
   };
 
   const onScrollLoading = () => {
@@ -56,7 +60,13 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   };
 
   const leftSwipeAction = () => {
-    if (selectedChat?.id) onShowList(false);
+    if (selectedChat?.id) {
+      if (isXsDown) {
+        const messagesElem = document.getElementById("chat-messages");
+        if (messagesElem) messagesElem.style.display = "flex";
+      }
+      onShowList(false);
+    }
   };
 
   return (
@@ -117,7 +127,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                 <div className={classes.itemInner}>
                   <Box display="flex" justifyContent="space-between">
                     <div className={classes.title}>
-                      <div className={classes.sellerName}>{partNumber}</div>
+                      <div className={classes.ellipsisText}>{partNumber}</div>
                       {!!unreadMessages && (
                         <div className={classes.unreadCount}>{unreadMessages > 99 ? "99+" : unreadMessages}</div>
                       )}
@@ -127,12 +137,12 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                       {/* <Status status="Requested" /> */}
                     </Box>
                   </Box>
-                  <div className={classes.message}>
+                  <div className={classes.ellipsisText}>
                     {lastMessage?.text ||
                       (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                   </div>
-                  <Box display="flex" justifyContent="space-between" flexWrap="wrap" className={classes.info}>
-                    <div>{name}</div>
+                  <Box display="flex" justifyContent="space-between" className={classes.info}>
+                    <div className={classes.ellipsisText}>{name}</div>
                     {!!quantity && !!price && (
                       <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
                     )}

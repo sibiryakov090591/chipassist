@@ -137,7 +137,14 @@ const SupplierResponseApp = () => {
             <Route path="/" element={<Navigate to="/supplier-response" />} />
             <Route path="/supplier-response/*" element={<SupplierResponse />} />
             <Route path="/statistics" element={<Statistics />} />
-            <Route path="/messages" element={<ChatPage />} />
+            <Route
+              path="/messages"
+              element={
+                <PrivateRoute isAuthenticated={isAuthenticated}>
+                  <ChatPage />
+                </PrivateRoute>
+              }
+            />
             <Route path="/auth/login" element={<Login />} />
             <Route
               path="/logout"

@@ -28,7 +28,7 @@ const SupplierSelect: React.FC<Props> = ({ onChangePartner, selectedPartner, par
   return (
     <div className={clsx(classes.supplier, { flexible: partners?.length > 1 })}>
       {!isXsDown && "You are logged in as "}
-      {partners.length > 1 ? (
+      {partners?.length > 1 ? (
         <TextField
           className={classes.partnerSelect}
           variant="outlined"

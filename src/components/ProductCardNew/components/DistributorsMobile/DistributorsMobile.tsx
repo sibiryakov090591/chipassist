@@ -5,7 +5,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
-import { Product, Stockrecord } from "@src/store/products/productTypes";
+import { Stockrecord } from "@src/store/products/productTypes";
 import { getDynamicMoq, getPrice } from "@src/utils/product";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
@@ -16,12 +16,11 @@ import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
-  product: Product;
   sortedStockrecords: Stockrecord[];
-  sellerMessageOpenModal: (sellerId: number, sellerName: string) => () => void;
+  sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
 }
 
-const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal, product }) => {
+const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal }) => {
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
 
   const { t } = useI18n("product");
@@ -36,11 +35,6 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
   const handleChange = (id: number) => () => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-
-  // const datacodeAttribute = product.attributes?.find((v) => v.code === "datecode" || v.name === "Date Code");
-  const packageAttribute = product?.attributes?.find(
-    (v) => (v.name === "Case/Package" && !!v.value) || v.name === "Packaging",
-  );
 
   const visitSellerHandler = (seller: Seller, url: string) => () => {
     dispatch(
@@ -68,7 +62,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
             sortedStockrecords.map((val, index) => {
               const dynamicMoq = getDynamicMoq(val);
               const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-              const isShowProductLink = !!val.product_url || !!seller;
+              const isShowProductLink = !!val.product_url || !!seller?.url;
               const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1];
               const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
@@ -130,7 +124,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             </div>
                             <div>
                               <div className={classes.detailsLabel}>Package</div>
-                              <div>{packageAttribute?.value || "-"}</div>
+                              <div>{val.packaging || "-"}</div>
                             </div>
                             <div className={classes.buttonColumn}>
                               {isShowProductLink ? (
@@ -155,7 +149,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                                 <Button
                                   variant="contained"
                                   className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                                  onClick={sellerMessageOpenModal(val.partner, val.partner_name)}
+                                  onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
                                   size="small"
                                 >
                                   Contact seller
@@ -175,9 +169,10 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                                         <td className={classes.detailsAmount}>
                                           {formatMoney(price.amount, 0, ".", "`")}
                                         </td>
-                                        <td className={classes.detailsCurrency}>{currency?.symbol}</td>
                                         <td className={classes.detailsPrice}>
-                                          {formatMoney(currencyPrice(price.price, val.price_currency))}
+                                          {`${currency?.symbol} ${formatMoney(
+                                            currencyPrice(price.price, val.price_currency),
+                                          )}`}
                                         </td>
                                       </tr>
                                     );

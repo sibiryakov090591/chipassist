@@ -52,7 +52,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         display: "flex",
       },
     },
-    upc: {
+    title: {
       fontSize: 22,
       color: "#345",
       marginBottom: 4,
@@ -60,6 +60,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     seller: {
       color: "#737373",
       fontSize: 12,
+    },
+    customer: {
+      fontSize: 14,
+      color: "#456",
+      "& span": {
+        fontWeight: "bold",
+        textDecoration: "underline",
+      },
     },
     showDetailsIcon: {
       cursor: "pointer",

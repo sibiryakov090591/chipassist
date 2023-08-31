@@ -387,6 +387,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       padding: 16,
     },
   },
+  currencyButton: {
+    backgroundColor: "#f4f4f4",
+  },
   rightControls: {
     display: "flex",
     alignItems: "center",

@@ -39,6 +39,7 @@ import Sticky from "react-sticky-el";
 import BomTableRowNew from "@src/views/chipassist/Bom/components/BomViewNew/BomEditor/BomTableRow/BomTableRowNew";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import TableHeadLabel, { parseOrderValues } from "../../TableHeadLabel/TableHeadLabel";
 import { useStyles } from "./style";
 import CheckoutModal from "./CheckoutModal/CheckoutModal";
@@ -353,7 +354,11 @@ const BomEditor: React.FC<Props> = (props) => {
               <Checkbox
                 className={classes.headerCheckbox}
                 onChange={onApproveAllItems}
-                checked={!rows.some((item) => !item.errors && !item.approved)}
+                checked={
+                  !rows
+                    .filter((item) => item.part_number && item.quantity)
+                    .some((item) => !item.errors && !item.approved)
+                }
                 name="approved"
                 disabled={disabledCheckbox}
               />
@@ -479,6 +484,9 @@ const BomEditor: React.FC<Props> = (props) => {
               <Box display="flex" justifyContent="space-between">
                 <div></div>
                 <div className={classes.rightControls}>
+                  <Box mr="12px">
+                    <FilterCurrency className={classes.currencyButton} />
+                  </Box>
                   {!!renderPageSizeSelect && (
                     <div style={{ display: "flex", alignItems: "center" }}>
                       {t("common.show_by")}:

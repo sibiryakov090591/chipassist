@@ -44,6 +44,7 @@ export const ChipassistHomePage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch = useAppDispatch();
 
   const aboutUsRef = React.useRef(null);
@@ -177,14 +178,27 @@ export const ChipassistHomePage = () => {
             <Grid container spacing={3} className={classes.heroMain}>
               <Grid item xs={12} md={6}>
                 <Box className={classes.heroSearchBlock}>
-                  <h1 className={classes.heroTitle}>
-                    Global marketplace for <br />
-                    <span className={classes.blueColor}>simple purchases of electronic components</span>
-                  </h1>
-                  <h2 className={classes.heroSubTitle}>
-                    We believe finding electronic components should be easy. Shop across distributors, manufacturers,
-                    and parts, or compare pricing and monitor inventory.
-                  </h2>
+                  {!isXsDown ? (
+                    <>
+                      <h1 className={classes.heroTitle}>
+                        Global marketplace for <br />
+                        <span className={classes.blueColor}>simple purchases of electronic components</span>
+                      </h1>
+                      <h2 className={classes.heroSubTitle}>
+                        We believe finding electronic components should be easy. Shop across distributors,
+                        manufacturers, and parts, or compare pricing and monitor inventory.
+                      </h2>
+                    </>
+                  ) : (
+                    <>
+                      <h1 className={classes.heroTitle}>
+                        Request any part number <span className={classes.blueColor}>in few clicks</span>
+                      </h1>
+                      <h2 className={classes.heroSubTitle}>
+                        Shop across distributors, manufacturers, and parts. Compare pricing and monitor inventory.
+                      </h2>
+                    </>
+                  )}
                   <Hidden smDown>
                     <SearchSuggestion
                       searchInputClass={classes.searchInput}
@@ -193,12 +207,12 @@ export const ChipassistHomePage = () => {
                       searchClearClass={classes.clearSearchIcon}
                       isHomePageSuggestions={true}
                     />
-                    <TrySearchPn
-                      partNumbers={partNumberExamples || partNumbers}
-                      textClassName={classes.tryP}
-                      pnClassName={classes.trySpan}
-                    />
                   </Hidden>
+                  <TrySearchPn
+                    partNumbers={partNumberExamples || partNumbers}
+                    textClassName={classes.tryP}
+                    pnClassName={classes.trySpan}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>

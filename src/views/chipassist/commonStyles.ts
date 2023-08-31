@@ -89,9 +89,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   closeButton: {
     position: "absolute",
-    right: theme.spacing(2),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
+    right: 27,
+    top: 19,
+    borderRadius: "50ch",
+    fontWeight: "bold",
+    padding: "0 5px 0 10px",
+    textTransform: "initial",
   },
 }));
 

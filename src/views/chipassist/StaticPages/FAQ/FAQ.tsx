@@ -4,6 +4,8 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useStyles from "@src/views/chipassist/StaticPages/FAQ/styles";
 import { Container, Grid } from "@material-ui/core";
 import CustomAccordion from "@src/views/chipassist/StaticPages/FAQ/components/CustomAccordion";
+import { Link } from "react-router-dom";
+import useAppTheme from "@src/theme/useAppTheme";
 
 const userFAQ = [
   {
@@ -61,6 +63,7 @@ const distributorFAQPart2 = [
 const FAQ = () => {
   const { t } = useI18n("static_pages.faq");
   const classes = useStyles();
+  const appTheme = useAppTheme();
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -82,7 +85,25 @@ const FAQ = () => {
                 <CustomAccordion>
                   {{
                     summary: <p className={classes.question}>{t(element.label_question)}</p>,
-                    details: <p className={classes.answer}>{t(element.label_answer)} </p>,
+                    details: (
+                      <p className={classes.answer}>
+                        {element.label_answer === "user_answer_3" ? (
+                          <>
+                            You have two options. You can use our{" "}
+                            <Link to={`/rfq-list-quotes`} className={appTheme.hyperlink}>
+                              group RFQ feature
+                            </Link>{" "}
+                            sending a request for up to 20 products at once. Also you can upload your{" "}
+                            <Link to={`/bom/create-file`} className={appTheme.hyperlink}>
+                              BOM list
+                            </Link>{" "}
+                            with up to 100 lines on a free account and up to 1000 lines on a paid account.
+                          </>
+                        ) : (
+                          t(element.label_answer)
+                        )}
+                      </p>
+                    ),
                   }}
                 </CustomAccordion>
               </Grid>

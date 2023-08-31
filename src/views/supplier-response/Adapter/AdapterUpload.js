@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Container } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
-import PublishIcon from "@material-ui/icons/Publish";
 import DataUsageIcon from "@material-ui/icons/DataUsage";
 import DoneIcon from "@material-ui/icons/Done";
 import Dropzone from "react-dropzone";
@@ -21,8 +20,6 @@ import {
   updateMisc,
   uploadFileThunk,
 } from "@src/store/adapter/adapterActions";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import useAppTheme from "@src/theme/useAppTheme";
 import Preloader from "@src/components/Preloader/Preloader";
 import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
@@ -87,10 +84,10 @@ const columnIndexes = {
 const AdapterUpload = () => {
   const classes = useStyles();
   const requestsClasses = useRequestsStyles();
-  const appTheme = useAppTheme();
   const dispatch = useDispatch();
   const { t } = useI18n("adapter");
 
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const upload = useAppSelector((state) => state.adapter.upload);
   const settings = useAppSelector((state) => state.adapter.settings);
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
@@ -263,6 +260,11 @@ const AdapterUpload = () => {
           <h1 style={{ marginBottom: 12 }} className={requestsClasses.title}>
             Data file upload
           </h1>
+          {isAuthenticated && !partners?.length && (
+            <Box p="60px 0" style={{ textAlign: "center", fontWeight: "bold" }}>
+              You can&apos;t upload files as you are not a supplier
+            </Box>
+          )}
           {selectedPartner && (
             <SupplierSelect
               selectedPartner={selectedPartner}
@@ -285,45 +287,50 @@ const AdapterUpload = () => {
                 </div>
               </Box>
             ))}
-            {file !== null && (
-              <Box>
-                <div className={classes.file}>
-                  <div className={classes.fileName}>
-                    <AttachFileIcon className={classes.fileIc} />
-                    {file.name}
-                  </div>
-                  {upload.uploading && (
-                    <div className={classes.fileUploadingWindow}>
-                      <div className={classes.fileUploadingWindowHeader}>
-                        <DataUsageIcon className={classes.fileUploading} />
-                        <span>{t("upload.uploading")}</span>
-                      </div>
-                      <div className={classes.fileUploadingWindowDesc}>
-                        <span>{t("upload.uploading_description")}</span>
-                      </div>
-                    </div>
-                  )}
-                  {!!upload.error && (
-                    <Alert severity="error">
-                      <span className={classes.fileUploadError}>{upload.error}</span>
-                    </Alert>
-                  )}
-                  {
-                    <Button
-                      style={{ marginLeft: 12, minWidth: 100 }}
-                      variant="contained"
-                      className={appTheme.buttonCreate}
-                      onClick={onUpload}
-                    >
-                      <PublishIcon className={classes.fileUploadIc} /> {t("upload.upload")}
-                    </Button>
-                  }
-                  <HighlightOffIcon className={classes.fileRemove} onClick={onFileRemove} />
-                </div>
-              </Box>
-            )}
+            {/* {file !== null && ( */}
+            {/*  <Box> */}
+            {/*    <div className={classes.file}> */}
+            {/*      <div className={classes.fileName}> */}
+            {/*        <AttachFileIcon className={classes.fileIc} /> */}
+            {/*        {file.name} */}
+            {/*      </div> */}
+            {/*      {upload.uploading && ( */}
+            {/*        <div className={classes.fileUploadingWindow}> */}
+            {/*          <div className={classes.fileUploadingWindowHeader}> */}
+            {/*            <DataUsageIcon className={classes.fileUploading} /> */}
+            {/*            <span>{t("upload.uploading")}</span> */}
+            {/*          </div> */}
+            {/*          <div className={classes.fileUploadingWindowDesc}> */}
+            {/*            <span>{t("upload.uploading_description")}</span> */}
+            {/*          </div> */}
+            {/*        </div> */}
+            {/*      )} */}
+            {/*      {!!upload.error && ( */}
+            {/*        <Alert severity="error"> */}
+            {/*          <span className={classes.fileUploadError}>{upload.error}</span> */}
+            {/*        </Alert> */}
+            {/*      )} */}
+            {/*      { */}
+            {/*        <Button */}
+            {/*          style={{ marginLeft: 12, minWidth: 100 }} */}
+            {/*          variant="contained" */}
+            {/*          className={appTheme.buttonCreate} */}
+            {/*          onClick={onUpload} */}
+            {/*        > */}
+            {/*          <PublishIcon className={classes.fileUploadIc} /> {t("upload.upload")} */}
+            {/*        </Button> */}
+            {/*      } */}
+            {/*      <HighlightOffIcon className={classes.fileRemove} onClick={onFileRemove} /> */}
+            {/*    </div> */}
+            {/*  </Box> */}
+            {/* )} */}
             {file !== null && (
               <>
+                {!!upload.error && (
+                  <Alert severity="error">
+                    <span className={classes.fileUploadError}>{upload.error}</span>
+                  </Alert>
+                )}
                 {!!upload.fileErrors?.length && (
                   <Alert severity="error" style={{ marginTop: 15 }}>
                     <ul className={classes.fileErrorsList}>
@@ -359,6 +366,8 @@ const AdapterUpload = () => {
                   onInputChange={onInputChange}
                   onFullexportChange={() => setFullexport((prevState) => !prevState)}
                   onStartingRowChange={onStartingRowChange}
+                  onUpload={onUpload}
+                  onFileRemove={onFileRemove}
                 />
               </>
             )}
@@ -400,6 +409,17 @@ const AdapterUpload = () => {
               </Box>
             )}
           </>
+        )}
+        {upload.uploading && (
+          <div className={classes.fileUploadingWindow}>
+            <div className={classes.fileUploadingWindowHeader}>
+              <DataUsageIcon className={classes.fileUploading} />
+              <span>{t("upload.uploading")}</span>
+            </div>
+            <div className={classes.fileUploadingWindowDesc}>
+              <span>{t("upload.uploading_description")}</span>
+            </div>
+          </div>
         )}
       </Container>
     </Page>

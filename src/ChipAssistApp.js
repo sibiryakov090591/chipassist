@@ -277,7 +277,14 @@ const ChipAssistApp = () => {
                 </Suspense>
               }
             />
-            <Route path="/messages" element={<ChatPage />} />
+            <Route
+              path="/messages"
+              element={
+                <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
+                  <ChatPage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/parts/*"
               element={
@@ -541,7 +548,7 @@ const ChipAssistApp = () => {
           </Routes>
         </HomePage>
         {/* <FeedbackButton /> */}
-        <ScrollUpButton />
+        {window.location.pathname !== "/messages" && <ScrollUpButton />}
         <RFQModal />
         <SellerMessageModal />
         <ProgressModal />

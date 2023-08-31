@@ -1,11 +1,11 @@
 import React from "react";
 import Page from "@src/components/Page";
-import letter from "@src/images/suppliers_response/letter.png";
+// import letter from "@src/images/suppliers_response/letter.png";
 import requests_page from "@src/images/suppliers_response/requests_page.png";
 import export_img from "@src/images/suppliers_response/export.png";
 import exel from "@src/images/suppliers_response/exel.png";
 import better_price from "@src/images/suppliers_response/better_price.png";
-import SendIcon from "@material-ui/icons/Send";
+// import SendIcon from "@material-ui/icons/Send";
 import { Container, Grid } from "@material-ui/core";
 import clsx from "clsx";
 import { useStyles } from "./helpStyles";
@@ -24,21 +24,21 @@ const Help: React.FC = () => {
               and receive hundreds of selected RFQs from ChipAssist customers every day.
             </p>
           </div>
-          <h2 className={classes.title}>How does it work?</h2>
-          <Grid container spacing={4} className={classes.gridContainer}>
-            <Grid item sm={6} className={classes.gridItem}>
-              <div className={classes.icon}>
-                <SendIcon />
-              </div>
-              <p>
-                All our partners subscribed to our active RFQs list get a daily email with actual requests from our
-                partnering company <a href="https://elfaro.ee/">ELFARO</a>.
-              </p>
-            </Grid>
-            <Grid item sm={6} className={classes.rightColumn}>
-              <img className={clsx(classes.img, classes.letterImg)} src={letter} alt="letter" />
-            </Grid>
-          </Grid>
+          {/* <h2 className={classes.title}>How does it work?</h2> */}
+          {/* <Grid container spacing={4} className={classes.gridContainer}> */}
+          {/*  <Grid item sm={6} className={classes.gridItem}> */}
+          {/*    <div className={classes.icon}> */}
+          {/*      <SendIcon /> */}
+          {/*    </div> */}
+          {/*    <p> */}
+          {/*      All our partners subscribed to our active RFQs list get a daily email with actual requests from our */}
+          {/*      partnering company <a href="https://elfaro.ee/">ELFARO</a>. */}
+          {/*    </p> */}
+          {/*  </Grid> */}
+          {/*  <Grid item sm={6} className={classes.rightColumn}> */}
+          {/*    <img className={clsx(classes.img, classes.letterImg)} src={letter} alt="letter" /> */}
+          {/*  </Grid> */}
+          {/* </Grid> */}
         </Container>
       </section>
       <section className={classes.section}>

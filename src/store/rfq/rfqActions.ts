@@ -347,10 +347,11 @@ export const setSellerMessageData = (
   partNumber: string,
   sellerId: number,
   sellerName: string,
+  stockrecordId: number,
 ): RfqActionTypes => {
   return {
     type: actionTypes.SELLER_MESSAGE_MODAL_OPEN,
-    payload: { open, partNumber, sellerId, sellerName },
+    payload: { open, partNumber, sellerId, sellerName, stockrecordId },
   };
 };
 

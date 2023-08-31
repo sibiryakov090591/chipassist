@@ -9,6 +9,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
+      [theme.breakpoints.down("xs")]: {
+        display: "none",
+      },
     },
     messagesWrapper: {
       overflowY: "auto",
@@ -157,6 +160,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       left: "107%",
       fontSize: 14,
       color: "#384054",
+    },
+    chatImage: {
+      maxWidth: "90px",
+    },
+    emptyText: {
+      marginTop: 12,
+      fontWeight: 400,
+      maxWidth: 365,
+      textAlign: "center",
     },
   }),
 );

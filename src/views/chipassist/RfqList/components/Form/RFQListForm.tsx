@@ -165,7 +165,7 @@ const defaultRfqListState = (): RfqListFormState => ({
   errors: [],
 });
 
-export const RFQListForm = () => {
+export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }) => {
   const maxRfqRows = 10;
   const { t } = useI18n("rfq");
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -223,7 +223,7 @@ export const RFQListForm = () => {
         MPN: "",
         index: rfqListState.values.length,
         manufacturer: "",
-        quantity: null,
+        quantity: "",
         price: "",
         isDisabled: true,
       });
@@ -419,6 +419,7 @@ export const RFQListForm = () => {
   const handleRfqListChange = (e: any, index: number) => {
     if (isFirstRender) setIsFirstRender(false);
 
+    if (e.target.name === "MPN") e.target.value = e.target.value.toUpperCase();
     const { value, name } = e.target;
     const errors = [...rfqListState.errors];
 
@@ -555,6 +556,7 @@ export const RFQListForm = () => {
 
     dispatch(progressModalSetPartNumber(`${data[0].part_number}, ... `, "rfq_list"));
 
+    if (isModalMode) dispatch(changeMisc("before_unload_modal_has_sent", "true"));
     dispatch(changeMisc("rfq_list", { ...formState.values, comment: details, rfq_list: data }, formState.values.email));
 
     setIsLoading(true);
@@ -631,7 +633,11 @@ export const RFQListForm = () => {
         <Container maxWidth={"lg"}>
           <Box className={classes.listBox}>
             <Box display={"flex"} justifyContent={"space-between"} flexDirection={"row"} style={{ width: "100%" }}>
-              <h1 className={classes.titleH1}>Enter your quote list</h1>
+              {isModalMode ? (
+                <h1 className={classes.modalTitle}>Your list of requests:</h1>
+              ) : (
+                <h1 className={classes.titleH1}>Enter your quote list</h1>
+              )}
               <FilterCurrency />
             </Box>
             {rfqListState.values.map((elem, key) => (
@@ -835,7 +841,7 @@ export const RFQListForm = () => {
               <p style={{ color: "#456" }}>
                 If you already have an account you can <NavLink to={"/auth/login"}>login here</NavLink>
               </p>
-              <Container maxWidth={"lg"}>
+              <Container maxWidth={"lg"} style={isModalMode ? { padding: 0 } : {}}>
                 <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
                   <Box className={classes.formRow}>
                     <TextField
