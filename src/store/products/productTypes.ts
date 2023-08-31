@@ -13,6 +13,9 @@ export const CLEAR_PRODUCTS = "@products/CLEAR_PRODUCTS";
 export const SAVE_RFQS = "@products/SAVE_RFQS";
 export const CLEAR_RFQS = "@products/CLEAR_RFQS";
 
+export const SET_PRODUCT_INTO_VIEWPORT = "@products/SET_PRODUCT_INTO_VIEWPORT";
+export const SHOW_PRODUCT_REQUEST_HINT = "@products/SHOW_PRODUCT_REQUEST_HINT";
+export const DISABLE_PRODUCT_REQUEST_HINT = "@products/DISABLE_PRODUCT_REQUEST_HINT";
 export const LOAD_STOCK_LIST_S = "@products/LOAD_STOCK_LIST_S";
 
 export const LOAD_SELLERS_WITH_PRODUCT_LINK_R = "@products/LOAD_SELLERS_WITH_PRODUCT_LINK_R";
@@ -115,6 +118,10 @@ export interface ProductsState {
   sellersWithProductLink: Seller[];
   products: ProductStateItem[];
   productViewData: ProductStateItem;
+  requestHint: {
+    intoViewportProductId: number;
+    isShow: boolean;
+  };
   rfqData: RfqProductData;
 }
 
@@ -132,6 +139,19 @@ export interface ClearProducts {
 export interface SaveRfqs {
   type: typeof SAVE_RFQS;
   payload: RfqProductData;
+}
+
+export interface SetProductIntoViewport {
+  type: typeof SET_PRODUCT_INTO_VIEWPORT;
+  payload: number;
+}
+
+export interface ShowProductRequestHint {
+  type: typeof SHOW_PRODUCT_REQUEST_HINT;
+}
+
+export interface DisableProductRequestHint {
+  type: typeof DISABLE_PRODUCT_REQUEST_HINT;
 }
 
 export interface ClearRfqs {
@@ -176,4 +196,7 @@ export type ProductsActionsType =
   | SaveProducts
   | ClearProducts
   | SaveRfqs
+  | ShowProductRequestHint
+  | SetProductIntoViewport
+  | DisableProductRequestHint
   | ClearRfqs;

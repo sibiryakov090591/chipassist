@@ -3,62 +3,50 @@ import { Theme } from "@material-ui/core";
 import { AppTheme } from "@src/themes/AppTheme";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
-  popper: {
+  wrapper: {
+    position: "absolute",
+    pointerEvents: "none",
+    top: "-75%",
+    right: 0,
+    width: 300,
+    opacity: 0,
     zIndex: 1,
     backgroundColor: `${theme.palette.app.blue800}`,
     padding: "1em",
-    borderRadius: "3px",
+    borderRadius: "4px",
     color: `white`,
-    '&[x-placement*="top"] $arrow': {
-      bottom: 0,
-      left: 0,
-      marginBottom: "-0.9em",
-      width: "3em",
-      height: "1em",
-      "&::before": {
-        borderWidth: "1em 1em 0 1em",
-        borderColor: `${theme.palette.app.blue800} transparent transparent transparent`,
-      },
-    },
-  },
-
-  popperWrapper: {
-    zIndex: 1,
-    borderRadius: "3px",
-    color: `white`,
-    '&[x-placement*="top"] $arrow': {
-      bottom: 0,
-      left: 0,
-      marginBottom: "-0.9em",
-      width: "3em",
-      height: "1em",
-      "&::before": {
-        borderWidth: "1em 1em 0 1em",
-        borderColor: `${theme.palette.app.blue800} transparent transparent transparent`,
-      },
-    },
-  },
-
-  arrow: {
-    position: "absolute",
-    fontSize: 7,
-    width: "3em",
-    height: "3em",
+    transition: "all 250ms ease",
     "&::before": {
       content: '""',
-      margin: "auto",
       display: "block",
-      width: 0,
-      height: 0,
-      borderStyle: "solid",
+      position: "absolute",
+      bottom: "-4px",
+      right: 16,
+      width: 10,
+      height: 10,
+      transform: "rotate(45deg)",
+      backgroundColor: `${theme.palette.app.blue800}`,
     },
   },
-
+  active: {
+    top: "-93%",
+    opacity: 1,
+    pointerEvents: "initial",
+    animation: `$product-hint-shake 0.4s linear`,
+  },
   closeIcon: {
     fontSize: "1em",
     "&:hover": {
       cursor: "pointer",
     },
+  },
+  "@keyframes product-hint-shake": {
+    "0%": { transform: "rotate(6deg)" },
+    "20%": { transform: "rotate(-6deg)" },
+    "40%": { transform: "rotate(6deg)" },
+    "60%": { transform: "rotate(-6deg)" },
+    "80%": { transform: "rotate(6deg)" },
+    "100%": { transform: "rotate(0)" },
   },
 }));
 

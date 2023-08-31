@@ -1,52 +1,40 @@
-import React from "react";
-import Popper from "@material-ui/core/Popper";
+import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "@src/components/CustomPopper/styles";
-import styled, { keyframes } from "styled-components";
-import { swing } from "react-animations";
+import useAppSelector from "@src/hooks/useAppSelector";
+import { clsx } from "clsx";
+import { Paper } from "@material-ui/core";
 
-export const CustomPopper = (props: any) => {
-  const { showPopup, arrowRef, arrow, setArrow, handleClosePopper } = props;
+interface Props {
+  productId: number;
+}
 
-  const Bounce = styled.div`
-    animation: 400ms ${keyframes`${swing}`} 100ms;
-  `;
-
+export const CustomPopper: React.FC<Props> = ({ productId }) => {
   const classes = useStyles();
 
-  return (
-    <Popper
-      id={"popper"}
-      open={showPopup}
-      placement="top"
-      disablePortal={true}
-      modifiers={{
-        flip: {
-          enabled: false,
-        },
-        arrow: {
-          enabled: true,
-          element: arrow,
-        },
-      }}
-      anchorEl={arrowRef.current}
-      className={classes.popperWrapper}
-    >
-      <span className={classes.arrow} ref={setArrow} />
-      <Bounce>
-        <div
-          style={{ display: "flex", justifyContent: "space-evenly", flexDirection: "column" }}
-          className={classes.popper}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
-            <span>No appropriate offers?</span>
-            <CloseIcon className={classes.closeIcon} onClick={handleClosePopper} />
-          </div>
+  const { intoViewportProductId, isShow } = useAppSelector((state) => state.products.requestHint);
 
-          <p>Click this button and request the quotes.</p>
-        </div>
-      </Bounce>
-    </Popper>
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (isShow && intoViewportProductId) {
+      setOpen(intoViewportProductId === productId);
+    }
+  }, [isShow]);
+
+  const handleClosePopper = () => {
+    sessionStorage.setItem("product_request_hint_disabled", "true");
+    setOpen(false);
+  };
+
+  return (
+    <Paper elevation={3} className={clsx(classes.wrapper, { [classes.active]: open })}>
+      <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
+        <span>No appropriate offers?</span>
+        <CloseIcon className={classes.closeIcon} onClick={handleClosePopper} />
+      </div>
+      <p>Click this button and request the quotes.</p>
+    </Paper>
   );
 };
 

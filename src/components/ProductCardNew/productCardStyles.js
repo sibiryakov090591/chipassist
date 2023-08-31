@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/styles";
 export const useStyles = makeStyles((theme) => ({
   productCard: {
     width: "100%",
-    overflow: "hidden",
     "&+&": {
       marginTop: "2em",
     },
@@ -172,6 +171,11 @@ export const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.app.blue800,
       color: theme.palette.white,
     },
+  },
+  requestButtonWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
   },
   requestButton: {
     whiteSpace: "nowrap",

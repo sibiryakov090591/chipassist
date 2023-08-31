@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui/core";
 import constants from "@src/constants/constants";
@@ -33,8 +33,7 @@ import { ID_MASTER } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
-import useDebounce from "@src/hooks/useDebounce";
-import popperActions from "@src/store/popper/popperActions";
+import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -94,13 +93,11 @@ const SearchResults = () => {
   const { isNeedModalOpenAgain, sellerId, sellerName, partNumber } = useAppSelector(
     (state) => state.rfq.sellerMessageModal,
   );
-  const firstOnTheScreen = useAppSelector((state) => state.popper.firstOnTheScreen);
   // const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const inViewArray = useAppSelector((state) => state.popper.inViewArray);
+
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
-  const debouncedInViewArray = useDebounce(inViewArray, 500);
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
   const [steps] = useState<ReactourStep[]>([
@@ -134,35 +131,6 @@ const SearchResults = () => {
     },
   ]);
 
-  const startTimer = useRef<any>(null);
-  // const debouncedSetInViewArray = useDebounce(inViewArray, 500);
-  const [needToShow, setNeedToShow] = useState(false);
-
-  useEffect(() => {
-    dispatch(popperActions.initArray(products.length));
-  }, []);
-
-  useEffect(() => {
-    dispatch(popperActions.updateFirstOnTheScreen());
-  }, [debouncedInViewArray]);
-
-  useEffect(() => {
-    const isDisabled = sessionStorage.getItem("disable-popper");
-    if (needToShow) setNeedToShow(false);
-    if (!isDisabled) {
-      if (startTimer.current) {
-        clearTimeout(startTimer.current);
-      }
-      startTimer.current = setTimeout(() => {
-        setNeedToShow(true);
-      }, 3000);
-    }
-  }, [firstOnTheScreen]);
-
-  const handleClosePopper = () => {
-    sessionStorage.setItem("disable-popper", "true");
-    setNeedToShow(false);
-  };
   useEffect(() => {
     if (
       constants.id === ID_MASTER &&
@@ -199,6 +167,14 @@ const SearchResults = () => {
       dispatch(changeQueryAction(""));
       console.log(`SEARCH. Unmount search component. Query cleared. Token: ${getAuthToken()}`);
     };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!sessionStorage.getItem("product_request_hint_disabled")) {
+        dispatch(ShowProductRequestHint());
+      }
+    }, 5000);
   }, []);
 
   useEffect(() => {
@@ -388,9 +364,6 @@ const SearchResults = () => {
                           rfqData={rfq}
                           searchQuery={query}
                           id={`product-item-${key}`}
-                          showPopup={key === firstOnTheScreen && needToShow}
-                          handleClosePopper={handleClosePopper}
-                          numInArray={key}
                         />
                       ) : (
                         <ProductCard key={product.id} product={product} searchQuery={query} />
