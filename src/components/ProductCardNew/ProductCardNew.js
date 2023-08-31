@@ -52,7 +52,6 @@ const ProductCardNew = (props) => {
   //   setInCartCount(cartItem?.quantity || 0);
   // }, [cartItems]);
 
-  console.log("rerender product card");
   useEffect(() => {
     if (!rfq && rfqStockrecords.length) {
       const data = {};

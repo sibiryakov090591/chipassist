@@ -174,7 +174,7 @@ const SearchResults = () => {
       if (!sessionStorage.getItem("product_request_hint_disabled")) {
         dispatch(ShowProductRequestHint());
       }
-    }, 5000);
+    }, 10000);
   }, []);
 
   useEffect(() => {

@@ -34,9 +34,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
     onChange: (inView) => {
       if (!sessionStorage.getItem("product_rfq_hint_disabled") && inView) {
         dispatch(SetProductIntoViewport(product.id));
-        console.log("Show in viewport: ", product.id);
       }
-      if (!inView) console.log("leave viewport: ", product.id);
     },
   });
 
