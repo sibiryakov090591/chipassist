@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui/core";
 import constants from "@src/constants/constants";
@@ -33,6 +33,7 @@ import { ID_MASTER } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
+import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -97,7 +98,6 @@ const SearchResults = () => {
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
-
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
   const [steps] = useState<ReactourStep[]>([
@@ -131,40 +131,6 @@ const SearchResults = () => {
     },
   ]);
 
-  const [inViewArray, setInViewArray] = useState([...new Array(products.length).fill(false)]);
-  const startTimer = useRef<any>(null);
-  const [firstOnTheScreen, setFirstOnTheScreen] = useState(-1);
-  const [needToSHow, setNeedToShow] = useState(false);
-
-  useEffect(() => {
-    const isDisabled = sessionStorage.getItem("disable-popper");
-    setNeedToShow(false);
-    if (!isDisabled)
-      if (inViewArray) {
-        const firstNum = inViewArray.indexOf(true);
-        setNeedToShow(false);
-        if (firstNum !== firstOnTheScreen) {
-          setFirstOnTheScreen(firstNum);
-        }
-      }
-  }, [inViewArray]);
-
-  useEffect(() => {
-    const isDisabled = sessionStorage.getItem("disable-popper");
-    if (!isDisabled) {
-      if (startTimer.current) {
-        clearTimeout(startTimer.current);
-      }
-      startTimer.current = setTimeout(() => {
-        setNeedToShow(true);
-      }, 3000);
-    }
-  }, [firstOnTheScreen]);
-
-  const handleClosePopper = () => {
-    sessionStorage.setItem("disable-popper", "true");
-    setNeedToShow(false);
-  };
   useEffect(() => {
     if (
       constants.id === ID_MASTER &&
@@ -201,6 +167,14 @@ const SearchResults = () => {
       dispatch(changeQueryAction(""));
       console.log(`SEARCH. Unmount search component. Query cleared. Token: ${getAuthToken()}`);
     };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!sessionStorage.getItem("product_request_hint_disabled")) {
+        dispatch(ShowProductRequestHint());
+      }
+    }, 10000);
   }, []);
 
   useEffect(() => {
@@ -390,15 +364,6 @@ const SearchResults = () => {
                           rfqData={rfq}
                           searchQuery={query}
                           id={`product-item-${key}`}
-                          onChangeHandler={(inView: boolean) => {
-                            setInViewArray((prevState) => [
-                              ...prevState.slice(0, key),
-                              inView,
-                              ...prevState.slice(key + 1, prevState.length),
-                            ]);
-                          }}
-                          showPopup={key === firstOnTheScreen && needToSHow}
-                          handleClosePopper={handleClosePopper}
                         />
                       ) : (
                         <ProductCard key={product.id} product={product} searchQuery={query} />

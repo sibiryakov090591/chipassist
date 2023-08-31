@@ -5,6 +5,10 @@ const initialState: actionTypes.ProductsState = {
   sellersWithProductLink: null,
   products: [],
   productViewData: null,
+  requestHint: {
+    intoViewportProductId: null,
+    isShow: false,
+  },
   rfqData: {
     results: [],
     count: 0,
@@ -39,6 +43,30 @@ export default function products(state = initialState, action: actionTypes.Produ
       return { ...state, sellersWithProductLink: action.response };
     case actionTypes.LOAD_SELLERS_WITH_PRODUCT_LINK_F:
       return { ...state, sellersWithProductLink: [] };
+    case actionTypes.SET_PRODUCT_INTO_VIEWPORT:
+      return {
+        ...state,
+        requestHint: {
+          ...state.requestHint,
+          intoViewportProductId: action.payload,
+        },
+      };
+    case actionTypes.DISABLE_PRODUCT_REQUEST_HINT:
+      return {
+        ...state,
+        requestHint: {
+          ...state.requestHint,
+          isShow: false,
+        },
+      };
+    case actionTypes.SHOW_PRODUCT_REQUEST_HINT:
+      return {
+        ...state,
+        requestHint: {
+          ...state.requestHint,
+          isShow: true,
+        },
+      };
     default:
       return state;
   }
