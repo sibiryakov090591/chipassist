@@ -470,7 +470,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
     return rfqListState.values
       .filter((elem) => elem.MPN !== "" && elem.quantity !== "")
       .map((rfq) => ({
-        part_number: rfq.MPN,
+        part_number: rfq.MPN.replace(/\s/g, ""),
         manufacturer: rfq.manufacturer,
         quantity: rfq.quantity,
         price: rfq.price !== "" ? rfq.price : 0,
