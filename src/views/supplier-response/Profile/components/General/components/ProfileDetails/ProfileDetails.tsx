@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { Card, CardContent, CardActions, Avatar, Typography, Button, Theme } from "@material-ui/core";
-import useAppDispatch from "@src/hooks/useAppDispatch";
-import { useDropzone } from "react-dropzone";
-import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { removeAvatarThunk, uploadAvatar } from "@src/store/profile/profileActions";
-import useAppSelector from "@src/hooks/useAppSelector";
+import { Card, CardContent, CardActions, Avatar, Button, Theme, TextField } from "@material-ui/core";
 import { AppTheme } from "@src/themes/AppTheme";
+import useAppTheme from "@src/theme/useAppTheme";
+import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -16,29 +14,10 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     textAlign: "center",
     flexDirection: "column",
+    paddingBottom: 0,
     [theme.breakpoints.down("xs")]: {
       flexDirection: "row",
     },
-  },
-  contactData: {
-    marginTop: 12,
-    wordBreak: "break-word",
-    [theme.breakpoints.down("xs")]: {
-      marginTop: 0,
-      marginLeft: 12,
-      textAlign: "start",
-    },
-  },
-  name: {
-    [theme.breakpoints.down("xs")]: {
-      fontSize: 20,
-      marginBottom: 2,
-    },
-  },
-  email: {
-    color: theme.palette.app.blue800,
-    fontWeight: "bold",
-    fontSize: "1.1rem",
   },
   avatar: {
     cursor: "pointer",
@@ -49,55 +28,53 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       width: 55,
     },
   },
-  removeBotton: {
-    width: "100%",
+  actions: {
+    justifyContent: "center",
   },
 }));
 
 const ProfileDetails = () => {
-  const profile = useAppSelector((state) => state.profile);
-  const { profileInfo, isRemovingAvatar } = profile;
-  const dispatch = useAppDispatch();
   const classes = useStyles();
-  const { t } = useI18n("profile");
+  const appTheme = useAppTheme();
+  const dispatch = useAppDispatch();
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
-    multiple: false,
-    onDrop: (acceptedFiles) => {
-      dispatch(uploadAvatar(acceptedFiles[0]));
-    },
-  });
+  const [url, setUrl] = useState("");
+  const [savedUrl, setSavedUrl] = useState("");
 
-  const handleRemove = (e: React.MouseEvent) => {
-    e.preventDefault();
-    dispatch(removeAvatarThunk());
+  const onUpdateLogo = () => {
+    setSavedUrl(url);
+    dispatch(
+      showBottomLeftMessageAlertAction({
+        text: "The logo was updated successfully!",
+        severity: "success",
+      }),
+    );
   };
 
   return (
     <Card className={clsx(classes.root)}>
       <CardContent className={classes.content}>
-        <div {...getRootProps({ className: "dropzone" })}>
-          <input {...getInputProps()} />
-          <Avatar className={classes.avatar} src={profileInfo.avatar} />
-        </div>
-        <div className={classes.contactData}>
-          <Typography className={classes.name} gutterBottom variant="h3">
-            {profileInfo.firstName} {profileInfo.lastName}
-          </Typography>
-          <Typography className={classes.email} gutterBottom>
-            {profileInfo.email}
-          </Typography>
-        </div>
+        <Avatar className={classes.avatar} src={savedUrl} />
+        <TextField
+          style={{ marginTop: 16 }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+          label={"Logo (url)"}
+          name="logo"
+          variant="outlined"
+          size="small"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
       </CardContent>
 
-      {profileInfo && profileInfo.avatar && (
-        <CardActions>
-          <Button className={classes.removeBotton} variant="text" disabled={isRemovingAvatar} onClick={handleRemove}>
-            {isRemovingAvatar ? t("removing") : t("remove_pic")}
-          </Button>
-        </CardActions>
-      )}
+      <CardActions className={classes.actions}>
+        <Button style={{ minWidth: 150 }} className={appTheme.buttonCreate} variant="contained" onClick={onUpdateLogo}>
+          Update
+        </Button>
+      </CardActions>
     </Card>
   );
 };
