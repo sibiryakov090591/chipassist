@@ -13,7 +13,7 @@ import Authorized from "../../HomePage/components/TopBar/components/ProfileMenu/
 import NotAuthorized from "../../HomePage/components/TopBar/components/ProfileMenu/NotAuthorized";
 import TopMenu from "./TopMenu/TopMenu";
 
-const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
+const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoLightBack}`;
 
 interface Props {
   className: string;
@@ -22,7 +22,6 @@ interface Props {
 const TopBar: React.FC<Props> = ({ className }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
   const currency = useAppSelector((state) => state.currency);
 
