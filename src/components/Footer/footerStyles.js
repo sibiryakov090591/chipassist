@@ -10,6 +10,11 @@ export const useStyles = makeStyles((theme) => ({
     paddingRight: `${scrollbarWidth}px`,
     backgroundColor: theme.palette.primary.main,
   },
+  supplierFooter: {
+    padding: "26px 0",
+    paddingRight: `${scrollbarWidth}px`,
+    backgroundColor: "#123",
+  },
   footerWrapper: {
     display: "flex",
     alignItems: "center",
