@@ -27,7 +27,7 @@ const Authorized = () => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const dispatch = useAppDispatch();
-
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(localStorage.getItem("email"));
   const anchorRef = React.useRef(null);
@@ -96,7 +96,10 @@ const Authorized = () => {
     <Box className={classes.showBy} display="flex">
       <Box display="flex" style={{ position: "relative" }}>
         <Button
-          className={clsx(classes.authButton, appTheme.topBarProfileButton)}
+          className={clsx(
+            isSupplierResponse ? classes.supplierAuthButton : classes.authButton,
+            appTheme.topBarProfileButton,
+          )}
           id="profilebutton"
           ref={anchorRef}
           aria-controls={open ? "profile-list-authorized" : undefined}
