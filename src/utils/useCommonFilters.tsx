@@ -1,5 +1,4 @@
 import { History } from "history";
-import { useLocation } from "react-router-dom";
 
 export function setUrl(
   history: History,
@@ -30,7 +29,7 @@ export function setUrl(
 export const setUrlGetString = (filters: { [index: string]: string | number }): string => {
   return Object.entries(filters).reduce((acc, [key, val]) => {
     if (!val) return acc;
-    if (!acc) return `?${key}=${val}`;
-    return `${acc}&${key}=${val}`;
+    if (!acc) return `?${key}=${encodeURIComponent(val)}`;
+    return `${acc}&${key}=${encodeURIComponent(val)}`;
   }, "");
 };

@@ -8,7 +8,6 @@ import Preloader from "@src/components/Preloader/Preloader";
 import { useStyles as useRequestsStyles } from "@src/views/supplier-response/Requests/supplierResponseStyles";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { loadMiscAction, saveMiscAction, updateMiscAction } from "@src/store/misc/miscActions";
-import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
 import Alert from "@material-ui/lab/Alert";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import { Link } from "react-router-dom";
@@ -19,7 +18,7 @@ import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@sr
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { v4 as uuid } from "uuid";
 import { DataHeader, DataTable, DataRow, DataField, DataValue, DataBody } from "@src/components/DataTable/DataTable";
-import { onChangePartner } from "@src/store/profile/profileActions";
+import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 import { useStyles } from "./statisticsStyles";
 import Paginate from "../../../components/Paginate";
 import StatisticItem from "./components/StatisticItem/StatisticItem";
@@ -40,7 +39,6 @@ const Statistics: React.FC = () => {
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("supplier_statistic_page_size"), false);
 
   const { isLoading, data } = useAppSelector((state) => state.supplierStatistics);
-  const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const currency = useAppSelector((state) => state.currency.selected);
@@ -77,13 +75,6 @@ const Statistics: React.FC = () => {
     }
   }, [data]);
 
-  const onChangePartnerHandler = (id: number) => {
-    const partner = partners?.find((p) => p.id === id);
-    if (partner) {
-      dispatch(onChangePartner(partner));
-    }
-  };
-
   const onChangePageSize = (value: string) => {
     if (!isLoading) {
       setFilters((prev) => ({ ...prev, page: 1, page_size: +value }));
@@ -119,13 +110,7 @@ const Statistics: React.FC = () => {
         <Container maxWidth="xl">
           <Box display="flex" flexDirection="column" alignItems="flex-start">
             <h1 className={requestsClasses.title}>Statistic of your responses</h1>
-            {selectedPartner && (
-              <SupplierSelect
-                selectedPartner={selectedPartner}
-                partners={partners}
-                onChangePartner={onChangePartnerHandler}
-              />
-            )}
+            <SupplierSelect />
           </Box>
           {isAuthenticated && selectedPartner === false && (
             <Alert className={requestsClasses.alert} severity="warning">

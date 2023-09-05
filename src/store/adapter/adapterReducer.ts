@@ -34,6 +34,7 @@ const alertsReducer = (state = initialState, action: AdapterActionTypes) => {
         isItemsLoading: false,
         itemsPagination: {
           count: action.response.count,
+          total_count: action.response.total_count,
           page: action.response.page,
           total_pages: action.response.total_pages,
         },
