@@ -79,7 +79,7 @@
       "sku_col": "SKU",
       "moq_col": "MOQ",
       "mpq_col": "MPQ",
-      "amount_col": "Склад",
+      "num_in_stock_col": "Склад",
       "quantity_col": "Quantity 1",
       "quantity_2_col": "Quantity 2",
       "quantity_3_col": "Quantity 3",
@@ -87,7 +87,7 @@
       "price_col": "Price",
       "price_2_col": "Price 2",
       "price_3_col": "Price 3",
-      "datecode": "Date code",
+      "datecode_col": "Date code",
       "manufacturer_col": "Manufacturer"
     }
   },
