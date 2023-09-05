@@ -26,6 +26,7 @@ const CSV_FORMAT = "CSV_FORMAT";
 const FileViewer = ({
   file,
   columns,
+  columnNames,
   fields,
   // fullexport,
   startingRow,
@@ -41,11 +42,10 @@ const FileViewer = ({
   const [data, setData] = useState({ columnsNames: [], rows: [] });
   const [sheetNames, setSheetNames] = useState([]);
   const [selectedColumn, setSelectedColumn] = useState(null);
-  const [isShowPriceBreaks, setIsShowPriceBreaks] = useState(false);
   // const [isHeader, setIsHeader] = useState(true);
   const [thereIsHeaders, setThereIsHeaders] = useState(false);
   const [timer, setTimer] = useState(null);
-  // const partners = useAppSelector((state) => state.profile?.profileInfo?.partners || []);
+  const [isShowPriceBreaks, setIsShowPriceBreaks] = useState(false);
   const dispatch = useDispatch();
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -67,8 +67,6 @@ const FileViewer = ({
 
     return fileFormat;
   };
-
-  const onShowPriceBreaks = () => setIsShowPriceBreaks((prev) => !prev);
 
   const getColumnsNames = (rows) => {
     const letters = [..."abcdefghijklmnopqrstuvwxyz"];
@@ -241,6 +239,8 @@ const FileViewer = ({
   //   }
   // }, [data, columns]);
 
+  const onShowPriceBreaks = () => setIsShowPriceBreaks((prev) => !prev);
+
   return (
     <div className={classes.fileView}>
       <Box display="flex" justifyContent="space-between">
@@ -253,7 +253,7 @@ const FileViewer = ({
                 value={columns.mpn_col}
                 label={
                   <>
-                    {t("column.mpn_col")} <span style={{ color: red[500] }}>*</span>
+                    {columnNames.mpn_col} <span style={{ color: red[500] }}>*</span>
                   </>
                 }
                 options={getColumnsSelectOptions("mpn_col")}
@@ -264,22 +264,22 @@ const FileViewer = ({
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.amount_col}
+                value={columns.num_in_stock_col}
                 label={
                   <>
-                    {t("column.amount_col")} <span style={{ color: red[500] }}>*</span>
+                    {columnNames.num_in_stock_col} <span style={{ color: red[500] }}>*</span>
                   </>
                 }
-                options={getColumnsSelectOptions("amount_col")}
-                onChange={onColumnSelect("amount_col")}
-                onClear={onColumnSelectClear("amount_col")}
+                options={getColumnsSelectOptions("num_in_stock_col")}
+                onChange={onColumnSelect("num_in_stock_col")}
+                onClear={onColumnSelectClear("num_in_stock_col")}
               />
             </div>
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
                 value={columns.datecode_col}
-                label={t("column.datecode")}
+                label={columnNames.datecode_col}
                 options={getColumnsSelectOptions("datecode_col")}
                 onChange={onColumnSelect("datecode_col")}
                 onClear={onColumnSelectClear("datecode_col")}
@@ -292,7 +292,7 @@ const FileViewer = ({
                   style={{ backgroundColor: "#f4f6f8" }}
                   placeholder={t("file.choose_column")}
                   value={columns.price_col}
-                  label={t("column.price_col")}
+                  label={columnNames.price_col}
                   options={getColumnsSelectOptions("price_col")}
                   onChange={onColumnSelect("price_col")}
                   onClear={onColumnSelectClear("price_col")}
@@ -307,7 +307,7 @@ const FileViewer = ({
               <CustomSelect
                 placeholder={t("file.choose_column")}
                 value={columns.moq_col}
-                label={t("column.moq_col")}
+                label={columnNames.moq_col}
                 options={getColumnsSelectOptions("moq_col")}
                 onChange={onColumnSelect("moq_col")}
                 onClear={onColumnSelectClear("moq_col")}
@@ -317,7 +317,7 @@ const FileViewer = ({
               <CustomSelect
                 placeholder={t("file.choose_column")}
                 value={columns.mpq_col}
-                label={t("column.mpq_col")}
+                label={columnNames.mpq_col}
                 options={getColumnsSelectOptions("mpq_col")}
                 onChange={onColumnSelect("mpq_col")}
                 onClear={onColumnSelectClear("mpq_col")}
@@ -327,7 +327,7 @@ const FileViewer = ({
               <CustomSelect
                 placeholder={t("file.choose_column")}
                 value={columns.manufacturer_col}
-                label={t("column.manufacturer_col")}
+                label={columnNames.manufacturer_col}
                 options={getColumnsSelectOptions("manufacturer_col")}
                 onChange={onColumnSelect("manufacturer_col")}
                 onClear={onColumnSelectClear("manufacturer_col")}
@@ -337,7 +337,7 @@ const FileViewer = ({
               <CustomSelect
                 placeholder={t("file.choose_column")}
                 value={columns.desc_col}
-                label={t("column.desc_col")}
+                label={columnNames.desc_col}
                 options={getColumnsSelectOptions("desc_col")}
                 onChange={onColumnSelect("desc_col")}
                 onClear={onColumnSelectClear("desc_col")}
@@ -358,7 +358,7 @@ const FileViewer = ({
             {/*  <CustomSelect */}
             {/*    placeholder={t("file.choose_column")} */}
             {/*    value={columns.sku_col} */}
-            {/*    label={t("column.sku_col")} */}
+            {/*    label={columnNames.sku_col} */}
             {/*    options={getColumnsSelectOptions("sku_col")} */}
             {/*    onChange={onColumnSelect("sku_col")} */}
             {/*    onClear={onColumnSelectClear("sku_col")} */}
@@ -373,7 +373,7 @@ const FileViewer = ({
                   <CustomSelect
                     placeholder={t("file.choose_column")}
                     value={columns.quantity_col}
-                    label={t("column.quantity_col")}
+                    label={columnNames.quantity_col}
                     options={getColumnsSelectOptions("quantity_col")}
                     onChange={onColumnSelect("quantity_col")}
                     onClear={onColumnSelectClear("quantity_col")}
@@ -383,7 +383,7 @@ const FileViewer = ({
                   <CustomSelect
                     placeholder={t("file.choose_column")}
                     value={columns.price_col}
-                    label={`${t("column.price_col")} 1`}
+                    label={`${columnNames.price_col} 1`}
                     options={getColumnsSelectOptions("price_col")}
                     onChange={onColumnSelect("price_col")}
                     onClear={onColumnSelectClear("price_col")}
@@ -395,7 +395,7 @@ const FileViewer = ({
                   <CustomSelect
                     placeholder={t("file.choose_column")}
                     value={columns.quantity_2_col}
-                    label={t("column.quantity_2_col")}
+                    label={columnNames.quantity_2_col}
                     options={getColumnsSelectOptions("quantity_2_col")}
                     onChange={onColumnSelect("quantity_2_col")}
                     onClear={onColumnSelectClear("quantity_2_col")}
@@ -405,7 +405,7 @@ const FileViewer = ({
                   <CustomSelect
                     placeholder={t("file.choose_column")}
                     value={columns.price_2_col}
-                    label={t("column.price_2_col")}
+                    label={columnNames.price_2_col}
                     options={getColumnsSelectOptions("price_2_col")}
                     onChange={onColumnSelect("price_2_col")}
                     onClear={onColumnSelectClear("price_2_col")}
@@ -417,7 +417,7 @@ const FileViewer = ({
                   <CustomSelect
                     placeholder={t("file.choose_column")}
                     value={columns.quantity_3_col}
-                    label={t("column.quantity_3_col")}
+                    label={columnNames.quantity_3_col}
                     options={getColumnsSelectOptions("quantity_3_col")}
                     onChange={onColumnSelect("quantity_3_col")}
                     onClear={onColumnSelectClear("quantity_3_col")}
@@ -427,7 +427,7 @@ const FileViewer = ({
                   <CustomSelect
                     placeholder={t("file.choose_column")}
                     value={columns.price_3_col}
-                    label={t("column.price_3_col")}
+                    label={columnNames.price_3_col}
                     options={getColumnsSelectOptions("price_3_col")}
                     onChange={onColumnSelect("price_3_col")}
                     onClear={onColumnSelectClear("price_3_col")}
@@ -459,7 +459,7 @@ const FileViewer = ({
         <div>
           <Box display="flex" alignItems="center" justifyContent="flex-end">
             <Button
-              style={{ marginLeft: 12, minWidth: 150 }}
+              style={{ marginLeft: 12, minWidth: 150, textTransform: "uppercase" }}
               variant="contained"
               className={appTheme.buttonCreate}
               onClick={onUpload}

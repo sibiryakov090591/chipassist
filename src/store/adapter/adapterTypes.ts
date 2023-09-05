@@ -21,10 +21,10 @@ export const DELETE_ITEM_F = "@adapter/DELETE_ITEM_F";
 export const DELETE_ITEM_ARRAY = [DELETE_ITEM_R, DELETE_ITEM_S, DELETE_ITEM_F];
 
 export interface AdapterItem {
-  id?: number;
-  title: string;
-  value_dec: number;
-  system_coeff: number;
+  id: number;
+  file: string;
+  status: number;
+  errors: any[];
 }
 export interface AdapterFileError {
   col: string;
@@ -36,6 +36,7 @@ export interface AdapterState {
   items: AdapterItem[];
   itemsPagination: {
     count: number;
+    total_count: number;
     page: number;
     total_pages: number;
   };
@@ -67,6 +68,7 @@ interface GetItemsSuccessAction {
     links: { next: string; previus: string };
     page: number;
     total_pages: number;
+    total_count: number;
     results: AdapterItem[];
   };
 }

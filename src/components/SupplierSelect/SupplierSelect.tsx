@@ -1,34 +1,43 @@
 import React from "react";
-import useAppTheme from "@src/theme/useAppTheme";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Partner } from "@src/store/profile/profileTypes";
 import TextField from "@material-ui/core/TextField";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import clsx from "clsx";
 import { Hidden } from "@material-ui/core";
-import { useStyles } from "../supplierResponseStyles";
+import { onChangePartner } from "@src/store/profile/profileActions";
+import { useDispatch } from "react-redux";
+import useAppSelector from "@src/hooks/useAppSelector";
+import { useStyles } from "./styles";
 
 interface Props {
-  selectedPartner: Partner;
-  partners: Partner[];
-  onChangePartner: (id: number) => void;
+  beforeChange?: any;
+  [key: string]: any;
 }
 
-const SupplierSelect: React.FC<Props> = ({ onChangePartner, selectedPartner, partners }) => {
+const SupplierSelect: React.FC<Props> = ({ beforeChange, ...rest }) => {
   const classes = useStyles();
-  const appTheme = useAppTheme();
+  const dispatch = useDispatch<any>();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
+  const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
+  const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
+
   const onChangeHandler = (e: React.ChangeEvent<any>) => {
-    onChangePartner(e.target.value);
+    if (beforeChange) beforeChange();
+    const id = e.target.value;
+    const partner = partners?.find((p) => p.id === id);
+    if (partner) {
+      dispatch(onChangePartner(partner));
+    }
   };
 
+  if (!selectedPartner) return null;
   return (
-    <div className={clsx(classes.supplier, { flexible: partners?.length > 1 })}>
+    <div className={clsx(classes.supplier, { flexible: partners?.length > 1 })} {...rest}>
       {!isXsDown && "You are logged in as "}
-      {partners?.length > 1 ? (
+      {partners.length > 1 ? (
         <TextField
           className={classes.partnerSelect}
           variant="outlined"
@@ -40,13 +49,7 @@ const SupplierSelect: React.FC<Props> = ({ onChangePartner, selectedPartner, par
         >
           {partners.map((p) => {
             return (
-              <MenuItem
-                key={p.id}
-                className={appTheme.selectMenuItem}
-                value={p.id}
-                selected={selectedPartner.id === p.id}
-                onClick={onChangeHandler}
-              >
+              <MenuItem key={p.id} value={p.id} selected={selectedPartner.id === p.id} onClick={onChangeHandler}>
                 {p.name}
               </MenuItem>
             );

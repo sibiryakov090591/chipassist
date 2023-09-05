@@ -47,10 +47,9 @@ import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import constants from "@src/constants/constants";
-import { onChangePartner } from "@src/store/profile/profileActions";
+import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
-import SupplierSelect from "./SupplierSelect/SupplierSelect";
 
 export interface ImportErrorItem {
   error: string;
@@ -87,7 +86,6 @@ const SupplierResponse: React.FC = () => {
   );
   // const all = useURLSearchParams("all", false, "true", false);
 
-  const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const rfqs = useAppSelector((state) => state.rfq.rfqs);
   const rfqResponseData = useAppSelector((state) => state.rfq.rfqResponseData);
@@ -310,13 +308,9 @@ const SupplierResponse: React.FC = () => {
     }
   };
 
-  const onChangePartnerHandler = (id: number) => {
-    const partner = partners?.find((p) => p.id === id);
-    if (partner) {
-      dispatch(onChangePartner(partner));
-      dispatch(clearSupplierResponseData());
-      setFileUploadErrors([]);
-    }
+  const beforeChangePartner = () => {
+    dispatch(clearSupplierResponseData());
+    setFileUploadErrors([]);
   };
 
   const onExportFile = () => {
@@ -354,13 +348,7 @@ const SupplierResponse: React.FC = () => {
           <Box className={classes.headerContainer} display="flex" justifyContent="space-between" alignItems="center">
             <Box display="flex" flexDirection="column" alignItems="flex-start">
               <h1 className={classes.title}>Please feedback your price and stock</h1>
-              {selectedPartner && (
-                <SupplierSelect
-                  selectedPartner={selectedPartner}
-                  partners={partners}
-                  onChangePartner={onChangePartnerHandler}
-                />
-              )}
+              <SupplierSelect beforeChange={beforeChangePartner} />
             </Box>
             {!isSmDown && (
               <div className={classes.fileActions}>
