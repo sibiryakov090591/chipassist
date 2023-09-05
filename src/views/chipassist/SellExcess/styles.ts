@@ -75,6 +75,15 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   textField: {
     marginBottom: 12,
   },
+  phone: {
+    margin: 13,
+    width: "100%",
+    position: "relative",
+    [theme.breakpoints.down(460)]: {
+      height: "37.63px",
+      margin: "8px 0",
+    },
+  },
   formTitleWrapper: {
     padding: "1.5rem",
     borderBottom: "1px solid #ededed",

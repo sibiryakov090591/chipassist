@@ -121,7 +121,6 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
   },
   fileUploadError: {
-    marginRight: 5,
     fontSize: 14,
   },
   fileUploadingWindow: {
@@ -279,6 +278,12 @@ export const useStyles = makeStyles((theme) => ({
   },
   fileSuccess: {
     color: "#8BC34A",
+  },
+  fileErrorsList: {
+    paddingLeft: 16,
+    "& span": {
+      fontWeight: "bold",
+    },
   },
 }));
 

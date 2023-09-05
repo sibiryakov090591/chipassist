@@ -5,6 +5,7 @@ import MuiCardHeader from "./MuiCardHeader";
 import MuiChip from "./MuiChip";
 import MuiIconButton from "./MuiIconButton";
 import MuiCheckbox from "./MuiCheckbox";
+import MuiFormControlLabel from "./MuiFormControlLabel";
 import MuiInputBase from "./MuiInputBase";
 import MuiLinearProgress from "./MuiLinearProgress";
 import MuiListItemIcon from "./MuiListItemIcon";
@@ -23,6 +24,7 @@ export default {
   MuiCardContent,
   MuiCardHeader,
   MuiCheckbox,
+  MuiFormControlLabel,
   MuiChip,
   MuiIconButton,
   MuiInputBase,

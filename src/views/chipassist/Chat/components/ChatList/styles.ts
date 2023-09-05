@@ -6,6 +6,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     leftColumn: {
       width: "25vw",
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      left: 0,
       display: "flex",
       flexDirection: "column",
       borderRight: "1px solid #D4D4D4",
@@ -13,10 +17,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       background: "#ffffff",
       [theme.breakpoints.down("md")]: {
         width: "35vw",
-        position: "absolute",
-        top: 0,
-        bottom: 0,
-        left: 0,
         pointerEvents: "none",
         transform: "translateX(-102%)",
         transition: "transform 550ms cubic-bezier(0.25, 1, 0.5, 1)",
@@ -75,11 +75,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: 14,
       overflow: "hidden",
     },
-    sellerName: {
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
     unreadCount: {
       marginLeft: 4,
       padding: "0 5px",
@@ -99,7 +94,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       lineHeight: "12px",
       fontSize: 12,
     },
-    message: {
+    ellipsisText: {
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -107,6 +102,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     info: {
       fontSize: 12,
       color: "#737373",
+      "& > *": {
+        whiteSpace: "nowrap",
+      },
     },
   }),
 );

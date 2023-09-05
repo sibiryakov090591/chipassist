@@ -13,7 +13,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import Reset from "@src/views/chipassist/Reset/Reset";
 import Maintenance from "@src/views/chipassist/Maintenance";
 import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
-import { getGeolocation, loadProfileInfoThunk } from "@src/store/profile/profileActions";
+import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
 import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
 import { checkUserActivityStatus, saveUtm } from "@src/store/common/commonActions";
 import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
@@ -118,7 +118,7 @@ const CatalogResults = lazy(() =>
 );
 
 const RfqList = lazy(() =>
-  lazyLoader(() => import(/* webpackChunkName: "catalogResults" */ "@src/views/chipassist/RfqList/RfqList")),
+  lazyLoader(() => import(/* webpackChunkName: "rfqList" */ "@src/views/chipassist/RfqList/RFQList")),
 );
 
 export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
@@ -140,6 +140,7 @@ const ChipAssistApp = () => {
   const dispatch = useAppDispatch();
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
+  const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
@@ -162,6 +163,19 @@ const ChipAssistApp = () => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (constants.id === ID_MASTER) {
+      let partner = false;
+      if (isAuthenticated && partners?.length) {
+        partner =
+          partners.find((p) => p.name === "Test Demo Supplier") ||
+          partners.find((p) => p.name === localStorage.getItem("selected_partner")) ||
+          partners[0];
+      }
+      dispatch(onChangePartner(partner));
+    }
+  }, [partners, isAuthenticated]);
 
   useEffect(() => {
     const utm = getUtm();
@@ -243,7 +257,7 @@ const ChipAssistApp = () => {
   }
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>
         <HomePage>
           <Routes location={location}>
@@ -263,7 +277,14 @@ const ChipAssistApp = () => {
                 </Suspense>
               }
             />
-            <Route path="/messages" element={<ChatPage />} />
+            <Route
+              path="/messages"
+              element={
+                <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
+                  <ChatPage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/parts/*"
               element={
@@ -495,7 +516,7 @@ const ChipAssistApp = () => {
             )}
             {constants.id !== ID_ICSEARCH && (
               <Route
-                path={"/RfqList"}
+                path={"/rfq-list-quotes"}
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <RfqList />
@@ -527,7 +548,7 @@ const ChipAssistApp = () => {
           </Routes>
         </HomePage>
         {/* <FeedbackButton /> */}
-        <ScrollUpButton />
+        {window.location.pathname !== "/messages" && <ScrollUpButton />}
         <RFQModal />
         <SellerMessageModal />
         <ProgressModal />

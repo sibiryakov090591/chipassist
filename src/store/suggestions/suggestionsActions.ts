@@ -9,12 +9,23 @@ export const onSuggestionsFetchRequested = (value: string) => {
         types: actionTypes.LOAD_SUGGESTIONS_ARRAY,
         promise: (client: ApiClientInterface) =>
           client
-            .post(`/search_ac/`, { data: { search: value }, cancelId: "search_ac" })
+            .get(`/search_ac/?search=${encodeURIComponent(value)}`, { cancelId: "search_ac" })
             .then((res) => res.data)
             .catch((e: any) => {
               console.log("***LOAD_SUGGESTIONS_ERROR", e);
               throw e;
             }),
+      });
+    }
+  };
+};
+
+export const onSuggestionFetchRequestedManufacturer = (MPN: string) => {
+  return (dispatch: Dispatch<any>) => {
+    if (MPN !== "") {
+      dispatch({
+        types: actionTypes.LOAD_SUGGESTIONS_ARRAY,
+        promise: (client: ApiClientInterface) => client.post(""),
       });
     }
   };

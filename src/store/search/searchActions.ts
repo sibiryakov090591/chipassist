@@ -153,6 +153,9 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: st
   const params =
     (urlParams &&
       Object.entries(urlParams).reduce((acc, val) => {
+        if (val[0] === "search") {
+          return `${acc ? `${acc}&` : "?"}${val[0]}=${encodeURIComponent(val[1])}`;
+        }
         return `${acc ? `${acc}&` : "?"}${val[0]}=${val[1]}`;
       }, "")) ||
     "";

@@ -41,7 +41,7 @@ const ProductCardNew = (props) => {
 
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
-  const [rfqStockrecords, setRfqStockrecords] = useState([]);
+  const [rfqStockrecords] = useState([]);
   const [showRfqStocks, setShowRfqStocks] = useState(false);
   const [searchQueryArray, setSearchQueryArray] = useState([]);
   const [mainImage, setMainImg] = useState(null);
@@ -151,8 +151,9 @@ const ProductCardNew = (props) => {
 
   useEffect(() => {
     if (sortedStockrecords) {
-      setAvailableStockrecords(sortedStockrecords.filter((sr) => isProductAvailable(sr, 1, ["No price"])));
-      setRfqStockrecords(sortedStockrecords.filter((sr) => !isProductAvailable(sr, 1, ["No price"])));
+      // setAvailableStockrecords(sortedStockrecords.filter((sr) => isProductAvailable(sr, 1, ["No price"])));
+      // setRfqStockrecords(sortedStockrecords.filter((sr) => !isProductAvailable(sr, 1, ["No price"])));
+      setAvailableStockrecords(sortedStockrecords);
     }
   }, [sortedStockrecords]);
 
@@ -161,7 +162,8 @@ const ProductCardNew = (props) => {
     [rfq],
   );
   const sellerMessageOpenModal = React.useCallback(
-    (sellerId, sellerName) => () => dispatch(setSellerMessageData(true, product.upc, sellerId, sellerName)),
+    (sellerId, sellerName, stockrecordId) => () =>
+      dispatch(setSellerMessageData(true, product.upc, sellerId, sellerName, stockrecordId)),
     [product],
   );
 
@@ -184,34 +186,39 @@ const ProductCardNew = (props) => {
   }, [shouldUpdateCard]);
 
   const requestButton = (className) => {
-    return isAuthenticated && !className && !!requestedQty ? (
-      <Tooltip
-        classes={{ tooltip: commonClasses.tooltip }}
-        title={
-          <div>
-            {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
-          </div>
-        }
-      >
-        <Button
-          variant="contained"
-          className={clsx(appTheme.buttonCreate, classes.requestButton)}
-          onClick={sendRfqOpenModal}
-        >
-          <Box display="flex" alignItems={"center"}>
-            Requested
-            <HelpOutlineOutlinedIcon className={classes.helpIcon} />
-          </Box>
-        </Button>
-      </Tooltip>
-    ) : (
-      <Button
-        variant="contained"
-        className={clsx(appTheme.buttonCreate, classes.requestButton, className)}
-        onClick={sendRfqOpenModal}
-      >
-        {"Get more quotes"}
-      </Button>
+    return (
+      <>
+        {isAuthenticated && !className && !!requestedQty ? (
+          <Tooltip
+            classes={{ tooltip: commonClasses.tooltip }}
+            title={
+              <div>
+                {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
+              </div>
+            }
+          >
+            <Button
+              variant="contained"
+              className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
+              onClick={sendRfqOpenModal}
+            >
+              <Box display="flex" alignItems={"center"}>
+                Requested
+                <HelpOutlineOutlinedIcon className={classes.helpIcon} />
+              </Box>
+            </Button>
+          </Tooltip>
+        ) : (
+          <Button
+            variant="contained"
+            className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
+            onClick={sendRfqOpenModal}
+          >
+            {"Get more quotes"}
+          </Button>
+        )}
+        <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
+      </>
     );
   };
 
@@ -258,13 +265,12 @@ const ProductCardNew = (props) => {
   return (
     <Paper
       elevation={3}
-      className={clsx({
-        "product-card": true,
+      className={clsx("product-card", classes.productCard, {
         [classes.productCard]: true,
         [classes.productCardElfaro]: viewType === ID_ELFARO,
       })}
     >
-      <div className={classes.row} style={{ paddingTop: 21 }}>
+      <div className={classes.row}>
         <Box display="flex" justifyContent="space-between">
           <div className={classes.imageColumn}>
             <Link
@@ -327,12 +333,6 @@ const ProductCardNew = (props) => {
           </Box>
         </Hidden>
       </div>
-      <Hidden smUp>
-        <div className={classes.mobileActions}>
-          {requestButton()}
-          {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
-        </div>
-      </Hidden>
       {!!availableStockrecords.length && (
         <div style={{ position: "relative" }}>
           <Hidden smDown>
@@ -345,12 +345,20 @@ const ProductCardNew = (props) => {
           </Hidden>
           <Hidden mdUp>
             <DistributorsMobile
+              product={product}
               sortedStockrecords={availableStockrecords}
               sellerMessageOpenModal={sellerMessageOpenModal}
             />
           </Hidden>
         </div>
       )}
+
+      <Hidden smUp>
+        <div className={classes.mobileActions}>
+          {requestButton()}
+          {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
+        </div>
+      </Hidden>
 
       {!availableStockrecords.length && (
         <>

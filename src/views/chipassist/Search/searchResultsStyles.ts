@@ -74,7 +74,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     stickyContainer: {
       minHeight: "auto !important",
       "& > div": {
-        zIndex: 100,
+        zIndex: 10,
         "&.sticky": {
           left: 0,
           right: 0,
@@ -287,6 +287,50 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         borderLeft: `1px solid ${theme.palette.primary.main}`,
         paddingLeft: "7px",
       },
+    },
+    tourContent: {
+      paddingRight: 26,
+      paddingTop: 8,
+    },
+    tourImg: {
+      maxWidth: "100%",
+    },
+    tour: {
+      "& .reactour__close": {
+        width: 12,
+      },
+    },
+    tourDialog: {
+      "& .MuiDialog-paper": {
+        boxShadow: "none",
+        backgroundColor: "transparent",
+      },
+      "& .MuiBackdrop-root": {
+        backgroundColor: "rgba(15, 1, 33, 0.8)",
+      },
+      "& .MuiDialogActions-root": {
+        justifyContent: "center",
+        marginTop: 12,
+      },
+      "& h2,p": {
+        color: "#fff",
+        fontWeight: 400,
+        textAlign: "center",
+      },
+      "& h2": {
+        fontSize: 34,
+      },
+      "& p": {
+        fontSize: 20,
+      },
+      "& button": {
+        fontWeight: "bold",
+        fontSize: 16,
+      },
+    },
+    skipTourButton: {
+      color: "#fff",
+      border: "none",
     },
   }),
 );

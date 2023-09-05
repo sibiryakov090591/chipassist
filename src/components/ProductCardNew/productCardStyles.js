@@ -15,7 +15,10 @@ export const useStyles = makeStyles((theme) => ({
   row: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "0 21px 21px",
+    padding: 21,
+    [theme.breakpoints.down("xs")]: {
+      paddingBottom: 0,
+    },
   },
   imageColumn: {
     marginRight: "18px",
@@ -44,6 +47,7 @@ export const useStyles = makeStyles((theme) => ({
   titlePartNumber: {
     fontWeight: 700,
     fontSize: "1.8rem",
+    lineHeight: "26px",
   },
   manufacturerName: {
     fontSize: "16px",
@@ -57,7 +61,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   mobileActions: {
-    margin: "0 12px 16px",
+    margin: "10px 12px 16px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -173,6 +177,16 @@ export const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     fontWeight: "bold",
     height: 38,
+  },
+  requestButtonHelpText: {
+    maxWidth: 200,
+    textAlign: "center",
+    paddingTop: 5,
+    color: "#456",
+    fontSize: "0.95rem",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "none",
+    },
   },
   helpIcon: {
     marginLeft: "5px",

@@ -11,6 +11,7 @@ import {
   Box,
   Hidden,
   CircularProgress,
+  useMediaQuery,
 } from "@material-ui/core";
 // import ReactInputMask from "react-input-mask";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,7 +24,6 @@ import {
   showUpdateSuccess,
   updateCompanyAddress,
 } from "@src/store/profile/profileActions";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
@@ -31,6 +31,8 @@ import { ID_ICSEARCH } from "@src/constants/server_constants";
 import validate from "validate.js";
 import { defaultCountry } from "@src/constants/countries";
 import formSchema from "@src/utils/formSchema";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import theme from "@src/themes";
 import { useStyles } from "../../CompanyAddressStyles";
 
 interface AddressFormProps {
@@ -56,6 +58,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const { t } = useI18n("profile");
+
+  const isDownKey = useMediaQuery(theme.breakpoints.down("md"));
 
   const checkout = useAppSelector((state) => state.checkout);
   const addressErrors = useAppSelector((state) => state.profile.profileInfo?.addressErrors);
@@ -205,9 +209,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
               />
             </Grid>
             <Grid className={classes.gridItem} item md={6} sm={6} xs={12}>
-              <div style={{ position: "relative" }}>
-                <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
-              </div>
+              <PhoneInputWrapper
+                value={phoneValue}
+                onChange={onChangePhoneHandler}
+                style={{ margin: 0, height: "53.63px" }}
+                small={isDownKey}
+              />
             </Grid>
             <Grid className={clsx(classes.gridItem, classes.gridItemRightColumn)} item md={6} sm={6} xs={12}>
               <TextField

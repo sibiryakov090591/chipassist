@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop, Box, Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Backdrop, Box, Button, useMediaQuery, useTheme, Hidden } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -22,11 +22,13 @@ import { deleteMiscAction, loadMiscAction } from "@src/store/misc/miscActions";
 import { batch } from "react-redux";
 import { getCart } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
 const ProgressModal: React.FC = () => {
   const classes = useStyles();
   const registerClasses = useRegisterStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const { t } = useI18n("progress_modal");
@@ -160,7 +162,7 @@ const ProgressModal: React.FC = () => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
-      className={classes.modal}
+      className={commonClasses.modal}
       onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -169,7 +171,7 @@ const ProgressModal: React.FC = () => {
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>
+        <div className={commonClasses.paper}>
           {!isAuthenticated && !success && !error && partNumber && (
             <div className={classes.content}>
               {requestType === "rfq" && (
@@ -321,12 +323,20 @@ const ProgressModal: React.FC = () => {
               )}
             </div>
           )}
-          {(success || error) && (
+          {success || error ? (
             <div className={classes.buttonContainer}>
               <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
                 {t("close_button")}
               </Button>
             </div>
+          ) : (
+            <Hidden smUp>
+              <div className={commonClasses.actionsRow}>
+                <Button variant="contained" className={appTheme.buttonPrimary} onClick={handleClose}>
+                  {t("common.close")}
+                </Button>
+              </div>
+            </Hidden>
           )}
         </div>
       </Fade>

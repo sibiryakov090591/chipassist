@@ -222,11 +222,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   fileActions: {
     display: "flex",
     "& > *": {
-      marginLeft: 7,
-    },
-    [theme.breakpoints.down("xs")]: {
-      flexDirection: "column",
-      padding: "10px",
+      [theme.breakpoints.up("md")]: {
+        marginLeft: 7,
+      },
+      [theme.breakpoints.down("sm")]: {
+        marginRight: 7,
+      },
     },
   },
   errorAlert: {
@@ -261,14 +262,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       border: "none",
       color: "white",
       fontSize: 13,
-    },
-    [theme.breakpoints.down("xs")]: {
-      display: "flex",
-      width: "100%",
-      margin: 0,
-      "&:first-child": {
-        margin: "0 0 12px 0",
-      },
     },
   },
   notValidMessage: {

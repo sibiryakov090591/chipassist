@@ -2,6 +2,7 @@ import { RootState } from "@src/store";
 import ApiClient, { ApiClientInterface } from "@src/services/ApiClient";
 import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
+import { push } from "react-router-redux";
 import * as actionTypes from "./adapterTypes";
 
 const apiClient = new ApiClient();
@@ -35,7 +36,7 @@ export const uploadFileThunk = (
   if (fullexport) formData.append("noheader_row", fullexport);
 
   return (dispatch: any) => {
-    dispatch(setUploadState({ uploading: true, error: "", selected: true }));
+    dispatch(setUploadState({ uploading: true, error: "", fileErrors: null, selected: true }));
 
     return apiClient
       .post("/upload_supplier_file/", {
@@ -44,10 +45,9 @@ export const uploadFileThunk = (
       })
       .then((response) => {
         if (response.status === 200) {
-          // const searchId = response.data.search_id;
-          // const bomId = response.data.id;
+          const searchId = response.data.id;
           if (returnRes) {
-            dispatch(setUploadState({ uploading: false, error: "", selected: false }));
+            dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: false }));
             dispatch(
               showBottomLeftMessageAlertAction({
                 text: t("file_uploaded"),
@@ -56,13 +56,14 @@ export const uploadFileThunk = (
             );
             return response.data;
           }
-          // return dispatch(checkFileParsingState(searchId, bomId));
+          return dispatch(checkFileState(searchId));
         }
 
         return dispatch(
           setUploadState({
             uploading: false,
             error: response.data?.error || t("error_file_upload_backend"),
+            fileErrors: null,
             selected: false,
           }),
         );
@@ -72,6 +73,78 @@ export const uploadFileThunk = (
           setUploadState({
             uploading: false,
             error: e.response?.data?.error || t("error_file_upload"),
+            fileErrors: null,
+            selected: false,
+          }),
+        );
+      });
+  };
+};
+
+export const checkFileStateThunk = (fileId: number) => {
+  return {
+    types: [false, false, false],
+    promise: (client: ApiClientInterface) =>
+      client
+        .get(`/upload_file/${fileId}/`)
+        .then((res) => res.data)
+        .catch((error) => {
+          console.log("***CHECK_PARSING_SUPPLIER_FILE_ERROR", error);
+          throw error;
+        }),
+  };
+};
+
+export const checkFileState = (fileId: number) => {
+  return (dispatch: any) => {
+    dispatch(checkFileStateThunk(fileId))
+      .then((response: any) => {
+        switch (response.status) {
+          case "PROCESSING": {
+            setTimeout(() => dispatch(checkFileState(fileId)), 1000);
+            break;
+          }
+          case "COMPLETED": {
+            if (response.errors?.length) {
+              dispatch(
+                setUploadState({
+                  uploading: false,
+                  fileErrors: response.errors,
+                  error: "",
+                  selected: false,
+                }),
+              );
+            } else {
+              dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: false }));
+              dispatch(push(`/file-upload`));
+              dispatch(
+                showBottomLeftMessageAlertAction({
+                  text: t("file_uploaded"),
+                  severity: "success",
+                }),
+              );
+            }
+            break;
+          }
+          default: {
+            const fileErrors = response.errors;
+            dispatch(
+              setUploadState({
+                uploading: false,
+                fileErrors: fileErrors || null,
+                error: fileErrors ? "" : t("error_file_upload_backend"),
+                selected: false,
+              }),
+            );
+          }
+        }
+      })
+      .catch(() => {
+        dispatch(
+          setUploadState({
+            uploading: false,
+            error: t("error_file_upload_backend"),
+            fileErrors: null,
             selected: false,
           }),
         );

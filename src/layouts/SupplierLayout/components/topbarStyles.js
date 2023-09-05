@@ -2,8 +2,9 @@ import { makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    boxShadow: "none",
-    background: "radial-gradient(circle at top left, #372859 35%, #1d1530 65%)",
+    background: "#fff",
+    boxShadow:
+      "0px 2px 4px -1px rgba(70, 70, 80, 0.2), 0px 4px 5px 0px rgba(70, 70, 80, 0.14), 0px 1px 6px 0px rgba(70, 70, 80, 0.12)",
   },
   toolbar: {
     justifyContent: "space-between",

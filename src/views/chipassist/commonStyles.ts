@@ -37,18 +37,32 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    "&.fullScreen .MuiBackdrop-root": {
+      [theme.breakpoints.down("xs")]: {
+        backgroundColor: "transparent",
+      },
+    },
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(3, 4, 3),
+    padding: theme.spacing(2, 3, 2),
     textAlign: "center",
     color: "rgba(0,0,0,0.7)",
     maxHeight: "90vh",
     maxWidth: "95vw",
     overflow: "auto",
     position: "relative",
+    "&.fullScreen": {
+      [theme.breakpoints.down("xs")]: {
+        borderRadius: 0,
+        height: "100%",
+        width: "100%",
+        maxHeight: "none",
+        maxWidth: "none",
+      },
+    },
   },
   tooltip: {
     backgroundColor: "#f5f5f9",
@@ -72,6 +86,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "& > *": {
       marginLeft: 16,
     },
+  },
+  closeButton: {
+    position: "absolute",
+    right: 27,
+    top: 19,
+    borderRadius: "50ch",
+    fontWeight: "bold",
+    padding: "0 5px 0 10px",
+    textTransform: "initial",
   },
 }));
 

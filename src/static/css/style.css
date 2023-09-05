@@ -1,5 +1,5 @@
 h1, h2, h3, h4, h5, h6 {
-  color: #234;
+  color: #456;
 }
 
 body {
@@ -952,13 +952,6 @@ a.btn:hover {
 
 .form-group.has-error .form-control {
   border-color: #dc3545;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
 }
 
 .main-catalog-types .catalog-item {

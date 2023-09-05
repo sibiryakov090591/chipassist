@@ -29,11 +29,11 @@ import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import validate from "validate.js";
 import formSchema from "@src/utils/formSchema";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import SuccessSnackbar from "../SuccessSnackbar";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -54,6 +54,15 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   innHelperLink: {
     textDecoration: "underline",
   },
+  phone: {
+    margin: 13,
+    width: "100%",
+    position: "relative",
+    [theme.breakpoints.down(460)]: {
+      height: "37.63px",
+      margin: "8px 0",
+    },
+  },
 }));
 
 const helpEmail = constants.id === ID_ICSEARCH ? "help@icsearch.ru" : "help@chipassist.com";
@@ -65,7 +74,7 @@ const GeneralSettings = () => {
   const { t } = useI18n("profile");
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const profile = useAppSelector((state) => state.profile);
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo, showUpdateSuccess } = profile;
@@ -313,7 +322,12 @@ const GeneralSettings = () => {
               />
             </Grid>
             <Grid item md={6} xs={12}>
-              <InputPhone small={isXsDown} value={phoneValue} onChange={onChangePhoneHandler} />
+              <PhoneInputWrapper
+                value={phoneValue}
+                onChange={onChangePhoneHandler}
+                small={isXsDown}
+                style={isSmDown && !isXsDown ? { height: "53.63px" } : null}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField

@@ -92,13 +92,26 @@ const TopMenu = ({ isMobile }) => {
       <div className={itemClasses}>
         <NavLink
           className={clsx(classes.topMenuItemLink, {
+            [classes.active]: window.location.pathname.includes("/rfq-list-quotes"),
+          })}
+          to={`/rfq-list-quotes`}
+        >
+          {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+          {"RFQ List"}
+        </NavLink>
+      </div>
+      <div className={itemClasses}>
+        <NavLink
+          className={clsx(classes.topMenuItemLink, {
             [classes.active]: window.location.pathname.includes("/messages"),
           })}
           to={`/messages`}
         >
           {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          {t("chat")}
-          <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+          <span style={{ position: "relative" }}>
+            {t("chat")}
+            <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+          </span>
         </NavLink>
       </div>
       {isAuthenticated && (

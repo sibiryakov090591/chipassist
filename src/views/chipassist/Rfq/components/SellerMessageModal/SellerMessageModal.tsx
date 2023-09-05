@@ -10,11 +10,14 @@ import { useStyles as useRegisterStyles } from "@src/views/chipassist/HomeRestri
 import { Link, useLocation } from "react-router-dom";
 import useAppTheme from "@src/theme/useAppTheme";
 import SellerMessageForm from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageForm/SellerMessageForm";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import clsx from "clsx";
 import { useStyles } from "./SellerMessageModalStyles";
 
 const SellerMessageModal: React.FC = () => {
   const classes = useStyles();
   const registerClasses = useRegisterStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -37,7 +40,7 @@ const SellerMessageModal: React.FC = () => {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={classes.modal}
+      className={clsx(commonClasses.modal, "fullScreen")}
       open={open}
       onClose={handleClose}
       closeAfterTransition
@@ -47,7 +50,7 @@ const SellerMessageModal: React.FC = () => {
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>
+        <div className={clsx(commonClasses.paper, "fullScreen")}>
           <h2 className={classes.header}>{t("title")}</h2>
           <p
             className={classes.text}

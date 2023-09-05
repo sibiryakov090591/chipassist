@@ -40,13 +40,33 @@ export const useStyles = makeStyles((theme) => ({
       backgroundColor: "#eee",
     },
   },
+  supplierTopMenuItemLink: {
+    textTransform: "uppercase",
+    transition: "all 150ms ease",
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
+    color: "rgb(51, 68, 85)",
+    padding: "4px 9px",
+    lineHeight: "14px",
+    borderRadius: "50ch",
+    position: "relative",
+    "&:hover": {
+      color: theme.palette.app.blue500,
+      backgroundColor: "#eee",
+    },
+    "&.active": {
+      color: theme.palette.app.blue500,
+      backgroundColor: "#eee",
+    },
+  },
   topMenuItemIcon: {
     marginRight: 5,
   },
   chatUnreadCount: {
     position: "absolute",
-    top: "-7px",
-    left: "85%",
+    top: "-10px",
+    left: "98%",
   },
 }));
 

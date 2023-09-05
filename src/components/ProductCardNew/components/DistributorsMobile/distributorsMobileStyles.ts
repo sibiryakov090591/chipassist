@@ -4,18 +4,100 @@ import { AppTheme } from "@src/themes/AppTheme";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
-    stockrecord: {
-      padding: "0 15px",
-      "&+&": {
-        // borderTop: "1px solid #e7e8ec",
-        paddingTop: "10px",
+    table: {
+      // tableLayout: "fixed",
+      width: "100%",
+      borderCollapse: "collapse",
+    },
+    headers: {
+      backgroundColor: "#f5f6f7",
+      "& th": {
+        fontSize: "0.9rem",
+        fontWeight: "bold",
+        padding: "2px 10px",
+        textAlign: "start",
       },
-      [theme.breakpoints.down("sm")]: {
-        "&:nth-child(even)": {
-          backgroundColor: "#f8f8f8",
+    },
+    tableRow: {
+      height: "38px",
+      "& td": {
+        padding: "2px 10px",
+      },
+      "&.odd": {
+        backgroundColor: "#fafafa",
+      },
+      "&.expanded": {
+        borderTop: "1px solid #ddd",
+        borderBottom: "1px solid #e8e8e8",
+        fontWeight: "bold",
+        backgroundColor: "#f2d492",
+        "& td": {
+          backgroundColor: "#f2d492",
+          fontWeight: "bold",
         },
       },
     },
+    tdSeller: {
+      wordBreak: "break-word",
+      width: "50%",
+    },
+    tdPrice: {
+      width: "25%",
+      whiteSpace: "nowrap",
+    },
+    tdStock: {
+      width: "25%",
+    },
+    tdIcon: {
+      width: "35px",
+      textAlign: "end",
+      paddingRight: "20px !important",
+    },
+    icon: {
+      transition: "all 180ms ease",
+      "&.expanded": {
+        transform: "rotate(180deg)",
+      },
+    },
+    details: {
+      backgroundColor: "#f8f4e3",
+      width: "100%",
+      borderBottom: "1px solid #ddd",
+    },
+    detailsLabel: {
+      marginBottom: 2,
+      fontSize: "0.8rem",
+      fontWeight: "bold",
+    },
+    buttonColumn: {
+      display: "flex",
+      alignItems: "center",
+      paddingRight: 10,
+    },
+    contactSellerButton: {
+      textTransform: "none",
+      fontWeight: "bold",
+      whiteSpace: "nowrap",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
+    },
+    detailsPriceRow: {
+      borderTop: "1px solid #ddd",
+      "& > td": {
+        padding: "3px 0",
+      },
+    },
+    detailsAmount: {
+      width: "40%",
+    },
+    detailsCurrency: {
+      width: "50px",
+    },
+    detailsPrice: {
+      width: "45%",
+    },
+
     checkIconWrapper: {
       display: "flex",
       alignItems: "center",
@@ -46,12 +128,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     accordionExpanded: {
       margin: "auto !important",
     },
-    accordionStocks: {
-      backgroundColor: "#e6f4ff",
-      borderTop: "1px solid #ebebeb",
-      borderBottom: "1px solid #ebebeb",
-      marginBottom: 8,
-    },
+
     AccordionSummaryContent: { flexGrow: 0 },
     accordionStocksTitle: {
       color: "#3f7cac",
@@ -123,15 +200,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       left: 0,
       top: "-14px",
     },
-    table: {
-      borderTop: "0.5px solid #c6c6c6",
-      width: "100%",
-      borderCollapse: "collapse",
-      fontSize: 13,
-      "& tr:not(last)": {
-        borderBottom: "0.5px solid #c6c6c6",
-      },
-    },
     cartIcon: {
       color: theme.palette.app.green600,
       marginRight: 5,
@@ -157,15 +225,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     addToBomIcon: {
       fontSize: "16px",
       marginRight: "3px",
-    },
-    contactSellerButton: {
-      minWidth: 230,
-      textTransform: "none",
-      fontWeight: "bold",
-      whiteSpace: "nowrap",
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
     },
   }),
 );

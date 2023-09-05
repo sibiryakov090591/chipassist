@@ -9,6 +9,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -22,19 +23,35 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const classes = useStyles();
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(800));
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);
 
   const onShowChatListHandler = () => {
-    onShowList(!showList);
+    if (isMdDown && !isXsDown) onShowDetails(false);
+    onShowList(true);
+    if (isXsDown) {
+      setTimeout(() => {
+        const messagesElem = document.getElementById("chat-messages");
+        if (messagesElem) messagesElem.style.display = "none";
+      }, 350);
+    }
   };
 
   const onShowDetailsHandler = () => {
-    onShowDetails(!showDetails);
+    onShowDetails(true);
+    if (isMdDown && !isXsDown) onShowList(false);
+    if (isXsDown) {
+      setTimeout(() => {
+        const messagesElem = document.getElementById("chat-messages");
+        if (messagesElem) messagesElem.style.display = "none";
+      }, 350);
+    }
   };
 
   const name = React.useMemo(() => {
-    return constants.id === ID_SUPPLIER_RESPONSE
+    return isSupplierResponse
       ? selectedChat?.partner &&
           Object.entries(selectedChat.partner).reduce((acc, item) => {
             const [key, value] = item;
@@ -45,11 +62,13 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   }, [selectedChat]);
 
   return (
-    <div
+    <SwipeWrapper
       className={clsx(classes.middleColumn, {
         detailsActive: showDetails,
         chatListActive: showList,
       })}
+      leftSwipeAction={onShowDetailsHandler}
+      rightSwipeAction={onShowChatListHandler}
     >
       <Box display="flex" flexDirection="column">
         <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
@@ -60,8 +79,14 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               </Box>
             )}
             <div>
-              <h2 className={classes.upc}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
-              <div className={classes.seller}>{name}</div>
+              <h2 className={classes.title}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
+              {isSupplierResponse && selectedChat ? (
+                <div className={classes.customer}>
+                  Customer: <span>{name}</span>
+                </div>
+              ) : (
+                <div className={classes.seller}>{name}</div>
+              )}
             </div>
           </div>
           <MoreVertIcon
@@ -72,7 +97,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
 
         <Messages />
       </Box>
-    </div>
+    </SwipeWrapper>
   );
 };
 

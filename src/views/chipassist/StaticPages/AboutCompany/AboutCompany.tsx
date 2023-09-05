@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Page } from "@src/components";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Container, Grid } from "@material-ui/core";
@@ -10,10 +10,6 @@ import { NavLink } from "react-router-dom";
 const AboutCompany = () => {
   const { t } = useI18n("static_pages.about_company");
   const classes = useStyles();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, []);
 
   return (
     <Page

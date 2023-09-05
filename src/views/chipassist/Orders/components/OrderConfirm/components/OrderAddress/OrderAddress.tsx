@@ -19,7 +19,6 @@ import {
 import { CheckoutAddress, CheckoutAddressErrors } from "@src/store/checkout/checkoutTypes";
 import { address as initAddress, addressErrors } from "@src/store/checkout/checkoutReducer";
 import useAppTheme from "@src/theme/useAppTheme";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { Hidden } from "@material-ui/core";
@@ -28,6 +27,7 @@ import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
 import formSchema from "@src/utils/formSchema";
 import validate from "validate.js";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useStyles } from "./orderAddressStyles";
 
 interface Props {
@@ -311,7 +311,14 @@ const OrderAddress: React.FC<Props> = ({ type, setStepHandler, openModal }) => {
               </Grid>
 
               <Grid className={classes.gridItem} item xs={12} sm={6} md={6}>
-                <InputPhone value={phoneValue} onChange={onChangePhoneHandler} />
+                {/* <div className={classes.phone}> */}
+                {/*  <InputPhone value={phoneValue} onChange={onChangePhoneHandler} /> */}
+                {/* </div> */}
+                <PhoneInputWrapper
+                  value={phoneValue}
+                  onChange={onChangePhoneHandler}
+                  style={{ margin: 0, height: "100%" }}
+                />
               </Grid>
               <Grid className={clsx(classes.gridItem, classes.gridItemRightColumn)} item xs={12} sm={6} md={6}>
                 <TextField

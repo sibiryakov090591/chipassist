@@ -6,7 +6,7 @@ import { ApiClientInterface } from "@src/services/ApiClient";
 import { RootState } from "@src/store";
 import { Dispatch } from "redux";
 import checkIsAuthenticated, { getAuthToken, removeAuthToken, setAuthToken } from "@src/utils/auth";
-import { saveRfqItem, sendSellerMessage } from "@src/store/rfq/rfqActions";
+import { saveRfqItem, saveRfqListItems, sendSellerMessage } from "@src/store/rfq/rfqActions";
 import { updatePrevEmail } from "@src/store/profile/profileActions";
 // import { CurrencyPrice } from "@src/store/common/commonTypes";
 import {
@@ -313,11 +313,23 @@ export function authUserProfile() {
 
 export const sendQuickRequestUnAuth = (item: any, token: string, email: string) => (dispatch: any) => {
   if (item && token) {
-    dispatch(progressModalSetPartNumber(item.partNumber || item.part_number, item.requestType));
+    dispatch(
+      progressModalSetPartNumber(
+        item.partNumber || item.part_number || `${item.rfq_list[0].part_number}, ...`,
+        item.requestType,
+      ),
+    );
     switch (item.requestType) {
       case "rfq": {
         dispatch(progressModalOpen());
         return dispatch(saveRfqItem(item, token)).then(() => {
+          dispatch(deleteMiscAction("not_activated_request", email));
+          localStorage.removeItem("progress_modal_data");
+        });
+      }
+      case "rfq_list": {
+        dispatch(progressModalOpen());
+        return dispatch(saveRfqListItems(item.rfq_list, token)).then(() => {
           dispatch(deleteMiscAction("not_activated_request", email));
           localStorage.removeItem("progress_modal_data");
         });
@@ -373,6 +385,13 @@ export const sendQuickRequest = () => (dispatch: any) => {
       case "rfq": {
         dispatch(progressModalOpen());
         dispatch(saveRfqItem(item.data)).then(() => {
+          localStorage.removeItem("progress_modal_data");
+        });
+        break;
+      }
+      case "rfq_list": {
+        dispatch(progressModalOpen());
+        dispatch(saveRfqListItems(item.data)).then(() => {
           localStorage.removeItem("progress_modal_data");
         });
         break;

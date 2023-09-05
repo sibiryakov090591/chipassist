@@ -21,7 +21,7 @@ import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
 import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
-import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
+import chatIcon from "@src/images/Icons/chat-icon.png";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -30,13 +30,13 @@ const FileDownload = require("js-file-download");
 
 const Messages: React.FC = () => {
   const classes = useStyles();
-  const chatClasses = useChatStyles();
   const dispatch = useAppDispatch();
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
 
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+  const chatList = useAppSelector((state) => state.chat.chatList);
   const messages = useAppSelector((state) => state.chat.messages);
   const files = useAppSelector((state) => state.chat.files);
 
@@ -63,7 +63,13 @@ const Messages: React.FC = () => {
         if (firstUnreadMessage) {
           setFirstUnreadMessageId((prev) => prev || firstUnreadMessage.id);
         } else {
+          // Bug: When we have images we're moving to last message before setting images up into the DOM so scrollHeight calc not correct
+          // The first scrolling is moving us to last message
           messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+          // The second scrolling is moving us to bottom after setting images up in DOM
+          setTimeout(() => {
+            messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+          }, 10);
         }
       });
     }
@@ -123,7 +129,8 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (unreadLabelRef.current) {
-      unreadLabelRef.current.scrollIntoView({ block: "center" });
+      // unreadLabelRef.current.scrollIntoView({ block: "center" });
+      messagesWindowRef.current.scrollTo({ top: unreadLabelRef.current.offsetTop - 50 });
     }
   }, [unreadLabelRef.current, firstUnreadMessageId]);
 
@@ -214,15 +221,27 @@ const Messages: React.FC = () => {
   };
 
   return (
-    <div className={classes.container}>
+    <div id="chat-messages" className={classes.container}>
       {!Object.keys(messages.results).length && (
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
           {messages.isLoading ? (
             <Preloader size={12} />
           ) : selectedChat ? (
-            <h5 className={chatClasses.emptyMessage}>You have no messages</h5>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <img className={classes.chatImage} src={chatIcon} alt="Chat icon" />
+              <h5>You have no messages</h5>
+            </Box>
           ) : (
-            <h5 className={chatClasses.emptyMessage}>Select a chat</h5>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <img className={classes.chatImage} src={chatIcon} alt="Chat icon" />
+              {!chatList.results.length ? (
+                <h5 className={classes.emptyText}>
+                  To start a chat send a request for a product by the contact seller button in the product card
+                </h5>
+              ) : (
+                <h5 className={classes.emptyText}>To start communication select a chat with the seller</h5>
+              )}
+            </Box>
           )}
         </Box>
       )}

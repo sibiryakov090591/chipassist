@@ -44,6 +44,7 @@ const BomTableRow: React.FC<Props> = ({
         qtyChangeHandler(e, rowKey);
         break;
       case "part_number":
+        e.target.value = e.target.value.toUpperCase();
         partNumberChangeHandler(e, rowKey);
         break;
       default:
@@ -52,7 +53,7 @@ const BomTableRow: React.FC<Props> = ({
   };
 
   const toggleApproved = (row: Row) => () => {
-    if (row.part_number.split(" ").length === 1 && !row.errors) toggleRfqApproved();
+    if (!row.errors) toggleRfqApproved();
   };
 
   return (
@@ -126,7 +127,7 @@ const BomTableRow: React.FC<Props> = ({
                         <strong>
                           {formatMoney(currencyPrice(unitPrice, stockrecord?.price_currency)) || "-"} {currency.symbol}
                         </strong>{" "}
-                        | {t("column.product")} <strong>{manufacturer}</strong> | {t("column.lead_time")}:{" "}
+                        | {t("column.product")}: <strong>{manufacturer}</strong> | {t("column.lead_time")}:{" "}
                         <strong>{stockrecord?.lead_period_str || stockrecord?.lead_period || "-"}</strong>
                       </div>
                     )}

@@ -53,10 +53,18 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   img: {
     boxShadow: "0px 0px 16px 0px rgb(34 60 80 / 20%)",
     borderRadius: 5,
+    maxWidth: "100%",
   },
   letterImg: {
-    maxWidth: 365,
-    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: 365,
+      width: "100%",
+    },
+  },
+  priceImg: {
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: 500,
+    },
   },
   icon: {
     marginBottom: 18,
