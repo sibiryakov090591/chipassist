@@ -42,6 +42,7 @@ import { BlogState } from "./blog/blogTypes";
 import { ChatState } from "./chat/chatTypes";
 import progressModalReducer from "./progressModal/progressModalReducer";
 import rfqList from "./rfqList/rfqListReducer";
+import sellerProfile from "./sellerProfile/sellerProfileReducer";
 
 const rootReducer = () =>
   combineReducers({
@@ -71,6 +72,7 @@ const rootReducer = () =>
     supplierStatistics,
     treeMenu: treeMenuReducer,
     rfqList,
+    sellerProfile,
   });
 
 export default rootReducer;
@@ -101,4 +103,5 @@ export interface RootState {
   chart: ChartState;
   progressModal: ProgressModalState;
   rfqList: any;
+  sellerProfile: any;
 }

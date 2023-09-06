@@ -48,24 +48,24 @@ const GeneralSettings = () => {
     <Card>
       <CardHeader className={classes.cardHeader} title={"Company details"} />
       <CardContent style={{ padding: 0 }}>
-        <Table className={classes.table} size="small">
+        <Table className={classes.table} size="medium">
           <TableBody>
-            <TableRow>
-              <TableCell className={classes.tableHeader}>Name</TableCell>
-              <TableCell>{billingAddress?.company_name || "-"}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className={classes.tableHeader}>Email</TableCell>
-              <TableCell>{profileInfo?.email || "-"}</TableCell>
-            </TableRow>
+            {/* <TableRow> */}
+            {/*  <TableCell className={classes.tableHeader}>Name</TableCell> */}
+            {/*  <TableCell>{billingAddress?.company_name || "-"}</TableCell> */}
+            {/* </TableRow> */}
+            {/* <TableRow> */}
+            {/*  <TableCell className={classes.tableHeader}>Email</TableCell> */}
+            {/*  <TableCell>{profileInfo?.email || "-"}</TableCell> */}
+            {/* </TableRow> */}
             <TableRow>
               <TableCell className={classes.tableHeader}>Website</TableCell>
               <TableCell>{billingAddress?.line2 || "-"}</TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell className={classes.tableHeader}>Phone</TableCell>
-              <TableCell>{billingAddress?.phone_number || billingAddress?.phone_number_str || "-"}</TableCell>
-            </TableRow>
+            {/* <TableRow> */}
+            {/*  <TableCell className={classes.tableHeader}>Phone</TableCell> */}
+            {/*  <TableCell>{billingAddress?.phone_number || billingAddress?.phone_number_str || "-"}</TableCell> */}
+            {/* </TableRow> */}
             <TableRow>
               <TableCell className={classes.tableHeader}>Country</TableCell>
               <TableCell>

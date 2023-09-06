@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { Card, CardContent, CardActions, Avatar, Button, Theme, TextField } from "@material-ui/core";
+import { Card, CardContent, Avatar, Theme, Box } from "@material-ui/core";
 import { AppTheme } from "@src/themes/AppTheme";
-import useAppTheme from "@src/theme/useAppTheme";
-import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
-import useAppDispatch from "@src/hooks/useAppDispatch";
+import useAppSelector from "@src/hooks/useAppSelector";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -35,46 +33,23 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
 
 const ProfileDetails = () => {
   const classes = useStyles();
-  const appTheme = useAppTheme();
-  const dispatch = useAppDispatch();
-
-  const [url, setUrl] = useState("");
-  const [savedUrl, setSavedUrl] = useState("");
-
-  const onUpdateLogo = () => {
-    setSavedUrl(url);
-    dispatch(
-      showBottomLeftMessageAlertAction({
-        text: "The logo was updated successfully!",
-        severity: "success",
-      }),
-    );
-  };
+  const profile = useAppSelector((state) => state.profile);
+  const avatar = useAppSelector((state) => state.sellerProfile.avatar);
+  const { profileInfo } = profile;
+  const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
 
   return (
     <Card className={clsx(classes.root)}>
       <CardContent className={classes.content}>
-        <Avatar className={classes.avatar} src={savedUrl} />
-        <TextField
-          style={{ marginTop: 16 }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          fullWidth
-          label={"Logo (url)"}
-          name="logo"
-          variant="outlined"
-          size="small"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
+        <Avatar className={classes.avatar} src={avatar} />
+        <Box display={"flex"} flexDirection={"column"}>
+          <span style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem" }}>
+            {billingAddress?.company_name || "TEST NAME"}
+          </span>
+          <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>{profileInfo?.email || "-"}</span>
+          <span style={{ fontSize: "1.rem" }}>{billingAddress?.phone_number || "+000 000 000 00 00"}</span>
+        </Box>
       </CardContent>
-
-      <CardActions className={classes.actions}>
-        <Button style={{ minWidth: 150 }} className={appTheme.buttonCreate} variant="contained" onClick={onUpdateLogo}>
-          Update
-        </Button>
-      </CardActions>
     </Card>
   );
 };
