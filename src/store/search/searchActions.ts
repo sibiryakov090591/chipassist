@@ -149,14 +149,20 @@ export const beforeSearchRequest = (
   };
 };
 
-export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: string | number } = null) => {
+export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: any } = null) => {
   const params =
     (urlParams &&
-      Object.entries(urlParams).reduce((acc, val) => {
-        if (val[0] === "search") {
-          return `${acc ? `${acc}&` : "?"}${val[0]}=${encodeURIComponent(val[1])}`;
+      Object.entries(urlParams).reduce((acc, entry) => {
+        const [key, val] = entry;
+        if (key === "search") {
+          if (val.includes("SELLER:")) {
+            // search seller's products
+            const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
+            return `${acc ? `${acc}&` : "?"}s=${encodeURIComponent(sellerName)}`;
+          }
+          return `${acc ? `${acc}&` : "?"}${key}=${encodeURIComponent(val)}`;
         }
-        return `${acc ? `${acc}&` : "?"}${val[0]}=${val[1]}`;
+        return `${acc ? `${acc}&` : "?"}${key}=${val}`;
       }, "")) ||
     "";
 
@@ -177,10 +183,7 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: st
   };
 };
 
-export const extendedLoadingOfSearchResultsThunk = (
-  searchId: number,
-  urlParams: { [key: string]: string | number } = null,
-) => {
+export const extendedLoadingOfSearchResultsThunk = (searchId: number, urlParams: { [key: string]: any } = null) => {
   // FIXIT move search_result check into loop
   return (dispatch: any) => {
     dispatch({
@@ -189,11 +192,17 @@ export const extendedLoadingOfSearchResultsThunk = (
 
     const params =
       (urlParams &&
-        Object.entries(urlParams).reduce((acc, val) => {
-          if (val[0] === "search") {
-            return `${acc ? `${acc}&` : "?"}${val[0]}=${encodeURIComponent(val[1])}`;
+        Object.entries(urlParams).reduce((acc, entry) => {
+          const [key, val] = entry;
+          if (key === "search") {
+            if (val.includes("SELLER:")) {
+              // search seller's products
+              const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
+              return `${acc ? `${acc}&` : "?"}s=${encodeURIComponent(sellerName)}`;
+            }
+            return `${acc ? `${acc}&` : "?"}${key}=${encodeURIComponent(val)}`;
           }
-          return `${acc ? `${acc}&` : "?"}${val[0]}=${val[1]}`;
+          return `${acc ? `${acc}&` : "?"}${key}=${val}`;
         }, "")) ||
       "";
 
@@ -215,14 +224,23 @@ export const extendedLoadingOfSearchResultsThunk = (
 
 export const extendedLoadingOfSearchResultsForCashing = (
   searchId: number,
-  urlPrams: { [key: string]: string | number } = null,
+  urlParams: { [key: string]: any } = null,
 ) => {
   // FIXIT move search_result check into loop
   return (dispatch: any) => {
     const params =
-      (urlPrams &&
-        Object.entries(urlPrams).reduce((acc, val) => {
-          return `${acc ? `${acc}&` : "?"}${val[0]}=${val[1]}`;
+      (urlParams &&
+        Object.entries(urlParams).reduce((acc, entry) => {
+          const [key, val] = entry;
+          if (key === "search") {
+            if (val.includes("SELLER:")) {
+              // search seller's products
+              const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
+              return `${acc ? `${acc}&` : "?"}s=${encodeURIComponent(sellerName)}`;
+            }
+            return `${acc ? `${acc}&` : "?"}${key}=${encodeURIComponent(val)}`;
+          }
+          return `${acc ? `${acc}&` : "?"}${key}=${val}`;
         }, "")) ||
       "";
 
@@ -390,7 +408,7 @@ export const sendFiltersValueAction = (
   page: number,
   pageSize: number,
   orderBy: string = null,
-  data: any,
+  data: { [key: string]: any },
   component: string = null,
   showProggress = true,
   removeAuth = false,
@@ -398,10 +416,16 @@ export const sendFiltersValueAction = (
   return (dispatch: any) => {
     const orderParam = orderBy ? `&order_by=${orderBy}` : "";
     let params = "";
-    Object.entries(data).forEach((entr) => {
-      const [key, val] = entr;
+    Object.entries(data).forEach((entry) => {
+      const [key, val] = entry;
       if (key === "search") {
-        params += `&${key}=${encodeURIComponent(val as string)}`;
+        if (val.includes("SELLER:")) {
+          // search seller's products
+          const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
+          params += `&s=${encodeURIComponent(sellerName)}`;
+        } else {
+          params += `&${key}=${encodeURIComponent(val)}`;
+        }
       } else {
         params += `&${key}=${val}`;
       }
