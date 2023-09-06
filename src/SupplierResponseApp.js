@@ -32,11 +32,11 @@ import Policy from "@src/views/chipassist/StaticPages/Policy";
 import Terms from "@src/views/chipassist/StaticPages/Terms";
 import SupplierResponseRegisterModal from "@src/components/Alerts/SupplierResponseRegisterModal";
 import Help from "@src/views/supplier-response/Help/Help";
-import AdapterUpload from "@src/views/supplier-response/Adapter/AdapterUpload";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
+import Adapter from "@src/views/supplier-response/Adapter/Adapter";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
@@ -166,10 +166,10 @@ const SupplierResponseApp = () => {
               }
             />
             <Route
-              path="/file-upload"
+              path="/adapter/*"
               element={
                 <PrivateRoute isAuthenticated={isAuthenticated}>
-                  <AdapterUpload />
+                  <Adapter />
                 </PrivateRoute>
               }
             />

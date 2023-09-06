@@ -23,6 +23,23 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "9px",
     color: "#ccc",
   },
+  supplierAccSpan1: {
+    fontSize: "12px",
+    lineHeight: "13px",
+    height: "14px",
+    fontWeight: "400",
+    marginTop: "9px",
+    color: "rgb(51, 68, 85)",
+  },
+  supplierAccSpan2: {
+    display: "inline-flex",
+    alignItems: "center",
+    fontSize: "14px",
+    lineHeight: "15px",
+    fontWeight: "700",
+    whiteSpace: "nowrap",
+    color: "rgb(51, 68, 85)",
+  },
   accountButton: {
     marginLeft: "7px",
     "&:hover": {
@@ -39,6 +56,23 @@ export const useStyles = makeStyles((theme) => ({
     transition: "all 250ms ease",
     [theme.breakpoints.down("xs")]: {
       marginLeft: "7px",
+    },
+  },
+  supplierAuthButton: {
+    color: "#345",
+    borderColor: "#345",
+    marginLeft: "45px",
+    padding: "0 12px",
+    minHeight: 36,
+    textTransform: "inherit",
+    whiteSpace: "nowrap",
+    border: "1px solid",
+    transition: "all 250ms ease",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "7px",
+    },
+    "&:hover": {
+      backgroundColor: "#e3e3e3",
     },
   },
   notAuthButton: {

@@ -3,6 +3,7 @@ import ApiClient, { ApiClientInterface } from "@src/services/ApiClient";
 import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { push } from "react-router-redux";
+import { setUrlGetString } from "@src/utils/useCommonFilters";
 import * as actionTypes from "./adapterTypes";
 
 const apiClient = new ApiClient();
@@ -116,7 +117,7 @@ export const checkFileState = (fileId: number) => {
               );
             } else {
               dispatch(setUploadState({ uploading: false, error: "", fileErrors: null, selected: false }));
-              dispatch(push(`/file-upload`));
+              dispatch(push(`/adapter/list`));
               dispatch(
                 showBottomLeftMessageAlertAction({
                   text: t("file_uploaded"),
@@ -159,6 +160,21 @@ export const setUploadState = (fields: any) => {
       type: actionTypes.SET_UPLOAD_STATE,
       payload: uploadState,
     });
+  };
+};
+
+export const getUploadedFiles = (params: any) => {
+  const urlParams = setUrlGetString(params);
+  return {
+    types: actionTypes.GET_ITEMS_ARRAY,
+    promise: (client: ApiClientInterface) =>
+      client
+        .get(`/upload_file/${urlParams}`)
+        .then((res) => res.data)
+        .catch((error) => {
+          console.log("***GET_SUPPLIER_UPLOADED_FILES_ERROR", error);
+          throw error;
+        }),
   };
 };
 
