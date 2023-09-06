@@ -78,6 +78,7 @@ const PartNumberInput: React.FC<Props> = ({
     //     }, 2000);
     //   }, 600);
     // }
+    setShowTooltip(false);
     setHasFocus(false);
   };
 
