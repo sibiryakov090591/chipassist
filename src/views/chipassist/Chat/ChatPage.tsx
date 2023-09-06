@@ -10,7 +10,7 @@ const ChatPage: React.FC = () => {
   return (
     <Page title={"Messages - ChipAssist"} description={"Messages between buyers and sellers"} className={classes.page}>
       <section className={classes.section}>
-        <SupplierSelect style={{ margin: 12 }} />
+        <SupplierSelect style={{ margin: 12 }} hidden={true} />
 
         <Chat />
       </section>

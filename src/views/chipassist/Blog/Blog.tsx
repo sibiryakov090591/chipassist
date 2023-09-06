@@ -89,6 +89,7 @@ const Blog: React.FC = () => {
         >
           {!isLoading &&
             list.results.map((item) => {
+              if (!item?.slug) return null;
               return (
                 <Link key={item.id} to={`${item.slug}`}>
                   <div className={classes.article}>
