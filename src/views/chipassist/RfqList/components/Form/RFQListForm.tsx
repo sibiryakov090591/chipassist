@@ -787,6 +787,11 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
                 {key !== rfqListState.values.length - 1 && <Divider className={classes.hrStyle} />}
               </Box>
             ))}
+            {isDownMd && (
+              <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+                <span>{`${rfqListState.values.length}/${maxRfqRows}`}</span>
+              </div>
+            )}
             <div
               style={
                 isDownMd
