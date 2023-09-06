@@ -12,10 +12,11 @@ import { useStyles } from "./styles";
 
 interface Props {
   beforeChange?: any;
+  hidden?: any;
   [key: string]: any;
 }
 
-const SupplierSelect: React.FC<Props> = ({ beforeChange, ...rest }) => {
+const SupplierSelect: React.FC<Props> = ({ beforeChange, hidden, ...rest }) => {
   const classes = useStyles();
   const dispatch = useDispatch<any>();
   const theme = useTheme();
@@ -33,7 +34,7 @@ const SupplierSelect: React.FC<Props> = ({ beforeChange, ...rest }) => {
     }
   };
 
-  if (!selectedPartner) return null;
+  if (!selectedPartner || (hidden && partners?.length < 2)) return null;
   return (
     <div className={clsx(classes.supplier, { flexible: partners?.length > 1 })} {...rest}>
       {!isXsDown && "You are logged in as "}
