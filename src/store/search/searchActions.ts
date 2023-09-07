@@ -769,7 +769,7 @@ const cleanBaseFilters = (base: { [index: string]: any }) => {
 export const setQueryValue = (value: string): actionTypes.SetQueryValueAction => {
   return {
     type: actionTypes.SET_QUERY_VALUE,
-    payload: value?.toUpperCase(),
+    payload: value?.includes("SELLER:") ? value : value?.toUpperCase(),
   };
 };
 
