@@ -63,7 +63,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const { page, total_pages, unread_total, results } = action.response;
       const partner_name =
         constants.id === ID_SUPPLIER_RESPONSE
-          ? results[0].partner &&
+          ? results[0]?.partner &&
             Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
               const [key, value] = entry;
               if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
@@ -87,7 +87,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const { page, total_pages, results } = action.response;
       const partner_name =
         constants.id === ID_SUPPLIER_RESPONSE
-          ? results[0].partner &&
+          ? results[0]?.partner &&
             Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
               const [key, value] = entry;
               if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
@@ -118,7 +118,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
       const partner_name =
         constants.id === ID_SUPPLIER_RESPONSE
-          ? results[0].partner &&
+          ? results[0]?.partner &&
             Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
               const [key, value] = entry;
               if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
