@@ -250,39 +250,39 @@ const FileViewer = ({
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.mpn_col}
+                value={columns.mpn}
                 label={
                   <>
-                    {columnNames.mpn_col} <span style={{ color: red[500] }}>*</span>
+                    {columnNames.mpn} <span style={{ color: red[500] }}>*</span>
                   </>
                 }
-                options={getColumnsSelectOptions("mpn_col")}
-                onChange={onColumnSelect("mpn_col")}
-                onClear={onColumnSelectClear("mpn_col")}
+                options={getColumnsSelectOptions("mpn")}
+                onChange={onColumnSelect("mpn")}
+                onClear={onColumnSelectClear("mpn")}
               />
             </div>
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.num_in_stock_col}
+                value={columns.num_in_stock}
                 label={
                   <>
-                    {columnNames.num_in_stock_col} <span style={{ color: red[500] }}>*</span>
+                    {columnNames.num_in_stock} <span style={{ color: red[500] }}>*</span>
                   </>
                 }
-                options={getColumnsSelectOptions("num_in_stock_col")}
-                onChange={onColumnSelect("num_in_stock_col")}
-                onClear={onColumnSelectClear("num_in_stock_col")}
+                options={getColumnsSelectOptions("num_in_stock")}
+                onChange={onColumnSelect("num_in_stock")}
+                onClear={onColumnSelectClear("num_in_stock")}
               />
             </div>
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.datecode_col}
-                label={columnNames.datecode_col}
-                options={getColumnsSelectOptions("datecode_col")}
-                onChange={onColumnSelect("datecode_col")}
-                onClear={onColumnSelectClear("datecode_col")}
+                value={columns.datecode}
+                label={columnNames.datecode}
+                options={getColumnsSelectOptions("datecode")}
+                onChange={onColumnSelect("datecode")}
+                onClear={onColumnSelectClear("datecode")}
               />
             </div>
             <div>
@@ -291,11 +291,11 @@ const FileViewer = ({
                   disabled={isShowPriceBreaks}
                   style={{ backgroundColor: "#f4f6f8" }}
                   placeholder={t("file.choose_column")}
-                  value={columns.price_col}
-                  label={columnNames.price_col}
-                  options={getColumnsSelectOptions("price_col")}
-                  onChange={onColumnSelect("price_col")}
-                  onClear={onColumnSelectClear("price_col")}
+                  value={columns.price}
+                  label={columnNames.price}
+                  options={getColumnsSelectOptions("price")}
+                  onChange={onColumnSelect("price")}
+                  onClear={onColumnSelectClear("price")}
                 />
                 <Box display="flex" justifyContent="center" style={{ flexGrow: 1 }}>
                   <CurrencyMenu setCurrencyHandler={onFieldChange("currency")} selected={fields.currency} />
@@ -306,41 +306,41 @@ const FileViewer = ({
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.moq_col}
-                label={columnNames.moq_col}
-                options={getColumnsSelectOptions("moq_col")}
-                onChange={onColumnSelect("moq_col")}
-                onClear={onColumnSelectClear("moq_col")}
+                value={columns.moq}
+                label={columnNames.moq}
+                options={getColumnsSelectOptions("moq")}
+                onChange={onColumnSelect("moq")}
+                onClear={onColumnSelectClear("moq")}
               />
             </div>
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.mpq_col}
-                label={columnNames.mpq_col}
-                options={getColumnsSelectOptions("mpq_col")}
-                onChange={onColumnSelect("mpq_col")}
-                onClear={onColumnSelectClear("mpq_col")}
+                value={columns.mpq}
+                label={columnNames.mpq}
+                options={getColumnsSelectOptions("mpq")}
+                onChange={onColumnSelect("mpq")}
+                onClear={onColumnSelectClear("mpq")}
               />
             </div>
             <div className={classes.field}>
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.manufacturer_col}
-                label={columnNames.manufacturer_col}
-                options={getColumnsSelectOptions("manufacturer_col")}
-                onChange={onColumnSelect("manufacturer_col")}
-                onClear={onColumnSelectClear("manufacturer_col")}
+                value={columns.manufacturer}
+                label={columnNames.manufacturer}
+                options={getColumnsSelectOptions("manufacturer")}
+                onChange={onColumnSelect("manufacturer")}
+                onClear={onColumnSelectClear("manufacturer")}
               />
             </div>
             <Box className={classes.field} display="flex" alignItems="center" gridGap="12px">
               <CustomSelect
                 placeholder={t("file.choose_column")}
-                value={columns.desc_col}
-                label={columnNames.desc_col}
-                options={getColumnsSelectOptions("desc_col")}
-                onChange={onColumnSelect("desc_col")}
-                onClear={onColumnSelectClear("desc_col")}
+                value={columns.desc}
+                label={columnNames.desc}
+                options={getColumnsSelectOptions("desc")}
+                onChange={onColumnSelect("desc")}
+                onClear={onColumnSelectClear("desc")}
               />
               <Box display="flex" justifyContent="center" style={{ flexGrow: 1 }}>
                 <Button
@@ -357,11 +357,11 @@ const FileViewer = ({
             {/* <div> */}
             {/*  <CustomSelect */}
             {/*    placeholder={t("file.choose_column")} */}
-            {/*    value={columns.sku_col} */}
-            {/*    label={columnNames.sku_col} */}
-            {/*    options={getColumnsSelectOptions("sku_col")} */}
-            {/*    onChange={onColumnSelect("sku_col")} */}
-            {/*    onClear={onColumnSelectClear("sku_col")} */}
+            {/*    value={columns.sku} */}
+            {/*    label={columnNames.sku} */}
+            {/*    options={getColumnsSelectOptions("sku")} */}
+            {/*    onChange={onColumnSelect("sku")} */}
+            {/*    onClear={onColumnSelectClear("sku")} */}
             {/*  /> */}
             {/* </div> */}
           </div>
@@ -372,43 +372,21 @@ const FileViewer = ({
                 <div className={classes.field}>
                   <CustomSelect
                     placeholder={t("file.choose_column")}
-                    value={columns.quantity_col}
-                    label={columnNames.quantity_col}
-                    options={getColumnsSelectOptions("quantity_col")}
-                    onChange={onColumnSelect("quantity_col")}
-                    onClear={onColumnSelectClear("quantity_col")}
+                    value={columns.quantity}
+                    label={columnNames.quantity}
+                    options={getColumnsSelectOptions("quantity")}
+                    onChange={onColumnSelect("quantity")}
+                    onClear={onColumnSelectClear("quantity")}
                   />
                 </div>
                 <div className={classes.field}>
                   <CustomSelect
                     placeholder={t("file.choose_column")}
-                    value={columns.price_col}
-                    label={`${columnNames.price_col} 1`}
-                    options={getColumnsSelectOptions("price_col")}
-                    onChange={onColumnSelect("price_col")}
-                    onClear={onColumnSelectClear("price_col")}
-                  />
-                </div>
-                <div />
-                <div />
-                <div className={classes.field}>
-                  <CustomSelect
-                    placeholder={t("file.choose_column")}
-                    value={columns.quantity_2_col}
-                    label={columnNames.quantity_2_col}
-                    options={getColumnsSelectOptions("quantity_2_col")}
-                    onChange={onColumnSelect("quantity_2_col")}
-                    onClear={onColumnSelectClear("quantity_2_col")}
-                  />
-                </div>
-                <div className={classes.field}>
-                  <CustomSelect
-                    placeholder={t("file.choose_column")}
-                    value={columns.price_2_col}
-                    label={columnNames.price_2_col}
-                    options={getColumnsSelectOptions("price_2_col")}
-                    onChange={onColumnSelect("price_2_col")}
-                    onClear={onColumnSelectClear("price_2_col")}
+                    value={columns.price}
+                    label={`${columnNames.price} 1`}
+                    options={getColumnsSelectOptions("price")}
+                    onChange={onColumnSelect("price")}
+                    onClear={onColumnSelectClear("price")}
                   />
                 </div>
                 <div />
@@ -416,21 +394,43 @@ const FileViewer = ({
                 <div className={classes.field}>
                   <CustomSelect
                     placeholder={t("file.choose_column")}
-                    value={columns.quantity_3_col}
-                    label={columnNames.quantity_3_col}
-                    options={getColumnsSelectOptions("quantity_3_col")}
-                    onChange={onColumnSelect("quantity_3_col")}
-                    onClear={onColumnSelectClear("quantity_3_col")}
+                    value={columns.quantity_2}
+                    label={columnNames.quantity_2}
+                    options={getColumnsSelectOptions("quantity_2")}
+                    onChange={onColumnSelect("quantity_2")}
+                    onClear={onColumnSelectClear("quantity_2")}
                   />
                 </div>
                 <div className={classes.field}>
                   <CustomSelect
                     placeholder={t("file.choose_column")}
-                    value={columns.price_3_col}
-                    label={columnNames.price_3_col}
-                    options={getColumnsSelectOptions("price_3_col")}
-                    onChange={onColumnSelect("price_3_col")}
-                    onClear={onColumnSelectClear("price_3_col")}
+                    value={columns.price_2}
+                    label={columnNames.price_2}
+                    options={getColumnsSelectOptions("price_2")}
+                    onChange={onColumnSelect("price_2")}
+                    onClear={onColumnSelectClear("price_2")}
+                  />
+                </div>
+                <div />
+                <div />
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.quantity_3}
+                    label={columnNames.quantity_3}
+                    options={getColumnsSelectOptions("quantity_3")}
+                    onChange={onColumnSelect("quantity_3")}
+                    onClear={onColumnSelectClear("quantity_3")}
+                  />
+                </div>
+                <div className={classes.field}>
+                  <CustomSelect
+                    placeholder={t("file.choose_column")}
+                    value={columns.price_3}
+                    label={columnNames.price_3}
+                    options={getColumnsSelectOptions("price_3")}
+                    onChange={onColumnSelect("price_3")}
+                    onClear={onColumnSelectClear("price_3")}
                   />
                 </div>
                 <div />
