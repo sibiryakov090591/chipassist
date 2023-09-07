@@ -22,6 +22,7 @@ import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
+import { NavLink } from "react-router-dom";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -236,7 +237,14 @@ const Messages: React.FC = () => {
               <img className={classes.chatImage} src={chatIcon} alt="Chat icon" />
               {!chatList.results.length ? (
                 <h5 className={classes.emptyText}>
-                  To start a chat send a request for a product by the contact seller button in the product card
+                  To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the search
+                  page
+                  <br />
+                  <br />
+                  Go to search page{" "}
+                  <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
+                    https://chipassist.com/search
+                  </a>
                 </h5>
               ) : (
                 <h5 className={classes.emptyText}>To start communication select a chat with the seller</h5>
