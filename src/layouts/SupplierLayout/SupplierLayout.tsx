@@ -43,6 +43,7 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
     maxWidth: "100%",
     background: "white!important",
+    overflowX: "hidden",
   },
 }));
 

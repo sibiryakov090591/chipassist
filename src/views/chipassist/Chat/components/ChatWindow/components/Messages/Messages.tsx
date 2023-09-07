@@ -22,7 +22,6 @@ import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
-import { NavLink } from "react-router-dom";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
