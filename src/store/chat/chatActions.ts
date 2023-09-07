@@ -321,11 +321,11 @@ export const downloadFile = (fileId: number) => {
   };
 };
 
-export const updateStockrecord = (data: any) => (dispatch: any, getState: () => RootState) => {
+export const updateStockrecord = (data: any, chatId: number) => (dispatch: any, getState: () => RootState) => {
   const { selectedPartner } = getState().profile;
   if (!selectedPartner) return false;
   return dispatch({
-    types: actionTypes.UPDATE_STOCKRECORD_ARRAY,
+    types: [actionTypes.UPDATE_STOCKRECORD_R, false, actionTypes.UPDATE_STOCKRECORD_F],
     promise: (client: ApiClientInterface) =>
       client
         .post(`/rfqs/response/`, {
@@ -334,7 +334,10 @@ export const updateStockrecord = (data: any) => (dispatch: any, getState: () => 
             data,
           },
         })
-        .then((res) => res.data)
+        .then((res) => {
+          dispatch({ type: actionTypes.UPDATE_STOCKRECORD_S, payload: { stock: Object.values(data)[0], chatId } });
+          return res.data;
+        })
         .catch((e) => {
           console.log("***UPDATE_RESPONSE_FROM_CHAT_ERROR", e);
           throw e;

@@ -311,8 +311,42 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
     case actionTypes.UPDATE_STOCKRECORD_R:
       return { ...state, stockrecordUpdating: true };
-    case actionTypes.UPDATE_STOCKRECORD_S:
-      return { ...state, stockrecordUpdating: false };
+    case actionTypes.UPDATE_STOCKRECORD_S: {
+      const {
+        stock: { stock, stock_id, lead_time, packaging, moq, mpq, prices },
+        chatId,
+      } = action.payload;
+
+      return {
+        ...state,
+        stockrecordUpdating: false,
+        chatList: {
+          ...state.chatList,
+          results: state.chatList.results.map((chat) => {
+            if (chat.id === chatId) {
+              return {
+                ...chat,
+                stocks: chat.stocks.map((i) => {
+                  if (i.id === stock_id) {
+                    return {
+                      ...i,
+                      num_in_stock: stock,
+                      lead_period_str: lead_time,
+                      packaging,
+                      moq,
+                      mpq,
+                      prices: prices.map((pr: any) => ({ id: pr.id, amount: pr.amount, original: pr.price })),
+                    };
+                  }
+                  return i;
+                }),
+              };
+            }
+            return chat;
+          }),
+        },
+      };
+    }
     case actionTypes.UPDATE_STOCKRECORD_F:
       return { ...state, stockrecordUpdating: false };
 

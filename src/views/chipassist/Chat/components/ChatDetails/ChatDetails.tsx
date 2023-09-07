@@ -90,7 +90,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
       setForceRender((prev) => !prev);
     }
-  }, [selectedChat?.id]);
+  }, [stock]);
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -114,8 +114,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    console.log(data);
-
     const part_number = selectedChat?.rfq?.upc;
     if (!isValid || !part_number) return false;
 
@@ -128,7 +126,12 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     });
 
     dispatch(
-      updateStockrecord({ [part_number]: { ...overallData, stock_id: stock?.id, currency: currency.code, prices } }),
+      updateStockrecord(
+        {
+          [part_number]: { ...overallData, stock_id: stock?.id, currency: currency.code, prices },
+        },
+        selectedChat?.id,
+      ),
     );
 
     // prevent reset form
@@ -138,7 +141,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     )();
     return false;
   };
-  console.log(getValues("prices"));
+
   return (
     <SwipeWrapper rightSwipeAction={onCloseHandler} className={clsx(classes.rightColumn, { active: showDetails })}>
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
@@ -217,6 +220,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                value={getValues(`prices.${key}.amount`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.amount}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
                                 variant="outlined"
@@ -232,6 +236,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
+                            defaultValue={""}
                             rules={{
                               min: {
                                 value: 1,
@@ -241,6 +246,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                value={getValues(`prices.${key}.price`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.price}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
                                 variant="outlined"
@@ -286,6 +292,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                value={getValues(`prices.${key}.amount`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.amount}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
                                 variant="outlined"
@@ -310,6 +317,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                value={getValues(`prices.${key}.price`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.price}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
                                 variant="outlined"

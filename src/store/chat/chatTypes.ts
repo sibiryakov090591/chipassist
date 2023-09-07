@@ -169,7 +169,14 @@ interface UpdateChatListAction {
 }
 
 interface UpdateStockrecordAction {
-  type: typeof UPDATE_STOCKRECORD_R | typeof UPDATE_STOCKRECORD_S | typeof UPDATE_STOCKRECORD_F;
+  type: typeof UPDATE_STOCKRECORD_R | typeof UPDATE_STOCKRECORD_F;
+}
+interface UpdateStockrecordSuccessAction {
+  type: typeof UPDATE_STOCKRECORD_S;
+  payload: {
+    stock: any;
+    chatId: number;
+  };
 }
 
 interface LoadMessagesRequestAction {
@@ -247,6 +254,7 @@ interface SaveFilesAction {
 
 export type ChatActionTypes =
   | UpdateStockrecordAction
+  | UpdateStockrecordSuccessAction
   | SaveFilesAction
   | SelectChatAction
   | ClearChatAction
