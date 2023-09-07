@@ -325,7 +325,7 @@ export const updateStockrecord = (data: any) => (dispatch: any, getState: () => 
   const { selectedPartner } = getState().profile;
   if (!selectedPartner) return false;
   return dispatch({
-    types: [false, false, false],
+    types: actionTypes.UPDATE_STOCKRECORD_ARRAY,
     promise: (client: ApiClientInterface) =>
       client
         .post(`/rfqs/response/`, {

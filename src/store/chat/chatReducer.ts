@@ -22,6 +22,7 @@ const initialState: actionTypes.ChatState = {
     loadedPages: [],
   },
   selectedChat: null,
+  stockrecordUpdating: false,
   messages: {
     error: "",
     page: null,
@@ -307,6 +308,13 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         },
       };
     }
+
+    case actionTypes.UPDATE_STOCKRECORD_R:
+      return { ...state, stockrecordUpdating: true };
+    case actionTypes.UPDATE_STOCKRECORD_S:
+      return { ...state, stockrecordUpdating: false };
+    case actionTypes.UPDATE_STOCKRECORD_F:
+      return { ...state, stockrecordUpdating: false };
 
     case actionTypes.CLEAR_CHAT_REDUCER:
       return { ...initialState };

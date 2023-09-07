@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "clsx";
@@ -10,15 +10,17 @@ import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 // import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles as useChatWindowStyles } from "@src/views/chipassist/Chat/components/ChatWindow/styles";
 import { NumberInput } from "@src/components/Inputs";
+import { v4 as uuidv4 } from "uuid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { MenuItem, Select, FormControl } from "@material-ui/core";
+import { MenuItem, Select, FormControl, CircularProgress } from "@material-ui/core";
 import { Currency } from "@src/store/currency/currencyTypes";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { updateStockrecord } from "@src/store/chat/chatActions";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -39,24 +41,24 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const chatWindowClasses = useChatWindowStyles();
+  const commonClasses = useCommonStyles();
   const dispatch = useAppDispatch();
   const isSupplierResponse = true; // constants.id === ID_SUPPLIER_RESPONSE;
 
+  const isUpdating = useAppSelector((state) => state.chat.stockrecordUpdating);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+  const stock = selectedChat?.stocks[0];
   const currencyList = useAppSelector((state) => state.currency.currencyList);
 
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
-  const [isShowPrices, setIsShowPrices] = React.useState(false);
-  const [currency, setCurrency] = React.useState<Currency>({
+  const [isShowPrices, setIsShowPrices] = useState(false);
+  const [, setForceRender] = useState(false);
+  const [currency, setCurrency] = useState<Currency>({
     symbol: "$",
     code: "USD",
   });
-  const [priceBreaks, setPriceBreaks] = React.useState<{ qty: number; price: number }[]>([
-    { qty: 1, price: null },
-    { qty: 1, price: null },
-  ]);
 
   const {
     register,
@@ -64,7 +66,31 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     control,
     formState: { errors, isValid },
     // setError,
+    setValue,
+    getValues,
   } = useForm<FormValues>();
+
+  useEffect(() => {
+    if (stock) {
+      setIsShowPrices(false);
+      setCurrency(currencyList.find((c) => c.code === stock.currency));
+
+      // update overall data
+      setValue("stock", stock.num_in_stock);
+      setValue("packaging", stock.packaging);
+      setValue("moq", stock.moq);
+      setValue("mpq", stock.mpq);
+      setValue("lead_time", stock.lead_period_str);
+
+      // update prices
+      setValue(`prices`, {}); // reset
+      stock.prices.forEach((i) => {
+        setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
+      });
+
+      setForceRender((prev) => !prev);
+    }
+  }, [selectedChat?.id]);
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -81,27 +107,28 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   const createPriceBreak = () => {
-    setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
+    // setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
+    const id = uuidv4();
+    setValue("prices", { ...getValues("prices"), [id]: { id, amount: "", price: "" } });
+    setForceRender((prev) => !prev);
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    console.log(data);
+
     const part_number = selectedChat?.rfq?.upc;
     if (!isValid || !part_number) return false;
 
     const overallData = Object.fromEntries(
-      Object.entries(data).filter(([key]) => !key.includes("amount_") && !key.includes("price_")),
+      Object.entries(data).filter(([key]) => !key.includes("prices") && !key.includes("price_")),
     );
     const prices: any = [];
-    Object.entries(data).forEach(([key, value]) => {
-      if (key.includes("amount_")) {
-        const index = key.split("_")[1];
-        const breakPrice = data[`price_${index}`];
-        if (value && breakPrice) prices.push({ amount: value, price: breakPrice });
-      }
+    Object.values(data.prices).forEach((value: any) => {
+      prices.push({ amount: value.amount, price: value.price, ...(typeof value.id === "number" && { id: value.id }) });
     });
 
     dispatch(
-      updateStockrecord({ [part_number]: { ...overallData, currency: currency.code, price: data.price_1, prices } }),
+      updateStockrecord({ [part_number]: { ...overallData, stock_id: stock?.id, currency: currency.code, prices } }),
     );
 
     // prevent reset form
@@ -111,7 +138,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     )();
     return false;
   };
-
+  console.log(getValues("prices"));
   return (
     <SwipeWrapper rightSwipeAction={onCloseHandler} className={clsx(classes.rightColumn, { active: showDetails })}>
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
@@ -127,7 +154,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       </Box>
 
       <div className={classes.details}>
-        {isSupplierResponse ? (
+        {isSupplierResponse && selectedChat ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>
@@ -135,7 +162,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <Controller
                   name="stock"
                   control={control}
-                  defaultValue={""}
                   rules={{
                     min: {
                       value: 1,
@@ -171,56 +197,63 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   </Select>
                 </FormControl>
               </div>
-              <div>
-                <div className={classes.label}>Quantity break #1:</div>
-                <Controller
-                  name="amount_1"
-                  control={control}
-                  defaultValue={""}
-                  rules={{
-                    min: {
-                      value: 1,
-                      message: "At least 1",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <NumberInput
-                      {...field}
-                      error={errors.amount_1}
-                      helperText={errors.amount_1?.message}
-                      variant="outlined"
-                      size="small"
-                      decimalScale={0}
-                      isAllowedZero={false}
-                    />
-                  )}
-                />
-              </div>
-              <div>
-                <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                <Controller
-                  name="price_1"
-                  control={control}
-                  defaultValue={""}
-                  rules={{
-                    min: {
-                      value: 1,
-                      message: "At least 1",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <NumberInput
-                      {...field}
-                      error={errors.price_1}
-                      helperText={errors.price_1?.message}
-                      variant="outlined"
-                      size="small"
-                      decimalScale={4}
-                      isAllowedZero={false}
-                    />
-                  )}
-                />
-              </div>
+              {!!getValues("prices") &&
+                Object.keys(getValues("prices"))
+                  .slice(0, 1)
+                  .map((key, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <div>
+                          <div className={classes.label}>Quantity break #{index + 1}:</div>
+                          <Controller
+                            name={`prices.${key}.amount`}
+                            control={control}
+                            rules={{
+                              min: {
+                                value: 1,
+                                message: "At least 1",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                error={errors?.prices && errors.prices[`${key}`]?.amount}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={0}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                          <Controller
+                            name={`prices.${key}.price`}
+                            control={control}
+                            rules={{
+                              min: {
+                                value: 1,
+                                message: "At least 1",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                error={errors?.prices && errors.prices[`${key}`]?.price}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={4}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                      </React.Fragment>
+                    );
+                  })}
             </div>
             <Box p="5px">
               <Button
@@ -232,65 +265,64 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <KeyboardArrowDownIcon className={clsx(classes.priceArrow, { active: isShowPrices })} />
               </Button>
             </Box>
-            {isShowPrices && priceBreaks.length > 1 && (
+            {isShowPrices && (
               <div className={classes.grid}>
-                {priceBreaks.map((item, index) => {
-                  if (index === 0) return null;
-                  return (
-                    <React.Fragment key={index}>
-                      <div>
-                        <div className={classes.label}>Quantity break #{index + 1}:</div>
-                        <Controller
-                          name={`amount_${index + 1}`}
-                          control={control}
-                          defaultValue={""}
-                          rules={{
-                            min: {
-                              value: 1,
-                              message: "At least 1",
-                            },
-                          }}
-                          render={({ field }) => (
-                            <NumberInput
-                              {...field}
-                              error={errors[`amount_${index + 1}`]}
-                              helperText={errors[`amount_${index + 1}`]?.message}
-                              variant="outlined"
-                              size="small"
-                              decimalScale={0}
-                              isAllowedZero={false}
-                            />
-                          )}
-                        />
-                      </div>
-                      <div>
-                        <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                        <Controller
-                          name={`price_${index + 1}`}
-                          control={control}
-                          defaultValue={""}
-                          rules={{
-                            min: {
-                              value: 1,
-                              message: "At least 1",
-                            },
-                          }}
-                          render={({ field }) => (
-                            <NumberInput
-                              {...field}
-                              error={errors[`price_${index + 1}`]}
-                              helperText={errors[`price_${index + 1}`]?.message}
-                              variant="outlined"
-                              size="small"
-                              decimalScale={4}
-                              isAllowedZero={false}
-                            />
-                          )}
-                        />
-                      </div>
-                    </React.Fragment>
-                  );
-                })}
+                {!!getValues("prices") &&
+                  Object.keys(getValues("prices")).map((key, index) => {
+                    if (index === 0) return null;
+                    return (
+                      <React.Fragment key={index}>
+                        <div>
+                          <div className={classes.label}>Quantity break #{index + 1}:</div>
+                          <Controller
+                            name={`prices.${key}.amount`}
+                            control={control}
+                            rules={{
+                              min: {
+                                value: 1,
+                                message: "At least 1",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                error={errors?.prices && errors.prices[`${key}`]?.amount}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={0}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                          <Controller
+                            name={`prices.${key}.price`}
+                            control={control}
+                            rules={{
+                              min: {
+                                value: 1,
+                                message: "At least 1",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                error={errors?.prices && errors.prices[`${key}`]?.price}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={4}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                      </React.Fragment>
+                    );
+                  })}
                 <span
                   style={{ padding: "2px 5px", width: "max-content" }}
                   className={appTheme.hyperlink}
@@ -310,7 +342,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <Controller
                   name="moq"
                   control={control}
-                  defaultValue={""}
                   rules={{
                     min: {
                       value: 1,
@@ -335,7 +366,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <Controller
                   name="mpq"
                   control={control}
-                  defaultValue={""}
                   rules={{
                     min: {
                       value: 1,
@@ -360,7 +390,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <Controller
                   name="lead_time"
                   control={control}
-                  defaultValue={""}
                   rules={{
                     min: {
                       value: 1,
@@ -382,7 +411,13 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               </div>
             </div>
             <Box p="5px" mt="3px">
-              <Button type="submit" className={clsx(appTheme.buttonCreate, classes.updateButton)} variant="contained">
+              <Button
+                disabled={!isValid || isUpdating}
+                type="submit"
+                className={clsx(appTheme.buttonCreate, classes.updateButton)}
+                variant="contained"
+              >
+                {isUpdating && <CircularProgress className={commonClasses.progressCircle} size="1.5em" />}
                 Update
               </Button>
             </Box>

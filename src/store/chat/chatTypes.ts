@@ -1,3 +1,5 @@
+import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
+
 export const LOAD_CHAT_FILTERS_R = "@chat/LOAD_CHAT_FILTERS_R";
 export const LOAD_CHAT_FILTERS_S = "@chat/LOAD_CHAT_FILTERS_S";
 export const LOAD_CHAT_FILTERS_F = "@chat/LOAD_CHAT_FILTERS_F";
@@ -11,6 +13,11 @@ export const LOAD_CHAT_LIST_ARRAY = [LOAD_CHAT_LIST_R, LOAD_CHAT_LIST_S, LOAD_CH
 
 export const UPDATE_CHAT_LIST_S = "@chat/UPDATE_CHAT_LIST_S";
 export const UPDATE_MESSAGES_S = "@chat/UPDATE_MESSAGES_S";
+
+export const UPDATE_STOCKRECORD_R = "@chat/UPDATE_STOCKRECORD_R";
+export const UPDATE_STOCKRECORD_S = "@chat/UPDATE_STOCKRECORD_S";
+export const UPDATE_STOCKRECORD_F = "@chat/UPDATE_STOCKRECORD_F";
+export const UPDATE_STOCKRECORD_ARRAY = [UPDATE_STOCKRECORD_R, UPDATE_STOCKRECORD_S, UPDATE_STOCKRECORD_F];
 
 export const LOAD_MESSAGES_R = "@chat/LOAD_MESSAGES_R";
 export const LOAD_MESSAGES_S = "@chat/LOAD_MESSAGES_S";
@@ -50,6 +57,7 @@ export interface ChatState {
     loadedPages: number[];
   };
   selectedChat: ChatListItem;
+  stockrecordUpdating: boolean;
   messages: {
     error: string;
     total_pages: number;
@@ -93,9 +101,26 @@ export interface ChatListItem {
     upc: string;
     quantity: number;
     price: number;
+    currency: CurrenciesAllowed;
+    delivery_time: any;
+    moq: number;
+    mpq: number;
+    num_in_stock: number;
   };
   unread_messages: number;
   messages: ChatListMessage[];
+  stocks: Array<{
+    currency: CurrenciesAllowed;
+    id: number;
+    upc: string;
+    lead_period_str: string;
+    moq: number;
+    mpq: number;
+    num_in_stock: number;
+    packaging: string;
+    partner_sku: string;
+    prices: { id: number; amount: number; original: number }[];
+  }>;
 }
 
 export interface ChatListMessage {
@@ -141,6 +166,10 @@ interface LoadChatListFailAction {
 interface UpdateChatListAction {
   type: typeof UPDATE_CHAT_LIST_S;
   response: any;
+}
+
+interface UpdateStockrecordAction {
+  type: typeof UPDATE_STOCKRECORD_R | typeof UPDATE_STOCKRECORD_S | typeof UPDATE_STOCKRECORD_F;
 }
 
 interface LoadMessagesRequestAction {
@@ -217,6 +246,7 @@ interface SaveFilesAction {
 }
 
 export type ChatActionTypes =
+  | UpdateStockrecordAction
   | SaveFilesAction
   | SelectChatAction
   | ClearChatAction
