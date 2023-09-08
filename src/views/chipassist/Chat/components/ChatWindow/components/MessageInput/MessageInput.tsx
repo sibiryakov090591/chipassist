@@ -13,6 +13,7 @@ import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { getPrice } from "@src/utils/product";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -39,9 +40,13 @@ const MessageInput: React.FC<Props> = ({
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
 
+  const currencyList = useAppSelector((state) => state.currency.currencyList);
   const errorMessage = useAppSelector((state) => state.chat.messages.error);
-  const { partner, rfq } = useAppSelector((state) => state.chat.selectedChat);
-
+  const { partner, stocks } = useAppSelector((state) => state.chat.selectedChat);
+  const stock = {
+    ...stocks[0],
+    prices: stocks[0].prices.map((i) => ({ ...i, price: i.original })),
+  };
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);
@@ -141,14 +146,34 @@ const MessageInput: React.FC<Props> = ({
     }
   };
 
-  const onSetHintMessage = (type: "confirm" | "update" | "later") => () => {
+  const onSetHintMessage = (type: "confirm" | "update_price" | "update_qty" | "later" | "out_stock") => () => {
     const name = `${partner.first_name} ${partner.last_name}`;
     let value = "";
     if (type === "confirm") {
-      value = `Dear ${name}! We have ${rfq.upc} available. We can ship up to ${rfq.quantity}pcs at ${rfq.price}€ unit price in [DELIVERY_TIME] days. If you are interested, please send us a Purchase Order (PO).`;
+      value = `Dear ${name}! We have ${stock?.upc} available. We can ship up to ${stock?.num_in_stock}pcs at ${
+        stock && getPrice(stock?.num_in_stock, stock as any)
+      }${currencyList.find((curr) => curr.code === stock?.currency)?.symbol} unit price in ${
+        stock?.lead_period_str
+      } days. If you are interested, please send us a Purchase Order (PO).`;
     }
-    if (type === "update") {
-      value = `Dear ${name}! Unfortunately, the unit price for ${rfq.upc} was updated. Now we can ship up to ${rfq.quantity}pcs at ${rfq.price}€ unit price in [DELIVERY_TIME] days. If you are interested, please send us a Purchase Order (PO).`;
+    if (type === "update_price") {
+      value = `Dear ${name}! Unfortunately, the unit price for ${stock?.upc} was updated. Now we can ship up to ${
+        stock?.num_in_stock
+      }pcs at ${stock && getPrice(stock?.num_in_stock, stock as any)}${
+        currencyList.find((curr) => curr.code === stock?.currency)?.symbol
+      } unit price in ${stock?.lead_period_str} days. If you are interested, please send us a Purchase Order (PO).`;
+    }
+    if (type === "update_qty") {
+      value = `Dear ${name}! Thank you for your request. Currently we have only ${stock?.num_in_stock} units of ${
+        stock?.upc
+      } in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${
+        stock && getPrice(stock?.num_in_stock, stock as any)
+      }${
+        currencyList.find((curr) => curr.code === stock?.currency)?.symbol
+      }. If you interested in this stock please send us a Purchase Order (PO).`;
+    }
+    if (type === "out_stock") {
+      value = `Dear ${name}! Thank you for your request. Unfortunately, ${stock?.upc} is currently out of stock. However, we are actively working to replenish our stock and expect ${stock?.upc} to be available soon.`;
     }
     if (type === "later") {
       value = `Dear ${name}! Thank you for your request. We will provide you the details a bit later. Thank you!`;
@@ -169,8 +194,14 @@ const MessageInput: React.FC<Props> = ({
             <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
               Confirm stock
             </div>
-            <div className={classes.hint} onClick={onSetHintMessage("update")}>
+            <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
               Update price
+            </div>
+            <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
+              Update quantity
+            </div>
+            <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
+              No stock
             </div>
             <div className={classes.hint} onClick={onSetHintMessage("later")}>
               Reply later

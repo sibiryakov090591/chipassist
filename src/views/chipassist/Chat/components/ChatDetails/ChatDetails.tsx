@@ -68,7 +68,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     // setError,
     setValue,
     getValues,
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    mode: "onChange",
+  });
 
   useEffect(() => {
     if (stock) {
@@ -122,7 +124,13 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     );
     const prices: any = [];
     Object.values(data.prices).forEach((value: any) => {
-      prices.push({ amount: value.amount, price: value.price, ...(typeof value.id === "number" && { id: value.id }) });
+      if (value.amount && value.price) {
+        prices.push({
+          amount: value.amount,
+          price: value.price,
+          ...(typeof value.id === "number" && { id: value.id }),
+        });
+      }
     });
 
     dispatch(
@@ -236,13 +244,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
-                            defaultValue={""}
-                            rules={{
-                              min: {
-                                value: 1,
-                                message: "At least 1",
-                              },
-                            }}
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
@@ -308,12 +309,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
-                            rules={{
-                              min: {
-                                value: 1,
-                                message: "At least 1",
-                              },
-                            }}
                             render={({ field }) => (
                               <NumberInput
                                 {...field}

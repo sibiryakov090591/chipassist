@@ -317,9 +317,30 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         chatId,
       } = action.payload;
 
+      const updatedStock = {
+        num_in_stock: stock,
+        lead_period_str: lead_time,
+        packaging,
+        moq,
+        mpq,
+        prices: prices.map((pr: any) => ({ id: pr.id, amount: pr.amount, original: pr.price })),
+      };
+
       return {
         ...state,
         stockrecordUpdating: false,
+        selectedChat: {
+          ...state.selectedChat,
+          stocks: state.selectedChat.stocks.map((i) => {
+            if (i.id === stock_id) {
+              return {
+                ...i,
+                ...updatedStock,
+              };
+            }
+            return i;
+          }),
+        },
         chatList: {
           ...state.chatList,
           results: state.chatList.results.map((chat) => {
@@ -330,12 +351,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
                   if (i.id === stock_id) {
                     return {
                       ...i,
-                      num_in_stock: stock,
-                      lead_period_str: lead_time,
-                      packaging,
-                      moq,
-                      mpq,
-                      prices: prices.map((pr: any) => ({ id: pr.id, amount: pr.amount, original: pr.price })),
+                      ...updatedStock,
                     };
                   }
                   return i;
