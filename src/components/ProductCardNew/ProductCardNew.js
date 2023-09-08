@@ -29,12 +29,14 @@ const ProductCardNew = (props) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const { currency, currencyPrice } = useCurrency();
+  const { currencyPrice } = useCurrency();
   // const theme = useTheme();
   // const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
+  const currency = useAppSelector((state) => state.currency);
+
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
   const [rfqStockrecords] = useState([]);
@@ -331,7 +333,7 @@ const ProductCardNew = (props) => {
                 <div className={classes.iconValue}>
                   {rfq?.min_price && rfq?.num_in_stock
                     ? `${formatMoney(currencyPrice((rfq.min_price + rfq.max_price) / 2, rfq.min_price_currency))} ${
-                        currency.symbol
+                        currency.selected.symbol
                       }`
                     : "By request"}
                 </div>
