@@ -65,12 +65,12 @@ const rootReducer = () =>
     progressModal: progressModalReducer,
     products,
     rfq,
+    rfqList,
     search,
     suggestions,
     sellers,
     supplierStatistics,
     treeMenu: treeMenuReducer,
-    rfqList,
   });
 
 export default rootReducer;
