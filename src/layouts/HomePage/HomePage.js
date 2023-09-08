@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     maxWidth: "100%",
     paddingRight: `${scrollbarWidth}px`,
-    overflowX: "hidden",
     background: "white !important",
     [theme.breakpoints.down("sm")]: {
       paddingRight: "initial",
