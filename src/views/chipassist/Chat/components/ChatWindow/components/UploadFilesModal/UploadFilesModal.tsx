@@ -37,6 +37,14 @@ const UploadFilesModal: React.FC<Props> = ({
   const textareaRef = useRef(null);
   const textareaWrapperRef = useRef(null);
 
+  const [val, setVal] = React.useState(message);
+
+  React.useEffect(() => {
+    if (open) {
+      setVal(message);
+    }
+  }, [message, open]);
+
   useEffect(() => {
     const textarea = textareaRef.current;
     const textareaWrapper = textareaWrapperRef.current;
@@ -48,7 +56,7 @@ const UploadFilesModal: React.FC<Props> = ({
       textarea.style.overflowY = textarea.scrollHeight > 130 ? "auto" : "hidden";
       textareaWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
     }
-  }, [message]);
+  }, [val]);
 
   const createThumbs = (items: any[]) => {
     return items.map((item) => {
@@ -95,7 +103,7 @@ const UploadFilesModal: React.FC<Props> = ({
               name="message"
               onChange={handleChange}
               onKeyDown={onEnterHandler}
-              value={message}
+              value={val}
               placeholder="Type a message"
             />
           </div>
