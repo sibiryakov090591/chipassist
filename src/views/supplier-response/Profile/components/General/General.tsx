@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { ProfileDetails, GeneralSettings, LoadLogo } from "./components";
+import { ProfileDetails, GeneralSettings } from "./components";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -31,9 +31,6 @@ const General = () => {
       <Grid item container spacing={3} lg={4} md={3} xl={3} xs={12} direction={"column"}>
         <Grid item>
           <ProfileDetails />
-        </Grid>
-        <Grid item>
-          <LoadLogo />
         </Grid>
       </Grid>
       <Grid item lg={8} md={9} xl={9} xs={12}>
