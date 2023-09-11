@@ -8,6 +8,7 @@ import UploadFilesModal from "@src/views/chipassist/Chat/components/ChatWindow/c
 import { useDropzone } from "react-dropzone";
 import { v1 } from "uuid";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
+import CloseIcon from "@material-ui/icons/Close";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
@@ -194,6 +195,10 @@ const MessageInput: React.FC<Props> = ({
     return setMessage(value);
   };
 
+  const onClearMessage = () => {
+    setMessage("");
+  };
+
   return (
     <div className={classes.root}>
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
@@ -224,6 +229,11 @@ const MessageInput: React.FC<Props> = ({
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
         <Hidden mdUp>
+          {!!message && (
+            <Box display="flex">
+              <CloseIcon className={classes.clearIcon} onClick={onClearMessage} />
+            </Box>
+          )}
           <Box display="flex" {...getRootProps()}>
             <input {...getInputProps()} />
             <AttachFileIcon className={classes.attachIcon} />
@@ -240,6 +250,11 @@ const MessageInput: React.FC<Props> = ({
             placeholder="Type a message"
           />
           <Hidden smDown>
+            {!!message && (
+              <Box display="flex">
+                <CloseIcon className={classes.clearIcon} onClick={onClearMessage} />
+              </Box>
+            )}
             <Box display="flex" {...getRootProps()}>
               <input {...getInputProps()} />
               <AttachFileIcon className={classes.attachIcon} />
@@ -257,6 +272,7 @@ const MessageInput: React.FC<Props> = ({
         message={message}
         files={files}
         handleChange={handleChange}
+        onClearMessage={onClearMessage}
         onEnterHandler={onEnterHandler}
         handleDeleteFile={handleDeleteFile}
         handleSubmit={handleSubmit}

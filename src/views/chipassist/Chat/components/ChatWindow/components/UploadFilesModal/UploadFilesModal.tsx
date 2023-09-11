@@ -19,6 +19,7 @@ interface Props {
   onCloseModal: any;
   onAddFiles: any;
   handleDeleteFile: any;
+  onClearMessage: any;
 }
 
 const UploadFilesModal: React.FC<Props> = ({
@@ -31,6 +32,7 @@ const UploadFilesModal: React.FC<Props> = ({
   handleSubmit,
   handleChange,
   onEnterHandler,
+  onClearMessage,
 }) => {
   const classes = useStyles();
   const messageInputClasses = useMessageInputStyles();
@@ -106,6 +108,11 @@ const UploadFilesModal: React.FC<Props> = ({
               value={val}
               placeholder="Type a message"
             />
+            {!!message && (
+              <Box display="flex">
+                <CloseIcon className={messageInputClasses.clearIcon} onClick={onClearMessage} />
+              </Box>
+            )}
           </div>
           <ArrowUpwardRoundedIcon className={messageInputClasses.sendIcon} onClick={handleSubmit} />
         </div>
