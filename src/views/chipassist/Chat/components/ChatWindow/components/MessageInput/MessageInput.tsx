@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { sendMessage, sendFiles, getMessages } from "@src/store/chat/chatActions";
+import { sendMessage, sendFiles, getMessages, setStockError } from "@src/store/chat/chatActions";
 import ScrollToBottom from "@src/views/chipassist/Chat/components/ChatWindow/components/ScrollToBottom/ScrollToBottom";
 import useAppSelector from "@src/hooks/useAppSelector";
 import Box from "@material-ui/core/Box";
@@ -14,6 +14,7 @@ import { clsx } from "clsx";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { getPrice } from "@src/utils/product";
+import { StockErrorsFields } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
   isShowScrollButton: boolean;
   onScrollToBottom: () => void;
   minLoadedPage: number;
+  onShowDetails: () => void;
 }
 
 const MessageInput: React.FC<Props> = ({
@@ -32,6 +34,7 @@ const MessageInput: React.FC<Props> = ({
   isShowScrollButton,
   onScrollToBottom,
   minLoadedPage,
+  onShowDetails,
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -148,38 +151,47 @@ const MessageInput: React.FC<Props> = ({
 
   const onSetHintMessage = (type: "confirm" | "update_price" | "update_qty" | "later" | "out_stock") => () => {
     const name = `${partner.first_name} ${partner.last_name}`;
+    const price = stock && getPrice(stock?.num_in_stock, stock as any);
+    const numInStock = stock?.num_in_stock;
+    const partNumber = stock?.upc;
+    const leadTime = stock?.lead_period_str;
+    const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
+
     let value = "";
+    let stockErrors: StockErrorsFields = null;
+
+    if (!numInStock) stockErrors = { ...stockErrors, num_in_stock: true };
+    if (!price) stockErrors = { ...stockErrors, price: true };
+
     if (type === "confirm") {
-      value = `Dear ${name}! We have ${stock?.upc} available. We can ship up to ${stock?.num_in_stock}pcs at ${
-        stock && getPrice(stock?.num_in_stock, stock as any)
-      }${currencyList.find((curr) => curr.code === stock?.currency)?.symbol} unit price in ${
-        stock?.lead_period_str
-      } days. If you are interested, please send us a Purchase Order (PO).`;
+      if (stockErrors) {
+        onShowDetails();
+        return dispatch(setStockError(stockErrors));
+      }
+      value = `Dear ${name}! We have ${partNumber} available. We can ship up to ${numInStock}pcs at ${price}${symbol} unit price in ${leadTime} days. If you are interested, please send us a Purchase Order (PO).`;
     }
     if (type === "update_price") {
-      value = `Dear ${name}! Unfortunately, the unit price for ${stock?.upc} was updated. Now we can ship up to ${
-        stock?.num_in_stock
-      }pcs at ${stock && getPrice(stock?.num_in_stock, stock as any)}${
-        currencyList.find((curr) => curr.code === stock?.currency)?.symbol
-      } unit price in ${stock?.lead_period_str} days. If you are interested, please send us a Purchase Order (PO).`;
+      if (stockErrors) {
+        onShowDetails();
+        return dispatch(setStockError(stockErrors));
+      }
+      value = `Dear ${name}! Unfortunately, the unit price for ${partNumber} was updated. Now we can ship up to ${numInStock}pcs at ${price}${symbol} unit price in ${leadTime} days. If you are interested, please send us a Purchase Order (PO).`;
     }
     if (type === "update_qty") {
-      value = `Dear ${name}! Thank you for your request. Currently we have only ${stock?.num_in_stock} units of ${
-        stock?.upc
-      } in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${
-        stock && getPrice(stock?.num_in_stock, stock as any)
-      }${
-        currencyList.find((curr) => curr.code === stock?.currency)?.symbol
-      }. If you interested in this stock please send us a Purchase Order (PO).`;
+      if (stockErrors) {
+        onShowDetails();
+        return dispatch(setStockError(stockErrors));
+      }
+      value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you interested in this stock please send us a Purchase Order (PO).`;
     }
     if (type === "out_stock") {
-      value = `Dear ${name}! Thank you for your request. Unfortunately, ${stock?.upc} is currently out of stock. However, we are actively working to replenish our stock and expect ${stock?.upc} to be available soon.`;
+      value = `Dear ${name}! Thank you for your request. Unfortunately, ${partNumber} is currently out of stock. However, we are actively working to replenish our stock and expect ${partNumber} to be available soon.`;
     }
     if (type === "later") {
       value = `Dear ${name}! Thank you for your request. We will provide you the details a bit later. Thank you!`;
     }
-    setMessage(value);
     if (error) setError("");
+    return setMessage(value);
   };
 
   return (

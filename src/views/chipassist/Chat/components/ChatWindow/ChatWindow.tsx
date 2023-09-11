@@ -16,7 +16,7 @@ interface Props {
   showList: boolean;
   showDetails: boolean;
   onShowList: (open: boolean) => void;
-  onShowDetails: (open: boolean) => void;
+  onShowDetails: (toggle: boolean, open?: boolean) => void;
 }
 
 const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShowDetails }) => {
@@ -29,7 +29,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const { selectedChat } = useAppSelector((state) => state.chat);
 
   const onShowChatListHandler = () => {
-    if (isMdDown && !isXsDown) onShowDetails(false);
+    if (isMdDown && !isXsDown) onShowDetails(false, false);
     onShowList(true);
     if (isXsDown) {
       setTimeout(() => {
@@ -39,8 +39,8 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
     }
   };
 
-  const onShowDetailsHandler = () => {
-    onShowDetails(true);
+  const onShowDetailsHandler = (toggle = true, open = false) => () => {
+    onShowDetails(toggle, open);
     if (isMdDown && !isXsDown) onShowList(false);
     if (isXsDown) {
       setTimeout(() => {
@@ -91,11 +91,11 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
           </div>
           <MoreVertIcon
             className={clsx(classes.showDetailsIcon, { active: showDetails })}
-            onClick={onShowDetailsHandler}
+            onClick={onShowDetailsHandler()}
           />
         </Box>
 
-        <Messages />
+        <Messages onShowDetails={onShowDetailsHandler(false, true)} />
       </Box>
     </SwipeWrapper>
   );

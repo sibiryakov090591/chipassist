@@ -37,6 +37,8 @@ export const DEDUCT_READ_MESSAGES = "@chat/DEDUCT_READ_MESSAGES";
 export const SAVE_FILES = "@chat/SAVE_FILES";
 export const CLEAR_CHAT_REDUCER = "@chat/CLEAR_CHAT_REDUCER";
 export const READ_MESSAGE = "@chat/READ_MESSAGE";
+export const SET_STOCK_ERROR = "@chat/SET_STOCK_ERROR";
+export const CLEAR_STOCK_ERROR = "@chat/CLEAR_STOCK_ERROR";
 
 export interface ChatState {
   filters: {
@@ -58,6 +60,7 @@ export interface ChatState {
   };
   selectedChat: ChatListItem;
   stockrecordUpdating: boolean;
+  stockrecordErrors: StockErrorsFields;
   messages: {
     error: string;
     total_pages: number;
@@ -81,6 +84,11 @@ export interface PartnersListItem {
 export interface FileType {
   type: string;
   url: string;
+}
+
+export interface StockErrorsFields {
+  num_in_stock?: boolean;
+  price?: boolean;
 }
 
 export interface ChatListItem {
@@ -252,6 +260,15 @@ interface SaveFilesAction {
   payload: any;
 }
 
+interface SetStockErrorAction {
+  type: typeof SET_STOCK_ERROR;
+  payload: StockErrorsFields;
+}
+
+interface ClearStockErrorsAction {
+  type: typeof CLEAR_STOCK_ERROR;
+}
+
 export type ChatActionTypes =
   | UpdateStockrecordAction
   | UpdateStockrecordSuccessAction
@@ -277,4 +294,6 @@ export type ChatActionTypes =
   | LoadMoreMessagesSuccessAction
   | OnChangeFiltersValuesAction
   | DeductReadMessagesAction
+  | SetStockErrorAction
+  | ClearStockErrorsAction
   | ClearChatReducerAction;

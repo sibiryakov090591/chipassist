@@ -108,6 +108,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         transform: "rotate(180deg)",
       },
     },
+    shakeAnimation: {
+      animation: "shake 1s",
+    },
+    fieldHint: {
+      "& > *": {
+        boxShadow: "0px 0px 6px 3px #7bb4c5",
+      },
+    },
   }),
 );
 

@@ -15,11 +15,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { MenuItem, Select, FormControl, CircularProgress } from "@material-ui/core";
+import { MenuItem, Select, FormControl, CircularProgress, useTheme, useMediaQuery } from "@material-ui/core";
 import { Currency } from "@src/store/currency/currencyTypes";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { updateStockrecord } from "@src/store/chat/chatActions";
+import { clearStockErrors, updateStockrecord } from "@src/store/chat/chatActions";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
@@ -43,10 +43,11 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const chatWindowClasses = useChatWindowStyles();
   const commonClasses = useCommonStyles();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSupplierResponse = true; // constants.id === ID_SUPPLIER_RESPONSE;
 
-  const isUpdating = useAppSelector((state) => state.chat.stockrecordUpdating);
-  const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+  const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = selectedChat?.stocks[0];
   const currencyList = useAppSelector((state) => state.currency.currencyList);
 
@@ -59,6 +60,8 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     symbol: "$",
     code: "USD",
   });
+
+  const [shake, setShake] = useState(false);
 
   const {
     register,
@@ -86,13 +89,27 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
       // update prices
       setValue(`prices`, {}); // reset
-      stock.prices.forEach((i) => {
-        setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
-      });
+      if (stock.prices.length) {
+        stock.prices.forEach((i) => {
+          setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
+        });
+      } else {
+        const id = uuidv4();
+        setValue("prices", { [id]: { id, amount: "", price: "" } });
+      }
 
       setForceRender((prev) => !prev);
     }
   }, [stock]);
+
+  useEffect(() => {
+    if (!isXsDown && stockrecordErrors && !shake) {
+      setShake(true);
+      setTimeout(() => {
+        setShake(false);
+      }, 1500);
+    }
+  }, [stockrecordErrors]);
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -124,23 +141,23 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     );
     const prices: any = [];
     Object.values(data.prices).forEach((value: any) => {
-      if (value.amount && value.price) {
-        prices.push({
-          amount: value.amount,
-          price: value.price,
-          ...(typeof value.id === "number" && { id: value.id }),
-        });
-      }
+      prices.push({
+        amount: value.amount,
+        price: value.price,
+        ...(typeof value.id === "number" && { id: value.id }),
+      });
     });
 
     dispatch(
       updateStockrecord(
         {
-          [part_number]: { ...overallData, stock_id: stock?.id, currency: currency.code, prices },
+          [part_number]: { ...overallData, stock_id: stock?.id, price: "", currency: currency.code, prices }, // price field is required for the request
         },
         selectedChat?.id,
       ),
     );
+
+    if (stockrecordErrors) dispatch(clearStockErrors());
 
     // prevent reset form
     await handleSubmit(
@@ -151,7 +168,13 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   return (
-    <SwipeWrapper rightSwipeAction={onCloseHandler} className={clsx(classes.rightColumn, { active: showDetails })}>
+    <SwipeWrapper
+      rightSwipeAction={onCloseHandler}
+      className={clsx(classes.rightColumn, {
+        active: showDetails,
+        [classes.shakeAnimation]: shake,
+      })}
+    >
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         {isSupplierResponse && selectedChat ? (
           <div>
@@ -182,6 +205,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.num_in_stock })}
                       error={errors.stock}
                       helperText={errors.stock?.message}
                       variant="outlined"
@@ -247,6 +271,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.price })}
                                 value={getValues(`prices.${key}.price`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.price}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}

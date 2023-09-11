@@ -387,3 +387,12 @@ export const saveFiles = (files: any) => ({
   type: actionTypes.SAVE_FILES,
   payload: files,
 });
+
+export const setStockError = (fields: actionTypes.StockErrorsFields) => ({
+  type: actionTypes.SET_STOCK_ERROR,
+  payload: fields,
+});
+
+export const clearStockErrors = () => ({
+  type: actionTypes.CLEAR_STOCK_ERROR,
+});

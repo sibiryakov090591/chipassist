@@ -23,6 +23,7 @@ const initialState: actionTypes.ChatState = {
   },
   selectedChat: null,
   stockrecordUpdating: false,
+  stockrecordErrors: null,
   messages: {
     error: "",
     page: null,
@@ -368,6 +369,12 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
     case actionTypes.CLEAR_CHAT_REDUCER:
       return { ...initialState };
+
+    case actionTypes.SET_STOCK_ERROR:
+      return { ...state, stockrecordErrors: action.payload };
+
+    case actionTypes.CLEAR_STOCK_ERROR:
+      return { ...state, stockrecordErrors: null };
 
     default:
       return state;

@@ -26,7 +26,11 @@ import UnreadMessagesLabel from "./UnreadMessagesLabel";
 
 const FileDownload = require("js-file-download");
 
-const Messages: React.FC = () => {
+interface Props {
+  onShowDetails: () => void;
+}
+
+const Messages: React.FC<Props> = ({ onShowDetails }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
@@ -377,6 +381,7 @@ const Messages: React.FC = () => {
           isShowScrollButton={isShowScrollButton}
           onScrollToBottom={onScrollToBottom}
           minLoadedPage={minLoadedPage}
+          onShowDetails={onShowDetails}
         />
       )}
     </div>
