@@ -20,6 +20,8 @@ import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -33,6 +35,7 @@ interface Props {
 const Messages: React.FC<Props> = ({ onShowDetails }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
@@ -238,17 +241,28 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
               <img className={classes.chatImage} src={chatIcon} alt="Chat icon" />
               {!chatList.results.length ? (
                 <h5 className={classes.emptyText}>
-                  To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the search
-                  page
-                  <br />
-                  <br />
-                  Go to search page{" "}
-                  <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
-                    https://chipassist.com/search
-                  </a>
+                  {isSupplierResponse ? (
+                    <>
+                      You have no chats yet. You&apos;ll see new messages here when customers click{" "}
+                      <strong>&quot;Contact seller&quot;</strong> button on ChipAssist.
+                    </>
+                  ) : (
+                    <>
+                      To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the
+                      search page
+                      <br />
+                      <br />
+                      Go to search page{" "}
+                      <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
+                        https://chipassist.com/search
+                      </a>
+                    </>
+                  )}
                 </h5>
               ) : (
-                <h5 className={classes.emptyText}>To start communication select a chat with the seller</h5>
+                <h5 className={classes.emptyText}>
+                  To start communication select a chat with the {isSupplierResponse ? "buyer" : "seller"}
+                </h5>
               )}
             </Box>
           )}
