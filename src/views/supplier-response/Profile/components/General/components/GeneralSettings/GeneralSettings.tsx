@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, Theme, TextField, Grid, Box, Button } from "@material-ui/core";
+import { Card, CardContent, CardHeader, Theme, TextField, Grid, Box, Button, InputAdornment } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { loadProfileInfoThunk } from "@src/store/profile/profileActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import useDebounce from "@src/hooks/useDebounce";
-import { uploadNewAvatar } from "@src/store/sellerProfile/sellerProfileAction";
-import formSchema from "@src/utils/formSchema";
-import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import validate from "validate.js";
-import _ from "lodash";
+import { saveNewDetails, uploadNewAvatar } from "@src/store/sellerProfile/sellerProfileAction";
+// import formSchema from "@src/utils/formSchema";
+// import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+// import validate from "validate.js";
+// import _ from "lodash";
 import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 
@@ -83,7 +83,7 @@ interface FormState {
 }
 
 const GeneralSettings = () => {
-  const { t } = useI18n("profile");
+  // const { t } = useI18n("profile");
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
@@ -91,6 +91,10 @@ const GeneralSettings = () => {
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo } = profile;
   const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
+
+  const [currentLength, setCurrentLength] = useState(0);
+
+  const maxLength = 300;
 
   const [formState, setFormState] = useState<FormState>({
     values: {
@@ -112,35 +116,37 @@ const GeneralSettings = () => {
 
   const debouncedFormState = useDebounce(formState, 300);
 
-  const schema = React.useMemo(() => {
-    return {
-      company_name: {
-        presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
-        ...formSchema.companyName,
-      },
-      postcode: formSchema.postcode,
-      address: formSchema.address,
-    };
-  }, []);
+  // const schema = React.useMemo(() => {
+  //   return {
+  //     company_name: {
+  //       presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
+  //       ...formSchema.companyName,
+  //     },
+  //     postcode: formSchema.postcode,
+  //     address: formSchema.address,
+  //   };
+  // }, []);
 
   useEffect(() => {
     dispatch(loadProfileInfoThunk());
   }, []);
 
   useEffect(() => {
-    const formErrors = validate(formState.values, schema);
-    setFormState((prevState) => ({
-      ...prevState,
-      errors: formErrors || {},
-    }));
+    // const formErrors = validate(formState.values, schema);
+    // setFormState((prevState) => ({
+    //   ...prevState,
+    //   errors: formErrors || {},
+    // }));
+
+    dispatch(saveNewDetails(debouncedFormState.values));
   }, [debouncedFormState.values]);
 
-  const errorProps = (name: keyof ProfileForm) => {
-    if (formState.touched[name] && formState.errors[name]) {
-      return { error: true, helperText: formState.errors[name][0] };
-    }
-    return false;
-  };
+  // const errorProps = (name: keyof ProfileForm) => {
+  //   if (formState.touched[name] && formState.errors[name]) {
+  //     return { error: true, helperText: formState.errors[name][0] };
+  //   }
+  //   return false;
+  // };
 
   const onBlurHandler = (name: string) => () => {
     return setFormState((prevState) => ({
@@ -157,22 +163,30 @@ const GeneralSettings = () => {
     const { name, value } = event.target;
     const errors: any = { ...formState.errors };
     if (errors[name]) delete errors[name];
+    if (name === "logoURL") {
+      dispatch(uploadNewAvatar(value));
+    }
+    if (name === "description") {
+      setCurrentLength(value.length > maxLength ? maxLength : value.length);
+    }
     setFormState((prevState) => ({
       ...prevState,
-      values: { ...prevState.values, [name]: value },
+      values: {
+        ...prevState.values,
+        [name]: name === "description" && value.length > maxLength ? value.slice(0, maxLength) : value,
+      },
       touched: { ...prevState.touched, [name]: false },
     }));
   };
 
   const onSubmit = () => {
-    if (!_.isEmpty(formState.errors)) {
-      setFormState((prevState) => ({
-        ...prevState,
-        touched: Object.keys(prevState.errors).reduce((acc, key) => ({ ...acc, [key]: true }), {}),
-      }));
-      console.log(formState.errors);
-      return false;
-    }
+    // if (!_.isEmpty(formState.errors)) {
+    //   setFormState((prevState) => ({
+    //     ...prevState,
+    //     touched: Object.keys(prevState.errors).reduce((acc, key) => ({ ...acc, [key]: true }), {}),
+    //   }));
+    //   return false;
+    // }
     if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
     dispatch(
       showBottomLeftMessageAlertAction({
@@ -181,6 +195,34 @@ const GeneralSettings = () => {
       }),
     );
     return true;
+  };
+
+  const onCancel = () => {
+    setFormState((prevState) => ({
+      ...prevState,
+      values: {
+        company_name: billingAddress?.company_name || "",
+        email: profileInfo?.email || "",
+        phone: billingAddress?.phone_number || "",
+        website: billingAddress?.line2 || "",
+        country:
+          (checkout?.countries && checkout.countries.find((i) => i.url === billingAddress?.country)?.printable_name) ||
+          "",
+        postcode: billingAddress?.postcode || "",
+        address: billingAddress?.line1 || "",
+        description: billingAddress?.notes || "",
+        logoURL: "",
+      },
+    }));
+
+    dispatch(uploadNewAvatar(""));
+
+    dispatch(
+      showBottomLeftMessageAlertAction({
+        text: "Data was cleared successfully!",
+        severity: "success",
+      }),
+    );
   };
 
   return (
@@ -200,7 +242,7 @@ const GeneralSettings = () => {
               }}
               onChange={onChangeHandler}
               onBlur={onBlurHandler("company_name")}
-              {...errorProps("company_name")}
+              /* {...errorProps("company_name")} */
             />
           </Grid>
           <Grid item md={6} xs={12}>
@@ -267,7 +309,7 @@ const GeneralSettings = () => {
               }}
               onChange={onChangeHandler}
               onBlur={onBlurHandler("postcode")}
-              {...errorProps("postcode")}
+              /* {...errorProps("postcode")} */
             />
           </Grid>
           <Grid item md={6} xs={12}>
@@ -282,7 +324,7 @@ const GeneralSettings = () => {
               }}
               onChange={onChangeHandler}
               onBlur={onBlurHandler("address")}
-              {...errorProps("address")}
+              /* {...errorProps("address")} */
             />
           </Grid>
           <Grid item md={6} xs={12}>
@@ -294,6 +336,10 @@ const GeneralSettings = () => {
               fullWidth
               InputLabelProps={{
                 shrink: true,
+              }}
+              multiline
+              InputProps={{
+                endAdornment: <InputAdornment position="end">{`${currentLength}/${maxLength}`}</InputAdornment>,
               }}
               onChange={onChangeHandler}
             />
@@ -312,14 +358,17 @@ const GeneralSettings = () => {
             />
           </Grid>
           <Grid item md={12} xs={12}>
-            <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+            <Box display={"flex"} justifyContent={"space-evenly"} alignItems={"center"}>
               <Button
                 style={{ minWidth: 150 }}
                 className={appTheme.buttonCreate}
                 variant="contained"
                 onClick={onSubmit}
               >
-                Update
+                Save
+              </Button>
+              <Button style={{ minWidth: 150 }} className={appTheme.buttonCancel} variant="outlined" onClick={onCancel}>
+                Cancel
               </Button>
             </Box>
           </Grid>
