@@ -118,3 +118,22 @@ export const getProductLink = (productId: number, sellerId: number) => {
         }),
   };
 };
+
+export const SetProductIntoViewport = (productId: number): actionTypes.SetProductIntoViewport => {
+  return {
+    type: actionTypes.SET_PRODUCT_INTO_VIEWPORT,
+    payload: productId,
+  };
+};
+
+export const ShowProductRequestHint = () => {
+  return {
+    type: actionTypes.SHOW_PRODUCT_REQUEST_HINT,
+  };
+};
+
+export const DisableProductRequestHint = () => {
+  return {
+    type: actionTypes.DISABLE_PRODUCT_REQUEST_HINT,
+  };
+};

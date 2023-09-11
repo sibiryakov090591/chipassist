@@ -3,7 +3,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import clsx from "clsx";
-import { Paper, Hidden, Button, Box, Collapse, Tooltip } from "@material-ui/core";
+import { Paper, Hidden, Box, Collapse } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { getDynamicMoq, getImage, getPrice, isDuplicateStockrecord, isProductAvailable } from "@src/utils/product";
 import { rfqModalOpen, setSellerMessageData } from "@src/store/rfq/rfqActions";
@@ -19,8 +19,7 @@ import usd_icon from "@src/images/search_page/usd.svg";
 import warehouse_icon from "@src/images/search_page/warehouse.svg";
 import { formatMoney } from "@src/utils/formatters";
 // import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
-import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
-import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import RequestButton from "@src/components/ProductCardNew/components/RequestButton/RequestButton";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
@@ -28,16 +27,15 @@ import { useStyles } from "./productCardStyles";
 const ProductCardNew = (props) => {
   const { product, searchQuery, viewType } = props;
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const { currency, currencyPrice } = useCurrency();
+  const { currencyPrice } = useCurrency();
   // const theme = useTheme();
   // const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
+  const currency = useAppSelector((state) => state.currency);
 
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
@@ -185,43 +183,6 @@ const ProductCardNew = (props) => {
     }
   }, [shouldUpdateCard]);
 
-  const requestButton = (className) => {
-    return (
-      <>
-        {isAuthenticated && !className && !!requestedQty ? (
-          <Tooltip
-            classes={{ tooltip: commonClasses.tooltip }}
-            title={
-              <div>
-                {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
-              </div>
-            }
-          >
-            <Button
-              variant="contained"
-              className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
-              onClick={sendRfqOpenModal}
-            >
-              <Box display="flex" alignItems={"center"}>
-                Requested
-                <HelpOutlineOutlinedIcon className={classes.helpIcon} />
-              </Box>
-            </Button>
-          </Tooltip>
-        ) : (
-          <Button
-            variant="contained"
-            className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton, className)}
-            onClick={sendRfqOpenModal}
-          >
-            {"Get more quotes"}
-          </Button>
-        )}
-        <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
-      </>
-    );
-  };
-
   // const handleAddToCart = () => {
   //   if (inCart) {
   //     return navigate("/cart");
@@ -327,7 +288,7 @@ const ProductCardNew = (props) => {
           <Box display="flex">
             {/* <div>{addToBomButton}</div> */}
             <div className={classes.actionRow}>
-              {requestButton()}
+              <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
               {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
             </div>
           </Box>
@@ -355,7 +316,7 @@ const ProductCardNew = (props) => {
 
       <Hidden smUp>
         <div className={classes.mobileActions}>
-          {requestButton()}
+          <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
           {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
         </div>
       </Hidden>
@@ -372,7 +333,7 @@ const ProductCardNew = (props) => {
                 <div className={classes.iconValue}>
                   {rfq?.min_price && rfq?.num_in_stock
                     ? `${formatMoney(currencyPrice((rfq.min_price + rfq.max_price) / 2, rfq.min_price_currency))} ${
-                        currency.symbol
+                        currency.selected.symbol
                       }`
                     : "By request"}
                 </div>
