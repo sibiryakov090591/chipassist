@@ -19,6 +19,7 @@ interface Props {
   onCloseModal: any;
   onAddFiles: any;
   handleDeleteFile: any;
+  onClearMessage: any;
 }
 
 const UploadFilesModal: React.FC<Props> = ({
@@ -31,11 +32,20 @@ const UploadFilesModal: React.FC<Props> = ({
   handleSubmit,
   handleChange,
   onEnterHandler,
+  onClearMessage,
 }) => {
   const classes = useStyles();
   const messageInputClasses = useMessageInputStyles();
   const textareaRef = useRef(null);
   const textareaWrapperRef = useRef(null);
+
+  const [val, setVal] = React.useState(message);
+
+  React.useEffect(() => {
+    if (open) {
+      setVal(message);
+    }
+  }, [message, open]);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -48,7 +58,7 @@ const UploadFilesModal: React.FC<Props> = ({
       textarea.style.overflowY = textarea.scrollHeight > 130 ? "auto" : "hidden";
       textareaWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
     }
-  }, [message]);
+  }, [val]);
 
   const createThumbs = (items: any[]) => {
     return items.map((item) => {
@@ -95,9 +105,14 @@ const UploadFilesModal: React.FC<Props> = ({
               name="message"
               onChange={handleChange}
               onKeyDown={onEnterHandler}
-              value={message}
+              value={val}
               placeholder="Type a message"
             />
+            {!!message && (
+              <Box display="flex">
+                <CloseIcon className={messageInputClasses.clearIcon} onClick={onClearMessage} />
+              </Box>
+            )}
           </div>
           <ArrowUpwardRoundedIcon className={messageInputClasses.sendIcon} onClick={handleSubmit} />
         </div>

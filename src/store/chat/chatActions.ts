@@ -321,6 +321,30 @@ export const downloadFile = (fileId: number) => {
   };
 };
 
+export const updateStockrecord = (data: any, chatId: number) => (dispatch: any, getState: () => RootState) => {
+  const { selectedPartner } = getState().profile;
+  if (!selectedPartner) return false;
+  return dispatch({
+    types: [actionTypes.UPDATE_STOCKRECORD_R, false, actionTypes.UPDATE_STOCKRECORD_F],
+    promise: (client: ApiClientInterface) =>
+      client
+        .post(`/rfqs/response/`, {
+          data: {
+            seller: selectedPartner.id,
+            data,
+          },
+        })
+        .then((res) => {
+          dispatch({ type: actionTypes.UPDATE_STOCKRECORD_S, payload: { stock: Object.values(data)[0], chatId } });
+          return res.data;
+        })
+        .catch((e) => {
+          console.log("***UPDATE_RESPONSE_FROM_CHAT_ERROR", e);
+          throw e;
+        }),
+  });
+};
+
 export const selectChat = (item: any) => ({
   type: actionTypes.SELECT_CHAT,
   payload: item,
@@ -362,4 +386,13 @@ export const onChangeFiltersValues = (filters: any) => ({
 export const saveFiles = (files: any) => ({
   type: actionTypes.SAVE_FILES,
   payload: files,
+});
+
+export const setStockError = (fields: actionTypes.StockErrorsFields) => ({
+  type: actionTypes.SET_STOCK_ERROR,
+  payload: fields,
+});
+
+export const clearStockErrors = () => ({
+  type: actionTypes.CLEAR_STOCK_ERROR,
 });

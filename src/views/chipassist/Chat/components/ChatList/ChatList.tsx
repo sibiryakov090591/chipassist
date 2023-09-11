@@ -10,8 +10,6 @@ import Filters from "@src/views/chipassist/Chat/components/ChatList/components/F
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
-import constants from "@src/constants/constants";
 import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { useStyles } from "./styles";
@@ -106,16 +104,6 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
             const price = item.details?.price || item.rfq?.price;
             const partNumber = item.title || item.rfq?.upc;
 
-            const name =
-              constants.id === ID_SUPPLIER_RESPONSE
-                ? item.partner &&
-                  Object.entries(item.partner).reduce((acc, i) => {
-                    const [key, value] = i;
-                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-                    return acc;
-                  }, "")
-                : item.partner.first_name;
-
             return (
               <div
                 key={`${item.id}_${index}`}
@@ -142,7 +130,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                       (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
                   </div>
                   <Box display="flex" justifyContent="space-between" className={classes.info}>
-                    <div className={classes.ellipsisText}>{name}</div>
+                    <div className={classes.ellipsisText}>{item.partner_name}</div>
                     {!!quantity && !!price && (
                       <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
                     )}

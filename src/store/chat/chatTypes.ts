@@ -1,3 +1,5 @@
+import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
+
 export const LOAD_CHAT_FILTERS_R = "@chat/LOAD_CHAT_FILTERS_R";
 export const LOAD_CHAT_FILTERS_S = "@chat/LOAD_CHAT_FILTERS_S";
 export const LOAD_CHAT_FILTERS_F = "@chat/LOAD_CHAT_FILTERS_F";
@@ -11,6 +13,11 @@ export const LOAD_CHAT_LIST_ARRAY = [LOAD_CHAT_LIST_R, LOAD_CHAT_LIST_S, LOAD_CH
 
 export const UPDATE_CHAT_LIST_S = "@chat/UPDATE_CHAT_LIST_S";
 export const UPDATE_MESSAGES_S = "@chat/UPDATE_MESSAGES_S";
+
+export const UPDATE_STOCKRECORD_R = "@chat/UPDATE_STOCKRECORD_R";
+export const UPDATE_STOCKRECORD_S = "@chat/UPDATE_STOCKRECORD_S";
+export const UPDATE_STOCKRECORD_F = "@chat/UPDATE_STOCKRECORD_F";
+export const UPDATE_STOCKRECORD_ARRAY = [UPDATE_STOCKRECORD_R, UPDATE_STOCKRECORD_S, UPDATE_STOCKRECORD_F];
 
 export const LOAD_MESSAGES_R = "@chat/LOAD_MESSAGES_R";
 export const LOAD_MESSAGES_S = "@chat/LOAD_MESSAGES_S";
@@ -30,6 +37,8 @@ export const DEDUCT_READ_MESSAGES = "@chat/DEDUCT_READ_MESSAGES";
 export const SAVE_FILES = "@chat/SAVE_FILES";
 export const CLEAR_CHAT_REDUCER = "@chat/CLEAR_CHAT_REDUCER";
 export const READ_MESSAGE = "@chat/READ_MESSAGE";
+export const SET_STOCK_ERROR = "@chat/SET_STOCK_ERROR";
+export const CLEAR_STOCK_ERROR = "@chat/CLEAR_STOCK_ERROR";
 
 export interface ChatState {
   filters: {
@@ -50,6 +59,8 @@ export interface ChatState {
     loadedPages: number[];
   };
   selectedChat: ChatListItem;
+  stockrecordUpdating: boolean;
+  stockrecordErrors: StockErrorsFields;
   messages: {
     error: string;
     total_pages: number;
@@ -75,6 +86,11 @@ export interface FileType {
   url: string;
 }
 
+export interface StockErrorsFields {
+  num_in_stock?: boolean;
+  price?: boolean;
+}
+
 export interface ChatListItem {
   id: number;
   created: string;
@@ -83,6 +99,7 @@ export interface ChatListItem {
     last_name: string;
     company_name: string;
   };
+  partner_name: string;
   title: string;
   details: {
     quantity: number;
@@ -92,9 +109,26 @@ export interface ChatListItem {
     upc: string;
     quantity: number;
     price: number;
+    currency: CurrenciesAllowed;
+    delivery_time: any;
+    moq: number;
+    mpq: number;
+    num_in_stock: number;
   };
   unread_messages: number;
   messages: ChatListMessage[];
+  stocks: Array<{
+    currency: CurrenciesAllowed;
+    id: number;
+    upc: string;
+    lead_period_str: string;
+    moq: number;
+    mpq: number;
+    num_in_stock: number;
+    packaging: string;
+    partner_sku: string;
+    prices: { id: number; amount: number; original: number }[];
+  }>;
 }
 
 export interface ChatListMessage {
@@ -140,6 +174,17 @@ interface LoadChatListFailAction {
 interface UpdateChatListAction {
   type: typeof UPDATE_CHAT_LIST_S;
   response: any;
+}
+
+interface UpdateStockrecordAction {
+  type: typeof UPDATE_STOCKRECORD_R | typeof UPDATE_STOCKRECORD_F;
+}
+interface UpdateStockrecordSuccessAction {
+  type: typeof UPDATE_STOCKRECORD_S;
+  payload: {
+    stock: any;
+    chatId: number;
+  };
 }
 
 interface LoadMessagesRequestAction {
@@ -215,7 +260,18 @@ interface SaveFilesAction {
   payload: any;
 }
 
+interface SetStockErrorAction {
+  type: typeof SET_STOCK_ERROR;
+  payload: StockErrorsFields;
+}
+
+interface ClearStockErrorsAction {
+  type: typeof CLEAR_STOCK_ERROR;
+}
+
 export type ChatActionTypes =
+  | UpdateStockrecordAction
+  | UpdateStockrecordSuccessAction
   | SaveFilesAction
   | SelectChatAction
   | ClearChatAction
@@ -238,4 +294,6 @@ export type ChatActionTypes =
   | LoadMoreMessagesSuccessAction
   | OnChangeFiltersValuesAction
   | DeductReadMessagesAction
+  | SetStockErrorAction
+  | ClearStockErrorsAction
   | ClearChatReducerAction;

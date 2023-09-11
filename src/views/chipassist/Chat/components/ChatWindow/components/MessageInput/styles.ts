@@ -79,6 +79,29 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         marginRight: 3,
       },
     },
+    clearIcon: {
+      color: "#505050",
+      cursor: "pointer",
+      fontSize: 32,
+      marginRight: 5,
+      padding: 7,
+      borderRadius: "50%",
+      "&:hover": {
+        backgroundColor: "#eee",
+      },
+      [theme.breakpoints.down("sm")]: {
+        marginRight: 3,
+      },
+    },
+    hint: {
+      backgroundColor: "#00d1b2",
+      color: "#456",
+      borderRadius: "50ch",
+      padding: "0 8px",
+      fontSize: "0.9rem",
+      fontWeight: "bold",
+      cursor: "pointer",
+    },
   }),
 );
 

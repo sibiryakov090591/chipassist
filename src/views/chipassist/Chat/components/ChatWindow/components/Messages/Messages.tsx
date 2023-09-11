@@ -15,22 +15,27 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
 import { formatMoney } from "@src/utils/formatters";
 import { clsx } from "clsx";
-import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import pdf_icon from "@src/images/files_icons/PDF_file_icon.png";
 import doc_icon from "@src/images/files_icons/docx_icon.png";
 import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
 
 const FileDownload = require("js-file-download");
 
-const Messages: React.FC = () => {
+interface Props {
+  onShowDetails: () => void;
+}
+
+const Messages: React.FC<Props> = ({ onShowDetails }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
@@ -236,17 +241,28 @@ const Messages: React.FC = () => {
               <img className={classes.chatImage} src={chatIcon} alt="Chat icon" />
               {!chatList.results.length ? (
                 <h5 className={classes.emptyText}>
-                  To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the search
-                  page
-                  <br />
-                  <br />
-                  Go to search page{" "}
-                  <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
-                    https://chipassist.com/search
-                  </a>
+                  {isSupplierResponse ? (
+                    <>
+                      You have no chats yet. You&apos;ll see new messages here when customers click{" "}
+                      <strong>&quot;Contact seller&quot;</strong> button on ChipAssist.
+                    </>
+                  ) : (
+                    <>
+                      To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the
+                      search page
+                      <br />
+                      <br />
+                      Go to search page{" "}
+                      <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
+                        https://chipassist.com/search
+                      </a>
+                    </>
+                  )}
                 </h5>
               ) : (
-                <h5 className={classes.emptyText}>To start communication select a chat with the seller</h5>
+                <h5 className={classes.emptyText}>
+                  To start communication select a chat with the {isSupplierResponse ? "buyer" : "seller"}
+                </h5>
               )}
             </Box>
           )}
@@ -292,16 +308,6 @@ const Messages: React.FC = () => {
 
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
-                  const name =
-                    constants.id === ID_SUPPLIER_RESPONSE
-                      ? selectedChat?.partner &&
-                        Object.entries(selectedChat.partner).reduce((acc, idx) => {
-                          const [key, value] = idx;
-                          if (value)
-                            return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-                          return acc;
-                        }, "")
-                      : selectedChat?.partner.first_name;
 
                   return (
                     <div key={item.id}>
@@ -312,7 +318,9 @@ const Messages: React.FC = () => {
                       )}
                       <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
                         <div className={classes.messageInfo}>
-                          <span className={classes.messageFrom}>{item.sender === "You" ? "You" : name}</span>
+                          <span className={classes.messageFrom}>
+                            {item.sender === "You" ? "You" : selectedChat.partner_name}
+                          </span>
                           <span className={classes.messageDate}>
                             {time}
                             {item.sender === "You" && item.read_by_partner && (
@@ -394,6 +402,7 @@ const Messages: React.FC = () => {
           isShowScrollButton={isShowScrollButton}
           onScrollToBottom={onScrollToBottom}
           minLoadedPage={minLoadedPage}
+          onShowDetails={onShowDetails}
         />
       )}
     </div>
