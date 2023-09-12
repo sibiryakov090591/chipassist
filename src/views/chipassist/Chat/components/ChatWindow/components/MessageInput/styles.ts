@@ -94,8 +94,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     hint: {
-      backgroundColor: "#00d1b2",
-      color: "#456",
+      backgroundColor: "#3e8ed0",
+      color: "#ffffff",
       borderRadius: "50ch",
       padding: "0 8px",
       fontSize: "0.9rem",

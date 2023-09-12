@@ -6,8 +6,8 @@ import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
 import useAppSelector from "@src/hooks/useAppSelector";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
-// import constants from "@src/constants/constants";
-// import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles as useChatWindowStyles } from "@src/views/chipassist/Chat/components/ChatWindow/styles";
 import { NumberInput } from "@src/components/Inputs";
 import { v4 as uuidv4 } from "uuid";
@@ -15,7 +15,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { MenuItem, Select, FormControl, CircularProgress, useTheme, useMediaQuery } from "@material-ui/core";
+import { MenuItem, Select, FormControl, CircularProgress, useTheme, useMediaQuery, Paper } from "@material-ui/core";
 import { Currency } from "@src/store/currency/currencyTypes";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -46,7 +46,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = true; // constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = selectedChat?.stocks[0];
@@ -78,6 +78,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
   useEffect(() => {
     if (stock) {
+      dispatch(clearStockErrors());
       setIsShowPrices(false);
       setCurrency(currencyList.find((c) => c.code === stock.currency));
 
@@ -183,6 +184,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         [classes.shakeAnimation]: shake,
       })}
     >
+      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         {isSupplierResponse && selectedChat ? (
           <div>
