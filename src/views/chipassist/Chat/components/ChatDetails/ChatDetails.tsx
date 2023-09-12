@@ -21,6 +21,7 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { clearStockErrors, updateStockrecord } from "@src/store/chat/chatActions";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -155,7 +156,14 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         },
         selectedChat?.id,
       ),
-    );
+    ).then(() => {
+      dispatch(
+        showBottomLeftMessageAlertAction({
+          text: "Your stock has updated successfully!",
+          severity: "success",
+        }),
+      );
+    });
 
     if (stockrecordErrors) dispatch(clearStockErrors());
 
