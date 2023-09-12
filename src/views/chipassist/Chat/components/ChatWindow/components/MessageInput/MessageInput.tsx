@@ -159,7 +159,7 @@ const MessageInput: React.FC<Props> = ({
     const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
 
     let value = "";
-    let stockErrors: StockErrorsFields = null;
+    let stockErrors: StockErrorsFields = { num_in_stock: true, price: true };
 
     if (!numInStock) stockErrors = { ...stockErrors, num_in_stock: true };
     if (!price) stockErrors = { ...stockErrors, price: true };
@@ -229,11 +229,6 @@ const MessageInput: React.FC<Props> = ({
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
         <Hidden mdUp>
-          {!!message && (
-            <Box display="flex">
-              <CloseIcon className={classes.clearIcon} onClick={onClearMessage} />
-            </Box>
-          )}
           <Box display="flex" {...getRootProps()}>
             <input {...getInputProps()} />
             <AttachFileIcon className={classes.attachIcon} />
@@ -249,12 +244,12 @@ const MessageInput: React.FC<Props> = ({
             value={message}
             placeholder="Type a message"
           />
+          {!!message && (
+            <Box display="flex">
+              <CloseIcon className={classes.clearIcon} onClick={onClearMessage} />
+            </Box>
+          )}
           <Hidden smDown>
-            {!!message && (
-              <Box display="flex">
-                <CloseIcon className={classes.clearIcon} onClick={onClearMessage} />
-              </Box>
-            )}
             <Box display="flex" {...getRootProps()}>
               <input {...getInputProps()} />
               <AttachFileIcon className={classes.attachIcon} />

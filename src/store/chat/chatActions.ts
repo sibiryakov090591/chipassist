@@ -237,7 +237,7 @@ export const getFilters = () => {
       types: actionTypes.LOAD_CHAT_FILTERS_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/filter_info/${params}`, { cancelId: "get_chat_filters" })
+          .get(`/chats/filter_data/${params}`, { cancelId: "get_chat_filters" })
           .then((res) => res.data)
           .catch((e) => {
             console.log("***GET_CHAT_FILTERS_ERROR", e);
