@@ -488,7 +488,7 @@ const SearchResults = () => {
         </div>
       </Container>
 
-      <BeforeUnloadModal />
+      {!sessionStorage.getItem("before_unload_alert_disabled") && <BeforeUnloadModal />}
     </Page>
   );
 };

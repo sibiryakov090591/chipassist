@@ -17,7 +17,7 @@ export const CustomPopper: React.FC<Props> = ({ productId }) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (isShow && intoViewportProductId) {
+    if (!sessionStorage.getItem("product_request_hint_disabled") && isShow && intoViewportProductId) {
       setOpen(intoViewportProductId === productId);
     }
   }, [isShow]);
