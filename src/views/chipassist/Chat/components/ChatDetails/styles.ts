@@ -108,8 +108,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         transform: "rotate(180deg)",
       },
     },
-    shakeAnimation: {
-      animation: "glow 1s, shake 1s",
+    animation: {
+      animation: "glow 1s",
     },
     fieldHint: {
       "& > *": {

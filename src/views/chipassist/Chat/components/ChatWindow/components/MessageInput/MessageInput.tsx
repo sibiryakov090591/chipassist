@@ -159,7 +159,7 @@ const MessageInput: React.FC<Props> = ({
     const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
 
     let value = "";
-    let stockErrors: StockErrorsFields = { num_in_stock: true, price: true };
+    let stockErrors: StockErrorsFields = null;
 
     if (!numInStock) stockErrors = { ...stockErrors, num_in_stock: true };
     if (!price) stockErrors = { ...stockErrors, price: true };
