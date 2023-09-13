@@ -62,7 +62,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     code: "USD",
   });
 
-  const [shake, setShake] = useState(false);
+  const [startAnimation, setStartAnimation] = useState(false);
 
   const {
     register,
@@ -105,10 +105,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   }, [stock]);
 
   useEffect(() => {
-    if (!isXsDown && stockrecordErrors && !shake) {
-      setShake(true);
+    if (!isXsDown && stockrecordErrors && !startAnimation) {
+      setStartAnimation(true);
       setTimeout(() => {
-        setShake(false);
+        setStartAnimation(false);
       }, 1500);
     }
   }, [stockrecordErrors]);
@@ -181,7 +181,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       rightSwipeAction={onCloseHandler}
       className={clsx(classes.rightColumn, {
         active: showDetails,
-        [classes.shakeAnimation]: shake,
+        [classes.animation]: startAnimation,
       })}
     >
       {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
