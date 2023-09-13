@@ -20,6 +20,7 @@ interface Props {
 
 const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
   const commonClasses = useCommonStyles();
+
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -27,7 +28,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const { isShow } = useAppSelector((state) => state.products.requestHint);
-
+  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const { ref } = useInView({
     threshold: 0,
     skip: isSmDown || isShow,
@@ -46,6 +47,9 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
     <div className={classes.requestButtonWrapper} ref={ref}>
       {isAuthenticated && !!requestedQty ? (
         <Tooltip
+          disableFocusListener={isDownMd}
+          disableHoverListener={isDownMd}
+          disableTouchListener={isDownMd}
           classes={{ tooltip: commonClasses.tooltip }}
           title={
             <div>
@@ -60,7 +64,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
           >
             <Box display="flex" alignItems={"center"}>
               Requested
-              <HelpOutlineOutlinedIcon className={classes.helpIcon} />
+              {!isDownMd && <HelpOutlineOutlinedIcon className={classes.helpIcon} />}
             </Box>
           </Button>
         </Tooltip>
@@ -76,6 +80,11 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
           </Button>
           <CustomPopper productId={product.id} />
         </>
+      )}
+      {isDownMd && (
+        <div className={classes.requestButtonHelpText}>
+          {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
+        </div>
       )}
       <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
     </div>
