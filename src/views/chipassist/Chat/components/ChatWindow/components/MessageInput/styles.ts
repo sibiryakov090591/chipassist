@@ -94,7 +94,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     hint: {
-      backgroundColor: "#3e8ed0",
+      backgroundColor: theme.palette.app.blue700,
       color: "#ffffff",
       borderRadius: "50ch",
       padding: "0 8px",
