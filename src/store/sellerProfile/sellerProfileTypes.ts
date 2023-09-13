@@ -12,4 +12,5 @@ export interface SellerProfileInfo {
   postcode: number;
   address: string;
   description: string;
+  isLoading: boolean;
 }

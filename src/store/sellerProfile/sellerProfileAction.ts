@@ -8,8 +8,7 @@ export const uploadNewAvatar = (avatar: any) => {
 
 export const saveNewDetails = (data: any) => {
   return (dispatch: any) => {
-    const { logoURL, ...rest } = data;
-    return dispatch({ type: UPLOAD_ALL_INFO, payload: rest });
+    return dispatch({ type: UPLOAD_ALL_INFO, payload: data });
   };
 };
 

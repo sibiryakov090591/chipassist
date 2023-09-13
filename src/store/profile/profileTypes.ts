@@ -1,4 +1,5 @@
 import { AUTH_LOGOUT } from "@src/store/authentication/authTypes";
+import { SellerProfileInfo } from "@src/store/sellerProfile/sellerProfileTypes";
 
 export const LOAD_PROFILE_INFO = ["LOAD_PROFILE_INFO_R", "LOAD_PROFILE_INFO_S", "LOAD_PROFILE_INFO_F"];
 export const SAVE_PROFILE_INFO = "SAVE_PROFILE_INFO";
@@ -46,6 +47,13 @@ export const SET_GEOLOCATION = "SET_GEOLOCATION";
 export const UPDATE_PREV_EMAIL = "UPDATE_PREV_EMAIL";
 export const CHANGE_PARTNER = "@profile/CHANGE_PARTNER";
 
+export const GET_PARTNER_INFORMATION_STARTS = "@sellerProfile/GET_PARTNER_INFORMATION_STARTS";
+export const GET_PARTNER_INFORMATION_ENDS = "@sellerProfile/GET_PARTNER_INFORMATION_ENDS";
+
+export const GET_PARTNER_INFORMATION = "@sellerProfile/GET_PARTNER_INFORMATION";
+
+export const SAVE_NEW_PARTNER_INFORMATION = "@sellerProfile/SAVE_NEW_PARTNER_INFORMATION";
+
 export interface ProfileState {
   profileInfo: {
     id: number;
@@ -78,6 +86,7 @@ export interface ProfileState {
     success: boolean;
     error: any;
   };
+  partnerProfile: SellerProfileInfo;
 }
 
 export interface Partner {
@@ -242,6 +251,33 @@ interface LogoutAction {
   type: typeof AUTH_LOGOUT;
 }
 
+interface GetPartnerInformation {
+  type: typeof GET_PARTNER_INFORMATION;
+  payload: {
+    avatar: any;
+    company_name: string;
+    email: string;
+    phone: string;
+    website: string;
+    country: string;
+    postcode: number;
+    address: string;
+    description: string;
+  };
+}
+
+interface SaveNewPartnerInformation {
+  type: typeof SAVE_NEW_PARTNER_INFORMATION;
+}
+
+interface GetPartnerInformationStarts {
+  type: typeof GET_PARTNER_INFORMATION_STARTS;
+}
+
+interface GetPartnerInformationEnds {
+  type: typeof GET_PARTNER_INFORMATION_ENDS;
+}
+
 export type ProfileActionTypes =
   | ChangePartner
   | LogoutAction
@@ -271,4 +307,8 @@ export type ProfileActionTypes =
   | ResetPasswordFailedAction
   | ResetPasswordClearAction
   | SetCompanyErrorsAction
-  | ProfileIsLoading;
+  | ProfileIsLoading
+  | GetPartnerInformation
+  | SaveNewPartnerInformation
+  | GetPartnerInformationStarts
+  | GetPartnerInformationEnds;

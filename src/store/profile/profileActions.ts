@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 import axios from "@src/utils/axios";
 import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
 import * as actionTypes from "./profileTypes";
-import { Partner } from "./profileTypes";
+import { GET_PARTNER_INFORMATION, Partner } from "./profileTypes";
 
 export const isLoadingProfile = (val: boolean) => {
   return {
@@ -303,6 +303,79 @@ export const updateCompanyAddress = (id: number, data: any) => {
             if (e.response?.status >= 400 && e.response?.status <= 499) {
               dispatch({ type: actionTypes.SET_COMPANY_ERRORS, payload: e.response.data });
             }
+            throw e;
+          }),
+    });
+  };
+};
+
+export const getPartnerInfo = (id: number) => {
+  return (dispatch: any) => {
+    dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_STARTS });
+    return dispatch({
+      types: GET_PARTNER_INFORMATION,
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/partners/${id}`)
+          .then((res) => {
+            dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
+            console.log(res.data);
+            dispatch({
+              type: actionTypes.GET_PARTNER_INFORMATION,
+              payload: {
+                avatar: res.data?.avatar || "",
+                company_name: res.data.name || "",
+                email: res.data?.email || "",
+                phone: res.data?.phone || "",
+                website: res.data?.url || "",
+                country: res.data?.country || "",
+                postcode: res.data?.postcode || 0,
+                address: res.data?.address || "",
+                description: res.data?.description || "",
+              },
+            });
+            return {
+              avatar: res.data?.avatar || "",
+              company_name: res.data.name || "",
+              email: res.data?.email || "",
+              phone: res.data?.phone || "",
+              website: res.data?.url || "",
+              country: res.data?.country || "",
+              postcode: res.data?.postcode || 0,
+              address: res.data?.address || "",
+              description: res.data?.description || "",
+            };
+          })
+          .catch((e) => {
+            dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
+            throw e;
+          }),
+    });
+  };
+};
+
+export const saveNewPartnerInfo = (id: number, data: any) => {
+  return (dispatch: any) => {
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .patch(`/partners/${id}`, {
+            data: {
+              avatar: data.logoURL,
+              company_name: data.company_name,
+              email: data.email,
+              phone: data.phone,
+              website: data.website,
+              country: data.country,
+              postcode: data.postcode,
+              address: data.address,
+              description: data.description,
+            },
+          })
+          .then((res) => console.log(res))
+          .catch((e) => {
+            dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
             throw e;
           }),
     });

@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
 const ProfileDetails = () => {
   const classes = useStyles();
   const profile = useAppSelector((state) => state.profile);
-  const avatar = useAppSelector((state) => state.sellerProfile.avatar);
   const stateProfile = useAppSelector((state) => state.sellerProfile);
   const { profileInfo } = profile;
   const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
@@ -42,7 +41,7 @@ const ProfileDetails = () => {
   return (
     <Card className={clsx(classes.root)}>
       <CardContent className={classes.content}>
-        <Avatar className={classes.avatar} src={avatar} />
+        <Avatar className={classes.avatar} src={stateProfile.logoURL} />
         <Box display={"flex"} flexDirection={"column"}>
           <span style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem" }}>
             {billingAddress?.company_name || stateProfile.company_name}

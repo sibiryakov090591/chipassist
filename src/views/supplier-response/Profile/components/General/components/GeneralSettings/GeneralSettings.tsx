@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, Theme, TextField, Grid, Box, Button, InputAdornment } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { loadProfileInfoThunk } from "@src/store/profile/profileActions";
+import { loadProfileInfoThunk, saveNewPartnerInfo } from "@src/store/profile/profileActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
@@ -88,6 +88,7 @@ const GeneralSettings = () => {
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.profile);
+  const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo } = profile;
   const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
@@ -98,17 +99,18 @@ const GeneralSettings = () => {
 
   const [formState, setFormState] = useState<FormState>({
     values: {
-      company_name: billingAddress?.company_name || "",
-      email: profileInfo?.email || "",
-      phone: billingAddress?.phone_number || "",
-      website: billingAddress?.line2 || "",
+      company_name: partner.company_name || "",
+      email: profileInfo?.email || partner.email || "",
+      phone: billingAddress?.phone_number || partner.phone || "",
+      website: billingAddress?.line2 || partner.website || "",
       country:
         (checkout?.countries && checkout.countries.find((i) => i.url === billingAddress?.country)?.printable_name) ||
+        partner.country ||
         "",
-      postcode: billingAddress?.postcode || "",
-      address: billingAddress?.line1 || "",
-      description: billingAddress?.notes || "",
-      logoURL: "",
+      postcode: billingAddress?.postcode || partner.postcode || "",
+      address: billingAddress?.line1 || partner.address || "",
+      description: billingAddress?.notes || partner.description || "",
+      logoURL: partner.avatar || "",
     },
     touched: {},
     errors: {},
@@ -188,6 +190,7 @@ const GeneralSettings = () => {
     //   return false;
     // }
     if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
+    if (profile.selectedPartner) dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
     dispatch(
       showBottomLeftMessageAlertAction({
         text: "Company details were updated successfully!",
@@ -201,17 +204,18 @@ const GeneralSettings = () => {
     setFormState((prevState) => ({
       ...prevState,
       values: {
-        company_name: billingAddress?.company_name || "",
-        email: profileInfo?.email || "",
-        phone: billingAddress?.phone_number || "",
-        website: billingAddress?.line2 || "",
+        company_name: partner.company_name || "",
+        email: profileInfo?.email || partner.email || "",
+        phone: billingAddress?.phone_number || partner.phone || "",
+        website: billingAddress?.line2 || partner.website || "",
         country:
           (checkout?.countries && checkout.countries.find((i) => i.url === billingAddress?.country)?.printable_name) ||
+          partner.country ||
           "",
-        postcode: billingAddress?.postcode || "",
-        address: billingAddress?.line1 || "",
-        description: billingAddress?.notes || "",
-        logoURL: "",
+        postcode: billingAddress?.postcode || partner.postcode || "",
+        address: billingAddress?.line1 || partner.address || "",
+        description: billingAddress?.notes || partner.description || "",
+        logoURL: partner.avatar || "",
       },
     }));
 
@@ -230,7 +234,7 @@ const GeneralSettings = () => {
       <CardHeader className={classes.cardHeader} title={"Company details"} />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item md={6} xs={12}>
+          <Grid item md={12} xs={12}>
             <TextField
               label={"Company name"}
               name={"company_name"}
@@ -314,6 +318,19 @@ const GeneralSettings = () => {
           </Grid>
           <Grid item md={6} xs={12}>
             <TextField
+              label={"Logo URL"}
+              name={"logoURL"}
+              value={formState.values.logoURL}
+              variant={"outlined"}
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={onChangeHandler}
+            />
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <TextField
               label={"Address"}
               name={"address"}
               value={formState.values.address}
@@ -327,7 +344,8 @@ const GeneralSettings = () => {
               /* {...errorProps("address")} */
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+
+          <Grid item md={12} xs={12}>
             <TextField
               label={"Description"}
               name={"description"}
@@ -338,27 +356,24 @@ const GeneralSettings = () => {
                 shrink: true,
               }}
               multiline
+              rows={4}
               InputProps={{
                 endAdornment: <InputAdornment position="end">{`${currentLength}/${maxLength}`}</InputAdornment>,
               }}
               onChange={onChangeHandler}
             />
           </Grid>
+
           <Grid item md={12} xs={12}>
-            <TextField
-              label={"Logo URL"}
-              name={"logoURL"}
-              value={formState.values.logoURL}
-              variant={"outlined"}
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={onChangeHandler}
-            />
-          </Grid>
-          <Grid item md={12} xs={12}>
-            <Box display={"flex"} justifyContent={"space-evenly"} alignItems={"center"}>
+            <Box display={"flex"} justifyContent={"end"}>
+              <Button
+                style={{ minWidth: 150, marginRight: "16px" }}
+                className={appTheme.buttonPrimary}
+                variant="outlined"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
               <Button
                 style={{ minWidth: 150 }}
                 className={appTheme.buttonCreate}
@@ -367,60 +382,9 @@ const GeneralSettings = () => {
               >
                 Save
               </Button>
-              <Button style={{ minWidth: 150 }} className={appTheme.buttonCancel} variant="outlined" onClick={onCancel}>
-                Cancel
-              </Button>
             </Box>
           </Grid>
         </Grid>
-        {/* <Table className={classes.table} size="medium"> */}
-        {/*  <TableBody> */}
-        {/*    /!* <TableRow> *!/ */}
-        {/*    /!*  <TableCell className={classes.tableHeader}>Name</TableCell> *!/ */}
-        {/*    /!*  <TableCell>{billingAddress?.company_name || "-"}</TableCell> *!/ */}
-        {/*    /!* </TableRow> *!/ */}
-        {/*    /!* <TableRow> *!/ */}
-        {/*    /!*  <TableCell className={classes.tableHeader}>Email</TableCell> *!/ */}
-        {/*    /!*  <TableCell>{profileInfo?.email || "-"}</TableCell> *!/ */}
-        {/*    /!* </TableRow> *!/ */}
-        {/*    <TableRow> */}
-        {/*      /!* <TableCell className={classes.tableHeader}>Website</TableCell> *!/ */}
-        {/*      /!* <TableCell>{billingAddress?.line2 || "-"}</TableCell> *!/ */}
-        {/*      <TableCell width={12}> */}
-        {/*        <TextField */}
-        {/*          label={"Website"} */}
-        {/*          value={billingAddress?.line2 || "-"} */}
-        {/*          variant={"outlined"} */}
-        {/*          fullWidth */}
-        {/*        ></TextField> */}
-        {/*      </TableCell> */}
-        {/*    </TableRow> */}
-        {/*    /!* <TableRow> *!/ */}
-        {/*    /!*  <TableCell className={classes.tableHeader}>Phone</TableCell> *!/ */}
-        {/*    /!*  <TableCell>{billingAddress?.phone_number || billingAddress?.phone_number_str || "-"}</TableCell> *!/ */}
-        {/*    /!* </TableRow> *!/ */}
-        {/*    <TableRow> */}
-        {/*      <TableCell className={classes.tableHeader}>Country</TableCell> */}
-        {/*      <TableCell> */}
-        {/*        {(checkout?.countries && */}
-        {/*          checkout.countries.find((i) => i.url === billingAddress?.country)?.printable_name) || */}
-        {/*          "-"} */}
-        {/*      </TableCell> */}
-        {/*    </TableRow> */}
-        {/*    <TableRow> */}
-        {/*      <TableCell className={classes.tableHeader}>Post/Zip-code</TableCell> */}
-        {/*      <TableCell>{billingAddress?.postcode || "-"}</TableCell> */}
-        {/*    </TableRow> */}
-        {/*    <TableRow> */}
-        {/*      <TableCell className={classes.tableHeader}>Address</TableCell> */}
-        {/*      <TableCell>{billingAddress?.line1 || "-"}</TableCell> */}
-        {/*    </TableRow> */}
-        {/*    <TableRow> */}
-        {/*      <TableCell className={classes.tableHeader}>Description</TableCell> */}
-        {/*      <TableCell>{billingAddress?.notes || "-"}</TableCell> */}
-        {/*    </TableRow> */}
-        {/*  </TableBody> */}
-        {/* </Table> */}
       </CardContent>
     </Card>
   );

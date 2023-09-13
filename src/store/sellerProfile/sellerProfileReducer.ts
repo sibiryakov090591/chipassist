@@ -10,6 +10,7 @@ const initialState: SellerProfileInfo = {
   postcode: 0,
   address: "",
   description: "",
+  isLoading: false,
 };
 
 export const sellerProfileReducer = (state = initialState, action: any) => {
