@@ -108,6 +108,38 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         transform: "rotate(180deg)",
       },
     },
+    animation: {
+      animation: "glow 1s",
+    },
+    fieldHint: {
+      "& > *": {
+        boxShadow: "0px 0px 6px 3px #7bb4c5",
+      },
+    },
+    popper: {
+      position: "absolute",
+      right: "102%",
+      bottom: "50%",
+      transform: "translateY(50%)",
+      backgroundColor: theme.palette.app.blue700,
+      minWidth: 200,
+      animation: "fadeIn 1.5s",
+      padding: 16,
+      color: "#ffffff",
+      "&::before": {
+        content: '""',
+        position: "absolute",
+        marginRight: "-0.71em",
+        bottom: "50%",
+        right: 1,
+        width: 10,
+        height: 10,
+        backgroundColor: theme.palette.app.blue700,
+        boxShadow: theme.shadows[1],
+        transform: "translate(-50%, 50%) rotate(45deg)",
+        clipPath: "polygon(-5px -5px, calc(100% + 5px) -5px, calc(100% + 5px) calc(100% + 5px))",
+      },
+    },
   }),
 );
 

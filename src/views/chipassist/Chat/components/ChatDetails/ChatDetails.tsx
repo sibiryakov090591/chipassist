@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "clsx";
@@ -6,16 +6,22 @@ import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
 import useAppSelector from "@src/hooks/useAppSelector";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
-// import constants from "@src/constants/constants";
-// import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles as useChatWindowStyles } from "@src/views/chipassist/Chat/components/ChatWindow/styles";
 import { NumberInput } from "@src/components/Inputs";
+import { v4 as uuidv4 } from "uuid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { MenuItem, Select, FormControl } from "@material-ui/core";
+import { MenuItem, Select, FormControl, CircularProgress, useTheme, useMediaQuery, Paper } from "@material-ui/core";
 import { Currency } from "@src/store/currency/currencyTypes";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import useAppDispatch from "@src/hooks/useAppDispatch";
+import { clearStockErrors, updateStockrecord } from "@src/store/chat/chatActions";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -23,27 +29,89 @@ interface Props {
   onCloseDetails: () => void;
 }
 
+type FormValues = {
+  stock: number;
+  lead_time: number;
+  packaging: string;
+  moq: number;
+  mpq: number;
+  [key: string]: any;
+};
+
 const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const chatWindowClasses = useChatWindowStyles();
-  const isSupplierResponse = false; // constants.id === ID_SUPPLIER_RESPONSE;
+  const commonClasses = useCommonStyles();
+  const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
-  const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+  const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
+  const stock = selectedChat?.stocks[0];
   const currencyList = useAppSelector((state) => state.currency.currencyList);
 
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
-  const [isShowPrices, setIsShowPrices] = React.useState(false);
-  const [currency, setCurrency] = React.useState<Currency>({
+  const [isShowPrices, setIsShowPrices] = useState(false);
+  const [, setForceRender] = useState(false);
+  const [currency, setCurrency] = useState<Currency>({
     symbol: "$",
     code: "USD",
   });
-  const [priceBreaks, setPriceBreaks] = React.useState<{ qty: number; price: number }[]>([
-    { qty: 1, price: null },
-    { qty: 1, price: null },
-  ]);
+
+  const [startAnimation, setStartAnimation] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    // setError,
+    setValue,
+    getValues,
+  } = useForm<FormValues>({
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    if (stock) {
+      dispatch(clearStockErrors());
+      setIsShowPrices(false);
+      setCurrency(currencyList.find((c) => c.code === stock.currency));
+
+      // update overall data
+      setValue("stock", stock.num_in_stock);
+      setValue("packaging", stock.packaging);
+      setValue("moq", stock.moq);
+      setValue("mpq", stock.mpq);
+      setValue("lead_time", stock.lead_period_str);
+
+      // update prices
+      setValue(`prices`, {}); // reset
+      if (stock.prices.length) {
+        stock.prices.forEach((i) => {
+          setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
+        });
+      } else {
+        const id = uuidv4();
+        setValue("prices", { [id]: { id, amount: "", price: "" } });
+      }
+
+      setForceRender((prev) => !prev);
+    }
+  }, [stock]);
+
+  useEffect(() => {
+    if (!isXsDown && stockrecordErrors && !startAnimation) {
+      setStartAnimation(true);
+      setTimeout(() => {
+        setStartAnimation(false);
+      }, 1500);
+    }
+  }, [stockrecordErrors]);
 
   const onCloseHandler = () => {
     const messagesElem = document.getElementById("chat-messages");
@@ -60,11 +128,63 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   const createPriceBreak = () => {
-    setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
+    // setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
+    const id = uuidv4();
+    setValue("prices", { ...getValues("prices"), [id]: { id, amount: "", price: "" } });
+    setForceRender((prev) => !prev);
+  };
+
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    const part_number = selectedChat?.rfq?.upc;
+    if (!isValid || !part_number) return false;
+
+    const overallData = Object.fromEntries(
+      Object.entries(data).filter(([key]) => !key.includes("prices") && !key.includes("price_")),
+    );
+    const prices: any = [];
+    Object.values(data.prices).forEach((value: any) => {
+      prices.push({
+        amount: value.amount,
+        price: value.price,
+        ...(typeof value.id === "number" && { id: value.id }),
+      });
+    });
+
+    dispatch(
+      updateStockrecord(
+        {
+          [part_number]: { ...overallData, stock_id: stock?.id, price: "", currency: currency.code, prices }, // price field is required for the request
+        },
+        selectedChat?.id,
+      ),
+    ).then(() => {
+      dispatch(
+        showBottomLeftMessageAlertAction({
+          text: "Your stock has updated successfully!",
+          severity: "success",
+        }),
+      );
+    });
+
+    if (stockrecordErrors) dispatch(clearStockErrors());
+
+    // prevent reset form
+    await handleSubmit(
+      () => false,
+      () => false,
+    )();
+    return false;
   };
 
   return (
-    <SwipeWrapper rightSwipeAction={onCloseHandler} className={clsx(classes.rightColumn, { active: showDetails })}>
+    <SwipeWrapper
+      rightSwipeAction={onCloseHandler}
+      className={clsx(classes.rightColumn, {
+        active: showDetails,
+        [classes.animation]: startAnimation,
+      })}
+    >
+      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         {isSupplierResponse && selectedChat ? (
           <div>
@@ -78,12 +198,33 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       </Box>
 
       <div className={classes.details}>
-        {isSupplierResponse ? (
-          <>
+        {isSupplierResponse && selectedChat ? (
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>
                 <div className={classes.label}>In stock (Qty):</div>
-                <NumberInput name="quantity" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="stock"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.num_in_stock })}
+                      error={errors.stock}
+                      helperText={errors.stock?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>Currency:</div>
@@ -101,14 +242,60 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   </Select>
                 </FormControl>
               </div>
-              <div>
-                <div className={classes.label}>Quantity break #1:</div>
-                <NumberInput name="amount_1" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
-              </div>
-              <div>
-                <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                <NumberInput name="price_1" variant="outlined" size="small" decimalScale={4} isAllowedZero={false} />
-              </div>
+              {!!getValues("prices") &&
+                Object.keys(getValues("prices"))
+                  .slice(0, 1)
+                  .map((key, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <div>
+                          <div className={classes.label}>Quantity break #{index + 1}:</div>
+                          <Controller
+                            name={`prices.${key}.amount`}
+                            control={control}
+                            rules={{
+                              min: {
+                                value: 1,
+                                message: "At least 1",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                value={getValues(`prices.${key}.amount`)}
+                                error={errors?.prices && errors.prices[`${key}`]?.amount}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={0}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                          <Controller
+                            name={`prices.${key}.price`}
+                            control={control}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.price })}
+                                value={getValues(`prices.${key}.price`)}
+                                error={errors?.prices && errors.prices[`${key}`]?.price}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={4}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                      </React.Fragment>
+                    );
+                  })}
             </div>
             <Box p="5px">
               <Button
@@ -120,35 +307,60 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 <KeyboardArrowDownIcon className={clsx(classes.priceArrow, { active: isShowPrices })} />
               </Button>
             </Box>
-            {isShowPrices && priceBreaks.length > 1 && (
+            {isShowPrices && (
               <div className={classes.grid}>
-                {priceBreaks.map((item, index) => {
-                  if (index === 0) return null;
-                  return (
-                    <React.Fragment key={index}>
-                      <div>
-                        <div className={classes.label}>Quantity break #{index + 1}:</div>
-                        <NumberInput
-                          name={`amount_${index + 1}`}
-                          variant="outlined"
-                          size="small"
-                          decimalScale={0}
-                          isAllowedZero={false}
-                        />
-                      </div>
-                      <div>
-                        <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                        <NumberInput
-                          name={`price_${index + 1}`}
-                          variant="outlined"
-                          size="small"
-                          decimalScale={4}
-                          isAllowedZero={false}
-                        />
-                      </div>
-                    </React.Fragment>
-                  );
-                })}
+                {!!getValues("prices") &&
+                  Object.keys(getValues("prices")).map((key, index) => {
+                    if (index === 0) return null;
+                    return (
+                      <React.Fragment key={index}>
+                        <div>
+                          <div className={classes.label}>Quantity break #{index + 1}:</div>
+                          <Controller
+                            name={`prices.${key}.amount`}
+                            control={control}
+                            rules={{
+                              min: {
+                                value: 1,
+                                message: "At least 1",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                value={getValues(`prices.${key}.amount`)}
+                                error={errors?.prices && errors.prices[`${key}`]?.amount}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={0}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                          <Controller
+                            name={`prices.${key}.price`}
+                            control={control}
+                            render={({ field }) => (
+                              <NumberInput
+                                {...field}
+                                value={getValues(`prices.${key}.price`)}
+                                error={errors?.prices && errors.prices[`${key}`]?.price}
+                                helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
+                                variant="outlined"
+                                size="small"
+                                decimalScale={4}
+                                isAllowedZero={false}
+                              />
+                            )}
+                          />
+                        </div>
+                      </React.Fragment>
+                    );
+                  })}
                 <span
                   style={{ padding: "2px 5px", width: "max-content" }}
                   className={appTheme.hyperlink}
@@ -161,23 +373,89 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             <div className={classes.grid}>
               <div>
                 <div className={classes.label}>Packaging:</div>
-                <TextField name="packaging" variant="outlined" size="small" />
+                <TextField {...register("packaging")} variant="outlined" size="small" />
               </div>
               <div>
                 <div className={classes.label}>MOQ:</div>
-                <NumberInput name="moq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="moq"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.moq}
+                      helperText={errors.moq?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>MPQ:</div>
-                <NumberInput name="mpq" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="mpq"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.mpq}
+                      helperText={errors.mpq?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
               <div>
                 <div className={classes.label}>Shipping time (days):</div>
-                <NumberInput name="leadtime" variant="outlined" size="small" decimalScale={0} isAllowedZero={false} />
+                <Controller
+                  name="lead_time"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      error={errors.lead_time}
+                      helperText={errors.lead_time?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
               </div>
             </div>
             <Box p="5px" mt="3px">
-              <Button className={clsx(appTheme.buttonCreate, classes.updateButton)} variant="contained">
+              <Button
+                disabled={!isValid || isUpdating}
+                type="submit"
+                className={clsx(appTheme.buttonCreate, classes.updateButton)}
+                variant="contained"
+              >
+                {isUpdating && <CircularProgress className={commonClasses.progressCircle} size="1.5em" />}
                 Update
               </Button>
             </Box>
@@ -193,7 +471,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 </a>
               </Box>
             )}
-          </>
+          </form>
         ) : (
           <div className={classes.requestCard}>
             {/* <Box display="flex" alignItems="center" justifyContent="space-between"> */}

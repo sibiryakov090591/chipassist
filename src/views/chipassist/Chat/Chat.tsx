@@ -13,9 +13,9 @@ const Chat: React.FC = () => {
   const [showList, setShowList] = useState(true);
   const [showDetails, setShowDetails] = useState(document.body.offsetWidth >= 1280);
 
-  const onShowDetailsHandler = () => {
-    setShowDetails(!showDetails);
-    if (betweenSmMd) setShowList(showDetails);
+  const onShowDetailsHandler = (toggle = true, open = false) => {
+    setShowDetails(toggle ? !showDetails : open);
+    if (betweenSmMd) setShowList(toggle ? showDetails : !open);
   };
 
   const onShowListHandler = (open: boolean) => {

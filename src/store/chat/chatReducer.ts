@@ -1,3 +1,5 @@
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import * as actionTypes from "./chatTypes";
 import { ChatListItem, ChatListMessage } from "./chatTypes";
 
@@ -20,6 +22,8 @@ const initialState: actionTypes.ChatState = {
     loadedPages: [],
   },
   selectedChat: null,
+  stockrecordUpdating: false,
+  stockrecordErrors: null,
   messages: {
     error: "",
     page: null,
@@ -59,6 +63,15 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return { ...state, chatList: { ...state.chatList, isLoading: true } };
     case actionTypes.LOAD_CHAT_LIST_S: {
       const { page, total_pages, unread_total, results } = action.response;
+      const partner_name =
+        constants.id === ID_SUPPLIER_RESPONSE
+          ? results[0]?.partner &&
+            Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
+              const [key, value] = entry;
+              if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+              return acc;
+            }, "")
+          : results[0].partner.first_name;
       return {
         ...state,
         chatList: {
@@ -67,13 +80,22 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           page,
           total_pages,
           unread_total,
-          results,
+          results: results.map((i: any) => ({ ...i, partner_name })),
           loadedPages: [page],
         },
       };
     }
     case actionTypes.LOAD_MORE_CHAT_LIST_S: {
       const { page, total_pages, results } = action.response;
+      const partner_name =
+        constants.id === ID_SUPPLIER_RESPONSE
+          ? results[0]?.partner &&
+            Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
+              const [key, value] = entry;
+              if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+              return acc;
+            }, "")
+          : results[0].partner.first_name;
       return {
         ...state,
         chatList: {
@@ -81,7 +103,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           isLoading: false,
           page,
           total_pages,
-          results: [...state.chatList.results, ...results],
+          results: [...state.chatList.results, ...results.map((i: any) => ({ ...i, partner_name }))],
           loadedPages: [...state.chatList.loadedPages, page],
         },
       };
@@ -96,10 +118,20 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const { results, unread_total } = action.response;
       let unreadCountSelectedChat = 0;
 
+      const partner_name =
+        constants.id === ID_SUPPLIER_RESPONSE
+          ? results[0]?.partner &&
+            Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
+              const [key, value] = entry;
+              if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+              return acc;
+            }, "")
+          : results[0].partner.first_name;
+
       const newChats: ChatListItem[] = [];
       results.forEach((chat: ChatListItem) => {
         const existedChat = state.chatList.results.find((i) => i.id === chat.id);
-        if (!existedChat) newChats.push(chat);
+        if (!existedChat) newChats.push({ ...chat, partner_name });
       });
 
       const updatedChats: ChatListItem[] = [];
@@ -110,7 +142,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           Number(updatedChat.unread_messages) > 0 &&
           Number(updatedChat.unread_messages) !== Number(chat.unread_messages)
         ) {
-          updatedChats.push(updatedChat);
+          updatedChats.push({ ...updatedChat, partner_name });
           if (updatedChat.id === state.selectedChat?.id) {
             unreadCountSelectedChat = Number(updatedChat.unread_messages);
           }
@@ -278,8 +310,71 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
 
+    case actionTypes.UPDATE_STOCKRECORD_R:
+      return { ...state, stockrecordUpdating: true };
+    case actionTypes.UPDATE_STOCKRECORD_S: {
+      const {
+        stock: { stock, stock_id, lead_time, packaging, moq, mpq, prices },
+        chatId,
+      } = action.payload;
+
+      const updatedStock = {
+        num_in_stock: stock,
+        lead_period_str: lead_time,
+        packaging,
+        moq,
+        mpq,
+        prices: prices.map((pr: any) => ({ id: pr.id, amount: pr.amount, original: pr.price })),
+      };
+
+      return {
+        ...state,
+        stockrecordUpdating: false,
+        selectedChat: {
+          ...state.selectedChat,
+          stocks: state.selectedChat.stocks.map((i) => {
+            if (i.id === stock_id) {
+              return {
+                ...i,
+                ...updatedStock,
+              };
+            }
+            return i;
+          }),
+        },
+        chatList: {
+          ...state.chatList,
+          results: state.chatList.results.map((chat) => {
+            if (chat.id === chatId) {
+              return {
+                ...chat,
+                stocks: chat.stocks.map((i) => {
+                  if (i.id === stock_id) {
+                    return {
+                      ...i,
+                      ...updatedStock,
+                    };
+                  }
+                  return i;
+                }),
+              };
+            }
+            return chat;
+          }),
+        },
+      };
+    }
+    case actionTypes.UPDATE_STOCKRECORD_F:
+      return { ...state, stockrecordUpdating: false };
+
     case actionTypes.CLEAR_CHAT_REDUCER:
       return { ...initialState };
+
+    case actionTypes.SET_STOCK_ERROR:
+      return { ...state, stockrecordErrors: action.payload };
+
+    case actionTypes.CLEAR_STOCK_ERROR:
+      return { ...state, stockrecordErrors: null };
 
     default:
       return state;
