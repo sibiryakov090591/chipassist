@@ -46,7 +46,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
@@ -186,7 +186,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     >
       {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
-        {isSupplierResponse && selectedChat ? (
+        {isSupplierResponse && selectedChat && stock ? (
           <div>
             <h2 className={chatWindowClasses.title}>Your stock on ChipAssist</h2>
             <div className={classes.text}>{selectedChat?.title || selectedChat?.rfq?.upc}</div>
@@ -198,7 +198,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       </Box>
 
       <div className={classes.details}>
-        {isSupplierResponse && selectedChat ? (
+        {isSupplierResponse && selectedChat && stock ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>
