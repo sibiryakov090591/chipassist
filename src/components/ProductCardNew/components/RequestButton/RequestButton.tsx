@@ -53,7 +53,8 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
           classes={{ tooltip: commonClasses.tooltip }}
           title={
             <div>
-              {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
+              {`You have already requested`} <strong>{`${requestedQty}pcs`} </strong> {`of`}{" "}
+              <strong>{product.upc}</strong>
             </div>
           }
         >
@@ -81,12 +82,12 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
           <CustomPopper productId={product.id} />
         </>
       )}
-      {isDownMd && (
+      {isDownMd && !!requestedQty && isAuthenticated && (
         <div className={classes.requestButtonHelpText}>
-          {`You have already requested ${requestedQty}pcs of`} <strong>{product.upc}</strong>
+          {`You have already requested`} <strong>{`${requestedQty}pcs`} </strong> {`of`} <strong>{product.upc}</strong>
         </div>
       )}
-      <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
+      {!isDownMd && <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>}
     </div>
   );
 };
