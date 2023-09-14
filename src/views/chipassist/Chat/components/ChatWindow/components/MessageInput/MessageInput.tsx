@@ -239,20 +239,20 @@ const MessageInput: React.FC<Props> = ({
                 Reply later
               </div>
             </Box>
-            {!isSupplierResponse && (
-              <Box>
-                <Button
-                  size="medium"
-                  variant="contained"
-                  className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
-                  onClick={onOpenOrderModal}
-                >
-                  Send PO
-                </Button>
-              </Box>
-            )}
           </Box>
         </>
+      )}
+      {!isSupplierResponse && (
+        <Box display="flex" justifyContent="flex-end" m="0 12px 8px">
+          <Button
+            size="medium"
+            variant="contained"
+            className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
+            onClick={onOpenOrderModal}
+          >
+            Send PO
+          </Button>
+        </Box>
       )}
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">

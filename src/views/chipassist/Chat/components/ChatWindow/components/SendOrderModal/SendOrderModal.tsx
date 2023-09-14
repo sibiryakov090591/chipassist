@@ -21,15 +21,13 @@ interface Props {
 
 type FormValues = {
   company_name: string;
-  country: string;
-  website: string;
-  city: string;
-  company_email: string;
-  zip_code: string;
   first_name: string;
   last_name: string;
-  work_email: string;
-  work_phone: string;
+  country: string;
+  address: string;
+  city: string;
+  zip_code: string;
+  phone: string;
   requested_qty: string;
   notes: string;
 };
@@ -43,6 +41,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const currencyList = useAppSelector((state) => state.currency.currencyList);
+  const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
 
   const {
     reset,
@@ -71,6 +70,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
         "country",
         checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url || defaultCountry.url,
       );
+      if (rfq) setValue("requested_qty", rfq.quantity);
     } else {
       reset();
     }
@@ -123,6 +123,66 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                 )}
               />
             </Grid>
+            <Grid item md={6} xs={12}></Grid>
+            <Grid item md={6} xs={12}>
+              <Controller
+                name="first_name"
+                control={control}
+                // rules={{
+                //   min: {
+                //     value: 1,
+                //     message: "At least 1",
+                //   },
+                // }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    label="First name:"
+                    error={!!errors.first_name}
+                    helperText={errors.first_name?.message}
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Controller
+                name="last_name"
+                control={control}
+                // rules={{
+                //   min: {
+                //     value: 1,
+                //     message: "At least 1",
+                //   },
+                // }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    label="Last name:"
+                    error={!!errors.last_name}
+                    helperText={errors.last_name?.message}
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => <PhoneInputWrapper {...field} label="Work phone:" small={true} />}
+              />
+            </Grid>
             <Grid item md={6} xs={12}>
               <Controller
                 name="country"
@@ -159,32 +219,6 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Controller
-                name="website"
-                control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    label="Website:"
-                    error={!!errors.website}
-                    helperText={errors.website?.message}
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
                 name="city"
                 control={control}
                 // rules={{
@@ -202,32 +236,6 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                     label="City:"
                     error={!!errors.city}
                     helperText={errors.city?.message}
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="company_email"
-                control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    label="Company email:"
-                    error={!!errors.company_email}
-                    helperText={errors.company_email?.message}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -261,13 +269,9 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                 )}
               />
             </Grid>
-          </Grid>
-
-          <h3>Contact person</h3>
-          <Grid container spacing={2}>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={12}>
               <Controller
-                name="first_name"
+                name="address"
                 control={control}
                 // rules={{
                 //   min: {
@@ -281,79 +285,14 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="First name:"
-                    error={!!errors.first_name}
-                    helperText={errors.first_name?.message}
+                    label="Address:"
+                    error={!!errors.address}
+                    helperText={errors.address?.message}
                     variant="outlined"
                     size="small"
                     fullWidth
                   />
                 )}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="last"
-                control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    label="Last name:"
-                    error={!!errors.last_name}
-                    helperText={errors.last_name?.message}
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="work_email"
-                control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    label="Work email:"
-                    error={!!errors.work_email}
-                    helperText={errors.work_email?.message}
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                name="work_phone"
-                control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
-                render={({ field }) => <PhoneInputWrapper {...field} label="Work phone:" small={true} />}
               />
             </Grid>
           </Grid>
