@@ -26,7 +26,7 @@ type FormValues = {
   country: string;
   address: string;
   city: string;
-  zip_code: string;
+  postcode: string;
   phone: string;
   requested_qty: string;
   notes: string;
@@ -43,8 +43,10 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
   const currencyList = useAppSelector((state) => state.currency.currencyList);
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
 
+  const profileInfo = useAppSelector((state) => state.profile.profileInfo);
+  const billingAddress = React.useMemo(() => [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0], [profileInfo]);
+
   const {
-    reset,
     watch,
     handleSubmit,
     control,
@@ -66,15 +68,24 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
 
   useEffect(() => {
     if (open) {
+      setValue("company_name", billingAddress?.company_name || "");
+      setValue("first_name", billingAddress?.first_name || "");
+      setValue("last_name", billingAddress?.last_name || "");
+      setValue("phone", billingAddress?.phone_number_str || "");
+      setValue("phone", billingAddress?.phone_number_str || "");
       setValue(
         "country",
-        checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url || defaultCountry.url,
+        (billingAddress?.country && checkout?.countries?.find((c) => c.url === billingAddress.country)?.url) ||
+          (geolocation?.country_code_iso3 &&
+            checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+          defaultCountry.url,
       );
-      if (rfq) setValue("requested_qty", rfq.quantity);
-    } else {
-      reset();
+      setValue("city", billingAddress?.line4 || "");
+      setValue("postcode", billingAddress?.postcode || "");
+      setValue("address", billingAddress?.line1 || "");
+      setValue("requested_qty", rfq?.quantity || "");
     }
-  }, [open]);
+  }, [open, billingAddress]);
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     console.log(data);
@@ -245,7 +256,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Controller
-                name="zip_code"
+                name="postcode"
                 control={control}
                 // rules={{
                 //   min: {
@@ -260,8 +271,8 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                       shrink: true,
                     }}
                     label="Postal code:"
-                    error={!!errors.zip_code}
-                    helperText={errors.zip_code?.message}
+                    error={!!errors.postcode}
+                    helperText={errors.postcode?.message}
                     variant="outlined"
                     size="small"
                     fullWidth
