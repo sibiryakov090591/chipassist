@@ -198,7 +198,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       </Box>
 
       <div className={classes.details}>
-        {isSupplierResponse && selectedChat ? (
+        {isSupplierResponse && selectedChat && stock ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>

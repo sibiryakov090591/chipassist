@@ -209,15 +209,19 @@ const MessageInput: React.FC<Props> = ({
             Please send your response directly to the customer:
           </div>
           <Box display="flex" flexWrap="wrap" gridGap="6px" m="0 12px 8px">
-            <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
-              Confirm stock
-            </div>
-            <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
-              Update price
-            </div>
-            <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
-              Update quantity
-            </div>
+            {!!stock && (
+              <>
+                <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
+                  Confirm stock
+                </div>
+                <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
+                  Update price
+                </div>
+                <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
+                  Update quantity
+                </div>
+              </>
+            )}
             <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
               No stock
             </div>
