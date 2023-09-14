@@ -39,7 +39,7 @@ const MessageInput: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = false; // constants.id === ID_SUPPLIER_RESPONSE;
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
