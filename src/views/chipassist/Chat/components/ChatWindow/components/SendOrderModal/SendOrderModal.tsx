@@ -12,6 +12,8 @@ import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapp
 import useAppTheme from "@src/theme/useAppTheme";
 import { getPrice } from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";
+import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -24,15 +26,16 @@ type FormValues = {
   first_name: string;
   last_name: string;
   country: string;
-  address: string;
-  city: string;
+  line1: string; // address
+  line4: string; // city
   postcode: string;
-  phone: string;
+  phone_number_str: string;
   requested_qty: string;
-  notes: string;
+  additional_notes: string;
 };
 
 const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
+  const dispatch = useAppDispatch();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -71,25 +74,40 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
       setValue("company_name", billingAddress?.company_name || "");
       setValue("first_name", billingAddress?.first_name || "");
       setValue("last_name", billingAddress?.last_name || "");
-      setValue("phone", billingAddress?.phone_number_str || "");
-      setValue("phone", billingAddress?.phone_number_str || "");
+      setValue("phone_number_str", billingAddress?.phone_number_str || "");
       setValue(
         "country",
-        (billingAddress?.country && checkout?.countries?.find((c) => c.url === billingAddress.country)?.url) ||
+        billingAddress?.country ||
+          (billingAddress?.country && checkout?.countries?.find((c) => c.url === billingAddress.country)?.url) ||
           (geolocation?.country_code_iso3 &&
             checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url,
       );
-      setValue("city", billingAddress?.line4 || "");
+      setValue("line4", billingAddress?.line4 || "");
       setValue("postcode", billingAddress?.postcode || "");
-      setValue("address", billingAddress?.line1 || "");
+      setValue("line1", billingAddress?.line1 || "");
       setValue("requested_qty", rfq?.quantity || "");
     }
   }, [open, billingAddress]);
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log(data);
     if (!isValid) return false;
+
+    if (billingAddress) {
+      const companyData = Object.fromEntries(
+        Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
+      );
+      let companyDataWasChanged = false;
+      Object.entries(companyData).forEach(([key, val]) => {
+        if (!companyDataWasChanged && val !== billingAddress[key]) {
+          companyDataWasChanged = true;
+        }
+      });
+      if (companyDataWasChanged) {
+        dispatch(updateCompanyAddress(billingAddress.id, companyData)).then(() => dispatch(loadProfileInfoThunk()));
+      }
+      console.log(data);
+    }
     return false;
   };
 
@@ -189,7 +207,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Controller
-                name="phone"
+                name="phone_number_str"
                 control={control}
                 render={({ field }) => <PhoneInputWrapper {...field} label="Work phone:" small={true} />}
               />
@@ -230,7 +248,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Controller
-                name="city"
+                name="line4"
                 control={control}
                 // rules={{
                 //   min: {
@@ -245,8 +263,8 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                       shrink: true,
                     }}
                     label="City:"
-                    error={!!errors.city}
-                    helperText={errors.city?.message}
+                    error={!!errors.line4}
+                    helperText={errors.line4?.message}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -282,7 +300,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
             </Grid>
             <Grid item xs={12}>
               <Controller
-                name="address"
+                name="line1"
                 control={control}
                 // rules={{
                 //   min: {
@@ -297,8 +315,8 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                       shrink: true,
                     }}
                     label="Address:"
-                    error={!!errors.address}
-                    helperText={errors.address?.message}
+                    error={!!errors.line1}
+                    helperText={errors.line1?.message}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -365,7 +383,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Controller
-                name="notes"
+                name="additional_notes"
                 control={control}
                 rules={{
                   min: {
@@ -380,8 +398,8 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
                       shrink: true,
                     }}
                     fullWidth
-                    error={!!errors.notes}
-                    helperText={errors.notes?.message}
+                    error={!!errors.additional_notes}
+                    helperText={errors.additional_notes?.message}
                     label="Delivery terms etc."
                     variant="outlined"
                     multiline
