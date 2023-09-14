@@ -47,7 +47,7 @@ const ProfileDetails = () => {
             {billingAddress?.company_name || stateProfile.company_name}
           </span>
           <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>{profileInfo?.email || stateProfile.email}</span>
-          <span style={{ fontSize: "1.rem" }}>{billingAddress?.phone_number || stateProfile.phone}</span>
+          <span style={{ fontSize: "1.rem" }}>{billingAddress?.phone_number || `+${stateProfile.phone}`}</span>
         </Box>
       </CardContent>
     </Card>

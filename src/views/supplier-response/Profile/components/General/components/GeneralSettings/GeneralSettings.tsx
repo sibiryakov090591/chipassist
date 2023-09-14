@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, Theme, TextField, Grid, Box, Button, InputAdornment } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Theme,
+  TextField,
+  Grid,
+  Box,
+  Button,
+  InputAdornment,
+  MenuItem,
+  useMediaQuery,
+} from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { loadProfileInfoThunk, saveNewPartnerInfo } from "@src/store/profile/profileActions";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -13,6 +25,8 @@ import { saveNewDetails, uploadNewAvatar } from "@src/store/sellerProfile/seller
 // import _ from "lodash";
 import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -86,15 +100,16 @@ const GeneralSettings = () => {
   // const { t } = useI18n("profile");
   const classes = useStyles();
   const appTheme = useAppTheme();
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.profile);
   const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo } = profile;
   const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
-
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const [currentLength, setCurrentLength] = useState(0);
-
   const maxLength = 300;
 
   const [formState, setFormState] = useState<FormState>({
@@ -132,6 +147,12 @@ const GeneralSettings = () => {
   useEffect(() => {
     dispatch(loadProfileInfoThunk());
   }, []);
+
+  useEffect(() => {
+    if (profile.partnerProfile.description !== "") {
+      setCurrentLength(profile.partnerProfile.description.length);
+    }
+  }, [profile.partnerProfile]);
 
   useEffect(() => {
     // const formErrors = validate(formState.values, schema);
@@ -229,6 +250,13 @@ const GeneralSettings = () => {
     );
   };
 
+  const onPhoneChangeHandler = (e: any) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      values: { ...prevState.values, phone: e },
+    }));
+  };
+
   return (
     <Card>
       <CardHeader className={classes.cardHeader} title={"Company details"} />
@@ -245,6 +273,7 @@ const GeneralSettings = () => {
                 shrink: true,
               }}
               onChange={onChangeHandler}
+              size={isXsDown ? "small" : "medium"}
               onBlur={onBlurHandler("company_name")}
               /* {...errorProps("company_name")} */
             />
@@ -256,6 +285,7 @@ const GeneralSettings = () => {
               value={formState.values.email}
               variant={"outlined"}
               fullWidth
+              size={isXsDown ? "small" : "medium"}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -263,16 +293,22 @@ const GeneralSettings = () => {
             />
           </Grid>
           <Grid item md={6} xs={12}>
-            <TextField
-              label={"Phone"}
-              name={"phone"}
+            {/* <TextField */}
+            {/*  label={"Phone"} */}
+            {/*  name={"phone"} */}
+            {/*  value={formState.values.phone} */}
+            {/*  variant={"outlined"} */}
+            {/*  fullWidth */}
+            {/*  InputLabelProps={{ */}
+            {/*    shrink: true, */}
+            {/*  }} */}
+            {/*  onChange={onChangeHandler} */}
+            {/* /> */}
+            <PhoneInputWrapper
               value={formState.values.phone}
-              variant={"outlined"}
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={onChangeHandler}
+              onChange={onPhoneChangeHandler}
+              style={isSmDown && !isXsDown ? { height: "53.63px" } : null}
+              small={isXsDown}
             />
           </Grid>
           <Grid item md={6} xs={12}>
@@ -282,6 +318,7 @@ const GeneralSettings = () => {
               value={formState.values.website}
               variant={"outlined"}
               fullWidth
+              size={isXsDown ? "small" : "medium"}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -290,16 +327,24 @@ const GeneralSettings = () => {
           </Grid>
           <Grid item md={6} xs={12}>
             <TextField
-              label={"Country"}
-              name={"country"}
-              value={formState.values.country}
-              variant={"outlined"}
-              fullWidth
               InputLabelProps={{
                 shrink: true,
               }}
+              variant="outlined"
+              name="country"
+              label="Country"
+              fullWidth
+              size={isXsDown ? "small" : "medium"}
+              select
               onChange={onChangeHandler}
-            />
+              value={formState.values.country}
+            >
+              {checkout?.countries?.map((item: Record<string, any>) => (
+                <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
+                  {item.printable_name}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item md={6} xs={12}>
             <TextField
@@ -308,6 +353,7 @@ const GeneralSettings = () => {
               value={formState.values.postcode}
               variant={"outlined"}
               fullWidth
+              size={isXsDown ? "small" : "medium"}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -323,6 +369,7 @@ const GeneralSettings = () => {
               value={formState.values.logoURL}
               variant={"outlined"}
               fullWidth
+              size={isXsDown ? "small" : "medium"}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -336,6 +383,7 @@ const GeneralSettings = () => {
               value={formState.values.address}
               variant={"outlined"}
               fullWidth
+              size={isXsDown ? "small" : "medium"}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -352,6 +400,7 @@ const GeneralSettings = () => {
               value={formState.values.description}
               variant={"outlined"}
               fullWidth
+              size={isXsDown ? "small" : "medium"}
               InputLabelProps={{
                 shrink: true,
               }}

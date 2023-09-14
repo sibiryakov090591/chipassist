@@ -5,8 +5,11 @@ import { Grid } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { getPartnerInfo } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { Skeleton } from "@material-ui/lab";
 import useDebounce from "@src/hooks/useDebounce";
+import ProfileDetailsPreloader from "@src/views/supplier-response/Profile/components/General/components/Preloaders/ProfileDetailsPreloader";
+import GeneralSettingPreloader from "@src/views/supplier-response/Profile/components/General/components/Preloaders/GeneralSettingPreloader";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import { ProfileDetails, GeneralSettings } from "./components";
 
 const useStyles = makeStyles(() => ({
@@ -18,7 +21,9 @@ const General = () => {
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const profile = useAppSelector((state) => state.profile);
   const isLoading = useAppSelector((state) => state.profile.partnerProfile.isLoading);
-  const debouncedIsLoading = useDebounce(isLoading, 600);
+  const debouncedIsLoading = useDebounce(isLoading, 300);
+  const theme = useTheme();
+  const isMdDowm = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useAppDispatch();
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,11 +46,17 @@ const General = () => {
   }
   return (
     <Grid className={clsx(classes.root)} container spacing={3} direction={"row"}>
-      <Grid item container spacing={3} lg={4} md={3} xl={3} xs={12} direction={"column"}>
-        <Grid item>{debouncedIsLoading ? <Skeleton variant="rect" height={233} /> : <ProfileDetails />}</Grid>
-      </Grid>
+      {isMdDowm ? (
+        <Grid item lg={8} md={9} xl={9} xs={12}>
+          {debouncedIsLoading ? <ProfileDetailsPreloader /> : <ProfileDetails />}
+        </Grid>
+      ) : (
+        <Grid item container spacing={3} lg={4} md={3} xl={3} xs={12} direction={"column"}>
+          <Grid item>{debouncedIsLoading ? <ProfileDetailsPreloader /> : <ProfileDetails />}</Grid>
+        </Grid>
+      )}
       <Grid item lg={8} md={9} xl={9} xs={12}>
-        {debouncedIsLoading ? <Skeleton variant="rect" height={600} /> : <GeneralSettings />}
+        {debouncedIsLoading ? <GeneralSettingPreloader /> : <GeneralSettings />}
       </Grid>
     </Grid>
   );

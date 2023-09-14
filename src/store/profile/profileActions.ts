@@ -363,7 +363,7 @@ export const saveNewPartnerInfo = (id: number, data: any) => {
           .patch(`/partners/${id}`, {
             data: {
               avatar: data.logoURL,
-              company_name: data.company_name,
+              name: data.company_name,
               email: data.email,
               phone: data.phone,
               website: data.website,
