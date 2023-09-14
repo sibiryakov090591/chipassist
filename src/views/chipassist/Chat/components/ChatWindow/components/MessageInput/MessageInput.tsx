@@ -12,8 +12,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
-// import constants from "@src/constants/constants";
-// import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { getPrice } from "@src/utils/product";
 import { StockErrorsFields } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
@@ -39,7 +39,7 @@ const MessageInput: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = false; // constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);

@@ -6,8 +6,8 @@ import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
 import useAppSelector from "@src/hooks/useAppSelector";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
-// import constants from "@src/constants/constants";
-// import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useStyles as useChatWindowStyles } from "@src/views/chipassist/Chat/components/ChatWindow/styles";
 import { NumberInput } from "@src/components/Inputs";
 import { v4 as uuidv4 } from "uuid";
@@ -46,7 +46,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = false; // constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
