@@ -92,7 +92,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
           }
         >
           {chatList.results.map((item, index) => {
-            const lastMessage = item.messages[0];
+            const lastMessage = !!item.messages && item.messages[0];
             if (!lastMessage) return null;
 
             const lastMessageDate =

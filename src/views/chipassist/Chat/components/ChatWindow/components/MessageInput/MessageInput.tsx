@@ -47,10 +47,11 @@ const MessageInput: React.FC<Props> = ({
   const currencyList = useAppSelector((state) => state.currency.currencyList);
   const errorMessage = useAppSelector((state) => state.chat.messages.error);
   const { partner, stocks } = useAppSelector((state) => state.chat.selectedChat);
-  const stock = {
-    ...stocks[0],
-    prices: stocks[0].prices.map((i) => ({ ...i, price: i.original })),
-  };
+  const stock = !!stocks &&
+    !!stocks[0] && {
+      ...stocks[0],
+      prices: stocks[0].prices.map((i) => ({ ...i, price: i.original })),
+    };
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);

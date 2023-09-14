@@ -49,7 +49,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
-  const stock = selectedChat?.stocks[0];
+  const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
   const currencyList = useAppSelector((state) => state.currency.currencyList);
 
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
