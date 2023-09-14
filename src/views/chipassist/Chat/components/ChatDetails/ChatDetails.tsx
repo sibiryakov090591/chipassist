@@ -186,7 +186,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     >
       {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
-        {isSupplierResponse && selectedChat ? (
+        {isSupplierResponse && selectedChat && stock ? (
           <div>
             <h2 className={chatWindowClasses.title}>Your stock on ChipAssist</h2>
             <div className={classes.text}>{selectedChat?.title || selectedChat?.rfq?.upc}</div>
