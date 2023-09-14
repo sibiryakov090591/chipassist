@@ -46,7 +46,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
@@ -90,7 +90,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       setValue("lead_time", stock.lead_period_str);
 
       // update prices
-      setValue(`prices`, {}); // reset
+      setValue("prices", {}); // reset
       if (stock.prices.length) {
         stock.prices.forEach((i) => {
           setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
@@ -99,9 +99,12 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         const id = uuidv4();
         setValue("prices", { [id]: { id, amount: "", price: "" } });
       }
-
-      setForceRender((prev) => !prev);
+    } else {
+      const id = uuidv4();
+      setValue("prices", { [id]: { id, amount: "", price: "" } });
     }
+
+    setForceRender((prev) => !prev);
   }, [stock]);
 
   useEffect(() => {
@@ -146,14 +149,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       prices.push({
         amount: value.amount,
         price: value.price,
-        ...(typeof value.id === "number" && { id: value.id }),
+        ...(typeof value.id === "number" && { id: value.id }), // the price will be updated if id exists, will create a new one if not
       });
     });
 
     dispatch(
       updateStockrecord(
         {
-          [part_number]: { ...overallData, stock_id: stock?.id, price: "", currency: currency.code, prices }, // price field is required for the request
+          [part_number]: {
+            ...overallData,
+            price: "",
+            currency: currency.code,
+            prices,
+            ...(!!stock && { stock_id: stock?.id }),
+          }, // price field is required for the request
         },
         selectedChat?.id,
       ),

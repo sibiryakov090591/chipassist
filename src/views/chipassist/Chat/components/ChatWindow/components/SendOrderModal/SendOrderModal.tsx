@@ -55,16 +55,15 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
     mode: "onChange",
   });
 
-  const stock = {
-    ...selectedChat?.stocks[0],
-    prices: selectedChat?.stocks[0].prices.map((i) => ({ ...i, price: i.original })),
-  };
+  const stock = !!selectedChat?.stocks &&
+    !!selectedChat?.stocks[0] && {
+      ...selectedChat?.stocks[0],
+      prices: selectedChat?.stocks[0].prices.map((i) => ({ ...i, price: i.original })),
+    };
   const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
   const quantity = watch("requested_qty");
   const price = !!stock && !!quantity && getPrice(+quantity, stock as any);
   const totalPrice = !!stock && !!quantity && !!price && quantity * price;
-
-  console.log(price, quantity, +quantity, stock);
 
   useEffect(() => {
     if (open) {
@@ -372,7 +371,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
             <Grid item md={6} xs={12}>
               <div className={classes.label}>Date code (DC):</div>
               <div className={classes.value}>
-                {(stock?.partner_sku.includes("datecode:") && stock.partner_sku.split(":")[1]) || "-"}
+                {(stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || "-"}
               </div>
             </Grid>
             <Grid item md={6} xs={12}>

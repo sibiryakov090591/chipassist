@@ -43,7 +43,7 @@ const MessageInput: React.FC<Props> = ({
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
@@ -239,16 +239,18 @@ const MessageInput: React.FC<Props> = ({
                 Reply later
               </div>
             </Box>
-            <Box>
-              <Button
-                size="medium"
-                variant="contained"
-                className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
-                onClick={onOpenOrderModal}
-              >
-                Send PO
-              </Button>
-            </Box>
+            {!isSupplierResponse && (
+              <Box>
+                <Button
+                  size="medium"
+                  variant="contained"
+                  className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
+                  onClick={onOpenOrderModal}
+                >
+                  Send PO
+                </Button>
+              </Box>
+            )}
           </Box>
         </>
       )}

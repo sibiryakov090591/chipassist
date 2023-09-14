@@ -313,34 +313,26 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.UPDATE_STOCKRECORD_R:
       return { ...state, stockrecordUpdating: true };
     case actionTypes.UPDATE_STOCKRECORD_S: {
-      const {
-        stock: { stock, stock_id, lead_time, packaging, moq, mpq, prices },
-        chatId,
-      } = action.payload;
+      const { stock, chatId } = action.payload;
 
-      const updatedStock = {
-        num_in_stock: stock,
-        lead_period_str: lead_time,
-        packaging,
-        moq,
-        mpq,
-        prices: prices.map((pr: any) => ({ id: pr.id, amount: pr.amount, original: pr.price })),
-      };
+      const isExist = !!state.selectedChat.stocks.find((i) => i.id === stock.id);
 
       return {
         ...state,
         stockrecordUpdating: false,
         selectedChat: {
           ...state.selectedChat,
-          stocks: state.selectedChat.stocks.map((i) => {
-            if (i.id === stock_id) {
-              return {
-                ...i,
-                ...updatedStock,
-              };
-            }
-            return i;
-          }),
+          stocks: isExist
+            ? state.selectedChat.stocks.map((i) => {
+                if (i.id === stock.id) {
+                  return {
+                    ...i,
+                    ...stock,
+                  };
+                }
+                return i;
+              })
+            : [stock, ...state.selectedChat.stocks],
         },
         chatList: {
           ...state.chatList,
@@ -348,15 +340,17 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
             if (chat.id === chatId) {
               return {
                 ...chat,
-                stocks: chat.stocks.map((i) => {
-                  if (i.id === stock_id) {
-                    return {
-                      ...i,
-                      ...updatedStock,
-                    };
-                  }
-                  return i;
-                }),
+                stocks: isExist
+                  ? chat.stocks.map((i) => {
+                      if (i.id === stock.id) {
+                        return {
+                          ...i,
+                          ...stock,
+                        };
+                      }
+                      return i;
+                    })
+                  : [stock, ...chat.stocks],
               };
             }
             return chat;
