@@ -11,6 +11,7 @@ import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import SettingsIcon from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import { useStyles } from "./topMenuStyles";
 
@@ -60,6 +61,17 @@ const TopMenu = ({ isMobile }) => {
         <NavLink className={classes.topMenuItemLink} to={`/help`}>
           {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}
           Help
+        </NavLink>
+      </div>
+      <div className={itemClasses}>
+        <NavLink
+          className={clsx(classes.topMenuItemLink, {
+            active: window.location.pathname.includes("/profile/"),
+          })}
+          to={`/profile/general`}
+        >
+          {isMobile && <SettingsIcon className={`${classes.topMenuItemIcon}`} />}
+          Profile
         </NavLink>
       </div>
       {isMobile && isAuthenticated && (
