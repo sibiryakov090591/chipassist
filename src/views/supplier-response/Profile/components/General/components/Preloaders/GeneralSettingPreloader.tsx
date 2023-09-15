@@ -38,36 +38,36 @@ export const GeneralSettingPreloader = () => {
       <CardContent>
         <Grid container spacing={3}>
           <Grid item md={12} xs={12}>
-            <Skeleton width={"100%"} variant="rect" />
+            <Skeleton width={"100%"} height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={12} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"53.63px"} variant="rect" />
           </Grid>
           <Grid item md={12} xs={12}>
-            <Skeleton variant="rect" />
+            <Skeleton height={"127.5px"} variant="rect" />
           </Grid>
           <Grid item md={12} xs={12}>
             <Box display={"flex"} justifyContent={"end"}>
-              <Skeleton variant="rect" style={{ minWidth: 150, marginRight: "16px" }} />
-              <Skeleton variant="rect" style={{ minWidth: 150 }} />
+              <Skeleton variant="rect" height={"36.5px"} style={{ minWidth: 150, marginRight: "16px" }} />
+              <Skeleton variant="rect" height={"36.5px"} style={{ minWidth: 150 }} />
             </Box>
           </Grid>
         </Grid>
