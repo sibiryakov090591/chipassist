@@ -24,6 +24,18 @@ const initialState: actionTypes.ProfileState = {
     success: false,
     error: false,
   },
+  partnerProfile: {
+    avatar: "",
+    company_name: "",
+    email: "",
+    phone: "",
+    website: "",
+    country: "",
+    postcode: 0,
+    address: "",
+    description: "",
+    isLoading: true,
+  },
 };
 
 const updatePrevEmail = (state: actionTypes.ProfileState, action: actionTypes.UpdatePrevEmail) => {
@@ -114,6 +126,31 @@ export default function profile(state = initialState, action: actionTypes.Profil
       return {
         ...state,
         geolocation: action.payload,
+      };
+    case actionTypes.GET_PARTNER_INFORMATION_STARTS:
+      return {
+        ...state,
+        partnerProfile: {
+          ...state.partnerProfile,
+          isLoading: true,
+        },
+      };
+    case actionTypes.GET_PARTNER_INFORMATION_ENDS:
+      return {
+        ...state,
+        partnerProfile: {
+          ...state.partnerProfile,
+          isLoading: false,
+        },
+      };
+    case actionTypes.GET_PARTNER_INFORMATION:
+      return {
+        ...state,
+        partnerProfile: { ...(action.payload ? action.payload : state.partnerProfile), isLoading: false },
+      };
+    case actionTypes.SAVE_NEW_PARTNER_INFORMATION:
+      return {
+        ...state,
       };
     default:
       return state;

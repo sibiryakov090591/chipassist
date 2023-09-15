@@ -36,6 +36,7 @@ import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/curr
 import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
+import Profile from "@src/views/supplier-response/Profile/Profile";
 import Adapter from "@src/views/supplier-response/Adapter/Adapter";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -142,6 +143,14 @@ const SupplierResponseApp = () => {
               element={
                 <PrivateRoute isAuthenticated={isAuthenticated}>
                   <ChatPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/*"
+              element={
+                <PrivateRoute isAuthenticated={isAuthenticated}>
+                  <Profile />
                 </PrivateRoute>
               }
             />
