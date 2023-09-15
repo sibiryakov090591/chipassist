@@ -112,7 +112,7 @@ const GeneralSettings = () => {
   const [currentLength, setCurrentLength] = useState(0);
   const maxLength = 300;
 
-  const [formState, setFormState] = useState<FormState>({
+  const initialState = (): FormState => ({
     values: {
       company_name: partner.company_name || "",
       email: profileInfo?.email || partner.email || "",
@@ -131,6 +131,8 @@ const GeneralSettings = () => {
     errors: {},
   });
 
+  const [formState, setFormState] = useState<FormState>(initialState());
+
   const debouncedFormState = useDebounce(formState, 300);
 
   // const schema = React.useMemo(() => {
@@ -147,6 +149,10 @@ const GeneralSettings = () => {
   useEffect(() => {
     dispatch(loadProfileInfoThunk());
   }, []);
+
+  useEffect(() => {
+    setFormState(initialState());
+  }, [profile.selectedPartner]);
 
   useEffect(() => {
     if (profile.partnerProfile.description !== "") {

@@ -7,6 +7,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { onChangePartner } from "@src/store/profile/profileActions";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
+import { clearSupplierResponseData } from "@src/store/rfq/rfqActions";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -18,11 +19,8 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
-  const onChangePartnerHandler = (id: number) => {
-    const partner = partners?.find((p) => p.id === id);
-    if (partner) {
-      dispatch(onChangePartner(partner));
-    }
+  const beforeChangePartner = () => {
+    dispatch(clearSupplierResponseData());
   };
   return (
     <div className={clsx(classes.root)}>
@@ -32,12 +30,8 @@ const Header = () => {
       <Typography component="h1" variant="h3">
         {t("change_info")}
       </Typography>
-      {selectedPartner && (
-        <SupplierSelect
-          selectedPartner={selectedPartner}
-          partners={partners}
-          onChangePartner={onChangePartnerHandler}
-        />
+      {!!selectedPartner && (
+        <SupplierSelect beforeChange={beforeChangePartner} />
       )}
     </div>
   );

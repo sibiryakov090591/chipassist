@@ -127,7 +127,7 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
         geolocation: action.payload,
       };
-    case actionTypes.GET_PARTNER_INFORMATION_STARTS:
+    case actionTypes.GET_PARTNER_INFORMATION_R:
       return {
         ...state,
         partnerProfile: {
@@ -135,7 +135,15 @@ export default function profile(state = initialState, action: actionTypes.Profil
           isLoading: true,
         },
       };
-    case actionTypes.GET_PARTNER_INFORMATION_ENDS:
+    case actionTypes.GET_PARTNER_INFORMATION_S:
+      return {
+        ...state,
+        partnerProfile: {
+          ...state.partnerProfile,
+          isLoading: false,
+        },
+      };
+    case actionTypes.GET_PARTNER_INFORMATION_F:
       return {
         ...state,
         partnerProfile: {

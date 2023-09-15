@@ -21,7 +21,7 @@ const General = () => {
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const profile = useAppSelector((state) => state.profile);
   const isLoading = useAppSelector((state) => state.profile.partnerProfile.isLoading);
-  const debouncedIsLoading = useDebounce(isLoading, 300);
+  const debouncedIsLoading = useDebounce(isLoading, 600);
   const theme = useTheme();
   const isMdDowm = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useAppDispatch();
@@ -36,7 +36,6 @@ const General = () => {
 
   useEffect(() => {
     if (profile.selectedPartner) {
-      console.log(profile.selectedPartner);
       dispatch(getPartnerInfo(profile.selectedPartner.id));
     }
   }, [profile.selectedPartner]);

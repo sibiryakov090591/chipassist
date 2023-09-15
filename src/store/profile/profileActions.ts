@@ -1,10 +1,15 @@
-import { RootState } from "@src/store";
-import { ApiClientInterface } from "@src/services/ApiClient";
-import { Dispatch } from "redux";
+import {RootState} from "@src/store";
+import {ApiClientInterface} from "@src/services/ApiClient";
+import {Dispatch} from "redux";
 import axios from "@src/utils/axios";
-import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
+import {saveBillingAddress} from "@src/store/checkout/checkoutActions";
 import * as actionTypes from "./profileTypes";
-import { GET_PARTNER_INFORMATION, Partner } from "./profileTypes";
+import {
+  GET_PARTNER_INFORMATION_F,
+  GET_PARTNER_INFORMATION_R,
+  GET_PARTNER_INFORMATION_S,
+  Partner,
+} from "./profileTypes";
 
 export const isLoadingProfile = (val: boolean) => {
   return {
@@ -311,14 +316,12 @@ export const updateCompanyAddress = (id: number, data: any) => {
 
 export const getPartnerInfo = (id: number) => {
   return (dispatch: any) => {
-    dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_STARTS });
     return dispatch({
-      types: GET_PARTNER_INFORMATION,
+      types: [GET_PARTNER_INFORMATION_R, GET_PARTNER_INFORMATION_S, GET_PARTNER_INFORMATION_F],
       promise: (client: ApiClientInterface) =>
         client
           .get(`/partners/${id}`)
           .then((res) => {
-            dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
             dispatch({
               type: actionTypes.GET_PARTNER_INFORMATION,
               payload: {
@@ -333,20 +336,10 @@ export const getPartnerInfo = (id: number) => {
                 description: res.data?.description || "",
               },
             });
-            return {
-              avatar: res.data?.avatar || "",
-              company_name: res.data.name || "",
-              email: res.data?.email || "",
-              phone: res.data?.phone || "",
-              website: res.data?.url || "",
-              country: res.data?.country || "",
-              postcode: res.data?.postcode || 0,
-              address: res.data?.address || "",
-              description: res.data?.description || "",
-            };
+            // dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
           })
           .catch((e) => {
-            dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
+            // dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
             throw e;
           }),
     });
@@ -356,7 +349,7 @@ export const getPartnerInfo = (id: number) => {
 export const saveNewPartnerInfo = (id: number, data: any) => {
   return (dispatch: any) => {
     return dispatch({
-      types: [false, false, false],
+      types: [GET_PARTNER_INFORMATION_R, GET_PARTNER_INFORMATION_S, GET_PARTNER_INFORMATION_F],
       promise: (client: ApiClientInterface) =>
         client
           .patch(`/partners/${id}`, {
@@ -374,7 +367,7 @@ export const saveNewPartnerInfo = (id: number, data: any) => {
           })
           .then()
           .catch((e) => {
-            dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
+            // dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
             throw e;
           }),
     });

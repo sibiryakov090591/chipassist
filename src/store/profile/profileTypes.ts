@@ -47,8 +47,9 @@ export const SET_GEOLOCATION = "SET_GEOLOCATION";
 export const UPDATE_PREV_EMAIL = "UPDATE_PREV_EMAIL";
 export const CHANGE_PARTNER = "@profile/CHANGE_PARTNER";
 
-export const GET_PARTNER_INFORMATION_STARTS = "@sellerProfile/GET_PARTNER_INFORMATION_STARTS";
-export const GET_PARTNER_INFORMATION_ENDS = "@sellerProfile/GET_PARTNER_INFORMATION_ENDS";
+export const GET_PARTNER_INFORMATION_R = "@sellerProfile/GET_PARTNER_INFORMATION_R";
+export const GET_PARTNER_INFORMATION_S = "@sellerProfile/GET_PARTNER_INFORMATION_S";
+export const GET_PARTNER_INFORMATION_F = "@sellerProfile/GET_PARTNER_INFORMATION_F";
 
 export const GET_PARTNER_INFORMATION = "@sellerProfile/GET_PARTNER_INFORMATION";
 
@@ -270,12 +271,16 @@ interface SaveNewPartnerInformation {
   type: typeof SAVE_NEW_PARTNER_INFORMATION;
 }
 
-interface GetPartnerInformationStarts {
-  type: typeof GET_PARTNER_INFORMATION_STARTS;
+interface GetPartnerInformationR {
+  type: typeof GET_PARTNER_INFORMATION_R;
 }
 
-interface GetPartnerInformationEnds {
-  type: typeof GET_PARTNER_INFORMATION_ENDS;
+interface GetPartnerInformationS {
+  type: typeof GET_PARTNER_INFORMATION_S;
+}
+
+interface GetPartnerInformationF {
+  type: typeof GET_PARTNER_INFORMATION_F;
 }
 
 export type ProfileActionTypes =
@@ -310,5 +315,6 @@ export type ProfileActionTypes =
   | ProfileIsLoading
   | GetPartnerInformation
   | SaveNewPartnerInformation
-  | GetPartnerInformationStarts
-  | GetPartnerInformationEnds;
+  | GetPartnerInformationR
+  | GetPartnerInformationS
+  | GetPartnerInformationF;
