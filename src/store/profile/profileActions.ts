@@ -319,7 +319,6 @@ export const getPartnerInfo = (id: number) => {
           .get(`/partners/${id}`)
           .then((res) => {
             dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
-            console.log(res.data);
             dispatch({
               type: actionTypes.GET_PARTNER_INFORMATION,
               payload: {
@@ -373,7 +372,7 @@ export const saveNewPartnerInfo = (id: number, data: any) => {
               description: data.description,
             },
           })
-          .then((res) => console.log(res))
+          .then()
           .catch((e) => {
             dispatch({ type: actionTypes.GET_PARTNER_INFORMATION_ENDS });
             throw e;

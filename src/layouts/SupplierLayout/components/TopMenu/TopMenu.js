@@ -69,7 +69,7 @@ const TopMenu = ({ isMobile }) => {
       </div>
       <div className={itemClasses}>
         <NavLink
-          className={clsx(classes.topMenuItemLink, {
+          className={clsx(linkStyleClass, {
             active: window.location.pathname.includes("/profile/"),
           })}
           to={`/profile/general`}
