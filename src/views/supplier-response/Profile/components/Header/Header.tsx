@@ -6,7 +6,7 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { onChangePartner } from "@src/store/profile/profileActions";
-import SupplierSelect from "@src/views/supplier-response/Requests/SupplierSelect/SupplierSelect";
+import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 
 const useStyles = makeStyles(() => ({
   root: {},
