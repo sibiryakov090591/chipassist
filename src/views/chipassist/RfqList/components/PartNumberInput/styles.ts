@@ -42,6 +42,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       background: "#1D90FF",
     },
   },
+  helpIcon: {
+    marginLeft: "5px",
+    fontSize: 14,
+  },
+  error: {
+    color: theme.palette.app.red500,
+  },
 }));
 
 export default useStyles;

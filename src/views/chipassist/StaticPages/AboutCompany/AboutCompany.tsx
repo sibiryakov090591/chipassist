@@ -15,6 +15,7 @@ const AboutCompany = () => {
     <Page
       title={t("page_title", { name: constants.title })}
       description={t("page_description", { name: constants.title })}
+      style={{ overflowX: "hidden" }}
     >
       <section className={classes.section}>
         <Container maxWidth="lg">

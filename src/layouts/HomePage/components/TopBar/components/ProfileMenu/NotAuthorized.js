@@ -24,6 +24,8 @@ const NotAuthorized = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+
   const navigate = useNavigate();
   const { t } = useI18n("menu");
 
@@ -78,9 +80,11 @@ const NotAuthorized = () => {
         >
           <div style={{ display: "flex" }}>
             <div>
-              <span className={classes.accountSpan1}>{t("hello")}</span>
+              <span className={isSupplierResponse ? classes.supplierAccSpan1 : classes.accountSpan1}>{t("hello")}</span>
               <br />
-              <span className={classes.accountSpan2}>{t("account")}</span>
+              <span className={isSupplierResponse ? classes.supplierAccSpan2 : classes.accountSpan2}>
+                {t("account")}
+              </span>
             </div>
             <div>
               <ArrowDropDownIcon className={classes.dropIcon} />

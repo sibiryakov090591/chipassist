@@ -37,7 +37,7 @@ const Footer = () => {
 
   return (
     <div className={classes.root}>
-      <footer className={classes.footer}>
+      <footer className={isSupplierResponse ? classes.supplierFooter : classes.footer}>
         {constants.id !== ID_ICSEARCH ? (
           <Container maxWidth="lg" className={classes.bottomCont}>
             <Box className={classes.footerWrapper}>

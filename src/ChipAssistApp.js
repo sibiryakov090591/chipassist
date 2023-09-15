@@ -69,7 +69,7 @@ const SupplierResponse = lazy(() =>
 );
 const AdapterUpload = lazy(() =>
   lazyLoader(() =>
-    import(/* webpackChunkName: "adapterUpload" */ "@src/views/supplier-response/Adapter/AdapterUpload"),
+    import(/* webpackChunkName: "adapterUpload" */ "@src/views/supplier-response/Adapter/AdapterUpload/AdapterUpload"),
   ),
 );
 const ProductView = lazy(() =>

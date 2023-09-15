@@ -33,8 +33,8 @@ const Article: React.FC = () => {
   const isDisabledNext = isLoading || !selected || !selected.next || selected.next.title === selected.title;
   const isDisabledPrevious = isLoading || !selected || !selected.previous || selected.previous.title === selected.title;
 
-  const previousLink = selected?.previous && `/blog/${selected.previous.slug}`;
-  const nextLink = selected?.next && `/blog/${selected.next.slug}`;
+  const previousLink = selected?.previous?.slug && `/blog/${selected.previous.slug}`;
+  const nextLink = selected?.next?.slug && `/blog/${selected.next.slug}`;
 
   return (
     <Page title="Article" description={`${selected?.intro}`}>
@@ -82,6 +82,7 @@ const Article: React.FC = () => {
         {!isSmDown && !!list.results.length && (
           <div className={classes.list}>
             {list.results.map((item) => {
+              if (!item?.slug) return null;
               return (
                 <Link
                   key={item.id}

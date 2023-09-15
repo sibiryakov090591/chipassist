@@ -30,9 +30,13 @@ const PartNumberInput: React.FC<Props> = ({
   blurHandler,
 }) => {
   const classes = useStyles();
+  // const theme = useTheme();
+  // const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
   const suggestions = useAppSelector((state) => state.suggestions.suggestions);
   const [hasFocus, setHasFocus] = useState(false);
   const dispatch = useAppDispatch();
+  const [showTooltip, setShowTooltip] = useState(false);
+  // const [anchorEl, setAnchorEl] = useState(null);
 
   const onSuggestionSelected = (e: any, { suggestionValue }: any) => {
     onChange({ ...e, target: { ...e.target, value: suggestionValue, name: "MPN" } });
@@ -51,15 +55,39 @@ const PartNumberInput: React.FC<Props> = ({
   const getSuggestionValue = (suggestion: any) => suggestion.name;
 
   const onFieldFocus = () => {
+    // setAnchorEl(e.target);
+    setShowTooltip(false);
     setHasFocus(true);
   };
 
   const onFieldBlur = () => {
     blurHandler();
+    // if (e.target.value.indexOf(" ") !== -1) {
+    //   e.target.value = e.target.value.replace(/\s/g, "");
+    //   onChange(e);
+    //   if (timer.current) {
+    //     clearTimeout(timer.current);
+    //   }
+    //   timer.current = setTimeout(() => {
+    //     setShowTooltip(true);
+    //     if (closeTimer.current) {
+    //       clearTimeout(closeTimer.current);
+    //     }
+    //     closeTimer.current = setTimeout(() => {
+    //       setShowTooltip(false);
+    //     }, 2000);
+    //   }, 600);
+    // }
+    setShowTooltip(false);
     setHasFocus(false);
   };
 
   const onFieldChange = (e: any) => {
+    if (e.target.value) {
+      const prevValue = e.target.value;
+      e.target.value = e.target.value.replace(/[^a-zA-Z0-9# /-]/g, "");
+      setShowTooltip(prevValue !== e.target.value);
+    }
     onChange(e);
   };
 
@@ -74,7 +102,7 @@ const PartNumberInput: React.FC<Props> = ({
         getSuggestionValue={getSuggestionValue}
         focusInputOnSuggestionClick={false}
         renderSuggestion={renderSuggestion}
-        shouldRenderSuggestions={() => hasFocus}
+        shouldRenderSuggestions={() => hasFocus && !showTooltip}
         inputProps={{
           value: value || "",
           onChange: onFieldChange,
@@ -82,22 +110,35 @@ const PartNumberInput: React.FC<Props> = ({
           onBlur: onFieldBlur,
         }}
         renderInputComponent={(inputProps: any) => (
-          <TextField
-            title={partnumberRef && partnumberRef.length > 25 ? partnumberRef : ""}
-            disabled={disabled}
-            variant={"outlined"}
-            name={"MPN"}
-            label={"Part number *"}
-            placeholder={"ex. KNP100"}
-            size="small"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            className={classes.rfqInput}
-            {...inputProps}
-            {...errorHandler}
-          />
+          <>
+            <TextField
+              title={partnumberRef && partnumberRef.length > 25 ? partnumberRef : ""}
+              aria-describedby={"mpn_field"}
+              disabled={disabled}
+              variant={"outlined"}
+              name={"MPN"}
+              label={"Part number *"}
+              placeholder={"ex. KNP100"}
+              size="small"
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+              className={classes.rfqInput}
+              {...inputProps}
+              {...(!showTooltip
+                ? { ...errorHandler }
+                : { error: true, helperText: 'Only "a-z, A-Z, 0-9, /, #, -, ." are allowed in MPN' })}
+            />
+            {/* {!isDownSm && ( */}
+            {/*  <Popper id={"mpn_field"} open={showTooltip} anchorEl={anchorEl}> */}
+            {/*    /!* Spaces were successfully deleted *!/ */}
+            {/*    <Box display="flex" alignItems={"center"} justifyContent={"space-between"}> */}
+            {/*      <span className={classes.error}>{'Only "a-z, A-Z, 0-9, /, #, -, ." are allowed in MPN'}</span> */}
+            {/*    </Box> */}
+            {/*  </Popper> */}
+            {/* )} */}
+          </>
         )}
       />
     </div>

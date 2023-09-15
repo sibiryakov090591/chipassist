@@ -33,6 +33,7 @@ import { ID_MASTER } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
+import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -97,7 +98,6 @@ const SearchResults = () => {
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
-
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
   const [steps] = useState<ReactourStep[]>([
@@ -167,6 +167,14 @@ const SearchResults = () => {
       dispatch(changeQueryAction(""));
       console.log(`SEARCH. Unmount search component. Query cleared. Token: ${getAuthToken()}`);
     };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!sessionStorage.getItem("product_request_hint_disabled")) {
+        dispatch(ShowProductRequestHint());
+      }
+    }, 10000);
   }, []);
 
   useEffect(() => {
@@ -345,12 +353,18 @@ const SearchResults = () => {
               {isLoadingSearchResultsInProgress ? (
                 <Skeletons />
               ) : (
-                <div>
+                <div id={"productList"}>
                   <ProductsSegment>
-                    {products?.map((product) => {
+                    {products?.map((product, key) => {
                       const rfq = rfqData.results.find((item) => item.id === product.id);
                       return constants.isNewSearchPage ? (
-                        <ProductCardNew key={product.id} product={product} rfqData={rfq} searchQuery={query} />
+                        <ProductCardNew
+                          key={product.id}
+                          product={product}
+                          rfqData={rfq}
+                          searchQuery={query}
+                          id={`product-item-${key}`}
+                        />
                       ) : (
                         <ProductCard key={product.id} product={product} searchQuery={query} />
                       );
@@ -474,7 +488,7 @@ const SearchResults = () => {
         </div>
       </Container>
 
-      <BeforeUnloadModal />
+      {!sessionStorage.getItem("before_unload_alert_disabled") && <BeforeUnloadModal />}
     </Page>
   );
 };

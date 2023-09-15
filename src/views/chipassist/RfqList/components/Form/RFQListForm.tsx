@@ -470,7 +470,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
     return rfqListState.values
       .filter((elem) => elem.MPN !== "" && elem.quantity !== "")
       .map((rfq) => ({
-        part_number: rfq.MPN,
+        part_number: rfq.MPN.replace(/\s/g, ""),
         manufacturer: rfq.manufacturer,
         quantity: rfq.quantity,
         price: rfq.price !== "" ? rfq.price : 0,
@@ -787,6 +787,11 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
                 {key !== rfqListState.values.length - 1 && <Divider className={classes.hrStyle} />}
               </Box>
             ))}
+            {isDownMd && (
+              <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+                <span>{`${rfqListState.values.length}/${maxRfqRows}`}</span>
+              </div>
+            )}
             <div
               style={
                 isDownMd
@@ -961,8 +966,14 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
                     )}
                   </Box>
                 </Box>
-                <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                  <Box display="flex" flexDirection={isDownKey ? "column" : "row"} ml={2}>
+                <Box
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: isDownKey || isModalMode ? "flex-start" : "center",
+                  }}
+                >
+                  <Box display="flex" flexDirection={isDownKey || isModalMode ? "column" : "row"} ml={2}>
                     <FormControlLabel
                       control={
                         <Checkbox
