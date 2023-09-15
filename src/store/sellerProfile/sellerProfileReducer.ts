@@ -7,7 +7,7 @@ const initialState: SellerProfileInfo = {
   phone: "",
   website: "",
   country: "",
-  postcode: 0,
+  postcode: "",
   address: "",
   description: "",
   isLoading: false,

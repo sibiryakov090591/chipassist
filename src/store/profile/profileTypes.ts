@@ -50,6 +50,11 @@ export const CHANGE_PARTNER = "@profile/CHANGE_PARTNER";
 export const GET_PARTNER_INFORMATION_R = "@sellerProfile/GET_PARTNER_INFORMATION_R";
 export const GET_PARTNER_INFORMATION_S = "@sellerProfile/GET_PARTNER_INFORMATION_S";
 export const GET_PARTNER_INFORMATION_F = "@sellerProfile/GET_PARTNER_INFORMATION_F";
+export const GET_PARTNER_INFORMATION_ARRAY = [
+  GET_PARTNER_INFORMATION_R,
+  GET_PARTNER_INFORMATION_S,
+  GET_PARTNER_INFORMATION_F,
+];
 
 export const GET_PARTNER_INFORMATION = "@sellerProfile/GET_PARTNER_INFORMATION";
 
@@ -252,21 +257,6 @@ interface LogoutAction {
   type: typeof AUTH_LOGOUT;
 }
 
-interface GetPartnerInformation {
-  type: typeof GET_PARTNER_INFORMATION;
-  payload: {
-    avatar: any;
-    company_name: string;
-    email: string;
-    phone: string;
-    website: string;
-    country: string;
-    postcode: number;
-    address: string;
-    description: string;
-  };
-}
-
 interface SaveNewPartnerInformation {
   type: typeof SAVE_NEW_PARTNER_INFORMATION;
 }
@@ -277,6 +267,17 @@ interface GetPartnerInformationR {
 
 interface GetPartnerInformationS {
   type: typeof GET_PARTNER_INFORMATION_S;
+  response: {
+    avatar: any;
+    company_name: string;
+    email: string;
+    phone: string;
+    website: string;
+    country: string;
+    postcode: number;
+    address: string;
+    description: string;
+  };
 }
 
 interface GetPartnerInformationF {
@@ -313,7 +314,6 @@ export type ProfileActionTypes =
   | ResetPasswordClearAction
   | SetCompanyErrorsAction
   | ProfileIsLoading
-  | GetPartnerInformation
   | SaveNewPartnerInformation
   | GetPartnerInformationR
   | GetPartnerInformationS
