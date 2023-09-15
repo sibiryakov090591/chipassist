@@ -43,7 +43,6 @@ import ProgressModal from "@src/components/ProgressModal/ProgressModal";
 import { loadCategoriesThunk } from "@src/store/categories/categoriesActions";
 import { authCheckState, sendQuickRequestUnAuth } from "@src/store/authentication/authActions";
 import Preloader from "@src/components/Preloader/Preloader";
-import SupplierLayout from "@src/layouts/SupplierLayout/SupplierLayout";
 import AddProductToListModal from "@src/components/Alerts/AddProductToListModal";
 import Register from "@src/views/chipassist/Register/Register.tsx";
 import ErrorRegister from "@src/views/chipassist/ErrorRegister/ErrorRegister";
@@ -52,7 +51,6 @@ import { loadMiscAction } from "@src/store/misc/miscActions";
 import ChipassistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
-import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
 import { loadSellersWithProductLink } from "@src/store/products/productsActions";
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
@@ -62,16 +60,6 @@ import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_consta
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
-const SupplierResponse = lazy(() =>
-  lazyLoader(() =>
-    import(/* webpackChunkName: "supplierResponse" */ "@src/views/supplier-response/Requests/SupplierResponse"),
-  ),
-);
-const AdapterUpload = lazy(() =>
-  lazyLoader(() =>
-    import(/* webpackChunkName: "adapterUpload" */ "@src/views/supplier-response/Adapter/AdapterUpload/AdapterUpload"),
-  ),
-);
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
 );
@@ -326,42 +314,6 @@ const ChipAssistApp = () => {
               }
             />
             <Route path="/search" element={<SearchResults />} />
-            {constants.id === ID_MASTER && (
-              <Route
-                path="/supplier-response"
-                element={
-                  <SupplierLayout>
-                    <Suspense fallback={<Preloader title={""} />}>
-                      <SupplierResponse />
-                    </Suspense>
-                  </SupplierLayout>
-                }
-              />
-            )}
-            {constants.id === ID_MASTER && (
-              <Route
-                path="/statistics"
-                element={
-                  <SupplierLayout>
-                    <Statistics />
-                  </SupplierLayout>
-                }
-              />
-            )}
-            {constants.id === ID_MASTER && (
-              <Route
-                path="/file-upload"
-                element={
-                  <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
-                    <SupplierLayout>
-                      <Suspense fallback={<Preloader title={""} />}>
-                        <AdapterUpload />
-                      </Suspense>
-                    </SupplierLayout>
-                  </PrivateRoute>
-                }
-              />
-            )}
             {/* <Route */}
             {/*  path="/cart" */}
             {/*  element={ */}

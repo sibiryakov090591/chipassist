@@ -114,6 +114,7 @@ const MessageInput: React.FC<Props> = ({
   };
 
   const handleSubmit = async () => {
+    textareaRef.current.focus();
     if (chatId && !isSending) {
       setIsSending(true);
 

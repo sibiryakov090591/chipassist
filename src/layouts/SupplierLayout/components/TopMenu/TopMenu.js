@@ -6,7 +6,6 @@ import PublishIcon from "@material-ui/icons/Publish";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import constants from "@src/constants/constants";
-import { ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -19,12 +18,9 @@ import { useStyles } from "./topMenuStyles";
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
-  const linkStyleClass = isSupplierResponse ? classes.supplierTopMenuItemLink : classes.topMenuItemLink;
-
-  const itemClasses = [classes.topMenuItem, isMobile ? classes.topMenuItemMobile : ""].join(" ");
+  const itemClasses = clsx(classes.topMenuItem, { [classes.topMenuItemMobile]: isMobile });
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -33,27 +29,27 @@ const TopMenu = ({ isMobile }) => {
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
       <div className={itemClasses}>
-        <NavLink className={`${linkStyleClass}`} to={`/supplier-response`}>
+        <NavLink className={classes.topMenuItemLink} to={`/supplier-response`}>
           {isMobile && <HomeIcon className={`${classes.topMenuItemIcon}`} />}
           Requests
         </NavLink>
       </div>
       <div className={itemClasses}>
-        <NavLink className={`${linkStyleClass}`} to={`/statistics`}>
+        <NavLink className={classes.topMenuItemLink} to={`/statistics`}>
           {isMobile && <EqualizerIcon className={`${classes.topMenuItemIcon}`} />}
           Statistics
         </NavLink>
       </div>
-      {constants.id === ID_MASTER && (
+      {constants.title === "Master" && (
         <div className={itemClasses}>
-          <NavLink className={`${linkStyleClass}`} to={`/file-upload`}>
+          <NavLink className={classes.topMenuItemLink} to={`/adapter/upload`}>
             {isMobile && <PublishIcon className={`${classes.topMenuItemIcon}`} />}
             Data File Upload
           </NavLink>
         </div>
       )}
       <div className={itemClasses}>
-        <NavLink className={`${linkStyleClass}`} to={`/messages`}>
+        <NavLink className={classes.topMenuItemLink} to={`/messages`}>
           {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
           <span style={{ position: "relative" }}>
             Messages
@@ -62,14 +58,14 @@ const TopMenu = ({ isMobile }) => {
         </NavLink>
       </div>
       <div className={itemClasses}>
-        <NavLink className={`${linkStyleClass}`} to={`/help`}>
+        <NavLink className={classes.topMenuItemLink} to={`/help`}>
           {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}
           Help
         </NavLink>
       </div>
       <div className={itemClasses}>
         <NavLink
-          className={clsx(linkStyleClass, {
+          className={clsx(classes.topMenuItemLink, {
             active: window.location.pathname.includes("/profile/"),
           })}
           to={`/profile/general`}
@@ -80,7 +76,7 @@ const TopMenu = ({ isMobile }) => {
       </div>
       {isMobile && isAuthenticated && (
         <div className={itemClasses}>
-          <div className={`${linkStyleClass} top-menu-logout`} onClick={logoutHandler}>
+          <div className={`${classes.topMenuItemLink} top-menu-logout`} onClick={logoutHandler}>
             <ExitToAppOutlinedIcon className={`${classes.topMenuItemIcon}`} />
             Logout
           </div>
