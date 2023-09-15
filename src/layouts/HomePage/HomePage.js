@@ -76,7 +76,7 @@ const HomePage = (props) => {
   if (constants.id === ID_MASTER) {
     isDisableLayout =
       (window.location.pathname === "/" && isMdUp) ||
-      ["/supplier-response", "/statistics", "/file-upload"].includes(window.location.pathname);
+      ["/supplier-response", "/statistics", "/adapter/upload", "/adapter/list"].includes(window.location.pathname);
   }
 
   return isDisableLayout ? (

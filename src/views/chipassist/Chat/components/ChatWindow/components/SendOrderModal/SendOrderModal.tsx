@@ -77,8 +77,8 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
       setValue("phone_number_str", billingAddress?.phone_number_str || "");
       setValue(
         "country",
-        billingAddress?.country ||
-          (billingAddress?.country && checkout?.countries?.find((c) => c.url === billingAddress.country)?.url) ||
+        (billingAddress?.country &&
+          checkout?.countries?.find((c) => c.url.includes(billingAddress.country.split("/api/")[1]))?.url) ||
           (geolocation?.country_code_iso3 &&
             checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url,

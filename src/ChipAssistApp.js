@@ -67,10 +67,8 @@ const SupplierResponse = lazy(() =>
     import(/* webpackChunkName: "supplierResponse" */ "@src/views/supplier-response/Requests/SupplierResponse"),
   ),
 );
-const AdapterUpload = lazy(() =>
-  lazyLoader(() =>
-    import(/* webpackChunkName: "adapterUpload" */ "@src/views/supplier-response/Adapter/AdapterUpload/AdapterUpload"),
-  ),
+const Adapter = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "adapter" */ "@src/views/supplier-response/Adapter/Adapter")),
 );
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
@@ -350,12 +348,12 @@ const ChipAssistApp = () => {
             )}
             {constants.id === ID_MASTER && (
               <Route
-                path="/file-upload"
+                path="/adapter/*"
                 element={
                   <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
                     <SupplierLayout>
                       <Suspense fallback={<Preloader title={""} />}>
-                        <AdapterUpload />
+                        <Adapter />
                       </Suspense>
                     </SupplierLayout>
                   </PrivateRoute>
