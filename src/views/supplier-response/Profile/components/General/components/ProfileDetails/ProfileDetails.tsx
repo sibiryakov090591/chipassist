@@ -35,8 +35,6 @@ const ProfileDetails = () => {
   const classes = useStyles();
   const profile = useAppSelector((state) => state.profile);
   const stateProfile = useAppSelector((state) => state.sellerProfile);
-  const { profileInfo } = profile;
-  const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
 
   return (
     <Card className={clsx(classes.root)}>
@@ -44,10 +42,14 @@ const ProfileDetails = () => {
         <Avatar className={classes.avatar} src={stateProfile.logoURL} />
         <Box display={"flex"} flexDirection={"column"}>
           <span style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem" }}>
-            {billingAddress?.company_name || stateProfile.company_name}
+            {stateProfile.company_name || profile.partnerProfile.company_name}
           </span>
-          <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>{profileInfo?.email || stateProfile.email}</span>
-          <span style={{ fontSize: "1.rem" }}>{billingAddress?.phone_number || `+${stateProfile.phone}`}</span>
+          <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>
+            {stateProfile.email || profile.partnerProfile.email}
+          </span>
+          <span style={{ fontSize: "1.rem" }}>
+            {stateProfile.phone !== "" ? `+${stateProfile.phone}` : stateProfile.phone || profile.partnerProfile.phone}
+          </span>
         </Box>
       </CardContent>
     </Card>

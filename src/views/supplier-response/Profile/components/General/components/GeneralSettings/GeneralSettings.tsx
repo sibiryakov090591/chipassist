@@ -13,7 +13,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { loadProfileInfoThunk, saveNewPartnerInfo } from "@src/store/profile/profileActions";
+import { saveNewPartnerInfo } from "@src/store/profile/profileActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
@@ -148,9 +148,9 @@ const GeneralSettings = () => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    dispatch(loadProfileInfoThunk());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadProfileInfoThunk());
+  // }, []);
 
   useEffect(() => {
     setFormState(initialState());
