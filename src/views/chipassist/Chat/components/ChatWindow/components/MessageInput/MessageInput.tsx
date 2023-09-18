@@ -13,7 +13,7 @@ import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { getPrice } from "@src/utils/product";
 import { StockErrorsFields } from "@src/store/chat/chatTypes";
 import Button from "@material-ui/core/Button";
@@ -43,7 +43,8 @@ const MessageInput: React.FC<Props> = ({
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isMaster = constants.id === ID_MASTER;
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
@@ -242,7 +243,7 @@ const MessageInput: React.FC<Props> = ({
           </Box>
         </>
       )}
-      {!isSupplierResponse && (
+      {isMaster && (
         <Box display="flex" justifyContent="flex-end" m="0 12px 8px">
           <Button
             size="medium"

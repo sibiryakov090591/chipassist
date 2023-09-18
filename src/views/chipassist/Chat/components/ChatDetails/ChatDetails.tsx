@@ -46,7 +46,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
@@ -216,6 +216,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   name="stock"
                   control={control}
                   rules={{
+                    required: {
+                      value: true,
+                      message: "Required",
+                    },
                     min: {
                       value: 1,
                       message: "At least 1",
@@ -263,6 +267,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             name={`prices.${key}.amount`}
                             control={control}
                             rules={{
+                              required: {
+                                value: true,
+                                message: "Required",
+                              },
                               min: {
                                 value: 1,
                                 message: "At least 1",
@@ -287,6 +295,16 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
+                            rules={{
+                              required: {
+                                value: true,
+                                message: "Required",
+                              },
+                              min: {
+                                value: 0.0001,
+                                message: "More than 0",
+                              },
+                            }}
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
@@ -353,6 +371,12 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
+                            rules={{
+                              min: {
+                                value: 0.0001,
+                                message: "More than 0",
+                              },
+                            }}
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
