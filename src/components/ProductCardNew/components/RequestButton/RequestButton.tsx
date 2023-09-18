@@ -87,7 +87,9 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
           {`You have already requested`} <strong>{`${requestedQty}pcs`} </strong> {`of`} <strong>{product.upc}</strong>
         </div>
       )}
-      {!isDownMd && <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>}
+      {((isDownMd && !requestedQty) || !isDownMd) && (
+        <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
+      )}
     </div>
   );
 };
