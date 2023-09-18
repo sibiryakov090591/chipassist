@@ -189,7 +189,7 @@
     "pcb": "Printed boards",
     "bom": "BOM Tool",
     "cart": "Cart",
-    "search_placeholder": "Search by keywords, technical specifications or part number",
+    "search_placeholder": "Search by MPN, manufacturer or keywords",
     "try_search": "Or try an example search:",
     "try_search_mobile": "Try sample search:",
     "hello": "Sign in",
