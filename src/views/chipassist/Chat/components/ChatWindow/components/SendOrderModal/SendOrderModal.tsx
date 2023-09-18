@@ -116,7 +116,9 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
       mpn: rfq?.upc || stock?.upc,
       datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
     };
-    dispatch(sendMessage(selectedChat.id, "''", orderData));
+    dispatch(sendMessage(selectedChat.id, "''", orderData)).then(() => {
+      onCloseModal();
+    });
 
     return false;
   };
