@@ -304,7 +304,7 @@ const MessageInput: React.FC<Props> = ({
         onAddFiles={onAddFiles}
         onCloseModal={onCloseModal}
       />
-      <SendOrderModal open={openOrderModal} onCloseModal={onCloseOrderModal} />
+      <SendOrderModal open={openOrderModal} onCloseModal={onCloseOrderModal} setIsSending={setIsSending} />
     </div>
   );
 };
