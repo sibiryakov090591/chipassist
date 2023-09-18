@@ -312,53 +312,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
 
-                  return orderData ? (
-                    <div key={item.id} className={classes.messageItem}>
-                      <Paper className={classes.orderItem} elevation={1}>
-                        <div className={classes.orderTitle}>Purchase Order (PO)</div>
-                        <div className={classes.orderContent}>
-                          <Grid container>
-                            <Grid item sm={6} xs={12}>
-                              <div>
-                                <strong>{orderData.company_name || "-"}</strong>
-                              </div>
-                              <div>
-                                {orderData.first_name} {orderData.last_name}
-                              </div>
-                              <div>{orderData.phone_number_str}</div>
-                            </Grid>
-                            <Grid item sm={6} xs={12}>
-                              <div>{`${orderData.line1}`}</div>
-                              <div>{`${orderData.line4}, ${
-                                checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
-                              }`}</div>
-                              <div>{orderData.postcode}</div>
-                            </Grid>
-                          </Grid>
-                          <table className={classes.orderTable}>
-                            <thead>
-                              <tr>
-                                <th>MPN</th>
-                                <th>DC</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Out Price</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>{orderData.mpn}</td>
-                                <td>{orderData.datecode || "-"}</td>
-                                <td>{orderData.requested_qty}</td>
-                                <td>{`${formatMoney(orderData.price)} ${orderData.stockrecord?.currency}`}</td>
-                                <td>{`${formatMoney(orderData.totalPrice)} ${orderData.stockrecord?.currency}`}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </Paper>
-                    </div>
-                  ) : (
+                  return (
                     <div key={item.id}>
                       {item.id === firstUnreadMessageId && (
                         <div ref={unreadLabelRef}>
@@ -377,49 +331,97 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                             )}
                           </span>
                         </div>
-                        {!!item.message_attachments?.length && (
-                          <Box display="flex" flexWrap="wrap" gridGap="6px">
-                            {item.message_attachments.map((attachment) => {
-                              const file = files[attachment.id];
-                              if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
+                        {orderData ? (
+                          <Paper className={classes.orderItem} elevation={1}>
+                            <div className={classes.orderTitle}>Purchase Order (PO)</div>
+                            <div className={classes.orderContent}>
+                              <Grid container>
+                                <Grid item sm={6} xs={12}>
+                                  <div>
+                                    <strong>{orderData.company_name || "-"}</strong>
+                                  </div>
+                                  <div>
+                                    {orderData.first_name} {orderData.last_name}
+                                  </div>
+                                  <div>{orderData.phone_number_str}</div>
+                                </Grid>
+                                <Grid item sm={6} xs={12}>
+                                  <div>{`${orderData.line1}`}</div>
+                                  <div>{`${orderData.line4}, ${
+                                    checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
+                                  }`}</div>
+                                  <div>{orderData.postcode}</div>
+                                </Grid>
+                              </Grid>
+                              <table className={classes.orderTable}>
+                                <thead>
+                                  <tr>
+                                    <th>MPN</th>
+                                    <th>DC</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Out Price</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>{orderData.mpn}</td>
+                                    <td>{orderData.datecode || "-"}</td>
+                                    <td>{orderData.requested_qty}</td>
+                                    <td>{`${formatMoney(orderData.price)} ${orderData.stockrecord?.currency}`}</td>
+                                    <td>{`${formatMoney(orderData.totalPrice)} ${orderData.stockrecord?.currency}`}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </Paper>
+                        ) : (
+                          <>
+                            {!!item.message_attachments?.length && (
+                              <Box display="flex" flexWrap="wrap" gridGap="6px">
+                                {item.message_attachments.map((attachment) => {
+                                  const file = files[attachment.id];
+                                  if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
 
-                              return (
-                                <img
-                                  key={attachment.id}
-                                  className={classes.image}
-                                  src={file.url}
-                                  alt="file"
-                                  onClick={onOpenPreview(file.url)}
-                                />
-                              );
-                            })}
-                          </Box>
+                                  return (
+                                    <img
+                                      key={attachment.id}
+                                      className={classes.image}
+                                      src={file.url}
+                                      alt="file"
+                                      onClick={onOpenPreview(file.url)}
+                                    />
+                                  );
+                                })}
+                              </Box>
+                            )}
+                            {!!item.message_attachments?.length && (
+                              <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
+                                {item.message_attachments.map((attachment) => {
+                                  const file = files[attachment.id];
+                                  if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+
+                                  const imgUrl =
+                                    (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
+                                    (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                                    (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+
+                                  return (
+                                    <div
+                                      key={attachment.id}
+                                      className={classes.file}
+                                      onClick={onDownloadFile(attachment.id, attachment.file_name)}
+                                    >
+                                      {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
+                                      <div className={classes.fileName}>{attachment.file_name}</div>
+                                    </div>
+                                  );
+                                })}
+                              </Box>
+                            )}
+                            <div className={classes.message}>{item.text}</div>
+                          </>
                         )}
-                        {!!item.message_attachments?.length && (
-                          <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
-                            {item.message_attachments.map((attachment) => {
-                              const file = files[attachment.id];
-                              if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
-
-                              const imgUrl =
-                                (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
-                                (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
-                                (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
-
-                              return (
-                                <div
-                                  key={attachment.id}
-                                  className={classes.file}
-                                  onClick={onDownloadFile(attachment.id, attachment.file_name)}
-                                >
-                                  {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
-                                  <div className={classes.fileName}>{attachment.file_name}</div>
-                                </div>
-                              );
-                            })}
-                          </Box>
-                        )}
-                        <div className={classes.message}>{item.text}</div>
                       </div>
                     </div>
                   );
