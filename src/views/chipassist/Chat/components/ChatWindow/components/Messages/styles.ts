@@ -170,6 +170,37 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       maxWidth: 365,
       textAlign: "center",
     },
+    orderItem: {
+      overflow: "hidden",
+    },
+    orderTitle: {
+      backgroundColor: theme.palette.app.green800,
+      color: "#ffffff",
+      fontWeight: "bold",
+      padding: "12px",
+    },
+    orderContent: {
+      padding: "12px",
+    },
+    orderTable: {
+      marginTop: "16px",
+      width: "100%",
+      border: "1px solid #003366",
+      borderCollapse: "collapse",
+      "& th": {
+        backgroundColor: "#345",
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 12,
+        padding: 5,
+        textAlign: "start",
+      },
+      "& td": {
+        padding: 5,
+        fontSize: 11,
+        border: "1px solid #003366",
+      },
+    },
   }),
 );
 

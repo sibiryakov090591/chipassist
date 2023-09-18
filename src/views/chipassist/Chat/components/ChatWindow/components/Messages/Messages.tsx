@@ -22,6 +22,7 @@ import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { Paper, Grid } from "@material-ui/core";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -40,6 +41,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
 
+  const checkout = useAppSelector((state) => state.checkout);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const chatList = useAppSelector((state) => state.chat.chatList);
   const messages = useAppSelector((state) => state.chat.messages);
@@ -308,8 +310,55 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
 
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
+                  const orderData = item.po;
 
-                  return (
+                  return orderData ? (
+                    <div key={item.id} className={classes.messageItem}>
+                      <Paper className={classes.orderItem} elevation={1}>
+                        <div className={classes.orderTitle}>Purchase Order (PO)</div>
+                        <div className={classes.orderContent}>
+                          <Grid container>
+                            <Grid item sm={6} xs={12}>
+                              <div>
+                                <strong>{orderData.company_name || "-"}</strong>
+                              </div>
+                              <div>
+                                {orderData.first_name} {orderData.last_name}
+                              </div>
+                              <div>{orderData.phone_number_str}</div>
+                            </Grid>
+                            <Grid item sm={6} xs={12}>
+                              <div>{`${orderData.line1}`}</div>
+                              <div>{`${orderData.line4}, ${
+                                checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
+                              }`}</div>
+                              <div>{orderData.postcode}</div>
+                            </Grid>
+                          </Grid>
+                          <table className={classes.orderTable}>
+                            <thead>
+                              <tr>
+                                <th>MPN</th>
+                                <th>DC</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Out Price</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>{orderData.mpn}</td>
+                                <td>{orderData.datecode || "-"}</td>
+                                <td>{orderData.requested_qty}</td>
+                                <td>{`${formatMoney(orderData.price)} ${orderData.stockrecord?.currency}`}</td>
+                                <td>{`${formatMoney(orderData.totalPrice)} ${orderData.stockrecord?.currency}`}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </Paper>
+                    </div>
+                  ) : (
                     <div key={item.id}>
                       {item.id === firstUnreadMessageId && (
                         <div ref={unreadLabelRef}>
