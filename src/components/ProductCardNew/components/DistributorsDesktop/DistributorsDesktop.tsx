@@ -96,14 +96,17 @@ const DistributorsDesktop: React.FC<Props> = ({
           if (group.length === 1) return group;
           /**
            *  Create combinedDataItem for show in collapsed group condition
-           *  Contains: min prices, min MOQ
+           *  Contains the best values
            */
           const combinedDataItem = group.reduce(
             (acc, sr) => {
+              const accDate = new Date(acc.date_updated.replace(/ /g, "T"));
+              const srDate = new Date(sr.date_updated.replace(/ /g, "T"));
               return {
                 ...acc,
                 num_in_stock: Math.max(acc.num_in_stock, sr.num_in_stock),
                 moq: Math.min(acc.moq, sr.moq),
+                date_updated: accDate.getTime() < srDate.getTime() ? acc.date_updated : sr.date_updated,
                 price_1: acc.price_1 ? (sr.price_1 ? Math.min(acc.price_1, sr.price_1) : acc.price_1) : sr.price_1,
                 price_10: acc.price_10
                   ? sr.price_10

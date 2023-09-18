@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import Footer from "@src/components/Footer/Footer";
-import constants from "@src/constants/constants";
-import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { scrollbarWidth } from "@src/config";
@@ -67,17 +65,9 @@ const HomePage = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const isShowFooter = window.location.pathname !== "/messages";
 
-  let isDisableLayout = false;
-  if (constants.id === ID_CHIPASSIST) {
-    isDisableLayout = window.location.pathname === "/" && isMdUp;
-  }
-  if (constants.id === ID_MASTER) {
-    isDisableLayout =
-      (window.location.pathname === "/" && isMdUp) ||
-      ["/supplier-response", "/statistics", "/adapter/upload", "/adapter/list"].includes(window.location.pathname);
-  }
+  const isShowFooter = window.location.pathname !== "/messages";
+  const isDisableLayout = window.location.pathname === "/" && isMdUp;
 
   return isDisableLayout ? (
     props.children
