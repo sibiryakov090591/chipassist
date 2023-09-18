@@ -14,6 +14,7 @@ import { getPrice } from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import { sendMessage } from "@src/store/chat/chatActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -106,8 +107,17 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
       if (companyDataWasChanged) {
         dispatch(updateCompanyAddress(billingAddress.id, companyData)).then(() => dispatch(loadProfileInfoThunk()));
       }
-      console.log(data);
     }
+    const orderData = {
+      ...data,
+      price,
+      totalPrice,
+      stockrecord: stock,
+      mpn: rfq?.upc || stock?.upc,
+      datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
+    };
+    dispatch(sendMessage(selectedChat.id, "''", orderData));
+
     return false;
   };
 

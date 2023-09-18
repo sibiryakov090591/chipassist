@@ -180,7 +180,7 @@ export const updateMessages = (chatId: number, filters: { [key: string]: any } =
   };
 };
 
-export const sendMessage = (chatId: number, message: string) => {
+export const sendMessage = (chatId: number, message: string, orderData: any = null) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -189,7 +189,7 @@ export const sendMessage = (chatId: number, message: string) => {
       promise: (client: ApiClientInterface) =>
         client
           .post(`/chats/${chatId}/message/${params}`, {
-            data: { text: message },
+            data: { text: message, ...(!!orderData && { po: orderData }) },
           })
           .then((res) => {
             const newMessage = {
@@ -199,6 +199,7 @@ export const sendMessage = (chatId: number, message: string) => {
               read: true,
               read_by_partner: false,
               created: new Date().toISOString(),
+              ...(res.data?.po && { po: res.data.po }),
             };
             dispatch(addMessage(chatId, newMessage));
             return res.data;
