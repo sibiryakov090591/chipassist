@@ -13,7 +13,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { loadProfileInfoThunk, saveNewPartnerInfo } from "@src/store/profile/profileActions";
+import { saveNewPartnerInfo } from "@src/store/profile/profileActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
@@ -27,6 +27,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useTheme } from "@material-ui/core/styles";
+import { defaultCountry } from "@src/constants/countries";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -60,7 +61,7 @@ interface ProfileForm {
   phone: string;
   website: string;
   country: string;
-  postcode: number;
+  postcode: string;
   address: string;
   description: string;
   logoURL: string;
@@ -102,34 +103,37 @@ const GeneralSettings = () => {
   const appTheme = useAppTheme();
   const theme = useTheme();
   const dispatch = useAppDispatch();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const maxLength = 300;
+
   const profile = useAppSelector((state) => state.profile);
   const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
-  const { profileInfo } = profile;
-  const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
-  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
-  const [currentLength, setCurrentLength] = useState(0);
-  const maxLength = 300;
+  const geolocation = useAppSelector((state) => state.profile.geolocation);
 
-  const [formState, setFormState] = useState<FormState>({
+  const [currentLength, setCurrentLength] = useState(0);
+
+  const initialState = (): FormState => ({
     values: {
       company_name: partner.company_name || "",
-      email: profileInfo?.email || partner.email || "",
-      phone: billingAddress?.phone_number || partner.phone || "",
-      website: billingAddress?.line2 || partner.website || "",
+      email: partner.email || "",
+      phone: partner.phone || "",
+      website: partner.website || "",
       country:
-        (checkout?.countries && checkout.countries.find((i) => i.url === billingAddress?.country)?.printable_name) ||
-        partner.country ||
-        "",
-      postcode: billingAddress?.postcode || partner.postcode || "",
-      address: billingAddress?.line1 || partner.address || "",
-      description: billingAddress?.notes || partner.description || "",
+        checkout?.countries?.find((i) => i.url === partner.country)?.url ||
+        checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url ||
+        defaultCountry.url,
+      postcode: partner.postcode || "",
+      address: partner.address || "",
+      description: partner.description || "",
       logoURL: partner.avatar || "",
     },
     touched: {},
     errors: {},
   });
+
+  const [formState, setFormState] = useState<FormState>(initialState());
 
   const debouncedFormState = useDebounce(formState, 300);
 
@@ -144,11 +148,12 @@ const GeneralSettings = () => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    dispatch(loadProfileInfoThunk());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadProfileInfoThunk());
+  // }, []);
 
   useEffect(() => {
+    setFormState(initialState());
     if (profile.partnerProfile.description !== "") {
       setCurrentLength(profile.partnerProfile.description.length);
     }
@@ -222,23 +227,7 @@ const GeneralSettings = () => {
   };
 
   const onCancel = () => {
-    setFormState((prevState) => ({
-      ...prevState,
-      values: {
-        company_name: partner.company_name || "",
-        email: profileInfo?.email || partner.email || "",
-        phone: billingAddress?.phone_number || partner.phone || "",
-        website: billingAddress?.line2 || partner.website || "",
-        country:
-          (checkout?.countries && checkout.countries.find((i) => i.url === billingAddress?.country)?.printable_name) ||
-          partner.country ||
-          "",
-        postcode: billingAddress?.postcode || partner.postcode || "",
-        address: billingAddress?.line1 || partner.address || "",
-        description: billingAddress?.notes || partner.description || "",
-        logoURL: partner.avatar || "",
-      },
-    }));
+    setFormState(initialState());
 
     dispatch(uploadNewAvatar(""));
 

@@ -9,7 +9,7 @@ export interface SellerProfileInfo {
   phone: string;
   website: string;
   country: string;
-  postcode: number;
+  postcode: string;
   address: string;
   description: string;
   isLoading: boolean;
