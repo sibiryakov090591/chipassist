@@ -20,6 +20,7 @@ import { useStyles } from "./styles";
 interface Props {
   open: boolean;
   onCloseModal: () => void;
+  setIsSending: any;
 }
 
 type FormValues = {
@@ -35,7 +36,7 @@ type FormValues = {
   additional_notes: string;
 };
 
-const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
+const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -94,6 +95,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     if (!isValid) return false;
 
+    setIsSending(true);
     if (billingAddress) {
       const companyData = Object.fromEntries(
         Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
@@ -116,7 +118,8 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal }) => {
       mpn: rfq?.upc || stock?.upc,
       datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
     };
-    dispatch(sendMessage(selectedChat.id, "''", orderData));
+    dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
+    onCloseModal();
 
     return false;
   };
