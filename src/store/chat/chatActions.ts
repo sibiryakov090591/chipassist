@@ -335,7 +335,7 @@ export const updateStockrecord = (data: any, chatId: number) => (dispatch: any, 
           },
         })
         .then((res) => {
-          dispatch({ type: actionTypes.UPDATE_STOCKRECORD_S, payload: { stock: Object.values(data)[0], chatId } });
+          dispatch({ type: actionTypes.UPDATE_STOCKRECORD_S, payload: { stock: res.data, chatId } });
           return res.data;
         })
         .catch((e) => {

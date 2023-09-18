@@ -46,7 +46,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
@@ -90,7 +90,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       setValue("lead_time", stock.lead_period_str);
 
       // update prices
-      setValue(`prices`, {}); // reset
+      setValue("prices", {}); // reset
       if (stock.prices.length) {
         stock.prices.forEach((i) => {
           setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
@@ -99,9 +99,12 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         const id = uuidv4();
         setValue("prices", { [id]: { id, amount: "", price: "" } });
       }
-
-      setForceRender((prev) => !prev);
+    } else {
+      const id = uuidv4();
+      setValue("prices", { [id]: { id, amount: "", price: "" } });
     }
+
+    setForceRender((prev) => !prev);
   }, [stock]);
 
   useEffect(() => {
@@ -146,14 +149,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       prices.push({
         amount: value.amount,
         price: value.price,
-        ...(typeof value.id === "number" && { id: value.id }),
+        ...(typeof value.id === "number" && { id: value.id }), // the price will be updated if id exists, will create a new one if not
       });
     });
 
     dispatch(
       updateStockrecord(
         {
-          [part_number]: { ...overallData, stock_id: stock?.id, price: "", currency: currency.code, prices }, // price field is required for the request
+          [part_number]: {
+            ...overallData,
+            price: "",
+            currency: currency.code,
+            prices,
+            ...(!!stock && { stock_id: stock?.id }),
+          }, // price field is required for the request
         },
         selectedChat?.id,
       ),
@@ -186,7 +195,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     >
       {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
-        {isSupplierResponse && selectedChat && stock ? (
+        {isSupplierResponse && selectedChat ? (
           <div>
             <h2 className={chatWindowClasses.title}>Your stock on ChipAssist</h2>
             <div className={classes.text}>{selectedChat?.title || selectedChat?.rfq?.upc}</div>
@@ -198,7 +207,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       </Box>
 
       <div className={classes.details}>
-        {isSupplierResponse && selectedChat && stock ? (
+        {isSupplierResponse && selectedChat ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>
@@ -207,6 +216,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   name="stock"
                   control={control}
                   rules={{
+                    required: {
+                      value: true,
+                      message: "Required",
+                    },
                     min: {
                       value: 1,
                       message: "At least 1",
@@ -254,6 +267,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             name={`prices.${key}.amount`}
                             control={control}
                             rules={{
+                              required: {
+                                value: true,
+                                message: "Required",
+                              },
                               min: {
                                 value: 1,
                                 message: "At least 1",
@@ -278,6 +295,16 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
+                            rules={{
+                              required: {
+                                value: true,
+                                message: "Required",
+                              },
+                              min: {
+                                value: 0.0001,
+                                message: "More than 0",
+                              },
+                            }}
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
@@ -344,6 +371,12 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           <Controller
                             name={`prices.${key}.price`}
                             control={control}
+                            rules={{
+                              min: {
+                                value: 0.0001,
+                                message: "More than 0",
+                              },
+                            }}
                             render={({ field }) => (
                               <NumberInput
                                 {...field}

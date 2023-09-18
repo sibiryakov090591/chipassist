@@ -13,9 +13,12 @@ import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { getPrice } from "@src/utils/product";
 import { StockErrorsFields } from "@src/store/chat/chatTypes";
+import Button from "@material-ui/core/Button";
+import useAppTheme from "@src/theme/useAppTheme";
+import SendOrderModal from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/SendOrderModal";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -38,8 +41,10 @@ const MessageInput: React.FC<Props> = ({
   onShowDetails,
 }) => {
   const classes = useStyles();
+  const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE && constants.title === "Master";
+  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isMaster = constants.id === ID_MASTER;
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
@@ -50,11 +55,12 @@ const MessageInput: React.FC<Props> = ({
   const stock = !!stocks &&
     !!stocks[0] && {
       ...stocks[0],
-      prices: stocks[0].prices.map((i) => ({ ...i, price: i.original })),
+      prices: stocks[0].prices?.map((i) => ({ ...i, price: i.original })),
     };
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);
+  const [openOrderModal, setOpenOrderModal] = useState(false);
   const [files, setFiles] = useState([]);
 
   const { getRootProps, getInputProps, open: openDropzone } = useDropzone({
@@ -95,6 +101,14 @@ const MessageInput: React.FC<Props> = ({
   const onCloseModal = () => {
     setOpen(false);
     setTimeout(() => setFiles([]), 500);
+  };
+
+  const onOpenOrderModal = () => {
+    setOpenOrderModal(true);
+  };
+
+  const onCloseOrderModal = () => {
+    setOpenOrderModal(false);
   };
 
   const onAddFiles = () => {
@@ -209,28 +223,38 @@ const MessageInput: React.FC<Props> = ({
           <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
             Please send your response directly to the customer:
           </div>
-          <Box display="flex" flexWrap="wrap" gridGap="6px" m="0 12px 8px">
-            {!!stock && (
-              <>
-                <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
-                  Confirm stock
-                </div>
-                <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
-                  Update price
-                </div>
-                <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
-                  Update quantity
-                </div>
-              </>
-            )}
-            <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
-              No stock
-            </div>
-            <div className={classes.hint} onClick={onSetHintMessage("later")}>
-              Reply later
-            </div>
+          <Box display="flex" justifyContent="space-between" alignItems="flex-end" m="0 12px 8px">
+            <Box display="flex" flexWrap="wrap" gridGap="6px">
+              <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
+                Confirm stock
+              </div>
+              <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
+                Update price
+              </div>
+              <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
+                Update quantity
+              </div>
+              <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
+                No stock
+              </div>
+              <div className={classes.hint} onClick={onSetHintMessage("later")}>
+                Reply later
+              </div>
+            </Box>
           </Box>
         </>
+      )}
+      {isMaster && (
+        <Box display="flex" justifyContent="flex-end" m="0 12px 8px">
+          <Button
+            size="medium"
+            variant="contained"
+            className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
+            onClick={onOpenOrderModal}
+          >
+            Send PO
+          </Button>
+        </Box>
       )}
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
@@ -280,6 +304,7 @@ const MessageInput: React.FC<Props> = ({
         onAddFiles={onAddFiles}
         onCloseModal={onCloseModal}
       />
+      <SendOrderModal open={openOrderModal} onCloseModal={onCloseOrderModal} />
     </div>
   );
 };
