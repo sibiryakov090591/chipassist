@@ -12,7 +12,6 @@ const Profile = () => {
   const { t } = useI18n("profile");
   // const theme = useTheme();
   // const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-
   const classes = useStyles();
   const tab = location.pathname;
 

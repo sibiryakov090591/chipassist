@@ -18,7 +18,7 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import useDebounce from "@src/hooks/useDebounce";
-import { saveNewDetails, uploadNewAvatar } from "@src/store/sellerProfile/sellerProfileAction";
+import { saveNewDetails, turnEditMode, uploadNewAvatar } from "@src/store/sellerProfile/sellerProfileAction";
 // import formSchema from "@src/utils/formSchema";
 // import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 // import validate from "validate.js";
@@ -217,6 +217,7 @@ const GeneralSettings = () => {
     // }
     if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
     if (profile.selectedPartner) dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+    dispatch(turnEditMode(false));
     dispatch(
       showBottomLeftMessageAlertAction({
         text: "Company details were updated successfully!",
@@ -228,9 +229,8 @@ const GeneralSettings = () => {
 
   const onCancel = () => {
     setFormState(initialState());
-
+    dispatch(turnEditMode(false));
     dispatch(uploadNewAvatar(""));
-
     dispatch(
       showBottomLeftMessageAlertAction({
         text: "Data was cleared successfully!",

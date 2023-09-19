@@ -10,6 +10,8 @@ import ProfileDetailsPreloader from "@src/views/supplier-response/Profile/compon
 import GeneralSettingPreloader from "@src/views/supplier-response/Profile/components/General/components/Preloaders/GeneralSettingPreloader";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import GeneralSettingView from "@src/views/supplier-response/Profile/components/General/components/GeneralSettingsView/GeneralSettingView";
+import { saveNewDetails } from "@src/store/sellerProfile/sellerProfileAction";
 import { ProfileDetails, GeneralSettings } from "./components";
 
 const useStyles = makeStyles(() => ({
@@ -21,6 +23,7 @@ const General = () => {
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const profile = useAppSelector((state) => state.profile);
   const isLoading = useAppSelector((state) => state.profile.partnerProfile.isLoading);
+  const isEditView = useAppSelector((state) => state.sellerProfile.isEditView);
   const debouncedIsLoading = useDebounce(isLoading, 1000);
   const theme = useTheme();
   const isMdDowm = useMediaQuery(theme.breakpoints.down("md"));
@@ -40,6 +43,12 @@ const General = () => {
     }
   }, [profile.selectedPartner]);
 
+  useEffect(() => {
+    if (profile.partnerProfile) {
+      dispatch(saveNewDetails(profile.partnerProfile));
+    }
+  }, [profile.partnerProfile]);
+
   if (!profileInfo) {
     return null;
   }
@@ -55,7 +64,7 @@ const General = () => {
         </Grid>
       )}
       <Grid item lg={8} md={9} xl={9} xs={12}>
-        {debouncedIsLoading ? <GeneralSettingPreloader /> : <GeneralSettings />}
+        {debouncedIsLoading ? <GeneralSettingPreloader /> : !isEditView ? <GeneralSettingView /> : <GeneralSettings />}
       </Grid>
     </Grid>
   );

@@ -1,4 +1,9 @@
-import { SellerProfileInfo, UPLOAD_ALL_INFO, UPLOAD_AVATAR } from "@src/store/sellerProfile/sellerProfileTypes";
+import {
+  SellerProfileInfo,
+  SET_EDIT_VIEW,
+  UPLOAD_ALL_INFO,
+  UPLOAD_AVATAR,
+} from "@src/store/sellerProfile/sellerProfileTypes";
 
 const initialState: SellerProfileInfo = {
   avatar: "",
@@ -11,6 +16,7 @@ const initialState: SellerProfileInfo = {
   address: "",
   description: "",
   isLoading: false,
+  isEditView: false,
 };
 
 export const sellerProfileReducer = (state = initialState, action: any) => {
@@ -19,6 +25,8 @@ export const sellerProfileReducer = (state = initialState, action: any) => {
       return { ...state, avatar: action.payload };
     case UPLOAD_ALL_INFO:
       return { ...state, ...action.payload };
+    case SET_EDIT_VIEW:
+      return { ...state, isEditView: action.payload };
     default:
       return state;
   }

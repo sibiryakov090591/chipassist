@@ -35,6 +35,7 @@ const initialState: actionTypes.ProfileState = {
     address: "",
     description: "",
     isLoading: true,
+    isEditView: false,
   },
 };
 
