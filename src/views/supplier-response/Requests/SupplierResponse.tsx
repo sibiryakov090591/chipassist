@@ -190,7 +190,8 @@ const SupplierResponse: React.FC = () => {
             datecode: responseRfq?.datecode || "",
             lead_time: responseRfq?.lead_time && Number(responseRfq.lead_time),
             comment: responseRfq?.comment || "",
-            selected_manufacturer: responseRfq?.manufacturer || item.response_rfq?.manufacturers[0] || null,
+            selected_manufacturer:
+              responseRfq?.manufacturer || item.manufacturer || item.response_rfq?.manufacturers[0] || null,
             other_manufacturer_name: "",
           };
         }

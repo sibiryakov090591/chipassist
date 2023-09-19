@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Backdrop, Box, Button, Grid, MenuItem, TextField } from "@material-ui/core";
+import { Backdrop, Box, Button, Grid, Hidden, MenuItem, TextField } from "@material-ui/core";
 import { clsx } from "clsx";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { NumberInput } from "@src/components/Inputs";
@@ -139,7 +139,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
         <form onSubmit={handleSubmit(onSubmit)} className={clsx(commonClasses.paper, "fullScreen", classes.form)}>
           <h3>Company</h3>
           <Grid container spacing={2}>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="company_name"
                 control={control}
@@ -165,8 +165,10 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item md={6} xs={12}></Grid>
-            <Grid item md={6} xs={12}>
+            <Hidden xsDown>
+              <Grid item sm={6} xs={12}></Grid>
+            </Hidden>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="first_name"
                 control={control}
@@ -192,7 +194,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="last_name"
                 control={control}
@@ -218,14 +220,21 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="phone_number_str"
                 control={control}
-                render={({ field }) => <PhoneInputWrapper {...field} label="Work phone:" small={true} />}
+                render={({ field }) => (
+                  <PhoneInputWrapper
+                    {...field}
+                    label="Work phone:"
+                    small={true}
+                    style={{ height: "37.63px", margin: 0 }}
+                  />
+                )}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="country"
                 control={control}
@@ -259,7 +268,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="line4"
                 control={control}
@@ -285,7 +294,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="postcode"
                 control={control}
@@ -341,25 +350,25 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
 
           <h3>Product</h3>
           <Grid container spacing={2}>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={6}>
               <div className={classes.label}>MPN:</div>
               <div className={classes.value}>{stock?.upc || "-"}</div>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={6}>
               <div className={classes.label}>Unit price:</div>
               <div className={classes.value}>{(price && `${formatMoney(price)}${symbol}`) || "-"}</div>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={6}>
               <div className={classes.label}>Date code (DC):</div>
               <div className={classes.value}>
                 {(stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || "-"}
               </div>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={6}>
               <div className={classes.label}>Packaging:</div>
               <div className={classes.value}>{stock?.packaging || "-"}</div>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={6}>
               <Controller
                 name="requested_qty"
                 control={control}
@@ -386,7 +395,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item xs={6}>
               <div className={classes.label}>Expected total:</div>
               <div className={classes.value}>{(totalPrice && `${formatMoney(totalPrice)}${symbol}`) || "-"}</div>
             </Grid>

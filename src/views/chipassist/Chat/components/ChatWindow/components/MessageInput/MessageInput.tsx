@@ -128,7 +128,7 @@ const MessageInput: React.FC<Props> = ({
   };
 
   const handleSubmit = async () => {
-    textareaRef.current.focus();
+    textareaRef.current.focus(); // leave focus in the input after submitting
     if (chatId && !isSending) {
       setIsSending(true);
 
@@ -147,15 +147,21 @@ const MessageInput: React.FC<Props> = ({
       }
 
       const promises: any = [];
-      if (message.trim()) {
-        promises.push(dispatch(sendMessage(chatId, message.trim())).then(() => setMessage("")));
+      const trimMessage = message.trim();
+      const maxLength = 1024; // allowed message's length
+      for (let i = 0; i < Math.ceil(trimMessage.length / maxLength); i += 1) {
+        // split a long message for parts by allowed length
+        promises.push(dispatch(sendMessage(chatId, trimMessage.slice(i * maxLength, (i + 1) * maxLength))));
       }
       if (files.length) {
         setOpen(false);
-        promises.push(dispatch(sendFiles(chatId, files)).finally(() => setFiles([])));
+        promises.push(dispatch(sendFiles(chatId, files)));
       }
-
-      Promise.all(promises).finally(() => setIsSending(false));
+      Promise.all(promises).finally(() => {
+        setMessage("");
+        setFiles([]);
+        setIsSending(false);
+      });
     }
   };
 
@@ -199,7 +205,7 @@ const MessageInput: React.FC<Props> = ({
         onShowDetails();
         return dispatch(setStockError(stockErrors));
       }
-      value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you interested in this stock please send us a Purchase Order (PO).`;
+      value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you are interested in this stock please send us a Purchase Order (PO).`;
     }
     if (type === "out_stock") {
       value = `Dear ${name}! Thank you for your request. Unfortunately, ${partNumber} is currently out of stock. However, we are actively working to replenish our stock and expect ${partNumber} to be available soon.`;
