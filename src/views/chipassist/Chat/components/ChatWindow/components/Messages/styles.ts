@@ -58,7 +58,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     dateLabel: {
       position: "sticky",
-      top: 20,
+      top: 50,
       borderRadius: "50ch",
       background: "rgba(64,56,84,0.3)",
       color: "#ffffff",
@@ -70,6 +70,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: "fit-content",
     },
     requestItem: {
+      zIndex: 100,
+      position: "sticky",
+      top: 6,
       display: "flex",
       alignItems: "center",
       width: "100%",

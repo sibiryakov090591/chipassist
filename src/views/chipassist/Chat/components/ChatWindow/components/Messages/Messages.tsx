@@ -227,6 +227,24 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
     if (url) window.open(url, "_blank");
   };
 
+  const requestBlock = () => {
+    if (!selectedChat?.rfq || !messages?.results) return null;
+    const message = !!Object.values(messages.results).length && Object.values(messages.results)[0][0];
+    if (!message) return null;
+    const date = new Date(message.created).toLocaleDateString();
+    return (
+      <div className={classes.requestItem}>
+        <ScheduleRoundedIcon className={classes.requestItemIcon} />
+        <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <strong>{`Request for ${selectedChat.rfq.quantity}pcs ${selectedChat.rfq.upc}${
+            selectedChat.rfq.price ? ` at ${selectedChat.rfq.price} €` : ""
+          }.`}</strong>{" "}
+          {date}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div id="chat-messages" className={classes.container}>
       {!Object.keys(messages.results).length && (
@@ -281,33 +299,15 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
               <Preloader />
             </Box>
           )}
+          {requestBlock()}
           {Object.values(messages.results).map((list, i) => {
             const todayDate = new Date().toLocaleDateString();
             const groupDate = new Date(list[0].created).toLocaleDateString();
             const dateLabel = todayDate === groupDate ? "Today" : groupDate;
 
-            const isFirstMessage = messages.page === messages.total_pages && i === 0;
-
             return (
               <div key={i} className={classes.group}>
-                {isFirstMessage && selectedChat?.rfq && (
-                  <div className={classes.requestItem}>
-                    <ScheduleRoundedIcon className={classes.requestItemIcon} />
-                    <div>
-                      <strong>{`${list[0].sender} sent a new request for ${
-                        selectedChat.title || selectedChat.rfq.upc
-                      }.`}</strong>{" "}
-                      {!!selectedChat.rfq.quantity && !!selectedChat.rfq.price && (
-                        <span>{`${selectedChat.rfq.quantity} x ${formatMoney(selectedChat.rfq.price)} € = ${formatMoney(
-                          selectedChat.rfq.quantity * selectedChat.rfq.price,
-                        )} €`}</span>
-                      )}
-                    </div>
-                  </div>
-                )}
-
                 <div className={classes.dateLabel}>{dateLabel}</div>
-
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
