@@ -39,7 +39,7 @@ const ProfileDetails = () => {
   return (
     <Card className={clsx(classes.root)}>
       <CardContent className={classes.content}>
-        <Avatar className={classes.avatar} src={stateProfile.logoURL} />
+        <Avatar className={classes.avatar} src={stateProfile.logoURL || profile.partnerProfile.avatar} />
         <Box display={"flex"} flexDirection={"column"}>
           <span style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem" }}>
             {stateProfile.company_name || profile.partnerProfile.company_name}
@@ -47,9 +47,7 @@ const ProfileDetails = () => {
           <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>
             {stateProfile.email || profile.partnerProfile.email}
           </span>
-          <span style={{ fontSize: "1.rem" }}>
-            {stateProfile.phone !== "" ? `+${stateProfile.phone}` : stateProfile.phone || profile.partnerProfile.phone}
-          </span>
+          <span style={{ fontSize: "1.rem" }}>{stateProfile.phone || profile.partnerProfile.phone}</span>
         </Box>
       </CardContent>
     </Card>

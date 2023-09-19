@@ -349,7 +349,7 @@ export const saveNewPartnerInfo = (id: number, data: any) => {
               name: data.company_name,
               email: data.email,
               phone: data.phone,
-              website: data.website,
+              url: data.website,
               country: data.country,
               postcode: data.postcode,
               address: data.address,
