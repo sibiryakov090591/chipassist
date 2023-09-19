@@ -496,7 +496,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               <Box textAlign="center" mt="3px">
                 <a
                   className={appTheme.hyperlink}
-                  href={`https://chipassist.com/search=${encodeURIComponent(selectedChat.rfq.upc)}`}
+                  href={`https://chipassist.com/search?query=${encodeURIComponent(selectedChat.rfq.upc)}`}
                   target="_blank"
                   rel="noreferrer"
                 >
