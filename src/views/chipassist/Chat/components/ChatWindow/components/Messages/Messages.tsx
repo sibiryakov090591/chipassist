@@ -231,7 +231,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   };
 
   const requestBlock = () => {
-    if (!selectedChat?.rfq || !messages?.results) return null;
+    if (!selectedChat?.rfq?.quantity || !messages?.results) return null;
     const message = !!Object.values(messages.results).length && Object.values(messages.results)[0][0];
     if (!message) return null;
     const date = new Date(message.created).toLocaleDateString();
