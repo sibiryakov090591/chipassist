@@ -22,7 +22,7 @@ import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
-import { Paper, Grid } from "@material-ui/core";
+import { Paper, Grid, useTheme, useMediaQuery } from "@material-ui/core";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -36,12 +36,15 @@ interface Props {
 const Messages: React.FC<Props> = ({ onShowDetails }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);
 
   const checkout = useAppSelector((state) => state.checkout);
+  const currencyList = useAppSelector((state) => state.currency.currencyList);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const chatList = useAppSelector((state) => state.chat.chatList);
   const messages = useAppSelector((state) => state.chat.messages);
@@ -235,7 +238,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
     return (
       <div className={classes.requestItem}>
         <ScheduleRoundedIcon className={classes.requestItemIcon} />
-        <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <div>
           <strong>{`Request for ${selectedChat.rfq.quantity}pcs ${selectedChat.rfq.upc}${
             selectedChat.rfq.price ? ` at ${selectedChat.rfq.price} €` : ""
           }.`}</strong>{" "}
@@ -311,6 +314,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
+                  const symbol = currencyList.find((curr) => curr.code === orderData?.stockrecord?.currency)?.symbol;
 
                   return (
                     <div key={item.id}>
@@ -334,7 +338,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                         {orderData ? (
                           <Paper className={classes.orderItem} elevation={1}>
                             <div className={classes.orderTitle}>Purchase Order (PO)</div>
-                            <div className={classes.orderContent}>
+                            <div className={classes.orderAddress}>
                               <Grid container>
                                 <Grid item sm={6} xs={12}>
                                   <div>
@@ -353,14 +357,16 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   <div>{orderData.postcode}</div>
                                 </Grid>
                               </Grid>
+                            </div>
+                            <div className={classes.orderTableWrapper}>
                               <table className={classes.orderTable}>
                                 <thead>
-                                  <tr>
+                                  <tr style={{ backgroundColor: "#345" }}>
                                     <th>MPN</th>
                                     <th>DC</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                    <th>Out Price</th>
+                                    <th>{isXsDown ? "Qty" : "Quantity"}</th>
+                                    <th>{isXsDown ? "Price" : "Unit Price"}</th>
+                                    <th>{isXsDown ? "Total" : "Total Price"}</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -368,8 +374,8 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     <td>{orderData.mpn}</td>
                                     <td>{orderData.datecode || "-"}</td>
                                     <td>{orderData.requested_qty}</td>
-                                    <td>{`${formatMoney(orderData.price)} ${orderData.stockrecord?.currency}`}</td>
-                                    <td>{`${formatMoney(orderData.totalPrice)} ${orderData.stockrecord?.currency}`}</td>
+                                    <td>{`${formatMoney(orderData.price)} ${symbol}`}</td>
+                                    <td>{`${formatMoney(orderData.totalPrice)} ${symbol}`}</td>
                                   </tr>
                                 </tbody>
                               </table>
