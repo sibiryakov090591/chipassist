@@ -95,6 +95,7 @@ export interface SellerRfqItem {
   id: number;
   part_number: string;
   quantity: number;
+  manufacturer: ResponseManufacturer;
   response_rfq: {
     your_quantity: number;
     unit_price: number;
