@@ -189,7 +189,7 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
       promise: (client: ApiClientInterface) =>
         client
           .post(`/chats/${chatId}/message/${params}`, {
-            data: { text: message, ...(!!orderData && { po: orderData }) },
+            data: { text: message?.trim(), ...(!!orderData && { po: orderData }) },
           })
           .then((res) => {
             const newMessage = {

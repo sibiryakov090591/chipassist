@@ -128,7 +128,7 @@ const MessageInput: React.FC<Props> = ({
   };
 
   const handleSubmit = async () => {
-    textareaRef.current.focus();
+    textareaRef.current.focus(); // leave focus in the input after submitting
     if (chatId && !isSending) {
       setIsSending(true);
 
@@ -147,15 +147,21 @@ const MessageInput: React.FC<Props> = ({
       }
 
       const promises: any = [];
-      if (message.trim()) {
-        promises.push(dispatch(sendMessage(chatId, message.trim())).then(() => setMessage("")));
+      const trimMessage = message.trim();
+      const maxLength = 1024; // allowed message's length
+      for (let i = 0; i < Math.ceil(trimMessage.length / maxLength); i += 1) {
+        // split a long message for parts by allowed length
+        promises.push(dispatch(sendMessage(chatId, trimMessage.slice(i * maxLength, (i + 1) * maxLength))));
       }
       if (files.length) {
         setOpen(false);
-        promises.push(dispatch(sendFiles(chatId, files)).finally(() => setFiles([])));
+        promises.push(dispatch(sendFiles(chatId, files)));
       }
-
-      Promise.all(promises).finally(() => setIsSending(false));
+      Promise.all(promises).finally(() => {
+        setMessage("");
+        setFiles([]);
+        setIsSending(false);
+      });
     }
   };
 
