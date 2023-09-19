@@ -58,7 +58,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     dateLabel: {
       position: "sticky",
-      top: 20,
+      top: 50,
       borderRadius: "50ch",
       background: "rgba(64,56,84,0.3)",
       color: "#ffffff",
@@ -70,6 +70,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: "fit-content",
     },
     requestItem: {
+      zIndex: 100,
+      position: "sticky",
+      top: 6,
       display: "flex",
       alignItems: "center",
       width: "100%",
@@ -169,6 +172,48 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontWeight: 400,
       maxWidth: 365,
       textAlign: "center",
+    },
+    orderItem: {
+      overflow: "hidden",
+    },
+    orderTitle: {
+      backgroundColor: theme.palette.app.green800,
+      color: "#ffffff",
+      fontWeight: "bold",
+      padding: "12px",
+    },
+    orderAddress: {
+      padding: "12px",
+    },
+    orderTableWrapper: {
+      padding: "12px",
+      [theme.breakpoints.down("xs")]: {
+        padding: "0",
+      },
+    },
+    orderTable: {
+      width: "100%",
+      borderCollapse: "collapse",
+      border: "1px solid #345",
+      [theme.breakpoints.down("xs")]: {
+        border: "none",
+      },
+      "& th": {
+        backgroundColor: "#345",
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 12,
+        padding: 5,
+        textAlign: "start",
+      },
+      "& td": {
+        padding: 5,
+        fontSize: 11,
+        border: "1px solid #345",
+        [theme.breakpoints.down("xs")]: {
+          border: "none",
+        },
+      },
     },
   }),
 );

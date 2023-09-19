@@ -141,6 +141,7 @@ export interface ChatListMessage {
   message_attachments: Array<{ id: number; file_name: string }>;
   starter: number;
   representatives: any[];
+  po?: any;
 }
 
 interface LoadChatFiltersRequestAction {

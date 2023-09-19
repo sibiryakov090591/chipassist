@@ -107,6 +107,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 num_in_stock: Math.max(acc.num_in_stock, sr.num_in_stock),
                 moq: Math.min(acc.moq, sr.moq),
                 date_updated: accDate.getTime() < srDate.getTime() ? acc.date_updated : sr.date_updated,
+                prices: acc.prices.length ? acc.prices : sr.prices,
                 price_1: acc.price_1 ? (sr.price_1 ? Math.min(acc.price_1, sr.price_1) : acc.price_1) : sr.price_1,
                 price_10: acc.price_10
                   ? sr.price_10
