@@ -138,7 +138,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    const part_number = selectedChat?.rfq?.upc;
+    const part_number = selectedChat?.title || selectedChat?.rfq?.upc;
     if (!isValid || !part_number) return false;
 
     const overallData = Object.fromEntries(
