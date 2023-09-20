@@ -543,9 +543,10 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
     } catch {
       company_type = null;
     }
-    const company_name = !isAuthenticated
-      ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
-      : billingAddress?.company_name;
+    // const company_name = !isAuthenticated
+    //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
+    //   : billingAddress?.company_name;
+    const company_name = billingAddress?.company_name;
     let details = `Delivery to: ${country?.printable_name};`;
     if (phone) details += ` Phone: ${phone};`;
     if (company_name) details += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
