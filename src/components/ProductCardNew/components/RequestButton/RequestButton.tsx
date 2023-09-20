@@ -40,7 +40,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
   });
 
   const sendRfqOpenModal = () => {
-    dispatch(rfqModalOpen(product.upc, 1, null, null, null, null, "rfq", product.id));
+    dispatch(rfqModalOpen(product.upc, 1, null, null, null, product, "rfq", product.id));
   };
 
   return (

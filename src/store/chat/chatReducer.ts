@@ -71,7 +71,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
               if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
               return acc;
             }, "")
-          : results[0].partner.first_name;
+          : results[0]?.partner?.first_name;
       return {
         ...state,
         chatList: {
@@ -95,7 +95,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
               if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
               return acc;
             }, "")
-          : results[0].partner.first_name;
+          : results[0]?.partner?.first_name;
       return {
         ...state,
         chatList: {
@@ -126,7 +126,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
               if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
               return acc;
             }, "")
-          : results[0].partner.first_name;
+          : results[0]?.partner?.first_name;
 
       const newChats: ChatListItem[] = [];
       results.forEach((chat: ChatListItem) => {

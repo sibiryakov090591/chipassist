@@ -224,9 +224,10 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
     } catch {
       company_type = null;
     }
-    const company_name = !isAuthenticated
-      ? item.values.email.match(/@(.*)\./g) && item.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
-      : billingAddress?.company_name;
+    // const company_name = !isAuthenticated
+    //   ? item.values.email.match(/@(.*)\./g) && item.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
+    //   : billingAddress?.company_name;
+    const company_name = billingAddress?.company_name;
     let comment = `Delivery to: ${country?.printable_name};`;
     if (phone) comment += ` Phone: ${phone};`;
     if (company_name) comment += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;

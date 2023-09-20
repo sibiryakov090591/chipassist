@@ -315,8 +315,8 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         countries?.find((c) => c.url === formState.values.country) ||
         (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
         defaultCountry;
-      const company_name =
-        formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "");
+      // const company_name =
+      //   formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "");
 
       let registerData: any = {
         ...defaultRegisterData,
@@ -324,7 +324,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         first_name: formState.values.firstName,
         last_name: formState.values.lastName,
         phone_number_str: phoneValue ? `+${phoneValue}` : null,
-        company_name: company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "",
+        // company_name: company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "",
         company_variant:
           formState.values.company_type === "Other"
             ? formState.values.company_other_type

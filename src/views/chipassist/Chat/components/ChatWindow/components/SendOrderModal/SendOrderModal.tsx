@@ -369,31 +369,35 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
               <div className={classes.value}>{stock?.packaging || "-"}</div>
             </Grid>
             <Grid item xs={6}>
-              <Controller
-                name="requested_qty"
-                control={control}
-                rules={{
-                  min: {
-                    value: 1,
-                    message: "At least 1",
-                  },
-                }}
-                render={({ field }) => (
-                  <NumberInput
-                    {...field}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    label="Requested quantity:"
-                    error={!!errors.requested_qty}
-                    helperText={errors.requested_qty?.message}
-                    variant="outlined"
-                    size="small"
-                    decimalScale={0}
-                    isAllowedZero={false}
-                  />
-                )}
-              />
+              <Box>
+                <div className={classes.label}>Requested qty:</div>
+                <Controller
+                  name="requested_qty"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      // InputLabelProps={{
+                      //   shrink: true,
+                      // }}
+                      // label="Requested qty:"
+                      style={{ maxWidth: 100 }}
+                      error={!!errors.requested_qty}
+                      helperText={errors.requested_qty?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
+              </Box>
             </Grid>
             <Grid item xs={6}>
               <div className={classes.label}>Expected total:</div>
