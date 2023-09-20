@@ -17,7 +17,7 @@ import {
 // import { orderBy } from "lodash";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 // import { DATE_FORMAT } from "@src/config";
-import { clearRfqItem, rfqModalClose, saveRfqItem } from "@src/store/rfq/rfqActions";
+import { clearRfqItem, rfqModalClose, saveRfqItem, sendSellerMessage } from "@src/store/rfq/rfqActions";
 // import { getAllSellers } from "@src/store/sellers/sellersActions";
 // import { searchAcReturn } from "@src/store/search/searchActions";
 // import { getCurrentDate } from "@src/store/rfq/rfqReducer";
@@ -195,6 +195,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   // const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const countries = useAppSelector((state) => state.checkout.countries);
   const utm = useAppSelector((state) => state.common.utm);
+  const { sellersWithProductLink } = useAppSelector((state) => state.products);
 
   // const all_sellers = [
   //   { id: "All", name: "All" },
@@ -520,6 +521,35 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           }));
         });
       });
+      // sending to all sellers without product url a chat message
+      if (rfqItem.product?.stockrecords?.length) {
+        rfqItem.product.stockrecords
+          .reduce((acc, stock) => {
+            // filtered duplicate sellers
+            if (acc.find((i) => i.partner === stock.partner)) return acc;
+            return [...acc, stock];
+          }, [])
+          .forEach((stock) => {
+            const seller = sellersWithProductLink?.find((i) => i.id === stock.partner);
+            const isNeedSendMessage = !stock.product_url && !seller?.url;
+            if (isNeedSendMessage) {
+              const sellerData = {
+                part_number: rfqItem.product.upc,
+                stockrecord: stock.id,
+                quantity: formState.values.quantity,
+                price: formState.values.price,
+                currency: currency.code,
+                seller: [{ id: stock.partner, name: stock.partner_name }],
+                comment: `${t("seller_message.message_placeholder", {
+                  seller: stock.partner_name,
+                  mpn: rfqItem.product.upc,
+                  constantsTitle: constants.title,
+                })}`,
+              };
+              dispatch(sendSellerMessage(sellerData));
+            }
+          });
+      }
     } else {
       saveRequestToLocalStorage(data, data.part_number, "rfq");
       dispatch(changeMisc("not_activated_request", { ...data, requestType: "rfq" }, formState.values.email));
