@@ -180,31 +180,24 @@ const MessageInput: React.FC<Props> = ({
     const leadTime = stock?.lead_period_str;
     const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
 
-    let value = "";
     let stockErrors: StockErrorsFields = null;
-
     if (!numInStock) stockErrors = { ...stockErrors, num_in_stock: true };
     if (!price) stockErrors = { ...stockErrors, price: true };
+    if (!leadTime && ["confirm", "update_price"].includes(type)) stockErrors = { ...stockErrors, leadTime: true };
 
+    if (stockErrors && ["confirm", "update_price", "update_qty"].includes(type)) {
+      onShowDetails();
+      return dispatch(setStockError(stockErrors));
+    }
+
+    let value = "";
     if (type === "confirm") {
-      if (stockErrors) {
-        onShowDetails();
-        return dispatch(setStockError(stockErrors));
-      }
       value = `Dear ${name}! We have ${partNumber} available. We can ship up to ${numInStock}pcs at ${price}${symbol} unit price in ${leadTime} days. If you are interested, please send us a Purchase Order (PO).`;
     }
     if (type === "update_price") {
-      if (stockErrors) {
-        onShowDetails();
-        return dispatch(setStockError(stockErrors));
-      }
       value = `Dear ${name}! Unfortunately, the unit price for ${partNumber} was updated. Now we can ship up to ${numInStock}pcs at ${price}${symbol} unit price in ${leadTime} days. If you are interested, please send us a Purchase Order (PO).`;
     }
     if (type === "update_qty") {
-      if (stockErrors) {
-        onShowDetails();
-        return dispatch(setStockError(stockErrors));
-      }
       value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you are interested in this stock please send us a Purchase Order (PO).`;
     }
     if (type === "out_stock") {

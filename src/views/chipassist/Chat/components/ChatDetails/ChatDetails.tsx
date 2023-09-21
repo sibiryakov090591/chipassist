@@ -30,11 +30,11 @@ interface Props {
 }
 
 type FormValues = {
-  stock: number;
-  lead_time: number;
+  stock: string;
+  lead_time: string;
   packaging: string;
-  moq: number;
-  mpq: number;
+  moq: string;
+  mpq: string;
   [key: string]: any;
 };
 
@@ -72,14 +72,24 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     // setError,
     setValue,
     getValues,
+    reset,
   } = useForm<FormValues>({
     mode: "onChange",
+    defaultValues: {
+      stock: "",
+      lead_time: "",
+      moq: "",
+      mpq: "",
+      packaging: "",
+      prices: { id: { amount: "", price: "" } },
+    },
   });
 
   useEffect(() => {
+    dispatch(clearStockErrors());
+    setIsShowPrices(false);
+
     if (stock) {
-      dispatch(clearStockErrors());
-      setIsShowPrices(false);
       setCurrency(currencyList.find((c) => c.code === stock.currency));
 
       // update overall data
@@ -95,17 +105,13 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         stock.prices.forEach((i) => {
           setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
         });
-      } else {
-        const id = uuidv4();
-        setValue("prices", { [id]: { id, amount: "", price: "" } });
       }
     } else {
-      const id = uuidv4();
-      setValue("prices", { [id]: { id, amount: "", price: "" } });
+      reset();
     }
 
     setForceRender((prev) => !prev);
-  }, [stock]);
+  }, [selectedChat]);
 
   useEffect(() => {
     if (!isXsDown && stockrecordErrors && !startAnimation) {
@@ -146,11 +152,13 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     );
     const prices: any = [];
     Object.values(data.prices).forEach((value: any) => {
-      prices.push({
-        amount: value.amount,
-        price: value.price,
-        ...(typeof value.id === "number" && { id: value.id }), // the price will be updated if id exists, will create a new one if not
-      });
+      if (value.amount && value.price) {
+        prices.push({
+          amount: value.amount,
+          price: value.price,
+          ...(typeof value.id === "number" && { id: value.id }), // the price will be updated if id exists, will create a new one if not
+        });
+      }
     });
 
     dispatch(
@@ -470,6 +478,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.leadTime })}
                       error={errors.lead_time}
                       helperText={errors.lead_time?.message}
                       variant="outlined"

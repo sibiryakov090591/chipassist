@@ -171,7 +171,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (!sessionStorage.getItem("product_request_hint_disabled")) {
+      if (!localStorage.getItem("product_request_hint_disabled")) {
         dispatch(ShowProductRequestHint());
       }
     }, 10000);
@@ -488,7 +488,7 @@ const SearchResults = () => {
         </div>
       </Container>
 
-      {!sessionStorage.getItem("before_unload_alert_disabled") && <BeforeUnloadModal />}
+      {!localStorage.getItem("before_unload_alert_disabled") && <BeforeUnloadModal />}
     </Page>
   );
 };

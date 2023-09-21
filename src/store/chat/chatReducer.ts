@@ -63,15 +63,6 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       return { ...state, chatList: { ...state.chatList, isLoading: true } };
     case actionTypes.LOAD_CHAT_LIST_S: {
       const { page, total_pages, unread_total, results } = action.response;
-      const partner_name =
-        constants.id === ID_SUPPLIER_RESPONSE
-          ? results[0]?.partner &&
-            Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
-              const [key, value] = entry;
-              if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-              return acc;
-            }, "")
-          : results[0]?.partner?.first_name;
       return {
         ...state,
         chatList: {
@@ -80,22 +71,24 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           page,
           total_pages,
           unread_total,
-          results: results.map((i: any) => ({ ...i, partner_name })),
+          results: results.map((i: any) => ({
+            ...i,
+            partner_name:
+              constants.id === ID_SUPPLIER_RESPONSE
+                ? i.partner &&
+                  Object.entries(i.partner).reduce((acc: string, entry: any) => {
+                    const [key, value] = entry;
+                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                    return acc;
+                  }, "")
+                : i.partner?.first_name,
+          })),
           loadedPages: [page],
         },
       };
     }
     case actionTypes.LOAD_MORE_CHAT_LIST_S: {
       const { page, total_pages, results } = action.response;
-      const partner_name =
-        constants.id === ID_SUPPLIER_RESPONSE
-          ? results[0]?.partner &&
-            Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
-              const [key, value] = entry;
-              if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-              return acc;
-            }, "")
-          : results[0]?.partner?.first_name;
       return {
         ...state,
         chatList: {
@@ -103,7 +96,21 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           isLoading: false,
           page,
           total_pages,
-          results: [...state.chatList.results, ...results.map((i: any) => ({ ...i, partner_name }))],
+          results: [
+            ...state.chatList.results,
+            ...results.map((i: any) => ({
+              ...i,
+              partner_name:
+                constants.id === ID_SUPPLIER_RESPONSE
+                  ? i.partner &&
+                    Object.entries(i.partner).reduce((acc: string, entry: any) => {
+                      const [key, value] = entry;
+                      if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
+                      return acc;
+                    }, "")
+                  : i.partner?.first_name,
+            })),
+          ],
           loadedPages: [...state.chatList.loadedPages, page],
         },
       };

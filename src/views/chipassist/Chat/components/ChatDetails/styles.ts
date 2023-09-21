@@ -5,6 +5,7 @@ import { AppTheme } from "@src/themes/AppTheme";
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     rightColumn: {
+      zIndex: 1,
       display: "flex",
       flexDirection: "column",
       position: "absolute",
@@ -112,7 +113,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       animation: "glow 1s",
     },
     fieldHint: {
-      "& > *": {
+      "& fieldset": {
         boxShadow: "0px 0px 6px 3px #7bb4c5",
       },
     },

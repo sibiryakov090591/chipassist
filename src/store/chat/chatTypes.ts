@@ -89,6 +89,7 @@ export interface FileType {
 export interface StockErrorsFields {
   num_in_stock?: boolean;
   price?: boolean;
+  leadTime?: boolean;
 }
 
 export interface ChatListItem {

@@ -70,7 +70,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: "fit-content",
     },
     requestItem: {
-      zIndex: 100,
+      zIndex: 1,
       position: "sticky",
       top: 6,
       display: "flex",
