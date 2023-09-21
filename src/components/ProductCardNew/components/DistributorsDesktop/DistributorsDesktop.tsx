@@ -19,6 +19,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { Seller } from "@src/store/sellers/sellersTypes";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
+import Star from "@src/images/search_page/star.png";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -330,6 +331,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             const MOQ = val.moq;
             const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
 
+            const rank = Math.round((5 + 1) / 2);
             let isShowPricesHint = false;
             sortedPrices.forEach((price) => {
               if (isShowPricesHint) return;
@@ -400,6 +402,13 @@ const DistributorsDesktop: React.FC<Props> = ({
                       {formatDistanceToNowStrict(dateUpdated, {
                         addSuffix: true,
                       })}
+                    </div>
+                  )}
+                  {rank && (
+                    <div className={classes.dateUpdated}>
+                      {[...Array(rank)].map((n, i) => (
+                        <img src={Star} alt={"rank"} key={i} style={{ width: "12px", height: "12px" }} />
+                      ))}
                     </div>
                   )}
                 </td>
