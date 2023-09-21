@@ -78,7 +78,7 @@ const GeneralSettings = () => {
   const profile = useAppSelector((state) => state.profile);
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo, showUpdateSuccess } = profile;
-  const billingAddress = [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
+  const billingAddress = profileInfo && [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
 
   const [phoneValue, setPhoneValue] = useState("");
   const [addressData, setAddressData] = useState(null);

@@ -49,7 +49,10 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
 
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
-  const billingAddress = React.useMemo(() => [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0], [profileInfo]);
+  const billingAddress = React.useMemo(
+    () => profileInfo && [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0],
+    [profileInfo],
+  );
 
   const {
     watch,
