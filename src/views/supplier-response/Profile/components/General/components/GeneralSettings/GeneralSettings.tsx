@@ -208,15 +208,10 @@ const GeneralSettings = () => {
   };
 
   const onSubmit = () => {
-    // if (!_.isEmpty(formState.errors)) {
-    //   setFormState((prevState) => ({
-    //     ...prevState,
-    //     touched: Object.keys(prevState.errors).reduce((acc, key) => ({ ...acc, [key]: true }), {}),
-    //   }));
-    //   return false;
-    // }
     if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
-    if (profile.selectedPartner) dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+    if (profile.selectedPartner) {
+      dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+    }
     dispatch(turnEditMode(false));
     dispatch(
       showBottomLeftMessageAlertAction({
