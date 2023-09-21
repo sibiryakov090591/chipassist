@@ -322,7 +322,11 @@ export const sendQuickRequestUnAuth = (item: any, token: string, email: string) 
     switch (item.requestType) {
       case "rfq": {
         dispatch(progressModalOpen());
-        return dispatch(saveRfqItem(item, token)).then(() => {
+        const { sellersMessages, ...rfqData } = item;
+        if (sellersMessages?.length) {
+          sellersMessages.forEach((messageData: any) => dispatch(sendSellerMessage(messageData, token)));
+        }
+        return dispatch(saveRfqItem(rfqData, token)).then(() => {
           dispatch(deleteMiscAction("not_activated_request", email));
           localStorage.removeItem("progress_modal_data");
         });
@@ -384,7 +388,11 @@ export const sendQuickRequest = () => (dispatch: any) => {
     switch (item.requestType) {
       case "rfq": {
         dispatch(progressModalOpen());
-        dispatch(saveRfqItem(item.data)).then(() => {
+        const { sellersMessages, ...rfqData } = item.data;
+        if (sellersMessages?.length) {
+          sellersMessages.forEach((messageData: any) => dispatch(sendSellerMessage(messageData)));
+        }
+        dispatch(saveRfqItem(rfqData)).then(() => {
           localStorage.removeItem("progress_modal_data");
         });
         break;

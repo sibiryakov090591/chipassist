@@ -500,6 +500,27 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
       }`,
       productId: formState.values.productId,
     };
+    // sending to all sellers without product url a chat message
+    const sellersMessages = rfqItem?.product?.stockrecords?.reduce((acc, stock) => {
+      if (acc.find((i) => i.seller[0].id === stock.partner)) return acc; // filtered duplicate sellers
+      const seller = sellersWithProductLink?.find((i) => i.id === stock.partner);
+      const isNeedSendMessage = !stock.product_url && !seller?.url;
+      if (!isNeedSendMessage) return acc;
+      const sellerData = {
+        part_number: rfqItem.product.upc,
+        stockrecord: stock.id,
+        quantity: formState.values.quantity,
+        price: formState.values.price,
+        currency: currency.code,
+        seller: [{ id: stock.partner, name: stock.partner_name }],
+        comment: `${t("seller_message.message_placeholder", {
+          seller: stock.partner_name,
+          mpn: rfqItem.product.upc,
+          constantsTitle: constants.title,
+        })}`,
+      };
+      return [...acc, sellerData];
+    }, []);
 
     dispatch(progressModalSetPartNumber(formState.values.partNumber, "rfq"));
 
@@ -521,38 +542,14 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           }));
         });
       });
-      // sending to all sellers without product url a chat message
-      if (rfqItem.product?.stockrecords?.length) {
-        rfqItem.product.stockrecords
-          .reduce((acc, stock) => {
-            // filtered duplicate sellers
-            if (acc.find((i) => i.partner === stock.partner)) return acc;
-            return [...acc, stock];
-          }, [])
-          .forEach((stock) => {
-            const seller = sellersWithProductLink?.find((i) => i.id === stock.partner);
-            const isNeedSendMessage = !stock.product_url && !seller?.url;
-            if (isNeedSendMessage) {
-              const sellerData = {
-                part_number: rfqItem.product.upc,
-                stockrecord: stock.id,
-                quantity: formState.values.quantity,
-                price: formState.values.price,
-                currency: currency.code,
-                seller: [{ id: stock.partner, name: stock.partner_name }],
-                comment: `${t("seller_message.message_placeholder", {
-                  seller: stock.partner_name,
-                  mpn: rfqItem.product.upc,
-                  constantsTitle: constants.title,
-                })}`,
-              };
-              dispatch(sendSellerMessage(sellerData));
-            }
-          });
+      if (sellersMessages?.length) {
+        sellersMessages.forEach((messageData) => dispatch(sendSellerMessage(messageData)));
       }
     } else {
-      saveRequestToLocalStorage(data, data.part_number, "rfq");
-      dispatch(changeMisc("not_activated_request", { ...data, requestType: "rfq" }, formState.values.email));
+      saveRequestToLocalStorage({ ...data, sellersMessages }, data.part_number, "rfq");
+      dispatch(
+        changeMisc("not_activated_request", { ...data, sellersMessages, requestType: "rfq" }, formState.values.email),
+      );
 
       setIsLoading(true);
       let registerData = { ...defaultRegisterData };
