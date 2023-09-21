@@ -24,7 +24,7 @@ const BeforeUnloadModal = () => {
 
   React.useEffect(() => {
     const listener = (event: any) => {
-      if (!sessionStorage.getItem("before_unload_alert_disabled")) {
+      if (!localStorage.getItem("before_unload_alert_disabled")) {
         const mouseY = event.clientY;
         if (mouseY <= 0) {
           dispatch(showAlertBeforeUnloadAction(true));
@@ -42,7 +42,7 @@ const BeforeUnloadModal = () => {
   }, []);
 
   const handleClose = () => {
-    sessionStorage.setItem("before_unload_alert_disabled", "true");
+    localStorage.setItem("before_unload_alert_disabled", "true");
     dispatch(showAlertBeforeUnloadAction(false));
   };
 

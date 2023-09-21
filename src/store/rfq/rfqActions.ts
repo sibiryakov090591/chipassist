@@ -225,8 +225,8 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
         .then((res) => {
           dispatch(progressModalOpen());
           dispatch(progressModalSuccess());
-          sessionStorage.setItem("before_unload_alert_disabled", "true");
-          sessionStorage.setItem("product_request_hint_disabled", "true");
+          localStorage.setItem("before_unload_alert_disabled", "true");
+          localStorage.setItem("product_request_hint_disabled", "true");
           if (data.productId) {
             localStorage.setItem(data.productId, JSON.stringify({ date: Date.now(), value: data.quantity }));
             dispatch(shouldUpdateCard());
@@ -249,8 +249,8 @@ export const saveRfqItemFromBom = (data: any) => (dispatch: any) => {
       client
         .post(`/rfqs/`, { data })
         .then((res) => {
-          sessionStorage.setItem("before_unload_alert_disabled", "true");
-          sessionStorage.setItem("product_request_hint_disabled", "true");
+          localStorage.setItem("before_unload_alert_disabled", "true");
+          localStorage.setItem("product_request_hint_disabled", "true");
           return res.data;
         })
         .catch((e) => {
@@ -270,8 +270,8 @@ export const saveRfqListItems = (data: any, token: string = null, disableProgres
           config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
         })
         .then((res) => {
-          sessionStorage.setItem("before_unload_alert_disabled", "true");
-          sessionStorage.setItem("product_request_hint_disabled", "true");
+          localStorage.setItem("before_unload_alert_disabled", "true");
+          localStorage.setItem("product_request_hint_disabled", "true");
           if (!disableProgressModal) {
             dispatch(progressModalOpen());
             dispatch(progressModalSuccess());
@@ -305,8 +305,8 @@ export const sendSellerMessage = (item: { [key: string]: any }, token: string = 
           config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
         })
         .then((res) => {
-          sessionStorage.setItem("before_unload_alert_disabled", "true");
-          sessionStorage.setItem("product_request_hint_disabled", "true");
+          localStorage.setItem("before_unload_alert_disabled", "true");
+          localStorage.setItem("product_request_hint_disabled", "true");
           dispatch(progressModalOpen());
           dispatch(progressModalSuccess());
           return res.data;
