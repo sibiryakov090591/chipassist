@@ -470,6 +470,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.leadTime })}
                       error={errors.lead_time}
                       helperText={errors.lead_time?.message}
                       variant="outlined"
