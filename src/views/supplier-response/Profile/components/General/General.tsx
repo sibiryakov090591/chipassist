@@ -44,6 +44,10 @@ const General = () => {
   }, [profile.selectedPartner]);
 
   useEffect(() => {
+    if (profile.selectedPartner && !isEditView) dispatch(getPartnerInfo(profile.selectedPartner.id));
+  }, [isEditView]);
+
+  useEffect(() => {
     if (profile.partnerProfile) {
       dispatch(saveNewDetails(profile.partnerProfile));
     }
