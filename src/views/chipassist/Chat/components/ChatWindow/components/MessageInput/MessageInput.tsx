@@ -19,6 +19,8 @@ import { StockErrorsFields } from "@src/store/chat/chatTypes";
 import Button from "@material-ui/core/Button";
 import useAppTheme from "@src/theme/useAppTheme";
 import SendOrderModal from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/SendOrderModal";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -43,6 +45,8 @@ const MessageInput: React.FC<Props> = ({
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
   const isMaster = constants.id === ID_MASTER;
 
@@ -93,7 +97,7 @@ const MessageInput: React.FC<Props> = ({
       textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to match the content
       textarea.scrollTop = textarea.scrollHeight; // Scroll to the bottom of the textarea
 
-      textarea.style.overflowY = textarea.scrollHeight > 230 ? "auto" : "hidden";
+      textarea.style.overflowY = textarea.scrollHeight > (isXsDown ? 130 : 230) ? "auto" : "hidden";
       inputWrapper.style.borderRadius = textarea.scrollHeight > 32 ? `8px` : "50ch";
     }
   }, [message]);
