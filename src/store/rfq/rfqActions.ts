@@ -225,8 +225,6 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
         .then((res) => {
           dispatch(progressModalOpen());
           dispatch(progressModalSuccess());
-          localStorage.setItem("before_unload_alert_disabled", "true");
-          localStorage.setItem("product_request_hint_disabled", "true");
           if (data.productId) {
             localStorage.setItem(data.productId, JSON.stringify({ date: Date.now(), value: data.quantity }));
             dispatch(shouldUpdateCard());

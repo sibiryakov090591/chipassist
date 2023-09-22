@@ -10,7 +10,7 @@ import { rfqModalOpen } from "@src/store/rfq/rfqActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useInView } from "react-intersection-observer";
-import { SetProductIntoViewport } from "@src/store/products/productsActions";
+import { SetProductIntoViewport, DisableProductRequestHint } from "@src/store/products/productsActions";
 
 interface Props {
   requestedQty?: number;
@@ -33,13 +33,14 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
     threshold: 0,
     skip: isSmDown || isShow,
     onChange: (inView) => {
-      if (!sessionStorage.getItem("product_rfq_hint_disabled") && inView) {
+      if (!localStorage.getItem("product_request_hint_disabled") && inView) {
         dispatch(SetProductIntoViewport(product.id));
       }
     },
   });
 
   const sendRfqOpenModal = () => {
+    dispatch(DisableProductRequestHint());
     dispatch(rfqModalOpen(product.upc, 1, null, null, null, product, "rfq", product.id));
   };
 

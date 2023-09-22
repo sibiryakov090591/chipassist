@@ -527,6 +527,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
     console.log("MISC_SAVE:", formState.values);
     dispatch(changeMisc("rfq", formState.values, formState.values.email));
 
+    localStorage.setItem("before_unload_alert_disabled", "true");
     if (isAuthenticated) {
       dispatch(saveRfqItem(data)).then(() => {
         batch(() => {
