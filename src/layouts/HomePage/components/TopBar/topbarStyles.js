@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme) => ({
   searchContainer: {
     margin: "20px 40px 10px",
     [theme.breakpoints.down("sm")]: {
-      margin: "20px 0px 10px",
+      margin: "20px 0px 6px",
     },
   },
   searchIconButton: {
@@ -155,6 +155,9 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
     paddingTop: "5px",
     marginLeft: 16,
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: 0,
+    },
   },
   trySpan: {
     color: theme.palette.white,
