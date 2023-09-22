@@ -133,6 +133,7 @@ export const ShowProductRequestHint = () => {
 };
 
 export const DisableProductRequestHint = () => {
+  localStorage.setItem("product_request_hint_disabled", "true");
   return {
     type: actionTypes.DISABLE_PRODUCT_REQUEST_HINT,
   };

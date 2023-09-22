@@ -61,6 +61,7 @@ const TopBar = (props) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const is1180Down = useMediaQuery(theme.breakpoints.down(1180));
 
   // const Icon = withBaseIcon();
   const maintenance = useAppSelector((state) => state.maintenance);
@@ -131,7 +132,7 @@ const TopBar = (props) => {
           <Collapse in={!collapse}>
             <section style={{ padding: "8px 0" }} className={homePageClasses.header}>
               <Container maxWidth="xl" className={homePageClasses.headerContainer}>
-                <div style={{ width: 250 }}>
+                <div style={{ width: is1180Down ? 145 : 250 }}>
                   {isChipAssist && (
                     <NavLink to="/sell-excess-inventory" className={homePageClasses.headerButtonLink}>
                       Sell on <span className={homePageClasses.redColor}>ChipAssist</span>
@@ -141,7 +142,7 @@ const TopBar = (props) => {
                 <div>
                   <TopMenu />
                 </div>
-                <div style={{ width: 250, textAlign: "end" }}>
+                <div style={{ width: is1180Down ? 145 : 250, textAlign: "end" }}>
                   <a
                     href={`mailto:${isChipAssist ? "info@chipassist.com" : "info@icsearch.ru"}`}
                     className={clsx({
@@ -151,16 +152,18 @@ const TopBar = (props) => {
                   >
                     {isChipAssist ? "info@chipassist.com" : "info@icsearch.ru"}
                   </a>
-                  <a
-                    href={`tel:${isChipAssist ? "+41797137881" : "+78126280016"}`}
-                    style={{ marginLeft: 18 }}
-                    className={clsx({
-                      [homePageClasses.headerLink]: isChipAssist,
-                      [classes.icSearchLink]: !isChipAssist,
-                    })}
-                  >
-                    {isChipAssist ? "+41 79 713 7881" : "+7 812 628 0016"}
-                  </a>
+                  {!is1180Down && (
+                    <a
+                      href={`tel:${isChipAssist ? "+41797137881" : "+78126280016"}`}
+                      style={{ marginLeft: 18 }}
+                      className={clsx({
+                        [homePageClasses.headerLink]: isChipAssist,
+                        [classes.icSearchLink]: !isChipAssist,
+                      })}
+                    >
+                      {isChipAssist ? "+41 79 713 7881" : "+7 812 628 0016"}
+                    </a>
+                  )}
                 </div>
               </Container>
             </section>
@@ -229,6 +232,11 @@ const TopBar = (props) => {
                 isHomePageSuggestions={true}
               />
             </div>
+            <TrySearchPn
+              partNumbers={partNumberExamples || partNumbers}
+              textClassName={classes.tryP}
+              pnClassName={classes.trySpan}
+            />
           </div>
         </Hidden>
       </AppBar>
