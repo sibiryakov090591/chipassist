@@ -1637,7 +1637,7 @@ export const countriesList = [
     url: `https://${constants.apiHost}/api/countries/GB/`,
     code: "GB",
     iso_3166_1_a3: "GBR",
-    printable_name: "United Kingdom of Great Britain and Northern Ireland",
+    printable_name: "United Kingdom",
     iso_3166_1_numeric: "826",
   },
   {

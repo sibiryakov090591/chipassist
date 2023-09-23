@@ -20,6 +20,8 @@ import { Seller } from "@src/store/sellers/sellersTypes";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import Star from "@src/images/search_page/star.png";
+import { toInteger } from "lodash";
+import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -74,6 +76,8 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const { sellersWithProductLink } = useAppSelector((state) => state.products);
+  const partners = useAppSelector((state) => state.sellers.items);
+  const checkout = useAppSelector((state) => state.checkout);
 
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
@@ -323,15 +327,18 @@ const DistributorsDesktop: React.FC<Props> = ({
           return srArray.map((val, index) => {
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
-
             const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
             const isShowProductLink = !!val.product_url || !!seller?.url;
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const MOQ = val.moq;
             const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
-
-            const rank = Math.round((5 + 1) / 2);
+            const partner = partners?.find((i: any) => i.id === val.partner);
+            const rank = partner && partner.rank ? Math.round((toInteger(partner?.rank) + 1) / 2) : 0;
+            const country =
+              partner && partner.country
+                ? checkout?.countries?.find((i) => i.url === partner.country)?.printable_name
+                : null;
             let isShowPricesHint = false;
             sortedPrices.forEach((price) => {
               if (isShowPricesHint) return;
@@ -404,11 +411,17 @@ const DistributorsDesktop: React.FC<Props> = ({
                       })}
                     </div>
                   )}
-                  {rank && (
+                  {rank !== 0 && rank !== undefined ? (
                     <div className={classes.dateUpdated}>
                       {[...Array(rank)].map((n, i) => (
                         <img src={Star} alt={"rank"} key={i} style={{ width: "12px", height: "12px" }} />
                       ))}
+                    </div>
+                  ) : null}
+                  {country && (
+                    <div className={classes.dateUpdated} style={{ display: "flex", alignItems: "center" }}>
+                      <LocationOnOutlinedIcon fontSize={"small"} />
+                      {country}
                     </div>
                   )}
                 </td>
