@@ -34,7 +34,7 @@ const BeforeUnloadModal = () => {
     };
     const timeoutId = setTimeout(() => {
       document.body.addEventListener("mouseleave", listener);
-    }, 5000);
+    }, 30000);
     return () => {
       clearTimeout(timeoutId);
       document.body.removeEventListener("mouseleave", listener);
