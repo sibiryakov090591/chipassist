@@ -112,6 +112,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     animation: {
       animation: "glow 1s",
     },
+    input: {
+      width: "100%",
+    },
     fieldHint: {
       "& fieldset": {
         boxShadow: "0px 0px 6px 3px #7bb4c5",
