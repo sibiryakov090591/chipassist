@@ -7,4 +7,11 @@ export const saveNewState = (newState: any) => {
   };
 };
 
+export const showHint = (isNeedToShow: boolean) => {
+  return {
+    type: actionTypes.SHOW_HINT,
+    payload: isNeedToShow,
+  };
+};
+
 export default saveNewState;

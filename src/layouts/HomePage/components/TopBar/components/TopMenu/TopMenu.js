@@ -30,6 +30,7 @@ const TopMenu = ({ isMobile }) => {
   const dispatch = useAppDispatch();
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const showHint = useAppSelector((state) => state.rfqList.showHint);
   // const ordersPage = useAppSelector((state) => state.orders.orders.page);
 
   // // Show feedback modal
