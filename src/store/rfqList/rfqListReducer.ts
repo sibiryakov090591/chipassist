@@ -33,7 +33,7 @@ export default function rfqListReducer(state = initialState, action: any): any {
     case actionTypes.SAVE_RFQ_LIST_FORM_STATE:
       return { ...state, formState: { ...action.payload.form, lastFilledIndex: action.payload.lastFilledIndex } };
     case actionTypes.SHOW_HINT:
-      return { ...state, showHint: action.payload }
+      return { ...state, showHint: action.payload };
     default:
       return state;
   }
