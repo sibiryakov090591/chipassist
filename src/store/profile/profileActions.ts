@@ -308,3 +308,58 @@ export const updateCompanyAddress = (id: number, data: any) => {
     });
   };
 };
+
+export const getPartnerInfo = (id: number) => {
+  return (dispatch: any) => {
+    return dispatch({
+      types: actionTypes.GET_PARTNER_INFORMATION_ARRAY,
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/partners/${id}`)
+          .then((res) => {
+            const data = {
+              avatar: res.data?.avatar || "",
+              company_name: res.data.name || "",
+              email: res.data?.email || "",
+              phone: res.data?.phone || "",
+              website: res.data?.url || "",
+              country: res.data?.country || "",
+              postcode: res.data?.postcode || "",
+              address: res.data?.address || "",
+              description: res.data?.description || "",
+            };
+            return data;
+          })
+          .catch((e) => {
+            throw e;
+          }),
+    });
+  };
+};
+
+export const saveNewPartnerInfo = (id: number, data: any) => {
+  return (dispatch: any) => {
+    return dispatch({
+      types: actionTypes.GET_PARTNER_INFORMATION_ARRAY,
+      promise: (client: ApiClientInterface) =>
+        client
+          .patch(`/partners/${id}`, {
+            data: {
+              avatar: data.logoURL,
+              name: data.company_name,
+              email: data.email,
+              phone: data.phone,
+              url: data.website,
+              country: data.country,
+              postcode: data.postcode,
+              address: data.address,
+              description: data.description,
+            },
+          })
+          .then()
+          .catch((e) => {
+            throw e;
+          }),
+    });
+  };
+};

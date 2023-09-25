@@ -31,11 +31,6 @@ const Page = (props) => {
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description || title} />
-        <meta name="og:title" content={title} />
-        <meta name="og:description" content={description || title} />
-        <meta name="og:url" content={window.location.href} />
-        <meta name="og:site_name" content={"ChipAssist"} />
-        <meta name="twitter:site" content={"@chipassist"} />
       </Helmet>
       {children}
     </div>

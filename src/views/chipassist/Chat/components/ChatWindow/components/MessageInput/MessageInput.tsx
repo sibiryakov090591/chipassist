@@ -179,9 +179,9 @@ const MessageInput: React.FC<Props> = ({
   const onSetHintMessage = (type: "confirm" | "update_price" | "update_qty" | "later" | "out_stock") => () => {
     const name = `${partner.first_name} ${partner.last_name}`;
     const price = stock && getPrice(stock?.num_in_stock, stock as any);
-    const numInStock = stock?.num_in_stock;
+    const numInStock = Number(stock?.num_in_stock);
     const partNumber = stock?.upc;
-    const leadTime = stock?.lead_period_str;
+    const leadTime = Number(stock?.lead_period_str);
     const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
 
     let stockErrors: StockErrorsFields = null;

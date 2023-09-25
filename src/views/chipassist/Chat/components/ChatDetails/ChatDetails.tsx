@@ -86,6 +86,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   });
 
   useEffect(() => {
+    reset();
     dispatch(clearStockErrors());
     setIsShowPrices(false);
 
@@ -93,23 +94,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       setCurrency(currencyList.find((c) => c.code === stock.currency));
 
       // update overall data
-      setValue("stock", stock.num_in_stock);
-      setValue("packaging", stock.packaging);
-      setValue("moq", stock.moq);
-      setValue("mpq", stock.mpq);
-      setValue("lead_time", stock.lead_period_str);
+      if (Number(stock.num_in_stock)) setValue("stock", stock.num_in_stock);
+      if (stock.packaging) setValue("packaging", stock.packaging);
+      if (Number(stock.moq)) setValue("moq", stock.moq);
+      if (Number(stock.mpq)) setValue("mpq", stock.mpq);
+      if (Number(stock.lead_period_str)) setValue("lead_time", stock.lead_period_str);
 
       // update prices
-      setValue("prices", {}); // reset
-      if (stock.prices.length) {
+      if (stock.prices?.length && stock.prices.some((i) => !!i.original && !!i.amount)) {
+        setValue("prices", {}); // reset
         stock.prices.forEach((i) => {
           setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
         });
       }
-    } else {
-      reset();
     }
-
     setForceRender((prev) => !prev);
   }, [selectedChat]);
 
@@ -236,7 +234,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
-                      className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.num_in_stock })}
+                      className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.num_in_stock })}
                       error={errors.stock}
                       helperText={errors.stock?.message}
                       variant="outlined"
@@ -287,6 +285,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                className={classes.input}
                                 value={getValues(`prices.${key}.amount`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.amount}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
@@ -316,7 +315,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
-                                className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.price })}
+                                className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.price })}
                                 value={getValues(`prices.${key}.price`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.price}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
@@ -363,6 +362,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                className={classes.input}
                                 value={getValues(`prices.${key}.amount`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.amount}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
@@ -388,6 +388,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                className={classes.input}
                                 value={getValues(`prices.${key}.price`)}
                                 error={errors?.prices && errors.prices[`${key}`]?.price}
                                 helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
@@ -414,7 +415,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             <div className={classes.grid}>
               <div>
                 <div className={classes.label}>Packaging:</div>
-                <TextField {...register("packaging")} variant="outlined" size="small" />
+                <TextField {...register("packaging")} variant="outlined" size="small" fullWidth />
               </div>
               <div>
                 <div className={classes.label}>MOQ:</div>
@@ -430,6 +431,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      className={classes.input}
                       error={errors.moq}
                       helperText={errors.moq?.message}
                       variant="outlined"
@@ -454,6 +456,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      className={classes.input}
                       error={errors.mpq}
                       helperText={errors.mpq?.message}
                       variant="outlined"
@@ -478,7 +481,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
-                      className={clsx({ [classes.fieldHint]: !!stockrecordErrors?.leadTime })}
+                      className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.leadTime })}
                       error={errors.lead_time}
                       helperText={errors.lead_time?.message}
                       variant="outlined"

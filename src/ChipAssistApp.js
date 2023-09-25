@@ -56,6 +56,7 @@ import { loadSellersWithProductLink } from "@src/store/products/productsActions"
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
+import { getAllSellers } from "@src/store/sellers/sellersActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -201,7 +202,7 @@ const ChipAssistApp = () => {
       dispatch(getCurrency(selectedCurrency)).catch(() => {
         setTimeout(() => dispatch(getCurrency(selectedCurrency)), 1000);
       });
-
+      dispatch(getAllSellers());
       // dispatch(getCountriesThunk());
       dispatch(getGeolocation());
     });
