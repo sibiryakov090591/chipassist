@@ -13,7 +13,7 @@ import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import Hidden from "@material-ui/core/Hidden";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
-import { ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { getPrice } from "@src/utils/product";
 import { StockErrorsFields } from "@src/store/chat/chatTypes";
 import Button from "@material-ui/core/Button";
@@ -48,7 +48,6 @@ const MessageInput: React.FC<Props> = ({
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
-  const isMaster = constants.id === ID_MASTER;
 
   const textareaRef = useRef(null);
   const inputWrapperRef = useRef(null);
@@ -61,6 +60,7 @@ const MessageInput: React.FC<Props> = ({
       ...stocks[0],
       prices: stocks[0].prices?.map((i) => ({ ...i, price: i.original })),
     };
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);
@@ -247,7 +247,7 @@ const MessageInput: React.FC<Props> = ({
           </Box>
         </>
       )}
-      {isMaster && (
+      {!isSupplierResponse && !!stock && (
         <Box display="flex" justifyContent="flex-end" m="0 12px 8px">
           <Button
             size="medium"
@@ -307,7 +307,12 @@ const MessageInput: React.FC<Props> = ({
         onAddFiles={onAddFiles}
         onCloseModal={onCloseModal}
       />
-      <SendOrderModal open={openOrderModal} onCloseModal={onCloseOrderModal} setIsSending={setIsSending} />
+      <SendOrderModal
+        open={openOrderModal}
+        stock={stock}
+        onCloseModal={onCloseOrderModal}
+        setIsSending={setIsSending}
+      />
     </div>
   );
 };
