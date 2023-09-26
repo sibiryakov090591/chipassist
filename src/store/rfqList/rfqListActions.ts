@@ -14,4 +14,11 @@ export const showHint = (isNeedToShow: boolean) => {
   };
 };
 
+export const collapseHint = (isNeedToCollapse: boolean) => {
+  return {
+    type: actionTypes.COLLAPSE_HINT,
+    payload: isNeedToCollapse,
+  };
+};
+
 export default saveNewState;

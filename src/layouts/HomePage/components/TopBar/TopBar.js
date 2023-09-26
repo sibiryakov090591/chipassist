@@ -18,6 +18,8 @@ import { useStyles as useHomePageStyles } from "@src/views/chipassist/Chipassist
 import { useTheme } from "@material-ui/core/styles";
 // import CartBlock from "@src/components/CartBlock/CartBlock";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
+import useAppDispatch from "@src/hooks/useAppDispatch";
+import { collapseHint } from "@src/store/rfqList/rfqListActions";
 import { useStyles } from "./topbarStyles";
 // import LangMenu from "./components/LangMenu/LangMenu";
 import ProfileMenu from "./components/ProfileMenu";
@@ -62,7 +64,7 @@ const TopBar = (props) => {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const is1180Down = useMediaQuery(theme.breakpoints.down(1180));
-
+  const dispatch = useAppDispatch();
   // const Icon = withBaseIcon();
   const maintenance = useAppSelector((state) => state.maintenance);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
@@ -82,9 +84,13 @@ const TopBar = (props) => {
 
   const listener = () => {
     if (window.pageYOffset > 60) {
-      if (!collapse) setСollapse(true);
+      if (!collapse) {
+        setСollapse(true);
+        dispatch(collapseHint(true));
+      }
     } else if (collapse) {
       setСollapse(false);
+      dispatch(collapseHint(false));
     }
   };
 

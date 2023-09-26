@@ -11,7 +11,7 @@ import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 // import Feedback from "@src/views/chipassist/Feedback/Feedback";
-import { Hidden } from "@material-ui/core";
+import { Button, Hidden, Tooltip, Zoom } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ReceiptIcon from "@material-ui/icons/Receipt";
@@ -22,7 +22,27 @@ import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
+import { showHint } from "@src/store/rfqList/rfqListActions";
+import { withStyles } from "@material-ui/core/styles";
 import { useStyles } from "./topMenuStyles";
+
+const HtmlTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: `${theme.palette.app.grey100}`,
+    padding: "1em",
+    borderRadius: "10px",
+    color: `black`,
+    transition: "all 250ms ease",
+    pointerEvents: "all",
+    width: "250px",
+    margin: "7px 0!important",
+    border: `2px solid ${theme.palette.app.blue800}`,
+  },
+  arrow: {
+    fontSize: "20px",
+    color: `${theme.palette.app.blue800}`,
+  },
+}))(Tooltip);
 
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
@@ -30,7 +50,8 @@ const TopMenu = ({ isMobile }) => {
   const dispatch = useAppDispatch();
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const showHint = useAppSelector((state) => state.rfqList.showHint);
+  const isShowHint = useAppSelector((state) => state.rfqList.showHint);
+  const isCollapseHint = useAppSelector((state) => state.rfqList.collapseHint);
   // const ordersPage = useAppSelector((state) => state.orders.orders.page);
 
   // // Show feedback modal
@@ -90,17 +111,44 @@ const TopMenu = ({ isMobile }) => {
       {/*    {t("pcb")} */}
       {/*  </NavLink> */}
       {/* </div> */}
-      <div className={itemClasses}>
-        <NavLink
-          className={clsx(classes.topMenuItemLink, {
-            [classes.active]: window.location.pathname.includes("/rfq-list-quotes"),
-          })}
-          to={`/rfq-list-quotes`}
-        >
-          {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          {"RFQ List"}
-        </NavLink>
-      </div>
+      <HtmlTooltip
+        title={
+          <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+            <span style={{ width: "100%", textAlign: "center", fontSize: "1.5em", marginTop: "10px" }}>
+              You can find RFQ List quotes here
+            </span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+              <Button
+                size={"small"}
+                style={{ minWidth: "0px", color: "inherit", fontSize: "1.2em", marginTop: "5px" }}
+                onClick={() => dispatch(showHint(false))}
+              >
+                Got it!
+              </Button>
+            </div>
+          </div>
+        }
+        disableFocusListener
+        disableTouchListener
+        open={!isMobile && isShowHint && !isCollapseHint}
+        arrow
+        TransitionComponent={Zoom}
+      >
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, {
+              [classes.active]: window.location.pathname.includes("/rfq-list-quotes"),
+            })}
+            to={`/rfq-list-quotes`}
+          >
+            {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+            {"RFQ List"}
+          </NavLink>
+          {/* {!isMobile && isShowHint && ( */}
+
+          {/* )} */}
+        </div>
+      </HtmlTooltip>
       <div className={itemClasses}>
         <NavLink
           className={clsx(classes.topMenuItemLink, {

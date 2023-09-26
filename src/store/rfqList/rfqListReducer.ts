@@ -2,6 +2,7 @@ import * as actionTypes from "./rfqListTypes";
 
 const initialState: any = {
   showHint: false,
+  collapseHint: false,
   formState: {
     isValid: false,
     values: [
@@ -34,6 +35,8 @@ export default function rfqListReducer(state = initialState, action: any): any {
       return { ...state, formState: { ...action.payload.form, lastFilledIndex: action.payload.lastFilledIndex } };
     case actionTypes.SHOW_HINT:
       return { ...state, showHint: action.payload };
+    case actionTypes.COLLAPSE_HINT:
+      return { ...state, collapseHint: action.payload };
     default:
       return state;
   }

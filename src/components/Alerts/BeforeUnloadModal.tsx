@@ -13,6 +13,7 @@ import { clsx } from "clsx";
 import { Button } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { changeMisc } from "@src/store/progressModal/progressModalActions";
+import { showHint } from "@src/store/rfqList/rfqListActions";
 
 const BeforeUnloadModal = () => {
   const commonClasses = useCommonStyles();
@@ -44,6 +45,7 @@ const BeforeUnloadModal = () => {
   const handleClose = () => {
     localStorage.setItem("before_unload_alert_disabled", "true");
     dispatch(showAlertBeforeUnloadAction(false));
+    dispatch(showHint(true));
   };
 
   return (
