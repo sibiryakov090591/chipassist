@@ -43,7 +43,7 @@ export const CLEAR_STOCK_ERROR = "@chat/CLEAR_STOCK_ERROR";
 export interface ChatState {
   filters: {
     upc_list: string[];
-    partners_list: PartnersListItem[];
+    partner_list: PartnersListItem[];
     values: {
       upc: string;
       partner: number;
