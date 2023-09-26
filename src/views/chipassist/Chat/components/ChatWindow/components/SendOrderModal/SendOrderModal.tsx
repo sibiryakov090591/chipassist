@@ -15,10 +15,12 @@ import { formatMoney } from "@src/utils/formatters";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendMessage } from "@src/store/chat/chatActions";
+import { ChatListStock } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 
 interface Props {
   open: boolean;
+  stock: ChatListStock;
   onCloseModal: () => void;
   setIsSending: any;
 }
@@ -36,7 +38,7 @@ type FormValues = {
   additional_notes: string;
 };
 
-const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) => {
+const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSending }) => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -64,11 +66,6 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
     mode: "onChange",
   });
 
-  const stock = !!selectedChat?.stocks &&
-    !!selectedChat?.stocks[0] && {
-      ...selectedChat?.stocks[0],
-      prices: selectedChat?.stocks[0].prices.map((i) => ({ ...i, price: i.original })),
-    };
   const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
   const quantity = watch("requested_qty");
   const price = !!stock && !!quantity && getPrice(+quantity, stock as any);

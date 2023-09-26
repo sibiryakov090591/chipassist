@@ -118,18 +118,20 @@ export interface ChatListItem {
   };
   unread_messages: number;
   messages: ChatListMessage[];
-  stocks: Array<{
-    currency: CurrenciesAllowed;
-    id: number;
-    upc: string;
-    lead_period_str: string;
-    moq: number;
-    mpq: number;
-    num_in_stock: number;
-    packaging: string;
-    partner_sku: string;
-    prices: { id: number; amount: number; original: number }[];
-  }>;
+  stocks: ChatListStock[];
+}
+
+export interface ChatListStock {
+  currency: CurrenciesAllowed;
+  id: number;
+  upc: string;
+  lead_period_str: string;
+  moq: number;
+  mpq: number;
+  num_in_stock: number;
+  packaging: string;
+  partner_sku: string;
+  prices: { id: number; amount: number; original: number }[];
 }
 
 export interface ChatListMessage {
