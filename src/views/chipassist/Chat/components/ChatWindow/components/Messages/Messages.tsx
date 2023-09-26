@@ -240,7 +240,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
         <ScheduleRoundedIcon className={classes.requestItemIcon} />
         <div>
           <strong>{`Request for ${selectedChat.rfq.quantity}pcs ${selectedChat.rfq.upc}${
-            selectedChat.rfq.price ? ` at ${selectedChat.rfq.price} €` : ""
+            selectedChat.rfq.price ? ` at ${formatMoney(selectedChat.rfq.price)} €` : ""
           }.`}</strong>{" "}
           {date}
         </div>
