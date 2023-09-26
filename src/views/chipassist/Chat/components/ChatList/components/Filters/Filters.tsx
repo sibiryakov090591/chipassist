@@ -100,9 +100,9 @@ const Filters: React.FC = () => {
               name="partner"
               value={values.partner || ""}
               onChange={onChangeHandler}
-              disabled={!filters.partners_list?.length}
+              disabled={!filters.partner_list?.length}
             >
-              {filters.partners_list?.map((partner) => {
+              {filters.partner_list?.map((partner) => {
                 return (
                   <MenuItem key={partner.id} value={partner.id}>
                     {isSupplierResponse

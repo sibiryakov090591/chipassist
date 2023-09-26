@@ -6,7 +6,7 @@ import { ChatListItem, ChatListMessage } from "./chatTypes";
 const initialState: actionTypes.ChatState = {
   filters: {
     upc_list: null,
-    partners_list: null,
+    partner_list: null,
     values: {
       upc: null,
       partner: null,
