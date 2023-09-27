@@ -25,6 +25,7 @@ export const GeneralSettingView = () => {
   const classes = useStyles();
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
+  const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <Card>
       <CardHeader className={classes.cardHeader} title={"Company details"} />
@@ -74,10 +75,28 @@ export const GeneralSettingView = () => {
               </div>
             </Box>
           </Grid>
-          <Grid item md={12} xs={12} className={classes.divideLine}>
+          <Grid
+            item
+            md={12}
+            xs={12}
+            className={classes.divideLine}
+            style={isDownXs ? { paddingLeft: 0, paddingRight: 0 } : null}
+          >
             <Box display={"flex"} justifyContent={"end"}>
-              <Button className={classes.editButton} variant={"outlined"} onClick={() => dispatch(turnEditMode(true))}>
-                <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
+              <Button
+                className={classes.editButton}
+                style={isDownXs ? { width: "100%" } : null}
+                variant={"outlined"}
+                onClick={() => dispatch(turnEditMode(true))}
+              >
+                <div
+                  style={{
+                    width: isDownXs ? "20%" : "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
+                  }}
+                >
                   <EditIcon />
                   {"Edit"}
                 </div>

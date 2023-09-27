@@ -407,7 +407,7 @@ const GeneralSettings = () => {
           </Grid>
 
           <Grid item md={12} xs={12}>
-            <Box display={"flex"} justifyContent={isXsDown ? "center" : "end"}>
+            <Box display={"flex"} justifyContent={isXsDown ? "space-between" : "end"}>
               <Button
                 style={{ minWidth: 150, marginRight: "16px" }}
                 className={appTheme.buttonPrimary}
