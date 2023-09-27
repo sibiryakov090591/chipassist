@@ -13,6 +13,7 @@ import { clsx } from "clsx";
 import { Button } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { changeMisc } from "@src/store/progressModal/progressModalActions";
+import { DisableProductRequestHint } from "@src/store/products/productsActions";
 
 const BeforeUnloadModal = () => {
   const commonClasses = useCommonStyles();
@@ -28,6 +29,7 @@ const BeforeUnloadModal = () => {
         const mouseY = event.clientY;
         if (mouseY <= 0) {
           dispatch(showAlertBeforeUnloadAction(true));
+          dispatch(DisableProductRequestHint());
           dispatch(changeMisc("before_unload_modal_has_shown", "true"));
         }
       }

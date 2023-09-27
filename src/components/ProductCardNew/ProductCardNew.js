@@ -3,7 +3,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import clsx from "clsx";
-import { Paper, Hidden, Box, Collapse } from "@material-ui/core";
+import { Paper, Hidden, Box, Collapse, useMediaQuery, useTheme } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { getDynamicMoq, getImage, getPrice, isDuplicateStockrecord, isProductAvailable } from "@src/utils/product";
 import { rfqModalOpen, setSellerMessageData } from "@src/store/rfq/rfqActions";
@@ -20,6 +20,8 @@ import warehouse_icon from "@src/images/search_page/warehouse.svg";
 import { formatMoney } from "@src/utils/formatters";
 // import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import RequestButton from "@src/components/ProductCardNew/components/RequestButton/RequestButton";
+import { useInView } from "react-intersection-observer";
+import { SetProductIntoViewport } from "@src/store/products/productsActions";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
@@ -30,12 +32,23 @@ const ProductCardNew = (props) => {
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const { currencyPrice } = useCurrency();
-  // const theme = useTheme();
-  // const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
   const currency = useAppSelector((state) => state.currency);
+  const { isShow } = useAppSelector((state) => state.products.requestHint);
+
+  const { ref } = useInView({
+    threshold: 1,
+    skip: isSmDown || isShow || !!localStorage.getItem("product_request_hint_disabled"),
+    onChange: (inView) => {
+      if (!localStorage.getItem("product_request_hint_disabled") && inView) {
+        dispatch(SetProductIntoViewport(product.id));
+      }
+    },
+  });
 
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
@@ -225,6 +238,7 @@ const ProductCardNew = (props) => {
 
   return (
     <Paper
+      ref={ref}
       elevation={3}
       className={clsx("product-card", classes.productCard, {
         [classes.productCard]: true,
