@@ -9,8 +9,7 @@ import { Product } from "@src/store/products/productTypes";
 import { rfqModalOpen } from "@src/store/rfq/rfqActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
-import { useInView } from "react-intersection-observer";
-import { SetProductIntoViewport, DisableProductRequestHint } from "@src/store/products/productsActions";
+import { DisableProductRequestHint } from "@src/store/products/productsActions";
 
 interface Props {
   requestedQty?: number;
@@ -24,20 +23,9 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const { isShow } = useAppSelector((state) => state.products.requestHint);
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
-  const { ref } = useInView({
-    threshold: 0,
-    skip: isSmDown || isShow,
-    onChange: (inView) => {
-      if (!localStorage.getItem("product_request_hint_disabled") && inView) {
-        dispatch(SetProductIntoViewport(product.id));
-      }
-    },
-  });
 
   const sendRfqOpenModal = () => {
     dispatch(DisableProductRequestHint());
@@ -45,7 +33,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
   };
 
   return (
-    <div className={classes.requestButtonWrapper} ref={ref}>
+    <div className={classes.requestButtonWrapper}>
       {isAuthenticated && !!requestedQty ? (
         <Tooltip
           disableFocusListener={isDownMd}
