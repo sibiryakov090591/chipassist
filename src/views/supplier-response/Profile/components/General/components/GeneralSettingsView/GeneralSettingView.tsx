@@ -10,6 +10,8 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import PhoneOutlinedIcon from "@material-ui/icons/PhoneOutlined";
 import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export const GeneralSettingView = () => {
   const partner = useAppSelector((state) => state.profile.partnerProfile);
@@ -21,14 +23,18 @@ export const GeneralSettingView = () => {
     defaultCountry.printable_name;
   const dispatch = useAppDispatch();
   const classes = useStyles();
+  const theme = useTheme();
+  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Card>
       <CardHeader className={classes.cardHeader} title={"Company details"} />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item md={12} xs={12}>
-            <p className={classes.name}>{partner.company_name}</p>
-          </Grid>
+          {!isDownMd && (
+            <Grid item md={12} xs={12}>
+              <p className={classes.name}>{partner.company_name}</p>
+            </Grid>
+          )}
           <Grid item md={12} xs={12} style={{ marginTop: "1em" }}>
             <span className={classes.title}>{"Company contacts and address: "}</span>
           </Grid>
