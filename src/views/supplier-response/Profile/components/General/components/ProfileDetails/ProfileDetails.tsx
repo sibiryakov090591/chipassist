@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   avatar: {
-    cursor: "pointer",
     height: 100,
     width: 100,
     [theme.breakpoints.down("xs")]: {

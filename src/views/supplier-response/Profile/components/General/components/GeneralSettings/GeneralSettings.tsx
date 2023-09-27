@@ -242,9 +242,9 @@ const GeneralSettings = () => {
   };
 
   return (
-    <Card>
+    <Card style={isXsDown ? { boxShadow: "none" } : null}>
       <CardHeader className={classes.cardHeader} title={"Company details"} />
-      <CardContent>
+      <CardContent style={isXsDown ? { paddingLeft: 0, paddingRight: 0 } : null}>
         <Grid container spacing={3}>
           <Grid item md={12} xs={12}>
             <TextField
@@ -390,15 +390,24 @@ const GeneralSettings = () => {
               }}
               multiline
               rows={4}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">{`${currentLength}/${maxLength}`}</InputAdornment>,
-              }}
+              InputProps={
+                !isXsDown
+                  ? {
+                      endAdornment: <InputAdornment position="end">{`${currentLength}/${maxLength}`}</InputAdornment>,
+                    }
+                  : null
+              }
               onChange={onChangeHandler}
             />
+            {isXsDown && (
+              <div
+                style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+              >{`${currentLength}/${maxLength}`}</div>
+            )}
           </Grid>
 
           <Grid item md={12} xs={12}>
-            <Box display={"flex"} justifyContent={"end"}>
+            <Box display={"flex"} justifyContent={isXsDown ? "center" : "end"}>
               <Button
                 style={{ minWidth: 150, marginRight: "16px" }}
                 className={appTheme.buttonPrimary}
