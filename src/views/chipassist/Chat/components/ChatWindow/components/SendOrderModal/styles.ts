@@ -5,7 +5,7 @@ import { createStyles, makeStyles } from "@material-ui/styles";
 export const useStyles = makeStyles(() =>
   createStyles({
     form: {
-      maxWidth: 800,
+      maxWidth: 600,
       textAlign: "start",
     },
     label: {
@@ -13,6 +13,19 @@ export const useStyles = makeStyles(() =>
     },
     value: {
       fontWeight: "bold",
+      fontSize: 15,
+    },
+    qtyInput: {
+      maxWidth: 100,
+      "& input": {
+        fontWeight: "bold",
+        fontSize: 15,
+      },
+    },
+    productCard: {
+      border: "1px solid #eee",
+      borderRadius: 4,
+      background: "#f5f5f5",
     },
   }),
 );

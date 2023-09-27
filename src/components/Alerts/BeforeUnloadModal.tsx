@@ -13,6 +13,7 @@ import { clsx } from "clsx";
 import { Button } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { changeMisc } from "@src/store/progressModal/progressModalActions";
+import { DisableProductRequestHint } from "@src/store/products/productsActions";
 import { showHint } from "@src/store/rfqList/rfqListActions";
 
 const BeforeUnloadModal = () => {
@@ -29,13 +30,14 @@ const BeforeUnloadModal = () => {
         const mouseY = event.clientY;
         if (mouseY <= 0) {
           dispatch(showAlertBeforeUnloadAction(true));
+          dispatch(DisableProductRequestHint());
           dispatch(changeMisc("before_unload_modal_has_shown", "true"));
         }
       }
     };
     const timeoutId = setTimeout(() => {
       document.body.addEventListener("mouseleave", listener);
-    }, 5000);
+    }, 30000);
     return () => {
       clearTimeout(timeoutId);
       document.body.removeEventListener("mouseleave", listener);

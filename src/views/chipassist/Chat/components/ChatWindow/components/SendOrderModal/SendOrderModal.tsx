@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Backdrop, Box, Button, Grid, Hidden, MenuItem, TextField } from "@material-ui/core";
+import { Backdrop, Box, Button, Grid, MenuItem, TextField } from "@material-ui/core";
 import { clsx } from "clsx";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { NumberInput } from "@src/components/Inputs";
@@ -15,10 +15,12 @@ import { formatMoney } from "@src/utils/formatters";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendMessage } from "@src/store/chat/chatActions";
+import { ChatListStock } from "@src/store/chat/chatTypes";
 import { useStyles } from "./styles";
 
 interface Props {
   open: boolean;
+  stock: ChatListStock;
   onCloseModal: () => void;
   setIsSending: any;
 }
@@ -36,7 +38,7 @@ type FormValues = {
   additional_notes: string;
 };
 
-const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) => {
+const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSending }) => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -64,11 +66,6 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
     mode: "onChange",
   });
 
-  const stock = !!selectedChat?.stocks &&
-    !!selectedChat?.stocks[0] && {
-      ...selectedChat?.stocks[0],
-      prices: selectedChat?.stocks[0].prices.map((i) => ({ ...i, price: i.original })),
-    };
   const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
   const quantity = watch("requested_qty");
   const price = !!stock && !!quantity && getPrice(+quantity, stock as any);
@@ -168,9 +165,20 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Hidden xsDown>
-              <Grid item sm={6} xs={12}></Grid>
-            </Hidden>
+            <Grid item sm={6} xs={12}>
+              <Controller
+                name="phone_number_str"
+                control={control}
+                render={({ field }) => (
+                  <PhoneInputWrapper
+                    {...field}
+                    label="Work phone:"
+                    small={true}
+                    style={{ height: "37.63px", margin: 0 }}
+                  />
+                )}
+              />
+            </Grid>
             <Grid item sm={6} xs={12}>
               <Controller
                 name="first_name"
@@ -219,20 +227,6 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                     variant="outlined"
                     size="small"
                     fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="phone_number_str"
-                control={control}
-                render={({ field }) => (
-                  <PhoneInputWrapper
-                    {...field}
-                    label="Work phone:"
-                    small={true}
-                    style={{ height: "37.63px", margin: 0 }}
                   />
                 )}
               />
@@ -323,16 +317,16 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="line1"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -352,7 +346,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
           </Grid>
 
           <h3>Product</h3>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className={classes.productCard}>
             <Grid item xs={6}>
               <div className={classes.label}>MPN:</div>
               <div className={classes.value}>{stock?.upc || "-"}</div>
@@ -378,6 +372,10 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                   name="requested_qty"
                   control={control}
                   rules={{
+                    required: {
+                      value: true,
+                      message: "Required",
+                    },
                     min: {
                       value: 1,
                       message: "At least 1",
@@ -390,7 +388,7 @@ const SendOrderModal: React.FC<Props> = ({ open, onCloseModal, setIsSending }) =
                       //   shrink: true,
                       // }}
                       // label="Requested qty:"
-                      style={{ maxWidth: 100 }}
+                      className={classes.qtyInput}
                       error={!!errors.requested_qty}
                       helperText={errors.requested_qty?.message}
                       variant="outlined"

@@ -43,7 +43,7 @@ export const CLEAR_STOCK_ERROR = "@chat/CLEAR_STOCK_ERROR";
 export interface ChatState {
   filters: {
     upc_list: string[];
-    partners_list: PartnersListItem[];
+    partner_list: PartnersListItem[];
     values: {
       upc: string;
       partner: number;
@@ -118,18 +118,20 @@ export interface ChatListItem {
   };
   unread_messages: number;
   messages: ChatListMessage[];
-  stocks: Array<{
-    currency: CurrenciesAllowed;
-    id: number;
-    upc: string;
-    lead_period_str: string;
-    moq: number;
-    mpq: number;
-    num_in_stock: number;
-    packaging: string;
-    partner_sku: string;
-    prices: { id: number; amount: number; original: number }[];
-  }>;
+  stocks: ChatListStock[];
+}
+
+export interface ChatListStock {
+  currency: CurrenciesAllowed;
+  id: number;
+  upc: string;
+  lead_period_str: string;
+  moq: number;
+  mpq: number;
+  num_in_stock: number;
+  packaging: string;
+  partner_sku: string;
+  prices: { id: number; amount: number; original: number }[];
 }
 
 export interface ChatListMessage {
