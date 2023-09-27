@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Backdrop, Box, Button, Grid, Hidden, MenuItem, TextField } from "@material-ui/core";
+import { Backdrop, Box, Button, Grid, MenuItem, TextField } from "@material-ui/core";
 import { clsx } from "clsx";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { NumberInput } from "@src/components/Inputs";
@@ -165,9 +165,20 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                 )}
               />
             </Grid>
-            <Hidden xsDown>
-              <Grid item sm={6} xs={12}></Grid>
-            </Hidden>
+            <Grid item sm={6} xs={12}>
+              <Controller
+                name="phone_number_str"
+                control={control}
+                render={({ field }) => (
+                  <PhoneInputWrapper
+                    {...field}
+                    label="Work phone:"
+                    small={true}
+                    style={{ height: "37.63px", margin: 0 }}
+                  />
+                )}
+              />
+            </Grid>
             <Grid item sm={6} xs={12}>
               <Controller
                 name="first_name"
@@ -216,20 +227,6 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                     variant="outlined"
                     size="small"
                     fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Controller
-                name="phone_number_str"
-                control={control}
-                render={({ field }) => (
-                  <PhoneInputWrapper
-                    {...field}
-                    label="Work phone:"
-                    small={true}
-                    style={{ height: "37.63px", margin: 0 }}
                   />
                 )}
               />
@@ -320,16 +317,16 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sm={6} xs={12}>
               <Controller
                 name="line1"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -349,7 +346,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
           </Grid>
 
           <h3>Product</h3>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className={classes.productCard}>
             <Grid item xs={6}>
               <div className={classes.label}>MPN:</div>
               <div className={classes.value}>{stock?.upc || "-"}</div>
@@ -375,6 +372,10 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                   name="requested_qty"
                   control={control}
                   rules={{
+                    required: {
+                      value: true,
+                      message: "Required",
+                    },
                     min: {
                       value: 1,
                       message: "At least 1",
@@ -387,7 +388,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                       //   shrink: true,
                       // }}
                       // label="Requested qty:"
-                      style={{ maxWidth: 100 }}
+                      className={classes.qtyInput}
                       error={!!errors.requested_qty}
                       helperText={errors.requested_qty?.message}
                       variant="outlined"
