@@ -10,6 +10,10 @@ interface Items {
   users: any[];
   url: string | null;
   lead_period: any;
+  reliable?: string;
+  whitelist?: string;
+  link_to_site?: string;
+  [key: string]: any;
 }
 
 export interface Seller {

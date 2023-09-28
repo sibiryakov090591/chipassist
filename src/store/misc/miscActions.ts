@@ -23,7 +23,7 @@ export const updateMiscAction = (name: string, data: any) => (dispatch: Dispatch
     types: [null, null, null] as any,
     promise: (client: ApiClientInterface) =>
       client
-        .put(`/misc/${name}/`, { data, cancelId: `updateMiscAction_${name}` })
+        .put(`/misc/${name}/`, { data: { name, data }, cancelId: `updateMiscAction_${name}` })
         .then((res) => {
           // dispatch(showUpdateSuccess());
           return res.data;

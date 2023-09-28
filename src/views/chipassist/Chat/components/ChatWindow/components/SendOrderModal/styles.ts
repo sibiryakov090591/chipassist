@@ -23,6 +23,8 @@ export const useStyles = makeStyles(() =>
       },
     },
     productCard: {
+      margin: 0,
+      width: "100%",
       border: "1px solid #eee",
       borderRadius: 4,
       background: "#f5f5f5",

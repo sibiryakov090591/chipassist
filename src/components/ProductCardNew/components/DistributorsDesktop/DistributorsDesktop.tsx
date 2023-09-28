@@ -75,7 +75,9 @@ const DistributorsDesktop: React.FC<Props> = ({
   const showSellerTooltip = false;
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
-  const { sellersWithProductLink } = useAppSelector((state) => state.products);
+  const sellersWithProductLink = useAppSelector((state) =>
+    state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
+  );
   const partners = useAppSelector((state) => state.sellers.items);
   const checkout = useAppSelector((state) => state.checkout);
 
@@ -328,13 +330,13 @@ const DistributorsDesktop: React.FC<Props> = ({
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
             const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-            const isShowProductLink = !!val.product_url || !!seller?.url;
+            const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const MOQ = val.moq;
             const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
             const partner = partners?.find((i: any) => i.id === val.partner);
-            const rank = partner && partner.rank ? Math.round((toInteger(partner?.rank) + 1) / 2) : 0;
+            const rank = partner && !!toInteger(partner.rank) ? Math.trunc((toInteger(partner.rank) + 1) / 2) : 0;
             const country =
               partner && partner.country
                 ? checkout?.countries?.find((i) => i.url === partner.country)?.printable_name
@@ -411,15 +413,15 @@ const DistributorsDesktop: React.FC<Props> = ({
                       })}
                     </div>
                   )}
-                  {rank !== 0 && rank !== undefined ? (
+                  {rank > 0 && (
                     <div className={classes.dateUpdated}>
-                      {[...Array(rank)].map((n, i) => (
-                        <img src={Star} alt={"rank"} key={i} style={{ width: "12px", height: "12px" }} />
+                      {[...Array(rank > 5 ? 5 : rank)].map((n, i) => (
+                        <img key={i} className={classes.statIcon} src={Star} alt={"rank"} />
                       ))}
                     </div>
-                  ) : null}
+                  )}
                   {country && (
-                    <div className={classes.dateUpdated} style={{ display: "flex", alignItems: "center" }}>
+                    <div className={clsx(classes.dateUpdated, classes.country)}>
                       <LocationOnOutlinedIcon fontSize={"small"} />
                       {country}
                     </div>

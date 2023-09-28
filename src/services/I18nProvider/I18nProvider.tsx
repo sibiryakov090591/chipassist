@@ -13,6 +13,9 @@ i18n
   // .use(Backend)
   .use(initReactI18next)
   .init({
+    interpolation: {
+      escapeValue: false, // This is important for preventing HTML and variable injection
+    },
     debug: true,
     load: "languageOnly",
     lng: locales.find((val) => val === localStorage.getItem("locale")) ? localStorage.getItem("locale") : localeDefault,

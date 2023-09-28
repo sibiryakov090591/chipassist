@@ -43,6 +43,7 @@ import { ChatState } from "./chat/chatTypes";
 import progressModalReducer from "./progressModal/progressModalReducer";
 import rfqList from "./rfqList/rfqListReducer";
 import sellerProfile from "./sellerProfile/sellerProfileReducer";
+import { SellersState } from "./sellers/sellersTypes";
 
 const rootReducer = () =>
   combineReducers({
@@ -95,7 +96,7 @@ export interface RootState {
   orders: any;
   alerts: AlertsState;
   profile: ProfileState;
-  sellers: any;
+  sellers: SellersState;
   supplierStatistics: StatisticsState;
   manufacturers: any;
   rfq: RfqState;

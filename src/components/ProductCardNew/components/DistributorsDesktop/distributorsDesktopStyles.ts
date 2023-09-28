@@ -365,6 +365,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       marginTop: 3,
       fontStyle: "italic",
     },
+    statIcon: {
+      width: "12px",
+      height: "12px",
+    },
+    country: {
+      display: "flex",
+      alignItems: "center",
+    },
     orderButton: {
       fontWeight: "bold",
       fontSize: 12,
