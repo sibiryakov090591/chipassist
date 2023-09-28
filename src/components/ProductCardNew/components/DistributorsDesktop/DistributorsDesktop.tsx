@@ -75,7 +75,9 @@ const DistributorsDesktop: React.FC<Props> = ({
   const showSellerTooltip = false;
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
-  const { sellersWithProductLink } = useAppSelector((state) => state.products);
+  const sellersWithProductLink = useAppSelector((state) =>
+    state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
+  );
   const partners = useAppSelector((state) => state.sellers.items);
   const checkout = useAppSelector((state) => state.checkout);
 
@@ -328,7 +330,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
             const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-            const isShowProductLink = !!val.product_url || !!seller?.url;
+            const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const MOQ = val.moq;
