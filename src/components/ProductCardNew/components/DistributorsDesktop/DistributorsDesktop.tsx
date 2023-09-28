@@ -336,7 +336,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             const MOQ = val.moq;
             const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
             const partner = partners?.find((i: any) => i.id === val.partner);
-            const rank = partner && partner.rank ? Math.round((toInteger(partner?.rank) + 1) / 2) : 0;
+            const rank = partner && !!toInteger(partner.rank) ? Math.trunc((toInteger(partner.rank) + 1) / 2) : 0;
             const country =
               partner && partner.country
                 ? checkout?.countries?.find((i) => i.url === partner.country)?.printable_name
@@ -413,15 +413,15 @@ const DistributorsDesktop: React.FC<Props> = ({
                       })}
                     </div>
                   )}
-                  {rank !== 0 && rank !== undefined ? (
+                  {rank > 0 && (
                     <div className={classes.dateUpdated}>
-                      {[...Array(rank)].map((n, i) => (
-                        <img src={Star} alt={"rank"} key={i} style={{ width: "12px", height: "12px" }} />
+                      {[...Array(rank > 5 ? 5 : rank)].map((n, i) => (
+                        <img key={i} className={classes.statIcon} src={Star} alt={"rank"} />
                       ))}
                     </div>
-                  ) : null}
+                  )}
                   {country && (
-                    <div className={classes.dateUpdated} style={{ display: "flex", alignItems: "center" }}>
+                    <div className={clsx(classes.dateUpdated, classes.country)}>
                       <LocationOnOutlinedIcon fontSize={"small"} />
                       {country}
                     </div>
