@@ -17,10 +17,8 @@ export const GeneralSettingView = () => {
   const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
-  const country =
-    checkout?.countries?.find((i) => i.url === partner.country)?.printable_name ||
-    checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.printable_name ||
-    defaultCountry.printable_name;
+  const country = checkout?.countries?.find((i) => i.iso_3166_1_a3 === partner.country)?.printable_name;
+  // checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.printable_name;
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const theme = useTheme();
