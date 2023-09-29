@@ -105,7 +105,7 @@ const GeneralSettings = () => {
   const dispatch = useAppDispatch();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
-  const maxLength = 300;
+  const maxLength = 2000;
 
   const profile = useAppSelector((state) => state.profile);
   const partner = useAppSelector((state) => state.profile.partnerProfile);
@@ -120,10 +120,8 @@ const GeneralSettings = () => {
       email: partner.email || "",
       phone: partner.phone || "",
       website: partner.website || "",
-      country:
-        checkout?.countries?.find((i) => i.url === partner.country)?.url ||
-        checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url ||
-        defaultCountry.url,
+      country: checkout?.countries?.find((i) => i.iso_3166_1_a3 === partner.country)?.iso_3166_1_a3,
+      // checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url,
       postcode: partner.postcode || "",
       address: partner.address || "",
       description: partner.description || "",
@@ -202,6 +200,7 @@ const GeneralSettings = () => {
       values: {
         ...prevState.values,
         [name]: name === "description" && value.length > maxLength ? value.slice(0, maxLength) : value,
+        // [name]: value,
       },
       touched: { ...prevState.touched, [name]: false },
     }));
@@ -324,7 +323,7 @@ const GeneralSettings = () => {
               value={formState.values.country}
             >
               {checkout?.countries?.map((item: Record<string, any>) => (
-                <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
+                <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.iso_3166_1_a3}>
                   {item.printable_name}
                 </MenuItem>
               ))}
