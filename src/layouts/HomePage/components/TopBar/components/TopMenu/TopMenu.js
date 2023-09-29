@@ -27,7 +27,7 @@ import { withStyles } from "@material-ui/core/styles";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useStyles } from "./topMenuStyles";
 
-const HtmlTooltip = withStyles((theme) => ({
+const HtmlTooltip = withStyles(() => ({
   tooltip: {
     backgroundColor: `transparent`,
     borderRadius: "10px",
