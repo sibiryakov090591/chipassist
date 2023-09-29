@@ -19,7 +19,7 @@ import { useTheme } from "@material-ui/core/styles";
 // import CartBlock from "@src/components/CartBlock/CartBlock";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { collapseHint } from "@src/store/rfqList/rfqListActions";
+import { showHint } from "@src/store/rfqList/rfqListActions";
 import { useStyles } from "./topbarStyles";
 // import LangMenu from "./components/LangMenu/LangMenu";
 import ProfileMenu from "./components/ProfileMenu";
@@ -71,6 +71,8 @@ const TopBar = (props) => {
   const { partNumberExamples } = useAppSelector((state) => state.search);
   // const cart = useAppSelector((state) => state.cart);
 
+  const isShowHint = useAppSelector((state) => state.rfqList.showHint);
+
   const [collapse, setСollapse] = useState(false);
 
   useEffect(() => {
@@ -86,13 +88,20 @@ const TopBar = (props) => {
     if (window.pageYOffset > 60) {
       if (!collapse) {
         setСollapse(true);
-        dispatch(collapseHint(true));
+        dispatch(showHint(false));
       }
     } else if (collapse) {
       setСollapse(false);
-      dispatch(collapseHint(false));
     }
   };
+
+  useEffect(() => {
+    if (isShowHint) {
+      if (collapse) {
+        dispatch(showHint(false));
+      }
+    }
+  }, [isShowHint]);
 
   const logoLink = (
     <div className={classes.logoCont}>
