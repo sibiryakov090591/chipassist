@@ -205,7 +205,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         [classes.animation]: startAnimation,
       })}
     >
-      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
+      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Update stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         {isSupplierResponse && selectedChat ? (
           <div>
