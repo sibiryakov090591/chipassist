@@ -202,6 +202,7 @@ const GeneralSettings = () => {
       values: {
         ...prevState.values,
         [name]: name === "description" && value.length > maxLength ? value.slice(0, maxLength) : value,
+        // [name]: value,
       },
       touched: { ...prevState.touched, [name]: false },
     }));
