@@ -195,7 +195,9 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   // const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const countries = useAppSelector((state) => state.checkout.countries);
   const utm = useAppSelector((state) => state.common.utm);
-  const { sellersWithProductLink } = useAppSelector((state) => state.products);
+  const sellersWithProductLink = useAppSelector((state) =>
+    state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
+  );
 
   // const all_sellers = [
   //   { id: "All", name: "All" },

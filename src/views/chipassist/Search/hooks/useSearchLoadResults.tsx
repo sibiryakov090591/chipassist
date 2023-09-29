@@ -18,8 +18,6 @@ import { batch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import constants from "@src/constants/constants";
 import { useState } from "react";
-import { loadMiscAction } from "@src/store/misc/miscActions";
-import { changeMisc } from "@src/store/progressModal/progressModalActions";
 import useExtendedSearch from "./useExtendedSearch";
 
 const useSearchLoadResults = () => {
@@ -85,9 +83,6 @@ const useSearchLoadResults = () => {
           }
           throw e;
         });
-      dispatch(loadMiscAction("search_count")).then((res: any) => {
-        dispatch(changeMisc("search_count", (res?.data || 0) + 1));
-      });
       console.log(
         `SEARCH. Load search. location.search: ${
           location.search

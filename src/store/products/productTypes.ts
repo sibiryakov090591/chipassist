@@ -1,4 +1,3 @@
-import { Seller } from "@src/store/sellers/sellersTypes";
 import { CurrenciesAllowed } from "../currency/currencyTypes";
 
 export const SET_LOADED_PRODUCTS = "@products/SET_LOADED_PRODUCTS";
@@ -116,7 +115,6 @@ export interface ProductStateItem extends Product {
 
 export interface ProductsState {
   stockList: number[];
-  sellersWithProductLink: Seller[];
   products: ProductStateItem[];
   productViewData: ProductStateItem;
   requestHint: {
@@ -173,24 +171,7 @@ export interface LoadStockList {
   response: number[];
 }
 
-export interface LoadSellersWithProductLinkS {
-  type: typeof LOAD_SELLERS_WITH_PRODUCT_LINK_S;
-  response: Seller[];
-}
-
-export interface LoadSellersWithProductLinkR {
-  type: typeof LOAD_SELLERS_WITH_PRODUCT_LINK_R;
-}
-
-export interface LoadSellersWithProductLinkF {
-  type: typeof LOAD_SELLERS_WITH_PRODUCT_LINK_F;
-  error: any;
-}
-
 export type ProductsActionsType =
-  | LoadSellersWithProductLinkR
-  | LoadSellersWithProductLinkS
-  | LoadSellersWithProductLinkF
   | LoadStockList
   | LoadProductDyIdS
   | SetLoadedProducts

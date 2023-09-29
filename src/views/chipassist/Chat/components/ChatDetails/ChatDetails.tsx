@@ -35,6 +35,7 @@ type FormValues = {
   packaging: string;
   moq: string;
   mpq: string;
+  prices: { id: any; price: string; amount: string }[];
   [key: string]: any;
 };
 
@@ -55,14 +56,14 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
 
+  const [prevChatId, setPrevChatId] = useState<number>(null);
+  const [startAnimation, setStartAnimation] = useState(false);
   const [isShowPrices, setIsShowPrices] = useState(false);
   const [, setForceRender] = useState(false);
   const [currency, setCurrency] = useState<Currency>({
     symbol: "$",
     code: "USD",
   });
-
-  const [startAnimation, setStartAnimation] = useState(false);
 
   const {
     register,
@@ -75,40 +76,45 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     reset,
   } = useForm<FormValues>({
     mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       stock: "",
       lead_time: "",
       moq: "",
       mpq: "",
       packaging: "",
-      prices: { id: { amount: "", price: "" } },
+      prices: [{ id: "", amount: "", price: "" }],
     },
   });
 
   useEffect(() => {
-    reset();
-    dispatch(clearStockErrors());
-    setIsShowPrices(false);
+    if (selectedChat && selectedChat.id !== prevChatId) {
+      reset();
 
-    if (stock) {
-      setCurrency(currencyList.find((c) => c.code === stock.currency));
+      if (stock) {
+        // update prices
+        if (stock.prices?.length && stock.prices.some((i) => !!i.original && !!i.amount)) {
+          setValue(
+            "prices",
+            [...stock.prices]
+              .sort((a, b) => a.amount - b.amount)
+              .map((i) => ({ id: i.id, amount: i.amount, price: i.original })),
+          );
+        }
 
-      // update overall data
-      if (Number(stock.num_in_stock)) setValue("stock", stock.num_in_stock);
-      if (stock.packaging) setValue("packaging", stock.packaging);
-      if (Number(stock.moq)) setValue("moq", stock.moq);
-      if (Number(stock.mpq)) setValue("mpq", stock.mpq);
-      if (Number(stock.lead_period_str)) setValue("lead_time", stock.lead_period_str);
+        // update overall data
+        if (Number(stock.num_in_stock)) setValue("stock", stock.num_in_stock);
+        if (stock.packaging) setValue("packaging", stock.packaging);
+        if (Number(stock.moq)) setValue("moq", stock.moq);
+        if (Number(stock.mpq)) setValue("mpq", stock.mpq);
+        if (Number(stock.lead_period_str)) setValue("lead_time", stock.lead_period_str);
 
-      // update prices
-      if (stock.prices?.length && stock.prices.some((i) => !!i.original && !!i.amount)) {
-        setValue("prices", {}); // reset
-        stock.prices.forEach((i) => {
-          setValue(`prices.${i.id}`, { id: i.id, amount: i.amount, price: i.original });
-        });
+        setCurrency((prev) => currencyList.find((c) => c.code === stock.currency) || prev);
       }
+      dispatch(clearStockErrors());
+      setIsShowPrices(false);
+      setPrevChatId(selectedChat.id);
     }
-    setForceRender((prev) => !prev);
   }, [selectedChat]);
 
   useEffect(() => {
@@ -127,6 +133,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   const onShowPrices = () => {
+    setValue("prices", [...getValues("prices").sort((a: any, b: any) => (a.amount ? a.amount - b.amount : 1))]);
     setIsShowPrices((prev) => !prev);
   };
 
@@ -135,9 +142,8 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   };
 
   const createPriceBreak = () => {
-    // setPriceBreaks((prev) => [...prev, { qty: 1, price: null }]);
     const id = uuidv4();
-    setValue("prices", { ...getValues("prices"), [id]: { id, amount: "", price: "" } });
+    setValue("prices", [...getValues("prices"), { id, amount: "", price: "" }]);
     setForceRender((prev) => !prev);
   };
 
@@ -145,11 +151,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     const part_number = selectedChat?.title || selectedChat?.rfq?.upc;
     if (!isValid || !part_number) return false;
 
-    const overallData = Object.fromEntries(
-      Object.entries(data).filter(([key]) => !key.includes("prices") && !key.includes("price_")),
-    );
+    const overallData = Object.fromEntries(Object.entries(data).filter(([key]) => key !== "prices"));
     const prices: any = [];
-    Object.values(data.prices).forEach((value: any) => {
+    data.prices.forEach((value) => {
       if (value.amount && value.price) {
         prices.push({
           amount: value.amount,
@@ -159,16 +163,18 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       }
     });
 
+    const result = {
+      ...overallData,
+      price: "", // price field is required for the request
+      currency: currency.code,
+      prices,
+      ...(!!stock && { stock_id: stock?.id }),
+    };
+
     dispatch(
       updateStockrecord(
         {
-          [part_number]: {
-            ...overallData,
-            price: "",
-            currency: currency.code,
-            prices,
-            ...(!!stock && { stock_id: stock?.id }),
-          }, // price field is required for the request
+          [part_number]: result,
         },
         selectedChat?.id,
       ),
@@ -199,7 +205,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         [classes.animation]: startAnimation,
       })}
     >
-      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Fill out stock data please!</Paper>}
+      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Update stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         {isSupplierResponse && selectedChat ? (
           <div>
@@ -261,75 +267,58 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   </Select>
                 </FormControl>
               </div>
-              {!!getValues("prices") &&
-                Object.keys(getValues("prices"))
-                  .slice(0, 1)
-                  .map((key, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <div>
-                          <div className={classes.label}>Quantity break #{index + 1}:</div>
-                          <Controller
-                            name={`prices.${key}.amount`}
-                            control={control}
-                            rules={{
-                              required: {
-                                value: true,
-                                message: "Required",
-                              },
-                              min: {
-                                value: 1,
-                                message: "At least 1",
-                              },
-                            }}
-                            render={({ field }) => (
-                              <NumberInput
-                                {...field}
-                                className={classes.input}
-                                value={getValues(`prices.${key}.amount`)}
-                                error={errors?.prices && errors.prices[`${key}`]?.amount}
-                                helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
-                                variant="outlined"
-                                size="small"
-                                decimalScale={0}
-                                isAllowedZero={false}
-                              />
-                            )}
-                          />
-                        </div>
-                        <div>
-                          <div className={classes.label}>Unit price ({currency.symbol}):</div>
-                          <Controller
-                            name={`prices.${key}.price`}
-                            control={control}
-                            rules={{
-                              required: {
-                                value: true,
-                                message: "Required",
-                              },
-                              min: {
-                                value: 0.0001,
-                                message: "More than 0",
-                              },
-                            }}
-                            render={({ field }) => (
-                              <NumberInput
-                                {...field}
-                                className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.price })}
-                                value={getValues(`prices.${key}.price`)}
-                                error={errors?.prices && errors.prices[`${key}`]?.price}
-                                helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
-                                variant="outlined"
-                                size="small"
-                                decimalScale={4}
-                                isAllowedZero={false}
-                              />
-                            )}
-                          />
-                        </div>
-                      </React.Fragment>
-                    );
-                  })}
+              <div>
+                <div className={classes.label}>Quantity break #1:</div>
+                <Controller
+                  name={`prices[0].amount`}
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 1,
+                      message: "At least 1",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      className={classes.input}
+                      value={getValues("prices")[0].amount}
+                      error={errors?.prices && errors.prices[0]?.amount}
+                      helperText={errors?.prices && errors.prices[0]?.amount?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={0}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
+              </div>
+              <div>
+                <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                <Controller
+                  name={`prices[0].price`}
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0.0001,
+                      message: "More than 0",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.price })}
+                      value={getValues("prices")[0].price}
+                      error={errors?.prices && errors.prices[0]?.price}
+                      helperText={errors?.prices && errors.prices[0]?.price?.message}
+                      variant="outlined"
+                      size="small"
+                      decimalScale={4}
+                      isAllowedZero={false}
+                    />
+                  )}
+                />
+              </div>
             </div>
             <Box p="5px">
               <Button
@@ -344,14 +333,14 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             {isShowPrices && (
               <div className={classes.grid}>
                 {!!getValues("prices") &&
-                  Object.keys(getValues("prices")).map((key, index) => {
+                  getValues("prices").map((item: any, index: number) => {
                     if (index === 0) return null;
                     return (
                       <React.Fragment key={index}>
                         <div>
                           <div className={classes.label}>Quantity break #{index + 1}:</div>
                           <Controller
-                            name={`prices.${key}.amount`}
+                            name={`prices[${index}].amount`}
                             control={control}
                             rules={{
                               min: {
@@ -363,9 +352,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                               <NumberInput
                                 {...field}
                                 className={classes.input}
-                                value={getValues(`prices.${key}.amount`)}
-                                error={errors?.prices && errors.prices[`${key}`]?.amount}
-                                helperText={errors?.prices && errors.prices[`${key}`]?.amount?.message}
+                                value={item.amount}
+                                error={errors?.prices && errors.prices[index]?.amount}
+                                helperText={errors?.prices && errors.prices[index]?.amount?.message}
                                 variant="outlined"
                                 size="small"
                                 decimalScale={0}
@@ -377,7 +366,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                         <div>
                           <div className={classes.label}>Unit price ({currency.symbol}):</div>
                           <Controller
-                            name={`prices.${key}.price`}
+                            name={`prices[${index}].price`}
                             control={control}
                             rules={{
                               min: {
@@ -389,9 +378,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                               <NumberInput
                                 {...field}
                                 className={classes.input}
-                                value={getValues(`prices.${key}.price`)}
-                                error={errors?.prices && errors.prices[`${key}`]?.price}
-                                helperText={errors?.prices && errors.prices[`${key}`]?.price?.message}
+                                value={item.price}
+                                error={errors?.prices && errors.prices[index]?.price}
+                                helperText={errors?.prices && errors.prices[index]?.price?.message}
                                 variant="outlined"
                                 size="small"
                                 decimalScale={4}
@@ -495,7 +484,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             </div>
             <Box p="5px" mt="3px">
               <Button
-                disabled={!isValid || isUpdating}
+                disabled={isUpdating}
                 type="submit"
                 className={clsx(appTheme.buttonCreate, classes.updateButton)}
                 variant="contained"
