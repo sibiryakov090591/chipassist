@@ -339,7 +339,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             const rank = partner && !!toInteger(partner.rank) ? Math.trunc((toInteger(partner.rank) + 1) / 2) : 0;
             const country =
               partner && partner.country
-                ? checkout?.countries?.find((i) => i.url === partner.country)?.printable_name
+                ? checkout?.countries?.find((i) => i.iso_3166_1_a3 === partner.country)?.printable_name
                 : null;
             let isShowPricesHint = false;
             sortedPrices.forEach((price) => {
