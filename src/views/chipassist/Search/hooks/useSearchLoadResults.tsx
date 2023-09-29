@@ -85,9 +85,6 @@ const useSearchLoadResults = () => {
           }
           throw e;
         });
-      dispatch(loadMiscAction("search_count")).then((res: any) => {
-        dispatch(changeMisc("search_count", (res?.data || 0) + 1));
-      });
       console.log(
         `SEARCH. Load search. location.search: ${
           location.search

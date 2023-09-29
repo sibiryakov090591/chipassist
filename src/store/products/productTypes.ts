@@ -173,24 +173,7 @@ export interface LoadStockList {
   response: number[];
 }
 
-export interface LoadSellersWithProductLinkS {
-  type: typeof LOAD_SELLERS_WITH_PRODUCT_LINK_S;
-  response: Seller[];
-}
-
-export interface LoadSellersWithProductLinkR {
-  type: typeof LOAD_SELLERS_WITH_PRODUCT_LINK_R;
-}
-
-export interface LoadSellersWithProductLinkF {
-  type: typeof LOAD_SELLERS_WITH_PRODUCT_LINK_F;
-  error: any;
-}
-
 export type ProductsActionsType =
-  | LoadSellersWithProductLinkR
-  | LoadSellersWithProductLinkS
-  | LoadSellersWithProductLinkF
   | LoadStockList
   | LoadProductDyIdS
   | SetLoadedProducts

@@ -52,7 +52,6 @@ import ChipassistHomePage from "@src/views/chipassist/ChipassistHomePage/Chipass
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
-// import { loadSellersWithProductLink } from "@src/store/products/productsActions";
 import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
@@ -192,7 +191,6 @@ const ChipAssistApp = () => {
   useEffect(() => {
     batch(() => {
       // dispatch(loadStockListIds());
-      // dispatch(loadSellersWithProductLink());
       dispatch(loadMaintenanceThunk());
       dispatch(authCheckState());
       // dispatch(categoriesActions.getCategoriesThunk());

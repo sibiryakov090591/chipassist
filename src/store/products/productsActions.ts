@@ -91,20 +91,6 @@ export const loadStockListIds = () => {
   };
 };
 
-export const loadSellersWithProductLink = () => {
-  return {
-    types: actionTypes.LOAD_SELLERS_WITH_PRODUCT_LINK_ARRAY,
-    promise: (client: ApiClientInterface) =>
-      client
-        .get(`/link/sellers/?page=1&page_size=900`)
-        .then((res) => res.data?.results)
-        .catch((e) => {
-          console.log("***LOAD_SELLERS_WITH_PRODUCT_LINK_ERROR", e);
-          throw e;
-        }),
-  };
-};
-
 export const getProductLink = (productId: number, sellerId: number) => {
   return {
     types: [false, false, false],
