@@ -27,7 +27,6 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useTheme } from "@material-ui/core/styles";
-import { defaultCountry } from "@src/constants/countries";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -110,7 +109,6 @@ const GeneralSettings = () => {
   const profile = useAppSelector((state) => state.profile);
   const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
 
   const [currentLength, setCurrentLength] = useState(0);
 
