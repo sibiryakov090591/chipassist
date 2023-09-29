@@ -4,6 +4,8 @@ import { Box, Card, CardContent, Theme } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -32,16 +34,13 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
 
 export const ProfileDetailsPreloader = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <Card className={clsx(classes.root)}>
       <CardContent className={classes.content}>
         <Skeleton variant="circle" className={classes.avatar} />
-        <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-          {/* <span style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem" }}> */}
-          {/*  {billingAddress?.company_name || stateProfile.company_name} */}
-          {/* </span> */}
-          {/* <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>{profileInfo?.email || stateProfile.email}</span> */}
-          {/* <span style={{ fontSize: "1.rem" }}>{billingAddress?.phone_number || stateProfile.phone}</span> */}
+        <Box display={"flex"} flexDirection={"column"} width={"100%"} style={isDownXs ? { marginLeft: "15px" } : null}>
           <Skeleton />
           <Skeleton />
           <Skeleton />
