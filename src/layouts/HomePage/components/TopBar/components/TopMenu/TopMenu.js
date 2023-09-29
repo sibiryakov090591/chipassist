@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import SettingsIcon from "@material-ui/icons/SettingsOutlined";
@@ -11,7 +11,7 @@ import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 // import Feedback from "@src/views/chipassist/Feedback/Feedback";
-import { Hidden } from "@material-ui/core";
+import { Button, Hidden, Paper, Tooltip, Zoom } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ReceiptIcon from "@material-ui/icons/Receipt";
@@ -22,14 +22,38 @@ import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
+import { showHint } from "@src/store/rfqList/rfqListActions";
+import { withStyles } from "@material-ui/core/styles";
+import useAppTheme from "@src/theme/useAppTheme";
 import { useStyles } from "./topMenuStyles";
+
+const HtmlTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: `transparent`,
+    borderRadius: "10px",
+    padding: 0,
+    color: `black`,
+    transition: "all 250ms ease",
+    pointerEvents: "all",
+    width: "250px",
+    margin: "4px 0!important",
+    // border: `2px solid ${theme.palette.app.blue800}`,
+  },
+  arrow: {
+    fontSize: "10px",
+    color: `white`,
+  },
+}))(Tooltip);
 
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
   const { t } = useI18n("menu");
   const dispatch = useAppDispatch();
-
+  const appTheme = useAppTheme();
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const isShowHint = useAppSelector((state) => state.rfqList.showHint);
+  // const isCollapseHint = useAppSelector((state) => state.rfqList.collapseHint);
+  const hintCloseTimeout = useRef(null);
   // const ordersPage = useAppSelector((state) => state.orders.orders.page);
 
   // // Show feedback modal
@@ -44,6 +68,16 @@ const TopMenu = ({ isMobile }) => {
     e.preventDefault();
     dispatch(logout());
   };
+
+  useEffect(() => {
+    if (isShowHint) {
+      if (!hintCloseTimeout.current) {
+        hintCloseTimeout.current = setTimeout(() => {
+          dispatch(showHint(false));
+        }, 20000);
+      }
+    }
+  }, [isShowHint]);
 
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 
@@ -89,17 +123,46 @@ const TopMenu = ({ isMobile }) => {
       {/*    {t("pcb")} */}
       {/*  </NavLink> */}
       {/* </div> */}
-      <div className={itemClasses}>
-        <NavLink
-          className={clsx(classes.topMenuItemLink, {
-            [classes.active]: window.location.pathname.includes("/rfq-list-quotes"),
-          })}
-          to={`/rfq-list-quotes`}
-        >
-          {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          {"RFQ List"}
-        </NavLink>
-      </div>
+      <HtmlTooltip
+        title={
+          <Paper
+            elevation={10}
+            style={{ display: "flex", justifyContent: "center", flexDirection: "column", padding: "1.5em" }}
+          >
+            <span style={{ width: "100%", textAlign: "center", fontSize: "1.7em", marginTop: "10px" }}>
+              You can create group RFQ here
+            </span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+              <Button
+                size={"small"}
+                style={{ minWidth: "0px", color: "white", fontSize: "1.2em", marginTop: "12px" }}
+                onClick={() => dispatch(showHint(false))}
+                className={appTheme.buttonCreate}
+              >
+                Got it!
+              </Button>
+            </div>
+          </Paper>
+        }
+        disableFocusListener
+        disableTouchListener
+        open={!isMobile && isShowHint}
+        // open={true}
+        arrow
+        TransitionComponent={Zoom}
+      >
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, {
+              [classes.active]: window.location.pathname.includes("/rfq-list-quotes"),
+            })}
+            to={`/rfq-list-quotes`}
+          >
+            {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+            {"RFQ List"}
+          </NavLink>
+        </div>
+      </HtmlTooltip>
       <div className={itemClasses}>
         <NavLink
           className={clsx(classes.topMenuItemLink, {
