@@ -1,4 +1,3 @@
-import { Seller } from "@src/store/sellers/sellersTypes";
 import { CurrenciesAllowed } from "../currency/currencyTypes";
 
 export const SET_LOADED_PRODUCTS = "@products/SET_LOADED_PRODUCTS";
@@ -116,7 +115,6 @@ export interface ProductStateItem extends Product {
 
 export interface ProductsState {
   stockList: number[];
-  sellersWithProductLink: Seller[];
   products: ProductStateItem[];
   productViewData: ProductStateItem;
   requestHint: {

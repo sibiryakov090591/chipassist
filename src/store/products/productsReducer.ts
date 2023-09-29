@@ -2,7 +2,6 @@ import * as actionTypes from "./productTypes";
 
 const initialState: actionTypes.ProductsState = {
   stockList: null,
-  sellersWithProductLink: null,
   products: [],
   productViewData: null,
   requestHint: {
@@ -39,10 +38,6 @@ export default function products(state = initialState, action: actionTypes.Produ
       };
     case actionTypes.LOAD_STOCK_LIST_S:
       return { ...state, stockList: action.response };
-    case actionTypes.LOAD_SELLERS_WITH_PRODUCT_LINK_S:
-      return { ...state, sellersWithProductLink: action.response };
-    case actionTypes.LOAD_SELLERS_WITH_PRODUCT_LINK_F:
-      return { ...state, sellersWithProductLink: [] };
     case actionTypes.SET_PRODUCT_INTO_VIEWPORT:
       return {
         ...state,
