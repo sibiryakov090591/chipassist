@@ -13,6 +13,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     width: "70%",
     overflowX: "hidden",
+    maxWidth: "1220px",
     [theme.breakpoints.down("md")]: {
       padding: 0,
       marginBottom: 0,

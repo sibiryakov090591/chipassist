@@ -366,8 +366,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontStyle: "italic",
     },
     statIcon: {
-      width: "12px",
-      height: "12px",
+      width: "9px",
+      height: "9px",
+      marginRight: "1px",
+      marginTop: "1px",
     },
     country: {
       display: "flex",

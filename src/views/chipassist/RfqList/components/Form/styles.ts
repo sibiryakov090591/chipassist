@@ -49,7 +49,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     display: "flex",
     marginBottom: "2rem",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     width: "100%",
     [theme.breakpoints.down("md")]: {
       flexDirection: "column",
