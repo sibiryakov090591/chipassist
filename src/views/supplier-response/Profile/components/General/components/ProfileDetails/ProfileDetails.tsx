@@ -47,9 +47,9 @@ const ProfileDetails = () => {
           src={stateProfile.isEditView ? stateProfile.logoURL : profile.partnerProfile.avatar}
         />
         <Box display={"flex"} flexDirection={"column"} style={isDownXs ? { marginLeft: "15px" } : null}>
-          <span style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem" }}>
+          <p style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem", marginBottom: 0 }}>
             {stateProfile.isEditView ? stateProfile.company_name : profile.partnerProfile.company_name}
-          </span>
+          </p>
           <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>
             {stateProfile.isEditView ? stateProfile.email : profile.partnerProfile.email}
           </span>

@@ -27,7 +27,6 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useTheme } from "@material-ui/core/styles";
-import { defaultCountry } from "@src/constants/countries";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -110,7 +109,6 @@ const GeneralSettings = () => {
   const profile = useAppSelector((state) => state.profile);
   const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
 
   const [currentLength, setCurrentLength] = useState(0);
 
@@ -261,7 +259,7 @@ const GeneralSettings = () => {
               /* {...errorProps("company_name")} */
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={6} xs={12} style={isXsDown ? { paddingBottom: 0 } : null}>
             <TextField
               label={"Email"}
               name={"email"}
@@ -294,7 +292,7 @@ const GeneralSettings = () => {
               small={isXsDown}
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={6} xs={12} style={isXsDown ? { paddingTop: 0 } : null}>
             <TextField
               label={"Website"}
               name={"website"}
@@ -408,7 +406,7 @@ const GeneralSettings = () => {
           <Grid item md={12} xs={12}>
             <Box display={"flex"} justifyContent={isXsDown ? "space-between" : "end"}>
               <Button
-                style={{ minWidth: 150, marginRight: "16px" }}
+                style={{ minWidth: 165, marginRight: !isXsDown ? 15 : 0 }}
                 className={appTheme.buttonPrimary}
                 variant="outlined"
                 onClick={onCancel}
@@ -416,7 +414,7 @@ const GeneralSettings = () => {
                 Cancel
               </Button>
               <Button
-                style={{ minWidth: 150 }}
+                style={{ minWidth: 165 }}
                 className={appTheme.buttonCreate}
                 variant="contained"
                 onClick={onSubmit}
