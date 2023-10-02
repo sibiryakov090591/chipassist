@@ -341,21 +341,24 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                             <div className={classes.orderAddress}>
                               <Grid container>
                                 <Grid item sm={6} xs={12}>
+                                  <div>{orderData.company_name ? <strong>{orderData.company_name}</strong> : "-"}</div>
                                   <div>
-                                    <strong>{orderData.company_name || "-"}</strong>
+                                    {orderData.first_name || "-"} {orderData.last_name}
                                   </div>
-                                  <div>
-                                    {orderData.first_name} {orderData.last_name}
-                                  </div>
-                                  <div>{orderData.phone_number_str}</div>
+                                  <div>{orderData.phone_number_str || "-"}</div>
                                 </Grid>
                                 <Grid item sm={6} xs={12}>
-                                  <div>{`${orderData.line1}`}</div>
-                                  <div>{`${orderData.line4}, ${
+                                  <div>{`${orderData.line1 || "-"}`}</div>
+                                  <div>{`${orderData.line4 ? `${orderData.line4},` : ""} ${
                                     checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
                                   }`}</div>
                                   <div>{orderData.postcode}</div>
                                 </Grid>
+                                {orderData.additional_notes && (
+                                  <Grid xs={12}>
+                                    <div>{orderData.additional_notes}</div>
+                                  </Grid>
+                                )}
                               </Grid>
                             </div>
                             <div className={classes.orderTableWrapper}>
