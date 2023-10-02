@@ -1651,7 +1651,7 @@ export const countriesList = [
     url: `https://${constants.apiHost}/api/countries/US/`,
     code: "US",
     iso_3166_1_a3: "USA",
-    printable_name: "United States of America",
+    printable_name: "United States",
     iso_3166_1_numeric: "840",
   },
   {
