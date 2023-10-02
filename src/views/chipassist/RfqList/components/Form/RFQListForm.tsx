@@ -971,10 +971,10 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
                   style={{
                     width: "100%",
                     display: "flex",
-                    justifyContent: isDownKey || isModalMode ? "flex-start" : "center",
+                    justifyContent: "flex-start",
                   }}
                 >
-                  <Box display="flex" flexDirection={isDownKey || isModalMode ? "column" : "row"} ml={2}>
+                  <Box display="flex" flexDirection={"column"} ml={2}>
                     <FormControlLabel
                       control={
                         <Checkbox
