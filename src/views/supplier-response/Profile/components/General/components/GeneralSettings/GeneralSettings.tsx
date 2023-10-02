@@ -259,7 +259,7 @@ const GeneralSettings = () => {
               /* {...errorProps("company_name")} */
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={6} xs={12} style={isXsDown ? { paddingBottom: 0 } : null}>
             <TextField
               label={"Email"}
               name={"email"}
@@ -292,7 +292,7 @@ const GeneralSettings = () => {
               small={isXsDown}
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={6} xs={12} style={isXsDown ? { paddingTop: 0 } : null}>
             <TextField
               label={"Website"}
               name={"website"}
@@ -406,7 +406,7 @@ const GeneralSettings = () => {
           <Grid item md={12} xs={12}>
             <Box display={"flex"} justifyContent={isXsDown ? "space-between" : "end"}>
               <Button
-                style={{ minWidth: 150, marginRight: "16px" }}
+                style={{ minWidth: 165, marginRight: !isXsDown ? 15 : 0 }}
                 className={appTheme.buttonPrimary}
                 variant="outlined"
                 onClick={onCancel}
@@ -414,7 +414,7 @@ const GeneralSettings = () => {
                 Cancel
               </Button>
               <Button
-                style={{ minWidth: 150 }}
+                style={{ minWidth: 165 }}
                 className={appTheme.buttonCreate}
                 variant="contained"
                 onClick={onSubmit}
