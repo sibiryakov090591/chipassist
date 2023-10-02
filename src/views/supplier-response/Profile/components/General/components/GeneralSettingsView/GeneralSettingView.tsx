@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Button, Card, CardContent, CardHeader, Grid, Theme } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { turnEditMode } from "@src/store/sellerProfile/sellerProfileAction";
 import EditIcon from "@material-ui/icons/Edit";
@@ -9,14 +9,59 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import PhoneOutlinedIcon from "@material-ui/icons/PhoneOutlined";
 import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
-import { useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { AppTheme } from "@src/themes/AppTheme";
+
+export const CollapsableText = ({ text }: any) => {
+  const useStyle = makeStyles((theme: AppTheme & Theme) => ({
+    button: {
+      fontColor: `${theme.palette.app.blue800}`,
+      fontWeight: 600,
+      textDecoration: "underline",
+      "&:hover": {
+        fontColor: `${theme.palette.app.blue200}`,
+        cursor: "pointer",
+      },
+    },
+  }));
+
+  const classes = useStyle();
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const MoreButton = () => {
+    const onChangeHandler = () => {
+      setIsCollapsed(!isCollapsed);
+    };
+    return (
+      <span className={classes.button} onClick={onChangeHandler}>
+        {isCollapsed ? "more" : "less"}
+      </span>
+    );
+  };
+
+  return (
+    <>
+      {text.length > 300 && isCollapsed ? (
+        <span>
+          {`${text.slice(0, 300)}...`} <MoreButton />
+        </span>
+      ) : !isCollapsed ? (
+        <span>
+          {text} <MoreButton />{" "}
+        </span>
+      ) : (
+        text
+      )}
+    </>
+  );
+};
 
 export const GeneralSettingView = () => {
   const partner = useAppSelector((state) => state.profile.partnerProfile);
   const checkout = useAppSelector((state) => state.checkout);
   const country = checkout?.countries?.find((i) => i.iso_3166_1_a3 === partner.country)?.printable_name;
-  // checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.printable_name;
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const theme = useTheme();
@@ -66,7 +111,8 @@ export const GeneralSettingView = () => {
               <span className={classes.title}>Company details:</span>
               <div className={classes.infoContainer}>
                 <span className={classes.info} style={{ paddingLeft: 0, marginTop: "1em" }}>
-                  {partner.description || "Details are not provided"}
+                  {/* {partner.description || "Details are not provided"} */}
+                  {partner.description ? <CollapsableText text={partner.description} /> : "Details are not provided"}
                 </span>
               </div>
             </Box>
