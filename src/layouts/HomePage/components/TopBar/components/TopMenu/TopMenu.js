@@ -26,7 +26,7 @@ import { showHint } from "@src/store/rfqList/rfqListActions";
 import { withStyles } from "@material-ui/core/styles";
 import { useStyles } from "./topMenuStyles";
 
-const HtmlTooltip = withStyles((theme) => ({
+const HtmlTooltip = withStyles(() => ({
   tooltip: {
     backgroundColor: `transparent`,
     borderRadius: "10px",
