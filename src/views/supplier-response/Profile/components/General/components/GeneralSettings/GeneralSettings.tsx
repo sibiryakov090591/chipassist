@@ -223,12 +223,6 @@ const GeneralSettings = () => {
     setFormState(initialState());
     dispatch(turnEditMode(false));
     dispatch(uploadNewAvatar(""));
-    dispatch(
-      showBottomLeftMessageAlertAction({
-        text: "Data was cleared successfully!",
-        severity: "success",
-      }),
-    );
   };
 
   const onPhoneChangeHandler = (e: any) => {

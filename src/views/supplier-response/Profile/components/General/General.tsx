@@ -59,7 +59,7 @@ const General = () => {
   return (
     <Grid className={clsx(classes.root)} container spacing={3} direction={"row"}>
       {isMdDowm ? (
-        <Grid item lg={8} md={9} xl={9} xs={12}>
+        <Grid item lg={8} md={12} xl={9} xs={12}>
           {debouncedIsLoading ? <ProfileDetailsPreloader /> : <ProfileDetails />}
         </Grid>
       ) : (
@@ -67,7 +67,7 @@ const General = () => {
           <Grid item>{debouncedIsLoading ? <ProfileDetailsPreloader /> : <ProfileDetails />}</Grid>
         </Grid>
       )}
-      <Grid item lg={8} md={9} xl={9} xs={12}>
+      <Grid item lg={8} md={12} xl={9} xs={12}>
         {debouncedIsLoading ? <GeneralSettingPreloader /> : !isEditView ? <GeneralSettingView /> : <GeneralSettings />}
       </Grid>
     </Grid>

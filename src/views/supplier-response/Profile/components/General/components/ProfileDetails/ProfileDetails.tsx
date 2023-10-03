@@ -48,7 +48,9 @@ const ProfileDetails = () => {
         />
         <Box display={"flex"} flexDirection={"column"} style={isDownXs ? { marginLeft: "15px" } : null}>
           <p style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem", marginBottom: 0 }}>
-            {stateProfile.isEditView ? stateProfile.company_name : profile.partnerProfile.company_name}
+            {stateProfile.isEditView
+              ? stateProfile.company_name
+              : profile.partnerProfile.company_name || "Company name is not provided"}
           </p>
           <span style={{ fontSize: "1.rem", paddingBottom: "1rem" }}>
             {stateProfile.isEditView ? stateProfile.email : profile.partnerProfile.email}
