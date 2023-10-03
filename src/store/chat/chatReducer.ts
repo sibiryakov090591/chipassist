@@ -116,6 +116,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       };
     }
     case actionTypes.LOAD_CHAT_LIST_F:
+      if (action.error.message === "request_cancelled") return state;
       return {
         ...state,
         chatList: { ...state.chatList, isLoading: false },

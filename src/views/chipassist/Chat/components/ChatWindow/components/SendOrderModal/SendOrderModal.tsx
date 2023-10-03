@@ -143,19 +143,19 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="company_name"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Company name is required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="Company name:"
+                    label="Company name *"
                     error={!!errors.company_name}
                     helperText={errors.company_name?.message}
                     variant="outlined"
@@ -169,12 +169,20 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="phone_number_str"
                 control={control}
+                // rules={{
+                //   required: {
+                //     value: true,
+                //     message: "Work phone is required",
+                //   },
+                // }}
                 render={({ field }) => (
                   <PhoneInputWrapper
                     {...field}
-                    label="Work phone:"
+                    label="Work phone"
                     small={true}
                     style={{ height: "37.63px", margin: 0 }}
+                    // error={!!errors.phone_number_str}
+                    // helperText={errors.phone_number_str?.message}
                   />
                 )}
               />
@@ -183,19 +191,19 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="first_name"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "First name is required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="First name:"
+                    label="First name *"
                     error={!!errors.first_name}
                     helperText={errors.first_name?.message}
                     variant="outlined"
@@ -209,19 +217,19 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="last_name"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Last name is required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="Last name:"
+                    label="Last name *"
                     error={!!errors.last_name}
                     helperText={errors.last_name?.message}
                     variant="outlined"
@@ -235,12 +243,12 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="country"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Country is required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -249,7 +257,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                       shrink: true,
                     }}
                     name="country"
-                    label="Country:"
+                    label="Country *"
                     fullWidth
                     size="small"
                     select
@@ -269,19 +277,19 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="line4"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "City is required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="City:"
+                    label="City *"
                     error={!!errors.line4}
                     helperText={errors.line4?.message}
                     variant="outlined"
@@ -295,19 +303,19 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="postcode"
                 control={control}
-                // rules={{
-                //   min: {
-                //     value: 1,
-                //     message: "At least 1",
-                //   },
-                // }}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Postal code is required",
+                  },
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="Postal code:"
+                    label="Postal code *"
                     error={!!errors.postcode}
                     helperText={errors.postcode?.message}
                     variant="outlined"
@@ -333,7 +341,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="Address:"
+                    label="Address *"
                     error={!!errors.line1}
                     helperText={errors.line1?.message}
                     variant="outlined"
@@ -367,7 +375,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
             </Grid>
             <Grid item xs={6}>
               <Box>
-                <div className={classes.label}>Requested qty:</div>
+                <div className={classes.label}>Requested qty *</div>
                 <Controller
                   name="requested_qty"
                   control={control}
@@ -412,12 +420,6 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="additional_notes"
                 control={control}
-                rules={{
-                  min: {
-                    value: 1,
-                    message: "At least 1",
-                  },
-                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -425,8 +427,6 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                       shrink: true,
                     }}
                     fullWidth
-                    error={!!errors.additional_notes}
-                    helperText={errors.additional_notes?.message}
                     label="Delivery terms etc."
                     variant="outlined"
                     multiline

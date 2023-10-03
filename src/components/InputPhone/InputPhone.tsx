@@ -11,9 +11,11 @@ interface Props {
   value: string;
   onChange: (val: string) => void;
   small?: boolean;
+  error?: boolean;
+  helperText?: string;
 }
 
-const InputPhone: React.FC<Props> = ({ label, value, onChange, small }) => {
+const InputPhone: React.FC<Props> = ({ label, value, onChange, small, error, helperText }) => {
   const classes = useStyles();
   const { t } = useI18n("form_labels");
 
@@ -21,7 +23,7 @@ const InputPhone: React.FC<Props> = ({ label, value, onChange, small }) => {
 
   return (
     <>
-      <fieldset className={classes.fieldsetObject}>
+      <fieldset className={clsx(classes.fieldsetObject, { error })}>
         <legend style={{ fontSize: "10px", fontWeight: 400, paddingRight: "7px", paddingLeft: "2px" }}>
           {label || t("phone")}
         </legend>
@@ -36,6 +38,13 @@ const InputPhone: React.FC<Props> = ({ label, value, onChange, small }) => {
           })}
           containerClass={classes.phoneContainer}
         />
+        {error && !!helperText && (
+          <p
+            className={`${classes.helperText} MuiFormHelperText-root MuiFormHelperText-contained Mui-error MuiFormHelperText-marginDense`}
+          >
+            {helperText}
+          </p>
+        )}
       </fieldset>
     </>
   );
