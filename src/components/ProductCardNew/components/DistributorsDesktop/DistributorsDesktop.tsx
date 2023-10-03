@@ -423,7 +423,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                   {country && (
                     <div className={clsx(classes.dateUpdated, classes.country)}>
                       <LocationOnOutlinedIcon fontSize={"small"} />
-                      {partner.gloabl === "1" ? "Global" : country}
+                      {partner.global === "1" ? "Global" : country}
                     </div>
                   )}
                 </td>
