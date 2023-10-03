@@ -319,7 +319,7 @@ export const getPartnerInfo = (id: number) => {
           .then((res) => {
             const data = {
               avatar: res.data?.avatar || "",
-              company_name: res.data?.company_name || res.data?.company_name || "",
+              company_name: res.data?.company_name || res.data?.name || "",
               email: res.data?.email || "",
               phone: res.data?.phone || "",
               website: res.data?.url || "",
