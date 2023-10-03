@@ -66,7 +66,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
       onShowList(false);
     }
   };
-
+  console.log(chatList.isLoading);
   return (
     <SwipeWrapper leftSwipeAction={leftSwipeAction} className={clsx(classes.leftColumn, { active: showList })}>
       <div className={classes.header}>
