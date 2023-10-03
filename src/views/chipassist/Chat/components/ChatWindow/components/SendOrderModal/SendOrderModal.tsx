@@ -332,7 +332,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                 rules={{
                   required: {
                     value: true,
-                    message: "Required",
+                    message: "Address is required",
                   },
                 }}
                 render={({ field }) => (
