@@ -169,18 +169,20 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
               <Controller
                 name="phone_number_str"
                 control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Work phone is required",
-                  },
-                }}
+                // rules={{
+                //   required: {
+                //     value: true,
+                //     message: "Work phone is required",
+                //   },
+                // }}
                 render={({ field }) => (
                   <PhoneInputWrapper
                     {...field}
-                    label="Work phone *"
+                    label="Work phone"
                     small={true}
                     style={{ height: "37.63px", margin: 0 }}
+                    // error={!!errors.phone_number_str}
+                    // helperText={errors.phone_number_str?.message}
                   />
                 )}
               />

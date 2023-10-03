@@ -10,6 +10,7 @@ interface Props {
   small?: boolean;
   style?: any;
   classes?: any;
+  [key: string]: any;
 }
 
 const useStyle = makeStyles((theme: any) => ({
@@ -24,11 +25,11 @@ const useStyle = makeStyles((theme: any) => ({
   },
 }));
 
-export const PhoneInputWrapper: React.FC<Props> = ({ label, value, onChange, small, classes, style }) => {
+export const PhoneInputWrapper: React.FC<Props> = ({ label, value, onChange, small, classes, style, ...rest }) => {
   const inlineClasses = useStyle();
   return (
     <div className={clsx(inlineClasses.phone, classes)} style={style}>
-      <InputPhone label={label} value={value} onChange={onChange} small={small} />
+      <InputPhone label={label} value={value} onChange={onChange} small={small} {...rest} />
     </div>
   );
 };

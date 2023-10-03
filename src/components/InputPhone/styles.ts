@@ -70,6 +70,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     borderRadius: "5px",
     outline: `${theme.palette.secondary.dark} !important`,
     border: `1px solid ${theme.palette.app.grey200} !important`,
+    "&.error": {
+      border: "1px solid #e53935 !important",
+    },
     "&:hover": {
       borderColor: `${theme.palette.secondary.dark} !important`,
       transition: `border-color 250ms ease !important`,
@@ -77,6 +80,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "&:focus": {
       boxShadow: `0 0 0 1px ${theme.palette.secondary.dark} !important`,
     },
+  },
+  helperText: {
+    position: "absolute",
+    bottom: "-18px",
+    left: "-2px",
   },
 }));
 
