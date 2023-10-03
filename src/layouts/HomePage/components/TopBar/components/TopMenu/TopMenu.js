@@ -11,7 +11,7 @@ import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 // import Feedback from "@src/views/chipassist/Feedback/Feedback";
-import { Button, Hidden, Paper, Tooltip, Zoom } from "@material-ui/core";
+import { Hidden, Paper, Tooltip, Zoom } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ReceiptIcon from "@material-ui/icons/Receipt";
@@ -24,7 +24,6 @@ import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnrea
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import { showHint } from "@src/store/rfqList/rfqListActions";
 import { withStyles } from "@material-ui/core/styles";
-import useAppTheme from "@src/theme/useAppTheme";
 import { useStyles } from "./topMenuStyles";
 
 const HtmlTooltip = withStyles((theme) => ({
@@ -49,7 +48,6 @@ const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
   const { t } = useI18n("menu");
   const dispatch = useAppDispatch();
-  const appTheme = useAppTheme();
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const isShowHint = useAppSelector((state) => state.rfqList.showHint);
   // const isCollapseHint = useAppSelector((state) => state.rfqList.collapseHint);
@@ -132,15 +130,10 @@ const TopMenu = ({ isMobile }) => {
             <span style={{ width: "100%", textAlign: "center", fontSize: "1.7em", marginTop: "10px" }}>
               You can create group RFQ here
             </span>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-              <Button
-                size={"small"}
-                style={{ minWidth: "0px", color: "white", fontSize: "1.2em", marginTop: "12px" }}
-                onClick={() => dispatch(showHint(false))}
-                className={appTheme.buttonCreate}
-              >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", marginTop: "6px" }}>
+              <p onClick={() => dispatch(showHint(false))} className={classes.gotItButton}>
                 Got it!
-              </Button>
+              </p>
             </div>
           </Paper>
         }
