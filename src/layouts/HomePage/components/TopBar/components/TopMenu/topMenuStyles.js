@@ -51,6 +51,24 @@ export const useStyles = makeStyles((theme) => ({
     top: "-10px",
     left: "95%",
   },
+  hintPaper: {
+    backgroundColor: `${theme.palette.app.blue800}`,
+    padding: "1em",
+    borderRadius: "4px",
+    color: `white`,
+    transition: "all 250ms ease",
+  },
+  gotItButton: {
+    minWidth: "0px",
+    fontSize: "1.5em",
+    marginRight: "10px",
+    color: `${theme.palette.app.blue800}`,
+    textDecoration: "underline",
+    "&:hover": {
+      cursor: "pointer",
+      color: `${theme.palette.app.blue500}`,
+    },
+  },
 }));
 
 export default "styles";
