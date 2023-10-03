@@ -319,7 +319,7 @@ export const getPartnerInfo = (id: number) => {
           .then((res) => {
             const data = {
               avatar: res.data?.avatar || "",
-              company_name: res.data.name || "",
+              company_name: res.data?.company_name || res.data?.name || "",
               email: res.data?.email || "",
               phone: res.data?.phone || "",
               website: res.data?.url || "",
@@ -346,7 +346,7 @@ export const saveNewPartnerInfo = (id: number, data: any) => {
           .patch(`/partners/${id}`, {
             data: {
               avatar: data.logoURL,
-              name: data.company_name,
+              company_name: data.company_name,
               email: data.email,
               phone: data.phone,
               url: data.website,

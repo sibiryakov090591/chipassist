@@ -16,13 +16,25 @@ import { AppTheme } from "@src/themes/AppTheme";
 export const CollapsableText = ({ text }: any) => {
   const useStyle = makeStyles((theme: AppTheme & Theme) => ({
     button: {
-      fontColor: `${theme.palette.app.blue800}`,
+      color: `${theme.palette.app.blue800}`,
       fontWeight: 600,
       textDecoration: "underline",
       "&:hover": {
-        fontColor: `${theme.palette.app.blue200}`,
+        color: `${theme.palette.app.blue200}`,
         cursor: "pointer",
       },
+    },
+    notCollapsableContainer: {
+      display: "flex",
+      width: "100%",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
+    },
+    lessButtonContainer: {
+      display: "flex",
+      width: "100%",
+      justifyContent: "flex-end",
     },
   }));
 
@@ -48,9 +60,14 @@ export const CollapsableText = ({ text }: any) => {
           {`${text.slice(0, 300)}...`} <MoreButton />
         </span>
       ) : !isCollapsed ? (
-        <span>
-          {text} <MoreButton />{" "}
-        </span>
+        <div className={classes.notCollapsableContainer}>
+          <span>
+            {text}
+          </span>
+          <div className={classes.lessButtonContainer}>
+            <MoreButton />
+          </div>
+        </div>
       ) : (
         text
       )}
