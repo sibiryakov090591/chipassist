@@ -61,9 +61,7 @@ export const CollapsableText = ({ text }: any) => {
         </span>
       ) : !isCollapsed ? (
         <div className={classes.notCollapsableContainer}>
-          <span>
-            {text}
-          </span>
+          <span>{text}</span>
           <div className={classes.lessButtonContainer}>
             <MoreButton />
           </div>
