@@ -314,7 +314,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                 {list.map((item) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
-                  const symbol = currencyList.find((curr) => curr.code === orderData?.stockrecord?.currency)?.symbol;
+                  const orderAttachment =
+                    orderData && item.message_attachments?.find((attach) => !!attach.file_name.match(/\.pdf$/i));
+                  const orderPdf = orderAttachment && files[orderAttachment.id];
+                  const symbol =
+                    orderData && currencyList.find((curr) => curr.code === orderData?.stockrecord?.currency)?.symbol;
 
                   return (
                     <div key={item.id}>
@@ -386,6 +390,14 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   </tr>
                                 </tbody>
                               </table>
+                              {!!orderPdf && (
+                                <div className={classes.orderPdfLink}>
+                                  <img src={pdf_icon} alt="file icon" />
+                                  <a href={orderPdf.url} target="_blank" rel="noreferrer">
+                                    View PO in PDF
+                                  </a>
+                                </div>
+                              )}
                             </div>
                           </Paper>
                         ) : (
