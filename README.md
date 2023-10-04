@@ -1,6 +1,11 @@
 # chipassist.com
+[chipassist.com](https://chipassist.com) — Prod
 
-[master.chipassist.com](https://master.chipassist.com) — Dev live server
+[requests.chipassist.com](https://requests.chipassist.com) — Prod requests
+
+[camaster.site](https://camaster.site) — Dev
+
+[requests.camaster.site](https://requests.camaster.site) — Dev requests
 
 ### Project Setup:
 
@@ -8,8 +13,34 @@
 - Copy `constants/{what_your_want}-defaults.js >> constants/defaults.js`
 - Add in your code editor EditorConfig, ESlint, TSLint, Prettier
 - Rules for EditorConfig (.editorconfig), ESlint (.eslintrc), TypeScript (tsconfig.json), Prettier (prettier.config.js)
+- To format *.ejs files use a plugin `prettier --plugin=prettier-plugin-ejs --write src/index.ejs`
 - JavaScript [airbnb](https://github.com/airbnb/javascript) rules
 - Husky for precommit hook. Please make commit via terminal
+
+### Build app:
+
+- `npm run build-dev` for master
+- `npm run build-prod` for production
+
+### Deploy app:
+
+You have to compress a content of dist folder to `dist.zip` and deploy it using Postman. Add `Authorization: Token <token>` header. Add `file` and `folder` keys into `form-data`. Folder's value vary depending on a project. 
+
+#### Production:
+- POST `https://api.chipassist.com/api/zip_upload/`
+
+- folder for chipassist: `www`
+
+- folder for requests: `www_requests`
+
+#### Master:
+- POST `https://api.camaster.site/api/zip_upload/`
+
+- folder for chipassist: `www_master`
+
+- folder for requests: `www_requests_master`
+
+### Additional:
 
 Amplify 
 [
