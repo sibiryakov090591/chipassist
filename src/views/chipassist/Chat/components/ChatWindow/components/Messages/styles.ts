@@ -215,6 +215,19 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         },
       },
     },
+    orderPdfLink: {
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      paddingTop: 12,
+      "& img": {
+        height: 20,
+        marginRight: 4,
+      },
+      "& a": {
+        textDecoration: "underline",
+      },
+    },
   }),
 );
 
