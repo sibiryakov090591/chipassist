@@ -345,7 +345,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   <div>
                                     {orderData.first_name || "-"} {orderData.last_name}
                                   </div>
-                                  <div>{orderData.phone_number_str ? `+${orderData.phone_number_str}` : "-"}</div>
+                                  <div>
+                                    {orderData.phone_number_str
+                                      ? `+${orderData.phone_number_str.replace(/[+]/g, "")}`
+                                      : "-"}
+                                  </div>
                                 </Grid>
                                 <Grid item sm={6} xs={12}>
                                   <div>{`${orderData.line1 || "-"}`}</div>
