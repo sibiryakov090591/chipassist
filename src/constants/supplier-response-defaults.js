@@ -27,7 +27,7 @@ const defaults = {
   userActivitySessionMinimumDuration: 0.5, // minutes
   userActivitySessionWhitespace: 0.2, // minutes
   jivoChat: false,
-  YM: false,
+  YM: true,
   GA: true,
   checkSiteVersion: true,
   checkSiteVersionPing: 6, // minutes
