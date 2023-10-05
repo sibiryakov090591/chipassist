@@ -54,7 +54,7 @@ const MessageInput: React.FC<Props> = ({
 
   const currencyList = useAppSelector((state) => state.currency.currencyList);
   const errorMessage = useAppSelector((state) => state.chat.messages.error);
-  const { partner, stocks } = useAppSelector((state) => state.chat.selectedChat);
+  const { partner, stocks, title } = useAppSelector((state) => state.chat.selectedChat);
   const stock = !!stocks &&
     !!stocks[0] && {
       ...stocks[0],
@@ -180,7 +180,7 @@ const MessageInput: React.FC<Props> = ({
     const name = `${partner.first_name} ${partner.last_name}`;
     const price = stock && getPrice(stock?.num_in_stock, stock as any);
     const numInStock = Number(stock?.num_in_stock);
-    const partNumber = stock?.upc;
+    const partNumber = title;
     const leadTime = Number(stock?.lead_period_str);
     const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
 

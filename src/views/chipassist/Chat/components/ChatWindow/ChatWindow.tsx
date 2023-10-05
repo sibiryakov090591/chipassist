@@ -40,7 +40,6 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   };
 
   const onShowDetailsHandler = (toggle = true, open = false) => () => {
-    console.log(123);
     onShowDetails(toggle, open);
     if (isMdDown && !isXsDown) onShowList(false);
     if (isXsDown) {
