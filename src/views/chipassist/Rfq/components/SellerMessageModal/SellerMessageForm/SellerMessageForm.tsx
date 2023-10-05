@@ -46,8 +46,9 @@ interface SellerMessageItemInterface {
   email: string;
   firstName: string;
   lastName: string;
-  company_type: string;
-  company_other_type: string;
+  company_name: string;
+  // company_type: string;
+  // company_other_type: string;
   policy_confirm: boolean;
   receive_updates_confirm: boolean;
 }
@@ -60,6 +61,7 @@ interface SellerMessageItemTouched {
   email?: boolean;
   firstName?: boolean;
   lastName?: boolean;
+  company_name?: boolean;
   company_type?: boolean;
   company_other_type?: boolean;
   policy_confirm?: boolean;
@@ -74,6 +76,7 @@ interface SellerMessageItemErrors {
   email?: string[];
   firstName?: string[];
   lastName?: string[];
+  company_name?: string[];
   company_type?: string[];
   company_other_type?: string[];
   policy_confirm?: string[];
@@ -124,8 +127,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
       email: "",
       firstName: "",
       lastName: "",
-      company_type: "Distributor",
-      company_other_type: "",
+      company_name: "",
+      // company_type: "Distributor",
+      // company_other_type: "",
       policy_confirm: false,
       receive_updates_confirm: false,
     },
@@ -163,16 +167,16 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         firstName: formSchema.firstName,
         lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-
-        ...(formState.values.company_type === "Other" && {
-          company_other_type: {
-            presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
-          },
-        }),
+        company_name: formSchema.companyName,
+        // ...(formState.values.company_type === "Other" && {
+        //   company_other_type: {
+        //     presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
+        //   },
+        // }),
       };
     }
     return sch;
-  }, [isAuthenticated, formState.values.company_type]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (open) {
@@ -184,8 +188,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           firstName: formState.values.firstName,
           lastName: formState.values.lastName,
           email: formState.values.email,
-          company_type: formState.values.company_type,
-          company_other_type: formState.values.company_other_type,
+          company_name: formState.values.company_name,
+          // company_type: formState.values.company_type,
+          // company_other_type: formState.values.company_other_type,
           phoneValue,
         }),
       );
@@ -205,8 +210,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),
-          ...(!isAuthenticated && registerData && { company_type: registerData.company_type }),
-          ...(!isAuthenticated && registerData && { company_other_type: registerData.company_other_type }),
+          ...(!isAuthenticated && registerData && { company_name: registerData.company_name }),
+          // ...(!isAuthenticated && registerData && { company_type: registerData.company_type }),
+          // ...(!isAuthenticated && registerData && { company_other_type: registerData.company_other_type }),
         },
         touched: {
           ...prevState.touched,
@@ -324,11 +330,11 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         first_name: formState.values.firstName,
         last_name: formState.values.lastName,
         phone_number_str: phoneValue ? `+${phoneValue}` : null,
-        // company_name: company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "",
-        company_variant:
-          formState.values.company_type === "Other"
-            ? formState.values.company_other_type
-            : formState.values.company_type,
+        company_name: formState.values.company_name,
+        // company_variant:
+        //   formState.values.company_type === "Other"
+        //     ? formState.values.company_other_type
+        //     : formState.values.company_type,
         policy_confirm: formState.values.policy_confirm,
         receive_updates_confirm: formState.values.receive_updates_confirm,
         country: country?.iso_3166_1_a3,
@@ -414,7 +420,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           name="message"
           label={`${t("form_labels.message")} *`}
           multiline
-          rows={4}
+          rows={2}
           variant="outlined"
           InputLabelProps={{
             shrink: true,
@@ -478,30 +484,45 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
               disabled={isAuthenticated}
               {...errorProps("email")}
             />
-            <div className={classes.phone}>
-              <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
-            </div>
-          </div>
-          <div className={classes.formRow}>
             <TextField
-              style={{ textAlign: "start", width: "100%" }}
-              name="company_type"
-              label={`${t("column.company_type")} *`}
+              style={{ width: "100%" }}
+              name="company_name"
+              label={`${t("form_labels.company_name")} *`}
               variant="outlined"
               size="small"
               InputLabelProps={{
                 shrink: true,
               }}
-              value={formState.values.company_type}
-              select
+              value={formState.values.company_name}
+              onBlur={onBlurHandler("company_name")}
               onChange={handleChange}
-            >
-              <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
-              <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
-              <MenuItem value="Design organization">{t("column.design")}</MenuItem>
-              <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
-              <MenuItem value="Other">{t("column.other")}</MenuItem>
-            </TextField>
+              disabled={isAuthenticated}
+              {...errorProps("company_name")}
+            />
+          </div>
+          <div className={classes.formRow}>
+            {/* <TextField */}
+            {/*  style={{ textAlign: "start", width: "100%" }} */}
+            {/*  name="company_type" */}
+            {/*  label={`${t("column.company_type")} *`} */}
+            {/*  variant="outlined" */}
+            {/*  size="small" */}
+            {/*  InputLabelProps={{ */}
+            {/*    shrink: true, */}
+            {/*  }} */}
+            {/*  value={formState.values.company_type} */}
+            {/*  select */}
+            {/*  onChange={handleChange} */}
+            {/* > */}
+            {/*  <MenuItem value="Distributor">{t("column.distributor")}</MenuItem> */}
+            {/*  <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem> */}
+            {/*  <MenuItem value="Design organization">{t("column.design")}</MenuItem> */}
+            {/*  <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem> */}
+            {/*  <MenuItem value="Other">{t("column.other")}</MenuItem> */}
+            {/* </TextField> */}
+            <div className={classes.phone}>
+              <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
+            </div>
             <TextField
               variant="outlined"
               name="country"
@@ -524,26 +545,26 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
               ))}
             </TextField>
           </div>
-          {formState.values.company_type === "Other" && (
-            <div className={classes.formRow}>
-              <TextField
-                style={{ width: "100%" }}
-                name="company_other_type"
-                label={`${t("column.company_other_type")} *`}
-                variant="outlined"
-                size="small"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={formState.values.company_other_type}
-                onChange={handleChange}
-                onBlur={onBlurHandler("company_other_type")}
-                {...errorProps("company_other_type")}
-              />
-            </div>
-          )}
+          {/* {formState.values.company_type === "Other" && ( */}
+          {/*  <div className={classes.formRow}> */}
+          {/*    <TextField */}
+          {/*      style={{ width: "100%" }} */}
+          {/*      name="company_other_type" */}
+          {/*      label={`${t("column.company_other_type")} *`} */}
+          {/*      variant="outlined" */}
+          {/*      size="small" */}
+          {/*      InputLabelProps={{ */}
+          {/*        shrink: true, */}
+          {/*      }} */}
+          {/*      value={formState.values.company_other_type} */}
+          {/*      onChange={handleChange} */}
+          {/*      onBlur={onBlurHandler("company_other_type")} */}
+          {/*      {...errorProps("company_other_type")} */}
+          {/*    /> */}
+          {/*  </div> */}
+          {/* )} */}
           {constants.id !== ID_ICSEARCH && (
-            <Box display="flex" flexDirection="column" ml={2}>
+            <Box display="flex" flexDirection="column" ml={2} mt={1}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -595,12 +616,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           </Button>
         )}
 
-        <Button
-          variant="contained"
-          className={appTheme.buttonCreate}
-          type="submit"
-          disabled={isSending || isLoading || !formState.isValid}
-        >
+        <Button variant="contained" className={appTheme.buttonCreate} type="submit" disabled={isSending || isLoading}>
           {(isSending || isLoading) && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
           {isSending || isLoading ? t("seller_message.sending") : t("seller_message.send")}
         </Button>

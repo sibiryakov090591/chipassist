@@ -192,6 +192,7 @@ const themeStylesChipAssist = makeStyles((theme) => ({
   },
   checkbox: {
     color: `${theme.palette.app.blue500} !important`,
+    padding: 7,
     "&:hover": {
       color: `${theme.palette.app.blue500} !important`,
     },

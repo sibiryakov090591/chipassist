@@ -67,6 +67,19 @@ export default function RFQModalModal() {
           {isChipAssist && (
             <Hidden smDown>
               <div className={classes.logoContainer}>
+                {!isAuthenticated && (
+                  <div className={classes.signIn}>
+                    {t("restricted.description_1")}
+                    <Link
+                      onClick={singInHandler}
+                      to={"/auth/login"}
+                      className={classes.link}
+                      state={{ background: location.state?.background || location }}
+                    >
+                      {t("restricted.sign_in")}
+                    </Link>
+                  </div>
+                )}
                 <img className={classes.logo} src={logo} alt="chipassist logo" />
               </div>
             </Hidden>
@@ -95,18 +108,20 @@ export default function RFQModalModal() {
               />
             )}
             {!isAuthenticated && (
-              <div className={classes.signIn}>
-                {t("restricted.description_1")}
-                <Link
-                  onClick={singInHandler}
-                  to={"/auth/login"}
-                  className={`${appTheme.hyperlink} ${registerClasses.link}`}
-                  state={{ background: location.state?.background || location }}
-                >
-                  {t("restricted.sign_in")}
-                </Link>
-                {". "}
-              </div>
+              <Hidden mdUp>
+                <div className={classes.signInMobile}>
+                  {t("restricted.description_1")}
+                  <Link
+                    onClick={singInHandler}
+                    to={"/auth/login"}
+                    className={`${appTheme.hyperlink} ${registerClasses.link}`}
+                    state={{ background: location.state?.background || location }}
+                  >
+                    {t("restricted.sign_in")}
+                  </Link>
+                  {". "}
+                </div>
+              </Hidden>
             )}
             <RFQForm onCloseModalHandler={handleClose} />
           </div>

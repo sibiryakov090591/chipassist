@@ -16,7 +16,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   logoContainer: {
     display: "flex",
-    alignItems: "flex-end",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: theme.palette.app.red500,
     padding: 20,
     position: "sticky",
@@ -24,7 +26,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   logo: {
     width: "100%",
-    maxWidth: "235px",
+    maxWidth: "200px",
   },
   content: {
     [theme.breakpoints.up("md")]: {
@@ -128,9 +130,25 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     textTransform: "lowercase",
   },
-  signIn: {
+  signInMobile: {
     textAlign: "center",
     marginBottom: 15,
+  },
+  signIn: {
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    color: "#ffffff",
+  },
+  link: {
+    color: "#ffffff !important",
+    fontWeight: "bold",
+    textDecoration: "underline",
+    fontSize: 16,
+    marginTop: 2,
+    "&:hover": {
+      color: "#cee7ff",
+    },
   },
   text: {
     textAlign: "center",

@@ -27,11 +27,6 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
     color: "#345",
   },
-  signIn: {
-    textAlign: "center",
-    marginTop: 10,
-    marginBottom: 15,
-  },
 }));
 
 export default "styles";
