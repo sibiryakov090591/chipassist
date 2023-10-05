@@ -181,7 +181,7 @@ export const updateMessages = (chatId: number, filters: { [key: string]: any } =
 };
 
 export const sendMessage = (chatId: number, message: string, orderData: any = null) => {
-  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+  return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
     return dispatch({
@@ -191,7 +191,7 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
           .post(`/chats/${chatId}/message/${params}`, {
             data: { text: message?.trim(), ...(!!orderData && { po: orderData }) },
           })
-          .then((res) => {
+          .then(async (res) => {
             const newMessage = {
               id: res.data.id || uuidv4(),
               text: message,
@@ -199,8 +199,28 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
               read: true,
               read_by_partner: false,
               created: new Date().toISOString(),
-              ...(res.data?.po && { po: res.data.po }),
+              ...(res.data?.po && { po: res.data.po, message_attachments: res.data.message_attachments }),
+              ...(res.data?.message_attachments && { message_attachments: res.data.message_attachments }),
             };
+            if (res.data?.po) {
+              // download order
+              const previewFiles: any = {};
+              const filesPromises: any = [];
+              res.data.message_attachments.forEach((file: any) => {
+                const validType = file.file_name.match(/\.(pdf)$/i);
+                if (validType && !getState().chat.files[file.id]) {
+                  filesPromises.push(
+                    dispatch(downloadFile(file.id))
+                      .then((blob: Blob) => {
+                        previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                      })
+                      .catch((e: any) => e),
+                  );
+                }
+              });
+              await Promise.all(filesPromises);
+              dispatch(saveFiles(previewFiles));
+            }
             dispatch(addMessage(chatId, newMessage));
             return res.data;
           })
