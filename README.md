@@ -13,7 +13,6 @@
 - Copy `constants/{what_your_want}-defaults.js >> constants/defaults.js`
 - Add in your code editor EditorConfig, ESlint, TSLint, Prettier
 - Rules for EditorConfig (.editorconfig), ESlint (.eslintrc), TypeScript (tsconfig.json), Prettier (prettier.config.js)
-- To format *.ejs files use a plugin `prettier --plugin=prettier-plugin-ejs --write src/index.ejs`
 - JavaScript [airbnb](https://github.com/airbnb/javascript) rules
 - Husky for precommit hook. Please make commit via terminal
 

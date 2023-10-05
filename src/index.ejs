@@ -8,44 +8,44 @@
   <head>
     <% var defaults = require("@src/constants/defaults") %> <% if (defaults && defaults.GA && ["chipassist",
     "supplier_response"].includes(defaults.id)) { %> <% if (defaults.id === "chipassist") { %>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z44R0VYWLB"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-Z44R0VYWLB");
-    </script>
-    <!-- End Google tag (gtag.js) -->
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z44R0VYWLB"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-Z44R0VYWLB");
+      </script>
+      <!-- End Google tag (gtag.js) -->
     <% } if (defaults.id === "supplier_response") { %>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDPK3Y7KDV"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-RDPK3Y7KDV");
-    </script>
-    <!-- End Google tag (gtag.js) -->
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDPK3Y7KDV"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-RDPK3Y7KDV");
+      </script>
+      <!-- End Google tag (gtag.js) -->
     <% } %>
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-KFM5999");
-    </script>
-    <!-- End Google Tag Manager -->
+      <!-- Google Tag Manager -->
+      <script>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", "GTM-KFM5999");
+      </script>
+      <!-- End Google Tag Manager -->
     <% } %>
 
     <title><%= htmlWebpackPlugin.options.title %></title>
@@ -73,80 +73,62 @@
     <meta name="twitter:image" content="https://chipassist.com/link-preview-image.png" />
 
     <% if (defaults && defaults.jivoChat) { %>
-    <script src="//code-eu1.jivosite.com/widget/35TThUDBbN" async></script>
+      <script src="//code-eu1.jivosite.com/widget/35TThUDBbN" async></script>
     <% } %>
     <% if (defaults && defaults.YM && defaults.id === "chipassist") { %>
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-      (function (m, e, t, r, i, k, a) {
-        m[i] =
-          m[i] ||
-          function () {
-            (m[i].a = m[i].a || []).push(arguments);
-          };
-        m[i].l = 1 * new Date();
-        (k = e.createElement(t)),
-          (a = e.getElementsByTagName(t)[0]),
-          (k.async = 1),
-          (k.src = r),
-          a.parentNode.insertBefore(k, a);
-      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+      <!-- Yandex.Metrika counter -->
+      <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+          m[i] =
+            m[i] ||
+            function () {
+              (m[i].a = m[i].a || []).push(arguments);
+            };
+          m[i].l = 1 * new Date();
+          (k = e.createElement(t)),
+            (a = e.getElementsByTagName(t)[0]),
+            (k.async = 1),
+            (k.src = r),
+            a.parentNode.insertBefore(k, a);
+        })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-      ym(84736483, "init", {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: true,
-      });
-    </script>
-    <noscript
-      ><div><img src="https://mc.yandex.ru/watch/84736483" style="position: absolute; left: -9999px" alt="" /></div
-    ></noscript>
-    <!-- /Yandex.Metrika counter -->
+        ym(84736483, "init", {
+          clickmap: true,
+          trackLinks: true,
+          accurateTrackBounce: true,
+          webvisor: true,
+        });
+      </script>
+      <!-- /Yandex.Metrika counter -->
     <% } %>
     <% if (defaults && defaults.YM && defaults.id === "supplier_response") { %>
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-      (function (m, e, t, r, i, k, a) {
-        m[i] =
-          m[i] ||
-          function () {
-            (m[i].a = m[i].a || []).push(arguments);
-          };
-        m[i].l = 1 * new Date();
-        (k = e.createElement(t)),
-          (a = e.getElementsByTagName(t)[0]),
-          (k.async = 1),
-          (k.src = r),
-          a.parentNode.insertBefore(k, a);
-      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+      <!-- Yandex.Metrika counter -->
+      <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-      ym(95144489, "init", {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: true,
-      });
-    </script>
-    <noscript
-      ><div><img src="https://mc.yandex.ru/watch/95144489" style="position: absolute; left: -9999px" alt="" /></div
-    ></noscript>
-    <!-- /Yandex.Metrika counter -->
+        ym(95144489, "init", {
+          clickmap:true,
+          trackLinks:true,
+          accurateTrackBounce:true,
+          webvisor:true
+        });
+      </script>
+      <!-- /Yandex.Metrika counter -->
     <% } %>
   </head>
 
   <body>
+    <% if (defaults && defaults.YM && defaults.id === "supplier_response") { %>
+      <noscript><div><img src="https://mc.yandex.ru/watch/95144489" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <% } %>
     <% if (defaults && defaults.GA && ["chipassist", "supplier_response"].includes(defaults.id)) { %>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-KFM5999"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFM5999" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
     <% } %>
 
     <!-- Creating a hidden scrollbar to determine its width -->
