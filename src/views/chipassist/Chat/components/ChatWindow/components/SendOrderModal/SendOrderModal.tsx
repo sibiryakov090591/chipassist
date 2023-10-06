@@ -438,10 +438,14 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
           </Grid>
 
           <Box mt={2} className={commonClasses.actionsRow}>
-            <Button variant="contained" className={appTheme.buttonPrimary} onClick={onCloseModal}>
+            <Button
+              variant="contained"
+              className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
+              onClick={onCloseModal}
+            >
               Cancel
             </Button>
-            <Button type="submit" variant="contained" className={appTheme.buttonCreate}>
+            <Button type="submit" variant="contained" className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}>
               Send
             </Button>
           </Box>

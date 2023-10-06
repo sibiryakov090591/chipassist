@@ -104,6 +104,15 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       },
     },
   },
+  buttonMinWidth: {
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 165,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      minWidth: "auto",
+    },
+  },
   buttonCancel: {
     color: theme.palette.white,
     backgroundColor: theme.palette.app.red500,
@@ -192,6 +201,7 @@ const themeStylesChipAssist = makeStyles((theme) => ({
   },
   checkbox: {
     color: `${theme.palette.app.blue500} !important`,
+    padding: 7,
     "&:hover": {
       color: `${theme.palette.app.blue500} !important`,
     },

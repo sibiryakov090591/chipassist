@@ -103,6 +103,11 @@ const themeStylesElfaro = makeStyles((theme) => ({
       },
     },
   },
+  buttonMinWidth: {
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 165,
+    },
+  },
   buttonCancel: {
     color: theme.palette.white,
     backgroundColor: theme.palette.app.red500,

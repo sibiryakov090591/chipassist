@@ -7,6 +7,13 @@
 
 [requests.camaster.site](https://requests.camaster.site) — Dev requests
 
+### Git clone
+
+Create and set the SSH key to GitLab before.
+
+Clone repo: `git clone ssh://git@gitlab.icsearch.ru:2233/developers/fe_spaceone.git`
+
+
 ### Project Setup:
 
 - `npm install`
