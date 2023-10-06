@@ -58,6 +58,11 @@ const sortFn = (stocks: any[][], name: string, direction: "desc" | "asc") => {
   });
 };
 
+const calculateBestOffer = (stocks: SortedStockrecord[]) => {
+  const sortedStocks = stocks.sort((elem, elem_next) => elem.price_1 - elem_next.price_1);
+  console.log(sortedStocks);
+};
+
 const DistributorsDesktop: React.FC<Props> = ({
   product,
   sortedStockrecords,
@@ -145,6 +150,12 @@ const DistributorsDesktop: React.FC<Props> = ({
       setStockrecords(sortFn(res, sortBy.name, sortBy.direction));
     }
   }, [sortedStockrecords, sortBy]);
+
+  useEffect(() => {
+    if (stockrecords) {
+      calculateBestOffer(stockrecords[0]);
+    }
+  }, [stockrecords]);
 
   function getBasedOnNumInStockPriceData(targetProduct: Product, stockrecord: Stockrecord) {
     let price = null;
@@ -372,6 +383,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 className={clsx(classes.tr, {
                   [classes.active]: isShowMoreActive,
                 })}
+                style={val.num_in_stock === 0 ? { color: "#777" } : null}
               >
                 <td className={clsx(classes.trDistributor, "product-seller")}>
                   {showSellerTooltip ? (

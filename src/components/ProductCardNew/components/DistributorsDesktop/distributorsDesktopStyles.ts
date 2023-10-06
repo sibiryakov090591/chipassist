@@ -374,6 +374,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     country: {
       display: "flex",
       alignItems: "center",
+      marginLeft: "-3px",
     },
     orderButton: {
       fontWeight: "bold",
@@ -443,6 +444,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     partnerLink: {
       color: "#16697a !important",
       textDecoration: "underline",
+    },
+    bestOffer: {
+      border: "1px solid #16BEA3",
+      borderRadius: "2px",
     },
   }),
 );
