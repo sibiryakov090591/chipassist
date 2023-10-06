@@ -186,6 +186,7 @@ export const isDuplicateStockrecord = (haystack: Stockrecord[], needle: Stockrec
     ...templateRfq(st),
     manufacturerId: st.manufacturer?.id,
     partner: st.partner,
+    partner_sku: st.partner_sku,
   });
   return filteredHeystack.some((val) => {
     // const template = isProductAvailable(needle) && isProductAvailable(val) ? templateOnline : templateRfq;

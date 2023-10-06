@@ -28,11 +28,9 @@ export const UPDATE_ITEM = "UPDATE_ITEM";
 export const SET_ITEM = "SET_ITEM";
 export const CLEAR_ITEM = "CLEAR_ITEM";
 export const MODAL_OPEN = "MODAL_OPEN";
-export const MODAL_OPEN_AGAIN_AFTER_LOGIN = "MODAL_OPEN_AGAIN_AFTER_LOGIN";
 
 export const SELLER_MESSAGE_MODAL_OPEN = "@rfq/SELLER_MESSAGE_MODAL_OPEN";
 export const SELLER_MESSAGE_MODAL_CLOSE = "@rfq/SELLER_MESSAGE_MODAL_CLOSE";
-export const SELLER_MESSAGE_MODAL_OPEN_AGAIN_AFTER_LOGIN = "@rfq/SELLER_MESSAGE_MODAL_OPEN_AGAIN_AFTER_LOGIN";
 export const SEND_SELLER_MESSAGE_R = "@rfq/SEND_SELLER_MESSAGE_R";
 export const SEND_SELLER_MESSAGE_S = "@rfq/SEND_SELLER_MESSAGE_S";
 export const SEND_SELLER_MESSAGE_F = "@rfq/SEND_SELLER_MESSAGE_F";
@@ -255,10 +253,6 @@ interface RfqModalCloseAction {
   type: typeof MODAL_CLOSE;
 }
 
-interface IsNeedToOpenRFQModalAfterLoginAction {
-  type: typeof MODAL_OPEN_AGAIN_AFTER_LOGIN;
-}
-
 interface SetSellerMessageData {
   type: typeof SELLER_MESSAGE_MODAL_OPEN;
   payload: {
@@ -268,10 +262,6 @@ interface SetSellerMessageData {
     sellerName: string;
     stockrecordId: number;
   };
-}
-
-interface IsNeedToOpenSellerMessageModalAgainAction {
-  type: typeof SELLER_MESSAGE_MODAL_OPEN_AGAIN_AFTER_LOGIN;
 }
 
 interface SellerMessageModalCloseAction {
@@ -344,8 +334,6 @@ export type RfqActionTypes =
   | SellerMessageRequestAction
   | SellerMessageSuccessAction
   | SellerMessageFailureAction
-  | IsNeedToOpenSellerMessageModalAgainAction
-  | IsNeedToOpenRFQModalAfterLoginAction
   | ClearSupplierResponseDataAction
   | SaveRfqResponse
   | RemoveRfqResponse

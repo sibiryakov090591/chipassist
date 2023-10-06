@@ -34,6 +34,7 @@ import constants from "@src/constants/constants";
 import validate from "validate.js";
 import formSchema from "@src/utils/formSchema";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import { clsx } from "clsx";
 import SuccessSnackbar from "../SuccessSnackbar";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -391,7 +392,12 @@ const GeneralSettings = () => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button className={appTheme.buttonCreate} type="submit" variant="contained" disabled={isSaving}>
+          <Button
+            className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
+            type="submit"
+            variant="contained"
+            disabled={isSaving}
+          >
             {isSaving && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
             {isSaving ? t("saving") : t("save_changes")}
           </Button>

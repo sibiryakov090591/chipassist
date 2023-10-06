@@ -293,10 +293,19 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
         </CardContent>
         <Divider />
         <CardActions>
-          <Button disabled={pendingMode} onClick={onCloseHandler} className={appTheme.buttonPrimary}>
+          <Button
+            disabled={pendingMode}
+            onClick={onCloseHandler}
+            className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
+          >
             {t("company.back")}
           </Button>
-          <Button disabled={pendingMode} className={appTheme.buttonCreate} variant="contained" type="submit">
+          <Button
+            disabled={pendingMode}
+            className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
+            variant="contained"
+            type="submit"
+          >
             {pendingMode && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
             {pendingMode ? t("company.saving") : t("company.save")}
           </Button>
