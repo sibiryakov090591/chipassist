@@ -359,12 +359,6 @@ export const sellerMessageModalClose = (): RfqActionTypes => {
   };
 };
 
-export const sellerMessageModalOpenAgainAfterLogin = (): RfqActionTypes => {
-  return {
-    type: actionTypes.SELLER_MESSAGE_MODAL_OPEN_AGAIN_AFTER_LOGIN,
-  };
-};
-
 export const setRFQQueryUpc = (payload = ""): RfqActionTypes => {
   return {
     type: actionTypes.SET_QUERY_UPC,
@@ -375,12 +369,6 @@ export const setRFQQueryUpc = (payload = ""): RfqActionTypes => {
 export const rfqModalClose = (): RfqActionTypes => {
   return {
     type: actionTypes.MODAL_CLOSE,
-  };
-};
-
-export const rfqModalOpenAgainAfterLogin = (): RfqActionTypes => {
-  return {
-    type: actionTypes.MODAL_OPEN_AGAIN_AFTER_LOGIN,
   };
 };
 

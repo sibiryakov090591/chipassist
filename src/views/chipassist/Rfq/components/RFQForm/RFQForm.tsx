@@ -47,6 +47,8 @@ import { NumberInput } from "@src/components/Inputs";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { clsx } from "clsx";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
 // interface Distributor {
@@ -179,6 +181,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   // const history = useHistory();
   // const location = useLocation();
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -655,13 +658,38 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           isAllowedZero={true}
         />
       </div>
+      {isAuthenticated && (
+        <div className={classes.formRow}>
+          <TextField
+            variant="outlined"
+            name="country"
+            size="small"
+            label={`${t("form_labels.delivery_to")} *`}
+            value={formState.values.country}
+            onBlur={onBlurHandler("country")}
+            onChange={handleChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            select
+            style={{ textAlign: "start", width: "100%" }}
+            {...errorProps("country")}
+          >
+            {countries?.map((i: Record<string, any>) => (
+              <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                {i.printable_name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+      )}
       <div className={classes.formRow}>
         <TextField
           style={{ width: "100%" }}
           name="comment"
           label={t("column.form_comment")}
           multiline
-          rows={2}
+          rows={isAuthenticated ? 4 : 2}
           variant="outlined"
           InputLabelProps={{
             shrink: true,
@@ -803,34 +831,38 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         {/*    <MenuItem value="Other">{t("column.other")}</MenuItem> */}
         {/*  </TextField> */}
         {/* )} */}
-        <PhoneInputWrapper
-          label={t("column.phone")}
-          value={phoneValue}
-          onChange={onChangePhoneHandler}
-          small
-          style={{ height: "37.63px", margin: !isDownKey && "13px" }}
-        />
-        <TextField
-          variant="outlined"
-          name="country"
-          size="small"
-          label={`${t("form_labels.delivery_to")} *`}
-          value={formState.values.country}
-          onBlur={onBlurHandler("country")}
-          onChange={handleChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          select
-          style={{ textAlign: "start", width: "100%" }}
-          {...errorProps("country")}
-        >
-          {countries?.map((i: Record<string, any>) => (
-            <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-              {i.printable_name}
-            </MenuItem>
-          ))}
-        </TextField>
+        {!isAuthenticated && (
+          <>
+            <PhoneInputWrapper
+              label={t("column.phone")}
+              value={phoneValue}
+              onChange={onChangePhoneHandler}
+              small
+              style={{ height: "37.63px", margin: !isDownKey && "13px" }}
+            />
+            <TextField
+              variant="outlined"
+              name="country"
+              size="small"
+              label={`${t("form_labels.delivery_to")} *`}
+              value={formState.values.country}
+              onBlur={onBlurHandler("country")}
+              onChange={handleChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              select
+              style={{ textAlign: "start", width: "100%" }}
+              {...errorProps("country")}
+            >
+              {countries?.map((i: Record<string, any>) => (
+                <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                  {i.printable_name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </>
+        )}
       </div>
       {/* {!isAuthenticated && formState.values.company_type === "Other" && ( */}
       {/*  <div className={classes.formRow}> */}
@@ -963,23 +995,28 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
       {/*    </div> */}
       {/*  </div> */}
       {/* </div> */}
-      <div className={classes.buttons}>
+      <Box className={clsx(commonClasses.actionsRow, classes.buttons)}>
         {onCloseModalHandler && (
           <Button
             variant="contained"
             type="reset"
-            className={`${appTheme.buttonPrimary} test-rfq-modal-cancel`}
+            className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth, "test-rfq-modal-cancel")}
             onClick={onCloseModalHandler}
           >
             {t("common.close")}
           </Button>
         )}
 
-        <Button variant="contained" className={appTheme.buttonCreate} type="submit" disabled={rfqSaving || isLoading}>
+        <Button
+          variant="contained"
+          className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
+          type="submit"
+          disabled={rfqSaving || isLoading}
+        >
           {(rfqSaving || isLoading) && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
           {rfqSaving || isLoading ? t("common.sending_2") : t("common.rfq_submit")}
         </Button>
-      </div>
+      </Box>
     </form>
   );
 };

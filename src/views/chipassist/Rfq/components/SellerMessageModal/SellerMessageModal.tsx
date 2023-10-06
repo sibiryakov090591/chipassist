@@ -1,14 +1,13 @@
 import React from "react";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop, Hidden } from "@material-ui/core";
+import { Backdrop, Box, Hidden } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { sellerMessageModalClose, sellerMessageModalOpenAgainAfterLogin } from "@src/store/rfq/rfqActions";
+import { sellerMessageModalClose } from "@src/store/rfq/rfqActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles as useRegisterStyles } from "@src/views/chipassist/HomeRestricted/styles";
 import { useStyles as useRfqModalStyles } from "@src/views/chipassist/Rfq/components/RFQModal/RFQModalStyles";
-import { Link, useLocation } from "react-router-dom";
 import useAppTheme from "@src/theme/useAppTheme";
 import SellerMessageForm from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageForm/SellerMessageForm";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
@@ -16,6 +15,7 @@ import clsx from "clsx";
 import logo from "@src/images/logo/on_red.png";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
+import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
 import { useStyles } from "./SellerMessageModalStyles";
 
 const SellerMessageModal: React.FC = () => {
@@ -25,7 +25,6 @@ const SellerMessageModal: React.FC = () => {
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const location = useLocation();
   const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
 
   const { open, partNumber } = useAppSelector((state) => state.rfq.sellerMessageModal);
@@ -33,13 +32,18 @@ const SellerMessageModal: React.FC = () => {
 
   const { t } = useI18n("rfq.seller_message");
 
+  const [showLoginForm, setShowLoginForm] = React.useState(false);
+
+  React.useEffect(() => {
+    if ((isAuthenticated && showLoginForm) || open) setShowLoginForm(false);
+  }, [isAuthenticated, open]);
+
   const handleClose = () => {
     dispatch(sellerMessageModalClose());
   };
 
   const singInHandler = () => {
-    dispatch(sellerMessageModalOpenAgainAfterLogin());
-    dispatch(sellerMessageModalClose());
+    setShowLoginForm(true);
   };
 
   return (
@@ -60,19 +64,16 @@ const SellerMessageModal: React.FC = () => {
           {isChipAssist && (
             <Hidden smDown>
               <div className={rfqModalClasses.logoContainer}>
-                {!isAuthenticated && (
-                  <div className={rfqModalClasses.signIn}>
-                    {t("restricted.description_1")}
-                    <Link
-                      onClick={singInHandler}
-                      to={"/auth/login"}
-                      className={rfqModalClasses.link}
-                      state={{ background: location.state?.background || location }}
-                    >
-                      {t("restricted.sign_in")}
-                    </Link>
-                  </div>
-                )}
+                <div className={rfqModalClasses.signIn}>
+                  {!isAuthenticated && (
+                    <>
+                      {t("restricted.description_1")}
+                      <div onClick={singInHandler} className={rfqModalClasses.link}>
+                        {t("restricted.sign_in")}
+                      </div>
+                    </>
+                  )}
+                </div>
                 <img className={rfqModalClasses.logo} src={logo} alt="chipassist logo" />
               </div>
             </Hidden>
@@ -92,19 +93,20 @@ const SellerMessageModal: React.FC = () => {
               <Hidden mdUp>
                 <div className={rfqModalClasses.signInMobile}>
                   {t("restricted.description_1")}
-                  <Link
-                    onClick={singInHandler}
-                    to={"/auth/login"}
-                    className={`${appTheme.hyperlink} ${registerClasses.link}`}
-                    state={{ background: location.state?.background || location }}
-                  >
+                  <span onClick={singInHandler} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                     {t("restricted.sign_in")}
-                  </Link>
+                  </span>
                   {". "}
                 </div>
               </Hidden>
             )}
-            <SellerMessageForm onCloseModalHandler={handleClose} />
+            {showLoginForm ? (
+              <Box m="13px">
+                <LoginForm className={null} />
+              </Box>
+            ) : (
+              <SellerMessageForm onCloseModalHandler={handleClose} />
+            )}
           </div>
         </div>
       </Fade>

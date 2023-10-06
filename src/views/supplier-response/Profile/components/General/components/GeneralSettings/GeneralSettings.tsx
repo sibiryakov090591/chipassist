@@ -27,6 +27,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useTheme } from "@material-ui/core/styles";
+import { clsx } from "clsx";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -400,16 +401,15 @@ const GeneralSettings = () => {
           <Grid item md={12} xs={12}>
             <Box display={"flex"} justifyContent={isXsDown ? "space-between" : "end"}>
               <Button
-                style={{ minWidth: 165, marginRight: !isXsDown ? 15 : 0 }}
-                className={appTheme.buttonPrimary}
+                style={{ marginRight: !isXsDown ? 15 : 0 }}
+                className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
                 variant="outlined"
                 onClick={onCancel}
               >
                 Cancel
               </Button>
               <Button
-                style={{ minWidth: 165 }}
-                className={appTheme.buttonCreate}
+                className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
                 variant="contained"
                 onClick={onSubmit}
               >

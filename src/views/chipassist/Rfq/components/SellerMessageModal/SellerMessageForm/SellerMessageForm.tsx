@@ -32,6 +32,8 @@ import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
 import InputPhone from "@src/components/InputPhone/InputPhone";
 import { NumberInput } from "@src/components/Inputs";
+import { clsx } from "clsx";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -101,6 +103,7 @@ interface FormState {
 
 const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const { t } = useI18n("rfq");
@@ -420,7 +423,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
           name="message"
           label={`${t("form_labels.message")} *`}
           multiline
-          rows={2}
+          rows={isAuthenticated ? 4 : 2}
           variant="outlined"
           InputLabelProps={{
             shrink: true,
@@ -609,14 +612,24 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
         </>
       )}
 
-      <div className={classes.buttons}>
+      <div className={clsx(commonClasses.actionsRow, classes.buttons)}>
         {onCloseModalHandler && (
-          <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={onCloseModalHandler}>
+          <Button
+            variant="contained"
+            type="reset"
+            className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
+            onClick={onCloseModalHandler}
+          >
             {t("common.close")}
           </Button>
         )}
 
-        <Button variant="contained" className={appTheme.buttonCreate} type="submit" disabled={isSending || isLoading}>
+        <Button
+          variant="contained"
+          className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
+          type="submit"
+          disabled={isSending || isLoading}
+        >
           {(isSending || isLoading) && <CircularProgress style={{ marginRight: 10, color: "white" }} size="1.5em" />}
           {isSending || isLoading ? t("seller_message.sending") : t("seller_message.send")}
         </Button>

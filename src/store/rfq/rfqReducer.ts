@@ -106,11 +106,6 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
         isNeedRfqModalOpenAgain: false,
         rfqItem: { ...state.rfqItem, ...action.payload },
       });
-    case actionTypes.MODAL_OPEN_AGAIN_AFTER_LOGIN:
-      return updateObject(state, {
-        isNeedRfqModalOpenAgain: true,
-        rfqItem: { ...state.rfqItem, prevPartNumber: state.rfqItem.partNumber },
-      });
     case actionTypes.SET_QUERY_UPC:
       return updateObject(state, { rfqItem: { ...state.rfqItem, partNumber: action.payload } });
     case actionTypes.MODAL_CLOSE:
@@ -128,13 +123,6 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
           stockrecordId: action.payload.stockrecordId,
         },
       };
-    case actionTypes.SELLER_MESSAGE_MODAL_OPEN_AGAIN_AFTER_LOGIN:
-      return updateObject(state, {
-        sellerMessageModal: {
-          ...state.sellerMessageModal,
-          isNeedModalOpenAgain: true,
-        },
-      });
     case actionTypes.SELLER_MESSAGE_MODAL_CLOSE:
       return updateObject(state, { sellerMessageModal: { ...state.sellerMessageModal, open: false } });
     case actionTypes.SEND_SELLER_MESSAGE_R:

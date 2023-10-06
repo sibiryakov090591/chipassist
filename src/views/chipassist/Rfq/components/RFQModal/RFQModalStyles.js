@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: theme.palette.app.red500,
-    padding: 20,
+    padding: "37px 20px 20px",
     position: "sticky",
     top: 0,
   },
@@ -141,6 +141,7 @@ export const useStyles = makeStyles((theme) => ({
     color: "#ffffff",
   },
   link: {
+    cursor: "pointer",
     color: "#ffffff !important",
     fontWeight: "bold",
     textDecoration: "underline",

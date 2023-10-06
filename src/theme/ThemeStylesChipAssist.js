@@ -104,6 +104,15 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       },
     },
   },
+  buttonMinWidth: {
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 165,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      minWidth: "auto",
+    },
+  },
   buttonCancel: {
     color: theme.palette.white,
     backgroundColor: theme.palette.app.red500,

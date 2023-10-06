@@ -49,7 +49,7 @@ const RegisterModal = () => {
             <br />
             <Box display="flex" justifyContent="flex-end">
               <Button
-                className={clsx(appTheme.buttonPrimary, "alert-modal-button")}
+                className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth, "alert-modal-button")}
                 color="primary"
                 variant="contained"
                 onClick={handleClose}
