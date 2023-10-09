@@ -5,7 +5,7 @@ import Highlighter from "react-highlight-words";
 import clsx from "clsx";
 import { Paper, Hidden, Box, Collapse, useMediaQuery, useTheme } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
-import { getDynamicMoq, getImage, getPrice, isDuplicateStockrecord, isProductAvailable } from "@src/utils/product";
+import { getDynamicMoq, getImage, getPrice, isProductAvailable } from "@src/utils/product";
 import { rfqModalOpen, setSellerMessageData } from "@src/store/rfq/rfqActions";
 import useCurrency from "@src/hooks/useCurrency";
 import { splitForHighlighter } from "@src/utils/search";
@@ -114,11 +114,10 @@ const ProductCardNew = (props) => {
 
   useEffect(() => {
     if (product.stockrecords) {
-      const noDuplicatedStockrecords = product.stockrecords
-        .filter((sr) => !!sr.id)
-        .reduce((acc, val) => {
-          return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
-        }, []);
+      const noDuplicatedStockrecords = product.stockrecords.filter((sr) => !!sr.id);
+      // .reduce((acc, val) => {
+      //   return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
+      // }, []);
 
       const bestDateUpdated = noDuplicatedStockrecords.reduce((acc, sr) => {
         const updatedTime = new Date(sr.date_updated.replace(/ /g, "T")).getTime();
