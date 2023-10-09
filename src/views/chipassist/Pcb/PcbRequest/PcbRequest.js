@@ -1154,7 +1154,7 @@ function PcbRequest() {
                 style={{ width: "100%", margin: "8px 0 8px 8px" }}
                 disabled={isAuthenticated}
                 name="company"
-                label={`${t("form_labels.company_name")}`}
+                label={`${t("form_labels.company_name")} *`}
                 variant="outlined"
                 size="small"
                 InputLabelProps={{

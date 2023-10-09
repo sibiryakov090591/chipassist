@@ -57,10 +57,7 @@ const OrderAddress: React.FC<Props> = ({ type, setStepHandler, openModal }) => {
     return {
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
-      company_name: {
-        ...formSchema.companyName,
-        presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
-      },
+      company_name: formSchema.companyName,
       line4: formSchema.city,
       postcode: formSchema.postcode,
       line1: formSchema.address,

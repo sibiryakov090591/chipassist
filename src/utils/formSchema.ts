@@ -33,6 +33,7 @@ const lastName = {
 };
 
 const companyName = {
+  presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
   format: {
     pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
     flags: "i",
