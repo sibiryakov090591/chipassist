@@ -449,6 +449,21 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       border: "1px solid #16BEA3",
       borderRadius: "2px",
     },
+    bestOfferLabel: {
+      top: "-22px",
+      position: "relative",
+      width: "fit-content",
+      right: 0,
+      float: "right",
+      fontSize: "0.74rem",
+      background: "#16BEA3",
+      color: "#fff",
+      border: "none",
+      padding: "0 7px",
+      borderRadius: "8px",
+      fontWeight: 600,
+      lineHeight: "1.1rem",
+    },
   }),
 );
 

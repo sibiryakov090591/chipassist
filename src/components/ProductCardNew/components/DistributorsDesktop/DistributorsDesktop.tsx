@@ -58,11 +58,6 @@ const sortFn = (stocks: any[][], name: string, direction: "desc" | "asc") => {
   });
 };
 
-const calculateBestOffer = (stocks: SortedStockrecord[]) => {
-  const sortedStocks = stocks.sort((elem, elem_next) => elem.price_1 - elem_next.price_1);
-  console.log(sortedStocks);
-};
-
 const DistributorsDesktop: React.FC<Props> = ({
   product,
   sortedStockrecords,
@@ -88,10 +83,21 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
+  const [bestOfferId, setBestOfferId] = useState(0);
   const [sortBy, setSortBy] = useState<{ name: string; direction: "desc" | "asc" }>({
     name: "updatedTime",
     direction: "asc",
   });
+
+  const calculateBestOffer = (stocks: any[][]) => {
+    if (stocks) {
+      const sortedStocks = sortFn(stocks, "price_1", "asc");
+      console.log("sortedStocks: ", sortedStocks);
+      const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
+      console.log("minValue: ", bestOffer);
+      if (bestOffer) setBestOfferId(bestOffer[0].id);
+    }
+  };
 
   useEffect(() => {
     if (sortedStockrecords) {
@@ -153,7 +159,7 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   useEffect(() => {
     if (stockrecords) {
-      calculateBestOffer(stockrecords[0]);
+      calculateBestOffer(stockrecords);
     }
   }, [stockrecords]);
 
@@ -382,6 +388,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 key={val.id}
                 className={clsx(classes.tr, {
                   [classes.active]: isShowMoreActive,
+                  [classes.bestOffer]: bestOfferId === val.id,
                 })}
                 style={val.num_in_stock === 0 ? { color: "#777" } : null}
               >
@@ -593,29 +600,32 @@ const DistributorsDesktop: React.FC<Props> = ({
                   </React.Fragment>
                 )}
                 <td className={classes.tdActions}>
-                  {isShowProductLink ? (
-                    <a
-                      href={val.product_url || seller.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                      onClick={visitSellerHandler(
-                        { id: val.partner, name: val.partner_name },
-                        val.product_url || seller.url,
-                      )}
-                    >
-                      Visit site
-                    </a>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      size="small"
-                      className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                      onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                    >
-                      Contact seller
-                    </Button>
-                  )}
+                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>Best offer</div>}
+                  <div>
+                    {isShowProductLink ? (
+                      <a
+                        href={val.product_url || seller.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={clsx(appTheme.hyperlink, classes.partnerLink)}
+                        onClick={visitSellerHandler(
+                          { id: val.partner, name: val.partner_name },
+                          val.product_url || seller.url,
+                        )}
+                      >
+                        Visit site
+                      </a>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                        onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
+                      >
+                        Contact seller
+                      </Button>
+                    )}
+                  </div>
                 </td>
               </tr>
             );
