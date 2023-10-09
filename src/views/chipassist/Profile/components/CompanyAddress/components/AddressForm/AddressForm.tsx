@@ -167,7 +167,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
                   shrink: true,
                 }}
                 name="company_name"
-                label={t("form_labels.company_name")}
+                label={`${t("form_labels.company_name")} *`}
                 defaultValue={(updateData && updateData.company_name) || ""}
                 fullWidth
                 {...register("company_name")}

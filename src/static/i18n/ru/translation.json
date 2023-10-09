@@ -557,6 +557,7 @@
     "moq": "MOQ",
     "pkg": "Pkg",
     "for_moq": "для MOQ",
+    "for_amount": "для кол-ва",
     "mpq": "MPQ",
     "updated": "Обновлено",
     "status": "Статус",

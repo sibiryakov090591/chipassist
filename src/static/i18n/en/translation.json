@@ -590,6 +590,7 @@
     "moq": "MOQ",
     "pkg": "Pkg",
     "for_moq": "for MOQ",
+    "for_amount": "for amount",
     "mpq": "MPQ",
     "updated": "Updated",
     "status": "Status",

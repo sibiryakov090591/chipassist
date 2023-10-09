@@ -91,10 +91,7 @@ const GeneralSettings = () => {
     return {
       firstName: formSchema.firstName,
       lastName: formSchema.lastName,
-      company_name: {
-        presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
-        ...formSchema.companyName,
-      },
+      company_name: formSchema.companyName,
       postcode: formSchema.postcode,
       line1: formSchema.address,
     };

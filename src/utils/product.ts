@@ -114,6 +114,11 @@ export const getCostAndQuantity = (quantity: number, stockrecord: Stockrecord, s
   return { price: p || {}, quantity: lineQuantity, cost, moq: dynamicMoq, amount };
 };
 
+export const getNextBiggerPriceBreak = (qty: number, stockrecord: Stockrecord) => {
+  if (!stockrecord?.id) return null;
+  return pricesSort(stockrecord.prices).find((price) => price.amount >= qty);
+};
+
 export const getPrice = (qty: number, stockrecord: Stockrecord, showBiggerPrice = true): number => {
   if (!stockrecord?.id) return null;
   const { price } = getCostAndQuantity(qty, stockrecord);
