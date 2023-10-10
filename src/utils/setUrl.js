@@ -22,10 +22,26 @@ export default function setUrl(navigate, path, page, pageSize, otherParams) {
   });
 }
 
-export const setUrlWithFilters = (pathname, navigate, query, page, pageSize, orderBy, filtersValues, baseFilters) => {
+export const setUrlWithFilters = (
+  pathname,
+  navigate,
+  query,
+  page,
+  pageSize,
+  orderBy,
+  filtersValues = null,
+  baseFilters = null,
+  otherParams = null,
+) => {
   let params = `?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}&page_size=${encodeURIComponent(
     pageSize,
   )}&order_by=${orderBy}`;
+
+  if (otherParams) {
+    Object.entries(otherParams).forEach((v) => {
+      if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
+    });
+  }
 
   if (filtersValues) {
     const localfiltersValues = { ...filtersValues };

@@ -30,6 +30,8 @@ const useSearchLoadResults = () => {
   page = useURLSearchParams("page", false, page, false);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
+  let smart_view = useAppSelector((state) => state.search.smart_view);
+  smart_view = useURLSearchParams("smart_view", false, smart_view, false);
   // const orderBy = useURLSearchParams(
   //   "order_by",
   //   false,
@@ -56,6 +58,7 @@ const useSearchLoadResults = () => {
     order_by: orderBy,
     search: query,
     ignore_count: true,
+    smart_view,
     ...baseFilters,
     ...filtersValues,
   });
@@ -64,7 +67,7 @@ const useSearchLoadResults = () => {
     batch(() => {
       if (searchTimeoutId) clearTimeout(searchTimeoutId);
       dispatch(loadBomListThunk(1, true));
-      dispatch(loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters))
+      dispatch(loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, { smart_view }))
         .then((res: any) => {
           setSearchTimeoutId(null);
           setStartReloadingTime(null);
