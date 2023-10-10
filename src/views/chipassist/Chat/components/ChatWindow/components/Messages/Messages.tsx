@@ -376,8 +376,8 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     <th>MPN</th>
                                     <th>DC</th>
                                     <th>{isXsDown ? "Qty" : "Quantity"}</th>
-                                    <th>{isXsDown ? "Price" : "Unit Price"}</th>
-                                    <th>{isXsDown ? "Total" : "Total Price"}</th>
+                                    <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
+                                    <th>{isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -385,8 +385,8 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     <td>{orderData.mpn}</td>
                                     <td>{orderData.datecode || "-"}</td>
                                     <td>{orderData.requested_qty}</td>
-                                    <td>{`${formatMoney(orderData.price)} ${symbol}`}</td>
-                                    <td>{`${formatMoney(orderData.totalPrice)} ${symbol}`}</td>
+                                    <td>{formatMoney(orderData.price)}</td>
+                                    <td>{formatMoney(orderData.totalPrice)}</td>
                                   </tr>
                                 </tbody>
                               </table>

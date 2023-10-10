@@ -220,6 +220,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       justifyContent: "flex-end",
       alignItems: "center",
       paddingTop: 12,
+      [theme.breakpoints.down("xs")]: {
+        padding: 12,
+      },
       "& img": {
         height: 20,
         marginRight: 4,
