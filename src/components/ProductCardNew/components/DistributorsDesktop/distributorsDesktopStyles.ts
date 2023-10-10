@@ -44,6 +44,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: "11%",
       textAlign: "left",
       padding: "7px 7px 7px 20px",
+      [theme.breakpoints.down("sm")]: {
+        width: "15%",
+      },
     },
     thSku: {
       width: "15%",

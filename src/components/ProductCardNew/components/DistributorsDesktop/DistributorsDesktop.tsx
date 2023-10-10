@@ -218,15 +218,17 @@ const DistributorsDesktop: React.FC<Props> = ({
             </TableSortLabel>
           </th>
           <th className={classes.thIcon}></th>
-          <th className={classes.thLeadPeriod}>
-            <TableSortLabel
-              active={sortBy?.name === "delivery_sort_value"}
-              direction={(sortBy?.name === "delivery_sort_value" && sortBy?.direction) || "desc"}
-              onClick={() => changeSort("delivery_sort_value")}
-            >
-              {t("distributor.lead_period")}
-            </TableSortLabel>
-          </th>
+          <Hidden smDown>
+            <th className={classes.thLeadPeriod}>
+              <TableSortLabel
+                active={sortBy?.name === "delivery_sort_value"}
+                direction={(sortBy?.name === "delivery_sort_value" && sortBy?.direction) || "desc"}
+                onClick={() => changeSort("delivery_sort_value")}
+              >
+                {t("distributor.lead_period")}
+              </TableSortLabel>
+            </th>
+          </Hidden>
           <th className={classes.thMoq}>
             <TableSortLabel
               active={sortBy?.name === "moq"}
@@ -237,7 +239,9 @@ const DistributorsDesktop: React.FC<Props> = ({
             </TableSortLabel>
           </th>
           <th className={classes.thMpq}>{t("distributor.mpq")}</th>
-          <th className={classes.thPkg}>{t("distributor.pkg")}</th>
+          <Hidden smDown>
+            <th className={classes.thPkg}>{t("distributor.pkg")}</th>
+          </Hidden>
           {showDC && (
             <th className={classes.thPkg}>
               <TableSortLabel
@@ -443,18 +447,22 @@ const DistributorsDesktop: React.FC<Props> = ({
                     </div>
                   )}
                 </td>
-                <td className={classes.trLeadTime}>
-                  {val.lead_period_str
-                    ? val.lead_period_str
-                    : val.lead_period
-                    ? `${val.lead_period}${t("common.d")}`
-                    : "-"}
-                </td>
+                <Hidden smDown>
+                  <td className={classes.trLeadTime}>
+                    {val.lead_period_str
+                      ? val.lead_period_str
+                      : val.lead_period
+                      ? `${val.lead_period}${t("common.d")}`
+                      : "-"}
+                  </td>
+                </Hidden>
                 <td className={classes.trMoq}>
                   <span>{formatMoney(MOQ, 0, ".", "`")}</span>
                 </td>
                 <td className={`${classes.trMpq} product-card-mpq`}>{val.mpq}</td>
-                <td className={`${!showDC ? classes.trPkg : classes.trPkgWithoutBorder}`}>{val.packaging || "-"}</td>
+                <Hidden smDown>
+                  <td className={`${!showDC ? classes.trPkg : classes.trPkgWithoutBorder}`}>{val.packaging || "-"}</td>
+                </Hidden>
                 {showDC && (
                   <td className={`${classes.trPkg}`}>
                     {dateCode ? (

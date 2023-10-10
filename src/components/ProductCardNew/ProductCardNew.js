@@ -34,6 +34,7 @@ const ProductCardNew = (props) => {
   const { currencyPrice } = useCurrency();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const initialMobileCard = useMediaQuery(theme.breakpoints.down(800));
 
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
@@ -309,21 +310,21 @@ const ProductCardNew = (props) => {
       </div>
       {!!availableStockrecords.length && (
         <div style={{ position: "relative" }}>
-          <Hidden smDown>
+          {!initialMobileCard && (
             <DistributorsDesktop
               product={product}
               sortedStockrecords={availableStockrecords}
               rfqOpenModal={sendRfqOpenModal}
               sellerMessageOpenModal={sellerMessageOpenModal}
             />
-          </Hidden>
-          <Hidden mdUp>
+          )}
+          {initialMobileCard && (
             <DistributorsMobile
               product={product}
               sortedStockrecords={availableStockrecords}
               sellerMessageOpenModal={sellerMessageOpenModal}
             />
-          </Hidden>
+          )}
         </div>
       )}
 
