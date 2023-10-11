@@ -2,6 +2,7 @@ import React from "react";
 import { Button, DialogContent, DialogActions, Dialog, Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import clsx from "clsx";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -54,7 +55,7 @@ const SetsModal: React.FC<Props> = ({ onConfirmHandler, onCloseHandler }) => {
               />
             </div>
             <Button
-              className={appTheme.buttonCreate}
+              className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
               onClick={onApplyHandler}
               color="primary"
               size="small"
@@ -62,7 +63,12 @@ const SetsModal: React.FC<Props> = ({ onConfirmHandler, onCloseHandler }) => {
             >
               {t("apply")}
             </Button>
-            <Button className={appTheme.buttonPrimary} onClick={onClose} size="small" variant="contained">
+            <Button
+              className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
+              onClick={onClose}
+              size="small"
+              variant="contained"
+            >
               {t("cancel")}
             </Button>
           </DialogActions>

@@ -151,7 +151,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register" }) => {
           <DialogActions style={{ justifyContent: "center" }}>
             {confirmed && (
               <Button
-                className={`${appTheme.buttonCreate} ${classes.button}`}
+                className={`${appTheme.buttonCreate} ${appTheme.buttonMinWidth} ${classes.button}`}
                 onClick={onCloseModal}
                 color="primary"
                 variant="contained"

@@ -3,7 +3,7 @@ import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
 import { Product, Stockrecord } from "@src/store/products/productTypes";
-import { getCostAndQuantity, getPrice } from "@src/utils/product";
+import { getCostAndQuantity, getNextBiggerPriceBreak } from "@src/utils/product";
 import clsx from "clsx";
 import Price from "@src/components/Price/Price";
 import { Button, Hidden, TableSortLabel, Tooltip, Box } from "@material-ui/core";
@@ -378,11 +378,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             let isShowPricesHint = false;
             sortedPrices.forEach((price) => {
               if (isShowPricesHint) return;
-              if (price.price === 0) return;
-
-              if ([1, 10, 100, 1000, 10000].every((i) => i !== price.amount)) {
-                isShowPricesHint = true;
-              }
+              isShowPricesHint = [1, 10, 100, 1000, 10000].every((i) => i !== price.amount);
             });
 
             const {
@@ -569,9 +565,11 @@ const DistributorsDesktop: React.FC<Props> = ({
                 )}
                 {!!sortedPrices.length && MOQ > 10000 && (
                   <td colSpan={isMdDown ? 3 : 5} style={{ textAlign: "center" }}>
-                    {`${t("distributor.moq_big")} `}
-                    {formatMoney(currencyPrice(getPrice(MOQ, val), val.price_currency))}
-                    {` ${t("distributor.for_moq")} ${MOQ}`}
+                    {getNextBiggerPriceBreak(10000, val)
+                      ? `${t("distributor.moq_big")} ${formatMoney(
+                          currencyPrice(getNextBiggerPriceBreak(10000, val).price, val.price_currency),
+                        )} ${t("distributor.for_amount")} ${getNextBiggerPriceBreak(10000, val).amount}`
+                      : t("distributor.price_upon_request")}
                   </td>
                 )}
                 {!!sortedPrices.length && MOQ <= 10000 && (

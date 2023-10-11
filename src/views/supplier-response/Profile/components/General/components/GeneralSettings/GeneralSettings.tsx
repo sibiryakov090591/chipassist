@@ -6,7 +6,6 @@ import {
   Theme,
   TextField,
   Grid,
-  Box,
   Button,
   InputAdornment,
   MenuItem,
@@ -27,6 +26,8 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useTheme } from "@material-ui/core/styles";
+import { clsx } from "clsx";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -99,6 +100,7 @@ interface FormState {
 const GeneralSettings = () => {
   // const { t } = useI18n("profile");
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const theme = useTheme();
   const dispatch = useAppDispatch();
@@ -398,24 +400,22 @@ const GeneralSettings = () => {
           </Grid>
 
           <Grid item md={12} xs={12}>
-            <Box display={"flex"} justifyContent={isXsDown ? "space-between" : "end"}>
+            <div className={commonClasses.actionsRow}>
               <Button
-                style={{ minWidth: 165, marginRight: !isXsDown ? 15 : 0 }}
-                className={appTheme.buttonPrimary}
+                className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
                 variant="outlined"
                 onClick={onCancel}
               >
                 Cancel
               </Button>
               <Button
-                style={{ minWidth: 165 }}
-                className={appTheme.buttonCreate}
+                className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
                 variant="contained"
                 onClick={onSubmit}
               >
                 Save
               </Button>
-            </Box>
+            </div>
           </Grid>
         </Grid>
       </CardContent>

@@ -131,6 +131,11 @@ const themeStylesICsearch = makeStyles((theme) => ({
       },
     },
   },
+  buttonMinWidth: {
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 165,
+    },
+  },
   buttonCancel: {
     backgroundColor: theme.palette.app.red500,
     color: theme.palette.white,

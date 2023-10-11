@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    paddingRight: "5px",
+    // paddingRight: "5px",
   },
   tabs: {
     marginTop: theme.spacing(3),

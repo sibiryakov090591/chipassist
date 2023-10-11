@@ -114,6 +114,11 @@ export const getCostAndQuantity = (quantity: number, stockrecord: Stockrecord, s
   return { price: p || {}, quantity: lineQuantity, cost, moq: dynamicMoq, amount };
 };
 
+export const getNextBiggerPriceBreak = (qty: number, stockrecord: Stockrecord) => {
+  if (!stockrecord?.id) return null;
+  return pricesSort(stockrecord.prices).find((price) => price.amount >= qty);
+};
+
 export const getPrice = (qty: number, stockrecord: Stockrecord, showBiggerPrice = true): number => {
   if (!stockrecord?.id) return null;
   const { price } = getCostAndQuantity(qty, stockrecord);
@@ -186,6 +191,7 @@ export const isDuplicateStockrecord = (haystack: Stockrecord[], needle: Stockrec
     ...templateRfq(st),
     manufacturerId: st.manufacturer?.id,
     partner: st.partner,
+    partner_sku: st.partner_sku,
   });
   return filteredHeystack.some((val) => {
     // const template = isProductAvailable(needle) && isProductAvailable(val) ? templateOnline : templateRfq;

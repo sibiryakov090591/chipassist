@@ -590,6 +590,7 @@
     "moq": "MOQ",
     "pkg": "Pkg",
     "for_moq": "for MOQ",
+    "for_amount": "for amount",
     "mpq": "MPQ",
     "updated": "Updated",
     "status": "Status",
@@ -1014,7 +1015,7 @@
     },
     "seller_message": {
       "title": "Contact seller",
-      "text": "Your request regarding <strong>{{mpn}}</strong> will be forwarded directly to the seller. The seller will reply back to you via email.",
+      "text": "Your request regarding <strong>{{mpn}}</strong> will be forwarded directly to the seller.",
       "message_placeholder": "Dear {{seller}}, I’d like to contact you regarding your offer for {{mpn}} on {{constantsTitle}}.",
       "send": "Send",
       "sending": "Sending",

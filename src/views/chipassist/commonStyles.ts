@@ -83,9 +83,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   actionsRow: {
     display: "flex",
     justifyContent: "flex-end",
-    "& > *": {
-      marginLeft: 16,
-    },
+    gridGap: 16,
   },
   closeButton: {
     position: "absolute",

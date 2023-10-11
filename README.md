@@ -7,13 +7,19 @@
 
 [requests.camaster.site](https://requests.camaster.site) — Dev requests
 
+### Git clone
+
+Create and set the SSH key to GitLab before.
+
+Clone repo: `git clone ssh://git@gitlab.icsearch.ru:2233/developers/fe_spaceone.git`
+
+
 ### Project Setup:
 
 - `npm install`
 - Copy `constants/{what_your_want}-defaults.js >> constants/defaults.js`
 - Add in your code editor EditorConfig, ESlint, TSLint, Prettier
 - Rules for EditorConfig (.editorconfig), ESlint (.eslintrc), TypeScript (tsconfig.json), Prettier (prettier.config.js)
-- To format *.ejs files use a plugin `prettier --plugin=prettier-plugin-ejs --write src/index.ejs`
 - JavaScript [airbnb](https://github.com/airbnb/javascript) rules
 - Husky for precommit hook. Please make commit via terminal
 

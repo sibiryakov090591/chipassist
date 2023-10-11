@@ -63,10 +63,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     flexDirection: "column",
   },
   buttons: {
-    display: "flex",
-    justifyContent: "flex-end",
-    "& > *": {
-      margin: theme.spacing(1),
+    margin: "2px 13px",
+    [theme.breakpoints.down(460)]: {
+      margin: "4px 0",
     },
   },
   dropdown: {

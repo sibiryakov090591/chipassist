@@ -10,6 +10,7 @@ import { saveRfqListItems } from "@src/store/rfq/rfqActions";
 import { updateBom, loadAllBomPagesThunk } from "@src/store/bom/bomActions";
 import { showAlertsModalMessageAction } from "@src/store/alerts/alertsActions";
 import useAppSelector from "@src/hooks/useAppSelector";
+import { clsx } from "clsx";
 // import { useStyles } from "./checkoutModalStyles";
 
 interface Props {
@@ -121,11 +122,16 @@ const CheckoutModal: React.FC<Props> = ({ onCloseModal, bom, setIsSending }) => 
         </DialogContent>
         <Box pt={2}>
           <DialogActions>
-            <Button className={appTheme.buttonPrimary} size="small" onClick={onCloseModal} variant="contained">
+            <Button
+              className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
+              size="small"
+              onClick={onCloseModal}
+              variant="contained"
+            >
               {t("checkout.cancel")}
             </Button>
             <Button
-              className={appTheme.buttonCreate}
+              className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
               size="small"
               onClick={confirmCheckout}
               color="primary"
