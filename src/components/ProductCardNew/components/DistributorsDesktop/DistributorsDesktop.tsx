@@ -102,7 +102,7 @@ const DistributorsDesktop: React.FC<Props> = ({
     if (stocks && partners) {
       const globalSellersAmount = stocks.filter((sRecord) => {
         const partner = partners?.find((i: any) => i.id === sRecord[0].partner);
-        return Object.prototype.hasOwnProperty.call(partner, "link_to_site");
+        return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
       }).length;
       if (globalSellersAmount > 4) {
         const filteredMultipleStocks = stocks.filter((sRecord) => sRecord[0].num_in_stock !== 0);
