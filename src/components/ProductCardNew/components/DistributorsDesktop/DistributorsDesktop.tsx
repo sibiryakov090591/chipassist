@@ -70,9 +70,11 @@ const DistributorsDesktop: React.FC<Props> = ({
   const commonClasses = useCommonStyles();
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const showSellerTooltip = false;
+  const lastPriceBreak = isSmDown ? 100 : 10000;
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const sellersWithProductLink = useAppSelector((state) =>
@@ -199,14 +201,16 @@ const DistributorsDesktop: React.FC<Props> = ({
             >
               Seller
             </TableSortLabel>
-            <TableSortLabel
-              active={sortBy?.name === "updatedTime"}
-              direction={(sortBy?.name === "updatedTime" && sortBy?.direction) || "asc"}
-              onClick={() => changeSort("updatedTime")}
-            >
-              <span className={classes.divider}>/</span>
-              Updated
-            </TableSortLabel>
+            {!isSmDown && (
+              <TableSortLabel
+                active={sortBy?.name === "updatedTime"}
+                direction={(sortBy?.name === "updatedTime" && sortBy?.direction) || "asc"}
+                onClick={() => changeSort("updatedTime")}
+              >
+                <span className={classes.divider}>/</span>
+                Updated
+              </TableSortLabel>
+            )}
           </th>
           <th className={classes.thStock}>
             <TableSortLabel
@@ -214,7 +218,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               direction={(sortBy?.name === "num_in_stock" && sortBy?.direction) || "desc"}
               onClick={() => changeSort("num_in_stock")}
             >
-              {t("distributor.in_stock")}
+              {isSmDown ? "Stock" : "In stock"}
             </TableSortLabel>
           </th>
           <th className={classes.thIcon}></th>
@@ -348,7 +352,8 @@ const DistributorsDesktop: React.FC<Props> = ({
             let isShowPricesHint = false;
             sortedPrices.forEach((price) => {
               if (isShowPricesHint) return;
-              isShowPricesHint = [1, 10, 100, 1000, 10000].every((i) => i !== price.amount);
+              const priceBreaks = isSmDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
+              isShowPricesHint = !priceBreaks.includes(price.amount);
             });
 
             const {
@@ -535,16 +540,16 @@ const DistributorsDesktop: React.FC<Props> = ({
                     {t("distributor.price_upon_request")}
                   </td>
                 )}
-                {!!sortedPrices.length && MOQ > 10000 && (
+                {!!sortedPrices.length && MOQ > lastPriceBreak && (
                   <td colSpan={isMdDown ? 3 : 5} style={{ textAlign: "center" }}>
-                    {getNextBiggerPriceBreak(10000, val)
+                    {getNextBiggerPriceBreak(lastPriceBreak, val)
                       ? `${t("distributor.moq_big")} ${formatMoney(
-                          currencyPrice(getNextBiggerPriceBreak(10000, val).price, val.price_currency),
-                        )} ${t("distributor.for_amount")} ${getNextBiggerPriceBreak(10000, val).amount}`
+                          currencyPrice(getNextBiggerPriceBreak(lastPriceBreak, val).price, val.price_currency),
+                        )} ${t("distributor.for_amount")} ${getNextBiggerPriceBreak(lastPriceBreak, val).amount}`
                       : t("distributor.price_upon_request")}
                   </td>
                 )}
-                {!!sortedPrices.length && MOQ <= 10000 && (
+                {!!sortedPrices.length && MOQ <= lastPriceBreak && (
                   <React.Fragment>
                     <td
                       className={clsx(classes.trPrice, classes.tr1, {

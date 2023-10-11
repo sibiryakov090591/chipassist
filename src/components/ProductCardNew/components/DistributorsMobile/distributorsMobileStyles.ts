@@ -10,12 +10,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderCollapse: "collapse",
     },
     headers: {
-      backgroundColor: "#f5f6f7",
+      // backgroundColor: "#f5f6f7",
+      backgroundColor: theme.palette.app.blue800,
       "& th": {
         fontSize: "0.9rem",
         fontWeight: "bold",
         padding: "2px 10px",
-        textAlign: "start",
+        backgroundColor: theme.palette.app.blue800,
+        color: "#ffffff",
       },
     },
     tableRow: {
@@ -39,14 +41,21 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     tdSeller: {
       wordBreak: "break-word",
-      width: "50%",
+      width: "40%",
+      textAlign: "start",
     },
     tdPrice: {
-      width: "25%",
+      width: "15%",
       whiteSpace: "nowrap",
+      textAlign: "end",
     },
     tdStock: {
-      width: "25%",
+      width: "15%",
+      textAlign: "end",
+    },
+    tdActions: {
+      width: "30%",
+      textAlign: "center",
     },
     tdIcon: {
       width: "35px",
@@ -78,9 +87,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textTransform: "none",
       fontWeight: "bold",
       whiteSpace: "nowrap",
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
+    },
+    partnerLink: {
+      color: "#16697a !important",
+      textDecoration: "underline",
     },
     detailsPriceRow: {
       borderTop: "1px solid #ddd",

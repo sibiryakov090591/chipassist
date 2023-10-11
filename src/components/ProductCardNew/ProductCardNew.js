@@ -173,8 +173,10 @@ const ProductCardNew = (props) => {
     [rfq],
   );
   const sellerMessageOpenModal = React.useCallback(
-    (sellerId, sellerName, stockrecordId) => () =>
-      dispatch(setSellerMessageData(true, product.upc, sellerId, sellerName, stockrecordId)),
+    (sellerId, sellerName, stockrecordId) => (e) => {
+      e.stopPropagation();
+      return dispatch(setSellerMessageData(true, product.upc, sellerId, sellerName, stockrecordId));
+    },
     [product],
   );
 

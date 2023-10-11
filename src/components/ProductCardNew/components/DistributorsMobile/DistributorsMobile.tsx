@@ -38,7 +38,8 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const visitSellerHandler = (seller: Seller, url: string) => () => {
+  const visitSellerHandler = (seller: Seller, url: string) => (e: React.ChangeEvent<any>) => {
+    e.stopPropagation();
     dispatch(
       sendFeedbackMessageThunk("seller_site", {
         seller,
@@ -56,6 +57,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
             <th className={classes.tdSeller}>Seller</th>
             <th className={classes.tdPrice}>Unit price</th>
             <th className={classes.tdStock}>Stock</th>
+            <th className={classes.tdActions}></th>
             <th className={classes.tdIcon} />
           </tr>
         </thead>
@@ -87,12 +89,37 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         t("distributor.price_by_request")}
                     </td>
                     <td className={classes.tdStock}>{formatMoney(val.num_in_stock, 0, ".", "`") || 0}</td>
+                    <td className={classes.tdActions}>
+                      {isShowProductLink ? (
+                        <a
+                          href={val.product_url || seller.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={clsx(appTheme.hyperlink, classes.partnerLink)}
+                          onClick={visitSellerHandler(
+                            { id: val.partner, name: val.partner_name },
+                            val.product_url || seller.url,
+                          )}
+                        >
+                          Visit site
+                        </a>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                          onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
+                          size="small"
+                        >
+                          Contact seller
+                        </Button>
+                      )}
+                    </td>
                     <td className={classes.tdIcon}>
                       <ExpandMoreIcon className={clsx(classes.icon, { expanded: isExpanded })} />
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan={4}>
+                    <td colSpan={5}>
                       <Collapse in={!!expanded[val.id]}>
                         <div className={classes.details}>
                           <Box p="5px 10px" display="flex" flexWrap="wrap" justifyContent="space-between">
@@ -127,36 +154,6 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             <div>
                               <div className={classes.detailsLabel}>Package</div>
                               <div>{val.packaging || "-"}</div>
-                            </div>
-                            <div className={classes.buttonColumn}>
-                              {isShowProductLink ? (
-                                <a
-                                  href={val.product_url || seller.url}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  onClick={visitSellerHandler(
-                                    { id: val.partner, name: val.partner_name },
-                                    val.product_url || seller.url,
-                                  )}
-                                >
-                                  <Button
-                                    variant="contained"
-                                    className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                                    size="small"
-                                  >
-                                    Visit site
-                                  </Button>
-                                </a>
-                              ) : (
-                                <Button
-                                  variant="contained"
-                                  className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                                  onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                                  size="small"
-                                >
-                                  Contact seller
-                                </Button>
-                              )}
                             </div>
                           </Box>
                           {!!sortedPrices.length && (
