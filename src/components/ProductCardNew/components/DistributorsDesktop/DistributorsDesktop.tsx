@@ -75,7 +75,6 @@ const DistributorsDesktop: React.FC<Props> = ({
   const showSellerTooltip = false;
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
-  const isSmartView = localStorage.getItem("smart_view");
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
@@ -95,20 +94,6 @@ const DistributorsDesktop: React.FC<Props> = ({
       const sortedStocks = sortFn(stocks, "price_1", "asc");
       const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
       if (bestOffer) setBestOfferId(bestOffer[0].id);
-    }
-  };
-
-  const deleteEmptyRowsFromMultiple = (stocks: any[][]) => {
-    if (stocks && partners) {
-      const globalSellersAmount = stocks.filter((sRecord) => {
-        const partner = partners?.find((i: any) => i.id === sRecord[0].partner);
-        return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
-      }).length;
-      if (globalSellersAmount > 4) {
-        const filteredMultipleStocks = stocks.filter((sRecord) => sRecord[0].num_in_stock !== 0);
-        console.log(filteredMultipleStocks);
-        setStockrecords(filteredMultipleStocks);
-      }
     }
   };
 
@@ -169,10 +154,6 @@ const DistributorsDesktop: React.FC<Props> = ({
       setStockrecords(sortFn(res, sortBy.name, sortBy.direction));
     }
   }, [sortedStockrecords, sortBy]);
-
-  useEffect(() => {
-    if (stockrecords && isSmartView) deleteEmptyRowsFromMultiple(stockrecords);
-  }, [isSmartView]);
 
   useEffect(() => {
     if (stockrecords) {

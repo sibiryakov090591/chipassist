@@ -35,6 +35,8 @@ const ProductCardNew = (props) => {
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const smart_view = useAppSelector((state) => state.search.smart_view);
+  const partners = useAppSelector((state) => state.sellers.items);
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
   const currency = useAppSelector((state) => state.currency);
@@ -113,19 +115,28 @@ const ProductCardNew = (props) => {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (product.stockrecords) {
+    if (product.stockrecords && partners) {
       const noDuplicatedStockrecords = product.stockrecords.filter((sr) => !!sr.id);
       // .reduce((acc, val) => {
       //   return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
       // }, []);
+      const globalSellersAmount = noDuplicatedStockrecords.filter((sRecord) => {
+        const partner = partners?.find((i) => i.id === sRecord.partner);
+        return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
+      }).length;
 
-      const bestDateUpdated = noDuplicatedStockrecords.reduce((acc, sr) => {
+      const filteredMultipleStocks =
+        globalSellersAmount > 4 && smart_view
+          ? noDuplicatedStockrecords.filter((sRecord) => sRecord.num_in_stock !== 0)
+          : noDuplicatedStockrecords;
+
+      const bestDateUpdated = filteredMultipleStocks.reduce((acc, sr) => {
         const updatedTime = new Date(sr.date_updated.replace(/ /g, "T")).getTime();
         return Math.max(acc, updatedTime);
       }, 0);
 
       setSortedStockrecords(
-        noDuplicatedStockrecords.map((val) => {
+        filteredMultipleStocks.map((val) => {
           const isElfaroSeller = val.partner_name?.toLowerCase().includes("elfaro");
           const dateUpdated = isElfaroSeller
             ? Date.now() >= bestDateUpdated + 3000
@@ -157,7 +168,7 @@ const ProductCardNew = (props) => {
         }),
       );
     }
-  }, [product.stockrecords, currency]);
+  }, [product.stockrecords, currency, smart_view, partners]);
 
   useEffect(() => {
     if (sortedStockrecords) {
