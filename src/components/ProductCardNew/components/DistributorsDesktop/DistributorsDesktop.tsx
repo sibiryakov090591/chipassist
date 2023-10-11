@@ -75,6 +75,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const showSellerTooltip = false;
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
+  const isSmartView = localStorage.getItem("smart_view");
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
@@ -84,7 +85,6 @@ const DistributorsDesktop: React.FC<Props> = ({
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
   const [bestOfferId, setBestOfferId] = useState(0);
-  const [isSmartView, setIsSmartView] = useState(false);
   const [sortBy, setSortBy] = useState<{ name: string; direction: "desc" | "asc" }>({
     name: "updatedTime",
     direction: "asc",
@@ -106,6 +106,7 @@ const DistributorsDesktop: React.FC<Props> = ({
       }).length;
       if (globalSellersAmount > 4) {
         const filteredMultipleStocks = stocks.filter((sRecord) => sRecord[0].num_in_stock !== 0);
+        console.log(filteredMultipleStocks);
         setStockrecords(filteredMultipleStocks);
       }
     }
@@ -176,7 +177,6 @@ const DistributorsDesktop: React.FC<Props> = ({
   useEffect(() => {
     if (stockrecords) {
       calculateBestOffer(stockrecords);
-      setIsSmartView(true);
     }
   }, [stockrecords]);
 
