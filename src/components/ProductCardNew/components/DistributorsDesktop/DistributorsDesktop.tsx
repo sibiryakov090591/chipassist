@@ -84,6 +84,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
   const [bestOfferId, setBestOfferId] = useState(0);
+  const [isSmartView, setIsSmartView] = useState(false);
   const [sortBy, setSortBy] = useState<{ name: string; direction: "desc" | "asc" }>({
     name: "updatedTime",
     direction: "asc",
@@ -92,10 +93,21 @@ const DistributorsDesktop: React.FC<Props> = ({
   const calculateBestOffer = (stocks: any[][]) => {
     if (stocks) {
       const sortedStocks = sortFn(stocks, "price_1", "asc");
-      console.log("sortedStocks: ", sortedStocks);
       const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
-      console.log("minValue: ", bestOffer);
       if (bestOffer) setBestOfferId(bestOffer[0].id);
+    }
+  };
+
+  const deleteEmptyRowsFromMultiple = (stocks: any[][]) => {
+    if (stocks && partners) {
+      const globalSellersAmount = stocks.filter((sRecord) => {
+        const partner = partners?.find((i: any) => i.id === sRecord[0].partner);
+        return Object.prototype.hasOwnProperty.call(partner, "link_to_site");
+      }).length;
+      if (globalSellersAmount > 4) {
+        const filteredMultipleStocks = stocks.filter((sRecord) => sRecord[0].num_in_stock !== 0);
+        setStockrecords(filteredMultipleStocks);
+      }
     }
   };
 
@@ -158,8 +170,13 @@ const DistributorsDesktop: React.FC<Props> = ({
   }, [sortedStockrecords, sortBy]);
 
   useEffect(() => {
+    if (stockrecords && isSmartView) deleteEmptyRowsFromMultiple(stockrecords);
+  }, [isSmartView]);
+
+  useEffect(() => {
     if (stockrecords) {
       calculateBestOffer(stockrecords);
+      setIsSmartView(true);
     }
   }, [stockrecords]);
 
@@ -389,8 +406,8 @@ const DistributorsDesktop: React.FC<Props> = ({
                 className={clsx(classes.tr, {
                   [classes.active]: isShowMoreActive,
                   [classes.bestOffer]: bestOfferId === val.id,
+                  [classes.emptyStock]: val.num_in_stock === 0,
                 })}
-                style={val.num_in_stock === 0 ? { color: "#777" } : null}
               >
                 <td className={clsx(classes.trDistributor, "product-seller")}>
                   {showSellerTooltip ? (

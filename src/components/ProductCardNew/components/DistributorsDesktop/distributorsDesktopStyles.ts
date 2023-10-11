@@ -449,6 +449,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     bestOffer: {
       border: "1px solid #16BEA3",
       borderRadius: "2px",
+      backgroundColor: "#fff",
     },
     bestOfferLabel: {
       position: "absolute",
@@ -461,6 +462,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderRadius: "50ch",
       fontWeight: 600,
       lineHeight: "1.1rem",
+    },
+    emptyStock: {
+      color: "#777",
     },
   }),
 );
