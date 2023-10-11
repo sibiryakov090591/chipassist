@@ -74,7 +74,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const showSellerTooltip = false;
-  const lastPriceBreak = isSmDown ? 100 : 10000;
+  const lastPriceBreak = isMdDown ? 100 : 10000;
 
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const sellersWithProductLink = useAppSelector((state) =>
@@ -352,7 +352,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             let isShowPricesHint = false;
             sortedPrices.forEach((price) => {
               if (isShowPricesHint) return;
-              const priceBreaks = isSmDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
+              const priceBreaks = isMdDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
               isShowPricesHint = !priceBreaks.includes(price.amount);
             });
 
