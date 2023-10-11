@@ -34,16 +34,9 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 0,
       },
     },
-    [theme.breakpoints.down("sm")]: {
-      paddingRight: "initial",
-      height: 155,
-    },
   },
   container: {
     marginTop: 133,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 155,
-    },
     display: "flex",
     flexGrow: 1,
     width: "100vw",
