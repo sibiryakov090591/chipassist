@@ -86,22 +86,11 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
-  const [bestOfferId, setBestOfferId] = useState(0);
+  const [bestOfferId, setBestOfferId] = useState<number>(null);
   const [sortBy, setSortBy] = useState<{ name: string; direction: "desc" | "asc" }>({
     name: "updatedTime",
     direction: "asc",
   });
-
-  const calculateBestOffer = (stocks: any[][]) => {
-    if (stocks && smart_view) {
-      const sortedStocks = sortFn(stocks, "price_1", "asc");
-      const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
-      if (bestOffer) {
-        setBestOfferId(bestOffer[0].id);
-        // setStockrecords((prevState) => ({ bestOffer, ...prevState.filter((elem) => elem[0].id !== bestOffer[0].id) }));
-      }
-    }
-  };
 
   useEffect(() => {
     if (sortedStockrecords) {
@@ -162,10 +151,14 @@ const DistributorsDesktop: React.FC<Props> = ({
   }, [sortedStockrecords, sortBy]);
 
   useEffect(() => {
-    if (stockrecords) {
-      calculateBestOffer(stockrecords);
-    }
-  }, [stockrecords]);
+    if (stockrecords && smart_view) {
+      const sortedStocks = sortFn(stockrecords, "price_1", "asc");
+      const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
+      if (bestOffer) {
+        setBestOfferId(bestOffer[0].id);
+      }
+    } else if (setBestOfferId) setBestOfferId(null);
+  }, [stockrecords, smart_view]);
 
   function getBasedOnNumInStockPriceData(targetProduct: Product, stockrecord: Stockrecord) {
     let price = null;
