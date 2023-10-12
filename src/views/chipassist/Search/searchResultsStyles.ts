@@ -98,7 +98,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     stickyContainerMarginMobile: {
       "& > div": {
         "&.sticky": {
-          marginTop: 155,
+          marginTop: 133,
         },
       },
     },

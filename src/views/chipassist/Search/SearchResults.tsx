@@ -135,6 +135,10 @@ const SearchResults = () => {
   ]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [isLoadingSearchResultsInProgress]);
+
+  useEffect(() => {
     if (
       constants.id === ID_MASTER &&
       !localStorage.getItem("tutorialCompleted") &&
@@ -264,7 +268,6 @@ const SearchResults = () => {
     );
     dispatch(toggleReloadSearchFlag());
     localStorage.setItem("productStock", "false");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

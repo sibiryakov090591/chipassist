@@ -247,11 +247,11 @@ const TopBar = (props) => {
                 isHomePageSuggestions={true}
               />
             </div>
-            <TrySearchPn
-              partNumbers={partNumberExamples || partNumbers}
-              textClassName={classes.tryP}
-              pnClassName={classes.trySpan}
-            />
+            {/* <TrySearchPn */}
+            {/*  partNumbers={partNumberExamples || partNumbers} */}
+            {/*  textClassName={classes.tryP} */}
+            {/*  pnClassName={classes.trySpan} */}
+            {/* /> */}
           </div>
         </Hidden>
       </AppBar>
