@@ -77,26 +77,28 @@ export const useStyles = makeStyles((theme) => ({
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
     backgroundColor: "#fafafa",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down(565)]: {
       gridTemplateColumns: "repeat(3, 1fr)",
-    },
-    [theme.breakpoints.down(450)]: {
-      gridTemplateColumns: "repeat(2, 1fr)",
     },
   },
   iconWrapper: {
     justifyContent: "center",
     margin: "20px 14px",
     textAlign: "center",
-    "&:last-child .product-card-icon-wrapper": {
-      height: 18,
-      margin: "11px 0",
+    [theme.breakpoints.up(565)]: {
+      "&:last-child .product-card-icon-wrapper": {
+        height: 18,
+        margin: "11px 0",
+        [theme.breakpoints.down("sm")]: {
+          height: 20,
+          margin: "5px 0",
+        },
+      },
     },
     "& .product-card-icon-wrapper": {
       height: 40,
-      "&:last-child": {
-        height: 18,
-        margin: "11px 0",
+      [theme.breakpoints.down("sm")]: {
+        height: 30,
       },
     },
     "& img": {
@@ -104,8 +106,9 @@ export const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
+      justifyContent: "flex-start",
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down(565)]: {
       margin: "20px 2px",
     },
   },
@@ -113,13 +116,17 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: 12,
     [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
-      marginTop: 12,
+      marginTop: 4,
     },
   },
   iconValue: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 15,
+      marginBottom: 0,
+    },
   },
   availableItemsHint: {
     textAlign: "center",
