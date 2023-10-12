@@ -116,20 +116,21 @@ const ProductCardNew = (props) => {
 
   useEffect(() => {
     if (product.stockrecords && partners) {
-      const noDuplicatedStockrecords = product.stockrecords.filter((sr) => !!sr.id);
+      let filteredMultipleStocks = product.stockrecords.filter((sr) => !!sr.id);
       // .reduce((acc, val) => {
       //   return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
       // }, []);
-      const globalSellersAmount = noDuplicatedStockrecords.filter((sRecord) => {
-        const partner = partners?.find((i) => i.id === sRecord.partner);
-        return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
-      }).length;
+      if (smart_view) {
+        const globalSellersAmount = filteredMultipleStocks.filter((sRecord) => {
+          const partner = partners?.find((i) => i.id === sRecord.partner);
+          return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
+        }).length;
 
-      const filteredMultipleStocks =
-        globalSellersAmount > 4 && smart_view
-          ? noDuplicatedStockrecords.filter((sRecord) => sRecord.num_in_stock !== 0)
-          : noDuplicatedStockrecords;
-
+        filteredMultipleStocks =
+          globalSellersAmount > 4
+            ? filteredMultipleStocks.filter((sRecord) => sRecord.num_in_stock > 0)
+            : filteredMultipleStocks;
+      }
       const bestDateUpdated = filteredMultipleStocks.reduce((acc, sr) => {
         const updatedTime = new Date(sr.date_updated.replace(/ /g, "T")).getTime();
         return Math.max(acc, updatedTime);
