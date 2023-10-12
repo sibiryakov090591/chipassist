@@ -49,6 +49,7 @@ const initialState: SearchState = {
 
   filterSize: 20,
   filterInc: 0,
+  smart_view: localStorage.getItem("smart_view") === "true",
 
   baseFilters: { ...getBaseFiltersInitialState() },
 };
@@ -160,6 +161,9 @@ export default function search(state = initialState, action: actionTypes.SearchA
 
     case actionTypes.TOGGLE_RELOAD_SEARCH_FLAG:
       return updateObject(state, { reloadSearchFlag: !state.reloadSearchFlag });
+
+    case actionTypes.TOGGLE_SMART_VIEW:
+      return updateObject(state, { smart_view: !state.smart_view });
 
     case actionTypes.CREATE_FILTER_FIELDS:
       return updateObject(state, {

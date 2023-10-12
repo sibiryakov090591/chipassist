@@ -54,6 +54,7 @@ export const loadSearchResultsActionThunk = (
   orderBy: string,
   filtersValues: { [index: string]: number | string },
   baseFilters: { [index: string]: any },
+  otherParams: { [index: string]: any } = null,
   component = "search",
   removeAuth = false,
 ) => {
@@ -62,6 +63,7 @@ export const loadSearchResultsActionThunk = (
     if (constants.id === ID_ELFARO) {
       filters = { ...filters, rfq: localStorage.getItem("productStock") === "true" ? 0 : 1 };
     }
+    if (otherParams) filters = { ...filters, ...otherParams };
     // await dispatch(loadProductsRfqData(query, page, pageSize, orderBy));
     return dispatch(sendFiltersValueAction(page, pageSize, orderBy, filters, component, true, removeAuth))
       .then((response: any) => {
@@ -87,7 +89,17 @@ export const loadSearchResultsActionThunk = (
         dispatch(cancelExtendedSearch());
         if (e?.response?.status === 401) {
           return dispatch(
-            loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, component, true),
+            loadSearchResultsActionThunk(
+              query,
+              page,
+              pageSize,
+              orderBy,
+              filtersValues,
+              baseFilters,
+              otherParams,
+              component,
+              true,
+            ),
           );
         }
         throw e;
@@ -732,6 +744,12 @@ export const setExtendedSearchFinished = () => {
 export const setSearchFinished = () => {
   return {
     type: actionTypes.SEND_FILTERS_VALUES_F,
+  };
+};
+
+export const toggleSmartView = () => {
+  return {
+    type: actionTypes.TOGGLE_SMART_VIEW,
   };
 };
 
