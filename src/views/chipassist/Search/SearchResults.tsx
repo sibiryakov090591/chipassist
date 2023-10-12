@@ -34,6 +34,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import { ShowProductRequestHint } from "@src/store/products/productsActions";
+import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -67,6 +68,8 @@ const SearchResults = () => {
     localStorage.getItem("mainOrderBy") || orderByValues[0].value,
     false,
   );
+  let smart_view = useAppSelector((state) => state.search.smart_view);
+  smart_view = useURLSearchParams("smart_view", false, smart_view, false) === "true";
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
   filtersValues.base_num_in_stock = constants.isNewSearchPage
     ? 0
@@ -217,11 +220,16 @@ const SearchResults = () => {
   };
 
   const onChangePageSize = (value: string) => {
-    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, baseFilters);
+    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, baseFilters, {
+      smart_view,
+    });
   };
 
   const onPageChangeHandle = (data: any) => {
-    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, baseFilters);
+    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, baseFilters, {
+      smart_view,
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // const onOrderChange = (value: string) => {
@@ -243,11 +251,21 @@ const SearchResults = () => {
   };
 
   const onChangeInStock = () => {
-    setUrlWithFilters(window.location.pathname, navigate, isSearchPage ? query : "", 1, pageSize, orderBy, null, {
-      ...baseFilters,
-      base_in_stock: false,
-      base_num_in_stock: "",
-    });
+    setUrlWithFilters(
+      window.location.pathname,
+      navigate,
+      isSearchPage ? query : "",
+      1,
+      pageSize,
+      orderBy,
+      null,
+      {
+        ...baseFilters,
+        base_in_stock: false,
+        base_num_in_stock: "",
+      },
+      { smart_view },
+    );
     dispatch(toggleReloadSearchFlag());
     localStorage.setItem("productStock", "false");
   };
@@ -327,6 +345,9 @@ const SearchResults = () => {
                         <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
                         {!constants.isNewSearchPage && (
                           <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+                        )}
+                        {!isSmDown && (
+                          <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
                         )}
                         <FilterCurrency />
                         {!isSmDown && (

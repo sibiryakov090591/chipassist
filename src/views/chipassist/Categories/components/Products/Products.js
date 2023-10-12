@@ -89,6 +89,7 @@ const Products = (props) => {
         orderBy,
         filtersValues,
         Object.keys(base).length ? base : null,
+        null,
         "products",
       ),
     );
