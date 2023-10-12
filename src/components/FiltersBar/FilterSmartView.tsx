@@ -34,7 +34,7 @@ const SmartView: React.FC<Props> = ({ disable }) => {
       smart_view: !smart_view,
     });
     dispatch(toggleSmartView());
-    dispatch(toggleReloadSearchFlag());
+    // dispatch(toggleReloadSearchFlag());
   };
 
   return (
