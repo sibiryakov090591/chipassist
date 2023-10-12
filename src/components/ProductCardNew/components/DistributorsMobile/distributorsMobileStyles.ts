@@ -5,7 +5,7 @@ import { AppTheme } from "@src/themes/AppTheme";
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     table: {
-      // tableLayout: "fixed",
+      tableLayout: "fixed",
       width: "100%",
       borderCollapse: "collapse",
     },
@@ -40,27 +40,37 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     tdSeller: {
-      wordBreak: "break-word",
-      width: "40%",
+      wordBreak: "normal",
       textAlign: "start",
     },
     tdPrice: {
       width: "15%",
       whiteSpace: "nowrap",
       textAlign: "end",
+      [theme.breakpoints.down(500)]: {
+        width: "auto",
+      },
     },
     tdStock: {
-      width: "15%",
+      width: "20%",
       textAlign: "end",
+      [theme.breakpoints.down(500)]: {
+        width: "auto",
+      },
     },
     tdActions: {
-      width: "30%",
+      width: 130,
       textAlign: "center",
+      paddingLeft: "40px !important",
+      paddingRight: "0 !important",
+      [theme.breakpoints.down(500)]: {
+        width: 100,
+        paddingLeft: "8px !important",
+      },
     },
     tdIcon: {
-      width: "35px",
+      width: 43,
       textAlign: "end",
-      paddingRight: "20px !important",
     },
     icon: {
       transition: "all 180ms ease",

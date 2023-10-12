@@ -22,6 +22,7 @@ import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import Star from "@src/images/search_page/star.png";
 import { toInteger } from "lodash";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
+import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -78,9 +79,6 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   const smart_view = useAppSelector((state) => state.search.smart_view);
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
-  const sellersWithProductLink = useAppSelector((state) =>
-    state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
-  );
   const partners = useAppSelector((state) => state.sellers.items);
   const checkout = useAppSelector((state) => state.checkout);
 
@@ -230,21 +228,21 @@ const DistributorsDesktop: React.FC<Props> = ({
               direction={(sortBy?.name === "num_in_stock" && sortBy?.direction) || "desc"}
               onClick={() => changeSort("num_in_stock")}
             >
-              {isSmDown ? "Stock" : "In stock"}
+              Stock
             </TableSortLabel>
           </th>
           <th className={classes.thIcon}></th>
-          <Hidden smDown>
-            <th className={classes.thLeadPeriod}>
-              <TableSortLabel
-                active={sortBy?.name === "delivery_sort_value"}
-                direction={(sortBy?.name === "delivery_sort_value" && sortBy?.direction) || "desc"}
-                onClick={() => changeSort("delivery_sort_value")}
-              >
-                {t("distributor.lead_period")}
-              </TableSortLabel>
-            </th>
-          </Hidden>
+          {/* <Hidden smDown> */}
+          {/*  <th className={classes.thLeadPeriod}> */}
+          {/*    <TableSortLabel */}
+          {/*      active={sortBy?.name === "delivery_sort_value"} */}
+          {/*      direction={(sortBy?.name === "delivery_sort_value" && sortBy?.direction) || "desc"} */}
+          {/*      onClick={() => changeSort("delivery_sort_value")} */}
+          {/*    > */}
+          {/*      {t("distributor.lead_period")} */}
+          {/*    </TableSortLabel> */}
+          {/*  </th> */}
+          {/* </Hidden> */}
           <th className={classes.thMoq}>
             <TableSortLabel
               active={sortBy?.name === "moq"}
@@ -355,13 +353,16 @@ const DistributorsDesktop: React.FC<Props> = ({
           return srArray.map((val, index) => {
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
-            const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-            const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
+            const partner = partners?.find((i: any) => i.id === val.partner);
+            const isShowProductLink =
+              partner &&
+              Object.prototype.hasOwnProperty.call(partner, "link_to_site") &&
+              (!!val.product_url || !!partner.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
+            const isShowQualityCheck = !isMdDown; // && partner && Object.prototype.hasOwnProperty.call(partner, "quality_check");
             const MOQ = val.moq;
             const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
-            const partner = partners?.find((i: any) => i.id === val.partner);
             const rank = partner && !!toInteger(partner.rank) ? Math.trunc((toInteger(partner.rank) + 1) / 2) : 0;
             const country =
               partner && partner.country
@@ -399,58 +400,86 @@ const DistributorsDesktop: React.FC<Props> = ({
                 })}
               >
                 <td className={clsx(classes.trDistributor, "product-seller")}>
-                  {showSellerTooltip ? (
-                    <Tooltip
-                      classes={{ tooltip: classes.tooltip, popper: classes.tooltipPopper }}
-                      placement="right"
-                      interactive
-                      title={
-                        <div>
-                          <h4 className={classes.tooltipTitle}>{val.partner_name}</h4>
-                          {/* <Rating value={4} readOnly /> */}
-                          <p>
-                            {val.partner_url
-                              ? "Check this product on seller`s website or request it on ChipAssist"
-                              : "You can request this product directly on ChipAssist"}
-                          </p>
-                          {val.partner_url && (
-                            <Box mb={0.5}>
-                              <a href={val.partner_url} target="_blank" rel="noreferrer" className={appTheme.hyperlink}>
-                                View on seller`s website
-                              </a>
-                            </Box>
-                          )}
-                          <Button variant="contained" className={appTheme.buttonCreate} onClick={rfqOpenModal}>
-                            Quick request
-                          </Button>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <div>
+                      {showSellerTooltip ? (
+                        <Tooltip
+                          classes={{ tooltip: classes.tooltip, popper: classes.tooltipPopper }}
+                          placement="right"
+                          interactive
+                          title={
+                            <div>
+                              <h4 className={classes.tooltipTitle}>{val.partner_name}</h4>
+                              {/* <Rating value={4} readOnly /> */}
+                              <p>
+                                {val.partner_url
+                                  ? "Check this product on seller`s website or request it on ChipAssist"
+                                  : "You can request this product directly on ChipAssist"}
+                              </p>
+                              {val.partner_url && (
+                                <Box mb={0.5}>
+                                  <a
+                                    href={val.partner_url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className={appTheme.hyperlink}
+                                  >
+                                    View on seller`s website
+                                  </a>
+                                </Box>
+                              )}
+                              <Button variant="contained" className={appTheme.buttonCreate} onClick={rfqOpenModal}>
+                                Quick request
+                              </Button>
+                            </div>
+                          }
+                        >
+                          <span className={clsx(classes.partnerName, appTheme.hyperlink)}>{val.partner_name}</span>
+                        </Tooltip>
+                      ) : (
+                        <span className={classes.partnerName}>{val.partner_name}</span>
+                      )}
+                      {dateUpdated && (
+                        <div className={classes.dateUpdated}>
+                          {formatDistanceToNowStrict(dateUpdated, {
+                            addSuffix: true,
+                          })}
                         </div>
-                      }
-                    >
-                      <span className={clsx(classes.partnerName, appTheme.hyperlink)}>{val.partner_name}</span>
-                    </Tooltip>
-                  ) : (
-                    <span className={classes.partnerName}>{val.partner_name}</span>
-                  )}
-                  {dateUpdated && (
-                    <div className={classes.dateUpdated}>
-                      {formatDistanceToNowStrict(dateUpdated, {
-                        addSuffix: true,
-                      })}
+                      )}
+                      {rank > 0 && (
+                        <div className={classes.dateUpdated}>
+                          {[...Array(rank > 5 ? 5 : rank)].map((n, i) => (
+                            <img key={i} className={classes.statIcon} src={Star} alt={"rank"} />
+                          ))}
+                        </div>
+                      )}
+                      {country && (
+                        <div className={clsx(classes.dateUpdated, classes.country)}>
+                          <LocationOnOutlinedIcon fontSize={"small"} />
+                          {partner.global === "1" ? "Global" : country}
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {rank > 0 && (
-                    <div className={classes.dateUpdated}>
-                      {[...Array(rank > 5 ? 5 : rank)].map((n, i) => (
-                        <img key={i} className={classes.statIcon} src={Star} alt={"rank"} />
-                      ))}
-                    </div>
-                  )}
-                  {country && (
-                    <div className={clsx(classes.dateUpdated, classes.country)}>
-                      <LocationOnOutlinedIcon fontSize={"small"} />
-                      {partner.global === "1" ? "Global" : country}
-                    </div>
-                  )}
+                    {isShowQualityCheck && (
+                      <Tooltip
+                        enterTouchDelay={1}
+                        classes={{ tooltip: clsx(commonClasses.tooltip, classes.tooltipMaxWidth) }}
+                        title={
+                          <div>
+                            You can have 10% OFF on components quality check with ChipAssist before purchase. Contact us
+                            for further details.
+                          </div>
+                        }
+                      >
+                        <div className={classes.qualityCheck}>
+                          <HelpOutlineOutlinedIcon />
+                          10% OFF
+                          <br />
+                          QUALITY CHECK
+                        </div>
+                      </Tooltip>
+                    )}
+                  </Box>
                 </td>
                 <td className={`${classes.trStock} product-stock`}>
                   {formatMoney(val.num_in_stock, 0, ".", "`")}
@@ -472,15 +501,15 @@ const DistributorsDesktop: React.FC<Props> = ({
                     </div>
                   )}
                 </td>
-                <Hidden smDown>
-                  <td className={classes.trLeadTime}>
-                    {val.lead_period_str
-                      ? val.lead_period_str
-                      : val.lead_period
-                      ? `${val.lead_period}${t("common.d")}`
-                      : "-"}
-                  </td>
-                </Hidden>
+                {/* <Hidden smDown> */}
+                {/*  <td className={classes.trLeadTime}> */}
+                {/*    {val.lead_period_str */}
+                {/*      ? val.lead_period_str */}
+                {/*      : val.lead_period */}
+                {/*      ? `${val.lead_period}${t("common.d")}` */}
+                {/*      : "-"} */}
+                {/*  </td> */}
+                {/* </Hidden> */}
                 <td className={classes.trMoq}>
                   <span>{formatMoney(MOQ, 0, ".", "`")}</span>
                 </td>
@@ -616,13 +645,13 @@ const DistributorsDesktop: React.FC<Props> = ({
                   <div>
                     {isShowProductLink ? (
                       <a
-                        href={val.product_url || seller.url}
+                        href={val.product_url || partner.url}
                         target="_blank"
                         rel="noreferrer"
                         className={clsx(appTheme.hyperlink, classes.partnerLink)}
                         onClick={visitSellerHandler(
                           { id: val.partner, name: val.partner_name },
-                          val.product_url || seller.url,
+                          val.product_url || partner.url,
                         )}
                       >
                         Visit site

@@ -86,7 +86,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         `${currency?.symbol} ${formatMoney(
                           currencyPrice(getPrice(1, val, false), val.price_currency),
                         )}`) ||
-                        t("distributor.price_by_request")}
+                        "-"}
                     </td>
                     <td className={classes.tdStock}>{formatMoney(val.num_in_stock, 0, ".", "`") || 0}</td>
                     <td className={classes.tdActions}>
