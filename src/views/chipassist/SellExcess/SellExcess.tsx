@@ -63,7 +63,7 @@ export const SellExcess = () => {
   } = useForm<FormValues>();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0 });
   }, []);
 
   useEffect(() => {
