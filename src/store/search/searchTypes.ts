@@ -28,6 +28,7 @@ export const SET_EXTENDED_SEARCH_ID = "@search/SET_EXTENDED_SEARCH_ID";
 export const CLEAR_ATTRIBUTES = "@search/CLEAR_ATTRIBUTES";
 
 export const TOGGLE_RELOAD_SEARCH_FLAG = "@search/TOGGLE_RELOAD_SEARCH_FLAG";
+export const TOGGLE_SMART_VIEW = "@search/TOGGLE_SMART_VIEW";
 
 export const CREATE_FILTER_FIELDS = "@search/CREATE_FILTER_FIELDS";
 export const REMOVE_FILTER_FIELD = "@search/REMOVE_FILTER_FIELD";
@@ -122,6 +123,7 @@ export interface SearchState {
   partNumberExamples: string[];
   filterSize: number;
   filterInc: number;
+  smart_view: boolean;
   baseFilters: BaseFilters;
 }
 
@@ -198,6 +200,9 @@ export interface ClearAttributesAction {
 }
 export interface ToggleReloadSearchFlagAction {
   type: typeof TOGGLE_RELOAD_SEARCH_FLAG;
+}
+export interface ToggleSmartViewAction {
+  type: typeof TOGGLE_SMART_VIEW;
 }
 export interface CreateFilterFieldsAction {
   type: typeof CREATE_FILTER_FIELDS;
@@ -294,6 +299,7 @@ export interface SavePartNumberExamplesAction {
 }
 
 export type SearchActionTypes =
+  | ToggleSmartViewAction
   | SavePartNumberExamplesAction
   | SetQueryValueAction
   | SaveResultAction

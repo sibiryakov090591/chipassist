@@ -36,6 +36,8 @@ const ProductCardNew = (props) => {
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const initialMobileCard = useMediaQuery(theme.breakpoints.down(800));
 
+  const smart_view = useAppSelector((state) => state.search.smart_view);
+  const partners = useAppSelector((state) => state.sellers.items);
   // const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
   const currency = useAppSelector((state) => state.currency);
@@ -114,19 +116,29 @@ const ProductCardNew = (props) => {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (product.stockrecords) {
-      const noDuplicatedStockrecords = product.stockrecords.filter((sr) => !!sr.id);
+    if (product.stockrecords && partners) {
+      let filteredMultipleStocks = product.stockrecords.filter((sr) => !!sr.id);
       // .reduce((acc, val) => {
       //   return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
       // }, []);
+      if (smart_view) {
+        const globalSellersAmount = filteredMultipleStocks.filter((sRecord) => {
+          const partner = partners?.find((i) => i.id === sRecord.partner);
+          return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
+        }).length;
 
-      const bestDateUpdated = noDuplicatedStockrecords.reduce((acc, sr) => {
+        filteredMultipleStocks =
+          globalSellersAmount > 4
+            ? filteredMultipleStocks.filter((sRecord) => sRecord.num_in_stock > 0)
+            : filteredMultipleStocks;
+      }
+      const bestDateUpdated = filteredMultipleStocks.reduce((acc, sr) => {
         const updatedTime = new Date(sr.date_updated.replace(/ /g, "T")).getTime();
         return Math.max(acc, updatedTime);
       }, 0);
 
       setSortedStockrecords(
-        noDuplicatedStockrecords.map((val) => {
+        filteredMultipleStocks.map((val) => {
           const isElfaroSeller = val.partner_name?.toLowerCase().includes("elfaro");
           const dateUpdated = isElfaroSeller
             ? Date.now() >= bestDateUpdated + 3000
@@ -158,7 +170,7 @@ const ProductCardNew = (props) => {
         }),
       );
     }
-  }, [product.stockrecords, currency]);
+  }, [product.stockrecords, currency, smart_view, partners]);
 
   useEffect(() => {
     if (sortedStockrecords) {

@@ -76,6 +76,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const showSellerTooltip = false;
   const lastPriceBreak = isMdDown ? 100 : 10000;
 
+  const smart_view = useAppSelector((state) => state.search.smart_view);
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
@@ -85,10 +86,22 @@ const DistributorsDesktop: React.FC<Props> = ({
 
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
+  const [bestOfferId, setBestOfferId] = useState(0);
   const [sortBy, setSortBy] = useState<{ name: string; direction: "desc" | "asc" }>({
     name: "updatedTime",
     direction: "asc",
   });
+
+  const calculateBestOffer = (stocks: any[][]) => {
+    if (stocks && smart_view) {
+      const sortedStocks = sortFn(stocks, "price_1", "asc");
+      const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
+      if (bestOffer) {
+        setBestOfferId(bestOffer[0].id);
+        // setStockrecords((prevState) => ({ bestOffer, ...prevState.filter((elem) => elem[0].id !== bestOffer[0].id) }));
+      }
+    }
+  };
 
   useEffect(() => {
     if (sortedStockrecords) {
@@ -147,6 +160,12 @@ const DistributorsDesktop: React.FC<Props> = ({
       setStockrecords(sortFn(res, sortBy.name, sortBy.direction));
     }
   }, [sortedStockrecords, sortBy]);
+
+  useEffect(() => {
+    if (stockrecords) {
+      calculateBestOffer(stockrecords);
+    }
+  }, [stockrecords]);
 
   function getBasedOnNumInStockPriceData(targetProduct: Product, stockrecord: Stockrecord) {
     let price = null;
@@ -316,7 +335,13 @@ const DistributorsDesktop: React.FC<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {stockrecords?.map((srArray) => {
+        {(smart_view && stockrecords && bestOfferId > 0
+          ? [
+              stockrecords.find((elem) => elem[0].id === bestOfferId),
+              ...stockrecords.filter((elem) => elem[0].id !== bestOfferId),
+            ]
+          : stockrecords
+        )?.map((srArray) => {
           const minPrices: any = {
             price_1: { price: srArray[0].price_1, stock_id: 0 },
             price_10: { price: srArray[0].price_10, stock_id: 0 },
@@ -376,6 +401,8 @@ const DistributorsDesktop: React.FC<Props> = ({
                 key={val.id}
                 className={clsx(classes.tr, {
                   [classes.active]: isShowMoreActive,
+                  [classes.bestOffer]: bestOfferId === val.id,
+                  [classes.emptyStock]: val.num_in_stock === 0,
                 })}
               >
                 <td className={clsx(classes.trDistributor, "product-seller")}>
@@ -592,29 +619,32 @@ const DistributorsDesktop: React.FC<Props> = ({
                   </React.Fragment>
                 )}
                 <td className={classes.tdActions}>
-                  {isShowProductLink ? (
-                    <a
-                      href={val.product_url || seller.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                      onClick={visitSellerHandler(
-                        { id: val.partner, name: val.partner_name },
-                        val.product_url || seller.url,
-                      )}
-                    >
-                      Visit site
-                    </a>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      size="small"
-                      className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                      onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                    >
-                      Contact seller
-                    </Button>
-                  )}
+                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>Best offer</div>}
+                  <div>
+                    {isShowProductLink ? (
+                      <a
+                        href={val.product_url || seller.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={clsx(appTheme.hyperlink, classes.partnerLink)}
+                        onClick={visitSellerHandler(
+                          { id: val.partner, name: val.partner_name },
+                          val.product_url || seller.url,
+                        )}
+                      >
+                        Visit site
+                      </a>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                        onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
+                      >
+                        Contact seller
+                      </Button>
+                    )}
+                  </div>
                 </td>
               </tr>
             );

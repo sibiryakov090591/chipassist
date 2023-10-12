@@ -377,6 +377,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     country: {
       display: "flex",
       alignItems: "center",
+      marginLeft: "-3px",
     },
     orderButton: {
       fontWeight: "bold",
@@ -435,6 +436,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: theme.palette.app.green800,
     },
     tdActions: {
+      position: "relative",
       textAlign: "center",
       padding: 7,
     },
@@ -446,6 +448,26 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     partnerLink: {
       color: "#16697a !important",
       textDecoration: "underline",
+    },
+    bestOffer: {
+      border: "1px solid #16BEA3",
+      borderRadius: "2px",
+      backgroundColor: "#fff",
+    },
+    bestOfferLabel: {
+      position: "absolute",
+      top: "-8px",
+      right: 10,
+      fontSize: "0.75rem",
+      background: "#16BEA3",
+      color: "#fff",
+      padding: "0 7px",
+      borderRadius: "50ch",
+      fontWeight: 600,
+      lineHeight: "1.1rem",
+    },
+    emptyStock: {
+      color: "#777",
     },
   }),
 );
