@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, DialogContent, DialogActions, Dialog, Box } from "@material-ui/core";
+import { Button, DialogContent, Dialog, Box } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { EditorBomData } from "@src/store/bom/bomTypes";
@@ -11,6 +11,7 @@ import { updateBom, loadAllBomPagesThunk } from "@src/store/bom/bomActions";
 import { showAlertsModalMessageAction } from "@src/store/alerts/alertsActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { clsx } from "clsx";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 // import { useStyles } from "./checkoutModalStyles";
 
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
 const CheckoutModal: React.FC<Props> = ({ onCloseModal, bom, setIsSending }) => {
   // const [counts, setCounts] = useState({ order: 0, rfq: 0, empty: 0 });
   const appTheme = useAppTheme();
+  const commonClasses = useCommonStyles();
   const dispatch = useAppDispatch();
   const utm = useAppSelector((state) => state.common.utm);
   // const cart = useAppSelector((state: RootState) => state.cart);
@@ -120,26 +122,22 @@ const CheckoutModal: React.FC<Props> = ({ onCloseModal, bom, setIsSending }) => 
           <h3>{t("checkout.success_rfq_title")}</h3>
           <p>{t("checkout.success_rfq_description")}</p>
         </DialogContent>
-        <Box pt={2}>
-          <DialogActions>
-            <Button
-              className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
-              size="small"
-              onClick={onCloseModal}
-              variant="contained"
-            >
-              {t("checkout.cancel")}
-            </Button>
-            <Button
-              className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
-              size="small"
-              onClick={confirmCheckout}
-              color="primary"
-              variant="contained"
-            >
-              {t("common.confirm")}
-            </Button>
-          </DialogActions>
+        <Box pt={2} className={commonClasses.actionsRow}>
+          <Button
+            className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
+            onClick={onCloseModal}
+            variant="contained"
+          >
+            {t("checkout.cancel")}
+          </Button>
+          <Button
+            className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
+            onClick={confirmCheckout}
+            color="primary"
+            variant="contained"
+          >
+            {t("common.confirm")}
+          </Button>
         </Box>
       </Box>
     </Dialog>
