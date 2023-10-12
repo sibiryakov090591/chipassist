@@ -3,7 +3,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import clsx from "clsx";
-import { Paper, Hidden, Box, Collapse, useMediaQuery, useTheme } from "@material-ui/core";
+import { Paper, Hidden, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { getDynamicMoq, getImage, getPrice, isProductAvailable } from "@src/utils/product";
 import { rfqModalOpen, setSellerMessageData } from "@src/store/rfq/rfqActions";
@@ -34,6 +34,7 @@ const ProductCardNew = (props) => {
   const { currencyPrice } = useCurrency();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(565));
   const initialMobileCard = useMediaQuery(theme.breakpoints.down(800));
 
   const smart_view = useAppSelector((state) => state.search.smart_view);
@@ -56,7 +57,7 @@ const ProductCardNew = (props) => {
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
   const [rfqStockrecords] = useState([]);
-  const [showRfqStocks, setShowRfqStocks] = useState(false);
+  // const [showRfqStocks, setShowRfqStocks] = useState(false);
   const [searchQueryArray, setSearchQueryArray] = useState([]);
   const [mainImage, setMainImg] = useState(null);
   const [rfq, setRfq] = useState(null);
@@ -246,9 +247,9 @@ const ProductCardNew = (props) => {
   //   </Button>
   // );
 
-  const collapseRfqStocksHandler = () => {
-    if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
-  };
+  // const collapseRfqStocksHandler = () => {
+  //   if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
+  // };
 
   return (
     <Paper
@@ -352,7 +353,7 @@ const ProductCardNew = (props) => {
       {!availableStockrecords.length && (
         <>
           <div className={classes.availableItemsHint}>AVAILABLE ON OFFLINE STOCKS:</div>
-          <div className={classes.iconsContainer} onClick={collapseRfqStocksHandler}>
+          <div className={classes.iconsContainer}>
             <Box display="flex" alignItems="center" className={classes.iconWrapper}>
               <div className="product-card-icon-wrapper">
                 <img src={usd_icon} alt="usd" />
@@ -379,54 +380,58 @@ const ProductCardNew = (props) => {
                 <div>In stock</div>
               </div>
             </Box>
-            <Box display="flex" alignItems="center" className={classes.iconWrapper}>
-              <div className="product-card-icon-wrapper">
-                <img src={suppliers_icon} alt="suppliers" />
-              </div>
-              <div className={classes.iconValueWrapper}>
-                <div className={classes.iconValue}>{rfq?.sellers ? `${rfq.sellers}+` : "1+"}</div>
-                <div>Suppliers</div>
-              </div>
-            </Box>
+            {!isXsDown && (
+              <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+                <div className="product-card-icon-wrapper">
+                  <img src={suppliers_icon} alt="suppliers" />
+                </div>
+                <div className={classes.iconValueWrapper}>
+                  <div className={classes.iconValue}>{rfq?.sellers ? `${rfq.sellers}+` : "1+"}</div>
+                  <div>Suppliers</div>
+                </div>
+              </Box>
+            )}
             <Box display="flex" alignItems="center" className={classes.iconWrapper}>
               <div className="product-card-icon-wrapper">
                 <img src={time_icon} alt="delivery" />
               </div>
               <div className={classes.iconValueWrapper}>
                 <div className={classes.iconValue}>2-4 weeks</div>
-                <div>Delivery time starts from</div>
+                <div>Delivery time</div>
               </div>
             </Box>
-            <Box display="flex" alignItems="center" className={classes.iconWrapper}>
-              <div className="product-card-icon-wrapper">
-                <img src={moq_icon} alt="moq" />
-              </div>
-              <div className={classes.iconValueWrapper}>
-                <div className={classes.iconValue}>
-                  {rfq?.min_moq ? formatMoney((rfq.min_moq + rfq.max_moq) / 2, 0) : "1"}
+            {!isXsDown && (
+              <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+                <div className="product-card-icon-wrapper">
+                  <img src={moq_icon} alt="moq" />
                 </div>
-                <div>Average quantity</div>
-              </div>
-            </Box>
+                <div className={classes.iconValueWrapper}>
+                  <div className={classes.iconValue}>
+                    {rfq?.min_moq ? formatMoney((rfq.min_moq + rfq.max_moq) / 2, 0) : "1"}
+                  </div>
+                  <div>Average quantity</div>
+                </div>
+              </Box>
+            )}
           </div>
-          <Collapse in={showRfqStocks}>
-            <div style={{ position: "relative" }}>
-              <Hidden smDown>
-                <DistributorsDesktop
-                  product={product}
-                  sortedStockrecords={rfqStockrecords}
-                  rfqOpenModal={sendRfqOpenModal}
-                  sellerMessageOpenModal={sellerMessageOpenModal}
-                />
-              </Hidden>
-              <Hidden mdUp>
-                <DistributorsMobile
-                  sortedStockrecords={rfqStockrecords}
-                  sellerMessageOpenModal={sellerMessageOpenModal}
-                />
-              </Hidden>
-            </div>
-          </Collapse>
+          {/* <Collapse in={showRfqStocks}> */}
+          {/*  <div style={{ position: "relative" }}> */}
+          {/*    <Hidden smDown> */}
+          {/*      <DistributorsDesktop */}
+          {/*        product={product} */}
+          {/*        sortedStockrecords={rfqStockrecords} */}
+          {/*        rfqOpenModal={sendRfqOpenModal} */}
+          {/*        sellerMessageOpenModal={sellerMessageOpenModal} */}
+          {/*      /> */}
+          {/*    </Hidden> */}
+          {/*    <Hidden mdUp> */}
+          {/*      <DistributorsMobile */}
+          {/*        sortedStockrecords={rfqStockrecords} */}
+          {/*        sellerMessageOpenModal={sellerMessageOpenModal} */}
+          {/*      /> */}
+          {/*    </Hidden> */}
+          {/*  </div> */}
+          {/* </Collapse> */}
         </>
       )}
       {!availableStockrecords.length && (

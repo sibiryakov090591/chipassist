@@ -77,9 +77,6 @@ export const useStyles = makeStyles((theme) => ({
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
     backgroundColor: "#fafafa",
-    [theme.breakpoints.down("sm")]: {
-      gridTemplateColumns: "repeat(5, 1fr)",
-    },
     [theme.breakpoints.down(565)]: {
       gridTemplateColumns: "repeat(3, 1fr)",
     },
@@ -88,12 +85,14 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     margin: "20px 14px",
     textAlign: "center",
-    "&:last-child .product-card-icon-wrapper": {
-      height: 18,
-      margin: "11px 0",
-      [theme.breakpoints.down("sm")]: {
-        height: 20,
-        margin: "5px 0",
+    [theme.breakpoints.up(565)]: {
+      "&:last-child .product-card-icon-wrapper": {
+        height: 18,
+        margin: "11px 0",
+        [theme.breakpoints.down("sm")]: {
+          height: 20,
+          margin: "5px 0",
+        },
       },
     },
     "& .product-card-icon-wrapper": {
@@ -125,7 +124,8 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginBottom: 5,
     [theme.breakpoints.down("sm")]: {
-      fontSize: 16,
+      fontSize: 15,
+      marginBottom: 0,
     },
   },
   availableItemsHint: {
