@@ -1,6 +1,6 @@
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { toggleReloadSearchFlag, toggleSmartView } from "@src/store/search/searchActions";
+import { toggleSmartView } from "@src/store/search/searchActions";
 import { setUrlWithFilters } from "@src/utils/setUrl";
 import React from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";

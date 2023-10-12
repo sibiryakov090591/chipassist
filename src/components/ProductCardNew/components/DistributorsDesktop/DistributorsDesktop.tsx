@@ -74,6 +74,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const showSellerTooltip = false;
 
+  const smart_view = useAppSelector((state) => state.search.smart_view);
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
@@ -90,10 +91,13 @@ const DistributorsDesktop: React.FC<Props> = ({
   });
 
   const calculateBestOffer = (stocks: any[][]) => {
-    if (stocks) {
+    if (stocks && smart_view) {
       const sortedStocks = sortFn(stocks, "price_1", "asc");
       const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
-      if (bestOffer) setBestOfferId(bestOffer[0].id);
+      if (bestOffer) {
+        setBestOfferId(bestOffer[0].id);
+        // setStockrecords((prevState) => ({ bestOffer, ...prevState.filter((elem) => elem[0].id !== bestOffer[0].id) }));
+      }
     }
   };
 
@@ -323,7 +327,13 @@ const DistributorsDesktop: React.FC<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {stockrecords?.map((srArray) => {
+        {(smart_view && stockrecords && bestOfferId > 0
+          ? [
+              stockrecords.find((elem) => elem[0].id === bestOfferId),
+              ...stockrecords.filter((elem) => elem[0].id !== bestOfferId),
+            ]
+          : stockrecords
+        )?.map((srArray) => {
           const minPrices: any = {
             price_1: { price: srArray[0].price_1, stock_id: 0 },
             price_10: { price: srArray[0].price_10, stock_id: 0 },
