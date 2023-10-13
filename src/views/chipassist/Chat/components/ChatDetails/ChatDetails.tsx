@@ -181,7 +181,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     ).then(() => {
       dispatch(
         showBottomLeftMessageAlertAction({
-          text: "Your stock has updated successfully!",
+          text: "Your stock was updated successfully!",
           severity: "success",
         }),
       );

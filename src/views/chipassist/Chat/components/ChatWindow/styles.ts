@@ -28,12 +28,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
           paddingRight: "35vw",
         },
       },
-      [theme.breakpoints.between(800, "sm")]: {
+      [theme.breakpoints.between(880, "sm")]: {
         "&.chatListActive": {
           paddingLeft: "335px",
         },
       },
-      [theme.breakpoints.down(800)]: {
+      [theme.breakpoints.down(880)]: {
         "&.detailsActive": {
           transform: "translateX(-48vw)",
         },

@@ -8,7 +8,7 @@ import { useStyles } from "./styles";
 const Chat: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const betweenSmMd = useMediaQuery(theme.breakpoints.between(800, "md"));
+  const betweenSmMd = useMediaQuery(theme.breakpoints.between(880, "md"));
 
   const [showList, setShowList] = useState(true);
   const [showDetails, setShowDetails] = useState(document.body.offsetWidth >= 1280);
