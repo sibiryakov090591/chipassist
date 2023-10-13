@@ -23,7 +23,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const classes = useStyles();
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
-  const isXsDown = useMediaQuery(theme.breakpoints.down(800));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(880));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);

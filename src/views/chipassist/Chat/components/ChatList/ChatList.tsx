@@ -25,7 +25,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const chatClasses = useChatStyles();
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const isXsDown = useMediaQuery(theme.breakpoints.down(800));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(880));
 
   const chatListRef = React.useRef(null);
 
