@@ -41,24 +41,31 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     thDistributor: {
-      width: "11%",
+      width: "215px",
       textAlign: "left",
       padding: "7px 7px 7px 20px",
+      whiteSpace: "nowrap",
+      [theme.breakpoints.down("md")]: {
+        width: "16%",
+      },
     },
     thSku: {
-      width: "15%",
+      width: "6%",
       textAlign: "left",
       padding: "7px",
     },
     thQty: {
-      width: 70,
+      width: "6%",
       textAlign: "center",
       padding: "7px",
     },
     thStock: {
-      width: 60,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thIcon: {
       width: 15,
@@ -66,61 +73,88 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     thLeadPeriod: {
       textAlign: "right",
       padding: "7px",
-      width: 65,
+      width: "6%",
     },
     thMoq: {
-      width: 50,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thMpq: {
-      width: 50,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thPkg: {
-      width: 50,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thCurrency: {
-      width: 30,
+      width: 45,
       textAlign: "center",
       padding: "7px",
     },
     thPricesHint: {
-      width: 22,
+      width: 15,
       textAlign: "center",
       padding: "7px",
     },
     th1: {
-      width: 55,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        width: "10%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "11%",
+      },
     },
     th10: {
-      width: 55,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        width: "10%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "11%",
+      },
     },
     th100: {
-      width: 60,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        width: "10%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "11%",
+      },
     },
     th1000: {
-      width: 65,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
     },
     th10000: {
-      width: 70,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
       paddingRight: 10,
     },
     thActions: {
-      width: 90,
+      width: 125,
     },
     starIcon: {
       color: "#f5a623",
@@ -187,6 +221,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textAlign: "right",
       padding: "7px",
       paddingRight: "14px",
+      whiteSpace: "nowrap",
     },
     trLeadTime: {
       textAlign: "right",
@@ -375,6 +410,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       alignItems: "center",
       marginLeft: "-3px",
+      lineHeight: "10px",
     },
     orderButton: {
       fontWeight: "bold",
@@ -465,6 +501,30 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     emptyStock: {
       color: "#777",
+    },
+    qualityCheck: {
+      cursor: "help",
+      color: "#ffffff",
+      backgroundColor: theme.palette.app.blue800,
+      textAlign: "center",
+      position: "relative",
+      borderRadius: 5,
+      fontSize: 10,
+      fontWeight: "bold",
+      lineHeight: "14px",
+      padding: "2px",
+      marginLeft: 6,
+      minWidth: 110,
+      "& svg": {
+        color: "#ffffff",
+        position: "absolute",
+        top: 1,
+        right: 2,
+        fontSize: 12,
+      },
+    },
+    tooltipMaxWidth: {
+      maxWidth: 350,
     },
   }),
 );
