@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textAlign: "start",
     },
     tdPrice: {
-      width: "15%",
+      width: "20%",
       whiteSpace: "nowrap",
       textAlign: "end",
       [theme.breakpoints.down(500)]: {
@@ -52,7 +52,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     tdStock: {
-      width: "20%",
+      width: "15%",
       textAlign: "end",
       [theme.breakpoints.down(500)]: {
         width: "auto",
