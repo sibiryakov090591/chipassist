@@ -5,17 +5,19 @@ import { AppTheme } from "@src/themes/AppTheme";
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     table: {
-      // tableLayout: "fixed",
+      tableLayout: "fixed",
       width: "100%",
       borderCollapse: "collapse",
     },
     headers: {
-      backgroundColor: "#f5f6f7",
+      // backgroundColor: "#f5f6f7",
+      backgroundColor: theme.palette.app.blue800,
       "& th": {
         fontSize: "0.9rem",
         fontWeight: "bold",
         padding: "2px 10px",
-        textAlign: "start",
+        backgroundColor: theme.palette.app.blue800,
+        color: "#ffffff",
       },
     },
     tableRow: {
@@ -38,20 +40,37 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     tdSeller: {
-      wordBreak: "break-word",
-      width: "50%",
+      wordBreak: "normal",
+      textAlign: "start",
     },
     tdPrice: {
-      width: "25%",
+      width: "20%",
       whiteSpace: "nowrap",
+      textAlign: "end",
+      [theme.breakpoints.down(500)]: {
+        width: "auto",
+      },
     },
     tdStock: {
-      width: "25%",
+      width: "15%",
+      textAlign: "end",
+      [theme.breakpoints.down(500)]: {
+        width: "auto",
+      },
+    },
+    tdActions: {
+      width: 130,
+      textAlign: "center",
+      paddingLeft: "40px !important",
+      paddingRight: "0 !important",
+      [theme.breakpoints.down(500)]: {
+        width: 100,
+        paddingLeft: "8px !important",
+      },
     },
     tdIcon: {
-      width: "35px",
+      width: 43,
       textAlign: "end",
-      paddingRight: "20px !important",
     },
     icon: {
       transition: "all 180ms ease",
@@ -78,9 +97,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textTransform: "none",
       fontWeight: "bold",
       whiteSpace: "nowrap",
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
+    },
+    partnerLink: {
+      color: "#16697a !important",
+      textDecoration: "underline",
     },
     detailsPriceRow: {
       borderTop: "1px solid #ddd",
