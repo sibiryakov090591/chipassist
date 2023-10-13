@@ -13,6 +13,8 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Seller } from "@src/store/sellers/sellersTypes";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
@@ -29,6 +31,8 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down(670));
 
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
@@ -55,8 +59,9 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
         <thead>
           <tr className={classes.headers}>
             <th className={classes.tdSeller}>Seller</th>
-            <th className={classes.tdPrice}>Unit price</th>
             <th className={classes.tdStock}>Stock</th>
+            {!isXsDown && <th className={classes.tdPrice}>DC</th>}
+            <th className={classes.tdPrice}>Unit price</th>
             <th className={classes.tdActions}></th>
             <th className={classes.tdIcon} />
           </tr>
@@ -81,6 +86,26 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                     onClick={handleChange(val.id)}
                   >
                     <td className={classes.tdSeller}>{val.partner_name}</td>
+                    <td className={classes.tdStock}>{formatMoney(val.num_in_stock, 0) || "-"}</td>
+                    {!isXsDown && (
+                      <td className={classes.tdStock}>
+                        {dateCode ? (
+                          dateCode.length > 10 ? (
+                            <Tooltip
+                              enterTouchDelay={1}
+                              classes={{ tooltip: commonClasses.tooltip }}
+                              title={<div>{dateCode}</div>}
+                            >
+                              <span>{`${dateCode.slice(0, 10)}...`}</span>
+                            </Tooltip>
+                          ) : (
+                            dateCode
+                          )
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                    )}
                     <td className={classes.tdPrice}>
                       {(getPrice(1, val, false) &&
                         `${currency?.symbol} ${formatMoney(
@@ -88,7 +113,6 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         )}`) ||
                         "-"}
                     </td>
-                    <td className={classes.tdStock}>{formatMoney(val.num_in_stock, 0, ".", "`") || 0}</td>
                     <td className={classes.tdActions}>
                       {isShowProductLink ? (
                         <a
@@ -119,7 +143,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan={5}>
+                    <td colSpan={isXsDown ? 5 : 6}>
                       <Collapse in={!!expanded[val.id]}>
                         <div className={classes.details}>
                           <Box p="5px 10px" display="flex" flexWrap="wrap" justifyContent="space-between">
@@ -131,26 +155,28 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                               <div className={classes.detailsLabel}>{t("distributor.mpq")}</div>
                               <div>{val.mpq || "-"}</div>
                             </div>
-                            <div>
-                              <div className={classes.detailsLabel}>DC</div>
+                            {isXsDown && (
                               <div>
-                                {dateCode ? (
-                                  dateCode.length > 10 ? (
-                                    <Tooltip
-                                      enterTouchDelay={1}
-                                      classes={{ tooltip: commonClasses.tooltip }}
-                                      title={<div>{dateCode}</div>}
-                                    >
-                                      <span>{`${dateCode.slice(0, 10)}...`}</span>
-                                    </Tooltip>
+                                <div className={classes.detailsLabel}>DC</div>
+                                <div>
+                                  {dateCode ? (
+                                    dateCode.length > 10 ? (
+                                      <Tooltip
+                                        enterTouchDelay={1}
+                                        classes={{ tooltip: commonClasses.tooltip }}
+                                        title={<div>{dateCode}</div>}
+                                      >
+                                        <span>{`${dateCode.slice(0, 10)}...`}</span>
+                                      </Tooltip>
+                                    ) : (
+                                      dateCode
+                                    )
                                   ) : (
-                                    dateCode
-                                  )
-                                ) : (
-                                  "-"
-                                )}
+                                    "-"
+                                  )}
+                                </div>
                               </div>
-                            </div>
+                            )}
                             <div>
                               <div className={classes.detailsLabel}>Package</div>
                               <div>{val.packaging || "-"}</div>

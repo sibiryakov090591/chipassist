@@ -366,7 +366,7 @@ const ProductCardNew = (props) => {
                       }`
                     : "By request"}
                 </div>
-                <div>Average price</div>
+                {!initialMobileCard && <div>Average price</div>}
               </div>
             </Box>
             <Box display="flex" alignItems="center" className={classes.iconWrapper}>
@@ -377,7 +377,7 @@ const ProductCardNew = (props) => {
                 <div className={classes.iconValue}>
                   {rfq?.num_in_stock ? formatMoney(rfq.num_in_stock, 0) : "By request"}
                 </div>
-                <div>In stock</div>
+                {!initialMobileCard && <div>In stock</div>}
               </div>
             </Box>
             {!isXsDown && (
@@ -387,7 +387,7 @@ const ProductCardNew = (props) => {
                 </div>
                 <div className={classes.iconValueWrapper}>
                   <div className={classes.iconValue}>{rfq?.sellers ? `${rfq.sellers}+` : "1+"}</div>
-                  <div>Suppliers</div>
+                  {!initialMobileCard && <div>Suppliers</div>}
                 </div>
               </Box>
             )}
@@ -397,7 +397,7 @@ const ProductCardNew = (props) => {
               </div>
               <div className={classes.iconValueWrapper}>
                 <div className={classes.iconValue}>2-4 weeks</div>
-                <div>Delivery time</div>
+                {!initialMobileCard && <div>Delivery time</div>}
               </div>
             </Box>
             {!isXsDown && (
@@ -409,7 +409,7 @@ const ProductCardNew = (props) => {
                   <div className={classes.iconValue}>
                     {rfq?.min_moq ? formatMoney((rfq.min_moq + rfq.max_moq) / 2, 0) : "1"}
                   </div>
-                  <div>Average quantity</div>
+                  {!initialMobileCard && <div>Average quantity</div>}
                 </div>
               </Box>
             )}
