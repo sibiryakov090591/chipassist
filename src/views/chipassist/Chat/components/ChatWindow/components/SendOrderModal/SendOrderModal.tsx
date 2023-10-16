@@ -62,6 +62,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
     control,
     formState: { errors, isValid },
     setValue,
+    trigger,
   } = useForm<FormValues>({
     mode: "onChange",
   });
@@ -89,7 +90,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
             checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url,
       );
-      setValue("line4", billingAddress?.line4 || "");
+      // setValue("line4", billingAddress?.line4 || "");
       setValue("postcode", billingAddress?.postcode || "");
       setValue("line1", billingAddress?.line1 || "");
       setValue("requested_qty", rfq?.quantity || "");
@@ -128,11 +129,12 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
     return false;
   };
 
-  const goToStep = (derection: "next" | "prev") => () => {
-    setStep(derection === "next" ? 2 : 1);
+  const goToStep = (derection: "next" | "prev") => async () => {
+    if (derection === "next" && !(await trigger())) return false;
+    return setStep(derection === "next" ? 2 : 1);
   };
 
-  const onSubmitHandler = () => handleSubmit(onSubmit);
+  const onSubmitHandler = () => handleSubmit(onSubmit)();
 
   return (
     <Modal
@@ -457,7 +459,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
 
           <Box display="flex" justifyContent="space-between" alignItems="flex-end">
             <Box>{step} / 2</Box>
-            <Box mt={2} className={commonClasses.actionsRow}>
+            <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
               <Button
                 variant="contained"
                 className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
