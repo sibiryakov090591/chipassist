@@ -34,7 +34,7 @@ type FormValues = {
   line4: string; // city
   postcode: string;
   phone_number_str: string;
-  requested_qty: string;
+  quantity: string;
   additional_notes: string;
 };
 
@@ -68,7 +68,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
   });
 
   const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
-  const quantity = watch("requested_qty");
+  const quantity = watch("quantity");
   const price = !!stock && !!quantity && getPrice(+quantity, stock as any);
   const totalPrice = !!stock && !!quantity && !!price && quantity * price;
 
@@ -90,10 +90,10 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
             checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url,
       );
-      // setValue("line4", billingAddress?.line4 || "");
+      setValue("line4", billingAddress?.line4 || "");
       setValue("postcode", billingAddress?.postcode || "");
       setValue("line1", billingAddress?.line1 || "");
-      setValue("requested_qty", rfq?.quantity || "");
+      setValue("quantity", rfq?.quantity || "");
     }
   }, [open, billingAddress]);
 
@@ -151,8 +151,8 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
         <form className={clsx(commonClasses.paper, "fullScreen", classes.form)}>
           {step === 1 && (
             <>
-              <h3>Company</h3>
-              <Grid container spacing={2}>
+              <h3 style={{ marginBottom: 20 }}>Company</h3>
+              <Grid container spacing={3}>
                 <Grid item sm={6} xs={12}>
                   <Controller
                     name="company_name"
@@ -395,7 +395,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                   <Box>
                     <div className={classes.label}>Requested qty *</div>
                     <Controller
-                      name="requested_qty"
+                      name="quantity"
                       control={control}
                       rules={{
                         required: {
@@ -403,8 +403,8 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                           message: "Qty is required",
                         },
                         min: {
-                          value: 1,
-                          message: "At least 1",
+                          value: stock?.moq || 1,
+                          message: stock?.moq ? `MOQ is ${stock.moq}` : "At least 1",
                         },
                       }}
                       render={({ field }) => (
@@ -415,8 +415,8 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                           // }}
                           // label="Requested qty:"
                           className={classes.qtyInput}
-                          error={!!errors.requested_qty}
-                          helperText={errors.requested_qty?.message}
+                          error={!!errors.quantity}
+                          helperText={errors.quantity?.message}
                           variant="outlined"
                           size="small"
                           decimalScale={0}
@@ -457,7 +457,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
             </>
           )}
 
-          <Box display="flex" justifyContent="space-between" alignItems="flex-end">
+          <Box display="flex" justifyContent="space-between" alignItems="flex-end" mt="12px">
             <Box>{step} / 2</Box>
             <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
               <Button
