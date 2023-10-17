@@ -34,6 +34,10 @@ const Reset = () => {
     }
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   const onSignUpHandler = (e: any) => {
     if (constants.id === ID_SUPPLIER_RESPONSE) {
       e.preventDefault();
