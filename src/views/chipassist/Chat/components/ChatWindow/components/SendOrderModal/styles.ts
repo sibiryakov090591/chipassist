@@ -16,7 +16,7 @@ export const useStyles = makeStyles(() =>
       fontSize: 15,
     },
     qtyInput: {
-      maxWidth: 100,
+      maxWidth: 106,
       "& input": {
         fontWeight: "bold",
         fontSize: 15,

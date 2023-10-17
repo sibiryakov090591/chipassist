@@ -384,7 +384,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   <tr>
                                     <td>{orderData.mpn}</td>
                                     <td>{orderData.datecode || "-"}</td>
-                                    <td>{orderData.requested_qty}</td>
+                                    <td>{orderData.quantity}</td>
                                     <td>{formatMoney(orderData.price)}</td>
                                     <td>{formatMoney(orderData.totalPrice)}</td>
                                   </tr>

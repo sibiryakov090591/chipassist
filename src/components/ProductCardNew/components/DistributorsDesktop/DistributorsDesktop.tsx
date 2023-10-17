@@ -360,7 +360,8 @@ const DistributorsDesktop: React.FC<Props> = ({
               (!!val.product_url || !!partner.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
-            const isShowQualityCheck = !isMdDown && partner && partner.name === "Tex Electr"; // Object.prototype.hasOwnProperty.call(partner, "quality_check");
+            const isShowQualityCheck =
+              !isMdDown && partner && Object.prototype.hasOwnProperty.call(partner, "quality_check");
             const MOQ = val.moq;
             const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
             const rank = partner && !!toInteger(partner.rank) ? Math.trunc((toInteger(partner.rank) + 1) / 2) : 0;
