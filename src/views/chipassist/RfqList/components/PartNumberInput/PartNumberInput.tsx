@@ -85,7 +85,7 @@ const PartNumberInput: React.FC<Props> = ({
   const onFieldChange = (e: any) => {
     if (e.target.value) {
       const prevValue = e.target.value;
-      e.target.value = e.target.value.replace(/[^a-zA-Z0-9# /-]/g, "");
+      e.target.value = e.target.value.replace(/[^a-zA-Z0-9# ,./-]/g, "");
       setShowTooltip(prevValue !== e.target.value);
     }
     onChange(e);

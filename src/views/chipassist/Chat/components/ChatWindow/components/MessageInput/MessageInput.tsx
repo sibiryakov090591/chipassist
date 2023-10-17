@@ -60,7 +60,7 @@ const MessageInput: React.FC<Props> = ({
       ...stocks[0],
       prices: stocks[0].prices?.map((i) => ({ ...i, price: i.original })),
     };
-
+  console.log(stock);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);
@@ -247,9 +247,10 @@ const MessageInput: React.FC<Props> = ({
           </Box>
         </>
       )}
-      {!isSupplierResponse && !!stock && (
+      {!isSupplierResponse && (
         <Box display="flex" justifyContent="flex-end" m="0 12px 8px">
           <Button
+            disabled={!stock?.prices?.length}
             size="medium"
             variant="contained"
             className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
