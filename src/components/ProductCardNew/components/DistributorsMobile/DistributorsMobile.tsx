@@ -116,7 +116,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         "-"}
                     </td>
                     {isLoading ? (
-                      <td className={classes.tdActions}>{<CircularProgress size={"small"} />}</td>
+                      <td className={classes.tdActions}>{<CircularProgress size={15} />}</td>
                     ) : (
                       <td className={classes.tdActions}>
                         {isShowProductLink ? (
