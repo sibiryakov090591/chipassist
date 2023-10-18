@@ -5,7 +5,7 @@ import * as actionTypes from "./sellersTypes";
 export function getAllSellers(page = 1, join = false) {
   return (dispatch: Dispatch<any>) => {
     dispatch({
-      types: actionTypes.ITEMS_FETCHING,
+      types: [actionTypes.ITEMS_FETCHING_R, actionTypes.ITEMS_FETCHING_S, actionTypes.ITEMS_FETCHING_F],
       promise: (client: ApiClientInterface) =>
         client
           .get(`partners/?page=${page}&page_size=900`)
