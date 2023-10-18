@@ -883,7 +883,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler }) => {
       {/*  </div> */}
       {/* )} */}
       {!isAuthenticated && constants.id !== ID_ICSEARCH && (
-        <Box display="flex" flexDirection="column" ml={2} mt={1}>
+        <Box display="flex" flexDirection="column" ml={2} mb={1}>
           <FormControlLabel
             control={
               <Checkbox
