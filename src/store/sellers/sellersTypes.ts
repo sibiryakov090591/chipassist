@@ -1,4 +1,7 @@
-export const ITEMS_FETCHING = "@sellers/ITEMS_FETCHING";
+export const ITEMS_FETCHING_R = "@sellers/ITEMS_FETCHING_R";
+export const ITEMS_FETCHING_S = "@sellers/ITEMS_FETCHING_S";
+export const ITEMS_FETCHING_F = "@sellers/ITEMS_FETCHING_F";
+export const ITEMS_FETCHING = [ITEMS_FETCHING_R, ITEMS_FETCHING_S, ITEMS_FETCHING_F];
 export const ITEMS_FETCHED = "@sellers/ITEMS_FETCHED";
 export const GET_All_ITEMS = "@sellers/GET_All_ITEMS";
 export const JOIN_ITEMS = "@sellers/JOIN_ITEMS";
@@ -25,4 +28,5 @@ export interface Seller {
 // State
 export interface SellersState {
   items: Items[];
+  isLoading: boolean;
 }

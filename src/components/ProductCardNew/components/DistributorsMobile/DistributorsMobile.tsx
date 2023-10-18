@@ -1,6 +1,6 @@
 import React from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Tooltip, Button, Box, Collapse } from "@material-ui/core";
+import { Tooltip, Button, Box, Collapse, CircularProgress } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -33,6 +33,8 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down(670));
+
+  const isLoading = useAppSelector((state) => state.sellers.isLoading);
 
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
@@ -113,31 +115,35 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         )}`) ||
                         "-"}
                     </td>
-                    <td className={classes.tdActions}>
-                      {isShowProductLink ? (
-                        <a
-                          href={val.product_url || seller.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                          onClick={visitSellerHandler(
-                            { id: val.partner, name: val.partner_name },
-                            val.product_url || seller.url,
-                          )}
-                        >
-                          Visit site
-                        </a>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                          onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                          size="small"
-                        >
-                          Contact seller
-                        </Button>
-                      )}
-                    </td>
+                    {isLoading ? (
+                      <td className={classes.tdActions}>{<CircularProgress size={"small"} />}</td>
+                    ) : (
+                      <td className={classes.tdActions}>
+                        {isShowProductLink ? (
+                          <a
+                            href={val.product_url || seller.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={clsx(appTheme.hyperlink, classes.partnerLink)}
+                            onClick={visitSellerHandler(
+                              { id: val.partner, name: val.partner_name },
+                              val.product_url || seller.url,
+                            )}
+                          >
+                            Visit site
+                          </a>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                            onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
+                            size="small"
+                          >
+                            Contact seller
+                          </Button>
+                        )}
+                      </td>
+                    )}
                     <td className={classes.tdIcon}>
                       <ExpandMoreIcon className={clsx(classes.icon, { expanded: isExpanded })} />
                     </td>
