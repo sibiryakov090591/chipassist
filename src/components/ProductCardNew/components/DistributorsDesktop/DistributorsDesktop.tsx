@@ -326,13 +326,14 @@ const DistributorsDesktop: React.FC<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {(smart_view && stockrecords && bestOfferId > 0
-          ? [
-              stockrecords.find((elem) => elem[0].id === bestOfferId),
-              ...stockrecords.filter((elem) => elem[0].id !== bestOfferId),
-            ]
+        {(smart_view && stockrecords && bestOfferId
+          ? stockrecords.reduce(
+              (acc: SortedStockrecord[][], elem) => (elem[0].id !== bestOfferId ? [...acc, elem] : [elem, ...acc]),
+              [],
+            )
           : stockrecords
         )?.map((srArray) => {
+          if (!srArray) return null;
           const minPrices: any = {
             price_1: { price: srArray[0].price_1, stock_id: 0 },
             price_10: { price: srArray[0].price_10, stock_id: 0 },
@@ -351,6 +352,7 @@ const DistributorsDesktop: React.FC<Props> = ({
           });
 
           return srArray.map((val, index) => {
+            if (!val) return null;
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
             const partner = partners?.find((i: any) => i.id === val.partner);
