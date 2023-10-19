@@ -23,7 +23,9 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import { showHint } from "@src/store/rfqList/rfqListActions";
-import { withStyles } from "@material-ui/core/styles";
+import { useTheme, withStyles } from "@material-ui/core/styles";
+import { triggerReloadPage } from "@src/store/chat/chatActions";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles } from "./topMenuStyles";
 
 const HtmlTooltip = withStyles(() => ({
@@ -48,10 +50,14 @@ const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
   const { t } = useI18n("menu");
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isXsChat = useMediaQuery(theme.breakpoints.down(880));
+
+  const hintCloseTimeout = useRef(null);
+
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const isShowHint = useAppSelector((state) => state.rfqList.showHint);
   // const isCollapseHint = useAppSelector((state) => state.rfqList.collapseHint);
-  const hintCloseTimeout = useRef(null);
   // const ordersPage = useAppSelector((state) => state.orders.orders.page);
 
   // // Show feedback modal
@@ -78,6 +84,10 @@ const TopMenu = ({ isMobile }) => {
   }, [isShowHint]);
 
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
+
+  const reloadChatPage = () => {
+    if (isXsChat) dispatch(triggerReloadPage());
+  };
 
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
@@ -162,6 +172,7 @@ const TopMenu = ({ isMobile }) => {
             [classes.active]: window.location.pathname.includes("/messages"),
           })}
           to={`/messages`}
+          onClick={reloadChatPage}
         >
           {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
           <span style={{ position: "relative" }}>

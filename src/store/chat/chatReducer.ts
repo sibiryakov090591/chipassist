@@ -34,6 +34,7 @@ const initialState: actionTypes.ChatState = {
     forceUpdate: 0,
   },
   files: {},
+  triggerReloadPage: 0,
 };
 
 const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) => {
@@ -377,6 +378,9 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
 
     case actionTypes.CLEAR_STOCK_ERROR:
       return { ...state, stockrecordErrors: null };
+
+    case actionTypes.TRIGGER_RELOAD_PAGE:
+      return { ...state, triggerReloadPage: state.triggerReloadPage + 1 };
 
     default:
       return state;
