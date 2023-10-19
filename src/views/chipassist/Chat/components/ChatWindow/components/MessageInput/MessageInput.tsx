@@ -60,7 +60,7 @@ const MessageInput: React.FC<Props> = ({
       ...stocks[0],
       prices: stocks[0].prices?.map((i) => ({ ...i, price: i.original })),
     };
-  console.log(stock);
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);
