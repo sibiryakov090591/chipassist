@@ -227,12 +227,10 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
           dispatch(progressModalSuccess());
 
           localStorage.setItem(
-            data.productId || "RFQ_from_empty_search",
+            data.productId || data.part_number,
             JSON.stringify({ date: Date.now(), value: data.quantity }),
           );
-          if (data.productId) {
-            dispatch(shouldUpdateCard());
-          }
+          dispatch(shouldUpdateCard()); // For showing requested info in product card and empty search page
           return res.data;
         })
         .catch((e) => {
