@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Box, Button, CircularProgress, TextField } from "@material-ui/core";
@@ -40,6 +40,10 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
 
   const password = useRef(null);
   const confirm = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [showLoginForm]);
 
   // eslint-disable-next-line new-cap
   const schema = new passwordValidator();
