@@ -406,6 +406,12 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                           value: stock?.moq || 1,
                           message: stock?.moq ? `MOQ is ${stock.moq}` : "At least 1",
                         },
+                        ...(!!stock?.num_in_stock && {
+                          max: {
+                            value: stock.num_in_stock,
+                            message: `In stock ${stock.num_in_stock} pcs.`,
+                          },
+                        }),
                       }}
                       render={({ field }) => (
                         <NumberInput
