@@ -225,8 +225,12 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
         .then((res) => {
           dispatch(progressModalOpen());
           dispatch(progressModalSuccess());
+
+          localStorage.setItem(
+            data.productId || "RFQ_from_empty_search",
+            JSON.stringify({ date: Date.now(), value: data.quantity }),
+          );
           if (data.productId) {
-            localStorage.setItem(data.productId, JSON.stringify({ date: Date.now(), value: data.quantity }));
             dispatch(shouldUpdateCard());
           }
           return res.data;
