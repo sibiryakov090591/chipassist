@@ -525,6 +525,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     tooltipMaxWidth: {
       maxWidth: 350,
+      fontSize: 14,
     },
   }),
 );

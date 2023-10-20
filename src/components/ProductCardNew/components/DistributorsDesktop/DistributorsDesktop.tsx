@@ -466,11 +466,12 @@ const DistributorsDesktop: React.FC<Props> = ({
                     {isShowQualityCheck && (
                       <Tooltip
                         enterTouchDelay={1}
+                        placement="right"
                         classes={{ tooltip: clsx(commonClasses.tooltip, classes.tooltipMaxWidth) }}
                         title={
                           <div>
-                            You can have 10% OFF on components quality check with ChipAssist before purchase. Contact us
-                            for further details.
+                            You can have 10% OFF on components quality check before purchase. Request this service
+                            making the purchase through ChipAssist.
                           </div>
                         }
                       >
