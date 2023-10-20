@@ -377,6 +377,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               const priceBreaks = isMdDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
               isShowPricesHint = !priceBreaks.includes(price.amount);
             });
+            isShowPricesHint = isShowPricesHint || isSmDown;
 
             const {
               price: dynamicPriceBasedOnNumInStock,
@@ -466,11 +467,12 @@ const DistributorsDesktop: React.FC<Props> = ({
                     {isShowQualityCheck && (
                       <Tooltip
                         enterTouchDelay={1}
+                        placement="right"
                         classes={{ tooltip: clsx(commonClasses.tooltip, classes.tooltipMaxWidth) }}
                         title={
                           <div>
-                            You can have 10% OFF on components quality check with ChipAssist before purchase. Contact us
-                            for further details.
+                            You can have 10% OFF on components quality check before purchase. Request this service
+                            making the purchase through ChipAssist.
                           </div>
                         }
                       >
@@ -544,7 +546,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                   {isShowPricesHint && (
                     <Tooltip
                       enterTouchDelay={1}
-                      classes={{ tooltip: classes.priceTooltip }}
+                      classes={{ tooltip: commonClasses.tooltip }}
                       title={
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                           <table className={classes.priceTooltipTable}>
@@ -565,6 +567,12 @@ const DistributorsDesktop: React.FC<Props> = ({
                                   </td>
                                 ))}
                               </tr>
+                              {isSmDown && (
+                                <tr>
+                                  <td style={{ fontWeight: 600 }}>Pkg:</td>
+                                  <td>{val.packaging || "-"}</td>
+                                </tr>
+                              )}
                             </tbody>
                           </table>
                         </div>
