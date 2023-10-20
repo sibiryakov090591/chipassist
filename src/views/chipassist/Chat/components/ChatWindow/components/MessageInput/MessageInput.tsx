@@ -180,14 +180,15 @@ const MessageInput: React.FC<Props> = ({
     const name = `${partner.first_name} ${partner.last_name}`;
     const price = stock && getPrice(stock?.num_in_stock, stock as any);
     const numInStock = Number(stock?.num_in_stock);
+    const datecode = stock && stock.partner_sku.split("datecode:")[1];
     const partNumber = title;
-    const leadTime = Number(stock?.lead_period_str);
+    // const leadTime = Number(stock?.lead_period_str);
     const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
 
     let stockErrors: StockErrorsFields = null;
-    if (!numInStock) stockErrors = { ...stockErrors, num_in_stock: true };
-    if (!price) stockErrors = { ...stockErrors, price: true };
-    if (!leadTime && ["confirm", "update_price"].includes(type)) stockErrors = { ...stockErrors, leadTime: true };
+    if (stock && !numInStock) stockErrors = { ...stockErrors, num_in_stock: true };
+    if (stock && !price) stockErrors = { ...stockErrors, price: true };
+    // if (stock && !leadTime && ["confirm", "update_price"].includes(type)) stockErrors = { ...stockErrors, leadTime: true };
 
     if (stockErrors && ["confirm", "update_price", "update_qty"].includes(type)) {
       onShowDetails();
@@ -196,10 +197,14 @@ const MessageInput: React.FC<Props> = ({
 
     let value = "";
     if (type === "confirm") {
-      value = `Dear ${name}! We have ${partNumber} available. We can ship up to ${numInStock}pcs at ${price}${symbol} unit price in ${leadTime} day(s). If you are interested, please send us a Purchase Order (PO).`;
+      value = `Dear ${name}! We have ${partNumber} available. We can ship up to ${numInStock}pcs at ${price}${symbol} unit price${
+        datecode ? ` with ${datecode} date code` : ""
+      }. If you are interested, please send us a Purchase Order (PO).`;
     }
     if (type === "update_price") {
-      value = `Dear ${name}! Unfortunately, the unit price for ${partNumber} was updated. Now we can ship up to ${numInStock}pcs at ${price}${symbol} unit price in ${leadTime} day(s). If you are interested, please send us a Purchase Order (PO).`;
+      value = `Dear ${name}! Unfortunately, the unit price for ${partNumber} was updated. Now we can ship up to ${numInStock}pcs at ${price}${symbol} unit price${
+        datecode ? ` with ${datecode} date code` : ""
+      }. If you are interested, please send us a Purchase Order (PO).`;
     }
     if (type === "update_qty") {
       value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you are interested in this stock please send us a Purchase Order (PO).`;
@@ -228,15 +233,19 @@ const MessageInput: React.FC<Props> = ({
           </div>
           <Box display="flex" justifyContent="space-between" alignItems="flex-end" m="0 12px 8px">
             <Box display="flex" flexWrap="wrap" gridGap="6px">
-              <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
-                Confirm stock
-              </div>
-              <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
-                Update price
-              </div>
-              <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
-                Update quantity
-              </div>
+              {!!stock && (
+                <>
+                  <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
+                    Confirm stock
+                  </div>
+                  <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
+                    Update price
+                  </div>
+                  <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
+                    Update quantity
+                  </div>
+                </>
+              )}
               <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
                 No stock
               </div>
