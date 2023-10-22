@@ -11,6 +11,7 @@ import PcbRequest from "@src/views/chipassist/Pcb/PcbRequest/PcbRequest";
 import { GeneralSettings } from "@src/views/chipassist/Profile/components/General/components";
 import AddressForm from "@src/views/chipassist/Profile/components/CompanyAddress/components/AddressForm/AddressForm";
 import Login from "@src/views/chipassist/Login/Login";
+import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
 
 export const FormExamples = () => {
   const classes = useStyles();
@@ -99,6 +100,16 @@ export const FormExamples = () => {
             <Grid container spacing={3}>
               <Grid item md={12} lg={12}>
                 <AddressForm isExample={true} />
+              </Grid>
+            </Grid>
+          </fieldset>
+        </Grid>
+        <Grid item md={12} lg={12}>
+          <fieldset className={classes.gridItem}>
+            <legend className={classes.legendText}>Seller message form</legend>
+            <Grid container spacing={3}>
+              <Grid item md={12} lg={8}>
+                <SellerMessageModal isExample={true} />
               </Grid>
             </Grid>
           </fieldset>

@@ -18,7 +18,7 @@ import constants from "@src/constants/constants";
 import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
 import { useStyles } from "./SellerMessageModalStyles";
 
-const SellerMessageModal: React.FC = () => {
+const SellerMessageModal: React.FC<{ isExample: boolean }> = ({ isExample }) => {
   const classes = useStyles();
   const registerClasses = useRegisterStyles();
   const rfqModalClasses = useRfqModalStyles();
@@ -46,7 +46,7 @@ const SellerMessageModal: React.FC = () => {
     setShowLoginForm(true);
   };
 
-  return (
+  return !isExample ? (
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
@@ -105,12 +105,64 @@ const SellerMessageModal: React.FC = () => {
                 <LoginForm className={null} />
               </Box>
             ) : (
-              <SellerMessageForm onCloseModalHandler={handleClose} />
+              <SellerMessageForm onCloseModalHandler={handleClose} isExample={isExample} />
             )}
           </div>
         </div>
       </Fade>
     </Modal>
+  ) : (
+    <>
+      <div className={clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container)}>
+        {isChipAssist && (
+          <Hidden smDown>
+            <div className={rfqModalClasses.logoContainer}>
+              <div className={rfqModalClasses.signIn}>
+                {!isAuthenticated && (
+                  <>
+                    {t("restricted.description_1")}
+                    <div onClick={singInHandler} className={rfqModalClasses.link}>
+                      {t("restricted.sign_in")}
+                    </div>
+                  </>
+                )}
+              </div>
+              <img className={rfqModalClasses.logo} src={logo} alt="chipassist logo" />
+            </div>
+          </Hidden>
+        )}
+        <div className={rfqModalClasses.content}>
+          <h2 className={classes.header}>{t("title")}</h2>
+          <p
+            className={classes.text}
+            dangerouslySetInnerHTML={{
+              __html: t("text", {
+                interpolation: { escapeValue: false },
+                mpn: partNumber,
+              }),
+            }}
+          />
+          {!isAuthenticated && (
+            <Hidden mdUp>
+              <div className={rfqModalClasses.signInMobile}>
+                {t("restricted.description_1")}
+                <span onClick={singInHandler} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
+                  {t("restricted.sign_in")}
+                </span>
+                {". "}
+              </div>
+            </Hidden>
+          )}
+          {showLoginForm ? (
+            <Box m="13px">
+              <LoginForm className={null} />
+            </Box>
+          ) : (
+            <SellerMessageForm onCloseModalHandler={handleClose} isExample={isExample} />
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
