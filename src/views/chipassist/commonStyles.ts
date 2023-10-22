@@ -65,12 +65,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   tooltip: {
-    backgroundColor: "#f5f5f9",
+    backgroundColor: "#ffffff",
     color: "rgba(0, 0, 0, 0.87)",
     fontSize: "inherit",
-    border: "1px solid #dadde9",
+    border: "1px solid #eee",
     maxWidth: "none",
-    padding: "4px 8px",
+    padding: "6px 10px",
+    boxShadow: theme.shadows[6],
   },
   errorIcon: {
     color: red[500],

@@ -1,12 +1,12 @@
 export default {
   root: {
     alignItems: "flex-start",
-    // marginTop: 6,
     "& .MuiCheckbox-root": {
-      top: "-9px",
+      padding: 7,
     },
     "& .MuiFormControlLabel-label": {
       textAlign: "start",
+      marginTop: 7,
     },
   },
 };

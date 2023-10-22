@@ -49,8 +49,8 @@ export default function RFQModalModal() {
     });
   };
 
-  const singInHandler = () => {
-    setShowLoginForm(true);
+  const showSignIn = (open: boolean) => () => {
+    setShowLoginForm(open);
   };
 
   return (
@@ -72,13 +72,18 @@ export default function RFQModalModal() {
             <Hidden smDown>
               <div className={classes.logoContainer}>
                 <div className={classes.signIn}>
-                  {!isAuthenticated && (
+                  {!isAuthenticated && !showLoginForm && (
                     <>
                       {t("restricted.description_1")}
-                      <div onClick={singInHandler} className={classes.link}>
+                      <div onClick={showSignIn(true)} className={classes.link}>
                         {t("restricted.sign_in")}
                       </div>
                     </>
+                  )}
+                  {!isAuthenticated && showLoginForm && (
+                    <div onClick={showSignIn(false)} className={classes.link}>
+                      Back to RFQ
+                    </div>
                   )}
                 </div>
                 <img className={classes.logo} src={logo} alt="chipassist logo" />
@@ -111,11 +116,13 @@ export default function RFQModalModal() {
             {!isAuthenticated && (
               <Hidden mdUp>
                 <div className={classes.signInMobile}>
-                  {t("restricted.description_1")}
-                  <span onClick={singInHandler} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
-                    {t("restricted.sign_in")}
+                  {!showLoginForm && t("restricted.description_1")}
+                  <span
+                    onClick={showSignIn(!showLoginForm)}
+                    className={`${appTheme.hyperlink} ${registerClasses.link}`}
+                  >
+                    {showLoginForm ? "Back to RFQ" : t("restricted.sign_in")}
                   </span>
-                  {". "}
                 </div>
               </Hidden>
             )}

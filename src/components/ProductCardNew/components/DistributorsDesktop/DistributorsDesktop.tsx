@@ -326,13 +326,14 @@ const DistributorsDesktop: React.FC<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {(smart_view && stockrecords && bestOfferId > 0
-          ? [
-              stockrecords.find((elem) => elem[0].id === bestOfferId),
-              ...stockrecords.filter((elem) => elem[0].id !== bestOfferId),
-            ]
+        {(smart_view && stockrecords && bestOfferId
+          ? stockrecords.reduce(
+              (acc: SortedStockrecord[][], elem) => (elem[0].id !== bestOfferId ? [...acc, elem] : [elem, ...acc]),
+              [],
+            )
           : stockrecords
         )?.map((srArray) => {
+          if (!srArray) return null;
           const minPrices: any = {
             price_1: { price: srArray[0].price_1, stock_id: 0 },
             price_10: { price: srArray[0].price_10, stock_id: 0 },
@@ -351,6 +352,7 @@ const DistributorsDesktop: React.FC<Props> = ({
           });
 
           return srArray.map((val, index) => {
+            if (!val) return null;
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
             const partner = partners?.find((i: any) => i.id === val.partner);
@@ -375,6 +377,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               const priceBreaks = isMdDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
               isShowPricesHint = !priceBreaks.includes(price.amount);
             });
+            isShowPricesHint = isShowPricesHint || isSmDown;
 
             const {
               price: dynamicPriceBasedOnNumInStock,
@@ -464,11 +467,12 @@ const DistributorsDesktop: React.FC<Props> = ({
                     {isShowQualityCheck && (
                       <Tooltip
                         enterTouchDelay={1}
+                        placement="right"
                         classes={{ tooltip: clsx(commonClasses.tooltip, classes.tooltipMaxWidth) }}
                         title={
                           <div>
-                            You can have 10% OFF on components quality check with ChipAssist before purchase. Contact us
-                            for further details.
+                            You can have 10% OFF on components quality check before purchase. Request this service
+                            making the purchase through ChipAssist.
                           </div>
                         }
                       >
@@ -542,7 +546,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                   {isShowPricesHint && (
                     <Tooltip
                       enterTouchDelay={1}
-                      classes={{ tooltip: classes.priceTooltip }}
+                      classes={{ tooltip: commonClasses.tooltip }}
                       title={
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                           <table className={classes.priceTooltipTable}>
@@ -563,6 +567,12 @@ const DistributorsDesktop: React.FC<Props> = ({
                                   </td>
                                 ))}
                               </tr>
+                              {isSmDown && (
+                                <tr>
+                                  <td style={{ fontWeight: 600 }}>Pkg:</td>
+                                  <td>{val.packaging || "-"}</td>
+                                </tr>
+                              )}
                             </tbody>
                           </table>
                         </div>

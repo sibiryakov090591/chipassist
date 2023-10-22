@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
+import { format } from "date-fns";
 import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -96,8 +97,10 @@ const SearchResults = () => {
   const { isNeedModalOpenAgain, sellerId, sellerName, partNumber, stockrecordId } = useAppSelector(
     (state) => state.rfq.sellerMessageModal,
   );
+  const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
   // const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
+  const [requestedRFQ, setRequestedRFQ] = useState<any>(null);
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
@@ -137,6 +140,11 @@ const SearchResults = () => {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [isLoadingSearchResultsInProgress]);
+
+  useEffect(() => {
+    const requestedData = localStorage.getItem(rfqItem?.partNumber);
+    setRequestedRFQ(requestedData ? JSON.parse(requestedData) : null);
+  }, [shouldUpdateCard, rfqItem]);
 
   useEffect(() => {
     if (
@@ -463,6 +471,12 @@ const SearchResults = () => {
                 !isExtendedSearchStarted &&
                 count === 0 && (
                   <div className={classes.searchResultEmpty}>
+                    {requestedRFQ && (
+                      <div className={classes.requestedBlock}>
+                        You have requested this product at{" "}
+                        {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
+                      </div>
+                    )}
                     <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
                     <h3
                       className={classes.rfqHeader}

@@ -5,8 +5,13 @@ import { createStyles, makeStyles } from "@material-ui/styles";
 export const useStyles = makeStyles(() =>
   createStyles({
     form: {
-      maxWidth: 600,
+      maxWidth: 500,
+      minHeight: 440, // 423
+      height: "100%",
       textAlign: "start",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
     },
     label: {
       fontSize: 11,

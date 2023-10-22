@@ -332,6 +332,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: "#fff",
       border: "none",
     },
+    requestedBlock: {
+      border: "1px solid #234",
+      maxWidth: 800,
+      margin: "0 auto",
+      padding: "1rem",
+      backgroundColor: "#f9f9f9",
+      color: "#123",
+      borderRadius: 4,
+    },
   }),
 );
 

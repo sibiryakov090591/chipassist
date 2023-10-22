@@ -39,6 +39,7 @@ export const CLEAR_CHAT_REDUCER = "@chat/CLEAR_CHAT_REDUCER";
 export const READ_MESSAGE = "@chat/READ_MESSAGE";
 export const SET_STOCK_ERROR = "@chat/SET_STOCK_ERROR";
 export const CLEAR_STOCK_ERROR = "@chat/CLEAR_STOCK_ERROR";
+export const TRIGGER_RELOAD_PAGE = "@chat/TRIGGER_RELOAD_PAGE";
 
 export interface ChatState {
   filters: {
@@ -71,6 +72,7 @@ export interface ChatState {
     forceUpdate: number;
   };
   files: { [key: number]: FileType };
+  triggerReloadPage: number;
 }
 
 export interface PartnersListItem {
@@ -273,7 +275,12 @@ interface ClearStockErrorsAction {
   type: typeof CLEAR_STOCK_ERROR;
 }
 
+interface TriggerReloadPageAction {
+  type: typeof TRIGGER_RELOAD_PAGE;
+}
+
 export type ChatActionTypes =
+  | TriggerReloadPageAction
   | UpdateStockrecordAction
   | UpdateStockrecordSuccessAction
   | SaveFilesAction

@@ -417,3 +417,7 @@ export const setStockError = (fields: actionTypes.StockErrorsFields) => ({
 export const clearStockErrors = () => ({
   type: actionTypes.CLEAR_STOCK_ERROR,
 });
+
+export const triggerReloadPage = () => ({
+  type: actionTypes.TRIGGER_RELOAD_PAGE,
+});
