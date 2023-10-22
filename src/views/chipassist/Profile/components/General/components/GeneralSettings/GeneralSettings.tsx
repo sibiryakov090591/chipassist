@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
 
 const helpEmail = constants.id === ID_ICSEARCH ? "help@icsearch.ru" : "help@chipassist.com";
 
-const GeneralSettings = () => {
+const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -122,9 +122,9 @@ const GeneralSettings = () => {
   }, []);
 
   const values = {
-    firstName: profileInfo.firstName || "",
-    lastName: profileInfo.lastName || "",
-    email: profileInfo.email || "",
+    firstName: profileInfo?.firstName || "",
+    lastName: profileInfo?.lastName || "",
+    email: profileInfo?.email || "",
   };
 
   const handleChangeProfileField = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,15 +195,17 @@ const GeneralSettings = () => {
     if (validErrors) {
       return setValidateErrors(validErrors);
     }
-
-    setIsSaving(true);
-    promises.push(dispatch(updateCompanyAddress(addressData.id, data)));
-    // update profile name and stop preloader
-    return Promise.all(promises)
-      .then(() => dispatch(updateProfileInfoThunk()))
-      .then(() => dispatch(loadProfileInfoThunk()))
-      .then(() => dispatch(showUpdateSuccessAction()))
-      .finally(() => setIsSaving(false));
+    if (!isExample) {
+      setIsSaving(true);
+      promises.push(dispatch(updateCompanyAddress(addressData.id, data)));
+      // update profile name and stop preloader
+      return Promise.all(promises)
+        .then(() => dispatch(updateProfileInfoThunk()))
+        .then(() => dispatch(loadProfileInfoThunk()))
+        .then(() => dispatch(showUpdateSuccessAction()))
+        .finally(() => setIsSaving(false));
+    }
+    return false;
   };
 
   const handleSnackbarClose = () => {

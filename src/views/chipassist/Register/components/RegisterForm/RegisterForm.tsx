@@ -63,8 +63,8 @@ interface FormState {
   wrongUserName: boolean;
 }
 
-const RegisterForm = (props: { className: string; [x: string]: any }) => {
-  const { className, ...rest } = props;
+const RegisterForm = (props: { className: string; isExample?: boolean; [x: string]: any }) => {
+  const { className, isExample, ...rest } = props;
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch: any = useAppDispatch();
@@ -174,28 +174,32 @@ const RegisterForm = (props: { className: string; [x: string]: any }) => {
       }));
     }
 
-    const data = {
-      ...formState.values,
-      country:
-        countries?.find((c) => c.url === formState.values.country)?.iso_3166_1_a3 ||
-        (constants?.id !== ID_ICSEARCH &&
-          countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.iso_3166_1_a3) ||
-        defaultCountry.iso_3166_1_a3,
-    };
-    return dispatch(authSignup(data))
-      .then(() => {
-        localStorage.setItem("registered_email", formState.values.email);
-        if (!localStorage.getItem("prev_user_email")) dispatch(updatePrevEmail(formState.values.email));
-        setSuccessModalOpen(true);
-      })
-      .catch((err: any, response: any) => {
-        console.log("authFail", err, response, err.error);
-        dispatch(authFail(err));
-        setFormState((prevState) => ({
-          ...prevState,
-          wrongUserName: true,
-        }));
-      });
+    if (!isExample) {
+      const data = {
+        ...formState.values,
+        country:
+          countries?.find((c) => c.url === formState.values.country)?.iso_3166_1_a3 ||
+          (constants?.id !== ID_ICSEARCH &&
+            countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.iso_3166_1_a3) ||
+          defaultCountry.iso_3166_1_a3,
+      };
+      return dispatch(authSignup(data))
+        .then(() => {
+          localStorage.setItem("registered_email", formState.values.email);
+          if (!localStorage.getItem("prev_user_email")) dispatch(updatePrevEmail(formState.values.email));
+          setSuccessModalOpen(true);
+        })
+        .catch((err: any, response: any) => {
+          console.log("authFail", err, response, err.error);
+          dispatch(authFail(err));
+          setFormState((prevState) => ({
+            ...prevState,
+            wrongUserName: true,
+          }));
+        });
+    }
+
+    return false;
   };
 
   const hasError = (field: keyof FormStateTouched) => !!(formState.touched[field] && formState.errors[field]);

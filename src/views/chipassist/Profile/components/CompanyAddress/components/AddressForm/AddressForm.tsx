@@ -36,9 +36,10 @@ import theme from "@src/themes";
 import { useStyles } from "../../CompanyAddressStyles";
 
 interface AddressFormProps {
-  onClose: () => void;
+  onClose?: () => void;
   changeCurrentPage?: (page: number) => void;
   updateData?: any;
+  isExample?: boolean;
 }
 
 type FormValues = {
@@ -53,7 +54,7 @@ type FormValues = {
   company_name: string;
 };
 
-const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, updateData }) => {
+const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, updateData, isExample }) => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -114,13 +115,28 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
       });
     }
 
-    setPendingMode(true);
-    if (updateData) {
-      return dispatch(updateCompanyAddress(updateData.id, data))
+    if (!isExample) {
+      setPendingMode(true);
+      if (updateData) {
+        return dispatch(updateCompanyAddress(updateData.id, data))
+          .then((res: any) => {
+            setPendingMode(false);
+            dispatch(showUpdateSuccess());
+            if (res.status < 300) {
+              onClose();
+              dispatch(loadProfileInfoThunk());
+            }
+          })
+          .catch(() => {
+            setPendingMode(false);
+          });
+      }
+      return dispatch(newCompanyAddress(data))
         .then((res: any) => {
           setPendingMode(false);
           dispatch(showUpdateSuccess());
           if (res.status < 300) {
+            if (changeCurrentPage) changeCurrentPage(1);
             onClose();
             dispatch(loadProfileInfoThunk());
           }
@@ -129,24 +145,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
           setPendingMode(false);
         });
     }
-    return dispatch(newCompanyAddress(data))
-      .then((res: any) => {
-        setPendingMode(false);
-        dispatch(showUpdateSuccess());
-        if (res.status < 300) {
-          if (changeCurrentPage) changeCurrentPage(1);
-          onClose();
-          dispatch(loadProfileInfoThunk());
-        }
-      })
-      .catch(() => {
-        setPendingMode(false);
-      });
+    return false;
   };
 
   const onCloseHandler = () => {
-    dispatch(loadProfileInfoThunk());
-    onClose();
+    if (!isExample) {
+      dispatch(loadProfileInfoThunk());
+      onClose();
+    }
   };
 
   const onChangePhoneHandler = (e: any) => {

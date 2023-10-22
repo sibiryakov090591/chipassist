@@ -165,7 +165,7 @@ const defaultRfqListState = (): RfqListFormState => ({
   errors: [],
 });
 
-export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }) => {
+export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean }> = ({ isModalMode, isExample }) => {
   const maxRfqRows = 10;
   const { t } = useI18n("rfq");
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -525,106 +525,112 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean }> = ({ isModalMode }
     if (checkErrorInRfqList()) {
       return false;
     }
-    let data = createDataRfqList();
+    if (!isExample) {
+      let data = createDataRfqList();
 
-    const country =
-      countries?.find((c) => c.url === formState.values.country) ||
-      (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-      defaultCountry;
-    const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
-    let company_type: string;
-    try {
-      company_type = !isAuthenticated
-        ? formState.values.company_type === "Other"
-          ? formState.values.company_other_type
-          : formState.values.company_type
-        : billingAddress?.notes.match(/company_variant: (.+)/) &&
-          billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
-    } catch {
-      company_type = null;
-    }
-    // const company_name = !isAuthenticated
-    //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
-    //   : billingAddress?.company_name;
-    const company_name = billingAddress?.company_name;
-    let details = `Delivery to: ${country?.printable_name};`;
-    if (phone) details += ` Phone: ${phone};`;
-    if (company_name) details += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
-    if (company_type) details += ` Company type: ${company_type};`;
-    if (formState.values.comment) details += ` ${formState.values.comment};`;
+      const country =
+        countries?.find((c) => c.url === formState.values.country) ||
+        (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
+        defaultCountry;
+      const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
+      let company_type: string;
+      try {
+        company_type = !isAuthenticated
+          ? formState.values.company_type === "Other"
+            ? formState.values.company_other_type
+            : formState.values.company_type
+          : billingAddress?.notes.match(/company_variant: (.+)/) &&
+            billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
+      } catch {
+        company_type = null;
+      }
+      // const company_name = !isAuthenticated
+      //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
+      //   : billingAddress?.company_name;
+      const company_name = billingAddress?.company_name;
+      let details = `Delivery to: ${country?.printable_name};`;
+      if (phone) details += ` Phone: ${phone};`;
+      if (company_name) details += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
+      if (company_type) details += ` Company type: ${company_type};`;
+      if (formState.values.comment) details += ` ${formState.values.comment};`;
 
-    data = data.map((elem) => ({ ...elem, comment: details }));
+      data = data.map((elem) => ({ ...elem, comment: details }));
 
-    dispatch(progressModalSetPartNumber(`${data[0].part_number}, ... `, "rfq_list"));
+      dispatch(progressModalSetPartNumber(`${data[0].part_number}, ... `, "rfq_list"));
 
-    if (isModalMode) dispatch(changeMisc("before_unload_modal_has_sent", "true"));
-    dispatch(changeMisc("rfq_list", { ...formState.values, comment: details, rfq_list: data }, formState.values.email));
-
-    setIsLoading(true);
-    if (isAuthenticated) {
-      dispatch(saveRfqListItems(data))
-        .then(() => {
-          batch(() => {
-            dispatch(clearRfqItem());
-            setFormState((prevState) => ({
-              ...defaultState(),
-              values: {
-                ...defaultState().values,
-                country: prevState.values.country,
-              },
-            }));
-            setRfqListState({ ...defaultRfqListState() });
-          });
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      saveRequestToLocalStorage(data, [...data].map((rfq) => `${rfq.part_number}`).toString(), "rfq_list");
+      if (isModalMode) dispatch(changeMisc("before_unload_modal_has_sent", "true"));
       dispatch(
-        changeMisc(
-          "not_activated_request",
-          { ...{ ...formState.values, rfq_list: data }, requestType: "rfq_list" },
-          formState.values.email,
-        ),
+        changeMisc("rfq_list", { ...formState.values, comment: details, rfq_list: data }, formState.values.email),
       );
 
-      let registerData = { ...defaultRegisterData };
-      registerData.email = formState.values.email;
-      registerData.first_name = formState.values.firstName;
-      registerData.last_name = formState.values.lastName;
-      registerData.phone_number_str = phoneValue ? `+${phoneValue}` : null;
-      registerData.company_name = company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "";
-      registerData.company_variant =
-        formState.values.company_type === "Other" ? formState.values.company_other_type : formState.values.company_type;
-      registerData.policy_confirm = formState.values.policy_confirm;
-      registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
-      registerData.country = country?.iso_3166_1_a3;
-      registerData = Object.fromEntries(
-        Object.entries(registerData)
-          .map((i: any) => {
-            if (typeof i[1] === "boolean" || i[1]) return i;
-            return false;
+      setIsLoading(true);
+      if (isAuthenticated) {
+        dispatch(saveRfqListItems(data))
+          .then(() => {
+            batch(() => {
+              dispatch(clearRfqItem());
+              setFormState((prevState) => ({
+                ...defaultState(),
+                values: {
+                  ...defaultState().values,
+                  country: prevState.values.country,
+                },
+              }));
+              setRfqListState({ ...defaultRfqListState() });
+            });
           })
-          .filter((i: any) => !!i),
-      );
+          .finally(() => setIsLoading(false));
+      } else {
+        saveRequestToLocalStorage(data, [...data].map((rfq) => `${rfq.part_number}`).toString(), "rfq_list");
+        dispatch(
+          changeMisc(
+            "not_activated_request",
+            { ...{ ...formState.values, rfq_list: data }, requestType: "rfq_list" },
+            formState.values.email,
+          ),
+        );
 
-      dispatch(authSignup(registerData, { subj: "rfq_list" }))
-        .then(() => {
-          batch(() => {
-            localStorage.removeItem("rfq_form_register_data");
-            localStorage.setItem("registered_email", formState.values.email);
-            dispatch(clearRfqItem());
-            setFormState((prevState) => ({
-              ...defaultState(),
-              values: {
-                ...defaultState().values,
-                country: prevState.values.country,
-              },
-            }));
-            setRfqListState({ ...defaultRfqListState() });
-            dispatch(progressModalOpen());
-          });
-        })
-        .finally(() => setIsLoading(false));
+        let registerData = { ...defaultRegisterData };
+        registerData.email = formState.values.email;
+        registerData.first_name = formState.values.firstName;
+        registerData.last_name = formState.values.lastName;
+        registerData.phone_number_str = phoneValue ? `+${phoneValue}` : null;
+        registerData.company_name = company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "";
+        registerData.company_variant =
+          formState.values.company_type === "Other"
+            ? formState.values.company_other_type
+            : formState.values.company_type;
+        registerData.policy_confirm = formState.values.policy_confirm;
+        registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
+        registerData.country = country?.iso_3166_1_a3;
+        registerData = Object.fromEntries(
+          Object.entries(registerData)
+            .map((i: any) => {
+              if (typeof i[1] === "boolean" || i[1]) return i;
+              return false;
+            })
+            .filter((i: any) => !!i),
+        );
+
+        dispatch(authSignup(registerData, { subj: "rfq_list" }))
+          .then(() => {
+            batch(() => {
+              localStorage.removeItem("rfq_form_register_data");
+              localStorage.setItem("registered_email", formState.values.email);
+              dispatch(clearRfqItem());
+              setFormState((prevState) => ({
+                ...defaultState(),
+                values: {
+                  ...defaultState().values,
+                  country: prevState.values.country,
+                },
+              }));
+              setRfqListState({ ...defaultRfqListState() });
+              dispatch(progressModalOpen());
+            });
+          })
+          .finally(() => setIsLoading(false));
+      }
     }
     return true;
   };

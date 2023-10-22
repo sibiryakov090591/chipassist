@@ -16,7 +16,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
 import LoginForm from "./components/LoginForm/LoginForm";
 
-const Login = () => {
+const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const navigate = useNavigate();
@@ -25,12 +25,14 @@ const Login = () => {
   const { t } = useI18n("login");
 
   useEffect(() => {
-    if (checkIsAuthenticated()) {
-      const previousLocation = localStorage.getItem("previousLocation");
-      if (previousLocation && !isAuthPage(previousLocation)) {
-        navigate(previousLocation);
-      } else {
-        navigate("/");
+    if (!isExample) {
+      if (checkIsAuthenticated()) {
+        const previousLocation = localStorage.getItem("previousLocation");
+        if (previousLocation && !isAuthPage(previousLocation)) {
+          navigate(previousLocation);
+        } else {
+          navigate("/");
+        }
       }
     }
   }, []);
@@ -40,9 +42,11 @@ const Login = () => {
   }, []);
 
   const onSignUpHandler = (e: any) => {
-    if (constants.id === ID_SUPPLIER_RESPONSE) {
-      e.preventDefault();
-      dispatch(showRegisterModalAction());
+    if (!isExample) {
+      if (constants.id === ID_SUPPLIER_RESPONSE) {
+        e.preventDefault();
+        dispatch(showRegisterModalAction());
+      }
     }
   };
 
@@ -55,7 +59,11 @@ const Login = () => {
             {t("sign_in")}
           </Typography>
           <Typography variant="subtitle2">{t("sign_in_description")}</Typography>
-          <LoginForm className={classes.loginForm} />
+          {isExample ? (
+            <LoginForm className={classes.loginForm} isExample={true} />
+          ) : (
+            <LoginForm className={classes.loginForm} />
+          )}
           <Divider className={classes.divider} />
           <Box display="flex" alignItems="center" justifyContent="space-between">
             <Link
