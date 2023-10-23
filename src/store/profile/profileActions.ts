@@ -31,10 +31,20 @@ export const loadProfileInfoThunk = () => {
           partners: response.partners,
           avatar: response.photo,
           addressErrors: null,
-          addresses: response.address,
+          addresses: response.address?.sort((a, b) => b.id - a.id),
+          defaultBillingAddress:
+            response.address?.find((address) => address.is_default_for_billing) ||
+            response?.address?.sort((a, b) => b.id - a.id)[0] ||
+            null,
+          defaultShippingAddress:
+            response.address?.find((address) => address.is_default_for_shipping) ||
+            response?.address?.sort((a, b) => b.id - a.id)[0] ||
+            null,
           addressViewItem: {},
         };
-        dispatch(saveBillingAddress(response.address.sort((a: any, b: any) => a.id - b.id)[0]));
+        if (profileInfo.defaultBillingAddress) {
+          dispatch(saveBillingAddress(profileInfo.defaultBillingAddress));
+        }
         dispatch(saveProfileInfo(profileInfo));
         dispatch(isLoadingProfile(false));
       })
