@@ -84,20 +84,23 @@ export const getMessages = (chatId: number, filters: { [key: string]: any } = {}
             // download images
             const files: any = {};
             const filesPromises: any = [];
-            res.data.results.forEach((i: ChatListMessage) => {
-              i.message_attachments.forEach((file) => {
-                const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
-                if (validType && !getState().chat.files[file.id]) {
-                  filesPromises.push(
-                    dispatch(downloadFile(file.id))
-                      .then((blob: Blob) => {
-                        files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
-                      })
-                      .catch((e: any) => e),
-                  );
-                }
+            if (res.data.results) {
+              res.data.results.forEach((i: ChatListMessage) => {
+                if (!i.message_files) return false;
+                return i.message_files.forEach((file) => {
+                  const validType = file?.file?.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
+                  if (validType && !getState().chat.files[file.id]) {
+                    filesPromises.push(
+                      dispatch(downloadFile(file.id))
+                        .then((blob: Blob) => {
+                          files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                        })
+                        .catch((e: any) => e),
+                    );
+                  }
+                });
               });
-            });
+            }
             if (filesPromises.length) {
               await Promise.all(filesPromises);
               dispatch(saveFiles(files));
@@ -142,20 +145,23 @@ export const updateMessages = (chatId: number, filters: { [key: string]: any } =
             // download images
             const files: any = {};
             const filesPromises: any = [];
-            res.data.results.forEach((i: ChatListMessage) => {
-              i.message_attachments.forEach((file) => {
-                const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
-                if (validType && !getState().chat.files[file.id]) {
-                  filesPromises.push(
-                    dispatch(downloadFile(file.id))
-                      .then((blob: Blob) => {
-                        files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
-                      })
-                      .catch((e: any) => e),
-                  );
-                }
+            if (res?.data?.results) {
+              res.data.results.forEach((i: ChatListMessage) => {
+                if (!i.message_files) return false;
+                return i.message_files.forEach((file) => {
+                  const validType = file?.file?.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
+                  if (validType && !getState().chat.files[file.id]) {
+                    filesPromises.push(
+                      dispatch(downloadFile(file.id))
+                        .then((blob: Blob) => {
+                          files[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                        })
+                        .catch((e: any) => e),
+                    );
+                  }
+                });
               });
-            });
+            }
             if (filesPromises.length) {
               await Promise.all(filesPromises);
               dispatch(saveFiles(files));
@@ -199,25 +205,29 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
               read: true,
               read_by_partner: false,
               created: new Date().toISOString(),
-              ...(res.data?.po && { po: res.data.po, message_attachments: res.data.message_attachments }),
-              ...(res.data?.message_attachments && { message_attachments: res.data.message_attachments }),
+              ...(res.data?.po && { po: res.data.po, message_files: res.data.message_files }),
+              ...(res.data?.message_files && { message_files: res.data.message_files }),
             };
             if (res.data?.po) {
               // download order
               const previewFiles: any = {};
               const filesPromises: any = [];
-              res.data.message_attachments.forEach((file: any) => {
-                const validType = file.file_name.match(/\.(pdf)$/i);
-                if (validType && !getState().chat.files[file.id]) {
-                  filesPromises.push(
-                    dispatch(downloadFile(file.id))
-                      .then((blob: Blob) => {
-                        previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
-                      })
-                      .catch((e: any) => e),
-                  );
-                }
-              });
+              if (res?.data.message_files) {
+                res.data.message_files.forEach((file: any) => {
+                  if (!file) return false;
+                  const validType = file?.file?.match(/\.(pdf)$/i);
+                  if (validType && !getState().chat.files[file.id]) {
+                    filesPromises.push(
+                      dispatch(downloadFile(file.id))
+                        .then((blob: Blob) => {
+                          previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                        })
+                        .catch((e: any) => e),
+                    );
+                  }
+                  return true;
+                });
+              }
               await Promise.all(filesPromises);
               dispatch(saveFiles(previewFiles));
             }
@@ -232,7 +242,7 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
   };
 };
 
-export const readMessage = (chatId: number, messageId: number) => {
+export const readMessage = (messageId: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -240,7 +250,7 @@ export const readMessage = (chatId: number, messageId: number) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .patch(`/chats/${chatId}/messages/${messageId}/read/${params}`)
+          .patch(`/chats/messages/${messageId}/read/${params}`)
           .then((res) => res.data)
           .catch((e) => {
             console.log("***READ_MESSAGE_ERROR", e);
@@ -279,7 +289,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
       types: actionTypes.SEND_MESSAGE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .post(`/chats/${chatId}/attachments/${params}`, {
+          .post(`/chats/${chatId}/files/${params}`, {
             data: formData,
             config: { timeout: 300000 }, // 5min
           })
@@ -287,7 +297,7 @@ export const sendFiles = (chatId: number, files: File[]) => {
             const newMessage = {
               id: res.data.id || uuidv4(),
               text: "",
-              message_attachments: res.data.message_attachments,
+              message_files: res.data.message_files,
               sender: "You",
               read: true,
               created: new Date().toISOString(),
@@ -295,18 +305,22 @@ export const sendFiles = (chatId: number, files: File[]) => {
             // download image
             const previewFiles: any = {};
             const filesPromises: any = [];
-            res.data.message_attachments.forEach((file: any) => {
-              const validType = file.file_name.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
-              if (validType && !getState().chat.files[file.id]) {
-                filesPromises.push(
-                  dispatch(downloadFile(file.id))
-                    .then((blob: Blob) => {
-                      previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
-                    })
-                    .catch((e: any) => e),
-                );
-              }
-            });
+            if (res?.data.message_files) {
+              res.data.message_files.forEach((file: any) => {
+                if (!file) return false;
+                const validType = file?.file?.match(/\.(png|jpg|jpeg|svg|pdf)$/i);
+                if (validType && !getState().chat.files[file.id]) {
+                  filesPromises.push(
+                    dispatch(downloadFile(file.id))
+                      .then((blob: Blob) => {
+                        previewFiles[file.id] = { type: validType[0], url: URL.createObjectURL(blob) };
+                      })
+                      .catch((e: any) => e),
+                  );
+                }
+                return true;
+              });
+            }
             await Promise.all(filesPromises);
             dispatch(saveFiles(previewFiles));
             dispatch(addMessage(chatId, newMessage));
@@ -328,7 +342,7 @@ export const downloadFile = (fileId: number) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`/chats/attachments/${fileId}/${params}`, {
+          .get(`/chats/files/${fileId}/${params}`, {
             config: { responseType: "blob" },
           })
           .then((res) => {

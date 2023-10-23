@@ -16,6 +16,7 @@ import logo from "@src/images/logo/on_red.png";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { useStyles } from "./SellerMessageModalStyles";
 
 const SellerMessageModal: React.FC = () => {
@@ -42,8 +43,8 @@ const SellerMessageModal: React.FC = () => {
     dispatch(sellerMessageModalClose());
   };
 
-  const singInHandler = () => {
-    setShowLoginForm(true);
+  const showSignIn = (show: boolean) => () => {
+    setShowLoginForm(show);
   };
 
   return (
@@ -65,13 +66,18 @@ const SellerMessageModal: React.FC = () => {
             <Hidden smDown>
               <div className={rfqModalClasses.logoContainer}>
                 <div className={rfqModalClasses.signIn}>
-                  {!isAuthenticated && (
+                  {!isAuthenticated && !showLoginForm && (
                     <>
                       {t("restricted.description_1")}
-                      <div onClick={singInHandler} className={rfqModalClasses.link}>
+                      <div onClick={showSignIn(true)} className={rfqModalClasses.link}>
                         {t("restricted.sign_in")}
                       </div>
                     </>
+                  )}
+                  {!isAuthenticated && showLoginForm && (
+                    <div onClick={showSignIn(false)} className={rfqModalClasses.link}>
+                      <DoubleArrowIcon /> Back to RFQ
+                    </div>
                   )}
                 </div>
                 <img className={rfqModalClasses.logo} src={logo} alt="chipassist logo" />
@@ -79,24 +85,40 @@ const SellerMessageModal: React.FC = () => {
             </Hidden>
           )}
           <div className={rfqModalClasses.content}>
-            <h2 className={classes.header}>{t("title")}</h2>
-            <p
-              className={classes.text}
-              dangerouslySetInnerHTML={{
-                __html: t("text", {
-                  interpolation: { escapeValue: false },
-                  mpn: partNumber,
-                }),
-              }}
-            />
+            {!showLoginForm ? (
+              <>
+                <h2 className={classes.header}>{t("title")}</h2>
+                <p
+                  className={classes.text}
+                  dangerouslySetInnerHTML={{
+                    __html: t("text", {
+                      interpolation: { escapeValue: false },
+                      mpn: partNumber,
+                    }),
+                  }}
+                />
+              </>
+            ) : (
+              <Hidden smDown>
+                <h2 className={clsx(classes.header, { mobile: true })}>Sign in</h2>
+              </Hidden>
+            )}
             {!isAuthenticated && (
               <Hidden mdUp>
-                <div className={rfqModalClasses.signInMobile}>
-                  {t("restricted.description_1")}
-                  <span onClick={singInHandler} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
-                    {t("restricted.sign_in")}
+                <div className={clsx(rfqModalClasses.signInMobile, { loginActive: showLoginForm })}>
+                  {!showLoginForm && t("restricted.description_1")}
+                  <span
+                    onClick={showSignIn(!showLoginForm)}
+                    className={`${appTheme.hyperlink} ${registerClasses.link}`}
+                  >
+                    {showLoginForm ? (
+                      <span className={rfqModalClasses.backToRfq}>
+                        <DoubleArrowIcon /> Back to RFQ
+                      </span>
+                    ) : (
+                      t("restricted.sign_in")
+                    )}
                   </span>
-                  {". "}
                 </div>
               </Hidden>
             )}

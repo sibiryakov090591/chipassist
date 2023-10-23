@@ -5,7 +5,7 @@ import { createStyles, makeStyles } from "@material-ui/styles";
 export const useStyles = makeStyles(() =>
   createStyles({
     form: {
-      maxWidth: 530,
+      maxWidth: 500,
       minHeight: 440, // 423
       height: "100%",
       textAlign: "start",

@@ -370,13 +370,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "& th": { fontSize: "0.9em", textAlign: "right", padding: "2px 5px" },
       "& td": { fontSize: "0.9em", textAlign: "right", padding: "2px 5px" },
     },
-    priceTooltip: {
-      backgroundColor: "#f5f5f9",
-      color: "rgba(0, 0, 0, 0.87)",
-      fontSize: "inherit",
-      border: "1px solid #dadde9",
-      maxWidth: "none",
-    },
     priceIcon: {
       color: "#1b93c2",
     },

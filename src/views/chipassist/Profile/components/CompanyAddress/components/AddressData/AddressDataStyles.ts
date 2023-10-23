@@ -18,6 +18,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontWeight: 600,
     whiteSpace: "nowrap",
   },
+  selected: {
+    fontWeight: 600,
+    color: theme.palette.app.green800,
+  },
 }));
 
 export default "styles";

@@ -143,7 +143,7 @@ export interface ChatListMessage {
   read_by_partner: boolean;
   text: string;
   created: string;
-  message_attachments: Array<{ id: number; file_name: string }>;
+  message_files: Array<{ id: number; file: string }>;
   starter: number;
   representatives: any[];
   po?: any;
