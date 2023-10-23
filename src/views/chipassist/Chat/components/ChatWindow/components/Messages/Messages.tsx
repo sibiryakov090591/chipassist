@@ -156,7 +156,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
     // if (messagesIdsWasRead.includes(messageId)) return Promise.reject();
 
     setMessagesIdsWasRead((prev) => [...prev, messageId]);
-    return dispatch(readMessage(selectedChat.id, messageId)).then(() => {
+    return dispatch(readMessage(messageId)).then(() => {
       dispatch(deductReadMessages(selectedChat.id, 1));
     });
   };
@@ -315,7 +315,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
                   const orderAttachment =
-                    orderData && item.message_attachments?.find((attach) => !!attach.file_name.match(/\.pdf$/i));
+                    orderData && item.message_files?.find((attach) => !!attach.file.match(/\.pdf$/i));
                   const orderPdf = orderAttachment && files[orderAttachment.id];
                   const symbol =
                     orderData && currencyList.find((curr) => curr.code === orderData?.stockrecord?.currency)?.symbol;
@@ -402,12 +402,13 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                           </Paper>
                         ) : (
                           <>
-                            {!!item.message_attachments?.length && (
+                            {!!item.message_files?.length && (
                               <Box display="flex" flexWrap="wrap" gridGap="6px">
-                                {item.message_attachments.map((attachment) => {
+                                {item.message_files.map((attachment) => {
                                   const file = files[attachment.id];
-                                  if (!file || attachment.file_name.match(/\.pdf$/i)) return null;
+                                  if (!file || attachment.file.match(/\.pdf$/i)) return null;
 
+                                  // render photos
                                   return (
                                     <img
                                       key={attachment.id}
@@ -420,25 +421,26 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                 })}
                               </Box>
                             )}
-                            {!!item.message_attachments?.length && (
+                            {!!item.message_files?.length && (
                               <Box display="flex" flexWrap="wrap" gridGap="6px" mt="12px">
-                                {item.message_attachments.map((attachment) => {
+                                {item.message_files.map((attachment) => {
                                   const file = files[attachment.id];
-                                  if (file && !attachment.file_name.match(/\.pdf$/i)) return null;
+                                  if (file && !attachment.file.match(/\.pdf$/i)) return null;
 
                                   const imgUrl =
-                                    (attachment.file_name.match(/\.pdf$/i) && pdf_icon) ||
-                                    (attachment.file_name.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
-                                    (attachment.file_name.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
+                                    (attachment.file.match(/\.pdf$/i) && pdf_icon) ||
+                                    (attachment.file.match(/\.(doc|docx|dot|dotx|docm)$/i) && doc_icon) ||
+                                    (attachment.file.match(/\.(xls|xlsx|xlsm|xlsb|xltx|csv)$/i) && xls_icon);
 
+                                  // render files
                                   return (
                                     <div
                                       key={attachment.id}
                                       className={classes.file}
-                                      onClick={onDownloadFile(attachment.id, attachment.file_name)}
+                                      onClick={onDownloadFile(attachment.id, attachment.file)}
                                     >
                                       {imgUrl ? <img src={imgUrl} alt="file icon" /> : <CloudDownloadIcon />}
-                                      <div className={classes.fileName}>{attachment.file_name}</div>
+                                      <div className={classes.fileName}>{attachment.file}</div>
                                     </div>
                                   );
                                 })}

@@ -128,8 +128,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                   <div className={classes.ellipsisText}>
                     {lastMessage?.po
                       ? "Purchase Order (PO)"
-                      : lastMessage?.text ||
-                        (lastMessage.message_attachments[0] && lastMessage.message_attachments[0].file_name)}
+                      : lastMessage?.text || (lastMessage?.message_files && lastMessage?.message_files[0]?.file)}
                   </div>
                   <Box display="flex" justifyContent="space-between" className={classes.info}>
                     <div className={classes.ellipsisText}>{item.partner_name}</div>
