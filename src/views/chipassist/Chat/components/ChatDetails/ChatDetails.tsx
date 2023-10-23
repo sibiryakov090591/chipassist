@@ -31,7 +31,7 @@ interface Props {
 
 type FormValues = {
   stock: string;
-  lead_time: string;
+  datecode: string;
   packaging: string;
   moq: string;
   mpq: string;
@@ -69,23 +69,27 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     register,
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
     // setError,
     setValue,
     getValues,
     reset,
+    watch,
   } = useForm<FormValues>({
     mode: "onChange",
     reValidateMode: "onChange",
     defaultValues: {
       stock: "",
-      lead_time: "",
+      datecode: "",
       moq: "",
       mpq: "",
       packaging: "",
       prices: [{ id: "", amount: "", price: "" }],
     },
   });
+
+  const priceBreaks = watch("prices");
+  const stockUpdatingMode = isSupplierResponse && !!selectedChat && !!stock;
 
   useEffect(() => {
     if (selectedChat && selectedChat.id !== prevChatId) {
@@ -107,7 +111,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         if (stock.packaging) setValue("packaging", stock.packaging);
         if (Number(stock.moq)) setValue("moq", stock.moq);
         if (Number(stock.mpq)) setValue("mpq", stock.mpq);
-        if (Number(stock.lead_period_str)) setValue("lead_time", stock.lead_period_str);
+        if (Number(stock.partner_sku.includes("datecode:"))) {
+          setValue("datecode", stock.partner_sku.split("datecode:")[1] || "");
+        }
 
         setCurrency((prev) => currencyList.find((c) => c.code === stock.currency) || prev);
       }
@@ -149,8 +155,6 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     const part_number = selectedChat?.title || selectedChat?.rfq?.upc;
-    if (!isValid || !part_number) return false;
-
     const overallData = Object.fromEntries(Object.entries(data).filter(([key]) => key !== "prices"));
     const prices: any = [];
     data.prices.forEach((value) => {
@@ -207,7 +211,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     >
       {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Update stock data please!</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
-        {isSupplierResponse && selectedChat ? (
+        {stockUpdatingMode ? (
           <div>
             <h2 className={chatWindowClasses.title}>Your stock on ChipAssist</h2>
             <div className={classes.text}>{selectedChat?.title || selectedChat?.rfq?.upc}</div>
@@ -219,7 +223,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       </Box>
 
       <div className={classes.details}>
-        {isSupplierResponse && selectedChat ? (
+        {stockUpdatingMode ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={classes.grid}>
               <div>
@@ -277,6 +281,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                       value: 1,
                       message: "At least 1",
                     },
+                    required: {
+                      value: !!priceBreaks[0].price,
+                      message: "Required",
+                    },
                   }}
                   render={({ field }) => (
                     <NumberInput
@@ -302,6 +310,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                     min: {
                       value: 0.0001,
                       message: "More than 0",
+                    },
+                    required: {
+                      value: !!priceBreaks[0].amount,
+                      message: "Required",
                     },
                   }}
                   render={({ field }) => (
@@ -347,6 +359,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                                 value: 1,
                                 message: "At least 1",
                               },
+                              required: {
+                                value: !!priceBreaks[index].price,
+                                message: "Required",
+                              },
                             }}
                             render={({ field }) => (
                               <NumberInput
@@ -372,6 +388,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                               min: {
                                 value: 0.0001,
                                 message: "More than 0",
+                              },
+                              required: {
+                                value: !!priceBreaks[index].amount,
+                                message: "Required",
                               },
                             }}
                             render={({ field }) => (
@@ -402,6 +422,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               </div>
             )}
             <div className={classes.grid}>
+              <div>
+                <div className={classes.label}>Date Code (DC):</div>
+                <TextField {...register("datecode")} variant="outlined" size="small" fullWidth />
+              </div>
               <div>
                 <div className={classes.label}>Packaging:</div>
                 <TextField {...register("packaging")} variant="outlined" size="small" fullWidth />
@@ -456,35 +480,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   )}
                 />
               </div>
-              <div>
-                <div className={classes.label}>Shipping time (days):</div>
-                <Controller
-                  name="lead_time"
-                  control={control}
-                  rules={{
-                    min: {
-                      value: 1,
-                      message: "At least 1",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <NumberInput
-                      {...field}
-                      className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.leadTime })}
-                      error={errors.lead_time}
-                      helperText={errors.lead_time?.message}
-                      variant="outlined"
-                      size="small"
-                      decimalScale={0}
-                      isAllowedZero={false}
-                    />
-                  )}
-                />
-              </div>
             </div>
             <Box p="5px" mt="3px">
               <Button
-                disabled={isUpdating}
+                disabled={isUpdating || !stock}
                 type="submit"
                 className={clsx(appTheme.buttonCreate, classes.updateButton)}
                 variant="contained"

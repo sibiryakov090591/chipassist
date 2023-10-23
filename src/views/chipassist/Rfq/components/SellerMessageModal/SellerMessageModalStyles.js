@@ -19,6 +19,10 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: 22,
       marginBottom: 15,
     },
+    "&.mobile": {
+      textAlign: "start",
+      marginLeft: 15,
+    },
   },
   text: {
     textAlign: "center",

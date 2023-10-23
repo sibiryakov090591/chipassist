@@ -13,6 +13,13 @@ function AddressData({ item }: any) {
   return (
     <Table className={classes.table} size="small">
       <TableBody>
+        {item?.is_default_for_billing && (
+          <TableRow>
+            <TableCell colSpan={2} className={classes.selected}>
+              Selected for billing and shipping
+            </TableCell>
+          </TableRow>
+        )}
         <TableRow>
           <TableCell className={classes.tableHeader}>{t("cart.address.company_name")}</TableCell>
           <TableCell>{item.company_name}</TableCell>

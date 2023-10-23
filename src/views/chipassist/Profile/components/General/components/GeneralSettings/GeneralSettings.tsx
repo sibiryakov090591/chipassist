@@ -79,7 +79,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const profile = useAppSelector((state) => state.profile);
   const checkout = useAppSelector((state) => state.checkout);
   const { profileInfo, showUpdateSuccess } = profile;
-  const billingAddress = profileInfo && [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0];
+  const billingAddress = profileInfo?.defaultBillingAddress;
 
   const [phoneValue, setPhoneValue] = useState("");
   const [addressData, setAddressData] = useState(null);
@@ -98,11 +98,11 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   }, []);
 
   useEffect(() => {
-    if (profileInfo?.addresses && billingAddress) {
+    if (billingAddress) {
       setAddressData(billingAddress);
       setPhoneValue(billingAddress.phone_number_str);
     }
-  }, [profileInfo?.addresses]);
+  }, [billingAddress]);
 
   useEffect(() => {
     if (profileInfo?.addressErrors && Object.keys(profileInfo.addressErrors).length) {

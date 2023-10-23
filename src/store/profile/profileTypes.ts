@@ -70,7 +70,9 @@ export interface ProfileState {
     partners: Partner[];
     avatar: string;
     addressErrors: { [key: string]: string[] };
-    addresses: any[];
+    addresses: Address[];
+    defaultBillingAddress: Address;
+    defaultShippingAddress: Address;
   };
   selectedPartner: Partner | false;
   prevEmail: string;
@@ -113,7 +115,7 @@ export interface ProfileResponse {
   partners: { id: number; name: string; pcb?: boolean }[];
   photo: string;
   company: any;
-  address: any;
+  address: Address[];
 }
 
 export interface Geolocation {
@@ -121,6 +123,29 @@ export interface Geolocation {
   country_name: string;
   city: string;
   country_code: string;
+}
+
+export interface Address {
+  id: number;
+  title: string;
+  inn: string;
+  first_name: string;
+  last_name: string;
+  line1: string;
+  line2: string;
+  line3: string;
+  line4: string;
+  state: string;
+  postcode: string;
+  country: string;
+  phone_number: string;
+  phone_number_str: string;
+  company_name: string;
+  notes: string;
+  search_text: string;
+  url: string;
+  is_default_for_shipping: boolean;
+  is_default_for_billing: boolean;
 }
 
 interface SaveProfileInfoAction {

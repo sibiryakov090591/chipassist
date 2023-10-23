@@ -12,9 +12,11 @@ import {
   Hidden,
   CircularProgress,
   useMediaQuery,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
 // import ReactInputMask from "react-input-mask";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -52,6 +54,7 @@ type FormValues = {
   country: string;
   phone_number_str: string;
   company_name: string;
+  is_default_for_billing: boolean;
 };
 
 const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, updateData, isExample }) => {
@@ -59,7 +62,6 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const { t } = useI18n("profile");
-
   const isDownKey = useMediaQuery(theme.breakpoints.down("md"));
 
   const checkout = useAppSelector((state) => state.checkout);
@@ -71,10 +73,19 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    getValues,
   } = useForm<FormValues>();
+
+  useEffect(() => {
+    if (updateData) {
+      setValue("is_default_for_billing", !!updateData.is_default_for_billing);
+    }
+  }, [updateData]);
 
   useEffect(() => {
     if (addressErrors && Object.keys(addressErrors).length) {
@@ -114,15 +125,29 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
         setError(i as keyof FormValues, { type: "frontend", message: v[0] });
       });
     }
-
-    if (!isExample) {
+    if(!isExample) {
       setPendingMode(true);
+      const normalizedData = {...data, is_default_for_shipping: !!data.is_default_for_billing};
       if (updateData) {
-        return dispatch(updateCompanyAddress(updateData.id, data))
+        return dispatch(updateCompanyAddress(updateData.id, normalizedData))
+            .then((res: any) => {
+              setPendingMode(false);
+              dispatch(showUpdateSuccess());
+              if (res.status < 300) {
+                onClose();
+                dispatch(loadProfileInfoThunk());
+              }
+            })
+            .catch(() => {
+              setPendingMode(false);
+            });
+      }
+      return dispatch(newCompanyAddress(normalizedData))
           .then((res: any) => {
             setPendingMode(false);
             dispatch(showUpdateSuccess());
             if (res.status < 300) {
+              if (changeCurrentPage) changeCurrentPage(1);
               onClose();
               dispatch(loadProfileInfoThunk());
             }
@@ -130,20 +155,6 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
           .catch(() => {
             setPendingMode(false);
           });
-      }
-      return dispatch(newCompanyAddress(data))
-        .then((res: any) => {
-          setPendingMode(false);
-          dispatch(showUpdateSuccess());
-          if (res.status < 300) {
-            if (changeCurrentPage) changeCurrentPage(1);
-            onClose();
-            dispatch(loadProfileInfoThunk());
-          }
-        })
-        .catch(() => {
-          setPendingMode(false);
-        });
     }
     return false;
   };
@@ -293,6 +304,24 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
                 {...register("line1")}
                 error={!!errors.line1}
                 helperText={errors.line1?.message}
+              />
+            </Grid>
+            <Grid className={classes.gridItem} item md={12} sm={12} xs={12}>
+              <Controller
+                name="is_default_for_billing"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        className={appTheme.checkbox}
+                        {...field}
+                        checked={!!getValues("is_default_for_billing")}
+                      />
+                    }
+                    label="This address is default for billing and shipping"
+                  />
+                )}
               />
             </Grid>
           </Grid>

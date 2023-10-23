@@ -20,7 +20,7 @@ import CircularProgress from "@src/components/CircularProgress/CircularProgress"
 import ManufacturerSelect from "@src/views/supplier-response/Requests/ManufacturerSelect/ManufacturerSelect";
 import { ResponseManufacturer } from "@src/store/manufacturers/manufacturersTypes";
 import addBusinessDays from "date-fns/addBusinessDays";
-import { isWeekend, nextMonday } from "date-fns";
+import { format, isWeekend, nextMonday } from "date-fns";
 import { NumberInput } from "@src/components/Inputs";
 import { useStyles } from "./responseItemStyles";
 import { useStyles as useResponseStyles } from "../supplierResponseStyles";
@@ -103,8 +103,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   useEffect(() => {
     if (responseItem?.response_rfq?.created) {
-      const date = new Date(responseItem.response_rfq.created);
-      setRepliedDate(`${date.toLocaleDateString()}, ${date.toLocaleTimeString()}`);
+      const date = format(new Date(responseItem.response_rfq.created), "dd.MM.yyyy, HH:mm");
+      setRepliedDate(date);
     } else if (repliedDate) setRepliedDate(null);
   }, [responseItem, selectedPartner]);
 
@@ -173,7 +173,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       })}
     >
       <Box display="flex" justifyContent="center">
-        {repliedDate && <div className={classes.repliedMobile}>Replied on {repliedDate}</div>}
+        {repliedDate && <div className={classes.repliedMobile}>Replied {repliedDate}</div>}
       </Box>
       <Box mb={1.5}>
         <div>
@@ -372,7 +372,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             </Tooltip>
           )}
         </div>
-        {repliedDate && <div className={classes.replied}>Replied on {repliedDate}</div>}
+        {repliedDate && <div className={classes.replied}>Replied {repliedDate}</div>}
       </td>
       <td className={clsx(classes.infoColumn, { [classes.error]: !!error })}>
         {isAuthenticated ? (

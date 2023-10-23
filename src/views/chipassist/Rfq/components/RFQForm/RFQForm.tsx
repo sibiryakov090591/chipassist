@@ -220,7 +220,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample }) => {
 
   useEffect(() => {
     if (profileInfo) {
-      setBillingAddress(profileInfo.addresses?.sort((a, b) => a.id - b.id)[0] || null);
+      setBillingAddress(profileInfo.defaultBillingAddress);
     }
   }, [profileInfo]);
 

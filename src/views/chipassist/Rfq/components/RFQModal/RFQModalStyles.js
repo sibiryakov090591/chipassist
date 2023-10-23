@@ -9,6 +9,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   container: {
     [theme.breakpoints.up("md")]: {
+      backgroundColor: "transparent",
       display: "flex",
       padding: 0,
       overflow: "hidden",
@@ -29,6 +30,7 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: "200px",
   },
   content: {
+    backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.up("md")]: {
       overflowY: "auto",
       padding: 12,
@@ -45,6 +47,10 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       fontSize: 22,
       marginBottom: 15,
+    },
+    "&.mobile": {
+      textAlign: "start",
+      marginLeft: 15,
     },
   },
   formRow: {
@@ -133,6 +139,11 @@ export const useStyles = makeStyles((theme) => ({
   signInMobile: {
     textAlign: "center",
     marginBottom: 15,
+    "&.loginActive": {
+      textAlign: "start",
+      marginLeft: 10,
+      marginBottom: 0,
+    },
   },
   signIn: {
     textAlign: "center",
@@ -141,6 +152,8 @@ export const useStyles = makeStyles((theme) => ({
     color: "#ffffff",
   },
   link: {
+    display: "inline-flex",
+    justifyContent: "center",
     cursor: "pointer",
     color: "#ffffff !important",
     fontWeight: "bold",
@@ -149,6 +162,19 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: 2,
     "&:hover": {
       color: "#cee7ff",
+    },
+    "& svg": {
+      transform: "rotate(180deg)",
+      marginRight: 4,
+    },
+  },
+  backToRfq: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& svg": {
+      transform: "rotate(180deg)",
+      marginRight: 4,
     },
   },
   text: {

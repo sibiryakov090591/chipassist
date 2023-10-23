@@ -16,6 +16,7 @@ import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/p
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
+import { Address } from "@src/store/profile/profileTypes";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -53,10 +54,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
 
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
-  const billingAddress = React.useMemo(
-    () => profileInfo && [...profileInfo?.addresses].sort((a, b) => a.id - b.id)[0],
-    [profileInfo],
-  );
+  const billingAddress = profileInfo?.defaultBillingAddress;
 
   const {
     watch,
@@ -107,11 +105,11 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       setIsSending(true);
       if (billingAddress) {
         const companyData = Object.fromEntries(
-          Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
+            Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
         );
         let companyDataWasChanged = false;
         Object.entries(companyData).forEach(([key, val]) => {
-          if (!companyDataWasChanged && val !== billingAddress[key]) {
+          if (!companyDataWasChanged && val !== billingAddress[key as keyof Address]) {
             companyDataWasChanged = true;
           }
         });
