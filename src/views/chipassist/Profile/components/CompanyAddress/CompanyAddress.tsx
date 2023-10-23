@@ -23,12 +23,10 @@ const CompanyAddress = () => {
   const addresses = useAppSelector((state) => state.profile.profileInfo?.addresses);
   const isLoadingProfile = useAppSelector((state) => state.profile.isLoadingProfile);
   const showUpdateSuccess = useAppSelector((state) => state.profile.showUpdateSuccess);
-  const countries = useAppSelector((state) => state.checkout.countries);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [newAddressMode, setNewAddressMode] = useState(false);
   const [updateAddressMode, setUpdateAddressMode] = useState(false);
-  const [sortedAddresses, setSortedAddresses] = useState(null);
 
   useEffect(
     () => () => {
@@ -36,13 +34,6 @@ const CompanyAddress = () => {
     },
     [],
   );
-
-  useEffect(() => {
-    if (addresses && countries) {
-      // Copy (for fix mutation error) and sort addresses
-      setSortedAddresses(addresses.map((i) => ({ ...i })).sort((a, b) => b.id - a.id));
-    }
-  }, [addresses, countries]);
 
   const onPageChangeHandle = (data: any) => {
     setCurrentPage(data.selected + 1);
@@ -92,58 +83,54 @@ const CompanyAddress = () => {
           </Box>
         )}
 
-        {!isLoadingProfile &&
-          !newAddressMode &&
-          !updateAddressMode &&
-          sortedAddresses &&
-          sortedAddresses[currentPage - 1] && (
-            <>
-              <Box
-                padding={4}
-                paddingTop={5}
-                paddingBottom={2}
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-              >
-                <Typography variant="h4" component="h4" className={classes.addressTitle}>
-                  {t("profile.company.current_address")} #{currentPage}
-                </Typography>
-                <Box display="flex">
-                  {sortedAddresses && currentPage < sortedAddresses.length && sortedAddresses[currentPage - 1] && (
-                    <ConfirmButton
-                      onAction={onDeleteClick(sortedAddresses[currentPage - 1].id)}
-                      theme="button"
-                      type="delete"
-                      size="medium"
-                      className={clsx(classes.buttonAction, appTheme.buttonCancel)}
-                      question={t("profile.company.delete_address")}
-                      caption={t("common.delete")}
-                    />
-                  )}
-                  <Button
-                    className={clsx(classes.buttonAction, appTheme.buttonCreate)}
-                    variant="contained"
-                    onClick={onUpdateHandle}
-                  >
-                    {t("common.edit")}
-                  </Button>
-                </Box>
+        {!isLoadingProfile && !newAddressMode && !updateAddressMode && addresses && addresses[currentPage - 1] && (
+          <>
+            <Box
+              padding={4}
+              paddingTop={5}
+              paddingBottom={2}
+              display="flex"
+              flexWrap="wrap"
+              justifyContent="space-between"
+            >
+              <Typography variant="h4" component="h4" className={classes.addressTitle}>
+                {t("profile.company.current_address")} #{currentPage}
+              </Typography>
+              <Box display="flex">
+                {addresses && currentPage < addresses.length && addresses[currentPage - 1] && (
+                  <ConfirmButton
+                    onAction={onDeleteClick(addresses[currentPage - 1].id)}
+                    theme="button"
+                    type="delete"
+                    size="medium"
+                    className={clsx(classes.buttonAction, appTheme.buttonCancel)}
+                    question={t("profile.company.delete_address")}
+                    caption={t("common.delete")}
+                  />
+                )}
+                <Button
+                  className={clsx(classes.buttonAction, appTheme.buttonCreate)}
+                  variant="contained"
+                  onClick={onUpdateHandle}
+                >
+                  {t("common.edit")}
+                </Button>
               </Box>
-              <Box padding={4} pt={1} display="flex" flexDirection="column" justifyContent="center">
-                <AddressData item={sortedAddresses[currentPage - 1]} />
+            </Box>
+            <Box padding={4} pt={1} display="flex" flexDirection="column" justifyContent="center">
+              <AddressData item={addresses[currentPage - 1]} />
+            </Box>
+            {addresses && addresses.length > 1 && (
+              <Box p={1} display="flex" justifyContent="center">
+                <Paginate pageCount={addresses.length} activePage={currentPage} onPageChange={onPageChangeHandle} />
               </Box>
-              {addresses && addresses.length > 1 && (
-                <Box p={1} display="flex" justifyContent="center">
-                  <Paginate pageCount={addresses.length} activePage={currentPage} onPageChange={onPageChangeHandle} />
-                </Box>
-              )}
-            </>
-          )}
+            )}
+          </>
+        )}
 
         {newAddressMode && <AddressForm onClose={() => setNewAddressMode(false)} changeCurrentPage={setCurrentPage} />}
-        {updateAddressMode && sortedAddresses && sortedAddresses[currentPage - 1] && (
-          <AddressForm updateData={sortedAddresses[currentPage - 1]} onClose={() => setUpdateAddressMode(false)} />
+        {updateAddressMode && addresses && addresses[currentPage - 1] && (
+          <AddressForm updateData={addresses[currentPage - 1]} onClose={() => setUpdateAddressMode(false)} />
         )}
       </Box>
       <SuccessSnackbar onClose={handleSnackbarClose} open={showUpdateSuccess} />

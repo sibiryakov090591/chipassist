@@ -22,6 +22,7 @@ export const loadProfileInfoThunk = () => {
         client.get("/profile/0/", { cancelId: "get_profile" }).then((res) => res.data),
     })
       .then((response: actionTypes.ProfileResponse) => {
+        const addresses = response?.address?.sort((a, b) => b.id - a.id);
         const profileInfo: any = {
           id: response.id,
           firstName: response.first_name,
@@ -31,10 +32,14 @@ export const loadProfileInfoThunk = () => {
           partners: response.partners,
           avatar: response.photo,
           addressErrors: null,
-          addresses: response.address,
+          addresses,
+          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || null,
+          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || null,
           addressViewItem: {},
         };
-        dispatch(saveBillingAddress(response.address.sort((a: any, b: any) => a.id - b.id)[0]));
+        if (profileInfo.defaultBillingAddress) {
+          dispatch(saveBillingAddress(profileInfo.defaultBillingAddress));
+        }
         dispatch(saveProfileInfo(profileInfo));
         dispatch(isLoadingProfile(false));
       })
