@@ -38,9 +38,10 @@ import theme from "@src/themes";
 import { useStyles } from "../../CompanyAddressStyles";
 
 interface AddressFormProps {
-  onClose: () => void;
+  onClose?: () => void;
   changeCurrentPage?: (page: number) => void;
   updateData?: any;
+  isExample?: boolean;
 }
 
 type FormValues = {
@@ -56,7 +57,7 @@ type FormValues = {
   is_default_for_billing: boolean;
 };
 
-const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, updateData }) => {
+const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, updateData, isExample }) => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -124,41 +125,45 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
         setError(i as keyof FormValues, { type: "frontend", message: v[0] });
       });
     }
-
-    setPendingMode(true);
-    const normalizedData = { ...data, is_default_for_shipping: !!data.is_default_for_billing };
-    if (updateData) {
-      return dispatch(updateCompanyAddress(updateData.id, normalizedData))
-        .then((res: any) => {
-          setPendingMode(false);
-          dispatch(showUpdateSuccess());
-          if (res.status < 300) {
-            onClose();
-            dispatch(loadProfileInfoThunk());
-          }
-        })
-        .catch(() => {
-          setPendingMode(false);
-        });
+    if(!isExample) {
+      setPendingMode(true);
+      const normalizedData = {...data, is_default_for_shipping: !!data.is_default_for_billing};
+      if (updateData) {
+        return dispatch(updateCompanyAddress(updateData.id, normalizedData))
+            .then((res: any) => {
+              setPendingMode(false);
+              dispatch(showUpdateSuccess());
+              if (res.status < 300) {
+                onClose();
+                dispatch(loadProfileInfoThunk());
+              }
+            })
+            .catch(() => {
+              setPendingMode(false);
+            });
+      }
+      return dispatch(newCompanyAddress(normalizedData))
+          .then((res: any) => {
+            setPendingMode(false);
+            dispatch(showUpdateSuccess());
+            if (res.status < 300) {
+              if (changeCurrentPage) changeCurrentPage(1);
+              onClose();
+              dispatch(loadProfileInfoThunk());
+            }
+          })
+          .catch(() => {
+            setPendingMode(false);
+          });
     }
-    return dispatch(newCompanyAddress(normalizedData))
-      .then((res: any) => {
-        setPendingMode(false);
-        dispatch(showUpdateSuccess());
-        if (res.status < 300) {
-          if (changeCurrentPage) changeCurrentPage(1);
-          onClose();
-          dispatch(loadProfileInfoThunk());
-        }
-      })
-      .catch(() => {
-        setPendingMode(false);
-      });
+    return false;
   };
 
   const onCloseHandler = () => {
-    dispatch(loadProfileInfoThunk());
-    onClose();
+    if (!isExample) {
+      dispatch(loadProfileInfoThunk());
+      onClose();
+    }
   };
 
   const onChangePhoneHandler = (e: any) => {

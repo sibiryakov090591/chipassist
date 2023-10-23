@@ -50,8 +50,8 @@ interface FormState {
   loginError: string | null;
 }
 
-const LoginForm = (props: { className: string }) => {
-  const { className, ...rest } = props;
+const LoginForm = (props: { className: string; isExample?: boolean }) => {
+  const { className, isExample, ...rest } = props;
   const navigate = useNavigate();
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -124,21 +124,24 @@ const LoginForm = (props: { className: string }) => {
       }));
     }
 
-    dispatch(authStart());
-    const data: { email: string } & FormStateValues = { ...formState.values, email: "" };
-    data.email = data.username;
+    if (!isExample) {
+      dispatch(authStart());
+      const data: { email: string } & FormStateValues = { ...formState.values, email: "" };
+      data.email = data.username;
 
-    return dispatch(authLoginAction(data))
-      .then((res: any) => {
-        const { token } = res;
-        dispatch(login(data, token, navigate, { backurl }));
-      })
-      .catch((err: any) => {
-        const textError = "Incorrect username or password";
-        setError(textError, textError);
-        localStorage.setItem("login_failure_email", formState.values.username);
-        console.log("LOGIN_ERROR 3", err);
-      });
+      return dispatch(authLoginAction(data))
+        .then((res: any) => {
+          const { token } = res;
+          dispatch(login(data, token, navigate, { backurl }));
+        })
+        .catch((err: any) => {
+          const textError = "Incorrect username or password";
+          setError(textError, textError);
+          localStorage.setItem("login_failure_email", formState.values.username);
+          console.log("LOGIN_ERROR 3", err);
+        });
+    }
+    return false;
   };
 
   const setError = (text: string, error: any) => {
