@@ -304,14 +304,16 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
           )}
           {requestBlock()}
           {Object.values(messages.results).map((list, i) => {
+            if (!list?.length) return null;
             const todayDate = new Date().toLocaleDateString();
-            const groupDate = new Date(list[0].created).toLocaleDateString();
+            const groupDate = list[0]?.created && new Date(list[0].created).toLocaleDateString();
             const dateLabel = todayDate === groupDate ? "Today" : groupDate;
 
             return (
               <div key={i} className={classes.group}>
                 <div className={classes.dateLabel}>{dateLabel}</div>
                 {list.map((item) => {
+                  if (!item) return null;
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
                   const orderAttachment =
