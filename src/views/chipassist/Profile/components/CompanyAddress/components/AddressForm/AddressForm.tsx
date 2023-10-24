@@ -125,29 +125,15 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
         setError(i as keyof FormValues, { type: "frontend", message: v[0] });
       });
     }
-    if(!isExample) {
+    if (!isExample) {
       setPendingMode(true);
-      const normalizedData = {...data, is_default_for_shipping: !!data.is_default_for_billing};
+      const normalizedData = { ...data, is_default_for_shipping: !!data.is_default_for_billing };
       if (updateData) {
         return dispatch(updateCompanyAddress(updateData.id, normalizedData))
-            .then((res: any) => {
-              setPendingMode(false);
-              dispatch(showUpdateSuccess());
-              if (res.status < 300) {
-                onClose();
-                dispatch(loadProfileInfoThunk());
-              }
-            })
-            .catch(() => {
-              setPendingMode(false);
-            });
-      }
-      return dispatch(newCompanyAddress(normalizedData))
           .then((res: any) => {
             setPendingMode(false);
             dispatch(showUpdateSuccess());
             if (res.status < 300) {
-              if (changeCurrentPage) changeCurrentPage(1);
               onClose();
               dispatch(loadProfileInfoThunk());
             }
@@ -155,6 +141,20 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
           .catch(() => {
             setPendingMode(false);
           });
+      }
+      return dispatch(newCompanyAddress(normalizedData))
+        .then((res: any) => {
+          setPendingMode(false);
+          dispatch(showUpdateSuccess());
+          if (res.status < 300) {
+            if (changeCurrentPage) changeCurrentPage(1);
+            onClose();
+            dispatch(loadProfileInfoThunk());
+          }
+        })
+        .catch(() => {
+          setPendingMode(false);
+        });
     }
     return false;
   };
