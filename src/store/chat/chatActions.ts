@@ -194,7 +194,7 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
       types: actionTypes.SEND_MESSAGE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .post(`/chats/${chatId}/message/${params}`, {
+          .post(`/chats/${chatId}/messages/${params}`, {
             data: { text: message?.trim(), ...(!!orderData && { po: orderData }) },
           })
           .then(async (res) => {
@@ -250,7 +250,7 @@ export const readMessage = (messageId: number) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .patch(`/chats/messages/${messageId}/read/${params}`)
+          .patch(`/chats/messages/${messageId}${params}`, { data: { status: 3 } })
           .then((res) => res.data)
           .catch((e) => {
             console.log("***READ_MESSAGE_ERROR", e);
