@@ -105,7 +105,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       setIsSending(true);
       if (billingAddress) {
         const companyData = Object.fromEntries(
-            Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
+          Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
         );
         let companyDataWasChanged = false;
         Object.entries(companyData).forEach(([key, val]) => {

@@ -127,7 +127,7 @@ const SellerMessageModal: React.FC<{ isExample: boolean }> = ({ isExample }) => 
                 <LoginForm className={null} />
               </Box>
             ) : (
-              <SellerMessageForm onCloseModalHandler={handleClose} isExample={isExample} />
+              <SellerMessageForm onCloseModalHandler={handleClose} />
             )}
           </div>
         </div>
@@ -143,7 +143,7 @@ const SellerMessageModal: React.FC<{ isExample: boolean }> = ({ isExample }) => 
                 {!isAuthenticated && (
                   <>
                     {t("restricted.description_1")}
-                    <div onClick={singInHandler} className={rfqModalClasses.link}>
+                    <div onClick={showSignIn(false)} className={rfqModalClasses.link}>
                       {t("restricted.sign_in")}
                     </div>
                   </>
@@ -168,7 +168,7 @@ const SellerMessageModal: React.FC<{ isExample: boolean }> = ({ isExample }) => 
             <Hidden mdUp>
               <div className={rfqModalClasses.signInMobile}>
                 {t("restricted.description_1")}
-                <span onClick={singInHandler} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
+                <span onClick={showSignIn(false)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                   {t("restricted.sign_in")}
                 </span>
                 {". "}
