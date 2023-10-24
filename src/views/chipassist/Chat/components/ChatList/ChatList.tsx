@@ -43,7 +43,10 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   }, []);
 
   const selectItemHandler = (item: any) => () => {
-    if (item.id !== selectedChat?.id) dispatch(selectChat(item));
+    if (item.id !== selectedChat?.id) {
+      dispatch(selectChat(item));
+      localStorage.setItem("last_selected_chat", JSON.stringify(item));
+    }
     if (isXsDown) {
       const messagesElem = document.getElementById("chat-messages");
       if (messagesElem) messagesElem.style.display = "flex";

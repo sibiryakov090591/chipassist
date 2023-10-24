@@ -60,7 +60,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   mobileActions: {
-    margin: "10px 12px 16px",
+    padding: "10px 12px 6px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

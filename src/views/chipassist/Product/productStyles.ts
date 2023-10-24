@@ -201,6 +201,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontSize: 25,
     fontWeight: "bold",
     marginBottom: 15,
+    lineHeight: 1,
     color: "#287c9f",
   },
   sort: {
