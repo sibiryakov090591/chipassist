@@ -8,6 +8,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       tableLayout: "fixed",
       width: "100%",
       borderCollapse: "collapse",
+      [theme.breakpoints.down(500)]: {
+        tableLayout: "auto",
+      },
     },
     headers: {
       // backgroundColor: "#f5f6f7",
@@ -44,18 +47,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textAlign: "start",
     },
     tdPrice: {
-      width: "20%",
+      width: "18%",
       whiteSpace: "nowrap",
       textAlign: "end",
-      [theme.breakpoints.down(500)]: {
-        width: "auto",
-      },
     },
     tdStock: {
       width: "15%",
       textAlign: "end",
       [theme.breakpoints.down(500)]: {
-        width: "auto",
+        width: "18%",
       },
     },
     tdActions: {
