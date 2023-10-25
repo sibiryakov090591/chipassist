@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Box from "@material-ui/core/Box";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MenuIcon from "@material-ui/icons/Menu";
 import Messages from "@src/views/chipassist/Chat/components/ChatWindow/components/Messages/Messages";
 import clsx from "clsx";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -92,7 +92,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               )}
             </div>
           </div>
-          <MoreVertIcon
+          <MenuIcon
             className={clsx(classes.showDetailsIcon, { active: showDetails })}
             onClick={onShowDetailsHandler()}
           />
