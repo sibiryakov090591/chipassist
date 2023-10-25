@@ -97,11 +97,7 @@ export interface StockErrorsFields {
 export interface ChatListItem {
   id: number;
   created: string;
-  partner: {
-    first_name: string;
-    last_name: string;
-    company_name: string;
-  };
+  partner: ChatPartner;
   partner_name: string;
   title: string;
   details: {
@@ -121,6 +117,12 @@ export interface ChatListItem {
   unread_messages: number;
   messages: ChatListMessage[];
   stocks: ChatListStock[];
+}
+
+export interface ChatPartner {
+  first_name: string;
+  last_name: string;
+  company_name: string;
 }
 
 export interface ChatListStock {
