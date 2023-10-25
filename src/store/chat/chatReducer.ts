@@ -21,9 +21,7 @@ const initialState: actionTypes.ChatState = {
     isLoading: true,
     loadedPages: [],
   },
-  selectedChat: localStorage.getItem("last_selected_chat")
-    ? JSON.parse(localStorage.getItem("last_selected_chat"))
-    : null,
+  selectedChat: null,
   stockrecordUpdating: false,
   stockrecordErrors: null,
   messages: {

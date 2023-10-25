@@ -45,7 +45,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const selectItemHandler = (item: any) => () => {
     if (item.id !== selectedChat?.id) {
       dispatch(selectChat(item));
-      localStorage.setItem("last_selected_chat", JSON.stringify(item));
+      localStorage.setItem("last_selected_chat", item.id);
     }
     if (isXsDown) {
       const messagesElem = document.getElementById("chat-messages");

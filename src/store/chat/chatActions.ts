@@ -36,6 +36,26 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
   };
 };
 
+export const getChat = (id: number | string) => {
+  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+    const partner = getState().profile.selectedPartner;
+    const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/chats/${id}/${params}`, { cancelId: "get_chat" })
+          .then((res) => {
+            dispatch(selectChat(res.data));
+          })
+          .catch((e) => {
+            console.log("***LOAD_CHAT_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
 export const updateChatList = (page: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const { isLoading } = getState().chat.chatList;

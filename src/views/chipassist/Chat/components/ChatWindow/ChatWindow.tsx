@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Messages from "@src/views/chipassist/Chat/components/ChatWindow/components/Messages/Messages";
@@ -10,6 +10,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
+import { getChat } from "@src/store/chat/chatActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -22,11 +24,19 @@ interface Props {
 const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShowDetails }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
   const isXsDown = useMediaQuery(theme.breakpoints.down(880));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);
+
+  useEffect(() => {
+    if (!selectedChat) {
+      const chatId = localStorage.getItem("last_selected_chat");
+      if (Number(chatId)) dispatch(getChat(chatId));
+    }
+  }, []);
 
   const onShowChatListHandler = () => {
     if (isMdDown && !isXsDown) onShowDetails(false, false);
