@@ -7,13 +7,14 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppTheme from "@src/theme/useAppTheme";
 import { title } from "@src/constants/defaults";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { ID_ELFARO, ID_ICSEARCH } from "@src/constants/server_constants";
 
 import logo from "@src/images/logos/en/logo_darkback.png";
+import ca_logo_for_elfaro from "@src/images/elfaro/login_ca_logo.svg";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import { useStyles } from "../../Login/styles";
 
-const RegisterFormExample = () => {
+const RegisterFormContainer: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const location = useLocation();
@@ -38,7 +39,7 @@ const RegisterFormExample = () => {
           {t("sign_up")}
         </Typography>
         <Typography variant="subtitle2">{t("sign_up_description")}</Typography>
-        <RegisterForm className={classes.loginForm} />
+        <RegisterForm className={classes.loginForm} isExample={isExample} />
         <Divider className={classes.divider} />
         <Link
           align="center"
@@ -57,15 +58,29 @@ const RegisterFormExample = () => {
         // eslint-disable-next-line global-require
         image={constants.id === ID_ICSEARCH ? require("@src/components/Authentication/auth.png") : ""}
       >
-        <>
-          {constants.id !== ID_ICSEARCH && <img className={classes.logo} src={logo} alt="Chipassist logo" />}
-          <Typography color="inherit" variant="subtitle1">
-            {t("cover_text", { title })}
-          </Typography>
-        </>
+        {constants.id === ID_ELFARO ? (
+          <>
+            <a target="_blank" rel="noreferrer" href="https://chipassist.com/">
+              <img className={classes.logo} src={ca_logo_for_elfaro} alt="Chipassist logo" />
+            </a>
+            <Typography color="inherit" variant="subtitle1">
+              Shopping cart is powered by{" "}
+              <a target="_blank" rel="noreferrer" className={classes.link} href="https://chipassist.com/">
+                ChipAssist
+              </a>
+            </Typography>
+          </>
+        ) : (
+          <>
+            {constants.id !== ID_ICSEARCH && <img className={classes.logo} src={logo} alt="Chipassist logo" />}
+            <Typography color="inherit" variant="subtitle1">
+              {t("cover_text", { title })}
+            </Typography>
+          </>
+        )}
       </CardMedia>
     </Card>
   );
 };
 
-export default RegisterFormExample;
+export default RegisterFormContainer;
