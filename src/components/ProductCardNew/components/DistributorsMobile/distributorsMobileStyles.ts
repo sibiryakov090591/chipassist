@@ -27,6 +27,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       height: "38px",
       "& td": {
         padding: "2px 10px",
+        [theme.breakpoints.down(500)]: {
+          padding: "2px 0 2px 10px",
+        },
       },
       "&.odd": {
         backgroundColor: "#fafafa",
@@ -64,13 +67,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       paddingLeft: "40px !important",
       paddingRight: "0 !important",
       [theme.breakpoints.down(500)]: {
-        width: 100,
-        paddingLeft: "8px !important",
+        width: "auto",
+        paddingLeft: "12px !important",
       },
     },
     tdIcon: {
       width: 43,
       textAlign: "end",
+      [theme.breakpoints.down(500)]: {
+        padding: "2px 10px !important",
+      },
     },
     icon: {
       transition: "all 180ms ease",

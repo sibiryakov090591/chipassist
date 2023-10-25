@@ -1,5 +1,4 @@
-import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { getPartnerName } from "@src/utils/chat";
 import * as actionTypes from "./chatTypes";
 import { ChatListItem, ChatListMessage } from "./chatTypes";
 
@@ -21,9 +20,7 @@ const initialState: actionTypes.ChatState = {
     isLoading: true,
     loadedPages: [],
   },
-  selectedChat: localStorage.getItem("last_selected_chat")
-    ? JSON.parse(localStorage.getItem("last_selected_chat"))
-    : null,
+  selectedChat: null,
   stockrecordUpdating: false,
   stockrecordErrors: null,
   messages: {
@@ -76,15 +73,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           unread_total,
           results: results.map((i: any) => ({
             ...i,
-            partner_name:
-              constants.id === ID_SUPPLIER_RESPONSE
-                ? i.partner &&
-                  Object.entries(i.partner).reduce((acc: string, entry: any) => {
-                    const [key, value] = entry;
-                    if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-                    return acc;
-                  }, "")
-                : i.partner?.first_name,
+            partner_name: getPartnerName(i.partner),
           })),
           loadedPages: [page],
         },
@@ -103,15 +92,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
             ...state.chatList.results,
             ...results.map((i: any) => ({
               ...i,
-              partner_name:
-                constants.id === ID_SUPPLIER_RESPONSE
-                  ? i.partner &&
-                    Object.entries(i.partner).reduce((acc: string, entry: any) => {
-                      const [key, value] = entry;
-                      if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-                      return acc;
-                    }, "")
-                  : i.partner?.first_name,
+              partner_name: getPartnerName(i.partner),
             })),
           ],
           loadedPages: [...state.chatList.loadedPages, page],
@@ -129,20 +110,10 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
       const { results, unread_total } = action.response;
       let unreadCountSelectedChat = 0;
 
-      const partner_name =
-        constants.id === ID_SUPPLIER_RESPONSE
-          ? results[0]?.partner &&
-            Object.entries(results[0].partner).reduce((acc: string, entry: any) => {
-              const [key, value] = entry;
-              if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-              return acc;
-            }, "")
-          : results[0]?.partner?.first_name;
-
       const newChats: ChatListItem[] = [];
       results.forEach((chat: ChatListItem) => {
         const existedChat = state.chatList.results.find((i) => i.id === chat.id);
-        if (!existedChat) newChats.push({ ...chat, partner_name });
+        if (!existedChat) newChats.push({ ...chat, partner_name: getPartnerName(chat.partner) });
       });
 
       const updatedChats: ChatListItem[] = [];
@@ -153,7 +124,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           Number(updatedChat.unread_messages) > 0 &&
           Number(updatedChat.unread_messages) !== Number(chat.unread_messages)
         ) {
-          updatedChats.push({ ...updatedChat, partner_name });
+          updatedChats.push({ ...updatedChat, partner_name: getPartnerName(updatedChat.partner) });
           if (updatedChat.id === state.selectedChat?.id) {
             unreadCountSelectedChat = Number(updatedChat.unread_messages);
           }
@@ -292,7 +263,10 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.SELECT_CHAT:
       return {
         ...state,
-        selectedChat: { ...action.payload },
+        selectedChat: {
+          ...action.payload,
+          partner_name: action.payload.partner_name || getPartnerName(action.payload.partner),
+        },
         messages: { ...initialState.messages, forceUpdate: 0, isLoading: true },
       };
     case actionTypes.CLEAR_CHAT:

@@ -33,6 +33,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down(670));
+  const isXXSDown = useMediaQuery(theme.breakpoints.down(500));
 
   const isLoading = useAppSelector((state) => state.sellers.isLoading);
 
@@ -63,7 +64,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
             <th className={classes.tdSeller}>Seller</th>
             <th className={classes.tdStock}>Stock</th>
             {!isXsDown && <th className={classes.tdPrice}>DC</th>}
-            <th className={classes.tdPrice}>Unit price</th>
+            <th className={classes.tdPrice}>{isXsDown ? "Price" : "Unit price"}</th>
             <th className={classes.tdActions}></th>
             <th className={classes.tdIcon} />
           </tr>
@@ -109,9 +110,9 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                       </td>
                     )}
                     <td className={classes.tdPrice}>
-                      {(getPrice(1, val, false) &&
+                      {(getPrice(1, val, true) &&
                         `${currency?.symbol} ${formatMoney(
-                          currencyPrice(getPrice(1, val, false), val.price_currency),
+                          currencyPrice(getPrice(1, val, true), val.price_currency),
                         )}`) ||
                         "-"}
                     </td>
@@ -130,7 +131,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                               val.product_url || seller.url,
                             )}
                           >
-                            Visit site
+                            {isXXSDown ? "Site" : "Visit site"}
                           </a>
                         ) : (
                           <Button
@@ -139,7 +140,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
                             size="small"
                           >
-                            Contact seller
+                            {isXXSDown ? "Contact" : "Contact seller"}
                           </Button>
                         )}
                       </td>
