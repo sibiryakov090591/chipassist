@@ -28,6 +28,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     height: "100% !important",
     fontSize: "14px !important",
     border: "0px solid white!important",
+    "&:focus": {
+      boxShadow: "none !important",
+    },
   },
   small: {
     padding: "9.5px 14px 9.5px 58px !important",
