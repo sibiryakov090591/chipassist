@@ -8,8 +8,8 @@ import { useStyles } from "./styles";
 const Chat: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const betweenSmMd = useMediaQuery(theme.breakpoints.between(880, "md"));
 
+  const betweenSmMd = useMediaQuery(theme.breakpoints.between(880, "md"));
   const mainView = useMediaQuery(theme.breakpoints.up("lg"));
   const smView = useMediaQuery(theme.breakpoints.between(880, "md"));
   const xsView = useMediaQuery(theme.breakpoints.down(880));

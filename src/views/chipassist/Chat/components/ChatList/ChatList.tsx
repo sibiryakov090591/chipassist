@@ -30,6 +30,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const chatListRef = React.useRef(null);
 
   const { chatList, selectedChat, filters } = useAppSelector((state) => state.chat);
+  const { profileInfo } = useAppSelector((state) => state.profile);
 
   useEffect(() => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });
@@ -45,7 +46,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
   const selectItemHandler = (item: any) => () => {
     if (item.id !== selectedChat?.id) {
       dispatch(selectChat(item));
-      localStorage.setItem("last_selected_chat", JSON.stringify(item));
+      localStorage.setItem("last_selected_chat", JSON.stringify({ user: profileInfo?.id, chat: item.id }));
     }
     if (isXsDown) {
       const messagesElem = document.getElementById("chat-messages");

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@material-ui/core/Box";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MenuIcon from "@material-ui/icons/Menu";
 import Messages from "@src/views/chipassist/Chat/components/ChatWindow/components/Messages/Messages";
 import clsx from "clsx";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -10,6 +10,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
+import { getChat } from "@src/store/chat/chatActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -22,11 +24,23 @@ interface Props {
 const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShowDetails }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
   const isXsDown = useMediaQuery(theme.breakpoints.down(880));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);
+  const { profileInfo } = useAppSelector((state) => state.profile);
+
+  useEffect(() => {
+    if (!selectedChat && profileInfo) {
+      const lastChatItem =
+        localStorage.getItem("last_selected_chat") && JSON.parse(localStorage.getItem("last_selected_chat"));
+      if (lastChatItem?.user === profileInfo.id) {
+        dispatch(getChat(lastChatItem.chat));
+      }
+    }
+  }, [profileInfo]);
 
   const onShowChatListHandler = () => {
     if (isMdDown && !isXsDown) onShowDetails(false, false);
@@ -50,17 +64,6 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
     }
   };
 
-  const name = React.useMemo(() => {
-    return isSupplierResponse
-      ? selectedChat?.partner &&
-          Object.entries(selectedChat.partner).reduce((acc, item) => {
-            const [key, value] = item;
-            if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-            return acc;
-          }, "")
-      : selectedChat?.partner.first_name;
-  }, [selectedChat]);
-
   return (
     <SwipeWrapper
       className={clsx(classes.middleColumn, {
@@ -82,14 +85,14 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               <h2 className={classes.title}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
               {isSupplierResponse && selectedChat ? (
                 <div className={classes.customer}>
-                  Customer: <span>{name}</span>
+                  Customer: <span>{selectedChat.partner_name}</span>
                 </div>
               ) : (
-                <div className={classes.seller}>{name}</div>
+                <div className={classes.seller}>{selectedChat?.partner_name}</div>
               )}
             </div>
           </div>
-          <MoreVertIcon
+          <MenuIcon
             className={clsx(classes.showDetailsIcon, { active: showDetails })}
             onClick={onShowDetailsHandler()}
           />
