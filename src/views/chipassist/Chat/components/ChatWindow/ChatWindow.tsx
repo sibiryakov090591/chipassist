@@ -30,13 +30,17 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);
+  const { profileInfo } = useAppSelector((state) => state.profile);
 
   useEffect(() => {
-    if (!selectedChat) {
-      const chatId = localStorage.getItem("last_selected_chat");
-      if (Number(chatId)) dispatch(getChat(chatId));
+    if (!selectedChat && profileInfo) {
+      const lastChatItem =
+        localStorage.getItem("last_selected_chat") && JSON.parse(localStorage.getItem("last_selected_chat"));
+      if (lastChatItem?.user === profileInfo.id) {
+        dispatch(getChat(lastChatItem.chat));
+      }
     }
-  }, []);
+  }, [profileInfo]);
 
   const onShowChatListHandler = () => {
     if (isMdDown && !isXsDown) onShowDetails(false, false);
@@ -60,17 +64,6 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
     }
   };
 
-  const name = React.useMemo(() => {
-    return isSupplierResponse
-      ? selectedChat?.partner &&
-          Object.entries(selectedChat.partner).reduce((acc, item) => {
-            const [key, value] = item;
-            if (value) return acc ? `${acc} ${key === "company_name" ? ` (${value})` : ` ${value}`}` : value;
-            return acc;
-          }, "")
-      : selectedChat?.partner.first_name;
-  }, [selectedChat]);
-
   return (
     <SwipeWrapper
       className={clsx(classes.middleColumn, {
@@ -92,10 +85,10 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               <h2 className={classes.title}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
               {isSupplierResponse && selectedChat ? (
                 <div className={classes.customer}>
-                  Customer: <span>{name}</span>
+                  Customer: <span>{selectedChat.partner_name}</span>
                 </div>
               ) : (
-                <div className={classes.seller}>{name}</div>
+                <div className={classes.seller}>{selectedChat?.partner_name}</div>
               )}
             </div>
           </div>
