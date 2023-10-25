@@ -1,5 +1,3 @@
-import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { getPartnerName } from "@src/utils/chat";
 import * as actionTypes from "./chatTypes";
 import { ChatListItem, ChatListMessage } from "./chatTypes";
