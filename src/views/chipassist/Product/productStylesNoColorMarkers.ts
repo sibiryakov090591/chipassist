@@ -187,6 +187,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     priceModel: {
       fontSize: "14px",
       marginBottom: "30px",
+      lineHeight: 1,
       color: theme.palette.app.grey500,
     },
     sort: {
