@@ -289,7 +289,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
-                      className={classes.input}
+                      className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.price })}
                       value={getValues("prices")[0].amount}
                       error={errors?.prices && errors.prices[0]?.amount}
                       helperText={errors?.prices && errors.prices[0]?.amount?.message}

@@ -8,6 +8,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       tableLayout: "fixed",
       width: "100%",
       borderCollapse: "collapse",
+      [theme.breakpoints.down(500)]: {
+        tableLayout: "auto",
+      },
     },
     headers: {
       // backgroundColor: "#f5f6f7",
@@ -24,6 +27,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       height: "38px",
       "& td": {
         padding: "2px 10px",
+        [theme.breakpoints.down(500)]: {
+          padding: "2px 0 2px 10px",
+        },
       },
       "&.odd": {
         backgroundColor: "#fafafa",
@@ -44,18 +50,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textAlign: "start",
     },
     tdPrice: {
-      width: "20%",
+      width: "18%",
       whiteSpace: "nowrap",
       textAlign: "end",
-      [theme.breakpoints.down(500)]: {
-        width: "auto",
-      },
     },
     tdStock: {
       width: "15%",
       textAlign: "end",
       [theme.breakpoints.down(500)]: {
-        width: "auto",
+        width: "18%",
       },
     },
     tdActions: {
@@ -64,13 +67,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       paddingLeft: "40px !important",
       paddingRight: "0 !important",
       [theme.breakpoints.down(500)]: {
-        width: 100,
-        paddingLeft: "8px !important",
+        width: "auto",
+        paddingLeft: "12px !important",
       },
     },
     tdIcon: {
       width: 43,
       textAlign: "end",
+      [theme.breakpoints.down(500)]: {
+        padding: "2px 10px !important",
+      },
     },
     icon: {
       transition: "all 180ms ease",

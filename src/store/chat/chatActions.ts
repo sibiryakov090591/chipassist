@@ -36,6 +36,26 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
   };
 };
 
+export const getChat = (id: number | string) => {
+  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+    const partner = getState().profile.selectedPartner;
+    const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/chats/${id}/${params}`, { cancelId: "get_chat" })
+          .then((res) => {
+            dispatch(selectChat(res.data));
+          })
+          .catch((e) => {
+            console.log("***LOAD_CHAT_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
 export const updateChatList = (page: number) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const { isLoading } = getState().chat.chatList;
@@ -194,7 +214,7 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
       types: actionTypes.SEND_MESSAGE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
-          .post(`/chats/${chatId}/message/${params}`, {
+          .post(`/chats/${chatId}/messages/${params}`, {
             data: { text: message?.trim(), ...(!!orderData && { po: orderData }) },
           })
           .then(async (res) => {
@@ -250,7 +270,7 @@ export const readMessage = (messageId: number) => {
       types: [false, false, false],
       promise: (client: ApiClientInterface) =>
         client
-          .patch(`/chats/messages/${messageId}/read/${params}`)
+          .patch(`/chats/messages/${messageId}${params}`, { data: { status: 3 } })
           .then((res) => res.data)
           .catch((e) => {
             console.log("***READ_MESSAGE_ERROR", e);
