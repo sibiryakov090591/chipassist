@@ -151,6 +151,7 @@ export interface ChatListMessage {
   starter: number;
   representatives: any[];
   po?: any;
+  invoice?: any;
 }
 
 interface LoadChatFiltersRequestAction {

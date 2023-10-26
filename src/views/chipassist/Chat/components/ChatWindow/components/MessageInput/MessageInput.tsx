@@ -22,6 +22,7 @@ import SendOrderModal from "@src/views/chipassist/Chat/components/ChatWindow/com
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ReactDOM from "react-dom";
+import SendInvoiceModal from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/SendInvoiceModal";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -66,6 +67,7 @@ const MessageInput: React.FC<Props> = ({
   const [error, setError] = useState(errorMessage);
   const [open, setOpen] = useState(false);
   const [openOrderModal, setOpenOrderModal] = useState(false);
+  const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
   const [files, setFiles] = useState([]);
 
   const { getRootProps, getInputProps, open: openDropzone } = useDropzone({
@@ -112,8 +114,16 @@ const MessageInput: React.FC<Props> = ({
     setOpenOrderModal(true);
   };
 
+  const onOpenInvoiceModal = () => {
+    setOpenInvoiceModal(true);
+  };
+
   const onCloseOrderModal = () => {
     setOpenOrderModal(false);
+  };
+
+  const onCloseInvoiceModal = () => {
+    setOpenInvoiceModal(false);
   };
 
   const onAddFiles = () => {
@@ -232,7 +242,7 @@ const MessageInput: React.FC<Props> = ({
         size="medium"
         variant="contained"
         className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
-        onClick={onOpenOrderModal}
+        onClick={isSupplierResponse ? onOpenInvoiceModal : onOpenOrderModal}
       >
         {isSupplierResponse ? "Send invoice" : "Send PO"}
       </Button>
@@ -332,6 +342,12 @@ const MessageInput: React.FC<Props> = ({
         open={openOrderModal}
         stock={stock}
         onCloseModal={onCloseOrderModal}
+        setIsSending={setIsSending}
+      />
+      <SendInvoiceModal
+        open={openInvoiceModal}
+        stock={stock}
+        onCloseModal={onCloseInvoiceModal}
         setIsSending={setIsSending}
       />
     </div>

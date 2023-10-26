@@ -182,6 +182,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontWeight: "bold",
       padding: "12px",
     },
+    invoiceTitle: {
+      backgroundColor: theme.palette.app.blue800,
+    },
     orderAddress: {
       padding: "12px",
     },

@@ -206,7 +206,7 @@ export const updateMessages = (chatId: number, filters: { [key: string]: any } =
   };
 };
 
-export const sendMessage = (chatId: number, message: string, orderData: any = null) => {
+export const sendMessage = (chatId: number, message: string, orderData: any = null, type: "po" | "invoice" = null) => {
   return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
@@ -215,7 +215,10 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
       promise: (client: ApiClientInterface) =>
         client
           .post(`/chats/${chatId}/messages/${params}`, {
-            data: { text: message?.trim(), ...(!!orderData && { po: orderData }) },
+            data: {
+              text: message?.trim(),
+              ...(!!orderData && (type === "invoice" ? { invoice: orderData } : { po: orderData })),
+            },
           })
           .then(async (res) => {
             const newMessage = {
@@ -226,9 +229,10 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
               read_by_partner: false,
               created: new Date().toISOString(),
               ...(res.data?.po && { po: res.data.po, message_files: res.data.message_files }),
+              ...(res.data?.invoice && { invoice: res.data.po, message_files: res.data.message_files }),
               ...(res.data?.message_files && { message_files: res.data.message_files }),
             };
-            if (res.data?.po) {
+            if (res.data?.po || res.data?.invoice) {
               // download order
               const previewFiles: any = {};
               const filesPromises: any = [];

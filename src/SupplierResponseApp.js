@@ -9,7 +9,12 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import Reset from "@src/views/chipassist/Reset/Reset.tsx";
 import Maintenance from "@src/views/chipassist/Maintenance";
 import checkIsAuthenticated from "@src/utils/auth";
-import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
+import {
+  getGeolocation,
+  getPartnerInfo,
+  loadProfileInfoThunk,
+  onChangePartner,
+} from "@src/store/profile/profileActions";
 import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
 import { checkUserActivityStatus } from "@src/store/common/commonActions";
 import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
@@ -101,6 +106,7 @@ const SupplierResponseApp = () => {
   useEffect(() => {
     if (isAuthenticated && selectedPartner) {
       dispatch(getChatList(1));
+      dispatch(getPartnerInfo(selectedPartner.id));
     }
   }, [isAuthenticated, selectedPartner]);
 

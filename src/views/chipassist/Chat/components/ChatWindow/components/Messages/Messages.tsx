@@ -316,8 +316,9 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                   if (!item) return null;
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
+                  const invoiceData = item.invoice;
                   const orderAttachment =
-                    orderData && item.message_files?.find((attach) => !!attach.file.match(/\.pdf$/i));
+                    (orderData || invoiceData) && item.message_files?.find((attach) => !!attach.file.match(/\.pdf$/i));
                   const orderPdf = orderAttachment && files[orderAttachment.id];
                   const symbol =
                     orderData && currencyList.find((curr) => curr.code === orderData?.stockrecord?.currency)?.symbol;
@@ -345,67 +346,136 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                             )}
                           </span>
                         </div>
-                        {orderData ? (
-                          <Paper className={classes.orderItem} elevation={1}>
-                            <div className={classes.orderTitle}>Purchase Order (PO)</div>
-                            <div className={classes.orderAddress}>
-                              <Grid container>
-                                <Grid item sm={6} xs={12}>
-                                  <div>{orderData.company_name ? <strong>{orderData.company_name}</strong> : "-"}</div>
-                                  <div>
-                                    {orderData.first_name || "-"} {orderData.last_name}
-                                  </div>
-                                  <div>
-                                    {orderData.phone_number_str
-                                      ? `+${orderData.phone_number_str.replace(/[+]/g, "")}`
-                                      : "-"}
-                                  </div>
-                                </Grid>
-                                <Grid item sm={6} xs={12}>
-                                  <div>{`${orderData.line1 || "-"}`}</div>
-                                  <div>{`${orderData.line4 ? `${orderData.line4},` : ""} ${
-                                    checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
-                                  }`}</div>
-                                  <div>{orderData.postcode}</div>
-                                </Grid>
-                                {orderData.additional_notes && (
-                                  <Grid xs={12}>
-                                    <div>{orderData.additional_notes}</div>
+                        {orderData || invoiceData ? (
+                          <>
+                            {orderData ? (
+                              <Paper className={classes.orderItem} elevation={1}>
+                                <div className={classes.orderTitle}>Purchase Order (PO)</div>
+                                <div className={classes.orderAddress}>
+                                  <Grid container>
+                                    <Grid item sm={6} xs={12}>
+                                      <div>
+                                        {orderData.company_name ? <strong>{orderData.company_name}</strong> : "-"}
+                                      </div>
+                                      <div>
+                                        {orderData.first_name || "-"} {orderData.last_name}
+                                      </div>
+                                      <div>
+                                        {orderData.phone_number_str
+                                          ? `+${orderData.phone_number_str.replace(/[+]/g, "")}`
+                                          : "-"}
+                                      </div>
+                                    </Grid>
+                                    <Grid item sm={6} xs={12}>
+                                      <div>{`${orderData.line1 || "-"}`}</div>
+                                      <div>{`${orderData.line4 ? `${orderData.line4},` : ""} ${
+                                        checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
+                                      }`}</div>
+                                      <div>{orderData.postcode}</div>
+                                    </Grid>
+                                    {orderData.additional_notes && (
+                                      <Grid xs={12}>
+                                        <div>{orderData.additional_notes}</div>
+                                      </Grid>
+                                    )}
                                   </Grid>
-                                )}
-                              </Grid>
-                            </div>
-                            <div className={classes.orderTableWrapper}>
-                              <table className={classes.orderTable}>
-                                <thead>
-                                  <tr style={{ backgroundColor: "#345" }}>
-                                    <th>MPN</th>
-                                    <th>DC</th>
-                                    <th>{isXsDown ? "Qty" : "Quantity"}</th>
-                                    <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
-                                    <th>{isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>{orderData.mpn}</td>
-                                    <td>{orderData.datecode || "-"}</td>
-                                    <td>{orderData.quantity}</td>
-                                    <td>{formatMoney(orderData.price)}</td>
-                                    <td>{formatMoney(orderData.totalPrice)}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              {!!orderPdf && (
-                                <div className={classes.orderPdfLink}>
-                                  <img src={pdf_icon} alt="file icon" />
-                                  <a href={orderPdf.url} target="_blank" rel="noreferrer">
-                                    View PO in PDF
-                                  </a>
                                 </div>
-                              )}
-                            </div>
-                          </Paper>
+                                <div className={classes.orderTableWrapper}>
+                                  <table className={classes.orderTable}>
+                                    <thead>
+                                      <tr style={{ backgroundColor: "#345" }}>
+                                        <th>MPN</th>
+                                        <th>DC</th>
+                                        <th>{isXsDown ? "Qty" : "Quantity"}</th>
+                                        <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
+                                        <th>{isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>{orderData.mpn}</td>
+                                        <td>{orderData.datecode || "-"}</td>
+                                        <td>{orderData.quantity}</td>
+                                        <td>{formatMoney(orderData.price)}</td>
+                                        <td>{formatMoney(orderData.totalPrice)}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  {!!orderPdf && (
+                                    <div className={classes.orderPdfLink}>
+                                      <img src={pdf_icon} alt="file icon" />
+                                      <a href={orderPdf.url} target="_blank" rel="noreferrer">
+                                        View PO in PDF
+                                      </a>
+                                    </div>
+                                  )}
+                                </div>
+                              </Paper>
+                            ) : (
+                              <Paper className={classes.orderItem} elevation={1}>
+                                <div className={clsx(classes.orderTitle, classes.invoiceTitle)}>Payment Invoice</div>
+                                <div className={classes.orderAddress}>
+                                  <Grid container>
+                                    <Grid item sm={6} xs={12}>
+                                      <div>
+                                        {invoiceData.company_name ? <strong>{invoiceData.company_name}</strong> : "-"}
+                                      </div>
+                                      <div>
+                                        {invoiceData.first_name || "-"} {invoiceData.last_name}
+                                      </div>
+                                      <div>
+                                        {invoiceData.phone_number_str
+                                          ? `+${invoiceData.phone_number_str.replace(/[+]/g, "")}`
+                                          : "-"}
+                                      </div>
+                                    </Grid>
+                                    <Grid item sm={6} xs={12}>
+                                      <div>{`${invoiceData.line1 || "-"}`}</div>
+                                      <div>{`${invoiceData.line4 ? `${orderData.line4},` : ""} ${
+                                        checkout?.countries?.find((c) => c.url === invoiceData.country)?.printable_name
+                                      }`}</div>
+                                      <div>{invoiceData.postcode}</div>
+                                    </Grid>
+                                    {invoiceData.additional_notes && (
+                                      <Grid xs={12}>
+                                        <div>{invoiceData.additional_notes}</div>
+                                      </Grid>
+                                    )}
+                                  </Grid>
+                                </div>
+                                <div className={classes.orderTableWrapper}>
+                                  <table className={classes.orderTable}>
+                                    <thead>
+                                      <tr style={{ backgroundColor: "#345" }}>
+                                        <th>MPN</th>
+                                        <th>DC</th>
+                                        <th>{isXsDown ? "Qty" : "Quantity"}</th>
+                                        <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
+                                        <th>{isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>{invoiceData.mpn}</td>
+                                        <td>{invoiceData.datecode || "-"}</td>
+                                        <td>{invoiceData.quantity}</td>
+                                        <td>{formatMoney(invoiceData.price)}</td>
+                                        <td>{formatMoney(invoiceData.totalPrice)}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  {!!orderPdf && (
+                                    <div className={classes.orderPdfLink}>
+                                      <img src={pdf_icon} alt="file icon" />
+                                      <a href={orderPdf.url} target="_blank" rel="noreferrer">
+                                        View Invoice in PDF
+                                      </a>
+                                    </div>
+                                  )}
+                                </div>
+                              </Paper>
+                            )}
+                          </>
                         ) : (
                           <>
                             {!!item.message_files?.length && (

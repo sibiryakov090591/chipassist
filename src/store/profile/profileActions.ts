@@ -50,16 +50,16 @@ export const loadProfileInfoThunk = () => {
   };
 };
 
-export const updateProfileInfoThunk = () => {
+export const updateProfileInfoThunk = (data: any = null) => {
   return (dispatch: any, getState: () => RootState) => {
     const { profileInfo } = getState().profile;
 
     return dispatch({
-      types: actionTypes.PROFILE_UPDATE_ARRAY,
+      types: data ? [false, false, false] : actionTypes.PROFILE_UPDATE_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
           .patch(`/profile/0/`, {
-            data: {
+            data: data || {
               first_name: profileInfo.firstName,
               last_name: profileInfo.lastName,
             },
