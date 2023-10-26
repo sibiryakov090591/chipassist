@@ -83,19 +83,26 @@ interface Props {
   constants: { [key: string]: Array<{ label: string; value: string }> };
   formState: any;
   errorProps: (name: string) => { error: boolean; helperText: string };
+  isExample?: boolean;
 }
 
-const PcbCalculator: React.FC<Props> = ({ handleChange, setFormState, constants, formState, errorProps }) => {
+const PcbCalculator: React.FC<Props> = ({
+  handleChange,
+  setFormState,
+  constants,
+  formState,
+  errorProps,
+  isExample,
+}) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const { t } = useI18n("pcb.calculator");
   // const dispatch = useAppDispatch();
-  const showAllFields = localStorage.getItem("show_all_PCB_fields") === "true";
+  const showAllFields = localStorage.getItem("show_all_PCB_fields") === "true" || isExample;
 
   useEffect(() => () => localStorage.removeItem("show_all_PCB_fields"));
-
   return (
     <Paper className={classes.paper}>
       {!constants && <Preloader title={false} />}

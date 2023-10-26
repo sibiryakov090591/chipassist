@@ -93,7 +93,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
             <LoginForm className={null} />
           </Box>
         ) : (
-          <SellerMessageForm onCloseModalHandler={handleClose} isExample={isExample} />
+          <SellerMessageForm onCloseModalHandler={handleClose} isExample={isExample} isAuth={isAuth} />
         )}
       </div>
     </div>

@@ -113,7 +113,8 @@ const defaultRegisterState = () => ({
   errors: {},
 });
 
-function PcbRequest(isExample) {
+function PcbRequest(props) {
+  const { isExample, isExampleDetails } = props;
   // const [colorInfo, setColorInfo] = useState({});
   const [savedFormData, setSavedFormData] = useState({});
   const [status, setStatus] = useState();
@@ -733,7 +734,7 @@ function PcbRequest(isExample) {
     const formErrors = validate(formState, calculatorSchema);
     if (formErrors) return setErrors(formErrors);
 
-    if (!isExample) {
+    if (!isExample && !isExampleDetails) {
       if (!isAuthenticated && !showRegisterForm) {
         return setShowRegisterForm(true);
       }
@@ -877,6 +878,34 @@ function PcbRequest(isExample) {
     localStorage.setItem("pcb_calculator_data", JSON.stringify(data));
   };
 
+  if (isExampleDetails === true) {
+    return (
+      <div>
+        <PcbCalculator
+          handleChange={handleChange}
+          constants={calcVariables}
+          formState={formState}
+          setFormState={setFormState}
+          errorProps={errorProps}
+          isExample={true}
+        />
+        <div className={classes.applyButton} style={{ position: "relative" }}>
+          <Button variant="contained" className={appTheme.buttonPrimary} onClick={onCloseDetails} size="large">
+            {t("common.close")}
+          </Button>
+          <Button
+            style={{ minWidth: 160 }}
+            variant="contained"
+            className={appTheme.buttonCreate}
+            onClick={onApplyDetails}
+            size="large"
+          >
+            {t("pcb_new.apply_btn")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`${classes.root} pcb-modal-form`}>
       <form id="pcb_form" autoComplete="off" onSubmit={handleSubmit}>

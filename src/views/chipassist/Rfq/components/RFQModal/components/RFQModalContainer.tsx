@@ -134,7 +134,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
             <LoginForm className={null} isExample={isExample} />
           </Box>
         ) : (
-          <RFQForm onCloseModalHandler={handleClose} isExample={isExample} />
+          <RFQForm onCloseModalHandler={handleClose} isExample={isExample} isAuth={isAuth} />
         )}
       </div>
     </div>
