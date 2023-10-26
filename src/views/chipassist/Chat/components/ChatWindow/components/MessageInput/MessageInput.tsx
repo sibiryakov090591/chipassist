@@ -21,6 +21,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import SendOrderModal from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/SendOrderModal";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ReactDOM from "react-dom";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -54,7 +55,7 @@ const MessageInput: React.FC<Props> = ({
 
   const currencyList = useAppSelector((state) => state.currency.currencyList);
   const errorMessage = useAppSelector((state) => state.chat.messages.error);
-  const { partner, stocks, title } = useAppSelector((state) => state.chat.selectedChat);
+  const { partner, stocks, title, details } = useAppSelector((state) => state.chat.selectedChat);
   const stock = !!stocks &&
     !!stocks[0] && {
       ...stocks[0],
@@ -223,16 +224,37 @@ const MessageInput: React.FC<Props> = ({
     setMessage("");
   };
 
+  const crateOrderButton = () => {
+    const isDisabled = !stock?.prices?.length || (isSupplierResponse && !details?.po);
+    const buttonElem = (
+      <Button
+        disabled={isDisabled}
+        size="medium"
+        variant="contained"
+        className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
+        onClick={onOpenOrderModal}
+      >
+        {isSupplierResponse ? "Send invoice" : "Send PO"}
+      </Button>
+    );
+    const container = document.getElementById("chat-order-button-container");
+    if (!container) return null;
+    if (isXsDown) return buttonElem;
+    return ReactDOM.createPortal(buttonElem, container);
+  };
+
   return (
     <div className={classes.root}>
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
       {isSupplierResponse && (
-        <>
-          <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
-            Please send your response directly to the customer:
-          </div>
-          <Box display="flex" justifyContent="space-between" alignItems="flex-end" m="0 12px 8px">
-            <Box display="flex" flexWrap="wrap" gridGap="6px">
+        <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
+          Please send your response directly to the customer:
+        </div>
+      )}
+      <Box display="flex" justifyContent="space-between" alignItems="flex-end" m="0 12px 8px">
+        <Box display="flex" flexWrap="wrap" gridGap="6px" width="100%">
+          {isSupplierResponse && (
+            <>
               {!!stock && (
                 <>
                   <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
@@ -252,23 +274,12 @@ const MessageInput: React.FC<Props> = ({
               <div className={classes.hint} onClick={onSetHintMessage("later")}>
                 Reply later
               </div>
-            </Box>
-          </Box>
-        </>
-      )}
-      {!isSupplierResponse && (
-        <Box display="flex" justifyContent="flex-end" m="0 12px 8px">
-          <Button
-            disabled={!stock?.prices?.length}
-            size="medium"
-            variant="contained"
-            className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
-            onClick={onOpenOrderModal}
-          >
-            Send PO
-          </Button>
+            </>
+          )}
         </Box>
-      )}
+        {crateOrderButton()}
+      </Box>
+
       {!!error && <div className={classes.error}>{error}</div>}
       <Box display="flex" alignItems="center">
         <Hidden mdUp>

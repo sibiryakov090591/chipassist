@@ -33,12 +33,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       maxWidth: 800,
       width: "100%",
       margin: "0 auto",
-      padding: 20,
+      padding: "20px 20px 0",
       display: "flex",
       flexDirection: "column",
       justifyContent: "flex-end",
       [theme.breakpoints.down("xs")]: {
-        padding: 8,
+        padding: "8px 8px 0",
       },
     },
     group: {

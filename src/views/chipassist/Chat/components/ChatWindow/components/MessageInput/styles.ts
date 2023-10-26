@@ -102,8 +102,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontWeight: "bold",
       cursor: "pointer",
     },
+    hintButton: {
+      backgroundColor: theme.palette.app.green800,
+    },
     sendOrderButton: {
       textTransform: "initial",
+      whiteSpace: "nowrap",
+      marginLeft: 8,
     },
   }),
 );

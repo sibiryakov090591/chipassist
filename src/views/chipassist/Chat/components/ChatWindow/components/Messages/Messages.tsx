@@ -329,7 +329,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                           <UnreadMessagesLabel chatId={selectedChat?.id} />
                         </div>
                       )}
-                      <div id={`chat-message-${item.id}`} data-id={item.id} className={classes.messageItem}>
+                      <div
+                        id={`chat-message-${item.id}`}
+                        data-id={item.id}
+                        className={clsx(classes.messageItem, "chat-message-item")}
+                      >
                         <div className={classes.messageInfo}>
                           <span className={classes.messageFrom}>
                             {item.sender === "You" ? "You" : selectedChat.partner_name}

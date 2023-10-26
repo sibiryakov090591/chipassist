@@ -101,6 +101,8 @@ export interface ChatListItem {
   partner_name: string;
   title: string;
   details: {
+    po?: any;
+    invoice?: any;
     quantity: number;
     price: number;
   };
