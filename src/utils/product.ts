@@ -200,6 +200,11 @@ export const isDuplicateStockrecord = (haystack: Stockrecord[], needle: Stockrec
   });
 };
 
+export const getStockDataCode = (stock: any) => {
+  if (!stock?.partner_sku?.includes("datecode:")) return null;
+  return stock.partner_sku.split("datecode:")[1]?.trim() || null;
+};
+
 function pricesSort(prices: Stockrecord["prices"]): Stockrecord["prices"] {
   return prices ? stableSort(prices, getComparator("asc", "amount", "price")) : [];
 }

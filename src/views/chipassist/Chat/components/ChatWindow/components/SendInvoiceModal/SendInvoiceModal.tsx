@@ -10,7 +10,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import Fade from "@material-ui/core/Fade";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import useAppTheme from "@src/theme/useAppTheme";
-import { getPrice } from "@src/utils/product";
+import { getPrice, getStockDataCode } from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";
 import {
   getPartnerInfo,
@@ -19,7 +19,7 @@ import {
   updateProfileInfoThunk,
 } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { sendMessage } from "@src/store/chat/chatActions";
+import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import { SellerProfileInfo } from "@src/store/sellerProfile/sellerProfileTypes";
 import { useStyles } from "../SendOrderModal/styles";
@@ -67,6 +67,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
     control,
     formState: { errors, isValid },
     setValue,
+    getValues,
     trigger,
     reset,
   } = useForm<FormValues>({
@@ -124,6 +125,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
     if (!isValid || !selectedPartner) return false;
 
     setIsSending(true);
+    onCloseModal();
     if (billingAddress) {
       const companyData = Object.fromEntries(
         Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
@@ -148,7 +150,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
       first_name: data.first_name,
       last_name: data.last_name,
       postcode: data.postcode,
-      phone_number_str: data.phone,
+      phone_number_str: data.phone && `+${data.phone.replace(/[+]/g, "")}`,
       quantity,
       additional_notes: data.additional_notes,
       shipping_notes: data.shipping_notes,
@@ -160,16 +162,41 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
       totalPrice: outPrice,
       stockrecord: stock,
       mpn: rfq?.upc || stock?.upc,
-      datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
+      datecode: getStockDataCode(stock),
       purchase_order: purchaseOrder,
     };
-    dispatch(sendMessage(selectedChat.id, "''", orderData, "invoice")).finally(() => setIsSending(false));
-    return onCloseModal();
+    return dispatch(sendMessage(selectedChat.id, "''", orderData, "invoice")).finally(() => setIsSending(false));
   };
 
   const goToStep = (direction: "next" | "prev") => async () => {
     if (direction === "next" && !(await trigger())) return false;
     return setStep((prev) => (direction === "next" ? prev + 1 : prev - 1));
+  };
+
+  const onOpenPreviewPdf = () => {
+    if (!selectedChat?.id) return null;
+    const data = {
+      invoice: {
+        mpn: selectedChat?.title,
+        line1: getValues("address"),
+        line4: getValues("city"),
+        price: unitPrice,
+        country: getValues("country"),
+        datecode: getStockDataCode(stock),
+        postcode: getValues("postcode"),
+        last_name: getValues("last_name"),
+        first_name: getValues("first_name"),
+        totalPrice: outPrice,
+        stockrecord: stock,
+        company_name: getValues("company_name"),
+        quantity: purchaseOrder?.quantity,
+        additional_notes: getValues("additional_notes"),
+        phone_number_str: getValues("phone") && `+${getValues("phone").replace(/[+]/g, "")}`,
+        shipping_notes: getValues("shipping_notes"),
+        shipping_fee: getValues("shipping_fee"),
+      },
+    };
+    return dispatch(previewOrderPdf(selectedChat.id, data));
   };
 
   const onSubmitHandler = () => handleSubmit(onSubmit)();
@@ -221,7 +248,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                     </Grid>
                     <Grid item sm={6} xs={12}>
                       <Controller
-                        name="phone_number_str"
+                        name="phone"
                         control={control}
                         // rules={{
                         //   required: {
@@ -235,8 +262,8 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                             label="Work phone"
                             small={true}
                             style={{ height: "37.63px", margin: 0 }}
-                            // error={!!errors.phone_number_str}
-                            // helperText={errors.phone_number_str?.message}
+                            // error={!!errors.phone}
+                            // helperText={errors.phone?.message}
                           />
                         )}
                       />
@@ -461,9 +488,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                     </Grid>
                     <Grid item xs={6}>
                       <div className={classes.label}>Date code (DC):</div>
-                      <div className={classes.value}>
-                        {(stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || "-"}
-                      </div>
+                      <div className={classes.value}>{getStockDataCode(stock) || "-"}</div>
                     </Grid>
                     <Grid item xs={6}>
                       <div className={classes.label}>Packaging:</div>
@@ -568,10 +593,16 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                       <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
                     </Box>
                   </h3>
+
+                  <Box display="flex" justifyContent="flex-end">
+                    <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
+                      Preview PDF
+                    </span>
+                  </Box>
                 </>
               )}
             </div>
-            <Box display="flex" justifyContent="space-between" alignItems="flex-end" mt="12px">
+            <Box display="flex" justifyContent="space-between" alignItems="flex-end">
               <Box>{step} / 3</Box>
               <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
                 <Button

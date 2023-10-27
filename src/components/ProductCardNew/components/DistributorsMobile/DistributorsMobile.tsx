@@ -6,7 +6,7 @@ import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
 import { Stockrecord } from "@src/store/products/productTypes";
-import { getDynamicMoq, getPrice } from "@src/utils/product";
+import { getDynamicMoq, getPrice, getStockDataCode } from "@src/utils/product";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -75,7 +75,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
               const dynamicMoq = getDynamicMoq(val);
               const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
               const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
-              const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1];
+              const dateCode = getStockDataCode(val);
               const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
 
@@ -230,7 +230,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
       {/*      const qtyPrice = getQtyPrice(1, val); */}
       {/*      const seller = sellersWithProductLink?.find((i) => i.id === val.partner); */}
       {/*      const isShowProductLink = !!val.product_url || !!seller; */}
-      {/*      const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1]; */}
+      {/*      const dateCode = getStockDataCode(val); */}
 
       {/*      return ( */}
       {/*        <div className={classes.stockrecord} key={val.id}> */}

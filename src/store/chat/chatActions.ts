@@ -404,6 +404,28 @@ export const updateStockrecord = (data: any, chatId: number) => (dispatch: any, 
   });
 };
 
+export function previewOrderPdf(chatId: number, data: any) {
+  return (dispatch: Dispatch<any>) => {
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .post(`/chats/${chatId}/messages/preview/`, { data, config: { responseType: "blob" } })
+          .then((res) => res.data)
+          .then((blob: Blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              window.open(url, "_blank");
+            }
+          })
+          .catch((e) => {
+            console.log("***LOAD_INVOICE_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+}
+
 export const selectChat = (item: any) => ({
   type: actionTypes.SELECT_CHAT,
   payload: item,

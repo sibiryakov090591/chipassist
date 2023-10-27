@@ -10,11 +10,11 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import Fade from "@material-ui/core/Fade";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import useAppTheme from "@src/theme/useAppTheme";
-import { getPrice } from "@src/utils/product";
+import { getPrice, getStockDataCode } from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { sendMessage } from "@src/store/chat/chatActions";
+import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import { Address } from "@src/store/profile/profileTypes";
 import { useStyles } from "./styles";
@@ -60,6 +60,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
     control,
     formState: { errors, isValid },
     setValue,
+    getValues,
     trigger,
     reset,
   } = useForm<FormValues>({
@@ -101,6 +102,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
     if (!isValid) return false;
 
     setIsSending(true);
+    onCloseModal();
     if (billingAddress) {
       const companyData = Object.fromEntries(
         Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
@@ -123,15 +125,38 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       totalPrice,
       stockrecord: stock,
       mpn: rfq?.upc || stock?.upc,
-      datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
+      datecode: getStockDataCode(stock),
     };
-    dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
-    return onCloseModal();
+    return dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
   };
 
   const goToStep = (direction: "next" | "prev") => async () => {
     if (direction === "next" && !(await trigger())) return false;
     return setStep(direction === "next" ? 2 : 1);
+  };
+
+  const onOpenPreviewPdf = () => {
+    if (!selectedChat?.id) return null;
+    const data = {
+      po: {
+        mpn: selectedChat?.title,
+        line1: getValues("line1"),
+        line4: getValues("line4"),
+        price,
+        country: getValues("country"),
+        datecode: getStockDataCode(stock),
+        postcode: getValues("postcode"),
+        last_name: getValues("last_name"),
+        first_name: getValues("first_name"),
+        totalPrice,
+        stockrecord: stock,
+        company_name: getValues("company_name"),
+        quantity,
+        additional_notes: getValues("additional_notes"),
+        phone_number_str: getValues("phone_number_str") && `+${getValues("phone_number_str").replace(/[+]/g, "")}`,
+      },
+    };
+    return dispatch(previewOrderPdf(selectedChat.id, data));
   };
 
   const onSubmitHandler = () => handleSubmit(onSubmit)();
@@ -385,9 +410,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                     </Grid>
                     <Grid item xs={6}>
                       <div className={classes.label}>Date code (DC):</div>
-                      <div className={classes.value}>
-                        {(stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || "-"}
-                      </div>
+                      <div className={classes.value}>{getStockDataCode(stock) || "-"}</div>
                     </Grid>
                     <Grid item xs={6}>
                       <div className={classes.label}>Packaging:</div>
@@ -464,10 +487,16 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                       />
                     </Grid>
                   </Grid>
+
+                  <Box display="flex" justifyContent="flex-end" mt="16px">
+                    <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
+                      Preview PDF
+                    </span>
+                  </Box>
                 </>
               )}
             </div>
-            <Box display="flex" justifyContent="space-between" alignItems="flex-end" mt="12px">
+            <Box display="flex" justifyContent="space-between" alignItems="flex-end">
               <Box>{step} / 2</Box>
               <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
                 <Button
