@@ -38,6 +38,8 @@ import { useStyles } from "./styles";
 
 interface Props {
   onCloseModalHandler?: () => void;
+  isExample?: boolean;
+  isAuth?: boolean;
 }
 
 interface SellerMessageItemInterface {
@@ -101,7 +103,7 @@ interface FormState {
   errors: SellerMessageItemErrors;
 }
 
-const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
+const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -111,7 +113,8 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
   const { open, partNumber, sellerId, sellerName, stockrecordId, isSending } = useAppSelector(
     (state) => state.rfq.sellerMessageModal,
   );
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  isAuthenticated = isExample ? isAuth : isAuthenticated;
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const countries = useAppSelector((state) => state.checkout.countries);
   const currency = useAppSelector((state) => state.currency.selected);
@@ -297,72 +300,77 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler }) => {
       }));
     }
 
-    const data = {
-      part_number: partNumber,
-      stockrecord: stockrecordId,
-      quantity: formState.values.quantity,
-      price: formState.values.price,
-      currency: currency.code,
-      seller: [{ id: sellerId, name: sellerName }],
-      comment: formState.values.message,
-    };
-
-    dispatch(progressModalSetPartNumber(partNumber, "sellerMessage"));
-    dispatch(changeMisc("sellerMessage", formState.values, formState.values.email));
-
-    if (isAuthenticated) {
-      dispatch(sendSellerMessage(data)).then(() => {
-        if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-        setFormState(defaultState());
-      });
-    } else {
-      setIsLoading(true);
-      saveRequestToLocalStorage(data, data.part_number, "sellerMessage");
-      dispatch(changeMisc("not_activated_request", { ...data, requestType: "sellerMessage" }, formState.values.email));
-
-      const country =
-        countries?.find((c) => c.url === formState.values.country) ||
-        (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-        defaultCountry;
-      // const company_name =
-      //   formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "");
-
-      let registerData: any = {
-        ...defaultRegisterData,
-        email: formState.values.email,
-        first_name: formState.values.firstName,
-        last_name: formState.values.lastName,
-        phone_number_str: phoneValue ? `+${phoneValue}` : null,
-        company_name: formState.values.company_name,
-        // company_variant:
-        //   formState.values.company_type === "Other"
-        //     ? formState.values.company_other_type
-        //     : formState.values.company_type,
-        policy_confirm: formState.values.policy_confirm,
-        receive_updates_confirm: formState.values.receive_updates_confirm,
-        country: country?.iso_3166_1_a3,
+    if (!isExample) {
+      const data = {
+        part_number: partNumber,
+        stockrecord: stockrecordId,
+        quantity: formState.values.quantity,
+        price: formState.values.price,
+        currency: currency.code,
+        seller: [{ id: sellerId, name: sellerName }],
+        comment: formState.values.message,
       };
 
-      registerData = Object.fromEntries(
-        Object.entries(registerData)
-          .map((i: any) => {
-            if (typeof i[1] === "boolean" || i[1]) return i;
-            return false;
-          })
-          .filter((i: any) => !!i),
-      );
+      dispatch(progressModalSetPartNumber(partNumber, "sellerMessage"));
+      dispatch(changeMisc("sellerMessage", formState.values, formState.values.email));
 
-      dispatch(authSignup(registerData, { subj: "rfq" }))
-        .then(() => {
-          batch(() => {
-            localStorage.removeItem("seller_message_form_register_data");
-            localStorage.setItem("registered_email", formState.values.email);
-            if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-            setFormState(defaultState());
-            dispatch(progressModalOpen());
-          });
-        })
-        .finally(() => setIsLoading(false));
+      if (isAuthenticated) {
+        dispatch(sendSellerMessage(data)).then(() => {
+          if (onCloseModalHandler) dispatch(sellerMessageModalClose());
+          setFormState(defaultState());
+        });
+      } else {
+        setIsLoading(true);
+        saveRequestToLocalStorage(data, data.part_number, "sellerMessage");
+        dispatch(
+          changeMisc("not_activated_request", { ...data, requestType: "sellerMessage" }, formState.values.email),
+        );
+
+        const country =
+          countries?.find((c) => c.url === formState.values.country) ||
+          (constants?.id !== ID_ICSEARCH &&
+            countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
+          defaultCountry;
+        // const company_name =
+        //   formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "");
+
+        let registerData: any = {
+          ...defaultRegisterData,
+          email: formState.values.email,
+          first_name: formState.values.firstName,
+          last_name: formState.values.lastName,
+          phone_number_str: phoneValue ? `+${phoneValue}` : null,
+          company_name: formState.values.company_name,
+          // company_variant:
+          //   formState.values.company_type === "Other"
+          //     ? formState.values.company_other_type
+          //     : formState.values.company_type,
+          policy_confirm: formState.values.policy_confirm,
+          receive_updates_confirm: formState.values.receive_updates_confirm,
+          country: country?.iso_3166_1_a3,
+        };
+
+        registerData = Object.fromEntries(
+          Object.entries(registerData)
+            .map((i: any) => {
+              if (typeof i[1] === "boolean" || i[1]) return i;
+              return false;
+            })
+            .filter((i: any) => !!i),
+        );
+
+        dispatch(authSignup(registerData, { subj: "rfq" }))
+          .then(() => {
+            batch(() => {
+              localStorage.removeItem("seller_message_form_register_data");
+              localStorage.setItem("registered_email", formState.values.email);
+              if (onCloseModalHandler) dispatch(sellerMessageModalClose());
+              setFormState(defaultState());
+              dispatch(progressModalOpen());
+            });
+          })
+          .finally(() => setIsLoading(false));
+      }
     }
     return false;
   };
