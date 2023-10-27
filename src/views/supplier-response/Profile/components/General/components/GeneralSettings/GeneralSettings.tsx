@@ -104,7 +104,8 @@ interface FormState {
   errors: ProfileFormErrors;
 }
 
-const GeneralSettings = () => {
+const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
+  // const { t } = useI18n("profile");
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -212,18 +213,20 @@ const GeneralSettings = () => {
   };
 
   const onSubmit = () => {
-    if (_.isEmpty(formState.errors)) {
-      if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
-      if (profile.selectedPartner) {
-        dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+    if(!isExample) {
+      if (_.isEmpty(formState.errors)) {
+        if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
+        if (profile.selectedPartner) {
+          dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+        }
+        dispatch(turnEditMode(false));
+        dispatch(
+            showBottomLeftMessageAlertAction({
+              text: "Company details were updated successfully!",
+              severity: "success",
+            }),
+        );
       }
-      dispatch(turnEditMode(false));
-      dispatch(
-        showBottomLeftMessageAlertAction({
-          text: "Company details were updated successfully!",
-          severity: "success",
-        }),
-      );
     }
     return true;
   };
