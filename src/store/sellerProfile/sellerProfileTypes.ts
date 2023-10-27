@@ -10,6 +10,7 @@ export interface SellerProfileInfo {
   phone: string;
   website: string;
   country: string;
+  city: string;
   postcode: string;
   address: string;
   description: string;

@@ -12,6 +12,7 @@ const initialState: SellerProfileInfo = {
   phone: "",
   website: "",
   country: "",
+  city: "",
   postcode: "",
   address: "",
   description: "",

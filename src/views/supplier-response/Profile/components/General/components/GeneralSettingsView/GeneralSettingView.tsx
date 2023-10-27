@@ -117,8 +117,10 @@ export const GeneralSettingView = () => {
             <div className={classes.infoContainer}>
               <LocationOnOutlinedIcon fontSize={"default"} />
               <span className={classes.info}>{`${country || "Country is not provided"}, ${
-                partner.address ? `${partner.address}, ` : ""
-              } ${partner.postcode || "Postcode is not provided"}`}</span>
+                partner.city ? `${partner.city}, ` : ""
+              } ${partner.address ? `${partner.address}, ` : ""} ${
+                partner.postcode || "Postcode is not provided"
+              }`}</span>
             </div>
           </Grid>
           <Grid item md={12} xs={12}>
