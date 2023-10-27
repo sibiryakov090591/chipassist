@@ -63,6 +63,14 @@ export const SendOrderModalContainer: React.FC<{
     reset,
   } = useForm<FormValues>({
     mode: "onChange",
+    defaultValues: {
+      country:
+        (billingAddress?.country &&
+          checkout?.countries?.find((c) => c.url.includes(billingAddress.country.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+    },
   });
 
   const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
@@ -81,13 +89,6 @@ export const SendOrderModalContainer: React.FC<{
       setValue("first_name", billingAddress?.first_name || "");
       setValue("last_name", billingAddress?.last_name || "");
       setValue("phone_number_str", billingAddress?.phone_number_str || "");
-      const country =
-        (billingAddress?.country &&
-          checkout?.countries?.find((c) => c.url.includes(billingAddress.country.split("/api/")[1]))?.url) ||
-        (geolocation?.country_code_iso3 &&
-          checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-        defaultCountry.url;
-      setValue("country", country);
       setValue("line4", billingAddress?.line4 || "");
       setValue("postcode", billingAddress?.postcode || "");
       setValue("line1", billingAddress?.line1 || "");
@@ -157,7 +158,7 @@ export const SendOrderModalContainer: React.FC<{
   };
 
   const onSubmitHandler = () => handleSubmit(onSubmit)();
-  // console.log(getValues("country"));
+
   return (
     <div className={clsx(commonClasses.paper, "fullScreen")}>
       <form className={classes.form}>

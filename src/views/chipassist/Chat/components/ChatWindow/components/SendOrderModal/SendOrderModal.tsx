@@ -13,6 +13,19 @@ interface Props {
   setIsSending: any;
 }
 
+type FormValues = {
+  company_name: string;
+  first_name: string;
+  last_name: string;
+  country: string;
+  line1: string; // address
+  line4: string; // city
+  postcode: string;
+  phone_number_str: string;
+  quantity: string;
+  additional_notes: string;
+};
+
 const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSending }) => {
   const commonClasses = useCommonStyles();
 
@@ -28,7 +41,9 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       }}
     >
       <Fade in={open}>
-        <SendOrderModalContainer open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
+        <div>
+          <SendOrderModalContainer open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
+        </div>
       </Fade>
     </Modal>
   );
