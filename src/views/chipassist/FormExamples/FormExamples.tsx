@@ -9,19 +9,27 @@ import Switch from "@material-ui/core/Switch";
 import SellExcessForm from "@src/views/chipassist/SellExcess/components/SellExcessForm";
 import PcbRequest from "@src/views/chipassist/Pcb/PcbRequest/PcbRequest";
 import { GeneralSettings } from "@src/views/chipassist/Profile/components/General/components";
+import { GeneralSettings as SupplierGeneralSettings } from "@src/views/supplier-response/Profile/components/General/components";
 import AddressForm from "@src/views/chipassist/Profile/components/CompanyAddress/components/AddressForm/AddressForm";
 import Login from "@src/views/chipassist/Login/Login";
 
 import Register from "@src/views/chipassist/Register/Register";
 import SellerMessageContainer from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageForm/SellerMessageContainer";
 import SendOrderModalContainer from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/components/SendOrderModalContainer";
+import MergeBomModal from "@src/views/chipassist/Bom/components/BomList/MergeBomModal/MergeBomModal";
+import { getConstants } from "@src/store/pcb/pcbActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 
 export const FormExamples = () => {
   const classes = useStyles();
   const [checkedA, setCheckedA] = useState(false);
   const [checkedASeller, setCheckedASeller] = useState(false);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     window.scrollTo({ top: 0 });
+  }, []);
+  useEffect(() => {
+    dispatch(getConstants());
   }, []);
   return (
     <Page style={{ padding: "20px" }}>
@@ -42,14 +50,21 @@ export const FormExamples = () => {
               />
               is Authenticated
             </div>
-
-            <RFQModalContainer isAuth={checkedA} isExample={true} />
+            <Grid container spacing={3}>
+              <Grid item md={12} lg={8}>
+                <RFQModalContainer isAuth={checkedA} isExample={true} />
+              </Grid>
+            </Grid>
           </fieldset>
         </Grid>
         <Grid item md={12} lg={12}>
           <fieldset className={classes.gridItem}>
             <legend className={classes.legendText}>Login Form in RFQ Modal</legend>
-            <RFQModalContainer isLoginForm={true} isExample={true} />
+            <Grid container spacing={3}>
+              <Grid item md={12} lg={6}>
+                <RFQModalContainer isLoginForm={true} isExample={true} />
+              </Grid>
+            </Grid>
           </fieldset>
         </Grid>
         <Grid item md={12} lg={12}>
@@ -85,7 +100,13 @@ export const FormExamples = () => {
         <Grid item md={12} lg={12}>
           <fieldset className={classes.gridItem}>
             <legend className={classes.legendText}>PCB Request</legend>
-            <PcbRequest isExample={true} />
+            <PcbRequest isExample={true} isExampleDetails={false} />
+          </fieldset>
+        </Grid>
+        <Grid item md={12} lg={12}>
+          <fieldset className={classes.gridItem}>
+            <legend className={classes.legendText}>PCB Request Details</legend>
+            <PcbRequest isExample={true} isExampleDetails={true} />
           </fieldset>
         </Grid>
         <Grid item md={12} lg={12}>
@@ -130,16 +151,26 @@ export const FormExamples = () => {
         </Grid>
         <Grid item md={12} lg={12}>
           <fieldset className={classes.gridItem}>
-            <legend className={classes.legendText}>PO part 1</legend>
+            <legend className={classes.legendText}>PO</legend>
             <Grid container spacing={3}>
               <Grid item md={12} lg={5}>
                 <SendOrderModalContainer
                   isExample={true}
-                  onCloseModal={() => console.log("hehe")}
+                  onCloseModal={null}
                   open
                   setIsSending={false}
                   stock={null}
                   pageNum={1}
+                />
+              </Grid>
+              <Grid item md={12} lg={5}>
+                <SendOrderModalContainer
+                  isExample={true}
+                  onCloseModal={null}
+                  open
+                  setIsSending={false}
+                  stock={null}
+                  pageNum={2}
                 />
               </Grid>
             </Grid>
@@ -147,17 +178,20 @@ export const FormExamples = () => {
         </Grid>
         <Grid item md={12} lg={12}>
           <fieldset className={classes.gridItem}>
-            <legend className={classes.legendText}>PO part 2</legend>
+            <legend className={classes.legendText}>Supplier general setting</legend>
             <Grid container spacing={3}>
-              <Grid item md={12} lg={5}>
-                <SendOrderModalContainer
-                  isExample={true}
-                  onCloseModal={() => console.log("hehe")}
-                  open
-                  setIsSending={false}
-                  stock={null}
-                  pageNum={2}
-                />
+              <Grid item md={12} lg={8}>
+                <SupplierGeneralSettings isExample={true} />
+              </Grid>
+            </Grid>
+          </fieldset>
+        </Grid>
+        <Grid item md={12} lg={12}>
+          <fieldset className={classes.gridItem}>
+            <legend className={classes.legendText}>Supplier general setting</legend>
+            <Grid container spacing={3}>
+              <Grid item md={12} lg={4}>
+                <MergeBomModal isExample={true} onClose={null} onView={null} submitHandle={null} />
               </Grid>
             </Grid>
           </fieldset>

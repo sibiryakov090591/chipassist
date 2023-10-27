@@ -76,6 +76,7 @@ import { useStyles } from "./styles";
 interface Props {
   onCloseModalHandler?: () => void;
   isExample?: boolean;
+  isAuth?: boolean;
 }
 
 interface RfqItemInterface {
@@ -178,7 +179,7 @@ const defaultState = (): FormState => ({
   errors: {},
 });
 
-const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample }) => {
+const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) => {
   // const history = useHistory();
   // const location = useLocation();
   const classes = useStyles();
@@ -197,7 +198,8 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample }) => {
   const rfqModalOpen = useAppSelector((state) => state.rfq.rfqModalOpen);
   const rfqSaving = useAppSelector((state) => state.rfq.rfqSaving);
   // const rfqErrors = useAppSelector((state) => state.rfq.rfqErrors);
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  isAuthenticated = isExample ? isAuth : isAuthenticated;
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   // const prevEmail = useAppSelector((state) => state.profile.prevEmail);

@@ -39,6 +39,7 @@ import { useStyles } from "./styles";
 interface Props {
   onCloseModalHandler?: () => void;
   isExample?: boolean;
+  isAuth?: boolean;
 }
 
 interface SellerMessageItemInterface {
@@ -102,7 +103,7 @@ interface FormState {
   errors: SellerMessageItemErrors;
 }
 
-const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample }) => {
+const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -112,7 +113,8 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample }) 
   const { open, partNumber, sellerId, sellerName, stockrecordId, isSending } = useAppSelector(
     (state) => state.rfq.sellerMessageModal,
   );
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  isAuthenticated = isExample ? isAuth : isAuthenticated;
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const countries = useAppSelector((state) => state.checkout.countries);
   const currency = useAppSelector((state) => state.currency.selected);
