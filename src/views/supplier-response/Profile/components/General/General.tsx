@@ -38,12 +38,6 @@ const General = () => {
   }, []);
 
   useEffect(() => {
-    if (profile.selectedPartner) {
-      dispatch(getPartnerInfo(profile.selectedPartner.id));
-    }
-  }, [profile.selectedPartner]);
-
-  useEffect(() => {
     if (profile.selectedPartner && !isEditView) dispatch(getPartnerInfo(profile.selectedPartner.id));
   }, [isEditView]);
 

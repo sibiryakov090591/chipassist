@@ -22,6 +22,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { clearStockErrors, updateStockrecord } from "@src/store/chat/chatActions";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
+import { getStockDataCode } from "@src/utils/product";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -111,8 +112,8 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         if (stock.packaging) setValue("packaging", stock.packaging);
         if (Number(stock.moq)) setValue("moq", stock.moq);
         if (Number(stock.mpq)) setValue("mpq", stock.mpq);
-        if (Number(stock.partner_sku.includes("datecode:"))) {
-          setValue("datecode", stock.partner_sku.split("datecode:")[1] || "");
+        if (stock.partner_sku.includes("datecode:")) {
+          setValue("datecode", getStockDataCode(stock) || "");
         }
 
         setCurrency((prev) => currencyList.find((c) => c.code === stock.currency) || prev);

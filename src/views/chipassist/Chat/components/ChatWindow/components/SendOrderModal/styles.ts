@@ -1,17 +1,23 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
-// import { Theme } from "@material-ui/core";
-// import { AppTheme } from "@src/themes/AppTheme";
+import { Theme } from "@material-ui/core";
+import { AppTheme } from "@src/themes/AppTheme";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     form: {
-      maxWidth: 500,
-      minHeight: 440, // 423
+      width: 500,
+      minHeight: 440,
       height: "100%",
       textAlign: "start",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
+      [theme.breakpoints.down("xs")]: {
+        width: "auto",
+      },
+      "& h3:not(:first-child)": {
+        marginTop: 16,
+      },
     },
     label: {
       fontSize: 11,
@@ -33,6 +39,12 @@ export const useStyles = makeStyles(() =>
       border: "1px solid #eee",
       borderRadius: 4,
       background: "#f5f5f5",
+    },
+    divider: {
+      marginTop: 16,
+    },
+    invoiceInput: {
+      width: "80%",
     },
   }),
 );

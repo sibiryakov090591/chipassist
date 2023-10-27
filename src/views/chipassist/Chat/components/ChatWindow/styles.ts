@@ -56,6 +56,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: 22,
       color: "#345",
       marginBottom: 4,
+      wordBreak: "break-word",
     },
     seller: {
       color: "#737373",
@@ -72,6 +73,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     showDetailsIcon: {
       cursor: "pointer",
       fontSize: 30,
+      marginLeft: 16,
     },
   }),
 );

@@ -18,6 +18,7 @@ import { setUrlGetString } from "@src/utils/useCommonFilters";
 import Preloader from "@src/components/Preloader/Preloader";
 import useAppTheme from "@src/theme/useAppTheme";
 import { clsx } from "clsx";
+import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import { useStyles } from "./adapterListStyles";
 
 const AdapterList: React.FC = () => {
@@ -66,8 +67,10 @@ const AdapterList: React.FC = () => {
           <TableHead>
             <TableRow className={clsx(appTheme.tableHeader, classes.tableHeaders)}>
               <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell>Partner</TableCell>
+              <TableCell>File</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Updated</TableCell>
               <TableCell>Errors</TableCell>
             </TableRow>
           </TableHead>
@@ -96,8 +99,16 @@ const AdapterList: React.FC = () => {
                 return (
                   <TableRow key={index}>
                     <TableCell>{item.id || "-"}</TableCell>
+                    <TableCell>{item.partner_name || "-"}</TableCell>
                     <TableCell>{item.file || "-"}</TableCell>
                     <TableCell>{item.status || "-"}</TableCell>
+                    <TableCell>
+                      {item.updated
+                        ? formatDistanceToNowStrict(new Date(item.updated), {
+                            addSuffix: true,
+                          })
+                        : "-"}
+                    </TableCell>
                     <TableCell>
                       {item.errors?.length
                         ? item.errors.map((err) => {

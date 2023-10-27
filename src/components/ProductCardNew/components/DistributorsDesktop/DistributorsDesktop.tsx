@@ -3,7 +3,7 @@ import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
 import { Product, Stockrecord } from "@src/store/products/productTypes";
-import { getCostAndQuantity, getNextBiggerPriceBreak } from "@src/utils/product";
+import { getCostAndQuantity, getNextBiggerPriceBreak, getStockDataCode } from "@src/utils/product";
 import clsx from "clsx";
 import Price from "@src/components/Price/Price";
 import { Button, Hidden, TableSortLabel, Tooltip, Box } from "@material-ui/core";
@@ -384,7 +384,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               className: dynamicPriceClass,
             } = getBasedOnNumInStockPriceData(product, val);
 
-            const dateCode = val.partner_sku.includes("datecode:") && val.partner_sku.split(":")[1];
+            const dateCode = getStockDataCode(val);
 
             let dateUpdated: any;
             try {

@@ -24,6 +24,8 @@ export interface AdapterItem {
   id: number;
   file: string;
   status: number;
+  updated: string;
+  partner_name: string;
   errors: any[];
 }
 export interface AdapterFileError {
