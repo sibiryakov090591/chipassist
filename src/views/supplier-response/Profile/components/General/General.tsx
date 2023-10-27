@@ -44,8 +44,9 @@ const General = () => {
   }, [profile.selectedPartner]);
 
   useEffect(() => {
-    if (profile.selectedPartner && !isEditView) dispatch(getPartnerInfo(profile.selectedPartner.id));
-  }, [isEditView]);
+    if (!debouncedIsLoading)
+      if (profile.selectedPartner && !isEditView) dispatch(getPartnerInfo(profile.selectedPartner.id));
+  }, [isEditView, debouncedIsLoading]);
 
   useEffect(() => {
     if (profile.partnerProfile) {

@@ -31,6 +31,7 @@ const initialState: actionTypes.ProfileState = {
     phone: "",
     website: "",
     country: "",
+    city: "",
     postcode: "",
     address: "",
     description: "",
