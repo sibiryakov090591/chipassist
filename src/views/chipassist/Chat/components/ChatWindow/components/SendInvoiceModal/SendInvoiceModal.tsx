@@ -186,7 +186,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
     >
       <Fade in={open}>
         <div className={clsx(commonClasses.paper, "fullScreen")}>
-          <form className={classes.form}>
+          <form style={{ minHeight: 560 }} className={classes.form}>
             <div>
               {step === 1 && (
                 <>

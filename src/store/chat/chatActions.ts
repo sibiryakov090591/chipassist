@@ -229,7 +229,7 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
               read_by_partner: false,
               created: new Date().toISOString(),
               ...(res.data?.po && { po: res.data.po, message_files: res.data.message_files }),
-              ...(res.data?.invoice && { invoice: res.data.po, message_files: res.data.message_files }),
+              ...(res.data?.invoice && { invoice: res.data.invoice, message_files: res.data.message_files }),
               ...(res.data?.message_files && { message_files: res.data.message_files }),
             };
             if (res.data?.po || res.data?.invoice) {
