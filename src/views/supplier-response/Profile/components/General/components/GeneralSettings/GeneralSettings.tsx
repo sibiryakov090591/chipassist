@@ -213,7 +213,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   };
 
   const onSubmit = () => {
-    if(!isExample) {
+    if (!isExample) {
       if (_.isEmpty(formState.errors)) {
         if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
         if (profile.selectedPartner) {
@@ -221,10 +221,10 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
         }
         dispatch(turnEditMode(false));
         dispatch(
-            showBottomLeftMessageAlertAction({
-              text: "Company details were updated successfully!",
-              severity: "success",
-            }),
+          showBottomLeftMessageAlertAction({
+            text: "Company details were updated successfully!",
+            severity: "success",
+          }),
         );
       }
     }
