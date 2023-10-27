@@ -317,11 +317,15 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                   const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
                   const orderData = item.po;
                   const invoiceData = item.invoice;
+                  const purchaseOrder = item.invoice?.purchase_order;
                   const orderAttachment =
                     (orderData || invoiceData) && item.message_files?.find((attach) => !!attach.file.match(/\.pdf$/i));
                   const orderPdf = orderAttachment && files[orderAttachment.id];
                   const symbol =
-                    orderData && currencyList.find((curr) => curr.code === orderData?.stockrecord?.currency)?.symbol;
+                    (orderData || invoiceData) &&
+                    currencyList.find(
+                      (curr) => curr.code === (orderData?.stockrecord?.currency || invoiceData?.stockrecord?.currency),
+                    )?.symbol;
 
                   return (
                     <div key={item.id}>
@@ -417,30 +421,59 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                 <div className={classes.orderAddress}>
                                   <Grid container>
                                     <Grid item sm={6} xs={12}>
-                                      <div>
-                                        {invoiceData.company_name ? <strong>{invoiceData.company_name}</strong> : "-"}
+                                      <div className={classes.orderAddressTitle}>
+                                        <strong>Customer:</strong>
                                       </div>
+                                      {purchaseOrder?.company_name && (
+                                        <div>
+                                          <strong>{purchaseOrder.company_name}</strong>
+                                        </div>
+                                      )}
+                                      {(purchaseOrder?.first_name || purchaseOrder?.last_name) && (
+                                        <div>
+                                          {purchaseOrder?.first_name} {purchaseOrder?.last_name}
+                                        </div>
+                                      )}
+                                      {purchaseOrder?.line1 && <div>{purchaseOrder.line1}</div>}
                                       <div>
-                                        {invoiceData.first_name || "-"} {invoiceData.last_name}
+                                        {`${purchaseOrder?.line4 ? `${purchaseOrder.line4},` : ""}`}{" "}
+                                        {
+                                          checkout?.countries?.find((c) => c.url === purchaseOrder?.country)
+                                            ?.printable_name
+                                        }{" "}
+                                        {`${purchaseOrder?.postcode ? `, ${purchaseOrder.postcode}` : ""}`}
                                       </div>
-                                      <div>
-                                        {invoiceData.phone_number_str
-                                          ? `+${invoiceData.phone_number_str.replace(/[+]/g, "")}`
-                                          : "-"}
-                                      </div>
+                                      {purchaseOrder?.phone_number_str && (
+                                        <div>{`+${purchaseOrder.phone_number_str.replace(/[+]/g, "")}`}</div>
+                                      )}
                                     </Grid>
                                     <Grid item sm={6} xs={12}>
-                                      <div>{`${invoiceData.line1 || "-"}`}</div>
-                                      <div>{`${invoiceData.line4 ? `${orderData.line4},` : ""} ${
-                                        checkout?.countries?.find((c) => c.url === invoiceData.country)?.printable_name
-                                      }`}</div>
-                                      <div>{invoiceData.postcode}</div>
+                                      <div className={classes.orderAddressTitle}>
+                                        <strong>Seller:</strong>
+                                      </div>
+                                      {invoiceData?.company_name && (
+                                        <div>
+                                          <strong>{invoiceData.company_name}</strong>
+                                        </div>
+                                      )}
+                                      {(invoiceData?.first_name || invoiceData?.last_name) && (
+                                        <div>
+                                          {invoiceData?.first_name} {invoiceData?.last_name}
+                                        </div>
+                                      )}
+                                      {invoiceData?.line1 && <div>{invoiceData.line1}</div>}
+                                      <div>
+                                        {`${invoiceData?.line4 ? `${invoiceData.line4},` : ""}`}{" "}
+                                        {
+                                          checkout?.countries?.find((c) => c.url === invoiceData?.country)
+                                            ?.printable_name
+                                        }{" "}
+                                        {`${invoiceData?.postcode ? `, ${invoiceData.postcode}` : ""}`}
+                                      </div>
+                                      {invoiceData?.phone_number_str && (
+                                        <div>{`+${invoiceData.phone_number_str.replace(/[+]/g, "")}`}</div>
+                                      )}
                                     </Grid>
-                                    {invoiceData.additional_notes && (
-                                      <Grid xs={12}>
-                                        <div>{invoiceData.additional_notes}</div>
-                                      </Grid>
-                                    )}
                                   </Grid>
                                 </div>
                                 <div className={classes.orderTableWrapper}>
@@ -451,19 +484,51 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <th>DC</th>
                                         <th>{isXsDown ? "Qty" : "Quantity"}</th>
                                         <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
-                                        <th>{isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}</th>
+                                        <th>{`Out Price, ${symbol}`}</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td>{invoiceData.mpn}</td>
-                                        <td>{invoiceData.datecode || "-"}</td>
-                                        <td>{invoiceData.quantity}</td>
-                                        <td>{formatMoney(invoiceData.price)}</td>
-                                        <td>{formatMoney(invoiceData.totalPrice)}</td>
+                                        <td>{invoiceData?.mpn}</td>
+                                        <td>{invoiceData?.datecode || "-"}</td>
+                                        <td>{invoiceData?.quantity}</td>
+                                        <td>{formatMoney(invoiceData?.price)}</td>
+                                        <td>{formatMoney(invoiceData?.totalPrice)}</td>
+                                      </tr>
+                                      <tr>
+                                        <td colSpan={5}>
+                                          <Box display="flex" justifyContent="space-between" alignItems="center">
+                                            <div>Shipping: {invoiceData?.shipping_notes}</div>
+                                            <div>{formatMoney(invoiceData?.shipping_fee)}</div>
+                                          </Box>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td colSpan={5}>
+                                          <Box display="flex" justifyContent="space-between" alignItems="center">
+                                            <div>
+                                              <strong>Total:</strong>
+                                            </div>
+                                            <div>
+                                              <strong>
+                                                {formatMoney(
+                                                  Number(invoiceData?.totalPrice) + Number(invoiceData?.shipping_fee),
+                                                )}
+                                              </strong>
+                                            </div>
+                                          </Box>
+                                        </td>
                                       </tr>
                                     </tbody>
                                   </table>
+                                  {invoiceData?.additional_notes && (
+                                    <div className={classes.notes}>
+                                      <div>
+                                        <strong>Notes:</strong>
+                                      </div>
+                                      <div>{invoiceData.additional_notes}</div>
+                                    </div>
+                                  )}
                                   {!!orderPdf && (
                                     <div className={classes.orderPdfLink}>
                                       <img src={pdf_icon} alt="file icon" />

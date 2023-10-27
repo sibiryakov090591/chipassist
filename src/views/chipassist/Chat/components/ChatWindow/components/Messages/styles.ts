@@ -125,10 +125,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "& svg": {
         color: "#878787",
         marginRight: 6,
-        fontSize: 18,
+        fontSize: 50,
       },
       "& img": {
-        height: 16,
+        height: 50,
         marginRight: 4,
       },
     },
@@ -185,6 +185,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     invoiceTitle: {
       backgroundColor: theme.palette.app.blue800,
     },
+    orderAddressTitle: {
+      textDecoration: "underline",
+      marginBottom: 5,
+    },
     orderAddress: {
       padding: "12px",
     },
@@ -232,6 +236,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
       "& a": {
         textDecoration: "underline",
+      },
+    },
+    notes: {
+      fontStyle: "italic",
+      paddingTop: 10,
+      [theme.breakpoints.down("xs")]: {
+        padding: 12,
       },
     },
   }),

@@ -155,12 +155,13 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
       shipping_fee: data.shipping_fee,
       line1: data.address,
       line4: data.city,
-      country: checkout?.countries?.find((c) => c.iso_3166_1_a3 === data.country)?.url || "",
+      country: checkout?.countries?.find((c) => c.url === data.country)?.url || "",
       price: unitPrice,
       totalPrice: outPrice,
       stockrecord: stock,
       mpn: rfq?.upc || stock?.upc,
       datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
+      purchase_order: purchaseOrder,
     };
     dispatch(sendMessage(selectedChat.id, "''", orderData, "invoice")).finally(() => setIsSending(false));
     return onCloseModal();
