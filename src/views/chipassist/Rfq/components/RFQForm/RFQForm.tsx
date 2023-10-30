@@ -98,7 +98,6 @@ interface RfqItemInterface {
   // company_other_type: string;
   policy_confirm: boolean;
   receive_updates_confirm: boolean;
-  productId: number;
 }
 
 interface RfqItemTouched {
@@ -116,7 +115,6 @@ interface RfqItemTouched {
   company_other_type?: boolean;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
-  productId?: boolean;
 }
 
 interface RfqItemErrors {
@@ -134,7 +132,6 @@ interface RfqItemErrors {
   company_other_type?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
-  productId?: string[];
   [key: string]: string[];
 }
 
@@ -173,7 +170,6 @@ const defaultState = (): FormState => ({
     company_name: "",
     policy_confirm: false,
     receive_updates_confirm: false,
-    productId: 0,
   },
   touched: {},
   errors: {},
@@ -307,7 +303,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) =>
         values: {
           ...prevState.values,
           ...rfqItem,
-          productId: rfqItem.productId,
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),
@@ -512,29 +507,32 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) =>
               }, "")
             : ""
         }`,
-        productId: formState.values.productId,
+        productId: rfqItem.productId,
       };
-      // sending to all sellers without product url a chat message
-      const sellersMessages = rfqItem?.product?.stockrecords?.reduce((acc, stock) => {
-        if (acc.find((i) => i.seller[0].id === stock.partner)) return acc; // filtered duplicate sellers
-        const seller = sellersWithProductLink?.find((i) => i.id === stock.partner);
-        const isNeedSendMessage = !stock.product_url && !seller?.url;
-        if (!isNeedSendMessage) return acc;
-        const sellerData = {
-          part_number: rfqItem.product.upc,
-          stockrecord: stock.id,
-          quantity: formState.values.quantity,
-          price: formState.values.price,
-          currency: currency.code,
-          seller: [{ id: stock.partner, name: stock.partner_name }],
-          comment: `${t("seller_message.message_placeholder", {
-            seller: stock.partner_name,
-            mpn: rfqItem.product.upc,
-            constantsTitle: constants.title,
-          })}`,
-        };
-        return [...acc, sellerData];
-      }, []);
+      // sending a chat message to all sellers without product url
+      const sellersMessages =
+        profileInfo &&
+        !profileInfo.isTestAccount &&
+        rfqItem?.product?.stockrecords?.reduce((acc, stock) => {
+          if (acc.find((i) => i.seller[0].id === stock.partner)) return acc; // filtered duplicate sellers
+          const seller = sellersWithProductLink?.find((i) => i.id === stock.partner);
+          const isNeedSendMessage = !stock.product_url && !seller?.url;
+          if (!isNeedSendMessage) return acc;
+          const sellerData = {
+            part_number: rfqItem.product.upc,
+            stockrecord: stock.id,
+            quantity: formState.values.quantity,
+            price: formState.values.price,
+            currency: currency.code,
+            seller: [{ id: stock.partner, name: stock.partner_name }],
+            comment: `${t("seller_message.message_placeholder", {
+              seller: stock.partner_name,
+              mpn: rfqItem.product.upc,
+              constantsTitle: constants.title,
+            })}`,
+          };
+          return [...acc, sellerData];
+        }, []);
 
       dispatch(progressModalSetPartNumber(formState.values.partNumber, "rfq"));
 

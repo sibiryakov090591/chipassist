@@ -26,3 +26,8 @@ export const removeAuthToken = () => {
 export const setAuthToken = (token) => {
   localStorage.setItem("token", token);
 };
+
+export const isTestAccount = (fields) => {
+  if (!fields?.length) return false;
+  return fields.some((field) => field?.toLowerCase().includes("test"));
+};
