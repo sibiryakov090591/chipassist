@@ -61,19 +61,7 @@ export const GET_PARTNER_INFORMATION = "@sellerProfile/GET_PARTNER_INFORMATION";
 export const SAVE_NEW_PARTNER_INFORMATION = "@sellerProfile/SAVE_NEW_PARTNER_INFORMATION";
 
 export interface ProfileState {
-  profileInfo: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    canSkip: boolean;
-    partners: Partner[];
-    avatar: string;
-    addressErrors: { [key: string]: string[] };
-    addresses: Address[];
-    defaultBillingAddress: Address;
-    defaultShippingAddress: Address;
-  };
+  profileInfo: ProfileInfo;
   selectedPartner: Partner | false;
   prevEmail: string;
   isLoadingProfile: boolean;
@@ -95,6 +83,21 @@ export interface ProfileState {
     error: any;
   };
   partnerProfile: SellerProfileInfo;
+}
+
+export interface ProfileInfo {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isTestAccount: boolean;
+  canSkip: boolean;
+  partners: Partner[];
+  avatar: string;
+  addressErrors: { [key: string]: string[] };
+  addresses: Address[];
+  defaultBillingAddress: Address;
+  defaultShippingAddress: Address;
 }
 
 export interface Partner {
