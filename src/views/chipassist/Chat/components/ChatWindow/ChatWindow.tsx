@@ -92,10 +92,13 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               )}
             </div>
           </div>
-          <MenuIcon
-            className={clsx(classes.showDetailsIcon, { active: showDetails })}
-            onClick={onShowDetailsHandler()}
-          />
+          <Box display="flex" alignItems="center">
+            <div id="chat-order-button-container" />
+            <MenuIcon
+              className={clsx(classes.showDetailsIcon, { active: showDetails })}
+              onClick={onShowDetailsHandler()}
+            />
+          </Box>
         </Box>
 
         <Messages onShowDetails={onShowDetailsHandler(false, true)} />

@@ -18,10 +18,6 @@ import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import useDebounce from "@src/hooks/useDebounce";
 import { saveNewDetails, turnEditMode, uploadNewAvatar } from "@src/store/sellerProfile/sellerProfileAction";
-// import formSchema from "@src/utils/formSchema";
-// import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-// import validate from "validate.js";
-// import _ from "lodash";
 import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
@@ -29,7 +25,6 @@ import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import formSchema from "@src/utils/formSchema";
-import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import validate from "validate.js";
 import _ from "lodash";
 

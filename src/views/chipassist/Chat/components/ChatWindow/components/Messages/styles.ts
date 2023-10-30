@@ -33,12 +33,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       maxWidth: 800,
       width: "100%",
       margin: "0 auto",
-      padding: 20,
+      padding: "20px 20px 0",
       display: "flex",
       flexDirection: "column",
       justifyContent: "flex-end",
       [theme.breakpoints.down("xs")]: {
-        padding: 8,
+        padding: "8px 8px 0",
       },
     },
     group: {
@@ -125,10 +125,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "& svg": {
         color: "#878787",
         marginRight: 6,
-        fontSize: 18,
+        fontSize: 50,
       },
       "& img": {
-        height: 16,
+        height: 50,
         marginRight: 4,
       },
     },
@@ -182,6 +182,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontWeight: "bold",
       padding: "12px",
     },
+    invoiceTitle: {
+      backgroundColor: theme.palette.app.blue800,
+    },
+    orderAddressTitle: {
+      textDecoration: "underline",
+      marginBottom: 5,
+    },
     orderAddress: {
       padding: "12px",
     },
@@ -229,6 +236,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
       "& a": {
         textDecoration: "underline",
+      },
+    },
+    notes: {
+      fontStyle: "italic",
+      paddingTop: 10,
+      [theme.breakpoints.down("xs")]: {
+        padding: 12,
       },
     },
   }),

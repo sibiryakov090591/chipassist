@@ -104,6 +104,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     sendOrderButton: {
       textTransform: "initial",
+      whiteSpace: "nowrap",
+      marginLeft: 8,
     },
   }),
 );

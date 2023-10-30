@@ -1,11 +1,10 @@
 import React from "react";
 import { Backdrop } from "@material-ui/core";
-
 import Modal from "@material-ui/core/Modal";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import Fade from "@material-ui/core/Fade";
-
 import { ChatListStock } from "@src/store/chat/chatTypes";
+import SendOrderModalContainer from "./components/SendOrderModalContainer";
 
 interface Props {
   open: boolean;
@@ -29,7 +28,9 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       }}
     >
       <Fade in={open}>
-        <SendOrderModal open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
+        <div>
+          <SendOrderModalContainer open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
+        </div>
       </Fade>
     </Modal>
   );

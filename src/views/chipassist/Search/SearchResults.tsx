@@ -33,7 +33,7 @@ import img from "@src/images/Screenshot_1.png";
 import { ID_MASTER } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
-import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
+// import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
 import Filters from "./components/Filters/Filters";
@@ -525,7 +525,7 @@ const SearchResults = () => {
         </div>
       </Container>
 
-      {!localStorage.getItem("before_unload_alert_disabled") && <BeforeUnloadModal />}
+      {/* {!localStorage.getItem("before_unload_alert_disabled") && <BeforeUnloadModal />} */}
     </Page>
   );
 };

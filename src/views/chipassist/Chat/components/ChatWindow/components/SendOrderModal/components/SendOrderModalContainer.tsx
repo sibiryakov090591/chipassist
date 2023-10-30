@@ -10,12 +10,13 @@ import { useStyles } from "@src/views/chipassist/Chat/components/ChatWindow/comp
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { getPrice } from "@src/utils/product";
+import { getPrice, getStockDataCode } from "@src/utils/product";
 import { defaultCountry } from "@src/constants/countries";
 import { Address } from "@src/store/profile/profileTypes";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
-import { sendMessage } from "@src/store/chat/chatActions";
+import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
+import constants from "@src/constants/constants";
 
 type FormValues = {
   company_name: string;
@@ -42,6 +43,7 @@ export const SendOrderModalContainer: React.FC<{
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
+  const previewDisabled = constants.apiHost !== "api.camaster.site";
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
@@ -58,10 +60,19 @@ export const SendOrderModalContainer: React.FC<{
     control,
     formState: { errors, isValid },
     setValue,
+    getValues,
     trigger,
     reset,
   } = useForm<FormValues>({
     mode: "onChange",
+    defaultValues: {
+      country:
+        (billingAddress?.country &&
+          checkout?.countries?.find((c) => c.url.includes(billingAddress.country.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+    },
   });
 
   const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
@@ -80,14 +91,6 @@ export const SendOrderModalContainer: React.FC<{
       setValue("first_name", billingAddress?.first_name || "");
       setValue("last_name", billingAddress?.last_name || "");
       setValue("phone_number_str", billingAddress?.phone_number_str || "");
-      setValue(
-        "country",
-        (billingAddress?.country &&
-          checkout?.countries?.find((c) => c.url.includes(billingAddress.country.split("/api/")[1]))?.url) ||
-          (geolocation?.country_code_iso3 &&
-            checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-          defaultCountry.url,
-      );
       setValue("line4", billingAddress?.line4 || "");
       setValue("postcode", billingAddress?.postcode || "");
       setValue("line1", billingAddress?.line1 || "");
@@ -95,41 +98,65 @@ export const SendOrderModalContainer: React.FC<{
     }
   }, [open, billingAddress]);
 
-  const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    if (!isValid) return false;
-    if (!isExample) {
-      setIsSending(true);
-      if (billingAddress) {
-        const companyData = Object.fromEntries(
-          Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
-        );
-        let companyDataWasChanged = false;
-        Object.entries(companyData).forEach(([key, val]) => {
-          if (!companyDataWasChanged && val !== billingAddress[key as keyof Address]) {
-            companyDataWasChanged = true;
-          }
-        });
-        if (companyDataWasChanged) {
-          dispatch(updateCompanyAddress(billingAddress.id, companyData)).then(() => dispatch(loadProfileInfoThunk()));
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    if (!isValid || isExample) return false;
+
+    setIsSending(true);
+    onCloseModal();
+    if (billingAddress) {
+      const companyData = Object.fromEntries(
+        Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
+      );
+      let companyDataWasChanged = false;
+      Object.entries(companyData).forEach(([key, val]) => {
+        if (!companyDataWasChanged && val !== billingAddress[key as keyof Address]) {
+          companyDataWasChanged = true;
         }
+      });
+      if (companyDataWasChanged) {
+        await dispatch(updateCompanyAddress(billingAddress.id, companyData)).then(() =>
+          dispatch(loadProfileInfoThunk()),
+        );
       }
-      const orderData = {
-        ...data,
-        price,
-        totalPrice,
-        stockrecord: stock,
-        mpn: rfq?.upc || stock?.upc,
-        datecode: (stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || null,
-      };
-      dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
-      onCloseModal();
     }
-    return false;
+    const orderData = {
+      ...data,
+      price,
+      totalPrice,
+      stockrecord: stock,
+      mpn: rfq?.upc || stock?.upc,
+      datecode: getStockDataCode(stock),
+    };
+    return dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
   };
 
-  const goToStep = (derection: "next" | "prev") => async () => {
-    if (derection === "next" && !(await trigger())) return false;
-    return setStep(derection === "next" ? 2 : 1);
+  const goToStep = (direction: "next" | "prev") => async () => {
+    if (direction === "next" && !(await trigger())) return false;
+    return setStep(direction === "next" ? 2 : 1);
+  };
+
+  const onOpenPreviewPdf = () => {
+    if (!selectedChat?.id) return null;
+    const data = {
+      po: {
+        mpn: selectedChat?.title,
+        line1: getValues("line1"),
+        line4: getValues("line4"),
+        price,
+        country: getValues("country"),
+        datecode: getStockDataCode(stock),
+        postcode: getValues("postcode"),
+        last_name: getValues("last_name"),
+        first_name: getValues("first_name"),
+        totalPrice,
+        stockrecord: stock,
+        company_name: getValues("company_name"),
+        quantity,
+        additional_notes: getValues("additional_notes"),
+        phone_number_str: getValues("phone_number_str") && `+${getValues("phone_number_str").replace(/[+]/g, "")}`,
+      },
+    };
+    return dispatch(previewOrderPdf(selectedChat.id, data));
   };
 
   const onSubmitHandler = () => handleSubmit(onSubmit)();
@@ -255,6 +282,7 @@ export const SendOrderModalContainer: React.FC<{
                     render={({ field }) => (
                       <TextField
                         {...field}
+                        value={getValues("country")}
                         variant="outlined"
                         InputLabelProps={{
                           shrink: true,
@@ -372,9 +400,7 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Date code (DC):</div>
-                  <div className={classes.value}>
-                    {(stock?.partner_sku?.includes("datecode:") && stock.partner_sku.split(":")[1]) || "-"}
-                  </div>
+                  <div className={classes.value}>{getStockDataCode(stock) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Packaging:</div>
@@ -449,11 +475,19 @@ export const SendOrderModalContainer: React.FC<{
                   />
                 </Grid>
               </Grid>
+
+              {!previewDisabled && (
+                <Box display="flex" justifyContent="flex-end" mt="16px">
+                  <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
+                    Preview PDF
+                  </span>
+                </Box>
+              )}
             </>
           )}
         </div>
-        <Box display="flex" justifyContent="space-between" alignItems="flex-end" mt="12px">
-          <Box>{pageNum || step} / 2</Box>
+        <Box display="flex" justifyContent="space-between" alignItems="flex-end">
+          <Box>{step} / 2</Box>
           <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
             <Button
               variant="contained"

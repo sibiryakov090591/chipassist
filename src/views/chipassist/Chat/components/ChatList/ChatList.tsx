@@ -130,8 +130,10 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                     </Box>
                   </Box>
                   <div className={classes.ellipsisText}>
-                    {lastMessage?.po
-                      ? "Purchase Order (PO)"
+                    {lastMessage?.po || lastMessage?.invoice
+                      ? lastMessage?.po
+                        ? "Purchase Order (PO)"
+                        : "Payment Invoice"
                       : lastMessage?.text || (lastMessage?.message_files && lastMessage?.message_files[0]?.file)}
                   </div>
                   <Box display="flex" justifyContent="space-between" className={classes.info}>

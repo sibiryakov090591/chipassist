@@ -15,6 +15,7 @@ import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { sellerMessageModalClose } from "@src/store/rfq/rfqActions";
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 
 export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: boolean }> = ({ isAuth, isExample }) => {
   const classes = useStyles();
@@ -53,13 +54,18 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
         <Hidden smDown>
           <div className={rfqModalClasses.logoContainer}>
             <div className={rfqModalClasses.signIn}>
-              {!isAuthenticated && (
+              {!isAuthenticated && !showLoginForm && (
                 <>
                   {t("restricted.description_1")}
-                  <div onClick={showSignIn(false)} className={rfqModalClasses.link}>
+                  <div onClick={showSignIn(true)} className={rfqModalClasses.link}>
                     {t("restricted.sign_in")}
                   </div>
                 </>
+              )}
+              {!isAuthenticated && showLoginForm && (
+                <div onClick={showSignIn(false)} className={rfqModalClasses.link}>
+                  <DoubleArrowIcon /> Back to RFQ
+                </div>
               )}
             </div>
             <img className={rfqModalClasses.logo} src={logo} alt="chipassist logo" />
@@ -81,7 +87,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
           <Hidden mdUp>
             <div className={rfqModalClasses.signInMobile}>
               {t("restricted.description_1")}
-              <span onClick={showSignIn(false)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
+              <span onClick={showSignIn(true)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                 {t("restricted.sign_in")}
               </span>
               {". "}
