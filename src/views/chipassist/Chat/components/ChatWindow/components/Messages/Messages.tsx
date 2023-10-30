@@ -359,25 +359,25 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   <Grid container>
                                     <Grid item sm={6} xs={12}>
                                       <div>
-                                        {orderData.company_name ? <strong>{orderData.company_name}</strong> : "-"}
+                                        {orderData?.company_name ? <strong>{orderData.company_name}</strong> : "-"}
                                       </div>
                                       <div>
-                                        {orderData.first_name || "-"} {orderData.last_name}
+                                        {orderData?.first_name || "-"} {orderData.last_name}
                                       </div>
                                       <div>
-                                        {orderData.phone_number_str
+                                        {orderData?.phone_number_str
                                           ? `+${orderData.phone_number_str.replace(/[+]/g, "")}`
                                           : "-"}
                                       </div>
                                     </Grid>
                                     <Grid item sm={6} xs={12}>
-                                      <div>{`${orderData.line1 || "-"}`}</div>
-                                      <div>{`${orderData.line4 ? `${orderData.line4},` : ""} ${
-                                        checkout?.countries?.find((c) => c.url === orderData.country)?.printable_name
+                                      <div>{`${orderData?.line1 || "-"}`}</div>
+                                      <div>{`${orderData?.line4 ? `${orderData.line4},` : ""} ${
+                                        checkout?.countries?.find((c) => c.url === orderData?.country)?.printable_name
                                       }`}</div>
-                                      <div>{orderData.postcode}</div>
+                                      <div>{orderData?.postcode}</div>
                                     </Grid>
-                                    {orderData.additional_notes && (
+                                    {orderData?.additional_notes && (
                                       <Grid xs={12}>
                                         <div>{orderData.additional_notes}</div>
                                       </Grid>
@@ -397,11 +397,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td>{orderData.mpn}</td>
-                                        <td>{orderData.datecode || "-"}</td>
-                                        <td>{orderData.quantity}</td>
-                                        <td>{formatMoney(orderData.price)}</td>
-                                        <td>{formatMoney(orderData.totalPrice)}</td>
+                                        <td>{orderData?.mpn}</td>
+                                        <td>{orderData?.datecode || "-"}</td>
+                                        <td>{orderData?.quantity}</td>
+                                        <td>{formatMoney(orderData?.price)}</td>
+                                        <td>{formatMoney(orderData?.totalPrice)}</td>
                                       </tr>
                                     </tbody>
                                   </table>
