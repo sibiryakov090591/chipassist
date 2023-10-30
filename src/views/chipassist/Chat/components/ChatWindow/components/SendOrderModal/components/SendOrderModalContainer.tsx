@@ -16,6 +16,7 @@ import { Address } from "@src/store/profile/profileTypes";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
+import constants from "@src/constants/constants";
 
 type FormValues = {
   company_name: string;
@@ -42,6 +43,7 @@ export const SendOrderModalContainer: React.FC<{
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
+  const previewDisabled = constants.apiHost !== "api.camaster.site";
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
@@ -474,11 +476,13 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
               </Grid>
 
-              <Box display="flex" justifyContent="flex-end" mt="16px">
-                <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
-                  Preview PDF
-                </span>
-              </Box>
+              {!previewDisabled && (
+                <Box display="flex" justifyContent="flex-end" mt="16px">
+                  <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
+                    Preview PDF
+                  </span>
+                </Box>
+              )}
             </>
           )}
         </div>
