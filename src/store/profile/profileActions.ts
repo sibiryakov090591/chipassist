@@ -3,6 +3,7 @@ import { ApiClientInterface } from "@src/services/ApiClient";
 import { Dispatch } from "redux";
 import axios from "@src/utils/axios";
 import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
+import { isTestAccount } from "@src/utils/auth";
 import * as actionTypes from "./profileTypes";
 import { Partner } from "./profileTypes";
 
@@ -28,6 +29,7 @@ export const loadProfileInfoThunk = () => {
           firstName: response.first_name,
           lastName: response.last_name,
           email: response.email,
+          isTestAccount: isTestAccount([response.first_name, response.last_name, response.email]),
           canSkip: response.can_skip,
           partners: response.partners,
           avatar: response.photo,
