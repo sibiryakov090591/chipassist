@@ -498,7 +498,7 @@ const ChipAssistApp = () => {
                 }
               />
             )}
-            {isShowFormExamplesPage && <Route path={"/examples"} element={<FormExamples />} />}
+            {isShowFormExamplesPage && <Route path={"/dev-tools/forms"} element={<FormExamples />} />}
             <Route path="/*" element={<Error404 />} />
           </Routes>
         </HomePage>
