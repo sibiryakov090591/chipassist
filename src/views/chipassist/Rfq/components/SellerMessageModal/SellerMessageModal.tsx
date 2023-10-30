@@ -36,7 +36,9 @@ const SellerMessageModal = () => {
       }}
     >
       <Fade in={open}>
-        <SellerMessageContainer />
+        <div>
+          <SellerMessageContainer />
+        </div>
       </Fade>
     </Modal>
   );

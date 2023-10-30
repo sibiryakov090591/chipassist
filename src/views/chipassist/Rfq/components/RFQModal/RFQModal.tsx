@@ -3,18 +3,14 @@ import { batch } from "react-redux";
 import Modal from "@material-ui/core/Modal";
 import { Backdrop } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
-
 import { clearRfqItem, rfqModalClose } from "@src/store/rfq/rfqActions";
 import { RootState } from "@src/store";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-
 import { clsx } from "clsx";
-
 import RFQModalContainer from "@src/views/chipassist/Rfq/components/RFQModal/components/RFQModalContainer";
 
 export default function RFQModalModal() {
@@ -45,7 +41,9 @@ export default function RFQModalModal() {
       }}
     >
       <Fade in={rfqModalOpen}>
-        <RFQModalContainer />
+        <div>
+          <RFQModalContainer />
+        </div>
       </Fade>
     </Modal>
   );

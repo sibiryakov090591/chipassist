@@ -122,7 +122,7 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       backgroundColor: theme.palette.app.grey200,
     },
     "&:hover": {
-      backgroundColor: "rgba(233, 65, 96, 0.8)", // red500
+      backgroundColor: "rgb(234,82,112)", // red500
     },
     "&:active": {
       backgroundColor: theme.palette.app.red500,
@@ -139,7 +139,7 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       backgroundColor: theme.palette.app.grey200,
     },
     "&:hover": {
-      backgroundColor: "rgba(0, 129, 167, 0.8)", // blue700
+      backgroundColor: "rgb(49 152 184)", // blue700
     },
     "&:active": {
       backgroundColor: theme.palette.app.blue700,
