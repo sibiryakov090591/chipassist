@@ -21,6 +21,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         padding: "2px 10px",
         backgroundColor: theme.palette.app.blue800,
         color: "#ffffff",
+        [theme.breakpoints.down(500)]: {
+          padding: "2px 0 2px 10px",
+        },
       },
     },
     tableRow: {
