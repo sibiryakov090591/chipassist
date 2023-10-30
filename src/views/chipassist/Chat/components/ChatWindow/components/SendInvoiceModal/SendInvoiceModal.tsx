@@ -23,7 +23,6 @@ import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import { SellerProfileInfo } from "@src/store/sellerProfile/sellerProfileTypes";
 import constants from "@src/constants/constants";
-import { ID_MASTER } from "@src/constants/server_constants";
 import { useStyles } from "../SendOrderModal/styles";
 
 interface Props {
@@ -52,7 +51,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
-  const previewDisabled = constants.id !== ID_MASTER;
+  const previewDisabled = constants.apiHost !== "api.camaster.site";
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);

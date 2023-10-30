@@ -56,9 +56,12 @@ import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
+import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
+
+const isShowFormExamplesPage = localStorage.getItem("show_form_example_page");
 
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
@@ -495,6 +498,7 @@ const ChipAssistApp = () => {
                 }
               />
             )}
+            {isShowFormExamplesPage && <Route path={"/examples"} element={<FormExamples />} />}
             <Route path="/*" element={<Error404 />} />
           </Routes>
         </HomePage>

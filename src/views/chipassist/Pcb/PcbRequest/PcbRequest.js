@@ -113,7 +113,8 @@ const defaultRegisterState = () => ({
   errors: {},
 });
 
-function PcbRequest() {
+function PcbRequest(props) {
+  const { isExample, isExampleDetails } = props;
   // const [colorInfo, setColorInfo] = useState({});
   const [savedFormData, setSavedFormData] = useState({});
   const [status, setStatus] = useState();
@@ -733,99 +734,101 @@ function PcbRequest() {
     const formErrors = validate(formState, calculatorSchema);
     if (formErrors) return setErrors(formErrors);
 
-    if (!isAuthenticated && !showRegisterForm) {
-      return setShowRegisterForm(true);
-    }
+    if (!isExample && !isExampleDetails) {
+      if (!isAuthenticated && !showRegisterForm) {
+        return setShowRegisterForm(true);
+      }
 
-    let data = Object.keys(formState).reduce((acc, curr) => {
-      if (formState[curr] !== "null") return { ...acc, [curr]: formState[curr] };
-      return acc;
-    }, {});
-    data = { ...data, status };
+      let data = Object.keys(formState).reduce((acc, curr) => {
+        if (formState[curr] !== "null") return { ...acc, [curr]: formState[curr] };
+        return acc;
+      }, {});
+      data = { ...data, status };
 
-    const formData = new FormData();
-    formData.append("part_number", "part_number");
-    if (detailsWillBeSent) {
-      Object.keys(data).map((name) => {
-        if (typeof data[name] !== "boolean" && !data[name]) return false;
-        if (name === "x_out") {
-          formData.append("xout", data[name] === "Accept" ? 1 : 0);
+      const formData = new FormData();
+      formData.append("part_number", "part_number");
+      if (detailsWillBeSent) {
+        Object.keys(data).map((name) => {
+          if (typeof data[name] !== "boolean" && !data[name]) return false;
+          if (name === "x_out") {
+            formData.append("xout", data[name] === "Accept" ? 1 : 0);
+            return true;
+          }
+          // if (name === "seller") {
+          //   data[name].map((val) => formData.append("seller", val));
+          //   return true;
+          // }
+          if (name === "file") {
+            data[name].forEach((val) => formData.append(`file[]`, val));
+            return true;
+          }
+          formData.append(name, data[name]);
           return true;
-        }
-        // if (name === "seller") {
-        //   data[name].map((val) => formData.append("seller", val));
-        //   return true;
-        // }
-        if (name === "file") {
-          data[name].forEach((val) => formData.append(`file[]`, val));
-          return true;
-        }
-        formData.append(name, data[name]);
-        return true;
-      });
-    } else {
-      formData.append("unit_x", formState.unit_x);
-      formData.append("unit_y", formState.unit_y);
-      formData.append("quantity", formState.quantity);
-      if (formState.comment) formData.append("comment", formState.comment);
-      if (formState.file.length) data.file.forEach((val) => formData.append(`file[]`, val));
-    }
-
-    setSavedFormData(formData);
-    dispatch(progressModalSetPartNumber("Title", "pcb"));
-    dispatch(changeMisc("pcb", data, registerItem.values.email));
-
-    if (isAuthenticated) {
-      dispatch(progressModalOpen());
-      dispatch(savePcbModalItem(formData, pcbModalUpdateId)).then(() => {
-        batch(() => {
-          dispatch(progressModalSuccess());
-          dispatch(clearPcbModalItem());
-          setFormState(initialState);
         });
-      });
-    } else {
-      saveRequestToLocalStorage(data, "Title", "pcb");
-      dispatch(
-        changeMisc(
-          "not_activated_request",
-          { ...data, requestType: "pcb", part_number: "PCB" },
-          registerItem.values.email,
-        ),
-      );
+      } else {
+        formData.append("unit_x", formState.unit_x);
+        formData.append("unit_y", formState.unit_y);
+        formData.append("quantity", formState.quantity);
+        if (formState.comment) formData.append("comment", formState.comment);
+        if (formState.file.length) data.file.forEach((val) => formData.append(`file[]`, val));
+      }
 
-      setIsLoading(true);
-      let registerData = { ...defaultRegisterData };
-      registerData.email = registerItem.values.email;
-      registerData.first_name = registerItem.values.firstName;
-      registerData.last_name = registerItem.values.lastName;
-      registerData.company_name = registerItem.values.company;
-      registerData.policy_confirm = registerItem.values.policy_confirm;
-      registerData.receive_updates_confirm = registerItem.values.receive_updates_confirm;
-      registerData.country =
-        countries?.find((c) => c.url === registerItem.values.country)?.iso_3166_1_a3 ||
-        (constants?.id !== ID_ICSEARCH &&
-          countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.iso_3166_1_a3) ||
-        defaultCountry.iso_3166_1_a3;
-      registerData = Object.fromEntries(
-        Object.entries(registerData)
-          .map((i) => {
-            if (typeof i[1] === "boolean" || i[1]) return i;
-            return false;
-          })
-          .filter((i) => !!i),
-      );
-      dispatch(authSignup(registerData, { subj: "pcb" }))
-        .then(() => {
+      setSavedFormData(formData);
+      dispatch(progressModalSetPartNumber("Title", "pcb"));
+      dispatch(changeMisc("pcb", data, registerItem.values.email));
+
+      if (isAuthenticated) {
+        dispatch(progressModalOpen());
+        dispatch(savePcbModalItem(formData, pcbModalUpdateId)).then(() => {
           batch(() => {
-            localStorage.setItem("registered_email", registerItem.values.email);
+            dispatch(progressModalSuccess());
             dispatch(clearPcbModalItem());
             setFormState(initialState);
-            setRegisterItem(defaultRegisterState());
-            dispatch(progressModalOpen());
           });
-        })
-        .finally(() => setIsLoading(false));
+        });
+      } else {
+        saveRequestToLocalStorage(data, "Title", "pcb");
+        dispatch(
+          changeMisc(
+            "not_activated_request",
+            { ...data, requestType: "pcb", part_number: "PCB" },
+            registerItem.values.email,
+          ),
+        );
+
+        setIsLoading(true);
+        let registerData = { ...defaultRegisterData };
+        registerData.email = registerItem.values.email;
+        registerData.first_name = registerItem.values.firstName;
+        registerData.last_name = registerItem.values.lastName;
+        registerData.company_name = registerItem.values.company;
+        registerData.policy_confirm = registerItem.values.policy_confirm;
+        registerData.receive_updates_confirm = registerItem.values.receive_updates_confirm;
+        registerData.country =
+          countries?.find((c) => c.url === registerItem.values.country)?.iso_3166_1_a3 ||
+          (constants?.id !== ID_ICSEARCH &&
+            countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.iso_3166_1_a3) ||
+          defaultCountry.iso_3166_1_a3;
+        registerData = Object.fromEntries(
+          Object.entries(registerData)
+            .map((i) => {
+              if (typeof i[1] === "boolean" || i[1]) return i;
+              return false;
+            })
+            .filter((i) => !!i),
+        );
+        dispatch(authSignup(registerData, { subj: "pcb" }))
+          .then(() => {
+            batch(() => {
+              localStorage.setItem("registered_email", registerItem.values.email);
+              dispatch(clearPcbModalItem());
+              setFormState(initialState);
+              setRegisterItem(defaultRegisterState());
+              dispatch(progressModalOpen());
+            });
+          })
+          .finally(() => setIsLoading(false));
+      }
     }
     return false;
   };
@@ -875,6 +878,34 @@ function PcbRequest() {
     localStorage.setItem("pcb_calculator_data", JSON.stringify(data));
   };
 
+  if (isExampleDetails === true) {
+    return (
+      <div>
+        <PcbCalculator
+          handleChange={handleChange}
+          constants={calcVariables}
+          formState={formState}
+          setFormState={setFormState}
+          errorProps={errorProps}
+          isExample={true}
+        />
+        <div className={classes.applyButton} style={{ position: "relative" }}>
+          <Button variant="contained" className={appTheme.buttonPrimary} onClick={onCloseDetails} size="large">
+            {t("common.close")}
+          </Button>
+          <Button
+            style={{ minWidth: 160 }}
+            variant="contained"
+            className={appTheme.buttonCreate}
+            onClick={onApplyDetails}
+            size="large"
+          >
+            {t("pcb_new.apply_btn")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`${classes.root} pcb-modal-form`}>
       <form id="pcb_form" autoComplete="off" onSubmit={handleSubmit}>

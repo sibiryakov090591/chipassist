@@ -18,16 +18,15 @@ import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import useDebounce from "@src/hooks/useDebounce";
 import { saveNewDetails, turnEditMode, uploadNewAvatar } from "@src/store/sellerProfile/sellerProfileAction";
-// import formSchema from "@src/utils/formSchema";
-// import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-// import validate from "validate.js";
-// import _ from "lodash";
 import useAppTheme from "@src/theme/useAppTheme";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import formSchema from "@src/utils/formSchema";
+import validate from "validate.js";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -61,6 +60,7 @@ interface ProfileForm {
   phone: string;
   website: string;
   country: string;
+  city: string;
   postcode: string;
   address: string;
   description: string;
@@ -73,6 +73,7 @@ interface ProfileFormTouched {
   phone?: string[];
   website?: string[];
   country?: string[];
+  city?: string[];
   postcode?: string[];
   address?: string[];
   description?: string[];
@@ -85,6 +86,7 @@ interface ProfileFormErrors {
   phone?: string[];
   website?: string[];
   country?: string[];
+  city?: string[];
   postcode?: string[];
   address?: string[];
   description?: string[];
@@ -97,7 +99,7 @@ interface FormState {
   errors: ProfileFormErrors;
 }
 
-const GeneralSettings = () => {
+const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   // const { t } = useI18n("profile");
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -122,6 +124,7 @@ const GeneralSettings = () => {
       website: partner.website || "",
       country: checkout?.countries?.find((i) => i.iso_3166_1_a3 === partner.country)?.iso_3166_1_a3,
       // checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url,
+      city: partner.city || "",
       postcode: partner.postcode || "",
       address: partner.address || "",
       description: partner.description || "",
@@ -135,16 +138,13 @@ const GeneralSettings = () => {
 
   const debouncedFormState = useDebounce(formState, 300);
 
-  // const schema = React.useMemo(() => {
-  //   return {
-  //     company_name: {
-  //       presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
-  //       ...formSchema.companyName,
-  //     },
-  //     postcode: formSchema.postcode,
-  //     address: formSchema.address,
-  //   };
-  // }, []);
+  const schema = React.useMemo(() => {
+    return {
+      company_name: {
+        ...formSchema.companyName,
+      },
+    };
+  }, []);
 
   // useEffect(() => {
   //   dispatch(loadProfileInfoThunk());
@@ -158,21 +158,22 @@ const GeneralSettings = () => {
   }, [profile.partnerProfile]);
 
   useEffect(() => {
-    // const formErrors = validate(formState.values, schema);
-    // setFormState((prevState) => ({
-    //   ...prevState,
-    //   errors: formErrors || {},
-    // }));
-
-    dispatch(saveNewDetails(debouncedFormState.values));
+    const formErrors = validate(formState.values, schema);
+    setFormState((prevState) => ({
+      ...prevState,
+      errors: formErrors || {},
+    }));
+    if (!formErrors) {
+      dispatch(saveNewDetails(debouncedFormState.values));
+    }
   }, [debouncedFormState.values]);
 
-  // const errorProps = (name: keyof ProfileForm) => {
-  //   if (formState.touched[name] && formState.errors[name]) {
-  //     return { error: true, helperText: formState.errors[name][0] };
-  //   }
-  //   return false;
-  // };
+  const errorProps = (name: keyof ProfileForm) => {
+    if (formState.touched[name] && formState.errors[name]) {
+      return { error: true, helperText: formState.errors[name][0] };
+    }
+    return false;
+  };
 
   const onBlurHandler = (name: string) => () => {
     return setFormState((prevState) => ({
@@ -207,17 +208,21 @@ const GeneralSettings = () => {
   };
 
   const onSubmit = () => {
-    if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
-    if (profile.selectedPartner) {
-      dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+    if (!isExample) {
+      if (_.isEmpty(formState.errors)) {
+        if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
+        if (profile.selectedPartner) {
+          dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
+        }
+        dispatch(turnEditMode(false));
+        dispatch(
+          showBottomLeftMessageAlertAction({
+            text: "Company details were updated successfully!",
+            severity: "success",
+          }),
+        );
+      }
     }
-    dispatch(turnEditMode(false));
-    dispatch(
-      showBottomLeftMessageAlertAction({
-        text: "Company details were updated successfully!",
-        severity: "success",
-      }),
-    );
     return true;
   };
 
@@ -252,7 +257,7 @@ const GeneralSettings = () => {
               onChange={onChangeHandler}
               size={isXsDown ? "small" : "medium"}
               onBlur={onBlurHandler("company_name")}
-              /* {...errorProps("company_name")} */
+              {...errorProps("company_name")}
             />
           </Grid>
           <Grid item md={6} xs={12} style={isXsDown ? { paddingBottom: 0 } : null}>
@@ -323,6 +328,36 @@ const GeneralSettings = () => {
               ))}
             </TextField>
           </Grid>
+          <Grid item md={6} xs={12} style={isXsDown ? { paddingTop: 0 } : null}>
+            <TextField
+              label={"City"}
+              name={"city"}
+              value={formState.values.city}
+              variant={"outlined"}
+              fullWidth
+              size={isXsDown ? "small" : "medium"}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={onChangeHandler}
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <TextField
+              label={"Address"}
+              name={"address"}
+              value={formState.values.address}
+              variant={"outlined"}
+              fullWidth
+              size={isXsDown ? "small" : "medium"}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler("address")}
+              /* {...errorProps("address")} */
+            />
+          </Grid>
           <Grid item md={6} xs={12}>
             <TextField
               label={"Post/Zip-code"}
@@ -351,22 +386,6 @@ const GeneralSettings = () => {
                 shrink: true,
               }}
               onChange={onChangeHandler}
-            />
-          </Grid>
-          <Grid item md={12} xs={12}>
-            <TextField
-              label={"Address"}
-              name={"address"}
-              value={formState.values.address}
-              variant={"outlined"}
-              fullWidth
-              size={isXsDown ? "small" : "medium"}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler("address")}
-              /* {...errorProps("address")} */
             />
           </Grid>
 
