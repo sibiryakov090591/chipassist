@@ -17,6 +17,8 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import { Address } from "@src/store/profile/profileTypes";
+import constants from "@src/constants/constants";
+import { ID_MASTER } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -44,6 +46,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
+  const previewDisabled = constants.id !== ID_MASTER;
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
@@ -488,11 +491,13 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
                     </Grid>
                   </Grid>
 
-                  <Box display="flex" justifyContent="flex-end" mt="16px">
-                    <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
-                      Preview PDF
-                    </span>
-                  </Box>
+                  {!previewDisabled && (
+                    <Box display="flex" justifyContent="flex-end" mt="16px">
+                      <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
+                        Preview PDF
+                      </span>
+                    </Box>
+                  )}
                 </>
               )}
             </div>
