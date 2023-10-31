@@ -81,7 +81,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
   const quantity = purchaseOrder?.quantity || purchaseOrder?.requested_qty || rfq?.quantity || 0;
   const unitPrice = !!stock && !!quantity && getPrice(+quantity, stock as any);
   const outPrice = !!unitPrice && quantity * unitPrice;
-  const totalPrice = !!outPrice && outPrice + (shippingFee ? Number(shippingFee) : 0);
+  const totalPrice = !!outPrice && outPrice + Number(shippingFee || 0);
 
   const shippingTypes = [
     "EXW - Ex-Works",
@@ -116,9 +116,10 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
             checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url,
       );
-      setValue("city", "");
+      setValue("city", billingAddress?.city || "");
       setValue("postcode", billingAddress?.postcode || "");
       setValue("address", billingAddress?.address || "");
+      setValue("shipping_fee", 0);
       setValue("shipping_notes", shippingTypes[0]);
     }
   }, [open, billingAddress]);
@@ -360,19 +361,19 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                       <Controller
                         name="city"
                         control={control}
-                        // rules={{
-                        //   required: {
-                        //     value: true,
-                        //     message: "City is required",
-                        //   },
-                        // }}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: "City is required",
+                          },
+                        }}
                         render={({ field }) => (
                           <TextField
                             {...field}
                             InputLabelProps={{
                               shrink: true,
                             }}
-                            label="City"
+                            label="City *"
                             error={!!errors.city}
                             helperText={errors.city?.message}
                             variant="outlined"
@@ -548,6 +549,12 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                         <Controller
                           name="shipping_fee"
                           control={control}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "Shipping cost is required",
+                            },
+                          }}
                           render={({ field }) => (
                             <NumberInput
                               {...field}
