@@ -114,6 +114,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: 42,
       },
     },
+    restFiltersContainer: {
+      alignSelf: "flex-end",
+      flexDirection: "column",
+    },
   }),
 );
 
