@@ -1,5 +1,9 @@
 https://chipassist.com
+https://chipassist.com/blog
+https://chipassist.com/about_company
+https://chipassist.com/rfq-list-quotes
 https://chipassist.com/parts
 https://chipassist.com/bom/create-file
 https://chipassist.com/pcb
 https://chipassist.com/sell-excess-inventory
+https://requests.chipassist.com
