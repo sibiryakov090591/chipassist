@@ -320,6 +320,39 @@ export const sendSellerMessage = (item: { [key: string]: any }, token: string = 
   });
 };
 
+export const sendQualityCheck = (item: { [key: string]: any }, token: string = null) => (dispatch: any) => {
+  let message = "Quality check; ";
+  Object.entries(item).forEach((entr) => {
+    if (typeof entr[1] !== "boolean" && !entr[1]) return;
+    message += `${entr[0]}: ${typeof entr[1] === "string" ? entr[1].trim() : entr[1]};`;
+  });
+  const formData = new FormData();
+  formData.append("message", message);
+  formData.append("subject", "Quality check");
+  formData.append("level", "info");
+
+  return dispatch({
+    types: actionTypes.QUALITY_CHECK_ARRAY,
+    promise: (client: ApiClientInterface) =>
+      client
+        .post("/register-user-feedback/", {
+          data: formData,
+          config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
+        })
+        .then((res) => {
+          dispatch(progressModalOpen());
+          dispatch(progressModalSuccess());
+          return res.data;
+        })
+        .catch((e) => {
+          dispatch(progressModalOpen());
+          dispatch(progressModalError(e.response?.data?.errors ? e.response.data.errors[0].error : ""));
+          console.log("***SEND_QUALITY_CHECK_ERROR", e);
+          throw e;
+        }),
+  });
+};
+
 export const clearRfqItem = (): RfqActionTypes => {
   return {
     type: actionTypes.CLEAR_ITEM,
@@ -352,6 +385,25 @@ export const setSellerMessageData = (
   return {
     type: actionTypes.SELLER_MESSAGE_MODAL_OPEN,
     payload: { open, partNumber, sellerId, sellerName, stockrecordId },
+  };
+};
+
+export const setQualityCheckData = (
+  open: boolean,
+  partNumber: string,
+  sellerId: number,
+  sellerName: string,
+  stockrecordId: number,
+): RfqActionTypes => {
+  return {
+    type: actionTypes.QUALITY_CHECK_MODAL_OPEN,
+    payload: { open, partNumber, sellerId, sellerName, stockrecordId },
+  };
+};
+
+export const qualityCheckModalClose = (): RfqActionTypes => {
+  return {
+    type: actionTypes.QUALITY_CHECK_MODAL_CLOSE,
   };
 };
 

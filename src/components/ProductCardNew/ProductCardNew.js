@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { Paper, Hidden, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
 import { getDynamicMoq, getImage, getPrice, isProductAvailable } from "@src/utils/product";
-import { rfqModalOpen, setSellerMessageData } from "@src/store/rfq/rfqActions";
+import { rfqModalOpen, setQualityCheckData, setSellerMessageData } from "@src/store/rfq/rfqActions";
 import useCurrency from "@src/hooks/useCurrency";
 import { splitForHighlighter } from "@src/utils/search";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -192,6 +192,13 @@ const ProductCardNew = (props) => {
     },
     [product],
   );
+  const qualityCheckOpenModal = React.useCallback(
+    (sellerId, sellerName, stockrecordId) => (e) => {
+      e.stopPropagation();
+      return dispatch(setQualityCheckData(true, product.upc, sellerId, sellerName, stockrecordId));
+    },
+    [product],
+  );
 
   useEffect(() => {
     const requestedData = localStorage.getItem(product.id) && JSON.parse(localStorage.getItem(product.id));
@@ -331,6 +338,7 @@ const ProductCardNew = (props) => {
               sortedStockrecords={availableStockrecords}
               rfqOpenModal={sendRfqOpenModal}
               sellerMessageOpenModal={sellerMessageOpenModal}
+              qualityCheckOpenModal={qualityCheckOpenModal}
             />
           )}
           {initialMobileCard && (

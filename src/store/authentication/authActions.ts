@@ -6,7 +6,7 @@ import { ApiClientInterface } from "@src/services/ApiClient";
 import { RootState } from "@src/store";
 import { Dispatch } from "redux";
 import checkIsAuthenticated, { getAuthToken, removeAuthToken, setAuthToken } from "@src/utils/auth";
-import { saveRfqItem, saveRfqListItems, sendSellerMessage } from "@src/store/rfq/rfqActions";
+import { saveRfqItem, saveRfqListItems, sendQualityCheck, sendSellerMessage } from "@src/store/rfq/rfqActions";
 import { updatePrevEmail } from "@src/store/profile/profileActions";
 // import { CurrencyPrice } from "@src/store/common/commonTypes";
 import {
@@ -341,6 +341,13 @@ export const sendQuickRequestUnAuth = (item: any, token: string, email: string) 
       case "sellerMessage": {
         dispatch(progressModalOpen());
         return dispatch(sendSellerMessage(item, token)).then(() => {
+          dispatch(deleteMiscAction("not_activated_request", email));
+          localStorage.removeItem("progress_modal_data");
+        });
+      }
+      case "qualityCheck": {
+        dispatch(progressModalOpen());
+        return dispatch(sendQualityCheck(item, token)).then(() => {
           dispatch(deleteMiscAction("not_activated_request", email));
           localStorage.removeItem("progress_modal_data");
         });

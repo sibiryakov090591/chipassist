@@ -93,7 +93,7 @@ const ProgressModal: React.FC = () => {
         if (codeRes?.token) {
           dispatch(loadMiscAction("not_activated_request", email)).then((res: any) => {
             const data = res?.data?.data || res?.data;
-            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list"].includes(data.requestType)) {
+            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list", "qualityCheck"].includes(data.requestType)) {
               setSending(true);
               dispatch(sendQuickRequestUnAuth(res.data, codeRes.token, email)).then(() => {
                 if (!codeRes?.code) dispatch(login({ email }, codeRes.token, navigate, null));
@@ -201,6 +201,12 @@ const ProgressModal: React.FC = () => {
                 </>
               )}
               {requestType === "sellerMessage" && (
+                <>
+                  <h1 className={classes.title}>{t("progress.message_title")}</h1>
+                  <h2 className={classes.subTitle}>{t("progress.message_text")}</h2>
+                </>
+              )}
+              {requestType === "qualityCheck" && (
                 <>
                   <h1 className={classes.title}>{t("progress.message_title")}</h1>
                   <h2 className={classes.subTitle}>{t("progress.message_text")}</h2>

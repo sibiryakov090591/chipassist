@@ -57,6 +57,7 @@ import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
 import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
+import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -506,6 +507,7 @@ const ChipAssistApp = () => {
         {window.location.pathname !== "/messages" && <ScrollUpButton />}
         <RFQModal />
         <SellerMessageModal />
+        <QualityCheckModal />
         <ProgressModal />
       </ProvidedErrorBoundary>
 
