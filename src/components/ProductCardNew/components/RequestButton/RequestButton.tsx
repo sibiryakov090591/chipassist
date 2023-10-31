@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import clsx from "clsx";
 import CustomPopper from "@src/components/CustomPopper/CustomPopper";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -18,10 +18,8 @@ interface Props {
 const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const sendRfqOpenModal = () => {
     dispatch(DisableProductRequestHint());
