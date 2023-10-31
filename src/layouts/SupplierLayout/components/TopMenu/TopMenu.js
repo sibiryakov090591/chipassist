@@ -13,6 +13,9 @@ import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import SettingsIcon from "@material-ui/icons/Settings";
 import clsx from "clsx";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { triggerReloadPage } from "@src/store/chat/chatActions";
 import { useStyles } from "./topMenuStyles";
 
 const TopMenu = ({ isMobile }) => {
@@ -22,6 +25,12 @@ const TopMenu = ({ isMobile }) => {
 
   const itemClasses = clsx(classes.topMenuItem, { [classes.topMenuItemMobile]: isMobile });
 
+  const theme = useTheme();
+  const isXsChat = useMediaQuery(theme.breakpoints.down(880));
+
+  const reloadChatPage = () => {
+    if (isXsChat) dispatch(triggerReloadPage());
+  };
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -49,7 +58,7 @@ const TopMenu = ({ isMobile }) => {
         </div>
       )}
       <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/messages`}>
+        <NavLink className={classes.topMenuItemLink} to={`/messages`} onClick={reloadChatPage}>
           {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
           <span style={{ position: "relative" }}>
             Messages
