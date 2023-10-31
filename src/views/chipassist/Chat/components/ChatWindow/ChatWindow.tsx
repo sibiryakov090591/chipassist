@@ -30,13 +30,16 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 
   const { selectedChat } = useAppSelector((state) => state.chat);
-  const { profileInfo } = useAppSelector((state) => state.profile);
+  const { profileInfo, selectedPartner } = useAppSelector((state) => state.profile);
 
   useEffect(() => {
     if (!selectedChat && profileInfo) {
       const lastChatItem =
         localStorage.getItem("last_selected_chat") && JSON.parse(localStorage.getItem("last_selected_chat"));
-      if (lastChatItem?.user === profileInfo.id) {
+      if (
+        lastChatItem?.user === profileInfo.id &&
+        (isSupplierResponse && selectedPartner ? lastChatItem?.seller === selectedPartner.id : true)
+      ) {
         dispatch(getChat(lastChatItem.chat));
       }
     }

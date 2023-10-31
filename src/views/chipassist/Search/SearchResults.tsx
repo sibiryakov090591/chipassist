@@ -348,15 +348,13 @@ const SearchResults = () => {
                     onFixedToggle={fixedStickyContainerHeight}
                   >
                     <div className={commonClasses.filtersRow}>
-                      <FiltersContainer>
+                      <FiltersContainer filtersCountToCollapse={4}>
                         {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
                         <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
                         {!constants.isNewSearchPage && (
                           <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
                         )}
-                        {!isSmDown && (
-                          <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                        )}
+                        <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
                         <FilterCurrency />
                         {!isSmDown && (
                           <FilterPageSizeChoiceBar

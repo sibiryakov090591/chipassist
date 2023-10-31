@@ -341,7 +341,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                       >
                         <div className={classes.messageInfo}>
                           <span className={classes.messageFrom}>
-                            {item.sender === "You" ? "You" : selectedChat.partner_name}
+                            {item.sender === "You" ? "You" : selectedChat?.partner_name}
                           </span>
                           <span className={classes.messageDate}>
                             {time}
@@ -499,7 +499,9 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <td colSpan={5}>
                                           <Box display="flex" justifyContent="space-between" alignItems="center">
                                             <div>Shipping: {invoiceData?.shipping_notes}</div>
-                                            <div>{formatMoney(invoiceData?.shipping_fee)}</div>
+                                            <div>
+                                              {invoiceData?.shipping_fee ? formatMoney(invoiceData.shipping_fee) : "-"}
+                                            </div>
                                           </Box>
                                         </td>
                                       </tr>
@@ -512,7 +514,8 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                             <div>
                                               <strong>
                                                 {formatMoney(
-                                                  Number(invoiceData?.totalPrice) + Number(invoiceData?.shipping_fee),
+                                                  Number(invoiceData?.totalPrice || 0) +
+                                                    Number(invoiceData?.shipping_fee || 0),
                                                 )}
                                               </strong>
                                             </div>
