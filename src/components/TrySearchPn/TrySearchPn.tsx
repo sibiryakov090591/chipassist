@@ -32,20 +32,27 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
 
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
-
+  const [partNumbersArray, setPartNumbersArray] = useState(partNumbers);
   const [randomPartNumber, setRandomPartNumber] = useState("MAX32");
 
   useEffect(() => {
-    const randVal = getRandomInt(partNumbers.length);
-    const partNumber = partNumbers[randVal];
+    const randVal = getRandomInt(partNumbersArray.length);
+    const partNumber = partNumbersArray[randVal];
     setRandomPartNumber(partNumber);
-  }, [partNumbers]);
+  }, [partNumbers, partNumbersArray]);
+
+  useEffect(() => {
+    if (partNumbersArray && partNumbersArray.length < 2) {
+      setPartNumbersArray(partNumbers);
+    }
+  }, [partNumbersArray]);
 
   const onTryHandler = () => {
     const val = randomPartNumber;
     dispatch(saveSearchQueryAction(val));
     dispatch(setQueryValue(val));
     onTryClickAction(navigate, val, 1, pageSize, dispatch);
+    setPartNumbersArray((prevState) => prevState.filter((el) => el !== randomPartNumber));
   };
 
   return (
