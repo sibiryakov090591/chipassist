@@ -520,6 +520,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       maxWidth: 350,
       fontSize: 14,
     },
+    geoPin: {
+      fontSize: "1rem",
+    },
   }),
 );
 
