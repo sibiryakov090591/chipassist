@@ -34,7 +34,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
         className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
         onClick={sendRfqOpenModal}
       >
-        Get more quotes
+        {requestedQty ? "Requested" : "Get more quotes"}
       </Button>
       <CustomPopper productId={product.id} />
 
