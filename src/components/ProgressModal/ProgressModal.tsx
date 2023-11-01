@@ -100,6 +100,7 @@ const ProgressModal: React.FC = () => {
               });
             } else if (codeRes?.code) {
               // for quick Order
+              // Quick order id disabled now
               dispatch(progressModalClose());
               navigate(`/password/request/${codeRes.code}`, {
                 state: { background: location.state?.background || location },
@@ -208,8 +209,8 @@ const ProgressModal: React.FC = () => {
               )}
               {requestType === "qualityCheck" && (
                 <>
-                  <h1 className={classes.title}>{t("progress.message_title")}</h1>
-                  <h2 className={classes.subTitle}>{t("progress.message_text")}</h2>
+                  <h1 className={classes.title}>Your request needs to be confirmed</h1>
+                  <h2 className={classes.subTitle}>Please enter the verification code to confirm your request</h2>
                 </>
               )}
 
@@ -289,6 +290,14 @@ const ProgressModal: React.FC = () => {
                     <>
                       <h2 className={classes.subTitle}>{t("success.pcb_text_1")}</h2>
                       <p className={classes.p}>{t("success.pcb_text_2")}</p>
+                    </>
+                  )}
+                  {requestType === "qualityCheck" && (
+                    <>
+                      <h2 className={classes.subTitle}>
+                        Your request for quality check about <strong>{partNumber}</strong> has been sent.
+                      </h2>
+                      <p className={classes.p}>{"You'll receive updates on your request by email."}</p>
                     </>
                   )}
                   {requestType === "order" && (

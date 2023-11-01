@@ -321,10 +321,10 @@ export const sendSellerMessage = (item: { [key: string]: any }, token: string = 
 };
 
 export const sendQualityCheck = (item: { [key: string]: any }, token: string = null) => (dispatch: any) => {
-  let message = "Quality check; ";
+  let message = "Quality check;";
   Object.entries(item).forEach((entr) => {
     if (typeof entr[1] !== "boolean" && !entr[1]) return;
-    message += `${entr[0]}: ${typeof entr[1] === "string" ? entr[1].trim() : entr[1]};`;
+    message += ` ${entr[0]}: ${typeof entr[1] === "string" ? entr[1].trim() : entr[1]};`;
   });
   const formData = new FormData();
   formData.append("message", message);

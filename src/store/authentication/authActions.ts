@@ -418,6 +418,13 @@ export const sendQuickRequest = () => (dispatch: any) => {
         });
         break;
       }
+      case "qualityCheck": {
+        dispatch(progressModalOpen());
+        dispatch(sendQualityCheck(item.data)).then(() => {
+          localStorage.removeItem("progress_modal_data");
+        });
+        break;
+      }
       case "pcb": {
         dispatch(progressModalOpen());
         const { data } = item;
