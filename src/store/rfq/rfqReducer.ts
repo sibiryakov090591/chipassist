@@ -24,6 +24,15 @@ const initialState: RfqState = {
     sellerName: null,
     isSending: false,
   },
+  qualityCheckModal: {
+    open: false,
+    isNeedModalOpenAgain: false,
+    partNumber: "",
+    stockrecordId: null,
+    sellerId: null,
+    sellerName: null,
+    isSending: false,
+  },
   rfqItem: {
     userId: "",
     partNumber: "",
@@ -131,6 +140,27 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
       return { ...state, sellerMessageModal: { ...state.sellerMessageModal, isSending: false } };
     case actionTypes.SEND_SELLER_MESSAGE_F:
       return { ...state, sellerMessageModal: { ...state.sellerMessageModal, isSending: false } };
+    case actionTypes.QUALITY_CHECK_MODAL_OPEN:
+      return {
+        ...state,
+        qualityCheckModal: {
+          ...state.qualityCheckModal,
+          isNeedModalOpenAgain: false,
+          open: action.payload.open,
+          partNumber: action.payload.partNumber,
+          sellerId: action.payload.sellerId,
+          sellerName: action.payload.sellerName,
+          stockrecordId: action.payload.stockrecordId,
+        },
+      };
+    case actionTypes.QUALITY_CHECK_MODAL_CLOSE:
+      return updateObject(state, { qualityCheckModal: { ...state.qualityCheckModal, open: false } });
+    case actionTypes.QUALITY_CHECK_R:
+      return { ...state, qualityCheckModal: { ...state.qualityCheckModal, isSending: true } };
+    case actionTypes.QUALITY_CHECK_S:
+      return { ...state, qualityCheckModal: { ...state.qualityCheckModal, isSending: false } };
+    case actionTypes.QUALITY_CHECK_F:
+      return { ...state, qualityCheckModal: { ...state.qualityCheckModal, isSending: false } };
     case actionTypes.RFQ_RESPONSE_R:
       return { ...state, rfqResponse: { loading: true, error: false } };
     case actionTypes.RFQ_RESPONSE_S: {

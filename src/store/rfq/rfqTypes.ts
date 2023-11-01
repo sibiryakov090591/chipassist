@@ -36,6 +36,13 @@ export const SEND_SELLER_MESSAGE_S = "@rfq/SEND_SELLER_MESSAGE_S";
 export const SEND_SELLER_MESSAGE_F = "@rfq/SEND_SELLER_MESSAGE_F";
 export const SEND_SELLER_MESSAGE_ARRAY = [SEND_SELLER_MESSAGE_R, SEND_SELLER_MESSAGE_S, SEND_SELLER_MESSAGE_F];
 
+export const QUALITY_CHECK_MODAL_OPEN = "@rfq/QUALITY_CHECK_MODAL_OPEN";
+export const QUALITY_CHECK_MODAL_CLOSE = "@rfq/QUALITY_CHECK_MODAL_CLOSE";
+export const QUALITY_CHECK_R = "@rfq/QUALITY_CHECK_R";
+export const QUALITY_CHECK_S = "@rfq/QUALITY_CHECK_S";
+export const QUALITY_CHECK_F = "@rfq/QUALITY_CHECK_F";
+export const QUALITY_CHECK_ARRAY = [QUALITY_CHECK_R, QUALITY_CHECK_S, QUALITY_CHECK_F];
+
 export const SET_QUERY_UPC = "SET_QUERY_UPC";
 export const MODAL_CLOSE = "MODAL_CLOSE";
 export const CLEAR_RFQ_RESPONSE = "CLEAR_RFQ_RESPONSE";
@@ -145,21 +152,24 @@ export interface RfqState {
   rfqsLoading: boolean;
   rfqSaving: boolean;
   rfqModalOpen: boolean;
-  sellerMessageModal: {
-    open: boolean;
-    isNeedModalOpenAgain: boolean;
-    partNumber: string;
-    stockrecordId: number;
-    sellerId: number;
-    sellerName: string;
-    isSending: boolean;
-  };
+  sellerMessageModal: SellerMessageModal;
+  qualityCheckModal: SellerMessageModal;
   isNeedRfqModalOpenAgain: boolean;
   rfqItem: NewRfqItem;
   rfqResponseData: { [key: string]: ResponseItem };
   rfqResponse: RfqLoadingState;
   rfqUpdate: RfqLoadingState;
   rfqErrors: any;
+}
+
+interface SellerMessageModal {
+  open: boolean;
+  isNeedModalOpenAgain: boolean;
+  partNumber: string;
+  stockrecordId: number;
+  sellerId: number;
+  sellerName: string;
+  isSending: boolean;
 }
 
 export interface RfqResponseBackend {
@@ -264,6 +274,35 @@ interface SetSellerMessageData {
   };
 }
 
+interface SetQualityCheckData {
+  type: typeof QUALITY_CHECK_MODAL_OPEN;
+  payload: {
+    open: boolean;
+    partNumber: string;
+    sellerId: number;
+    sellerName: string;
+    stockrecordId: number;
+  };
+}
+
+interface QualityCheckModalCloseAction {
+  type: typeof QUALITY_CHECK_MODAL_CLOSE;
+}
+
+interface QualityCheckRequestAction {
+  type: typeof QUALITY_CHECK_R;
+}
+
+interface QualityCheckSuccessAction {
+  type: typeof QUALITY_CHECK_S;
+  response: any;
+}
+
+interface QualityCheckFailureAction {
+  type: typeof QUALITY_CHECK_F;
+  error: any;
+}
+
 interface SellerMessageModalCloseAction {
   type: typeof SELLER_MESSAGE_MODAL_CLOSE;
 }
@@ -329,6 +368,11 @@ interface RemoveRfqResponse {
 }
 
 export type RfqActionTypes =
+  | QualityCheckFailureAction
+  | QualityCheckSuccessAction
+  | QualityCheckRequestAction
+  | QualityCheckModalCloseAction
+  | SetQualityCheckData
   | SetSellerMessageData
   | SellerMessageModalCloseAction
   | SellerMessageRequestAction
