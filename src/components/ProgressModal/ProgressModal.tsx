@@ -93,13 +93,14 @@ const ProgressModal: React.FC = () => {
         if (codeRes?.token) {
           dispatch(loadMiscAction("not_activated_request", email)).then((res: any) => {
             const data = res?.data?.data || res?.data;
-            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list"].includes(data.requestType)) {
+            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list", "qualityCheck"].includes(data.requestType)) {
               setSending(true);
               dispatch(sendQuickRequestUnAuth(res.data, codeRes.token, email)).then(() => {
                 if (!codeRes?.code) dispatch(login({ email }, codeRes.token, navigate, null));
               });
             } else if (codeRes?.code) {
               // for quick Order
+              // Quick order id disabled now
               dispatch(progressModalClose());
               navigate(`/password/request/${codeRes.code}`, {
                 state: { background: location.state?.background || location },
@@ -206,6 +207,12 @@ const ProgressModal: React.FC = () => {
                   <h2 className={classes.subTitle}>{t("progress.message_text")}</h2>
                 </>
               )}
+              {requestType === "qualityCheck" && (
+                <>
+                  <h1 className={classes.title}>Your request needs to be confirmed</h1>
+                  <h2 className={classes.subTitle}>Please enter the verification code to confirm your request</h2>
+                </>
+              )}
 
               {requestType === "rfq_list" && (
                 <>
@@ -283,6 +290,14 @@ const ProgressModal: React.FC = () => {
                     <>
                       <h2 className={classes.subTitle}>{t("success.pcb_text_1")}</h2>
                       <p className={classes.p}>{t("success.pcb_text_2")}</p>
+                    </>
+                  )}
+                  {requestType === "qualityCheck" && (
+                    <>
+                      <h2 className={classes.subTitle}>
+                        Your request for quality check about <strong>{partNumber}</strong> has been sent.
+                      </h2>
+                      <p className={classes.p}>{"You'll receive updates on your request by email."}</p>
                     </>
                   )}
                   {requestType === "order" && (

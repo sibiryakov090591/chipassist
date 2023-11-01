@@ -5,7 +5,7 @@ export const PROGRESS_MODAL_CLOSE = "PROGRESS_MODAL_CLOSE";
 export const PROGRESS_MODAL_SET_PART_NUMBER = "PROGRESS_MODAL_SET_PART_NUMBER";
 export const PROGRESS_MODAL_SET_REQUEST_TYPE = "PROGRESS_MODAL_SET_REQUEST_TYPE";
 
-export type RequestTypes = "rfq" | "pcb" | "order" | "sellerMessage" | "rfq_list";
+export type RequestTypes = "rfq" | "pcb" | "order" | "sellerMessage" | "rfq_list" | "qualityCheck";
 
 // State
 export interface ProgressModalState {

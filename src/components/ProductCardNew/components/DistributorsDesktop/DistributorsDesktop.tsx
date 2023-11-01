@@ -30,6 +30,7 @@ interface Props {
   sortedStockrecords: SortedStockrecord[];
   rfqOpenModal: () => void;
   sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
+  qualityCheckOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
 }
 
 interface SortedStockrecord extends Stockrecord {
@@ -64,6 +65,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   sortedStockrecords,
   rfqOpenModal,
   sellerMessageOpenModal,
+  qualityCheckOpenModal,
 }) => {
   const { t } = useI18n("product");
   const { currency, currencyPrice } = useCurrency();
@@ -466,13 +468,27 @@ const DistributorsDesktop: React.FC<Props> = ({
                     </div>
                     {isShowQualityCheck && (
                       <Tooltip
+                        interactive
                         enterTouchDelay={1}
                         placement="right"
-                        classes={{ tooltip: clsx(commonClasses.tooltip, classes.tooltipMaxWidth) }}
+                        classes={{
+                          tooltip: clsx(commonClasses.tooltip, classes.tooltipMaxWidth),
+                          popper: classes.tooltipPopper,
+                        }}
                         title={
                           <div>
-                            You can have 10% OFF on components quality check before purchase. Request this service
-                            making the purchase through ChipAssist.
+                            You can have 10% OFF for component quality check before purchase. Request quality check on
+                            product purchase or by clicking the button below.
+                            <Box m="8px 0 5px">
+                              <Button
+                                variant="contained"
+                                size="small"
+                                className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                                onClick={qualityCheckOpenModal(val.partner, val.partner_name, val.id)}
+                              >
+                                Get quality check
+                              </Button>
+                            </Box>
                           </div>
                         }
                       >
