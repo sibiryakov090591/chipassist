@@ -75,10 +75,12 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
         } else {
           // Bug: When we have images we're moving to last message before setting images up into the DOM so scrollHeight calc not correct
           // The first scrolling is moving us to last message
-          messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+          if (messagesWindowRef.current)
+            messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
           // The second scrolling is moving us to bottom after setting images up in DOM
           setTimeout(() => {
-            messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+            if (messagesWindowRef.current)
+              messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
           }, 10);
         }
       });
@@ -86,7 +88,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   }, [selectedChat?.id]);
 
   useEffect(() => {
-    if (selectedChat?.id && messages.forceUpdate && !messages.isLoading) {
+    if (selectedChat?.id && messages.forceUpdate && !messages.isLoading && messagesWindowRef.current) {
       const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
       const isNeedToScroll = scrollTop + clientHeight > scrollHeight - 50;
       dispatch(updateMessages(selectedChat.id)).then(() => {
@@ -138,7 +140,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   }, [unreadMessagesRefs, messagesIdsWasRead]);
 
   useEffect(() => {
-    if (unreadLabelRef.current) {
+    if (unreadLabelRef.current && messagesWindowRef.current) {
       // unreadLabelRef.current.scrollIntoView({ block: "center" });
       messagesWindowRef.current.scrollTo({ top: unreadLabelRef.current.offsetTop - 50 });
     }
@@ -149,7 +151,9 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   }, [messages]);
 
   useEffect(() => {
-    messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+    if (messagesWindowRef.current) {
+      messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight });
+    }
   }, [isSending]);
 
   const markAsRead = (messageId: number) => {
@@ -166,7 +170,8 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
       !messages.isLoading &&
       Object.keys(messages.results).length &&
       loadedPages.length &&
-      messages.total_pages > Math.max(...loadedPages)
+      messages.total_pages > Math.max(...loadedPages) &&
+      messagesWindowRef.current
     ) {
       setIsLoadingMore("top");
 
@@ -199,22 +204,26 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   };
 
   const onScroll = () => {
-    const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
-    const loadingYOffset = 250;
-    const toShowButtonYOffset = 200;
+    if (messagesWindowRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = messagesWindowRef.current;
+      const loadingYOffset = 250;
+      const toShowButtonYOffset = 200;
 
-    const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;
-    if (toShowButton !== isShowScrollButton) setIsShowScrollButton(toShowButton);
+      const toShowButton = scrollHeight > scrollTop + clientHeight + toShowButtonYOffset;
+      if (toShowButton !== isShowScrollButton) setIsShowScrollButton(toShowButton);
 
-    const isAtBottom = scrollTop + clientHeight > scrollHeight - loadingYOffset;
-    if (isAtBottom) loadOnTheBottomSide();
+      const isAtBottom = scrollTop + clientHeight > scrollHeight - loadingYOffset;
+      if (isAtBottom) loadOnTheBottomSide();
 
-    const isAtTop = scrollTop < loadingYOffset;
-    if (isAtTop) loadOnTheTopSide();
+      const isAtTop = scrollTop < loadingYOffset;
+      if (isAtTop) loadOnTheTopSide();
+    }
   };
 
   const onScrollToBottom = React.useCallback(() => {
-    messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight, behavior: "smooth" });
+    if (messagesWindowRef.current) {
+      messagesWindowRef.current.scrollTo({ top: messagesWindowRef.current.scrollHeight, behavior: "smooth" });
+    }
   }, []);
 
   const onDownloadFile = (fileId: number, name: string) => () => {
