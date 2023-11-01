@@ -23,7 +23,7 @@ import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import { SellerProfileInfo } from "@src/store/sellerProfile/sellerProfileTypes";
 import constants from "@src/constants/constants";
-import AddressData from "@src/views/chipassist/Profile/components/CompanyAddress/components/AddressData/AddressData";
+import AddressData from "./components/AddressData/AddressData";
 import { useStyles } from "../SendOrderModal/styles";
 
 interface Props {
@@ -438,46 +438,8 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                     </Grid>
                   </Grid>
 
-                  <Divider className={classes.divider} />
-
                   <h3>Buyer details</h3>
                   <AddressData item={purchaseOrder} />
-                  {/* <Grid container spacing={2}> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>Company name:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.company_name || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>Work phone:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.phone_number_str || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>First name:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.first_name || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>Last name:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.last_name || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>Country:</div> */}
-                  {/*    <div className={classes.value}> */}
-                  {/*      {checkout?.countries?.find((c) => c.url === purchaseOrder?.country)?.printable_name || "-"} */}
-                  {/*    </div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>City:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.line4 || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>Postal code:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.postcode || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/*  <Grid item xs={6}> */}
-                  {/*    <div className={classes.label}>Address:</div> */}
-                  {/*    <div className={classes.value}>{purchaseOrder?.line1 || "-"}</div> */}
-                  {/*  </Grid> */}
-                  {/* </Grid> */}
                 </>
               )}
 
