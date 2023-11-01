@@ -24,7 +24,8 @@ const General = () => {
   const profile = useAppSelector((state) => state.profile);
   const isLoading = useAppSelector((state) => state.profile.partnerProfile.isLoading);
   const isEditView = useAppSelector((state) => state.sellerProfile.isEditView);
-  const debouncedIsLoading = useDebounce(isLoading, 1000);
+  const debouncedIsLoading = useDebounce(isLoading, 600);
+  const debouncedIsEditView = useDebounce(isEditView, 100);
   const theme = useTheme();
   const isMdDowm = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useAppDispatch();
@@ -45,8 +46,10 @@ const General = () => {
 
   useEffect(() => {
     if (!debouncedIsLoading)
-      if (profile.selectedPartner && !isEditView) dispatch(getPartnerInfo(profile.selectedPartner.id));
-  }, [isEditView, debouncedIsLoading]);
+      if (profile.selectedPartner && !debouncedIsEditView) {
+        dispatch(getPartnerInfo(profile.selectedPartner.id));
+      }
+  }, [debouncedIsEditView, debouncedIsLoading]);
 
   useEffect(() => {
     if (profile.partnerProfile) {

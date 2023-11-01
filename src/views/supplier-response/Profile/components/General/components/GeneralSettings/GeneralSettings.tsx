@@ -24,9 +24,11 @@ import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapp
 import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import formSchema from "@src/utils/formSchema";
 import validate from "validate.js";
 import _ from "lodash";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -100,7 +102,7 @@ interface FormState {
 }
 
 const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
-  // const { t } = useI18n("profile");
+  const { t } = useI18n("profile");
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -141,7 +143,18 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const schema = React.useMemo(() => {
     return {
       company_name: {
-        ...formSchema.companyName,
+        format: {
+          pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
+          flags: "i",
+          message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits")}`,
+        },
+      },
+      city: {
+        format: {
+          pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
+          flags: "i",
+          message: `^City ${t("errors.only_letters_and_digits")}`,
+        },
       },
     };
   }, []);
@@ -340,6 +353,8 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
                 shrink: true,
               }}
               onChange={onChangeHandler}
+              onBlur={onBlurHandler("city")}
+              {...errorProps("city")}
             />
           </Grid>
           <Grid item md={6} xs={12}>
