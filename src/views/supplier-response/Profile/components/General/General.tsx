@@ -71,7 +71,7 @@ const General = () => {
           <Grid item>{debouncedIsLoading ? <ProfileDetailsPreloader /> : <ProfileDetails />}</Grid>
         </Grid>
       )}
-      <Grid item lg={8} md={12} xl={9} xs={12}>
+      <Grid item lg={7} md={12} xl={7} xs={12}>
         {debouncedIsLoading ? <GeneralSettingPreloader /> : !isEditView ? <GeneralSettingView /> : <GeneralSettings />}
       </Grid>
     </Grid>

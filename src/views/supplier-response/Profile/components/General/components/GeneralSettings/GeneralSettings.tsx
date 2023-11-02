@@ -29,6 +29,7 @@ import _ from "lodash";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import formSchema from "@src/utils/formSchema";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   root: {},
@@ -156,6 +157,14 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
           message: `^City ${t("errors.only_letters_and_digits")}`,
         },
       },
+      email: { presence: { allowEmpty: true }, ...formSchema.email },
+      postcode: {
+        format: {
+          pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
+          flags: "i",
+          message: `^${t("form_labels.postcode")} ${t("errors.only_letters_and_digits")}`,
+        },
+      },
     };
   }, []);
 
@@ -257,7 +266,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
       <CardHeader className={classes.cardHeader} title={"Company details"} />
       <CardContent style={isXsDown ? { paddingLeft: 0, paddingRight: 0 } : null}>
         <Grid container spacing={3}>
-          <Grid item md={12} xs={12}>
+          <Grid item md={6} xs={12}>
             <TextField
               label={"Company name"}
               name={"company_name"}
@@ -285,6 +294,8 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
                 shrink: true,
               }}
               onChange={onChangeHandler}
+              onBlur={onBlurHandler("email")}
+              {...errorProps("email")}
             />
           </Grid>
           <Grid item md={6} xs={12}>
@@ -357,7 +368,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
               {...errorProps("city")}
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={12} xs={12}>
             <TextField
               label={"Address"}
               name={"address"}
@@ -386,7 +397,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
               }}
               onChange={onChangeHandler}
               onBlur={onBlurHandler("postcode")}
-              /* {...errorProps("postcode")} */
+              {...errorProps("postcode")}
             />
           </Grid>
           <Grid item md={6} xs={12}>
