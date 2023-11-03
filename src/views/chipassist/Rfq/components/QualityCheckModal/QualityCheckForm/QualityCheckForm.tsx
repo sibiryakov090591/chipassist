@@ -115,6 +115,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
   isAuthenticated = isExample ? isAuth : isAuthenticated;
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const countries = useAppSelector((state) => state.checkout.countries);
+  const profileInfo = useAppSelector((state) => state.profile.profileInfo);
 
   const defaultState = (): FormState => ({
     isValid: false,
@@ -292,6 +293,8 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
         sellerId,
         sellerName,
         comment: formState.values.message,
+        user: isAuthenticated ? profileInfo?.email : formState.values.email,
+        wasAuthenticated: isAuthenticated,
       };
 
       dispatch(progressModalSetPartNumber(partNumber, "qualityCheck"));
