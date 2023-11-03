@@ -8,8 +8,6 @@ import {
   progressModalOpen,
   progressModalSuccess,
 } from "@src/store/progressModal/progressModalActions";
-import constants from "@src/constants/constants";
-import { ID_ELFARO } from "@src/constants/server_constants";
 import { getAuthToken } from "@src/utils/auth";
 import { Stockrecord, Product } from "@src/store/products/productTypes";
 import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
@@ -210,16 +208,25 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
     const [key, value] = v;
     if (value) data[key] = typeof value === "string" ? value.trim() : value;
   });
-  let params = "";
-  const isShowQuickButton = localStorage.getItem("isShowQuickButton");
-  if (isShowQuickButton && constants.id === ID_ELFARO)
-    params += `?method_code=${isShowQuickButton === "true" ? "quick_button_showed" : "quick_button_hidden"}`;
+
+  const preventCreateRFQ = !data.productId; // Create feedback instead RFQ if product doesn't exists
+  let message = "Missing product;";
+  const formData = new FormData();
+  if (preventCreateRFQ) {
+    Object.entries(data).forEach((entr) => {
+      message += ` ${entr[0]}: ${entr[1]};`;
+    });
+    formData.append("message", message);
+    formData.append("subject", "Missing product");
+    formData.append("level", "info");
+  }
+
   return dispatch({
     types: actionTypes.SAVE_RFQ_ARRAY,
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/list/${params}`, {
-          data: { rfq_list: [data] },
+        .post(preventCreateRFQ ? "/register-user-feedback/" : `/rfqs/list/`, {
+          data: preventCreateRFQ ? formData : { rfq_list: [data] },
           config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
         })
         .then((res) => {

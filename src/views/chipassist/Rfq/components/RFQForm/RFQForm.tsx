@@ -465,7 +465,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) =>
       if (phone) comment += ` Phone: ${phone};`;
       if (company_name) comment += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
       // if (company_type) comment += ` Company type: ${company_type};`;
-      if (formState.values.comment) comment += ` ${formState.values.comment};`;
+      if (formState.values.comment) comment += ` Additional: ${formState.values.comment};`;
 
       const sr = rfqItem?.stockrecord;
       const srPrice = sr && getPrice(+formState.values.quantity, sr);
