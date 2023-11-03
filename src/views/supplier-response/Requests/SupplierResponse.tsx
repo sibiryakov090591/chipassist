@@ -191,7 +191,10 @@ const SupplierResponse: React.FC = () => {
             lead_time: responseRfq?.lead_time && Number(responseRfq.lead_time),
             comment: responseRfq?.comment || "",
             selected_manufacturer:
-              responseRfq?.manufacturer || item.manufacturer || item.response_rfq?.manufacturers[0] || null,
+              !responseRfq?.manufacturers?.length ||
+              responseRfq?.manufacturers?.some((i) => i.id === item.manufacturer?.id)
+                ? item.manufacturer
+                : responseRfq?.manufacturers[0] || null,
             other_manufacturer_name: "",
           };
         }
