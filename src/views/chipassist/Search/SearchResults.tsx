@@ -84,6 +84,7 @@ const SearchResults = () => {
     baseFilters = null;
   }
   const isSearchPage = window.location.pathname === "/search";
+  const disabledRFQForm = !!query?.startsWith("SELLER:");
 
   const isLoadingSearchResultsInProgress = useAppSelector((state) => state.search.isLoadingSearchResultsInProgress);
   const isExtendedSearchStarted = useAppSelector((state) => state.search.isExtendedSearchStarted);
@@ -476,29 +477,38 @@ const SearchResults = () => {
                       </div>
                     )}
                     <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
-                    <h3
-                      className={classes.rfqHeader}
-                      dangerouslySetInnerHTML={{
-                        __html: t("rfq.modal_header", {
-                          interpolation: { escapeValue: false },
-                          partNumber: rfqItem.partNumber,
-                          title: t("rfq.request"),
-                        }),
-                      }}
-                      style={{ marginBottom: 20 }}
-                    />
-                    <p
-                      className={classes.rfqText}
-                      dangerouslySetInnerHTML={{
-                        __html: t("rfq.modal_text", {
-                          interpolation: { escapeValue: false },
-                          partNumber: rfqItem.partNumber,
-                        }),
-                      }}
-                    />
-                    <div style={{ maxWidth: 500, margin: "0 auto" }}>
-                      <RFQForm />
-                    </div>
+                    {disabledRFQForm && (
+                      <h3 className={classes.rfqHeader}>
+                        Please try to search another seller or the part number you are interested in.
+                      </h3>
+                    )}
+                    {!disabledRFQForm && (
+                      <>
+                        <h3
+                          className={classes.rfqHeader}
+                          dangerouslySetInnerHTML={{
+                            __html: t("rfq.modal_header", {
+                              interpolation: { escapeValue: false },
+                              partNumber: rfqItem.partNumber,
+                              title: t("rfq.request"),
+                            }),
+                          }}
+                          style={{ marginBottom: 20 }}
+                        />
+                        <p
+                          className={classes.rfqText}
+                          dangerouslySetInnerHTML={{
+                            __html: t("rfq.modal_text", {
+                              interpolation: { escapeValue: false },
+                              partNumber: rfqItem.partNumber,
+                            }),
+                          }}
+                        />
+                        <div style={{ maxWidth: 500, margin: "0 auto" }}>
+                          <RFQForm />
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
 

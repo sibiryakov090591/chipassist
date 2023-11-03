@@ -6,12 +6,12 @@ const slice = (part: string, state: string[]) => {
   }
 };
 
-export const splitForHighlighter = (searchQuery: string, textToHighlight = "") => {
+export const splitForHighlighter = (search: string, textToHighlight = "") => {
+  if (!search) return [];
+  const searchQuery = search.startsWith("SELLER:") ? search.replace(/SELLER:/, "") : search;
   if (searchQuery.length > 15) return simpleSplitForHighlighter(searchQuery);
 
   let res: string[] = [];
-  if (!searchQuery) return res;
-
   const parts = searchQuery.toLowerCase().trim().split(" ");
   parts.forEach((part) => {
     if (part.length >= 3) {
