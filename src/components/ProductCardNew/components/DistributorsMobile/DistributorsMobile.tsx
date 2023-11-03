@@ -89,7 +89,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                     onClick={handleChange(val.id)}
                   >
                     <td className={classes.tdSeller}>{val.partner_name}</td>
-                    <td className={classes.tdStock}>{formatMoney(val.num_in_stock, 0) || "-"}</td>
+                    <td className={classes.tdStock}>{formatMoney(val.num_in_stock, 0) || ""}</td>
                     {!isXsDown && (
                       <td className={classes.tdStock}>
                         {dateCode ? (
@@ -105,7 +105,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             dateCode
                           )
                         ) : (
-                          "-"
+                          ""
                         )}
                       </td>
                     )}
@@ -114,7 +114,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         `${currency?.symbol} ${formatMoney(
                           currencyPrice(getPrice(1, val, true), val.price_currency),
                         )}`) ||
-                        "-"}
+                        ""}
                     </td>
                     {isLoading ? (
                       <td className={classes.tdActions}>{<CircularProgress size={15} />}</td>
@@ -156,11 +156,11 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                           <Box p="5px 10px" display="flex" flexWrap="wrap" justifyContent="space-between">
                             <div>
                               <div className={classes.detailsLabel}>{t("distributor.moq")}</div>
-                              <div>{formatMoney(dynamicMoq, 0, ".", "`") || "-"}</div>
+                              <div>{formatMoney(dynamicMoq, 0, ".", "`") || ""}</div>
                             </div>
                             <div>
                               <div className={classes.detailsLabel}>{t("distributor.mpq")}</div>
-                              <div>{val.mpq || "-"}</div>
+                              <div>{val.mpq || ""}</div>
                             </div>
                             {isXsDown && (
                               <div>
@@ -179,14 +179,14 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                                       dateCode
                                     )
                                   ) : (
-                                    "-"
+                                    ""
                                   )}
                                 </div>
                               </div>
                             )}
                             <div>
                               <div className={classes.detailsLabel}>Package</div>
-                              <div>{val.packaging || "-"}</div>
+                              <div>{val.packaging || ""}</div>
                             </div>
                           </Box>
                           {!!sortedPrices.length && (

@@ -33,6 +33,10 @@ interface Props {
   wasSent: boolean;
 }
 
+const responseErrorsMatch: { [key: string]: string } = {
+  "duplicate data": "You sent a duplicate set of data. Your stock remains unchanged.",
+};
+
 const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown, error, wasSent }) => {
   const classes = useStyles();
   const responseClasses = useResponseStyles();
@@ -365,7 +369,11 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
         <div style={{ position: "relative" }}>
           {item.part_number?.toUpperCase()}
           {!!error && (
-            <Tooltip enterTouchDelay={1} classes={{ tooltip: commonClasses.tooltip }} title={<div>{error.error}</div>}>
+            <Tooltip
+              enterTouchDelay={1}
+              classes={{ tooltip: commonClasses.tooltip }}
+              title={<div>{responseErrorsMatch[error.error] || error.error}</div>}
+            >
               <div className={classes.errorToolTip}>
                 <ErrorOutlineIcon style={{ padding: 0 }} className={commonClasses.errorIcon} />
               </div>
