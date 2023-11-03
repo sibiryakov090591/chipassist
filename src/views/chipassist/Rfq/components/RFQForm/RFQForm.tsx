@@ -508,6 +508,10 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth }) =>
             : ""
         }`,
         productId: rfqItem.productId,
+        ...(!rfqItem.productId && {
+          user: isAuthenticated ? profileInfo?.email : formState.values.email,
+          wasAuthenticated: isAuthenticated,
+        }),
       };
       // sending a chat message to all sellers without product url
       const sellersMessages =
