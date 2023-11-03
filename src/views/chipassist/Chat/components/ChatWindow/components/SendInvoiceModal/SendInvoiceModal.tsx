@@ -586,7 +586,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
                   {step <= 1 ? "Cancel" : "Back"}
                 </Button>
                 <Button
-                  onClick={step >= 3 ? onSubmitHandler : goToStep("next")}
+                  onClick={step >= 2 ? onSubmitHandler : goToStep("next")}
                   variant="contained"
                   className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
                 >
