@@ -498,7 +498,10 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       {constants.showManufacturerField && (
         <td className={clsx(classes.tdManufacturer, { [classes.disabledSelect]: !validHoursLeft })}>
           <ManufacturerSelect
-            selected={item.selected_manufacturer}
+            selected={
+              item.response_rfq?.manufacturers?.find((i) => i.id === item?.selected_manufacturer?.id) ||
+              item.response_rfq?.manufacturers[0]
+            }
             otherName={item.other_manufacturer_name}
             list={item.response_rfq?.manufacturers}
             onSelectHandler={onSelectManufacturer}
