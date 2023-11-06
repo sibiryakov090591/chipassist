@@ -19,6 +19,7 @@ import SendOrderModalContainer from "@src/views/chipassist/Chat/components/ChatW
 import MergeBomModal from "@src/views/chipassist/Bom/components/BomList/MergeBomModal/MergeBomModal";
 import { getConstants } from "@src/store/pcb/pcbActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import SendInvoiceModalContainer from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/components/SendInvoiceModalContainer";
 
 export const FormExamples = () => {
   const classes = useStyles();
@@ -192,6 +193,33 @@ export const FormExamples = () => {
             <Grid container spacing={3}>
               <Grid item md={12} lg={4}>
                 <MergeBomModal isExample={true} onClose={null} onView={null} submitHandle={null} />
+              </Grid>
+            </Grid>
+          </fieldset>
+        </Grid>
+        <Grid item md={12} lg={12}>
+          <fieldset className={classes.gridItem}>
+            <legend className={classes.legendText}>PO</legend>
+            <Grid container spacing={3}>
+              <Grid item md={12} lg={6}>
+                <SendInvoiceModalContainer
+                  isExample={true}
+                  onCloseModal={null}
+                  open
+                  setIsSending={false}
+                  stock={null}
+                  pageNum={1}
+                />
+              </Grid>
+              <Grid item md={12} lg={6}>
+                <SendInvoiceModalContainer
+                  isExample={true}
+                  onCloseModal={null}
+                  open
+                  setIsSending={false}
+                  stock={null}
+                  pageNum={2}
+                />
               </Grid>
             </Grid>
           </fieldset>
