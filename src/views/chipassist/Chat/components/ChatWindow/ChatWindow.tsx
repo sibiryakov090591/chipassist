@@ -43,7 +43,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
         dispatch(getChat(lastChatItem.chat));
       }
     }
-  }, [profileInfo]);
+  }, [profileInfo, selectedPartner]);
 
   const onShowChatListHandler = () => {
     if (isMdDown && !isXsDown) onShowDetails(false, false);
@@ -85,7 +85,10 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
               </Box>
             )}
             <div>
-              <h2 className={classes.title}>{selectedChat?.title || selectedChat?.rfq?.upc}</h2>
+              <h2 className={classes.title}>
+                {selectedChat?.title || selectedChat?.rfq?.upc}
+                {`${selectedChat?.rfq?.quantity ? `, ${selectedChat?.rfq?.quantity}pcs` : ""}`}
+              </h2>
               {isSupplierResponse && selectedChat ? (
                 <div className={classes.customer}>
                   Customer: <span>{selectedChat.partner_name}</span>
