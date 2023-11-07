@@ -149,7 +149,7 @@ export const SendOrderModalContainer: React.FC<{
         last_name: getValues("last_name"),
         first_name: getValues("first_name"),
         totalPrice,
-        stockrecord: stock,
+        // stockrecord: stock,
         company_name: getValues("company_name"),
         quantity,
         additional_notes: getValues("additional_notes"),

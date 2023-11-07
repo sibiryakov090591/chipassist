@@ -74,6 +74,14 @@ export const SendInvoiceModalContainer: React.FC<{
     reset,
   } = useForm<FormValues>({
     mode: "onChange",
+    defaultValues: {
+      country:
+        (billingAddress?.country &&
+          checkout?.countries?.find((c) => c.url.includes(billingAddress.country.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+    },
   });
 
   const shippingFee = watch("shipping_fee");
@@ -110,14 +118,6 @@ export const SendInvoiceModalContainer: React.FC<{
       setValue("first_name", profileInfo?.firstName || "");
       setValue("last_name", profileInfo?.lastName || "");
       setValue("phone", billingAddress?.phone || "");
-      setValue(
-        "country",
-        (billingAddress?.country &&
-          checkout?.countries?.find((c) => c.iso_3166_1_a3 === billingAddress?.country)?.url) ||
-          (geolocation?.country_code_iso3 &&
-            checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-          defaultCountry.url,
-      );
       setValue("city", billingAddress?.city || "");
       setValue("postcode", billingAddress?.postcode || "");
       setValue("address", billingAddress?.address || "");

@@ -29,7 +29,14 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
       }}
     >
       <Fade in={open}>
-        <SendInvoiceModalContainer open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
+        <div>
+          <SendInvoiceModalContainer
+            open={open}
+            stock={stock}
+            onCloseModal={onCloseModal}
+            setIsSending={setIsSending}
+          />
+        </div>
       </Fade>
     </Modal>
   );
