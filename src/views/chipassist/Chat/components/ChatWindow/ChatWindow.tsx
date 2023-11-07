@@ -38,7 +38,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
         localStorage.getItem("last_selected_chat") && JSON.parse(localStorage.getItem("last_selected_chat"));
       if (
         lastChatItem?.user === profileInfo.id &&
-        (isSupplierResponse && selectedPartner ? lastChatItem?.seller === selectedPartner.id : true)
+        (isSupplierResponse ? selectedPartner && lastChatItem?.seller === selectedPartner.id : true)
       ) {
         dispatch(getChat(lastChatItem.chat));
       }
