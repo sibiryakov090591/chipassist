@@ -22,7 +22,8 @@ const CatalogResults: React.FC = () => {
   const navigate = useNavigate();
 
   const page = useURLSearchParams("page", false, null, false) || 1;
-  const catalogId = useURLSearchParams("catalogId", false, null, false);
+  const matchResult = window.location.pathname?.match(/parts\/(.*)/);
+  const catalogUrl = matchResult && matchResult[1];
   const titleRef = useRef(null);
 
   const normalizeData = useAppSelector((state) => state.categories.catalog.normalizeData);
@@ -38,13 +39,13 @@ const CatalogResults: React.FC = () => {
 
   useEffect(() => {
     if (normalizeData.length) {
-      const cat = findCategory(+catalogId, normalizeData);
+      const cat = findCategory(catalogUrl, normalizeData);
       setCategory(cat || false);
       setIsCategoryLoading(false);
     } else {
       dispatch(getCatalogCategoriesThunk());
     }
-  }, [catalogId, normalizeData]);
+  }, [catalogUrl, normalizeData]);
 
   useEffect(() => {
     if (category) {
@@ -67,7 +68,7 @@ const CatalogResults: React.FC = () => {
         titleRef.current.scrollIntoView({ block: "start" });
       }
       setIsProductsLoading(true);
-      setUrl(navigate, `/parts/${category.url}`, data.selected + 1, null, { catalogId: category.id });
+      setUrl(navigate, `/parts/${category.url}`, data.selected + 1);
       dispatch(getCatalogProducts(category.id, data.selected + 1))
         .then((res: any) => {
           setProducts(res);
@@ -107,7 +108,7 @@ const CatalogResults: React.FC = () => {
                   {category.breadcrumbs.map((crumb: any) => {
                     return (
                       <span key={uuidv4()}>
-                        <NavLink className={classes.link} to={`/parts/${crumb?.url}?catalogId=${crumb?.id}`}>
+                        <NavLink className={classes.link} to={`/parts/${crumb?.url}`}>
                           {crumb?.name}
                         </NavLink>
                         {" > "}
@@ -125,10 +126,7 @@ const CatalogResults: React.FC = () => {
                           {category.children.map((depth_2: any) => {
                             return (
                               <div key={uuidv4()}>
-                                <NavLink
-                                  className={classes.categoryLink}
-                                  to={`/parts/${depth_2.url}?catalogId=${depth_2.id}`}
-                                >
+                                <NavLink className={classes.categoryLink} to={`/parts/${depth_2.url}`}>
                                   {depth_2.name}
                                 </NavLink>
                                 {depth_2.children && !!depth_2.children.length && (
@@ -136,10 +134,7 @@ const CatalogResults: React.FC = () => {
                                     {depth_2.children.map((depth_3: any) => {
                                       return (
                                         <div key={uuidv4()}>
-                                          <NavLink
-                                            className={classes.categoryLink}
-                                            to={`/parts/${depth_3.url}?catalogId=${depth_3?.id}`}
-                                          >
+                                          <NavLink className={classes.categoryLink} to={`/parts/${depth_3.url}`}>
                                             {depth_3.name}
                                           </NavLink>
                                           {depth_3.children && !!depth_3.children.length && (
@@ -149,7 +144,7 @@ const CatalogResults: React.FC = () => {
                                                   <div key={uuidv4()}>
                                                     <NavLink
                                                       className={classes.categoryLink}
-                                                      to={`/parts/${depth_4.url}?catalogId=${depth_4?.id}`}
+                                                      to={`/parts/${depth_4.url}`}
                                                     >
                                                       {depth_4.name}
                                                     </NavLink>
@@ -160,7 +155,7 @@ const CatalogResults: React.FC = () => {
                                                             <div key={uuidv4()}>
                                                               <NavLink
                                                                 className={classes.categoryLink}
-                                                                to={`/parts/${depth_5.url}?catalogId=${depth_5?.id}`}
+                                                                to={`/parts/${depth_5.url}`}
                                                               >
                                                                 {depth_5.name}
                                                               </NavLink>
