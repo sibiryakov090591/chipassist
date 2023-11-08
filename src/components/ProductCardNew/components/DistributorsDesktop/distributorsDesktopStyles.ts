@@ -519,6 +519,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     tooltipMaxWidth: {
       maxWidth: 350,
       fontSize: 14,
+      padding: "12px 16px",
     },
     geoPin: {
       fontSize: "1rem",
