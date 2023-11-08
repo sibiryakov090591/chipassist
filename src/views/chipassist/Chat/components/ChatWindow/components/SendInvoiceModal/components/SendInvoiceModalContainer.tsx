@@ -212,7 +212,7 @@ export const SendInvoiceModalContainer: React.FC<{
   const onSubmitHandler = () => handleSubmit(onSubmit)();
 
   return (
-    <div className={isExample ? clsx(commonClasses.paper, "fullScreen") : ""}>
+    <div className={isExample ? clsx(commonClasses.paper, "fullScreen") : commonClasses.displayContents}>
       <form style={{ minHeight: 600 }} className={classes.form}>
         <div>
           {step === 1 && (

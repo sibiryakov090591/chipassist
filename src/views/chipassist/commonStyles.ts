@@ -95,6 +95,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     padding: "0 5px 0 10px",
     textTransform: "initial",
   },
+  displayContents: {
+    display: "contents",
+  },
 }));
 
 export default "styles";
