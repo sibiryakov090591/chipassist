@@ -7,6 +7,7 @@ import Fade from "@material-ui/core/Fade";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 
 import SendInvoiceModalContainer from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/components/SendInvoiceModalContainer";
+import { clsx } from "clsx";
 
 interface Props {
   open: boolean;
@@ -29,7 +30,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
       }}
     >
       <Fade in={open}>
-        <div>
+        <div className={clsx(commonClasses.paper, "fullScreen")}>
           <SendInvoiceModalContainer
             open={open}
             stock={stock}

@@ -61,7 +61,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
   };
 
   return (
-    <div className={clsx(commonClasses.paper, "fullScreen", classes.container)}>
+    <div className={isExample ? clsx(commonClasses.paper, "fullScreen", classes.container) : ""}>
       {isChipAssist && (
         <Hidden smDown>
           <div className={classes.logoContainer}>

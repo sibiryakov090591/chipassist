@@ -12,9 +12,11 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { clsx } from "clsx";
 import RFQModalContainer from "@src/views/chipassist/Rfq/components/RFQModal/components/RFQModalContainer";
+import { useStyles } from "@src/views/chipassist/Rfq/components/RFQModal/RFQModalStyles";
 
 export default function RFQModalModal() {
   const commonClasses = useCommonStyles();
+  const classes = useStyles();
 
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
 
@@ -41,7 +43,7 @@ export default function RFQModalModal() {
       }}
     >
       <Fade in={rfqModalOpen}>
-        <div>
+        <div className={clsx(commonClasses.paper, "fullScreen", classes.container)}>
           <RFQModalContainer />
         </div>
       </Fade>

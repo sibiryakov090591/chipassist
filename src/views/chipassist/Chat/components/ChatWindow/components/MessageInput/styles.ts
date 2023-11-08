@@ -106,6 +106,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textTransform: "initial",
       whiteSpace: "nowrap",
       marginLeft: 8,
+      [theme.breakpoints.down("xs")]: {
+        margin: 0,
+        width: "100%",
+      },
     },
   }),
 );
