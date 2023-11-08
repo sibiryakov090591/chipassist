@@ -49,7 +49,11 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
     setShowLoginForm(show);
   };
   return (
-    <div className={isExample ? clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container) : ""}>
+    <div
+      className={
+        isExample ? clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container) : commonClasses.displayContents
+      }
+    >
       {isChipAssist && (
         <Hidden smDown>
           <div className={rfqModalClasses.logoContainer}>

@@ -162,7 +162,7 @@ export const SendOrderModalContainer: React.FC<{
   const onSubmitHandler = () => handleSubmit(onSubmit)();
 
   return (
-    <div className={isExample ? clsx(commonClasses.paper, "fullScreen") : ""}>
+    <div className={isExample ? clsx(commonClasses.paper, "fullScreen") : commonClasses.displayContents}>
       <form className={classes.form}>
         <div>
           {(isExample ? pageNum : step) === 1 && (
