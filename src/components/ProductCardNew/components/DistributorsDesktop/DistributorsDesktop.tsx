@@ -479,7 +479,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                           <div>
                             You can have 10% OFF for component quality check before purchase. Request quality check on
                             product purchase or by clicking the button below.
-                            <Box m="8px 0 5px">
+                            <Box mt="12px">
                               <Button
                                 variant="contained"
                                 size="small"

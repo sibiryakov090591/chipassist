@@ -11,9 +11,11 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import clsx from "clsx";
 
 import SellerMessageContainer from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageForm/SellerMessageContainer";
+import { useStyles as useRfqModalStyles } from "@src/views/chipassist/Rfq/components/RFQModal/RFQModalStyles";
 
 const SellerMessageModal = () => {
   const commonClasses = useCommonStyles();
+  const rfqModalClasses = useRfqModalStyles();
 
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.rfq.sellerMessageModal);
@@ -36,7 +38,7 @@ const SellerMessageModal = () => {
       }}
     >
       <Fade in={open}>
-        <div>
+        <div className={clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container)}>
           <SellerMessageContainer />
         </div>
       </Fade>

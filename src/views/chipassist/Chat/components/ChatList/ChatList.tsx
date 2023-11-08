@@ -12,6 +12,7 @@ import { useTheme } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
 import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
+import { format } from "date-fns";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -104,8 +105,8 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
 
             const lastMessageDate =
               Date.now() - new Date(lastMessage.created).getTime() > 86400000
-                ? new Date(lastMessage.created).toLocaleDateString()
-                : new Date(lastMessage.created).toLocaleTimeString().slice(0, 5);
+                ? format(new Date(lastMessage.created), "dd.MM.yy")
+                : format(new Date(lastMessage.created), "HH:mm");
             const unreadMessages = Number(item.unread_messages);
             const quantity = item.details?.quantity || item.rfq?.quantity;
             const price = item.details?.price || item.rfq?.price;

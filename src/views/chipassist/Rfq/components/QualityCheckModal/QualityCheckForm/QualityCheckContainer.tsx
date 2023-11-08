@@ -49,7 +49,7 @@ export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boo
     setShowLoginForm(show);
   };
   return (
-    <div className={clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container)}>
+    <div className={isExample ? clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container) : ""}>
       {isChipAssist && (
         <Hidden smDown>
           <div className={rfqModalClasses.logoContainer}>

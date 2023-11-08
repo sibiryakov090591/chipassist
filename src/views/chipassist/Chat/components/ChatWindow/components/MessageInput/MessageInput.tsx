@@ -248,7 +248,7 @@ const MessageInput: React.FC<Props> = ({
       </Button>
     );
     const container = document.getElementById("chat-order-button-container");
-    if (!container) return null;
+    if (!container || (isSupplierResponse && isDisabled)) return null;
     if (isXsDown) return buttonElem;
     return ReactDOM.createPortal(buttonElem, container);
   };
@@ -256,38 +256,36 @@ const MessageInput: React.FC<Props> = ({
   return (
     <div className={classes.root}>
       <ScrollToBottom onScrollHandler={onScrollToBottom} active={isShowScrollButton} chatId={chatId} />
+      <Box m={isXsDown ? "0 12px 8px" : "0"}>{crateOrderButton()}</Box>
       {isSupplierResponse && (
         <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
           Please send your response directly to the customer:
         </div>
       )}
-      <Box display="flex" justifyContent="space-between" alignItems="flex-end" m="0 12px 8px">
-        <Box display="flex" flexWrap="wrap" gridGap="6px" width="100%">
-          {isSupplierResponse && (
-            <>
-              {!!stock && (
-                <>
-                  <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
-                    Confirm stock
-                  </div>
-                  <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
-                    Update price
-                  </div>
-                  <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
-                    Update quantity
-                  </div>
-                </>
-              )}
-              <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
-                No stock
-              </div>
-              <div className={classes.hint} onClick={onSetHintMessage("later")}>
-                Reply later
-              </div>
-            </>
-          )}
-        </Box>
-        {crateOrderButton()}
+      <Box display="flex" flexWrap="wrap" gridGap="6px" m="0 12px 8px">
+        {isSupplierResponse && (
+          <>
+            {!!stock && (
+              <>
+                <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
+                  Confirm stock
+                </div>
+                <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
+                  Update price
+                </div>
+                <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
+                  Update quantity
+                </div>
+              </>
+            )}
+            <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
+              No stock
+            </div>
+            <div className={classes.hint} onClick={onSetHintMessage("later")}>
+              Reply later
+            </div>
+          </>
+        )}
       </Box>
 
       {!!error && <div className={classes.error}>{error}</div>}

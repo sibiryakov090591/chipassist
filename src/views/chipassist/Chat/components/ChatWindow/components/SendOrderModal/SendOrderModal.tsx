@@ -4,6 +4,7 @@ import Modal from "@material-ui/core/Modal";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import Fade from "@material-ui/core/Fade";
 import { ChatListStock } from "@src/store/chat/chatTypes";
+import { clsx } from "clsx";
 import SendOrderModalContainer from "./components/SendOrderModalContainer";
 
 interface Props {
@@ -28,7 +29,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       }}
     >
       <Fade in={open}>
-        <div>
+        <div className={clsx(commonClasses.paper, "fullScreen")}>
           <SendOrderModalContainer open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
         </div>
       </Fade>

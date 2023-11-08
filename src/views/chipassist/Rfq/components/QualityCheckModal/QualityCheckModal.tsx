@@ -8,9 +8,11 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import clsx from "clsx";
 import QualityCheckContainer from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckForm/QualityCheckContainer";
+import { useStyles as useRfqModalStyles } from "@src/views/chipassist/Rfq/components/RFQModal/RFQModalStyles";
 
 const QualityCheckModal = () => {
   const commonClasses = useCommonStyles();
+  const rfqModalClasses = useRfqModalStyles();
 
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.rfq.qualityCheckModal);
@@ -33,7 +35,7 @@ const QualityCheckModal = () => {
       }}
     >
       <Fade in={open}>
-        <div>
+        <div className={clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container)}>
           <QualityCheckContainer />
         </div>
       </Fade>
