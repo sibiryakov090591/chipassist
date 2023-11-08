@@ -65,6 +65,7 @@ const TopBar = (props) => {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const is1180Down = useMediaQuery(theme.breakpoints.down(1180));
   const dispatch = useAppDispatch();
+  const isHomePage = window.location.pathname === "/";
   // const Icon = withBaseIcon();
   const maintenance = useAppSelector((state) => state.maintenance);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
@@ -76,16 +77,16 @@ const TopBar = (props) => {
   const [collapse, setСollapse] = useState(false);
 
   useEffect(() => {
-    if (isMdUp) {
+    if (isMdUp || isHomePage) {
       window.addEventListener("scroll", listener);
     }
     return () => {
       window.removeEventListener("scroll", listener);
     };
-  }, [collapse, isMdUp]);
+  }, [collapse, isMdUp, isHomePage]);
 
   const listener = () => {
-    if (window.pageYOffset > 60) {
+    if (window.pageYOffset > (isHomePage ? 500 : 60)) {
       if (!collapse) {
         setСollapse(true);
         dispatch(showHint(false));
@@ -138,6 +139,7 @@ const TopBar = (props) => {
         {...rest}
         className={clsx({
           [classes.root]: true,
+          [classes.homePageTopBar]: isMdUp && isHomePage,
           [className]: true,
           collapse,
         })}
@@ -238,15 +240,17 @@ const TopBar = (props) => {
                 {/* {cartBlock} */}
               </div>
             </div>
-            <div className={classes.searchContainer}>
-              <SearchSuggestion
-                searchInputClass={homePageClasses.searchInput}
-                searchButtonClass={clsx(homePageClasses.searchIconButton, appTheme.topBarSearchButton)}
-                searchIconClass={homePageClasses.searchIcon}
-                searchClearClass={homePageClasses.clearSearchIcon}
-                isHomePageSuggestions={true}
-              />
-            </div>
+            <Collapse in={isHomePage ? collapse : true}>
+              <div className={classes.searchContainer}>
+                <SearchSuggestion
+                  searchInputClass={homePageClasses.searchInput}
+                  searchButtonClass={clsx(homePageClasses.searchIconButton, appTheme.topBarSearchButton)}
+                  searchIconClass={homePageClasses.searchIcon}
+                  searchClearClass={homePageClasses.clearSearchIcon}
+                  isHomePageSuggestions={true}
+                />
+              </div>
+            </Collapse>
             {/* <TrySearchPn */}
             {/*  partNumbers={partNumberExamples || partNumbers} */}
             {/*  textClassName={classes.tryP} */}

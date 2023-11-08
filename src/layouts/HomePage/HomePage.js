@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import Footer from "@src/components/Footer/Footer";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { scrollbarWidth } from "@src/config";
+import { clsx } from "clsx";
 import { TopBar } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,10 +21,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   topBar: {
-    zIndex: 100,
+    zIndex: 1000,
     position: "fixed",
     transition: "all 250ms ease",
-    height: 133,
     width: "100vw",
     paddingRight: `${scrollbarWidth}px`,
     [theme.breakpoints.up("md")]: {
@@ -35,11 +33,22 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  fixedHeight: {
+    height: 133,
+  },
   container: {
     marginTop: 133,
     display: "flex",
     flexGrow: 1,
     width: "100vw",
+  },
+  homeContainer: {
+    display: "flex",
+    flexGrow: 1,
+    width: "100vw",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 80,
+    },
   },
   navBar: {
     zIndex: 3,
@@ -60,18 +69,14 @@ const useStyles = makeStyles((theme) => ({
 
 const HomePage = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const isShowFooter = window.location.pathname !== "/messages";
-  const isDisableLayout = window.location.pathname === "/" && isMdUp;
+  const isHomePage = window.location.pathname === "/";
 
-  return isDisableLayout ? (
-    props.children
-  ) : (
+  return (
     <div className={classes.wrapper}>
-      <TopBar className={classes.topBar} />
-      <div className={classes.container}>
+      <TopBar className={clsx(classes.topBar, { [classes.fixedHeight]: !isHomePage })} />
+      <div className={isHomePage ? classes.homeContainer : classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
       {isShowFooter && <Footer />}

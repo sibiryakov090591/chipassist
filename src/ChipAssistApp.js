@@ -48,7 +48,6 @@ import Register from "@src/views/chipassist/Register/Register.tsx";
 import ErrorRegister from "@src/views/chipassist/ErrorRegister/ErrorRegister";
 import { getUtm, lazyLoader } from "@src/utils/utility";
 import { loadMiscAction } from "@src/store/misc/miscActions";
-import ChipassistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
@@ -58,6 +57,7 @@ import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
 import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
+import HomePageVer2 from "@src/views/chipassist/ChipassistHomePage/ver2/HomePageVer2";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -299,7 +299,7 @@ const ChipAssistApp = () => {
                 </Routes>
               }
             />
-            <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <ChipassistHomePage />} />
+            <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <HomePageVer2 />} />
             {constants.id !== ID_ICSEARCH && <Route path="/sell-excess-inventory" element={<SellExcess />} />}
             <Route path="/auth/registration" element={<Register />} />
             <Route path="/registered" element={isRestricted ? <RegisterClosedSuccess /> : <RegisterSuccess />} />

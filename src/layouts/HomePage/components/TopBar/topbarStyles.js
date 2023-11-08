@@ -91,7 +91,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   toolbar: {
-    minHeight: 87,
+    minHeight: 80,
     alignItems: "center",
     paddingBottom: 0,
     paddingLeft: 10,
@@ -308,6 +308,13 @@ export const useStyles = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: "underline",
       color: "#ffffff",
+    },
+  },
+  homePageTopBar: {
+    transform: "translateY(-100%)",
+    transition: "all 250ms ease",
+    "&.collapse": {
+      transform: "translateY(0)",
     },
   },
 }));
