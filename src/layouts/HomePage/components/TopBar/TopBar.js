@@ -81,6 +81,7 @@ const TopBar = (props) => {
       window.addEventListener("scroll", listener);
     }
     return () => {
+      if (isHomePage && collapse) setСollapse(false);
       window.removeEventListener("scroll", listener);
     };
   }, [collapse, isMdUp, isHomePage]);
@@ -226,7 +227,7 @@ const TopBar = (props) => {
           </Toolbar>
         </Hidden>
         <Hidden only={["md", "lg", "xl"]}>
-          <div className={classes.toolbar}>
+          <div className={clsx(classes.toolbar, appTheme.toolbar)}>
             <div className={classes.mobileTopBar}>
               <div className={classes.mobileTopBarItem} style={{ display: "flex", alignSelf: "center" }}>
                 <MobileMenu logo={logo_img} />

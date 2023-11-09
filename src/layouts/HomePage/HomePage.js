@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   topBar: {
+    maxHeight: 133,
     zIndex: 1000,
     position: "fixed",
     transition: "all 250ms ease",

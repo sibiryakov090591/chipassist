@@ -3,8 +3,10 @@ import { colors } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    boxShadow: "none",
     backgroundColor: theme.palette.primary.main,
+    [theme.breakpoints.up("md")]: {
+      boxShadow: "none",
+    },
   },
   flexGrow: {
     flexGrow: 1,
@@ -12,7 +14,7 @@ export const useStyles = makeStyles((theme) => ({
   searchContainer: {
     margin: "20px 40px 10px",
     [theme.breakpoints.down("sm")]: {
-      margin: "20px 0px 6px",
+      margin: "20px 0px 10px",
     },
   },
   searchIconButton: {
@@ -311,7 +313,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   homePageTopBar: {
-    transform: "translateY(-100%)",
+    transform: "translateY(-101%)",
     transition: "all 250ms ease",
     "&.collapse": {
       transform: "translateY(0)",

@@ -86,6 +86,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       textDecoration: "underline",
       color: "#fff",
     },
+    [theme.breakpoints.down(1000)]: {
+      marginRight: 20,
+    },
   },
   heroButtonLink: {
     backgroundColor: "#2c1f46",
@@ -99,6 +102,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     position: "absolute",
     top: "-7px",
     left: "85%",
+    background: theme.palette.app.green800,
   },
   cartBlock: {
     display: "flex",
@@ -163,6 +167,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.8rem",
       lineHeight: "3.3rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "2.3rem",
       textAlign: "center",
     },
   },
@@ -181,7 +188,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     padding: "12px 0",
     color: "#f2f1f4",
     maxWidth: 370,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       textAlign: "center",
     },
   },
@@ -279,8 +286,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     flexWrap: "wrap",
     justifyContent: "space-between",
     [theme.breakpoints.down(768)]: {
-      flexDirection: "column",
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
       justifyContent: "center",
+    },
+    [theme.breakpoints.down(500)]: {
+      gridTemplateColumns: "1fr",
     },
   },
   countsItem: {
