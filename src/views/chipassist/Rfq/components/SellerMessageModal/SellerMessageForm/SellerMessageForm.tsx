@@ -34,7 +34,7 @@ import InputPhone from "@src/components/InputPhone/InputPhone";
 import { NumberInput } from "@src/components/Inputs";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import { useStyles } from "./styles";
+import { useStyles } from "@src/views/chipassist/Rfq/components/RFQForm/styles";
 
 interface Props {
   onCloseModalHandler?: () => void;
@@ -388,238 +388,239 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
   return (
     <form className={classes.root} autoComplete="on" onSubmit={handleSubmit}>
-      <div className={classes.formRow}>
-        <NumberInput
-          style={{ width: "100%" }}
-          name="quantity"
-          label={`${t("column.qty")} *`}
-          variant="outlined"
-          size="small"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={formState.values.quantity}
-          onBlur={onBlurHandler("quantity")}
-          onChange={handleChange}
-          onFocus={(e: any) => e.target.select()}
-          decimalScale={0}
-          isAllowedZero={false}
-          {...errorProps("quantity")}
-        />
-        <NumberInput
-          style={{ width: "100%" }}
-          name="price"
-          label={t("column.target_price")}
-          variant="outlined"
-          size="small"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>,
-          }}
-          value={formState.values.price}
-          onChange={handleChange}
-          {...errorProps("price")}
-          decimalScale={4}
-          isAllowedZero={true}
-        />
-      </div>
-      <div className={classes.formRow}>
-        <TextField
-          style={{ width: "100%" }}
-          name="message"
-          label={`${t("form_labels.message")} *`}
-          multiline
-          rows={isAuthenticated ? 4 : 2}
-          variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={formState.values.message || ""}
-          onChange={handleChange}
-          onBlur={onBlurHandler("message")}
-          placeholder={t("form_labels.message")}
-          {...errorProps("message")}
-        />
-      </div>
-      {!isAuthenticated && (
-        <>
-          <div className={classes.formRow}>
-            <TextField
-              style={{ width: "100%" }}
-              name="firstName"
-              label={`${t("form_labels.first_name")} *`}
-              variant="outlined"
-              size="small"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={formState.values.firstName}
-              onBlur={onBlurHandler("firstName")}
-              onChange={handleChange}
-              disabled={isAuthenticated}
-              {...errorProps("firstName")}
-            />
-            <TextField
-              style={{ width: "100%" }}
-              name="lastName"
-              label={`${t("form_labels.last_name")} *`}
-              variant="outlined"
-              size="small"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={formState.values.lastName}
-              onBlur={onBlurHandler("lastName")}
-              onChange={handleChange}
-              disabled={isAuthenticated}
-              {...errorProps("lastName")}
-            />
-          </div>
-          <div className={classes.formRow}>
-            <TextField
-              style={{ width: "100%" }}
-              name="email"
-              label={`${t(
-                constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-              )} *`}
-              variant="outlined"
-              size="small"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={formState.values.email}
-              onBlur={onBlurHandler("email")}
-              onChange={handleChange}
-              disabled={isAuthenticated}
-              {...errorProps("email")}
-            />
-            <TextField
-              style={{ width: "100%" }}
-              name="company_name"
-              label={`${t("form_labels.company_name")} *`}
-              variant="outlined"
-              size="small"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={formState.values.company_name}
-              onBlur={onBlurHandler("company_name")}
-              onChange={handleChange}
-              disabled={isAuthenticated}
-              {...errorProps("company_name")}
-            />
-          </div>
-          <div className={classes.formRow}>
-            {/* <TextField */}
-            {/*  style={{ textAlign: "start", width: "100%" }} */}
-            {/*  name="company_type" */}
-            {/*  label={`${t("column.company_type")} *`} */}
-            {/*  variant="outlined" */}
-            {/*  size="small" */}
-            {/*  InputLabelProps={{ */}
-            {/*    shrink: true, */}
-            {/*  }} */}
-            {/*  value={formState.values.company_type} */}
-            {/*  select */}
-            {/*  onChange={handleChange} */}
-            {/* > */}
-            {/*  <MenuItem value="Distributor">{t("column.distributor")}</MenuItem> */}
-            {/*  <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem> */}
-            {/*  <MenuItem value="Design organization">{t("column.design")}</MenuItem> */}
-            {/*  <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem> */}
-            {/*  <MenuItem value="Other">{t("column.other")}</MenuItem> */}
-            {/* </TextField> */}
-            <div className={classes.phone}>
-              <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
+      <div>
+        <div className={classes.formRow}>
+          <NumberInput
+            style={{ width: "100%" }}
+            name="quantity"
+            label={`${t("column.qty")} *`}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={formState.values.quantity}
+            onBlur={onBlurHandler("quantity")}
+            onChange={handleChange}
+            onFocus={(e: any) => e.target.select()}
+            decimalScale={0}
+            isAllowedZero={false}
+            {...errorProps("quantity")}
+          />
+          <NumberInput
+            style={{ width: "100%" }}
+            name="price"
+            label={t("column.target_price")}
+            variant="outlined"
+            size="small"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>,
+            }}
+            value={formState.values.price}
+            onChange={handleChange}
+            {...errorProps("price")}
+            decimalScale={4}
+            isAllowedZero={true}
+          />
+        </div>
+        <div className={classes.formRow}>
+          <TextField
+            style={{ width: "100%" }}
+            name="message"
+            label={`${t("form_labels.message")} *`}
+            multiline
+            rows={isAuthenticated ? 4 : 2}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={formState.values.message || ""}
+            onChange={handleChange}
+            onBlur={onBlurHandler("message")}
+            placeholder={t("form_labels.message")}
+            {...errorProps("message")}
+          />
+        </div>
+        {!isAuthenticated && (
+          <>
+            <div className={classes.formRow}>
+              <TextField
+                style={{ width: "100%" }}
+                name="firstName"
+                label={`${t("form_labels.first_name")} *`}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={formState.values.firstName}
+                onBlur={onBlurHandler("firstName")}
+                onChange={handleChange}
+                disabled={isAuthenticated}
+                {...errorProps("firstName")}
+              />
+              <TextField
+                style={{ width: "100%" }}
+                name="lastName"
+                label={`${t("form_labels.last_name")} *`}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={formState.values.lastName}
+                onBlur={onBlurHandler("lastName")}
+                onChange={handleChange}
+                disabled={isAuthenticated}
+                {...errorProps("lastName")}
+              />
             </div>
-            <TextField
-              variant="outlined"
-              name="country"
-              size="small"
-              label={`${t("form_labels.delivery_to")} *`}
-              value={formState.values.country}
-              onBlur={onBlurHandler("country")}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              select
-              style={{ textAlign: "start", width: "100%" }}
-              {...errorProps("country")}
-            >
-              {countries?.map((i: Record<string, any>) => (
-                <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                  {i.printable_name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-          {/* {formState.values.company_type === "Other" && ( */}
-          {/*  <div className={classes.formRow}> */}
-          {/*    <TextField */}
-          {/*      style={{ width: "100%" }} */}
-          {/*      name="company_other_type" */}
-          {/*      label={`${t("column.company_other_type")} *`} */}
-          {/*      variant="outlined" */}
-          {/*      size="small" */}
-          {/*      InputLabelProps={{ */}
-          {/*        shrink: true, */}
-          {/*      }} */}
-          {/*      value={formState.values.company_other_type} */}
-          {/*      onChange={handleChange} */}
-          {/*      onBlur={onBlurHandler("company_other_type")} */}
-          {/*      {...errorProps("company_other_type")} */}
-          {/*    /> */}
-          {/*  </div> */}
-          {/* )} */}
-          {constants.id !== ID_ICSEARCH && (
-            <Box display="flex" flexDirection="column" ml={2} mt={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="receive_updates_confirm"
-                    className={appTheme.checkbox}
-                    checked={formState.values.receive_updates_confirm || false}
-                    onChange={handleChange}
-                  />
-                }
-                label={<>{t("feedback.form.receive_updates_confirm")}</>}
+            <div className={classes.formRow}>
+              <TextField
+                style={{ width: "100%" }}
+                name="email"
+                label={`${t(
+                  constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                )} *`}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={formState.values.email}
+                onBlur={onBlurHandler("email")}
+                onChange={handleChange}
+                disabled={isAuthenticated}
+                {...errorProps("email")}
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="policy_confirm"
-                    className={appTheme.checkbox}
-                    checked={formState.values.policy_confirm}
-                    onChange={handleChange}
-                  />
-                }
-                label={
-                  <>
-                    {t("feedback.form.policy_agree")}
-                    <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                      {t("feedback.form.terms_of_services")}
-                    </Link>
-                    {t("feedback.form.and")}
-                    <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                      {t("feedback.form.privacy_policy")}
-                    </Link>{" "}
-                    *
-                  </>
-                }
+              <TextField
+                style={{ width: "100%" }}
+                name="company_name"
+                label={`${t("form_labels.company_name")} *`}
+                variant="outlined"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={formState.values.company_name}
+                onBlur={onBlurHandler("company_name")}
+                onChange={handleChange}
+                disabled={isAuthenticated}
+                {...errorProps("company_name")}
               />
-              {formState.touched?.policy_confirm &&
-                !!formState.errors?.policy_confirm &&
-                formState.errors.policy_confirm[0] && (
-                  <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
-                )}
-            </Box>
-          )}
-        </>
-      )}
-
+            </div>
+            <div className={classes.formRow}>
+              {/* <TextField */}
+              {/*  style={{ textAlign: "start", width: "100%" }} */}
+              {/*  name="company_type" */}
+              {/*  label={`${t("column.company_type")} *`} */}
+              {/*  variant="outlined" */}
+              {/*  size="small" */}
+              {/*  InputLabelProps={{ */}
+              {/*    shrink: true, */}
+              {/*  }} */}
+              {/*  value={formState.values.company_type} */}
+              {/*  select */}
+              {/*  onChange={handleChange} */}
+              {/* > */}
+              {/*  <MenuItem value="Distributor">{t("column.distributor")}</MenuItem> */}
+              {/*  <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem> */}
+              {/*  <MenuItem value="Design organization">{t("column.design")}</MenuItem> */}
+              {/*  <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem> */}
+              {/*  <MenuItem value="Other">{t("column.other")}</MenuItem> */}
+              {/* </TextField> */}
+              <div className={classes.phone}>
+                <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
+              </div>
+              <TextField
+                variant="outlined"
+                name="country"
+                size="small"
+                label={`${t("form_labels.delivery_to")} *`}
+                value={formState.values.country}
+                onBlur={onBlurHandler("country")}
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                select
+                style={{ textAlign: "start", width: "100%" }}
+                {...errorProps("country")}
+              >
+                {countries?.map((i: Record<string, any>) => (
+                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                    {i.printable_name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            {/* {formState.values.company_type === "Other" && ( */}
+            {/*  <div className={classes.formRow}> */}
+            {/*    <TextField */}
+            {/*      style={{ width: "100%" }} */}
+            {/*      name="company_other_type" */}
+            {/*      label={`${t("column.company_other_type")} *`} */}
+            {/*      variant="outlined" */}
+            {/*      size="small" */}
+            {/*      InputLabelProps={{ */}
+            {/*        shrink: true, */}
+            {/*      }} */}
+            {/*      value={formState.values.company_other_type} */}
+            {/*      onChange={handleChange} */}
+            {/*      onBlur={onBlurHandler("company_other_type")} */}
+            {/*      {...errorProps("company_other_type")} */}
+            {/*    /> */}
+            {/*  </div> */}
+            {/* )} */}
+            {constants.id !== ID_ICSEARCH && (
+              <Box display="flex" flexDirection="column" ml={2} mt={1}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="receive_updates_confirm"
+                      className={appTheme.checkbox}
+                      checked={formState.values.receive_updates_confirm || false}
+                      onChange={handleChange}
+                    />
+                  }
+                  label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="policy_confirm"
+                      className={appTheme.checkbox}
+                      checked={formState.values.policy_confirm}
+                      onChange={handleChange}
+                    />
+                  }
+                  label={
+                    <>
+                      {t("feedback.form.policy_agree")}
+                      <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                        {t("feedback.form.terms_of_services")}
+                      </Link>
+                      {t("feedback.form.and")}
+                      <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                        {t("feedback.form.privacy_policy")}
+                      </Link>{" "}
+                      *
+                    </>
+                  }
+                />
+                {formState.touched?.policy_confirm &&
+                  !!formState.errors?.policy_confirm &&
+                  formState.errors.policy_confirm[0] && (
+                    <FormHelperText error>{formState.errors.policy_confirm[0]}</FormHelperText>
+                  )}
+              </Box>
+            )}
+          </>
+        )}
+      </div>
       <div className={clsx(commonClasses.actionsRow, classes.buttons)}>
         {onCloseModalHandler && (
           <Button

@@ -77,19 +77,32 @@ export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boo
         </Hidden>
       )}
       <div className={rfqModalClasses.content}>
-        <h2 className={classes.header}>Request quality check</h2>
-        <p className={classes.text}>
-          You are about to request the quality check for <strong>{partNumber}</strong> from{" "}
-          <strong>{sellerName}</strong>
-        </p>
+        {!showLoginForm ? (
+          <>
+            <h2 className={classes.header}>Request quality check</h2>
+            <p className={classes.text}>
+              You are about to request the quality check for <strong>{partNumber}</strong> from{" "}
+              <strong>{sellerName}</strong>
+            </p>
+          </>
+        ) : (
+          <Hidden smDown>
+            <h2 className={clsx(classes.header, { mobile: true })}>Sign in</h2>
+          </Hidden>
+        )}
         {!isAuthenticated && (
           <Hidden mdUp>
-            <div className={rfqModalClasses.signInMobile}>
-              {t("restricted.description_1")}
-              <span onClick={showSignIn(true)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
-                {t("restricted.sign_in")}
+            <div className={clsx(rfqModalClasses.signInMobile, { loginActive: showLoginForm })}>
+              {!showLoginForm && t("restricted.description_1")}
+              <span onClick={showSignIn(!showLoginForm)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
+                {showLoginForm ? (
+                  <span className={rfqModalClasses.backToRfq}>
+                    <DoubleArrowIcon /> Back to RFQ
+                  </span>
+                ) : (
+                  t("restricted.sign_in")
+                )}
               </span>
-              {". "}
             </div>
           </Hidden>
         )}

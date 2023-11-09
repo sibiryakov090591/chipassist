@@ -44,6 +44,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   paper: {
+    display: "flex",
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
@@ -56,6 +57,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     position: "relative",
     "&.fullScreen": {
       [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
         borderRadius: 0,
         height: "100%",
         width: "100%",
