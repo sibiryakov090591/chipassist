@@ -14,6 +14,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       justifyContent: "space-between",
       [theme.breakpoints.down("xs")]: {
         width: "auto",
+        height: "auto",
+        minHeight: "auto !important",
+        flexGrow: 1,
       },
       "& h3:not(:first-child)": {
         marginTop: 16,
@@ -45,6 +48,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     invoiceInput: {
       width: "80%",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
   }),
 );
