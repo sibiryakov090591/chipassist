@@ -35,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   fixedHeight: {
-    height: 133,
+    height: 127,
+    [theme.breakpoints.down("sm")]: {
+      height: 133,
+    },
   },
   container: {
     marginTop: 133,
