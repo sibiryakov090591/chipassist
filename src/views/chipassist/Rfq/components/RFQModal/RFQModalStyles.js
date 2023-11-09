@@ -35,6 +35,11 @@ export const useStyles = makeStyles((theme) => ({
       overflowY: "auto",
       padding: 12,
     },
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column",
+      flexGrow: 1,
+    },
   },
   header: {
     textAlign: "center",

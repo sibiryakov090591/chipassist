@@ -473,8 +473,8 @@ export const SendInvoiceModalContainer: React.FC<{
               <Divider className={classes.divider} />
 
               <h3>Shipping:</h3>
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
+              <Grid container spacing={1}>
+                <Grid item sm={6} xs={12}>
                   <Box>
                     <div className={classes.label}>Shipping type: *</div>
                     <Controller
@@ -494,7 +494,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                   <Box>
                     <div className={classes.label}>{`Shipping cost (${currency}): *`}</div>
                     <Controller
@@ -509,6 +509,7 @@ export const SendInvoiceModalContainer: React.FC<{
                       render={({ field }) => (
                         <NumberInput
                           {...field}
+                          className={classes.invoiceInput}
                           error={!!errors.shipping_fee}
                           helperText={errors.shipping_fee?.message}
                           variant="outlined"

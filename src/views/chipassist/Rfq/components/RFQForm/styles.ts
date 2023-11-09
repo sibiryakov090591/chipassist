@@ -22,9 +22,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   root: {
     width: 500,
-    margin: "0 auto",
     [theme.breakpoints.down("sm")]: {
       width: "auto",
+    },
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column",
+      flexGrow: 1,
+      justifyContent: "space-between",
     },
     "& .MuiTextField-root": {
       margin: 13,

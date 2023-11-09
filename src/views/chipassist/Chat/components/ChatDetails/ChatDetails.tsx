@@ -49,6 +49,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isProd = constants.title !== "Master";
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
@@ -497,7 +498,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               <Box textAlign="center" mt="3px">
                 <a
                   className={appTheme.hyperlink}
-                  href={`https://chipassist.com/search?query=${encodeURIComponent(selectedChat.rfq.upc)}`}
+                  href={`https://${isProd ? "chipassist.com" : "camaster.site"}/search?query=${encodeURIComponent(
+                    selectedChat.rfq.upc,
+                  )}`}
                   target="_blank"
                   rel="noreferrer"
                 >
