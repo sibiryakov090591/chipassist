@@ -26,9 +26,6 @@ import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import validate from "validate.js";
 import _ from "lodash";
-import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
-import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import formSchema from "@src/utils/formSchema";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -103,7 +100,6 @@ interface FormState {
 }
 
 const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
-  const { t } = useI18n("profile");
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
@@ -143,28 +139,10 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
 
   const schema = React.useMemo(() => {
     return {
-      company_name: {
-        format: {
-          pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
-          flags: "i",
-          message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits")}`,
-        },
-      },
-      city: {
-        format: {
-          pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
-          flags: "i",
-          message: `^City ${t("errors.only_letters_and_digits")}`,
-        },
-      },
-      email: { presence: { allowEmpty: true }, ...formSchema.email },
-      postcode: {
-        format: {
-          pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
-          flags: "i",
-          message: `^${t("form_labels.postcode")} ${t("errors.only_letters_and_digits")}`,
-        },
-      },
+      company_name: { ...formSchema.companyName, presence: { allowEmpty: true } },
+      city: { ...formSchema.city, presence: { allowEmpty: true } },
+      email: { ...formSchema.email, presence: { allowEmpty: true } },
+      postcode: { ...formSchema.postcode, presence: { allowEmpty: true } },
     };
   }, []);
 
