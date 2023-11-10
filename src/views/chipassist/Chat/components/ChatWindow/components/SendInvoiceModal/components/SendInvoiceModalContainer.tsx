@@ -11,7 +11,6 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/styles";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppTheme from "@src/theme/useAppTheme";
-import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { defaultCountry } from "@src/constants/countries";
 import { SellerProfileInfo } from "@src/store/sellerProfile/sellerProfileTypes";
@@ -49,7 +48,6 @@ export const SendInvoiceModalContainer: React.FC<{
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
-  const previewDisabled = constants.apiHost !== "api.camaster.site";
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
@@ -556,13 +554,11 @@ export const SendInvoiceModalContainer: React.FC<{
                 </Box>
               </h3>
 
-              {!previewDisabled && (
-                <Box display="flex" justifyContent="flex-end">
-                  <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
-                    Preview PDF
-                  </span>
-                </Box>
-              )}
+              <Box display="flex" justifyContent="flex-end">
+                <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
+                  Preview PDF
+                </span>
+              </Box>
             </>
           )}
         </div>

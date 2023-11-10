@@ -184,14 +184,24 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         },
         selectedChat?.id,
       ),
-    ).then(() => {
-      dispatch(
-        showBottomLeftMessageAlertAction({
-          text: "Your stock was updated successfully!",
-          severity: "success",
-        }),
-      );
-    });
+    )
+      .then(() => {
+        dispatch(
+          showBottomLeftMessageAlertAction({
+            text: "Your stock was updated successfully!",
+            severity: "success",
+          }),
+        );
+      })
+      .catch(() => {
+        dispatch(
+          showBottomLeftMessageAlertAction({
+            text: "The update failed!",
+            severity: "warning",
+          }),
+        );
+        return true;
+      });
 
     if (stockrecordErrors) dispatch(clearStockErrors());
 
