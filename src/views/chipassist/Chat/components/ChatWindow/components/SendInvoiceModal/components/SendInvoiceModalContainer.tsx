@@ -516,6 +516,7 @@ export const SendInvoiceModalContainer: React.FC<{
                           size="small"
                           decimalScale={4}
                           isAllowedZero={true}
+                          onFocus={(e: any) => e.target.select()}
                         />
                       )}
                     />
