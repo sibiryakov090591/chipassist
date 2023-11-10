@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { clsx } from "clsx";
-import { Box, Button, Grid, MenuItem, TextField } from "@material-ui/core";
+import { Box, Button, Divider, Grid, MenuItem, TextField } from "@material-ui/core";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import AddressData from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/components/AddressData/AddressData";
+import { getPrice, getStockDataCode } from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";
 import { NumberInput } from "@src/components/Inputs";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -10,33 +12,37 @@ import { useStyles } from "@src/views/chipassist/Chat/components/ChatWindow/comp
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { getPrice, getStockDataCode } from "@src/utils/product";
 import { defaultCountry } from "@src/constants/countries";
-import { Address } from "@src/store/profile/profileTypes";
-import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
+import { SellerProfileInfo } from "@src/store/sellerProfile/sellerProfileTypes";
+import {
+  getPartnerInfo,
+  loadProfileInfoThunk,
+  saveNewPartnerInfo,
+  updateProfileInfoThunk,
+} from "@src/store/profile/profileActions";
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
-import { ChatListStock } from "@src/store/chat/chatTypes";
 
 type FormValues = {
   company_name: string;
   first_name: string;
   last_name: string;
   country: string;
-  line1: string; // address
-  line4: string; // city
+  address: string; // address
+  city: string; // city
   postcode: string;
-  phone_number_str: string;
-  quantity: string;
+  phone: string;
   additional_notes: string;
+  shipping_notes: string;
+  shipping_fee: string;
 };
 
-export const SendOrderModalContainer: React.FC<{
-  open: boolean;
-  stock: ChatListStock;
-  onCloseModal: () => void;
-  setIsSending: any;
+export const SendInvoiceModalContainer: React.FC<{
   isExample?: boolean;
-  pageNum?: any;
+  open: boolean;
+  stock: any;
+  onCloseModal: any;
+  setIsSending: any;
+  pageNum?: number;
 }> = ({ open, stock, onCloseModal, setIsSending, isExample, pageNum }) => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
@@ -49,8 +55,11 @@ export const SendOrderModalContainer: React.FC<{
   const currencyList = useAppSelector((state) => state.currency.currencyList);
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
 
-  const profileInfo = useAppSelector((state) => state.profile.profileInfo);
-  const billingAddress = profileInfo?.defaultBillingAddress;
+  const { profileInfo, partnerProfile, selectedPartner } = useAppSelector((state) => state.profile);
+  const billingAddress = partnerProfile;
+  const purchaseOrder: any = isExample
+    ? null
+    : selectedChat?.details?.po && Object.values(selectedChat?.details?.po)[0];
 
   const {
     watch,
@@ -73,85 +82,126 @@ export const SendOrderModalContainer: React.FC<{
     },
   });
 
-  const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
-  const quantity = watch("quantity");
-  const price = !!stock && !!quantity && getPrice(+quantity, stock as any);
-  const totalPrice = !!stock && !!quantity && !!price && quantity * price;
+  const shippingFee = watch("shipping_fee");
+  const currency = currencyList.find((curr) => curr.code === stock?.currency)?.code;
+  const quantity = purchaseOrder?.quantity || purchaseOrder?.requested_qty || rfq?.quantity || 0;
+  const unitPrice = !!stock && !!quantity && getPrice(+quantity, stock as any);
+  const outPrice = !!unitPrice && quantity * unitPrice;
+  const totalPrice = !!outPrice && outPrice + Number(shippingFee || 0);
 
-  const [step, setStep] = useState(1);
+  const shippingTypes = [
+    "EXW - Ex-Works",
+    "FCA - Free to Carrier",
+    "FAS - Free Alongside Ship",
+    "FOB - Free On Board",
+    "CFR - Cost and Freight",
+    "CIF - Cost, Insurance and Freight",
+    "CPT - Carriage Paid To",
+    "CIP - Carriage And Insurance Paid To",
+    "DAP - Delivered At Place",
+    "DPU - Delivered At Place Unloaded",
+    "DDP - Delivered Duty Paid",
+  ];
+
+  const [step, setStep] = useState(pageNum || 1);
 
   useEffect(() => {
     if (open) {
       reset();
-      setStep(1);
+      if (!isExample) {
+        setStep(1);
+      }
 
       setValue("company_name", billingAddress?.company_name || "");
-      setValue("first_name", billingAddress?.first_name || "");
-      setValue("last_name", billingAddress?.last_name || "");
-      setValue("phone_number_str", billingAddress?.phone_number_str || "");
-      setValue("line4", billingAddress?.line4 || "");
+      setValue("first_name", profileInfo?.firstName || "");
+      setValue("last_name", profileInfo?.lastName || "");
+      setValue("phone", billingAddress?.phone || "");
+      setValue("city", billingAddress?.city || "");
       setValue("postcode", billingAddress?.postcode || "");
-      setValue("line1", billingAddress?.line1 || "");
-      setValue("quantity", rfq?.quantity || "");
+      setValue("address", billingAddress?.address || "");
+      setValue("shipping_fee", 0);
+      setValue("shipping_notes", shippingTypes[0]);
     }
   }, [open, billingAddress]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    if (!isValid || isExample) return false;
+    if (!isValid || !selectedPartner) return false;
 
-    setIsSending(true);
-    onCloseModal();
-    if (billingAddress) {
-      const companyData = Object.fromEntries(
-        Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
-      );
-      let companyDataWasChanged = false;
-      Object.entries(companyData).forEach(([key, val]) => {
-        if (!companyDataWasChanged && val !== billingAddress[key as keyof Address]) {
-          companyDataWasChanged = true;
-        }
-      });
-      if (companyDataWasChanged) {
-        await dispatch(updateCompanyAddress(billingAddress.id, companyData)).then(() =>
-          dispatch(loadProfileInfoThunk()),
+    if (!isExample) {
+      setIsSending(true);
+      onCloseModal();
+      if (billingAddress) {
+        const companyData = Object.fromEntries(
+          Object.entries(data).filter(([key]) => Object.prototype.hasOwnProperty.call(billingAddress, key)),
         );
+        let companyDataWasChanged = false;
+        Object.entries(companyData).forEach(([key, val]) => {
+          if (!companyDataWasChanged && val !== billingAddress[key as keyof SellerProfileInfo]) {
+            companyDataWasChanged = true;
+          }
+        });
+        if (companyDataWasChanged) {
+          await dispatch(saveNewPartnerInfo(selectedPartner.id, companyData)).then(() => {
+            dispatch(getPartnerInfo(selectedPartner.id));
+          });
+          await dispatch(updateProfileInfoThunk({ first_name: data.first_name, last_name: data.last_name })).then(
+            () => {
+              dispatch(loadProfileInfoThunk());
+            },
+          );
+        }
       }
+      const orderData = {
+        company_name: data.company_name,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        postcode: data.postcode,
+        phone_number_str: data.phone && `+${data.phone.replace(/[+]/g, "")}`,
+        quantity,
+        additional_notes: data.additional_notes,
+        shipping_notes: data.shipping_notes,
+        shipping_fee: data.shipping_fee,
+        line1: data.address,
+        line4: data.city,
+        country: checkout?.countries?.find((c) => c.url === data.country)?.url || "",
+        price: unitPrice,
+        totalPrice: outPrice,
+        stockrecord: stock,
+        mpn: rfq?.upc || stock?.upc,
+        datecode: getStockDataCode(stock),
+        purchase_order: purchaseOrder,
+      };
+      return dispatch(sendMessage(selectedChat.id, "''", orderData, "invoice")).finally(() => setIsSending(false));
     }
-    const orderData = {
-      ...data,
-      price,
-      totalPrice,
-      stockrecord: stock,
-      mpn: rfq?.upc || stock?.upc,
-      datecode: getStockDataCode(stock),
-    };
-    return dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
+    return false;
   };
 
   const goToStep = (direction: "next" | "prev") => async () => {
     if (direction === "next" && !(await trigger())) return false;
-    return setStep(direction === "next" ? 2 : 1);
+    return setStep((prev) => (direction === "next" ? prev + 1 : prev - 1));
   };
 
   const onOpenPreviewPdf = () => {
     if (!selectedChat?.id) return null;
     const data = {
-      po: {
+      invoice: {
         mpn: selectedChat?.title,
-        line1: getValues("line1"),
-        line4: getValues("line4"),
-        price,
+        line1: getValues("address"),
+        line4: getValues("city"),
+        price: unitPrice,
         country: getValues("country"),
         datecode: getStockDataCode(stock),
         postcode: getValues("postcode"),
         last_name: getValues("last_name"),
         first_name: getValues("first_name"),
-        totalPrice,
-        // stockrecord: stock,
+        totalPrice: outPrice,
+        stockrecord: stock,
         company_name: getValues("company_name"),
-        quantity,
+        quantity: purchaseOrder?.quantity,
         additional_notes: getValues("additional_notes"),
-        phone_number_str: getValues("phone_number_str") && `+${getValues("phone_number_str").replace(/[+]/g, "")}`,
+        phone_number_str: getValues("phone") && `+${getValues("phone").replace(/[+]/g, "")}`,
+        shipping_notes: getValues("shipping_notes"),
+        shipping_fee: getValues("shipping_fee"),
       },
     };
     return dispatch(previewOrderPdf(selectedChat.id, data));
@@ -161,12 +211,12 @@ export const SendOrderModalContainer: React.FC<{
 
   return (
     <div className={isExample ? clsx(commonClasses.paper, "fullScreen") : commonClasses.displayContents}>
-      <form className={classes.form}>
+      <form style={{ minHeight: 600 }} className={classes.form}>
         <div>
-          {(isExample ? pageNum : step) === 1 && (
+          {step === 1 && (
             <>
               <h3 style={{ marginBottom: 20 }}>Company</h3>
-              <Grid container spacing={3}>
+              <Grid container spacing={2}>
                 <Grid item sm={6} xs={12}>
                   <Controller
                     name="company_name"
@@ -195,7 +245,7 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item sm={6} xs={12}>
                   <Controller
-                    name="phone_number_str"
+                    name="phone"
                     control={control}
                     // rules={{
                     //   required: {
@@ -209,8 +259,8 @@ export const SendOrderModalContainer: React.FC<{
                         label="Work phone"
                         small={true}
                         style={{ height: "37.63px", margin: 0 }}
-                        // error={!!errors.phone_number_str}
-                        // helperText={errors.phone_number_str?.message}
+                        // error={!!errors.phone}
+                        // helperText={errors.phone?.message}
                       />
                     )}
                   />
@@ -280,7 +330,6 @@ export const SendOrderModalContainer: React.FC<{
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        value={getValues("country")}
                         variant="outlined"
                         InputLabelProps={{
                           shrink: true,
@@ -304,7 +353,7 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item sm={6} xs={12}>
                   <Controller
-                    name="line4"
+                    name="city"
                     control={control}
                     rules={{
                       required: {
@@ -319,8 +368,8 @@ export const SendOrderModalContainer: React.FC<{
                           shrink: true,
                         }}
                         label="City *"
-                        error={!!errors.line4}
-                        helperText={errors.line4?.message}
+                        error={!!errors.city}
+                        helperText={errors.city?.message}
                         variant="outlined"
                         size="small"
                         fullWidth
@@ -356,7 +405,7 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item sm={6} xs={12}>
                   <Controller
-                    name="line1"
+                    name="address"
                     control={control}
                     rules={{
                       required: {
@@ -371,8 +420,8 @@ export const SendOrderModalContainer: React.FC<{
                           shrink: true,
                         }}
                         label="Address *"
-                        error={!!errors.line1}
-                        helperText={errors.line1?.message}
+                        error={!!errors.address}
+                        helperText={errors.address?.message}
                         variant="outlined"
                         size="small"
                         fullWidth
@@ -381,20 +430,19 @@ export const SendOrderModalContainer: React.FC<{
                   />
                 </Grid>
               </Grid>
+
+              <h3>Buyer details</h3>
+              <AddressData item={purchaseOrder} />
             </>
           )}
 
-          {(isExample ? pageNum : step) === 2 && (
+          {step === 2 && (
             <>
               <h3>Product</h3>
-              <Grid container spacing={2} className={classes.productCard}>
+              <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <div className={classes.label}>MPN:</div>
                   <div className={classes.value}>{stock?.upc || "-"}</div>
-                </Grid>
-                <Grid item xs={6}>
-                  <div className={classes.label}>Unit price:</div>
-                  <div className={classes.value}>{(price && `${formatMoney(price)}${symbol}`) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Date code (DC):</div>
@@ -406,48 +454,71 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item xs={6}>
                   <Box>
-                    <div className={classes.label}>Requested qty *</div>
+                    <div className={classes.label}>Quantity:</div>
+                    <div className={classes.value}>{quantity || "-"}</div>
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <div className={classes.label}>{`Unit price (${currency}):`}</div>
+                  <div className={classes.value}>{(unitPrice && formatMoney(unitPrice)) || "-"}</div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div className={classes.label}>{`Out price (${currency}):`}</div>
+                  <div className={classes.value}>{(outPrice && formatMoney(outPrice)) || "-"}</div>
+                </Grid>
+              </Grid>
+
+              <Divider className={classes.divider} />
+
+              <h3>Shipping:</h3>
+              <Grid container spacing={1}>
+                <Grid item sm={6} xs={12}>
+                  <Box>
+                    <div className={classes.label}>Shipping type: *</div>
                     <Controller
-                      name="quantity"
+                      name="shipping_notes"
                       control={control}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: "Qty is required",
-                        },
-                        min: {
-                          value: stock?.moq || 1,
-                          message: stock?.moq ? `MOQ is ${stock.moq}` : "At least 1",
-                        },
-                        ...(!!stock?.num_in_stock && {
-                          max: {
-                            value: stock.num_in_stock,
-                            message: `In stock ${stock.num_in_stock} pcs.`,
-                          },
-                        }),
-                      }}
                       render={({ field }) => (
-                        <NumberInput
-                          {...field}
-                          // InputLabelProps={{
-                          //   shrink: true,
-                          // }}
-                          // label="Requested qty:"
-                          className={classes.qtyInput}
-                          error={!!errors.quantity}
-                          helperText={errors.quantity?.message}
-                          variant="outlined"
-                          size="small"
-                          decimalScale={0}
-                          isAllowedZero={false}
-                        />
+                        <TextField {...field} className={classes.invoiceInput} variant="outlined" size="small" select>
+                          {shippingTypes.map((type) => {
+                            return (
+                              <MenuItem key={type} value={type}>
+                                {type}
+                              </MenuItem>
+                            );
+                          })}
+                        </TextField>
                       )}
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
-                  <div className={classes.label}>Expected total:</div>
-                  <div className={classes.value}>{(totalPrice && `${formatMoney(totalPrice)}${symbol}`) || "-"}</div>
+                <Grid item sm={6} xs={12}>
+                  <Box>
+                    <div className={classes.label}>{`Shipping cost (${currency}): *`}</div>
+                    <Controller
+                      name="shipping_fee"
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "Shipping cost is required",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <NumberInput
+                          {...field}
+                          className={classes.invoiceInput}
+                          error={!!errors.shipping_fee}
+                          helperText={errors.shipping_fee?.message}
+                          variant="outlined"
+                          size="small"
+                          decimalScale={4}
+                          isAllowedZero={true}
+                          onFocus={(e: any) => e.target.select()}
+                        />
+                      )}
+                    />
+                  </Box>
                 </Grid>
               </Grid>
 
@@ -474,7 +545,16 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
               </Grid>
 
-              <Box display="flex" justifyContent="flex-end" mt="16px">
+              <Divider className={classes.divider} />
+
+              <h3>
+                <Box display="flex" justifyContent="space-between">
+                  <span>{`Total Amount Payable (${currency}):`}</span>
+                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
+                </Box>
+              </h3>
+
+              <Box display="flex" justifyContent="flex-end">
                 <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
                   Preview PDF
                 </span>
@@ -488,12 +568,12 @@ export const SendOrderModalContainer: React.FC<{
             <Button
               variant="contained"
               className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
-              onClick={step <= 1 ? onCloseModal : goToStep("prev")}
+              onClick={isExample ? null : step <= 1 ? onCloseModal : goToStep("prev")}
             >
               {step <= 1 ? "Cancel" : "Back"}
             </Button>
             <Button
-              onClick={step >= 2 ? onSubmitHandler : goToStep("next")}
+              onClick={isExample ? onSubmitHandler : step >= 2 ? onSubmitHandler : goToStep("next")}
               variant="contained"
               className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
             >
@@ -506,4 +586,4 @@ export const SendOrderModalContainer: React.FC<{
   );
 };
 
-export default SendOrderModalContainer;
+export default SendInvoiceModalContainer;

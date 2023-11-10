@@ -23,6 +23,7 @@ import chatIcon from "@src/images/Icons/chat-icon.png";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Paper, Grid, useTheme, useMediaQuery } from "@material-ui/core";
+import { format } from "date-fns";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -323,7 +324,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                 <div className={classes.dateLabel}>{dateLabel}</div>
                 {list.map((item) => {
                   if (!item) return null;
-                  const time = new Date(item.created).toLocaleTimeString().slice(0, 5);
+                  const time = format(new Date(item.created), "HH:mm");
                   const orderData = item.po;
                   const invoiceData = item.invoice;
                   const purchaseOrder = item.invoice?.purchase_order;

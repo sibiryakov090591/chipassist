@@ -40,10 +40,7 @@ const Catalog: React.FC = () => {
             {catalog.normalizeData.map((category: any) => {
               return (
                 <div key={uuidv4()} className={classes.categoryWrapper}>
-                  <NavLink
-                    to={`/parts/${category.url}?catalogId=${category.id}`}
-                    className={clsx(classes.categoryLink, classes.depth1Name)}
-                  >
+                  <NavLink to={`/parts/${category.url}`} className={clsx(classes.categoryLink, classes.depth1Name)}>
                     {category.name}
                   </NavLink>
                   {!!category.children.length && (
@@ -52,7 +49,7 @@ const Catalog: React.FC = () => {
                         return (
                           <div key={uuidv4()}>
                             <NavLink
-                              to={`/parts/${depth_2.url}?catalogId=${depth_2.id}`}
+                              to={`/parts/${depth_2.url}`}
                               className={clsx({
                                 [classes.categoryLink]: true,
                                 [classes.depth2Name]: true,
@@ -67,7 +64,7 @@ const Catalog: React.FC = () => {
                                   return (
                                     <div key={uuidv4()}>
                                       <NavLink
-                                        to={`/parts/${depth_3.url}?catalogId=${depth_3.id}`}
+                                        to={`/parts/${depth_3.url}`}
                                         className={clsx(classes.categoryLink, classes.depth3Name)}
                                       >
                                         {depth_3.name}
@@ -78,7 +75,7 @@ const Catalog: React.FC = () => {
                                             return (
                                               <div key={uuidv4()}>
                                                 <NavLink
-                                                  to={`/parts/${depth_4.url}?catalogId=${depth_4.id}`}
+                                                  to={`/parts/${depth_4.url}`}
                                                   className={clsx(classes.categoryLink, classes.depth4Name)}
                                                 >
                                                   {depth_4.name}
@@ -89,7 +86,7 @@ const Catalog: React.FC = () => {
                                                       return (
                                                         <div key={uuidv4()}>
                                                           <NavLink
-                                                            to={`/parts/${depth_5.url}?catalogId=${depth_5.id}`}
+                                                            to={`/parts/${depth_5.url}`}
                                                             className={clsx(classes.categoryLink, classes.depth5Name)}
                                                           >
                                                             {depth_5.name}

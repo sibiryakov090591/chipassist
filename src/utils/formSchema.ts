@@ -35,7 +35,7 @@ const lastName = {
 const companyName = {
   presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
+    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} -]*`,
     flags: "i",
     message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits")}`,
   },
@@ -44,7 +44,7 @@ const companyName = {
 const city = {
   presence: { allowEmpty: false, message: `^${t("form_labels.city")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
+    pattern: `[a-zA-Z${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} -]*`,
     flags: "i",
     message: `^${t("errors.only_letters")}`,
   },

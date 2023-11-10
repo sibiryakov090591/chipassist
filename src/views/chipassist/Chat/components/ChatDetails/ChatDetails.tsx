@@ -49,6 +49,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isProd = constants.title !== "Master";
 
   const { selectedChat, stockrecordErrors, stockrecordUpdating: isUpdating } = useAppSelector((state) => state.chat);
   const stock = !!selectedChat?.stocks && selectedChat?.stocks[0];
@@ -183,14 +184,24 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         },
         selectedChat?.id,
       ),
-    ).then(() => {
-      dispatch(
-        showBottomLeftMessageAlertAction({
-          text: "Your stock was updated successfully!",
-          severity: "success",
-        }),
-      );
-    });
+    )
+      .then(() => {
+        dispatch(
+          showBottomLeftMessageAlertAction({
+            text: "Your stock was updated successfully!",
+            severity: "success",
+          }),
+        );
+      })
+      .catch(() => {
+        dispatch(
+          showBottomLeftMessageAlertAction({
+            text: "The update failed!",
+            severity: "warning",
+          }),
+        );
+        return true;
+      });
 
     if (stockrecordErrors) dispatch(clearStockErrors());
 
@@ -497,7 +508,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               <Box textAlign="center" mt="3px">
                 <a
                   className={appTheme.hyperlink}
-                  href={`https://chipassist.com/search?query=${encodeURIComponent(selectedChat.rfq.upc)}`}
+                  href={`https://${isProd ? "chipassist.com" : "camaster.site"}/search?query=${encodeURIComponent(
+                    selectedChat.rfq.upc,
+                  )}`}
                   target="_blank"
                   rel="noreferrer"
                 >

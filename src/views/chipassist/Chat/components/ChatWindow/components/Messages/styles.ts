@@ -9,9 +9,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
-      },
+      // [theme.breakpoints.down("xs")]: {
+      //   display: "none",
+      // },
     },
     messagesWrapper: {
       overflowY: "auto",

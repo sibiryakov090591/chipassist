@@ -109,6 +109,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
     case actionTypes.UPDATE_CHAT_LIST_S: {
       const { results, unread_total } = action.response;
       let unreadCountSelectedChat = 0;
+      let updatedSelectedChat: any = null;
 
       const newChats: ChatListItem[] = [];
       results.forEach((chat: ChatListItem) => {
@@ -127,6 +128,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           updatedChats.push({ ...updatedChat, partner_name: getPartnerName(updatedChat.partner) });
           if (updatedChat.id === state.selectedChat?.id) {
             unreadCountSelectedChat = Number(updatedChat.unread_messages);
+            updatedSelectedChat = updatedChat;
           }
           return false;
         }
@@ -141,7 +143,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           unread_total,
         },
         ...(unreadCountSelectedChat > 0 && {
-          selectedChat: { ...state.selectedChat, unread_messages: unreadCountSelectedChat },
+          selectedChat: { ...state.selectedChat, ...updatedSelectedChat, unread_messages: unreadCountSelectedChat },
         }),
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + 1 },
       };
