@@ -5,14 +5,7 @@ import { red } from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   paper: {
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: 3,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(4, 4),
-    overflowY: "auto",
-    maxHeight: "92vh",
-    maxWidth: "92vw",
-    minWidth: 320,
+    flexDirection: "column",
   },
   header: {
     textAlign: "center",
