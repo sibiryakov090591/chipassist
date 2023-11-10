@@ -172,7 +172,7 @@ const ProgressModal: React.FC = () => {
       }}
     >
       <Fade in={open}>
-        <div className={commonClasses.paper}>
+        <div className={clsx(commonClasses.paper, classes.paper)}>
           {!isAuthenticated && !success && !error && partNumber && (
             <div className={classes.content}>
               {requestType === "rfq" && (
