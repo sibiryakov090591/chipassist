@@ -32,6 +32,7 @@ import formSchema from "@src/utils/formSchema";
 import InputPhone from "@src/components/InputPhone/InputPhone";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import { saveProfileInfo, updateCompanyAddress, updateProfileInfoThunk } from "@src/store/profile/profileActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -117,17 +118,21 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
   const countries = useAppSelector((state) => state.checkout.countries);
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
 
-  const defaultState = (): FormState => ({
+  const defaultState = (profile?: any): FormState => ({
     isValid: false,
     values: {
       quantity: 1,
       price: null,
       message: "I'd like to know more about the quality check for this product...",
-      country: "",
-      email: "",
-      firstName: "",
-      lastName: "",
-      company_name: "",
+      country:
+        profile?.defaultBillingAddress?.country.slice(
+          profile?.defaultBillingAddress?.country.length - 4,
+          profile?.defaultBillingAddress?.country.length,
+        ) || "",
+      email: profile?.email || "",
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
+      company_name: profile?.defaultBillingAddress?.company_name || "",
       // company_type: "Distributor",
       // company_other_type: "",
       policy_confirm: false,
@@ -171,8 +176,14 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
   }, [isAuthenticated]);
 
   useEffect(() => {
+    if (profileInfo) {
+      setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
+    }
+  }, [profileInfo]);
+
+  useEffect(() => {
     if (open) {
-      setFormState(defaultState());
+      setFormState(defaultState(profileInfo));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "seller_message_form_register_data",
@@ -262,6 +273,11 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       }));
     }
 
+    if (isAuthenticated && !isExample && Object.keys(profileInfo).includes(name)) {
+      const updatedProfileInfo = { ...profileInfo, [name]: value };
+      dispatch(saveProfileInfo(updatedProfileInfo));
+    }
+
     return setFormState((prevState) => ({
       ...prevState,
       values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
@@ -301,6 +317,16 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       // dispatch(changeMisc("sellerMessage", formState.values, formState.values.email));
 
       if (isAuthenticated) {
+        dispatch(
+          updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
+            ...profileInfo?.defaultBillingAddress,
+            company_name: formState.values.company_name,
+            phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+            country: formState.values.country ? formState.values.country : null,
+          }),
+        );
+        dispatch(updateProfileInfoThunk());
+
         dispatch(sendQualityCheck(data)).then(() => {
           if (onCloseModalHandler) dispatch(qualityCheckModalClose());
           setFormState(defaultState());
@@ -390,7 +416,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
           {...errorProps("message")}
         />
       </div>
-      {!isAuthenticated && (
+      {
         <>
           <div className={classes.formRow}>
             <TextField
@@ -405,7 +431,6 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
               value={formState.values.firstName}
               onBlur={onBlurHandler("firstName")}
               onChange={handleChange}
-              disabled={isAuthenticated}
               {...errorProps("firstName")}
             />
             <TextField
@@ -420,7 +445,6 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
               value={formState.values.lastName}
               onBlur={onBlurHandler("lastName")}
               onChange={handleChange}
-              disabled={isAuthenticated}
               {...errorProps("lastName")}
             />
           </div>
@@ -454,7 +478,6 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
               value={formState.values.company_name}
               onBlur={onBlurHandler("company_name")}
               onChange={handleChange}
-              disabled={isAuthenticated}
               {...errorProps("company_name")}
             />
           </div>
@@ -497,7 +520,11 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
               {...errorProps("country")}
             >
               {countries?.map((i: Record<string, any>) => (
-                <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                <MenuItem
+                  className={appTheme.selectMenuItem}
+                  key={i.url.slice(i.url.length - 4, i.url.length)}
+                  value={i.url.slice(i.url.length - 4, i.url.length)}
+                >
                   {i.printable_name}
                 </MenuItem>
               ))}
@@ -521,7 +548,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
           {/*    /> */}
           {/*  </div> */}
           {/* )} */}
-          {constants.id !== ID_ICSEARCH && (
+          {constants.id !== ID_ICSEARCH && !isAuthenticated && (
             <Box display="flex" flexDirection="column" ml={2} mt={1}>
               <FormControlLabel
                 control={
@@ -565,7 +592,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
             </Box>
           )}
         </>
-      )}
+      }
 
       <div className={clsx(commonClasses.actionsRow, classes.buttons)}>
         {onCloseModalHandler && (
