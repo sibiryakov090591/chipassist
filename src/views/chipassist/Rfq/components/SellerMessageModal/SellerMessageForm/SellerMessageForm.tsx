@@ -35,7 +35,12 @@ import { NumberInput } from "@src/components/Inputs";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "@src/views/chipassist/Rfq/components/RFQForm/styles";
-import { saveProfileInfo, updateCompanyAddress, updateProfileInfoThunk } from "@src/store/profile/profileActions";
+import {
+  loadProfileInfoThunk,
+  saveProfileInfo,
+  updateCompanyAddress,
+  updateProfileInfoThunk,
+} from "@src/store/profile/profileActions";
 
 interface Props {
   onCloseModalHandler?: () => void;
@@ -131,10 +136,11 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
         constantsTitle: constants.title,
       })}`,
       country:
-        profile?.defaultBillingAddress?.country.slice(
-          profile?.defaultBillingAddress?.country.length - 4,
-          profile?.defaultBillingAddress?.country.length,
-        ) || "",
+        (profile?.defaultBillingAddress?.country &&
+          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
       email: profile?.email || "",
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
@@ -149,7 +155,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
   });
 
   const [phoneValue, setPhoneValue] = useState("");
-  const [formState, setFormState] = useState<FormState>(defaultState());
+  const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
   const [isLoading, setIsLoading] = useState(false);
   const debouncedState = useDebounce(formState, 300);
 
@@ -164,6 +170,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
   const schema = useMemo(() => {
     let sch: any = {
+      firstName: formSchema.firstName,
+      lastName: formSchema.lastName,
+      company_name: formSchema.companyName,
       quantity: {
         presence: { allowEmpty: false, message: `^${t("column.qty")} ${t("column.required")}` },
       },
@@ -175,10 +184,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       sch = {
         ...sch,
         email: formSchema.email,
-        firstName: formSchema.firstName,
-        lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-        company_name: formSchema.companyName,
         // ...(formState.values.company_type === "Other" && {
         //   company_other_type: {
         //     presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
@@ -192,16 +198,6 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
   useEffect(() => {
     if (profileInfo) {
       setPhoneValue(profileInfo?.defaultBillingAddress?.phone_number_str || "");
-      setFormState((prevState) => ({
-        ...prevState,
-        values: {
-          ...prevState.values,
-          country: profileInfo?.defaultBillingAddress?.country.slice(
-            profileInfo?.defaultBillingAddress?.country.length - 4,
-            profileInfo?.defaultBillingAddress?.country.length,
-          ),
-        },
-      }));
     }
   }, [profileInfo]);
 
@@ -313,7 +309,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
@@ -341,18 +337,22 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       dispatch(changeMisc("sellerMessage", formState.values, formState.values.email));
 
       if (isAuthenticated) {
-        dispatch(
+        setIsLoading(true);
+        await dispatch(
           updateCompanyAddress(profileInfo.defaultBillingAddress.id, {
             ...profileInfo.defaultBillingAddress,
+            first_name: formState.values.firstName,
+            last_name: formState.values.lastName,
             company_name: formState.values.company_name,
             phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-            country: formState.values.country ? `http://127.0.0.1:8000/api/countries${formState.values.country}` : null,
+            country: formState.values.country ? formState.values.country : null,
           }),
-        );
-        dispatch(updateProfileInfoThunk());
+        ).then(() => dispatch(loadProfileInfoThunk()));
+        await dispatch(updateProfileInfoThunk());
         dispatch(sendSellerMessage(data)).then(() => {
           if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-          setFormState(defaultState());
+          setIsLoading(false);
+          setFormState(defaultState(profileInfo));
         });
       } else {
         setIsLoading(true);
@@ -400,7 +400,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               localStorage.removeItem("seller_message_form_register_data");
               localStorage.setItem("registered_email", formState.values.email);
               if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-              setFormState(defaultState());
+              setFormState(defaultState(profileInfo));
               dispatch(progressModalOpen());
             });
           })
@@ -583,11 +583,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                 {...errorProps("country")}
               >
                 {countries?.map((i: Record<string, any>) => (
-                  <MenuItem
-                    className={appTheme.selectMenuItem}
-                    key={i.url.slice(i.url.length - 4, i.url.length)}
-                    value={i.url.slice(i.url.length - 4, i.url.length)}
-                  >
+                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
                     {i.printable_name}
                   </MenuItem>
                 ))}

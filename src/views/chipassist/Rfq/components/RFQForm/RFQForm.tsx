@@ -49,7 +49,12 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import { saveProfileInfo, updateCompanyAddress, updateProfileInfoThunk } from "@src/store/profile/profileActions";
+import {
+  loadProfileInfoThunk,
+  saveProfileInfo,
+  updateCompanyAddress,
+  updateProfileInfoThunk,
+} from "@src/store/profile/profileActions";
 import { useStyles } from "./styles";
 
 // interface Distributor {
@@ -205,7 +210,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
-  const [formState, setFormState] = useState<FormState>(defaultState);
+  const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
   const debouncedState = useDebounce(formState, 300);
 
   // const all_sellers = [
@@ -244,6 +249,9 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   const schema = useMemo(() => {
     let sch: any = {
+      firstName: formSchema.firstName,
+      lastName: formSchema.lastName,
+      company_name: formSchema.companyName,
       partNumber: {
         presence: { allowEmpty: false, message: `^${t("column.part_number")} ${t("column.required")}` },
       },
@@ -265,10 +273,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       sch = {
         ...sch,
         email: formSchema.email,
-        firstName: formSchema.firstName,
-        lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-        company_name: formSchema.companyName,
         // ...(formState.values.company_type === "Other" && {
         //   company_other_type: {
         //     presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
@@ -326,19 +331,17 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   }, [rfqItem]);
 
   useEffect(() => {
-    let country: any = null;
-    if (billingAddress) country = countries?.find((c) => c.url === billingAddress.country);
-    if (!country)
-      country =
-        (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-        defaultCountry;
-
     setFormState((prevState) => {
       return {
         ...prevState,
         values: {
           ...prevState.values,
-          country: country.url,
+          country:
+            (billingAddress?.country &&
+              countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
+            (geolocation?.country_code_iso3 &&
+              countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+            defaultCountry.url,
         },
       };
     });
@@ -434,7 +437,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   //   setItem((prevState) => ({ ...prevState, seller: sellers }));
   // };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
@@ -455,7 +458,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         countries?.find((c) => c.url === formState.values.country) ||
         (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
         defaultCountry;
-      const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
+      const phone = phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : billingAddress?.phone_number_str;
       // let company_type: string;
       // try {
       //   company_type = !isAuthenticated
@@ -557,17 +560,21 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       localStorage.setItem("product_request_hint_disabled", "true");
       if (isAuthenticated) {
         // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
-        dispatch(
+        setIsLoading(true);
+        await dispatch(
           updateCompanyAddress(billingAddress.id, {
             ...billingAddress,
+            first_name: formState.values.firstName,
+            last_name: formState.values.lastName,
             company_name: formState.values.company_name,
             phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-            country: formState.values.country ? formState.values.country : null,
+            country: formState.values.country || null,
           }),
-        );
-        dispatch(updateProfileInfoThunk());
+        ).then(() => dispatch(loadProfileInfoThunk()));
+        await dispatch(updateProfileInfoThunk());
         dispatch(saveRfqItem(data)).then(() => {
           batch(() => {
+            setIsLoading(false);
             dispatch(clearRfqItem());
             if (onCloseModalHandler) dispatch(rfqModalClose());
             setFormState((prevState) => ({

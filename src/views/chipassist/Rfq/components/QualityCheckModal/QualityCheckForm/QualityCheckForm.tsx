@@ -32,7 +32,12 @@ import formSchema from "@src/utils/formSchema";
 import InputPhone from "@src/components/InputPhone/InputPhone";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import { saveProfileInfo, updateCompanyAddress, updateProfileInfoThunk } from "@src/store/profile/profileActions";
+import {
+  loadProfileInfoThunk,
+  saveProfileInfo,
+  updateCompanyAddress,
+  updateProfileInfoThunk,
+} from "@src/store/profile/profileActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -125,10 +130,11 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       price: null,
       message: "I'd like to know more about the quality check for this product...",
       country:
-        profile?.defaultBillingAddress?.country.slice(
-          profile?.defaultBillingAddress?.country.length - 4,
-          profile?.defaultBillingAddress?.country.length,
-        ) || "",
+        (profile?.defaultBillingAddress?.country &&
+          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
       email: profile?.email || "",
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
@@ -158,6 +164,9 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
 
   const schema = useMemo(() => {
     let sch: any = {
+      firstName: formSchema.firstName,
+      lastName: formSchema.lastName,
+      company_name: formSchema.companyName,
       message: {
         presence: { allowEmpty: false, message: `^${t("form_labels.message")} ${t("column.required")}` },
       },
@@ -166,10 +175,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       sch = {
         ...sch,
         email: formSchema.email,
-        firstName: formSchema.firstName,
-        lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-        company_name: formSchema.companyName,
       };
     }
     return sch;
@@ -289,7 +295,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
@@ -317,19 +323,23 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       // dispatch(changeMisc("sellerMessage", formState.values, formState.values.email));
 
       if (isAuthenticated) {
-        dispatch(
+        setIsLoading(true);
+        await dispatch(
           updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
             ...profileInfo?.defaultBillingAddress,
+            first_name: formState.values.firstName,
+            last_name: formState.values.lastName,
             company_name: formState.values.company_name,
             phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
             country: formState.values.country ? formState.values.country : null,
           }),
-        );
-        dispatch(updateProfileInfoThunk());
+        ).then(() => dispatch(loadProfileInfoThunk()));
+        await dispatch(updateProfileInfoThunk());
 
         dispatch(sendQualityCheck(data)).then(() => {
           if (onCloseModalHandler) dispatch(qualityCheckModalClose());
           setFormState(defaultState());
+          setIsLoading(false);
         });
       } else {
         setIsLoading(true);
@@ -520,11 +530,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
               {...errorProps("country")}
             >
               {countries?.map((i: Record<string, any>) => (
-                <MenuItem
-                  className={appTheme.selectMenuItem}
-                  key={i.url.slice(i.url.length - 4, i.url.length)}
-                  value={i.url.slice(i.url.length - 4, i.url.length)}
-                >
+                <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
                   {i.printable_name}
                 </MenuItem>
               ))}
