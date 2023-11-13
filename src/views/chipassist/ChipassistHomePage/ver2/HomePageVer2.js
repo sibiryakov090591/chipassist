@@ -42,6 +42,7 @@ export const ChipassistHomePage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch = useAppDispatch();
 
   const aboutUsRef = React.useRef(null);
@@ -174,25 +175,38 @@ export const ChipassistHomePage = () => {
                 pnClassName={classes.trySpan}
               />
               <div className={classes.heroItems}>
-                <div className={classes.heroItem}>
-                  <h3 className={classes.heroItemTitle}>Search & buy</h3>
-                  <p className={classes.heroItemText}>
-                    Search and compare prices and market availability. Contact sellers and get special prices right
-                    through ChipAssist.
-                  </p>
-                </div>
-                <div className={classes.heroItem}>
-                  <h3 className={classes.heroItemTitle}>Request & get</h3>
-                  <p className={classes.heroItemText}>
-                    Place your request and get the dedicated offers from 300+ connected sellers from all over the world.
-                  </p>
-                </div>
-                <div className={classes.heroItem}>
-                  <h3 className={classes.heroItemTitle}>Order & track</h3>
-                  <p className={classes.heroItemText}>
-                    Order your product through ChipAssist and get safe and convinient purchasing and tracking.
-                  </p>
-                </div>
+                {isXsDown ? (
+                  <div className={classes.heroItem}>
+                    <h3 className={classes.heroItemTitle}>Search. Request. Buy.</h3>
+                    <p className={classes.heroItemText}>
+                      Search for products and see market availability. Place your requests with 300+ sellers in one
+                      click. Order and track with ChipAssist.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className={classes.heroItem}>
+                      <h3 className={classes.heroItemTitle}>Search & buy</h3>
+                      <p className={classes.heroItemText}>
+                        Search and compare prices and market availability. Contact sellers and get special prices right
+                        through ChipAssist.
+                      </p>
+                    </div>
+                    <div className={classes.heroItem}>
+                      <h3 className={classes.heroItemTitle}>Request & get</h3>
+                      <p className={classes.heroItemText}>
+                        Place your request and get the dedicated offers from 300+ connected sellers from all over the
+                        world.
+                      </p>
+                    </div>
+                    <div className={classes.heroItem}>
+                      <h3 className={classes.heroItemTitle}>Order & track</h3>
+                      <p className={classes.heroItemText}>
+                        Order your product through ChipAssist and get safe and convinient purchasing and tracking.
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </Container>
           </div>

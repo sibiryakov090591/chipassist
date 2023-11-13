@@ -55,6 +55,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 80px)",
+      background: "#e55972",
     },
   },
   today: {
@@ -154,6 +155,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginTop: 65,
     [theme.breakpoints.down("sm")]: {
       marginTop: 12,
+      maxWidth: "none",
     },
   },
   heroTitle: {
@@ -179,9 +181,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     justifyContent: "space-between",
     gap: "30px",
     [theme.breakpoints.down("xs")]: {
-      flexDirection: "column",
       alignItems: "center",
-      gap: "16px",
     },
   },
   heroItem: {
@@ -190,6 +190,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     maxWidth: 370,
     [theme.breakpoints.down("xs")]: {
       textAlign: "center",
+      maxWidth: "none",
     },
   },
   heroItemTitle: {
