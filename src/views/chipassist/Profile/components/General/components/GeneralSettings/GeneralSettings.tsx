@@ -35,6 +35,7 @@ import validate from "validate.js";
 import formSchema from "@src/utils/formSchema";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { clsx } from "clsx";
+import { defaultCountry } from "@src/constants/countries";
 import SuccessSnackbar from "../SuccessSnackbar";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -99,7 +100,13 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
 
   useEffect(() => {
     if (billingAddress) {
-      setAddressData(billingAddress);
+      setAddressData({
+        ...billingAddress,
+        country:
+          (billingAddress?.country &&
+            checkout?.countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
+          defaultCountry.url,
+      });
       setPhoneValue(billingAddress.phone_number_str);
     }
   }, [billingAddress]);
@@ -340,15 +347,11 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
                 fullWidth
                 select
                 onChange={handleChange}
-                value={addressData?.country.slice(addressData?.country.length - 4, addressData?.country.length) || ""}
+                value={addressData?.country || ""}
                 size={isXsDown ? "small" : "medium"}
               >
                 {checkout?.countries?.map((item: Record<string, any>) => (
-                  <MenuItem
-                    className={appTheme.selectMenuItem}
-                    key={item.url.slice(item.url.length - 4, item.url.length)}
-                    value={item.url.slice(item.url.length - 4, item.url.length)}
-                  >
+                  <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
                     {item.printable_name}
                   </MenuItem>
                 ))}
