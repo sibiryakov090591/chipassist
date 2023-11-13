@@ -77,7 +77,7 @@ export default {
     blue100: "#D2E9F7",
 
     red500: "#E94160",
-    red400: "#F07188",
+    red400: "#E55972",
     red300: "#F797AB",
     red200: "#FFC4C9",
     red100: "#FAEEEF",

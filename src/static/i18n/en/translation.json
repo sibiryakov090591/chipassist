@@ -9,7 +9,7 @@
     "strictly": "Strictly necessary"
   },
   "errors": {
-    "only_letters": "Use the Latin alphabet",
+    "only_letters": "can only contain Latin letters",
     "only_letters_and_digits": "can only contain Latin letters and digits",
     "privacy_policy": "You must agree to the terms of service",
     "email": "This is not a valid email",
