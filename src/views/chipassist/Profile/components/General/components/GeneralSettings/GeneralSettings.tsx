@@ -340,11 +340,15 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
                 fullWidth
                 select
                 onChange={handleChange}
-                value={addressData?.country || ""}
+                value={addressData?.country.slice(addressData?.country.length - 4, addressData?.country.length) || ""}
                 size={isXsDown ? "small" : "medium"}
               >
                 {checkout?.countries?.map((item: Record<string, any>) => (
-                  <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
+                  <MenuItem
+                    className={appTheme.selectMenuItem}
+                    key={item.url.slice(item.url.length - 4, item.url.length)}
+                    value={item.url.slice(item.url.length - 4, item.url.length)}
+                  >
                     {item.printable_name}
                   </MenuItem>
                 ))}
