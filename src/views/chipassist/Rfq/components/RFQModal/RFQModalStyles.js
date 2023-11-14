@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
+    flexDirection: "row",
     [theme.breakpoints.up("md")]: {
       backgroundColor: "transparent",
       display: "flex",
