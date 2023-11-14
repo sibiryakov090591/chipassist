@@ -36,6 +36,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 // import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
+import RfqBar from "@src/views/chipassist/Search/components/RfqBar/RfqBar";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -372,6 +373,7 @@ const SearchResults = () => {
                       </FiltersContainer>
                     </div>
                   </Sticky>
+                  {!isSmDown && <RfqBar />}
                 </div>
               )}
               {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (
