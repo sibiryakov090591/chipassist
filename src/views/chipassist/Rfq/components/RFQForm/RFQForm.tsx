@@ -569,6 +569,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
             company_name: formState.values.company_name,
             phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
             country: formState.values.country || null,
+            line1: billingAddress.line1 || "-",
           }),
         ).then(() => dispatch(loadProfileInfoThunk()));
         await dispatch(updateProfileInfoThunk());
