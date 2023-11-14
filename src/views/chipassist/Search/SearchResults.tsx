@@ -373,7 +373,7 @@ const SearchResults = () => {
                       </FiltersContainer>
                     </div>
                   </Sticky>
-                  <RfqBar />
+                  {!isSmDown && <RfqBar />}
                 </div>
               )}
               {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (
