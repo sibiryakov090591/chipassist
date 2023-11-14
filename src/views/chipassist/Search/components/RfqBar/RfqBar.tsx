@@ -45,7 +45,7 @@ const RfqBar: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { part_number, quantity, price } = formState;
-    dispatch(rfqModalOpen(part_number, quantity, null, price, null, null, "rfq", null));
+    dispatch(rfqModalOpen(part_number, quantity, null, price, null, null, "rfq", 1)); // productId required for creating RFQ from RFQForm
     setFormState(defaultState);
   };
 
