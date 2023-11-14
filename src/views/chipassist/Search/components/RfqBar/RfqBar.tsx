@@ -6,7 +6,15 @@ import { clsx } from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
 import { rfqModalOpen } from "@src/store/rfq/rfqActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import { europeanCountries } from "@src/constants/countries";
 import { useStyles } from "./styles";
+
+const allowedCountries = [
+  ...europeanCountries,
+  "USA", // the United States
+  "CAN", // Canada
+  "AUS", // Australia
+];
 
 const RfqBar: React.FC = () => {
   const classes = useStyles();
@@ -15,12 +23,14 @@ const RfqBar: React.FC = () => {
 
   const query = useAppSelector((state) => state.search.query);
   const currency = useAppSelector((state) => state.currency.selected);
+  const geolocation = useAppSelector((state) => state.profile.geolocation);
 
   const defaultState = {
     part_number: query || "",
     quantity: "",
     price: "",
   };
+  const hiddenBar = geolocation?.country_code_iso3 ? !allowedCountries.includes(geolocation.country_code_iso3) : true;
 
   const [formState, setFormState] = useState(defaultState);
 
@@ -39,6 +49,7 @@ const RfqBar: React.FC = () => {
     setFormState(defaultState);
   };
 
+  if (hiddenBar) return null;
   return (
     <Paper elevation={3} className={classes.root}>
       <div className={classes.title}>
