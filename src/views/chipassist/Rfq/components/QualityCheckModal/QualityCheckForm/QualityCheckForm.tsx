@@ -332,6 +332,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
             company_name: formState.values.company_name,
             phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
             country: formState.values.country ? formState.values.country : null,
+            line1: profileInfo?.defaultBillingAddress?.line1 || "-",
           }),
         ).then(() => dispatch(loadProfileInfoThunk()));
         await dispatch(updateProfileInfoThunk());
