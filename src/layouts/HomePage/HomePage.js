@@ -69,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: "initial",
     },
   },
+  home: {
+    transform: "translateY(-101%)",
+  },
 }));
 
 const HomePage = (props) => {
@@ -79,7 +82,7 @@ const HomePage = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      <TopBar className={clsx(classes.topBar, { [classes.fixedHeight]: !isHomePage })} />
+      <TopBar className={clsx(classes.topBar, { [classes.fixedHeight]: !isHomePage, [classes.home]: isHomePage })} />
       <div className={isHomePage ? classes.homeContainer : classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
