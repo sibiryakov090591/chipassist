@@ -45,6 +45,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   paper: {
     display: "flex",
+    flexDirection: "column",
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],

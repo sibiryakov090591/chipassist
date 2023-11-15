@@ -20,11 +20,13 @@ import MergeBomModal from "@src/views/chipassist/Bom/components/BomList/MergeBom
 import { getConstants } from "@src/store/pcb/pcbActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import SendInvoiceModalContainer from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/components/SendInvoiceModalContainer";
+import QualityCheckContainer from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckForm/QualityCheckContainer";
 
 export const FormExamples = () => {
   const classes = useStyles();
   const [checkedA, setCheckedA] = useState(false);
   const [checkedASeller, setCheckedASeller] = useState(false);
+  const [checkedAQuality, setCheckedAQuality] = useState(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -220,6 +222,26 @@ export const FormExamples = () => {
                   stock={null}
                   pageNum={2}
                 />
+              </Grid>
+            </Grid>
+          </fieldset>
+        </Grid>
+        <Grid item md={12} lg={12}>
+          <fieldset className={classes.gridItem}>
+            <legend className={classes.legendText}>Quality check</legend>
+            <div style={{ width: "100%" }}>
+              <Switch
+                checked={checkedAQuality}
+                onChange={() => setCheckedAQuality((prevState) => !prevState)}
+                name="checkedQuality"
+                inputProps={{ "aria-label": "secondary checkbox" }}
+                color={"secondary"}
+              />
+              is Authenticated
+            </div>
+            <Grid container spacing={3}>
+              <Grid item md={12} lg={8}>
+                <QualityCheckContainer isExample={true} isAuth={checkedAQuality} />
               </Grid>
             </Grid>
           </fieldset>
