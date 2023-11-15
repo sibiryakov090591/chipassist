@@ -48,7 +48,6 @@ import Register from "@src/views/chipassist/Register/Register.tsx";
 import ErrorRegister from "@src/views/chipassist/ErrorRegister/ErrorRegister";
 import { getUtm, lazyLoader } from "@src/utils/utility";
 import { loadMiscAction } from "@src/store/misc/miscActions";
-import ChipassistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
@@ -58,6 +57,7 @@ import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
 import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
+import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/HomePage";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -129,6 +129,7 @@ const ChipAssistApp = () => {
   const isRestricted = constants.closedRegistration;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
+  const [geoLoaded, setGeoLoaded] = useState(false);
   const dispatch = useAppDispatch();
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
@@ -136,12 +137,17 @@ const ChipAssistApp = () => {
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
+  const geolocation = useAppSelector((state) => state.profile.geolocation);
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
 
   useConsoleLogSave();
 
   const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
+
+  useEffect(() => {
+    if (geolocation?.country_code_iso3) setGeoLoaded(true);
+  }, [geolocation]);
 
   // Send quick request
   useEffect(() => {
@@ -247,6 +253,7 @@ const ChipAssistApp = () => {
     return <Maintenance />;
   }
 
+  if (!geoLoaded) return <div />;
   return (
     <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>
@@ -299,7 +306,7 @@ const ChipAssistApp = () => {
                 </Routes>
               }
             />
-            <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <ChipassistHomePage />} />
+            <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <ChipAssistHomePage />} />
             {constants.id !== ID_ICSEARCH && <Route path="/sell-excess-inventory" element={<SellExcess />} />}
             <Route path="/auth/registration" element={<Register />} />
             <Route path="/registered" element={isRestricted ? <RegisterClosedSuccess /> : <RegisterSuccess />} />

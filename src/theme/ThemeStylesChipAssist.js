@@ -6,6 +6,9 @@ const themeStylesChipAssist = makeStyles((theme) => ({
   },
   toolbar: {
     background: "radial-gradient(circle at top left, #372859 35%, #1d1530 65%)",
+    [theme.breakpoints.down("sm")]: {
+      background: "radial-gradient(circle at top left, #372859 50%, #271849 100%)",
+    },
   },
   topBarProfileButton: {
     color: "#CCCCCC",
