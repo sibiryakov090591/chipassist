@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, InputAdornment, TextField, Paper } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { NumberInput } from "@src/components/Inputs";
@@ -6,15 +6,27 @@ import { clsx } from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
 import { rfqModalOpen } from "@src/store/rfq/rfqActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { europeanCountries } from "@src/constants/countries";
+import formSchema from "@src/utils/formSchema";
+import validate from "validate.js";
 import { useStyles } from "./styles";
 
-const allowedCountries = [
-  ...europeanCountries,
-  "USA", // the United States
-  "CAN", // Canada
-  "AUS", // Australia
-];
+interface FormStateValues {
+  part_number: string;
+  quantity: string;
+  price: any;
+}
+
+interface FormStateErrors {
+  part_number?: string[];
+  quantity?: string[];
+  price?: string[];
+  [key: string]: string[];
+}
+
+interface FormState {
+  values: FormStateValues;
+  errors: FormStateErrors;
+}
 
 const RfqBar: React.FC = () => {
   const classes = useStyles();
@@ -23,33 +35,63 @@ const RfqBar: React.FC = () => {
 
   const query = useAppSelector((state) => state.search.query);
   const currency = useAppSelector((state) => state.currency.selected);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
+  const products = useAppSelector((state) => state.products.products);
 
   const defaultState = {
-    part_number: query || "",
-    quantity: "",
-    price: "",
+    values: {
+      part_number: query || "",
+      quantity: "",
+      price: "",
+    },
+    errors: {},
   };
-  const hiddenBar = geolocation?.country_code_iso3 ? !allowedCountries.includes(geolocation.country_code_iso3) : true;
 
-  const [formState, setFormState] = useState(defaultState);
+  const schema = React.useMemo(() => {
+    return {
+      part_number: formSchema.partNumber,
+    };
+  }, []);
+
+  const [formState, setFormState] = useState<FormState>(defaultState);
+
+  useEffect(() => {
+    setFormState(defaultState);
+  }, [query]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
+
+    const errors = { ...formState.errors };
+    if (errors[name]) delete errors[name];
+
     return setFormState((prev) => ({
       ...prev,
-      [name]: value,
+      values: {
+        ...prev.values,
+        [name]: name === "part_number" ? value?.toUpperCase() : value,
+      },
+      errors,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { part_number, quantity, price } = formState;
-    dispatch(rfqModalOpen(part_number, quantity, null, price, null, null, "rfq", 1)); // productId required for creating RFQ from RFQForm
-    setFormState(defaultState);
+
+    const errors = validate(formState.values, schema);
+    if (errors) {
+      return setFormState((prevState) => ({
+        ...prevState,
+        isValid: !errors,
+        errors: errors || {},
+      }));
+    }
+
+    const { part_number, quantity, price } = formState.values;
+    const isProductExists = products?.some((i) => i.upc?.toUpperCase() === part_number);
+    dispatch(rfqModalOpen(part_number, quantity, null, price, null, null, "rfq", isProductExists ? 1 : null)); // productId required for creating RFQ from RFQForm instead missing product feedback
+    return setFormState(defaultState);
   };
 
-  if (hiddenBar) return null;
   return (
     <Paper elevation={3} className={classes.root}>
       <div className={classes.title}>
@@ -57,20 +99,23 @@ const RfqBar: React.FC = () => {
       </div>
       <form onSubmit={handleSubmit} className={classes.form}>
         <TextField
+          className={classes.input}
           fullWidth
           name="part_number"
           variant="outlined"
           size="small"
-          value={formState.part_number || ""}
+          value={formState.values.part_number || ""}
           onChange={handleChange}
           placeholder="Part number"
+          error={!!formState.errors.part_number}
+          helperText={!!formState.errors.part_number && formState.errors.part_number[0]}
         />
         <NumberInput
           style={{ width: "100%" }}
           name="quantity"
           variant="outlined"
           size="small"
-          value={formState.quantity}
+          value={formState.values.quantity}
           onChange={handleChange}
           decimalScale={0}
           isAllowedZero={true}
@@ -84,7 +129,7 @@ const RfqBar: React.FC = () => {
           InputProps={{
             endAdornment: <InputAdornment position="end">{currency?.symbol || <span>&#8364;</span>}</InputAdornment>,
           }}
-          value={formState.price}
+          value={formState.values.price}
           onChange={handleChange}
           decimalScale={4}
           isAllowedZero={true}
