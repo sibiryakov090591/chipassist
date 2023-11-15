@@ -5,7 +5,7 @@ import { AppTheme } from "@src/themes/AppTheme";
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
     root: {
-      marginTop: 15,
+      marginTop: 5,
       marginBottom: 15,
       padding: "16px 21px 21px",
       backgroundColor: theme.palette.app.green800,
@@ -22,7 +22,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     button: {
       width: "100%",
+      height: 37,
       whiteSpace: "nowrap",
+    },
+    input: {
+      "& p.Mui-error": {
+        color: "#ffffff",
+      },
     },
   }),
 );
