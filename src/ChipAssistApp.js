@@ -15,7 +15,7 @@ import Maintenance from "@src/views/chipassist/Maintenance";
 import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
 import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
 import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
-import { checkUserActivityStatus, saveUtm } from "@src/store/common/commonActions";
+import { checkUserActivityStatus, saveHref, saveUtm } from "@src/store/common/commonActions";
 import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
@@ -173,6 +173,7 @@ const ChipAssistApp = () => {
   useEffect(() => {
     const utm = getUtm();
     if (utm) dispatch(saveUtm(utm));
+    dispatch(saveHref(window.location.href));
   }, []);
 
   // useEffect(() => {

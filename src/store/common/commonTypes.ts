@@ -5,6 +5,7 @@ export const SHOULD_UPDATE_CARD = "@common/SHOULD_UPDATE_CARD";
 export const ADD_PRODUCT_TO_CART_BLOCK = "@cart/ADD_PRODUCT_TO_CART_BLOCK";
 export const DELETE_PRODUCT_CART_BLOCK = "@cart/DELETE_PRODUCT_CART_BLOCK";
 export const SAVE_UTM = "@cart/SAVE_UTM";
+export const SAVE_HREF = "@common/SAVE_HREF";
 
 export interface CommonState {
   isShowQuickButton: boolean;
@@ -16,6 +17,7 @@ export interface CommonState {
     lineId: number | string;
   };
   utm: { [key: string]: string };
+  href: string;
 }
 export interface ShouldUpdateBackendAction {
   type: typeof SHOULD_UPDATE_BACKEND;
@@ -43,7 +45,13 @@ interface SaveUtmAction {
   payload: { [key: string]: string };
 }
 
+interface SaveHrefAction {
+  type: typeof SAVE_HREF;
+  payload: string;
+}
+
 export type CommonActionTypes =
+  | SaveHrefAction
   | ShouldUpdateCardAction
   | ShouldUpdateBackendAction
   | AddProductToCartBlockAction

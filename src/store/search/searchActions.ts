@@ -57,6 +57,7 @@ export const loadSearchResultsActionThunk = (
   otherParams: { [index: string]: any } = null,
   component = "search",
   removeAuth = false,
+  isFirstRequest = false,
 ) => {
   return async (dispatch: any) => {
     let filters = dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, baseFilters, component));
@@ -64,6 +65,7 @@ export const loadSearchResultsActionThunk = (
       filters = { ...filters, rfq: localStorage.getItem("productStock") === "true" ? 0 : 1 };
     }
     if (otherParams) filters = { ...filters, ...otherParams };
+    if (isFirstRequest) filters = { ...filters, query: window };
     // await dispatch(loadProductsRfqData(query, page, pageSize, orderBy));
     return dispatch(sendFiltersValueAction(page, pageSize, orderBy, filters, component, true, removeAuth))
       .then((response: any) => {
