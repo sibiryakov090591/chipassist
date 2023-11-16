@@ -97,6 +97,7 @@ export interface RfqItem {
 
 export interface SellerRfqItem {
   created: string;
+  country: string;
   id: number;
   part_number: string;
   quantity: number;
