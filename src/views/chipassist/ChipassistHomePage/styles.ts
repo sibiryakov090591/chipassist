@@ -169,7 +169,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontWeight: "normal",
     [theme.breakpoints.down("sm")]: {
       fontSize: 16,
-      margin: "auto",
+      margin: "0 auto 40px",
       textAlign: "center",
     },
   },
@@ -230,9 +230,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     paddingTop: 5,
     marginLeft: 16,
     [theme.breakpoints.down("sm")]: {
-      paddingTop: 14,
-      marginLeft: 0,
-      textAlign: "center",
       color: theme.palette.white,
       fontSize: 15,
     },

@@ -123,13 +123,14 @@ export const setGeolocation = (countryCode: string, countryName: string, city: s
 
 export const getGeolocation = () => {
   return (dispatch: any) => {
-    axios
+    return axios
       .get("https://ipapi.co/json/")
       .then((res) => res.data)
       .then((data: any) => {
         dispatch(setGeolocation(data.country_code_iso3, data.country_name, data.city, data.country_code));
+        return data;
       })
-      .catch((e) => {
+      .catch((e: any) => {
         console.log("***GET_GEOLOCATION_ERROR", e);
         throw e;
       });

@@ -137,17 +137,12 @@ const ChipAssistApp = () => {
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
 
   useConsoleLogSave();
 
   const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
-
-  useEffect(() => {
-    if (geolocation?.country_code_iso3) setGeoLoaded(true);
-  }, [geolocation]);
 
   // Send quick request
   useEffect(() => {
@@ -212,7 +207,7 @@ const ChipAssistApp = () => {
       });
       dispatch(getAllSellers());
       // dispatch(getCountriesThunk());
-      dispatch(getGeolocation());
+      dispatch(getGeolocation()).finally(() => setGeoLoaded(true));
     });
   }, []);
 
@@ -253,7 +248,7 @@ const ChipAssistApp = () => {
     return <Maintenance />;
   }
 
-  if (!geoLoaded) return <div />;
+  if (!geoLoaded) return null;
   return (
     <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>

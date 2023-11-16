@@ -213,6 +213,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: "#9a9a9a",
     marginTop: "4px",
   },
+  geoPin: {
+    paddingTop: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "& svg": {
+      padding: 0,
+      fontSize: 12,
+    },
+  },
   replied: {
     fontWeight: "normal",
     fontSize: 11,

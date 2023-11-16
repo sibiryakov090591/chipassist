@@ -1,7 +1,7 @@
 import React from "react";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import { Page } from "@src/components";
-import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
+import { Box, Button, Container, Grid } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import clsx from "clsx";
 import combo_mobile from "@src/images/Homepage/devices_ca.png";
@@ -199,15 +199,13 @@ export const ChipassistHomePage = () => {
                       </h2>
                     </>
                   )}
-                  <Hidden smDown>
-                    <SearchSuggestion
-                      searchInputClass={classes.searchInput}
-                      searchButtonClass={clsx(classes.searchIconButton, appTheme.topBarSearchButton)}
-                      searchIconClass={classes.searchIcon}
-                      searchClearClass={classes.clearSearchIcon}
-                      isHomePageSuggestions={true}
-                    />
-                  </Hidden>
+                  <SearchSuggestion
+                    searchInputClass={classes.searchInput}
+                    searchButtonClass={clsx(classes.searchIconButton, appTheme.topBarSearchButton)}
+                    searchIconClass={classes.searchIcon}
+                    searchClearClass={classes.clearSearchIcon}
+                    isHomePageSuggestions={true}
+                  />
                   <TrySearchPn
                     partNumbers={partNumberExamples || partNumbers}
                     textClassName={classes.tryP}

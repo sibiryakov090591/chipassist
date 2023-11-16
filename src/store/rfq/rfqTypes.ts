@@ -97,6 +97,7 @@ export interface RfqItem {
 
 export interface SellerRfqItem {
   created: string;
+  country: string;
   id: number;
   part_number: string;
   quantity: number;
@@ -203,6 +204,7 @@ interface LoadRfqSuccessAction {
 
 interface LoadRfqFailureAction {
   type: typeof LOAD_RFQ_F;
+  error: any;
 }
 
 interface ClearSupplierResponseDataAction {

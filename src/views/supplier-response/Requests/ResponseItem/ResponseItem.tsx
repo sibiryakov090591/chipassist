@@ -22,6 +22,7 @@ import { ResponseManufacturer } from "@src/store/manufacturers/manufacturersType
 import addBusinessDays from "date-fns/addBusinessDays";
 import { format, isWeekend, nextMonday } from "date-fns";
 import { NumberInput } from "@src/components/Inputs";
+import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import { useStyles } from "./responseItemStyles";
 import { useStyles as useResponseStyles } from "../supplierResponseStyles";
 
@@ -380,6 +381,12 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             </Tooltip>
           )}
         </div>
+        {item?.country && (
+          <div className={clsx(classes.replied, classes.geoPin)}>
+            <LocationOnOutlinedIcon />
+            {item.country}
+          </div>
+        )}
         {repliedDate && <div className={classes.replied}>Replied {repliedDate}</div>}
       </td>
       <td className={clsx(classes.infoColumn, { [classes.error]: !!error })}>

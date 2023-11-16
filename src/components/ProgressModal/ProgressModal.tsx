@@ -294,15 +294,15 @@ const ProgressModal: React.FC = () => {
                   )}
                   {requestType === "qualityCheck" && (
                     <>
-                      <h2 className={classes.subTitle}>
+                      <p className={classes.p}>
                         Your request for quality check about <strong>{partNumber}</strong> has been sent.
-                      </h2>
+                      </p>
                       <p className={classes.p}>{"You'll receive updates on your request by email."}</p>
                     </>
                   )}
                   {requestType === "order" && (
                     <>
-                      <h2 className={classes.subTitle}>{t("success.order_text_1")}</h2>
+                      <p className={classes.p}>{t("success.order_text_1")}</p>
                       <p className={classes.p}>{t("success.order_text_2")}</p>
                     </>
                   )}

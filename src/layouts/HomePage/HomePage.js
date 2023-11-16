@@ -70,7 +70,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   home: {
-    transform: "translateY(-101%)",
+    [theme.breakpoints.up("md")]: {
+      transform: "translateY(-101%)",
+    },
   },
 }));
 

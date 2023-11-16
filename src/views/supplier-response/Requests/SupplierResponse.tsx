@@ -157,7 +157,7 @@ const SupplierResponse: React.FC = () => {
   }, [selectedPartner, page, pageSize, hasResponse, forceUpdate]);
 
   useEffect(() => {
-    if (rfqs.results) {
+    if (rfqs.results && currency) {
       const newData: { [key: string]: IResponseItem[] } = {};
       ((rfqs.results as any) as SellerRfqItem[]).forEach((item) => {
         const groupName = new Date(item.created).toLocaleDateString();
