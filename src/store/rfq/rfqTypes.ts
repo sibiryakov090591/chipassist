@@ -203,6 +203,7 @@ interface LoadRfqSuccessAction {
 
 interface LoadRfqFailureAction {
   type: typeof LOAD_RFQ_F;
+  error: any;
 }
 
 interface ClearSupplierResponseDataAction {
