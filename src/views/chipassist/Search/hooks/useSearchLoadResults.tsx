@@ -47,8 +47,9 @@ const useSearchLoadResults = () => {
     baseFilters = null;
   }
   const reloadSearchFlag = useAppSelector((state) => state.search.reloadSearchFlag);
-  const shouldUpdateBackend = useAppSelector((state) => state.common.shouldUpdateBackend);
+  const { shouldUpdateBackend, href } = useAppSelector((state) => state.common);
 
+  const [isFirstRequest, setIsFirstRequest] = useState(true);
   const [searchTimeoutId, setSearchTimeoutId] = useState<any>(null);
   const [startReloadingTime, setStartReloadingTime] = useState<number>(null);
 
@@ -67,8 +68,14 @@ const useSearchLoadResults = () => {
     batch(() => {
       if (searchTimeoutId) clearTimeout(searchTimeoutId);
       dispatch(loadBomListThunk(1, true));
-      dispatch(loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, { smart_view }))
+      dispatch(
+        loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, {
+          smart_view,
+          ...(isFirstRequest && { href: encodeURIComponent(href) }),
+        }),
+      )
         .then((res: any) => {
+          setIsFirstRequest(false);
           setSearchTimeoutId(null);
           setStartReloadingTime(null);
           return res;
