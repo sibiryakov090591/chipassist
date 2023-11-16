@@ -38,6 +38,12 @@ const TopMenu = ({ isMobile }) => {
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
       <div className={itemClasses}>
+        <NavLink className={classes.topMenuItemLink} to={`/home`}>
+          {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}
+          Home
+        </NavLink>
+      </div>
+      <div className={itemClasses}>
         <NavLink className={classes.topMenuItemLink} to={`/supplier-response`}>
           {isMobile && <HomeIcon className={`${classes.topMenuItemIcon}`} />}
           Requests
@@ -64,12 +70,6 @@ const TopMenu = ({ isMobile }) => {
             Messages
             <ChatUnreadTotalCount className={classes.chatUnreadCount} />
           </span>
-        </NavLink>
-      </div>
-      <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/help`}>
-          {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}
-          Help
         </NavLink>
       </div>
       <div className={itemClasses}>

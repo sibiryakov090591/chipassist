@@ -1,12 +1,11 @@
 import { Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
-import background from "@src/images/Homepage/background.png";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   main: {
-    padding: "2rem 0",
-    backgroundImage: `url(${background});`,
+    // padding: "2rem 0",
+    // backgroundImage: `url(${background});`,
   },
   section: {
     padding: "2rem 0",
@@ -17,11 +16,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     textAlign: "center",
   },
   pageTitle: {
+    fontSize: 45,
     color: theme.palette.app.red500,
     marginBottom: "1rem",
+    // mixBlendMode: "difference",
   },
   pageDescription: {
-    fontSize: 18,
+    fontSize: 20,
+    textAlign: "center",
+    color: "white",
+    mixBlendMode: "difference",
   },
   title: {
     color: "#345",
@@ -82,6 +86,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "& p": {
       fontSize: 16,
     },
+  },
+  firstWay: {
+    backgroundColor: "#123",
+    width: "100vw",
+    color: "white",
+  },
+  howToGetStarted: {
+    backgroundColor: theme.palette.app.grey100,
   },
 }));
 

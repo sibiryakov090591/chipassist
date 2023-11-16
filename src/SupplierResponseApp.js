@@ -43,6 +43,7 @@ import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import Profile from "@src/views/supplier-response/Profile/Profile";
 import Adapter from "@src/views/supplier-response/Adapter/Adapter";
+import NewHelp from "@src/views/supplier-response/Help/NewHelp";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
@@ -188,7 +189,7 @@ const SupplierResponseApp = () => {
                 </PrivateRoute>
               }
             />
-            <Route path="/help" element={<Help />} />
+            <Route path="/home" element={<NewHelp />} />
             <Route path="/privacy_policy" element={<Policy />} />
             <Route path="/terms_of_services" element={<Terms />} />
             <Route path="/*" element={<Error404 />} />
