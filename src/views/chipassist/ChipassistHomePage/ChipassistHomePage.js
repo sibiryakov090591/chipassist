@@ -199,15 +199,13 @@ export const ChipassistHomePage = () => {
                       </h2>
                     </>
                   )}
-                  <Hidden smDown>
-                    <SearchSuggestion
-                      searchInputClass={classes.searchInput}
-                      searchButtonClass={clsx(classes.searchIconButton, appTheme.topBarSearchButton)}
-                      searchIconClass={classes.searchIcon}
-                      searchClearClass={classes.clearSearchIcon}
-                      isHomePageSuggestions={true}
-                    />
-                  </Hidden>
+                  <SearchSuggestion
+                    searchInputClass={classes.searchInput}
+                    searchButtonClass={clsx(classes.searchIconButton, appTheme.topBarSearchButton)}
+                    searchIconClass={classes.searchIcon}
+                    searchClearClass={classes.clearSearchIcon}
+                    isHomePageSuggestions={true}
+                  />
                   <TrySearchPn
                     partNumbers={partNumberExamples || partNumbers}
                     textClassName={classes.tryP}
