@@ -49,6 +49,12 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import {
+  loadProfileInfoThunk,
+  saveProfileInfo,
+  updateCompanyAddress,
+  updateProfileInfoThunk,
+} from "@src/store/profile/profileActions";
 import { useStyles } from "./styles";
 
 // interface Distributor {
@@ -150,12 +156,12 @@ interface FormState {
   errors: RfqItemErrors;
 }
 
-const defaultState = (): FormState => ({
+const defaultState = (profile?: any): FormState => ({
   isValid: false,
   values: {
     partNumber: "",
     prevPartNumber: "",
-    country: "",
+    country: profile?.country || "",
     quantity: "",
     price: "",
     // deliveryDate: getCurrentDate(),
@@ -163,12 +169,12 @@ const defaultState = (): FormState => ({
     // seller: [],
     // address: "",
     comment: "",
-    email: "",
-    firstName: "",
-    lastName: "",
+    email: profile?.email || "",
+    firstName: profile?.firstName || "",
+    lastName: profile?.lastName || "",
     // company_type: "Distributor",
     // company_other_type: "",
-    company_name: "",
+    company_name: profile?.defaultBillingAddress?.company_name || "",
     policy_confirm: false,
     receive_updates_confirm: false,
   },
@@ -185,8 +191,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const [phoneValue, setPhoneValue] = useState("");
-  const [formState, setFormState] = useState<FormState>(defaultState());
-  const debouncedState = useDebounce(formState, 300);
+
   const [isLoading, setIsLoading] = useState(false);
   const [billingAddress, setBillingAddress] = useState(null);
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
@@ -205,6 +210,8 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
+  const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
+  const debouncedState = useDebounce(formState, 300);
 
   // const all_sellers = [
   //   { id: "All", name: "All" },
@@ -219,7 +226,9 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (profileInfo) {
+      if (!rfqModalOpen) setFormState(defaultState(profileInfo));
       setBillingAddress(profileInfo.defaultBillingAddress);
+      setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
   }, [profileInfo]);
 
@@ -240,6 +249,9 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   const schema = useMemo(() => {
     let sch: any = {
+      firstName: formSchema.firstName,
+      lastName: formSchema.lastName,
+      company_name: formSchema.companyName,
       partNumber: {
         presence: { allowEmpty: false, message: `^${t("column.part_number")} ${t("column.required")}` },
       },
@@ -261,10 +273,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       sch = {
         ...sch,
         email: formSchema.email,
-        firstName: formSchema.firstName,
-        lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-        company_name: formSchema.companyName,
         // ...(formState.values.company_type === "Other" && {
         //   company_other_type: {
         //     presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
@@ -277,7 +286,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (rfqModalOpen) {
-      setFormState(defaultState());
+      setFormState(defaultState(profileInfo));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "rfq_form_register_data",
@@ -322,19 +331,17 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   }, [rfqItem]);
 
   useEffect(() => {
-    let country: any = null;
-    if (billingAddress) country = countries?.find((c) => c.url === billingAddress.country);
-    if (!country)
-      country =
-        (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-        defaultCountry;
-
     setFormState((prevState) => {
       return {
         ...prevState,
         values: {
           ...prevState.values,
-          country: country.url,
+          country:
+            (billingAddress?.country &&
+              countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
+            (geolocation?.country_code_iso3 &&
+              countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+            defaultCountry.url,
         },
       };
     });
@@ -386,6 +393,11 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       }));
     }
 
+    if (isAuthenticated && !isExample && Object.keys(profileInfo).includes(name)) {
+      const updatedProfileInfo = { ...profileInfo, [name]: value };
+      dispatch(saveProfileInfo(updatedProfileInfo));
+    }
+
     return setFormState((prevState) => ({
       ...prevState,
       values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
@@ -425,7 +437,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   //   setItem((prevState) => ({ ...prevState, seller: sellers }));
   // };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
@@ -446,7 +458,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         countries?.find((c) => c.url === formState.values.country) ||
         (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
         defaultCountry;
-      const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
+      const phone = phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : billingAddress?.phone_number_str;
       // let company_type: string;
       // try {
       //   company_type = !isAuthenticated
@@ -547,8 +559,23 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       localStorage.setItem("before_unload_alert_disabled", "true");
       localStorage.setItem("product_request_hint_disabled", "true");
       if (isAuthenticated) {
+        // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
+        setIsLoading(true);
+        await dispatch(
+          updateCompanyAddress(billingAddress.id, {
+            ...billingAddress,
+            first_name: formState.values.firstName,
+            last_name: formState.values.lastName,
+            company_name: formState.values.company_name,
+            phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+            country: formState.values.country || null,
+            line1: billingAddress.line1 || "-",
+          }),
+        ).then(() => dispatch(loadProfileInfoThunk()));
+        await dispatch(updateProfileInfoThunk());
         dispatch(saveRfqItem(data)).then(() => {
           batch(() => {
+            setIsLoading(false);
             dispatch(clearRfqItem());
             if (onCloseModalHandler) dispatch(rfqModalClose());
             setFormState((prevState) => ({
@@ -670,50 +697,8 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
             isAllowedZero={true}
           />
         </div>
-        {isAuthenticated && (
-          <div className={classes.formRow}>
-            <TextField
-              variant="outlined"
-              name="country"
-              size="small"
-              label={`${t("form_labels.delivery_to")} *`}
-              value={formState.values.country}
-              onBlur={onBlurHandler("country")}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              select
-              style={{ textAlign: "start", width: "100%" }}
-              {...errorProps("country")}
-            >
-              {countries?.map((i: Record<string, any>) => (
-                <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                  {i.printable_name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-        )}
-        <div className={classes.formRow}>
-          <TextField
-            style={{ width: "100%" }}
-            name="comment"
-            label={t("column.form_comment")}
-            multiline
-            rows={isAuthenticated ? 4 : 2}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={formState.values.comment || ""}
-            onChange={handleChange}
-            onBlur={onBlurHandler("comment")}
-            placeholder={t("column.comment_placeholder")}
-            {...errorProps("comment")}
-          />
-        </div>
-        {!isAuthenticated && (
+
+        {
           <>
             <div className={classes.formRow}>
               <TextField
@@ -728,7 +713,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 value={formState.values.firstName}
                 onBlur={onBlurHandler("firstName")}
                 onChange={handleChange}
-                disabled={isAuthenticated}
+                // disabled={isAuthenticated}
                 {...errorProps("firstName")}
               />
               <TextField
@@ -743,7 +728,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 value={formState.values.lastName}
                 onBlur={onBlurHandler("lastName")}
                 onChange={handleChange}
-                disabled={isAuthenticated}
+                // disabled={isAuthenticated}
                 {...errorProps("lastName")}
               />
             </div>
@@ -777,12 +762,12 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 value={formState.values.company_name}
                 onBlur={onBlurHandler("company_name")}
                 onChange={handleChange}
-                disabled={isAuthenticated}
+                // disabled={isAuthenticated}
                 {...errorProps("company_name")}
               />
             </div>
           </>
-        )}
+        }
         {/* <div className={classes.formRow}> */}
         {/* <div className={`${classes.dropdown} rfq-modal-partnumber`}> */}
         {/*  <input */}
@@ -843,7 +828,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
           {/*    <MenuItem value="Other">{t("column.other")}</MenuItem> */}
           {/*  </TextField> */}
           {/* )} */}
-          {!isAuthenticated && (
+          {
             <>
               <PhoneInputWrapper
                 label={t("column.phone")}
@@ -874,7 +859,25 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 ))}
               </TextField>
             </>
-          )}
+          }
+        </div>
+        <div className={classes.formRow}>
+          <TextField
+            style={{ width: "100%" }}
+            name="comment"
+            label={t("column.form_comment")}
+            multiline
+            rows={isAuthenticated ? 4 : 2}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={formState.values.comment || ""}
+            onChange={handleChange}
+            onBlur={onBlurHandler("comment")}
+            placeholder={t("column.comment_placeholder")}
+            {...errorProps("comment")}
+          />
         </div>
         {/* {!isAuthenticated && formState.values.company_type === "Other" && ( */}
         {/*  <div className={classes.formRow}> */}
