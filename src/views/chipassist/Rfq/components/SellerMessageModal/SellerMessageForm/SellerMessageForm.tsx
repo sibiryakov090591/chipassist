@@ -35,6 +35,12 @@ import { NumberInput } from "@src/components/Inputs";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "@src/views/chipassist/Rfq/components/RFQForm/styles";
+import {
+  loadProfileInfoThunk,
+  saveProfileInfo,
+  updateCompanyAddress,
+  updateProfileInfoThunk,
+} from "@src/store/profile/profileActions";
 
 interface Props {
   onCloseModalHandler?: () => void;
@@ -118,8 +124,8 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const countries = useAppSelector((state) => state.checkout.countries);
   const currency = useAppSelector((state) => state.currency.selected);
-
-  const defaultState = (): FormState => ({
+  const profileInfo = useAppSelector((state) => state.profile.profileInfo);
+  const defaultState = (profile?: any): FormState => ({
     isValid: false,
     values: {
       quantity: 1,
@@ -129,11 +135,16 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
         mpn: partNumber,
         constantsTitle: constants.title,
       })}`,
-      country: "",
-      email: "",
-      firstName: "",
-      lastName: "",
-      company_name: "",
+      country:
+        (profile?.defaultBillingAddress?.country &&
+          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+      email: profile?.email || "",
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
+      company_name: profile?.defaultBillingAddress?.company_name || "",
       // company_type: "Distributor",
       // company_other_type: "",
       policy_confirm: false,
@@ -144,7 +155,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
   });
 
   const [phoneValue, setPhoneValue] = useState("");
-  const [formState, setFormState] = useState<FormState>(defaultState());
+  const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
   const [isLoading, setIsLoading] = useState(false);
   const debouncedState = useDebounce(formState, 300);
 
@@ -159,6 +170,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
   const schema = useMemo(() => {
     let sch: any = {
+      firstName: formSchema.firstName,
+      lastName: formSchema.lastName,
+      company_name: formSchema.companyName,
       quantity: {
         presence: { allowEmpty: false, message: `^${t("column.qty")} ${t("column.required")}` },
       },
@@ -170,10 +184,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       sch = {
         ...sch,
         email: formSchema.email,
-        firstName: formSchema.firstName,
-        lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-        company_name: formSchema.companyName,
         // ...(formState.values.company_type === "Other" && {
         //   company_other_type: {
         //     presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
@@ -185,8 +196,14 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
   }, [isAuthenticated]);
 
   useEffect(() => {
+    if (profileInfo) {
+      setPhoneValue(profileInfo?.defaultBillingAddress?.phone_number_str || "");
+    }
+  }, [profileInfo]);
+
+  useEffect(() => {
     if (open) {
-      setFormState(defaultState());
+      setFormState(defaultState(profileInfo));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "seller_message_form_register_data",
@@ -276,6 +293,11 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       }));
     }
 
+    if (isAuthenticated && !isExample && Object.keys(profileInfo).includes(name)) {
+      const updatedProfileInfo = { ...profileInfo, [name]: value };
+      dispatch(saveProfileInfo(updatedProfileInfo));
+    }
+
     return setFormState((prevState) => ({
       ...prevState,
       values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
@@ -287,7 +309,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
@@ -315,9 +337,23 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       dispatch(changeMisc("sellerMessage", formState.values, formState.values.email));
 
       if (isAuthenticated) {
+        setIsLoading(true);
+        await dispatch(
+          updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
+            ...profileInfo.defaultBillingAddress,
+            first_name: formState.values.firstName,
+            last_name: formState.values.lastName,
+            company_name: formState.values.company_name,
+            phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+            country: formState.values.country ? formState.values.country : null,
+            line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+          }),
+        ).then(() => dispatch(loadProfileInfoThunk()));
+        await dispatch(updateProfileInfoThunk());
         dispatch(sendSellerMessage(data)).then(() => {
           if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-          setFormState(defaultState());
+          setIsLoading(false);
+          setFormState(defaultState(profileInfo));
         });
       } else {
         setIsLoading(true);
@@ -365,7 +401,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               localStorage.removeItem("seller_message_form_register_data");
               localStorage.setItem("registered_email", formState.values.email);
               if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-              setFormState(defaultState());
+              setFormState(defaultState(profileInfo));
               dispatch(progressModalOpen());
             });
           })
@@ -444,7 +480,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
             {...errorProps("message")}
           />
         </div>
-        {!isAuthenticated && (
+        {
           <>
             <div className={classes.formRow}>
               <TextField
@@ -459,7 +495,6 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                 value={formState.values.firstName}
                 onBlur={onBlurHandler("firstName")}
                 onChange={handleChange}
-                disabled={isAuthenticated}
                 {...errorProps("firstName")}
               />
               <TextField
@@ -474,7 +509,6 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                 value={formState.values.lastName}
                 onBlur={onBlurHandler("lastName")}
                 onChange={handleChange}
-                disabled={isAuthenticated}
                 {...errorProps("lastName")}
               />
             </div>
@@ -508,7 +542,6 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                 value={formState.values.company_name}
                 onBlur={onBlurHandler("company_name")}
                 onChange={handleChange}
-                disabled={isAuthenticated}
                 {...errorProps("company_name")}
               />
             </div>
@@ -575,7 +608,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
             {/*    /> */}
             {/*  </div> */}
             {/* )} */}
-            {constants.id !== ID_ICSEARCH && (
+            {constants.id !== ID_ICSEARCH && !isAuthenticated && (
               <Box display="flex" flexDirection="column" ml={2} mt={1}>
                 <FormControlLabel
                   control={
@@ -619,7 +652,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               </Box>
             )}
           </>
-        )}
+        }
       </div>
       <div className={clsx(commonClasses.actionsRow, classes.buttons)}>
         {onCloseModalHandler && (
