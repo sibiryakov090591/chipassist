@@ -59,6 +59,9 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const currency = useAppSelector((state) => state.currency.selected);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const countries = useAppSelector((state) => state.checkout.countries);
+
+  const countryName = countries?.find((i) => i.iso_3166_1_a3 === item.country)?.printable_name;
 
   useEffect(() => {
     if (item.created) {
@@ -381,10 +384,10 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             </Tooltip>
           )}
         </div>
-        {item?.country && (
+        {countryName && (
           <div className={clsx(classes.replied, classes.geoPin)}>
             <LocationOnOutlinedIcon />
-            {item.country}
+            {countryName}
           </div>
         )}
         {repliedDate && <div className={classes.replied}>Replied {repliedDate}</div>}
