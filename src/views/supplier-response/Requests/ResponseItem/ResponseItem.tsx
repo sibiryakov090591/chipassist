@@ -62,7 +62,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const country = React.useMemo(() => {
     let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
-    if (countryItem.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
+    if (countryItem?.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
     return countryItem;
   }, [countries]);
 
