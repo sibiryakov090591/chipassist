@@ -214,6 +214,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginTop: "4px",
   },
   geoPin: {
+    fontWeight: "normal",
+    fontSize: 11,
+    lineHeight: "11px",
     paddingTop: 0,
     display: "flex",
     justifyContent: "center",
@@ -224,9 +227,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   replied: {
-    fontWeight: "normal",
+    display: "inline-block",
+    color: "#ffffff",
+    padding: "4px 10px",
+    background: "#16be9f",
+    fontWeight: "bold",
     fontSize: 11,
     lineHeight: "11px",
+    borderRadius: "50ch",
+    marginBottom: "2px",
   },
   repliedMobile: {
     fontSize: 13,

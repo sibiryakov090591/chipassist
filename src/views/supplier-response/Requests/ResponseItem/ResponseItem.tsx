@@ -385,7 +385,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
           )}
         </div>
         {countryName && (
-          <div className={clsx(classes.replied, classes.geoPin)}>
+          <div className={classes.geoPin}>
             <LocationOnOutlinedIcon />
             {countryName}
           </div>
