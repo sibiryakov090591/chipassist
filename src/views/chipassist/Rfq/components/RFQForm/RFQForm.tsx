@@ -226,7 +226,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (profileInfo) {
-      if (!rfqModalOpen) setFormState(defaultState(profileInfo));
+      setFormState(defaultState(profileInfo));
       setBillingAddress(profileInfo.defaultBillingAddress);
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
