@@ -155,7 +155,9 @@ const DistributorsDesktop: React.FC<Props> = ({
       const sortedStocks = sortFn(stockrecords, "price_1", "asc");
       const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
       if (bestOffer) {
-        setBestOfferId(bestOffer[0].id);
+        if (sortedStocks.length >= 2) {
+          setBestOfferId(bestOffer[0].id);
+        }
       }
     } else if (setBestOfferId) setBestOfferId(null);
   }, [stockrecords, smart_view]);
