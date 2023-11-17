@@ -22,7 +22,6 @@ import { ResponseManufacturer } from "@src/store/manufacturers/manufacturersType
 import addBusinessDays from "date-fns/addBusinessDays";
 import { format, isWeekend, nextMonday } from "date-fns";
 import { NumberInput } from "@src/components/Inputs";
-import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import { useStyles } from "./responseItemStyles";
 import { useStyles as useResponseStyles } from "../supplierResponseStyles";
 
@@ -61,7 +60,11 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const countries = useAppSelector((state) => state.checkout.countries);
 
-  const countryName = countries?.find((i) => i.iso_3166_1_a3 === item.country)?.printable_name;
+  const country = React.useMemo(() => {
+    let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
+    if (countryItem.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
+    return countryItem;
+  }, [countries]);
 
   useEffect(() => {
     if (item.created) {
@@ -384,10 +387,10 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             </Tooltip>
           )}
         </div>
-        {countryName && (
+        {country && (
           <div className={classes.geoPin}>
-            <LocationOnOutlinedIcon />
-            {countryName}
+            <span className={`fi fi-${country.code.toLowerCase()}`} />
+            <span className={classes.countryName}>{country.printable_name}</span>
           </div>
         )}
         {repliedDate && <div className={classes.replied}>Replied {repliedDate}</div>}

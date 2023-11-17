@@ -214,17 +214,22 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginTop: "4px",
   },
   geoPin: {
-    fontWeight: "normal",
-    fontSize: 11,
-    lineHeight: "11px",
     paddingTop: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     "& svg": {
-      padding: 0,
       fontSize: 12,
     },
+    "& *": {
+      padding: 1,
+      fontSize: 11,
+      lineHeight: "11px",
+      fontWeight: "normal",
+    },
+  },
+  countryName: {
+    marginLeft: 2,
   },
   replied: {
     display: "inline-block",
