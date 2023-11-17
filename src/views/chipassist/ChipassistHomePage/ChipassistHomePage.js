@@ -26,7 +26,6 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import SearchSuggestion from "@src/layouts/HomePage/components/TopBar/components/SearchSuggestion/SearchSuggestion";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import Footer from "@src/components/Footer/Footer";
 import TrySearchPn from "@src/components/TrySearchPn/TrySearchPn";
 import { partNumbers } from "@src/layouts/HomePage/components/TopBar/TopBar";
 import { logout } from "@src/store/authentication/authActions";
@@ -586,7 +585,6 @@ export const ChipassistHomePage = () => {
             </Grid>
           </Container>
         </section>
-        {isMdUp && <Footer />}
       </div>
     </Page>
   );
