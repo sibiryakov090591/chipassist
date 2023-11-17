@@ -141,7 +141,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
     return {
       company_name: { ...formSchema.companyName, presence: { allowEmpty: true } },
       city: { ...formSchema.city, presence: { allowEmpty: true } },
-      email: { ...formSchema.email, presence: { allowEmpty: true } },
+      email: formSchema.email, // an email validation ignores "allowEmpty true"
       postcode: { ...formSchema.postcode, presence: { allowEmpty: true } },
     };
   }, []);
@@ -158,7 +158,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   }, [profile.partnerProfile]);
 
   useEffect(() => {
-    const formErrors = validate(formState.values, schema);
+    const formErrors = validate(formState.values, { ...schema, email: formState.values.email ? schema.email : null });
     setFormState((prevState) => ({
       ...prevState,
       errors: formErrors || {},
