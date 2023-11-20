@@ -387,7 +387,7 @@ export const updateStockrecord = (data: any, chatId: number) => (dispatch: any, 
     types: [actionTypes.UPDATE_STOCKRECORD_R, false, actionTypes.UPDATE_STOCKRECORD_F],
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/response/`, {
+        .post(`/rfqs/response/?source=chat`, {
           data: {
             seller: selectedPartner.id,
             data,
