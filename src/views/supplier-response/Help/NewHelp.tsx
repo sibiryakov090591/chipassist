@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Page from "@src/components/Page";
 // import letter from "@src/images/suppliers_response/letter.png";
 import requests_page from "@src/images/suppliers_response/requests_page.png";
+import supplier_logo from "@src/images/suppliers_response/supplier_logo.png";
+
 import export_img from "@src/images/suppliers_response/export.png";
 import exel from "@src/images/suppliers_response/exel.png";
 import better_price from "@src/images/suppliers_response/better_price.png";
@@ -14,7 +16,7 @@ import { useStyles } from "./helpStyles";
 
 const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
   mainSection: {
-    minHeight: "100vh",
+    // minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -48,19 +50,22 @@ export const NewHelp = () => {
   // const [isListenerExist, setIsListenerExist] = useState(false);
   // const [needToChange, setNeedToChange] = useState(false);
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      console.log(entry.isIntersecting);
-      if (ref) {
-        if (entry.isIntersecting) window.addEventListener("wheel", eventHandler);
-        else window.removeEventListener("wheel", eventHandler);
-      }
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log(entry.isIntersecting);
+        if (ref) {
+          if (entry.isIntersecting) window.addEventListener("wheel", eventHandler);
+          else window.removeEventListener("wheel", eventHandler);
+        }
+      },
+      { threshold: 0.5 },
+    );
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, [ref.current]);
 
   const eventHandler = (ev: any) => {
-    const ratio = 0.1;
+    const ratio = 0.2;
     setCircleSize((prevState) =>
       prevState + ev.deltaY * ratio > 100
         ? 100
@@ -75,22 +80,51 @@ export const NewHelp = () => {
   return (
     <Page title={"Help"} description={"User guide for requests.chipassist.com"} className={classes.main}>
       <section
-        className={newClasses.mainSection}
+        className={classes.firstWay}
         ref={ref}
         style={{
-          background: `radial-gradient(circle at top left, #123 ${circleSize}%, #fff 5%)`,
+          background: `#123`,
           transition: "background 200 easy-out",
         }}
         id={"main"}
       >
-        <Container maxWidth="md">
-          <div className={classes.pageTitleContainer}>
-            <h1 className={classes.pageTitle}>Awesome way of working with quotation requests</h1>
-            <p className={classes.pageDescription}>
-              ChipAssist offers you a <span>unique way</span> of processing user requests. Get subscribed to our daily
-              mailing list and receive hundreds of selected RFQs from ChipAssist customers every day.
-            </p>
-          </div>
+        <Container maxWidth="md" style={{ maxWidth: "1200px" }}>
+          {/* <div className={classes.pageTitleContainer}> */}
+          {/*  <div style={{ display: "flex", justifyContent: "center", alignItems: "start", flexDirection: "column" }}> */}
+          {/*    <h1 className={classes.pageTitle}>New way of working with RFQs</h1> */}
+          {/*    <p className={classes.pageDescription}> */}
+          {/*      /!* ChipAssist offers you a <span>unique way</span> of processing user requests. Get subscribed to our daily *!/ */}
+          {/*      /!* mailing list and receive hundreds of selected RFQs from ChipAssist customers every day. *!/ */}
+          {/*      Many customers, one service: */}
+          {/*    </p> */}
+          {/*    <p>- Get request from the customers worldwide</p> */}
+          {/*    <p>- Compare your offer with competitive quotes</p> */}
+          {/*    <p>- Discuss payment and delivery terms</p> */}
+          {/*  </div> */}
+          {/*  <img style={{ width: "50%" }} className={classes.img} src={requests_page} alt="requests page" /> */}
+          {/* </div> */}
+          <table width={"100%"}>
+            <tbody>
+              <tr>
+                <td width={"50%"}>
+                  <h1 className={classes.pageTitle}>New way of working with RFQs</h1>
+                  <p className={classes.pageDescription}>
+                    {/* ChipAssist offers you a <span>unique way</span> of processing user requests. Get subscribed to our daily */}
+                    {/* mailing list and receive hundreds of selected RFQs from ChipAssist customers every day. */}
+                    Many customers, one service:
+                  </p>
+                  <div className={classes.pageDescrSubDiv}>
+                    <p>- Get request from the customers worldwide</p>
+                    <p>- Compare your offer with competitive quotes</p>
+                    <p>- Discuss payment and delivery terms</p>
+                  </div>
+                </td>
+                <td width={"50%"}>
+                  <img className={clsx(classes.img, classes.pageTitleImage)} src={supplier_logo} alt="requests page" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
           {/* <h2 className={classes.title}>How does it work?</h2> */}
           {/* <Grid container spacing={4} className={classes.gridContainer}> */}
           {/*  <Grid item sm={6} className={classes.gridItem}> */}
@@ -108,13 +142,13 @@ export const NewHelp = () => {
           {/* </Grid> */}
         </Container>
       </section>
-      <section className={clsx(classes.section, classes.firstWay)}>
+      <section className={clsx(classes.section)}>
         <Container maxWidth="lg">
           <Grid container spacing={4} className={classes.gridContainer}>
             <Grid item sm={7}>
               <img style={{ width: "100%" }} className={classes.img} src={requests_page} alt="requests page" />
             </Grid>
-            <Grid item sm={5} className={classes.rightColumn} style={{ alignSelf: "center", color: "white" }}>
+            <Grid item sm={5} className={classes.rightColumn} style={{ alignSelf: "center" }}>
               <p>
                 Seeing a demand for products that can be offered you can respond to the request(s) by visiting our RFQ
                 processing portal{" "}
@@ -127,7 +161,7 @@ export const NewHelp = () => {
           </Grid>
         </Container>
       </section>
-      <section className={clsx(classes.section, classes.firstWay)}>
+      <section className={clsx(classes.section)}>
         <Container maxWidth="md">
           <p className={classes.p}>
             You can provide your{" "}
