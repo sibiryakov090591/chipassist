@@ -262,7 +262,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
           </Grid>
           <Grid item md={6} xs={12} style={isXsDown ? { paddingBottom: 0 } : null}>
             <TextField
-              label={"Email"}
+              label={"Corporate email"}
               name={"email"}
               value={formState.values.email}
               variant={"outlined"}
