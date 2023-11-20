@@ -35,7 +35,8 @@
     "postcode": "Post/Zip-code",
     "country": "Country",
     "delivery_to": "Delivery to",
-    "message": "Your request to seller"
+    "message": "Your request to seller",
+    "part_number": "Part number"
   },
   "adapter": {
     "file_uploaded": "File was uploaded successfully",

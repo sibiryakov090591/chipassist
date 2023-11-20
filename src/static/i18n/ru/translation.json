@@ -38,7 +38,8 @@
     "postcode": "Индекс",
     "country": "Страна",
     "delivery_to": "Доставить в",
-    "message": "Ваш запрос продавцу"
+    "message": "Ваш запрос продавцу",
+    "part_number": "Парт номер"
   },
   "adapter": {
     "file_uploaded": "Файл успешно загружен",
