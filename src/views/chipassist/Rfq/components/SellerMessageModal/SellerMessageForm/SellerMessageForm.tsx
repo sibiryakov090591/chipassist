@@ -339,17 +339,19 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
       if (isAuthenticated) {
         setIsLoading(true);
-        await dispatch(
-          updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
-            ...profileInfo.defaultBillingAddress,
-            first_name: formState.values.firstName,
-            last_name: formState.values.lastName,
-            company_name: formState.values.company_name,
-            phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-            country: formState.values.country ? formState.values.country : null,
-            line1: profileInfo?.defaultBillingAddress?.line1 || "-",
-          }),
-        ).then(() => dispatch(loadProfileInfoThunk()));
+        if (profileInfo?.defaultBillingAddress?.id) {
+          await dispatch(
+            updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
+              ...profileInfo.defaultBillingAddress,
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country ? formState.values.country : null,
+              line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+            }),
+          ).then(() => dispatch(loadProfileInfoThunk()));
+        }
         await dispatch(updateProfileInfoThunk());
         dispatch(sendSellerMessage(data)).then(() => {
           if (onCloseModalHandler) dispatch(sellerMessageModalClose());

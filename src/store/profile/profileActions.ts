@@ -35,8 +35,8 @@ export const loadProfileInfoThunk = () => {
           avatar: response.photo,
           addressErrors: null,
           addresses,
-          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || null,
-          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || null,
+          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || {},
+          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || {},
           addressViewItem: {},
         };
         if (profileInfo.defaultBillingAddress) {
