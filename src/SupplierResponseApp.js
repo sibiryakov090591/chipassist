@@ -36,14 +36,13 @@ import SupplierResponse from "@src/views/supplier-response/Requests/SupplierResp
 import Policy from "@src/views/chipassist/StaticPages/Policy";
 import Terms from "@src/views/chipassist/StaticPages/Terms";
 import SupplierResponseRegisterModal from "@src/components/Alerts/SupplierResponseRegisterModal";
-import Help from "@src/views/supplier-response/Help/Help";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import Statistics from "@src/views/supplier-response/Statistics/Statistics";
 import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import Profile from "@src/views/supplier-response/Profile/Profile";
 import Adapter from "@src/views/supplier-response/Adapter/Adapter";
-import NewHelp from "@src/views/supplier-response/Help/NewHelp";
+import Help from "@src/views/supplier-response/Help/Help";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
@@ -189,7 +188,7 @@ const SupplierResponseApp = () => {
                 </PrivateRoute>
               }
             />
-            <Route path="/home" element={<NewHelp />} />
+            <Route path="/home" element={<Help />} />
             <Route path="/privacy_policy" element={<Policy />} />
             <Route path="/terms_of_services" element={<Terms />} />
             <Route path="/*" element={<Error404 />} />

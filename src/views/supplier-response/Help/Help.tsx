@@ -2,28 +2,129 @@ import React from "react";
 import Page from "@src/components/Page";
 // import letter from "@src/images/suppliers_response/letter.png";
 import requests_page from "@src/images/suppliers_response/requests_page.png";
+import supplier_logo from "@src/images/suppliers_response/supplier_logo.png";
+
 import export_img from "@src/images/suppliers_response/export.png";
 import exel from "@src/images/suppliers_response/exel.png";
 import better_price from "@src/images/suppliers_response/better_price.png";
 // import SendIcon from "@material-ui/icons/Send";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Theme } from "@material-ui/core";
 import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import { AppTheme } from "@src/themes/AppTheme";
 import { useStyles } from "./helpStyles";
 
-const Help: React.FC = () => {
+const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
+  mainSection: {
+    // minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100vw",
+  },
+  highlight: {
+    color: theme.palette.app.red500,
+    fontWeight: 700,
+  },
+}));
+
+// export function useOnScreen(ref: RefObject<HTMLElement>) {
+//   const [isIntersecting, setIntersecting] = useState(false);
+//
+//   const observer = useMemo(() => new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting)), [ref]);
+//
+//   useEffect(() => {
+//     observer.observe(ref.current);
+//
+//     return () => observer.disconnect();
+//   }, []);
+//
+//   return isIntersecting;
+// }
+
+export const Help = () => {
   const classes = useStyles();
+  const newClasses = useNewStyles();
+  // const [circleSize, setCircleSize] = useState(14);
+  // const ref = useRef(null);
+  // // const [isListenerExist, setIsListenerExist] = useState(false);
+  // // const [needToChange, setNeedToChange] = useState(false);
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       console.log(entry.isIntersecting);
+  //       if (ref) {
+  //         if (entry.isIntersecting) window.addEventListener("wheel", eventHandler);
+  //         else window.removeEventListener("wheel", eventHandler);
+  //       }
+  //     },
+  //     { threshold: 0.5 },
+  //   );
+  //   observer.observe(ref.current);
+  //   return () => observer.disconnect();
+  // }, [ref.current]);
+  //
+  // const eventHandler = (ev: any) => {
+  //   const ratio = 0.2;
+  //   setCircleSize((prevState) =>
+  //     prevState + ev.deltaY * ratio > 100
+  //       ? 100
+  //       : prevState + ev.deltaY * ratio < 14
+  //       ? 14
+  //       : prevState + ev.deltaY * ratio,
+  //   );
+  // };
+
+  //
 
   return (
     <Page title={"Help"} description={"User guide for requests.chipassist.com"} className={classes.main}>
-      <section className={classes.section}>
-        <Container maxWidth="md">
-          <div className={classes.pageTitleContainer}>
-            <h1 className={classes.pageTitle}>Awesome way of working with quotation requests</h1>
-            <p className={classes.pageDescription}>
-              ChipAssist offers you a <span>unique way</span> of processing user requests. Get subscribed to our daily
-              mailing list and receive hundreds of selected RFQs from ChipAssist customers every day.
-            </p>
-          </div>
+      <section
+        className={classes.firstWay}
+        // ref={ref}
+        style={{
+          background: `#123`,
+          transition: "background 200 easy-out",
+        }}
+        id={"main"}
+      >
+        <Container maxWidth="md" style={{ maxWidth: "1200px" }}>
+          {/* <div className={classes.pageTitleContainer}> */}
+          {/*  <div style={{ display: "flex", justifyContent: "center", alignItems: "start", flexDirection: "column" }}> */}
+          {/*    <h1 className={classes.pageTitle}>New way of working with RFQs</h1> */}
+          {/*    <p className={classes.pageDescription}> */}
+          {/*      /!* ChipAssist offers you a <span>unique way</span> of processing user requests. Get subscribed to our daily *!/ */}
+          {/*      /!* mailing list and receive hundreds of selected RFQs from ChipAssist customers every day. *!/ */}
+          {/*      Many customers, one service: */}
+          {/*    </p> */}
+          {/*    <p>- Get request from the customers worldwide</p> */}
+          {/*    <p>- Compare your offer with competitive quotes</p> */}
+          {/*    <p>- Discuss payment and delivery terms</p> */}
+          {/*  </div> */}
+          {/*  <img style={{ width: "50%" }} className={classes.img} src={requests_page} alt="requests page" /> */}
+          {/* </div> */}
+          <table width={"100%"}>
+            <tbody>
+              <tr>
+                <td width={"50%"}>
+                  <h1 className={classes.pageTitle}>New way of working with RFQs</h1>
+                  <p className={classes.pageDescription}>
+                    {/* ChipAssist offers you a <span>unique way</span> of processing user requests. Get subscribed to our daily */}
+                    {/* mailing list and receive hundreds of selected RFQs from ChipAssist customers every day. */}
+                    Many customers, one service:
+                  </p>
+                  <div className={classes.pageDescrSubDiv}>
+                    <p>- Get request from the customers worldwide</p>
+                    <p>- Compare your offer with competitive quotes</p>
+                    <p>- Discuss payment and delivery terms</p>
+                  </div>
+                </td>
+                <td width={"50%"}>
+                  <img className={clsx(classes.img, classes.pageTitleImage)} src={supplier_logo} alt="requests page" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
           {/* <h2 className={classes.title}>How does it work?</h2> */}
           {/* <Grid container spacing={4} className={classes.gridContainer}> */}
           {/*  <Grid item sm={6} className={classes.gridItem}> */}
@@ -41,8 +142,8 @@ const Help: React.FC = () => {
           {/* </Grid> */}
         </Container>
       </section>
-      <section className={clsx(classes.section, classes.firstWay)}>
-        <Container maxWidth="md">
+      <section className={clsx(classes.section)}>
+        <Container maxWidth="lg">
           <Grid container spacing={4} className={classes.gridContainer}>
             <Grid item sm={7}>
               <img style={{ width: "100%" }} className={classes.img} src={requests_page} alt="requests page" />
@@ -60,13 +161,13 @@ const Help: React.FC = () => {
           </Grid>
         </Container>
       </section>
-      <section className={clsx(classes.section, classes.firstWay)}>
+      <section className={clsx(classes.section)}>
         <Container maxWidth="md">
           <p className={classes.p}>
             You can provide your{" "}
-            <span style={{ color: "red", fontWeight: 700 }}>stock, unit price, date code and lead time</span> for every
-            item you like. Additionally you can provide an alternative MPN and comments describing any information you
-            would like to provide.
+            <span className={newClasses.highlight}>stock, unit price, date code and lead time</span> for every item you
+            like. Additionally you can provide an alternative MPN and comments describing any information you would like
+            to provide.
           </p>
           <p className={classes.p}>
             Once you have provided all the information required, just hit the “SEND DATA” button and your responses will
@@ -80,9 +181,8 @@ const Help: React.FC = () => {
             <Grid item sm={6} style={{ alignSelf: "center" }}>
               <h3>The second way to provide your responses</h3>
               <p>
-                You also can export the list of the request to{" "}
-                <span style={{ color: "red", fontWeight: 700 }}>.xls file</span>. This might be useful if you like to
-                prepare your responses in .xls format.
+                You also can export the list of the request to <span className={newClasses.highlight}>.xls file</span>.
+                This might be useful if you like to prepare your responses in .xls format.
               </p>
             </Grid>
             <Grid item sm={6} className={classes.rightColumn}>
@@ -127,8 +227,8 @@ const Help: React.FC = () => {
         <Container maxWidth="md">
           <h3>How to get started</h3>
           <p className={classes.p}>
-            If you are <span style={{ color: "red", fontWeight: 700 }}>not yet subscribed</span> to a daily requests
-            list and don’t have an account at{" "}
+            If you are <span className={newClasses.highlight}>not yet subscribed</span> to a daily requests list and
+            don’t have an account at{" "}
             <a href="https://requests.chipassist.com" target="_blank" rel="noreferrer">
               https://requests.chipassist.com
             </a>{" "}
