@@ -58,6 +58,13 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const currency = useAppSelector((state) => state.currency.selected);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const countries = useAppSelector((state) => state.checkout.countries);
+
+  const country = React.useMemo(() => {
+    let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
+    if (countryItem?.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
+    return countryItem;
+  }, [countries]);
 
   useEffect(() => {
     if (item.created) {
@@ -380,6 +387,12 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             </Tooltip>
           )}
         </div>
+        {country && (
+          <div className={classes.geoPin}>
+            <span className={`fi fi-${country.code.toLowerCase()}`} />
+            <span className={classes.countryName}>{country.printable_name}</span>
+          </div>
+        )}
         {repliedDate && <div className={classes.replied}>Replied {repliedDate}</div>}
       </td>
       <td className={clsx(classes.infoColumn, { [classes.error]: !!error })}>

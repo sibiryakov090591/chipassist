@@ -15,7 +15,7 @@ const firstName = {
   format: {
     pattern: `[a-zA-Z${constants.id === ID_ICSEARCH ? "А-Яа-яЁё" : ""} -]+`,
     flags: "i",
-    message: `^${t("errors.only_letters")}`,
+    message: `^${t("form_labels.first_name")} ${t("errors.only_letters")}`,
   },
 };
 
@@ -28,14 +28,14 @@ const lastName = {
   format: {
     pattern: `[a-zA-Z${constants.id === ID_ICSEARCH ? "А-Яа-яЁё" : ""} -]+`,
     flags: "i",
-    message: `^${t("errors.only_letters")}`,
+    message: `^${t("form_labels.last_name")} ${t("errors.only_letters")}`,
   },
 };
 
 const companyName = {
   presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} -]*`,
+    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} \`~'}{><"!@#$%^&*)(-_=+.,?№;:/]*`,
     flags: "i",
     message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits")}`,
   },
@@ -46,14 +46,14 @@ const city = {
   format: {
     pattern: `[a-zA-Z${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} -]*`,
     flags: "i",
-    message: `^${t("errors.only_letters")}`,
+    message: `^${t("form_labels.city")} ${t("errors.only_letters")}`,
   },
 };
 
 const postcode = {
   presence: { allowEmpty: false, message: `^${t("form_labels.postcode")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} !@#$%^&*)(-_=+.,?№;:/]*`,
+    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} \`~'}{><"!@#$%^&*)(-_=+.,?№;:/]*`,
     flags: "i",
     message: `^${t("form_labels.postcode")} ${t("errors.only_letters_and_digits")}`,
   },

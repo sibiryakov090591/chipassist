@@ -47,4 +47,9 @@ export const saveUtm = (data: { [key: string]: string }) => ({
   payload: data,
 });
 
+export const saveHref = (href: string) => ({
+  type: actionTypes.SAVE_HREF,
+  payload: href,
+});
+
 export default "common actions";

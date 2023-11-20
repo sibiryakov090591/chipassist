@@ -213,10 +213,34 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: "#9a9a9a",
     marginTop: "4px",
   },
+  geoPin: {
+    paddingTop: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "& svg": {
+      fontSize: 12,
+    },
+    "& *": {
+      padding: 1,
+      fontSize: 11,
+      lineHeight: "11px",
+      fontWeight: "normal",
+    },
+  },
+  countryName: {
+    marginLeft: 2,
+  },
   replied: {
-    fontWeight: "normal",
+    display: "inline-block",
+    color: "#ffffff",
+    padding: "4px 10px",
+    background: "#16be9f",
+    fontWeight: "bold",
     fontSize: 11,
     lineHeight: "11px",
+    borderRadius: "50ch",
+    marginBottom: "2px",
   },
   repliedMobile: {
     fontSize: 13,

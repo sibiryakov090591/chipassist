@@ -17,6 +17,7 @@ const initialState: actionTypes.CommonState = {
   shouldUpdateCard: 0,
   addedProduct: null,
   utm: {},
+  href: null,
 };
 
 export default function common(state = initialState, action: actionTypes.CommonActionTypes) {
@@ -38,6 +39,11 @@ export default function common(state = initialState, action: actionTypes.CommonA
     case actionTypes.SAVE_UTM: {
       return updateObject(state, {
         utm: action.payload,
+      });
+    }
+    case actionTypes.SAVE_HREF: {
+      return updateObject(state, {
+        href: action.payload,
       });
     }
     default:

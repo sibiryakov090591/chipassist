@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
+    flexDirection: "row",
     [theme.breakpoints.up("md")]: {
       backgroundColor: "transparent",
       display: "flex",
@@ -20,7 +21,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: theme.palette.app.red500,
+    backgroundColor: theme.palette.app.red400,
     padding: "37px 20px 20px",
     position: "sticky",
     top: 0,

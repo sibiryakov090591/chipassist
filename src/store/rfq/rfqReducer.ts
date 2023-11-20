@@ -75,6 +75,7 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
     case actionTypes.LOAD_RFQ_S:
       return { ...state, rfqsLoading: false, rfqs: action.response };
     case actionTypes.LOAD_RFQ_F:
+      if (action.error.message === "request_cancelled") return state;
       return { ...state, rfqsLoading: false, rfqs: { ...state.rfqs, results: [] } };
     case actionTypes.SAVE_RFQ: // TODO: delete?
       return updateObject(state, { rfqs: action.payload });

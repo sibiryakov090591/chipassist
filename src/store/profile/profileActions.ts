@@ -35,8 +35,8 @@ export const loadProfileInfoThunk = () => {
           avatar: response.photo,
           addressErrors: null,
           addresses,
-          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || null,
-          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || null,
+          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || {},
+          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || {},
           addressViewItem: {},
         };
         if (profileInfo.defaultBillingAddress) {
@@ -123,13 +123,14 @@ export const setGeolocation = (countryCode: string, countryName: string, city: s
 
 export const getGeolocation = () => {
   return (dispatch: any) => {
-    axios
+    return axios
       .get("https://ipapi.co/json/")
       .then((res) => res.data)
       .then((data: any) => {
         dispatch(setGeolocation(data.country_code_iso3, data.country_name, data.city, data.country_code));
+        return data;
       })
-      .catch((e) => {
+      .catch((e: any) => {
         console.log("***GET_GEOLOCATION_ERROR", e);
         throw e;
       });

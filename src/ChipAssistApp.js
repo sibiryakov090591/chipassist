@@ -15,7 +15,7 @@ import Maintenance from "@src/views/chipassist/Maintenance";
 import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
 import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
 import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
-import { checkUserActivityStatus, saveUtm } from "@src/store/common/commonActions";
+import { checkUserActivityStatus, saveHref, saveUtm } from "@src/store/common/commonActions";
 import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
@@ -48,7 +48,6 @@ import Register from "@src/views/chipassist/Register/Register.tsx";
 import ErrorRegister from "@src/views/chipassist/ErrorRegister/ErrorRegister";
 import { getUtm, lazyLoader } from "@src/utils/utility";
 import { loadMiscAction } from "@src/store/misc/miscActions";
-import ChipassistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
@@ -58,6 +57,7 @@ import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
 import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
+import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/HomePage";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -129,6 +129,7 @@ const ChipAssistApp = () => {
   const isRestricted = constants.closedRegistration;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
+  const [geoLoaded, setGeoLoaded] = useState(false);
   const dispatch = useAppDispatch();
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
@@ -172,6 +173,7 @@ const ChipAssistApp = () => {
   useEffect(() => {
     const utm = getUtm();
     if (utm) dispatch(saveUtm(utm));
+    dispatch(saveHref(window.location.href));
   }, []);
 
   // useEffect(() => {
@@ -206,7 +208,7 @@ const ChipAssistApp = () => {
       });
       dispatch(getAllSellers());
       // dispatch(getCountriesThunk());
-      dispatch(getGeolocation());
+      dispatch(getGeolocation()).finally(() => setGeoLoaded(true));
     });
   }, []);
 
@@ -247,6 +249,7 @@ const ChipAssistApp = () => {
     return <Maintenance />;
   }
 
+  if (!geoLoaded) return null;
   return (
     <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>
@@ -299,7 +302,7 @@ const ChipAssistApp = () => {
                 </Routes>
               }
             />
-            <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <ChipassistHomePage />} />
+            <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <ChipAssistHomePage />} />
             {constants.id !== ID_ICSEARCH && <Route path="/sell-excess-inventory" element={<SellExcess />} />}
             <Route path="/auth/registration" element={<Register />} />
             <Route path="/registered" element={isRestricted ? <RegisterClosedSuccess /> : <RegisterSuccess />} />
