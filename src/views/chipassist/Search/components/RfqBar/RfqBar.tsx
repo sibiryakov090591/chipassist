@@ -118,7 +118,7 @@ const RfqBar: React.FC = () => {
           value={formState.values.quantity}
           onChange={handleChange}
           decimalScale={0}
-          isAllowedZero={true}
+          isAllowedZero={false}
           placeholder="Quantity"
         />
         <NumberInput
