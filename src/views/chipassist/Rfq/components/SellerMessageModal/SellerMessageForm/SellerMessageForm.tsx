@@ -353,11 +353,12 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
           ).then(() => dispatch(loadProfileInfoThunk()));
         }
         await dispatch(updateProfileInfoThunk());
-        dispatch(sendSellerMessage(data)).then(() => {
-          if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-          setIsLoading(false);
-          setFormState(defaultState(profileInfo));
-        });
+        dispatch(sendSellerMessage(data))
+          .then(() => {
+            if (onCloseModalHandler) dispatch(sellerMessageModalClose());
+            setFormState(defaultState(profileInfo));
+          })
+          .finally(() => setIsLoading(false));
       } else {
         setIsLoading(true);
         saveRequestToLocalStorage(data, data.part_number, "sellerMessage");

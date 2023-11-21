@@ -575,21 +575,22 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
           ).then(() => dispatch(loadProfileInfoThunk()));
         }
         await dispatch(updateProfileInfoThunk());
-        dispatch(saveRfqItem(data)).then(() => {
-          batch(() => {
-            setIsLoading(false);
-            dispatch(clearRfqItem());
-            if (onCloseModalHandler) dispatch(rfqModalClose());
-            setFormState((prevState) => ({
-              ...defaultState(),
-              values: {
-                ...defaultState().values,
-                partNumber: prevState.values.partNumber,
-                country: prevState.values.country,
-              },
-            }));
-          });
-        });
+        dispatch(saveRfqItem(data))
+          .then(() => {
+            batch(() => {
+              dispatch(clearRfqItem());
+              if (onCloseModalHandler) dispatch(rfqModalClose());
+              setFormState((prevState) => ({
+                ...defaultState(),
+                values: {
+                  ...defaultState().values,
+                  partNumber: prevState.values.partNumber,
+                  country: prevState.values.country,
+                },
+              }));
+            });
+          })
+          .finally(() => setIsLoading(false));
         if (sellersMessages?.length) {
           sellersMessages.forEach((messageData) => dispatch(sendSellerMessage(messageData)));
         }

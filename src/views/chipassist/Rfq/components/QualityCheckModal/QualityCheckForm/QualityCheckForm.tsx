@@ -340,11 +340,12 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
         }
         await dispatch(updateProfileInfoThunk());
 
-        dispatch(sendQualityCheck(data)).then(() => {
-          if (onCloseModalHandler) dispatch(qualityCheckModalClose());
-          setFormState(defaultState());
-          setIsLoading(false);
-        });
+        dispatch(sendQualityCheck(data))
+          .then(() => {
+            if (onCloseModalHandler) dispatch(qualityCheckModalClose());
+            setFormState(defaultState());
+          })
+          .finally(() => setIsLoading(false));
       } else {
         setIsLoading(true);
         saveRequestToLocalStorage(data, data.part_number, "qualityCheck");
