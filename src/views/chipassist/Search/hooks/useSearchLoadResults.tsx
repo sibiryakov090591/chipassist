@@ -71,7 +71,8 @@ const useSearchLoadResults = () => {
       dispatch(
         loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, {
           smart_view,
-          ...(isFirstRequest && { href: encodeURIComponent(href), referrer: encodeURIComponent(document.referrer) }),
+          href: encodeURIComponent(href),
+          ...(isFirstRequest && { referrer: encodeURIComponent(document.referrer) }),
         }),
       )
         .then((res: any) => {
