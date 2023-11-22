@@ -1,4 +1,5 @@
 import { updateObject } from "@src/utils/utility";
+import store from "@src/store";
 import * as actionTypes from "./profileTypes";
 import * as authActionTypes from "../authentication/authTypes";
 
@@ -157,6 +158,25 @@ export default function profile(state = initialState, action: actionTypes.Profil
     case actionTypes.SAVE_NEW_PARTNER_INFORMATION:
       return {
         ...state,
+      };
+    case actionTypes.UPDATE_ADDRESS_S:
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          firsName: action.return.data.first_name,
+          lastName: action.return.data.last_name,
+        },
+      };
+
+    case actionTypes.CREATE_ADDRESS_S:
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          firsName: action.return.data.first_name,
+          lastName: action.return.data.last_name,
+        },
       };
     default:
       return state;

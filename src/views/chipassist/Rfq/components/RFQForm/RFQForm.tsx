@@ -51,6 +51,7 @@ import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import {
   loadProfileInfoThunk,
+  newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
   updateProfileInfoThunk,
@@ -230,7 +231,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       setBillingAddress(profileInfo.defaultBillingAddress);
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
-  }, [profileInfo]);
+  }, []);
 
   useEffect(() => {
     const formErrors = validate(formState.values, schema);
@@ -572,7 +573,18 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               country: formState.values.country || null,
               line1: billingAddress.line1 || "-",
             }),
-          ).then(() => dispatch(loadProfileInfoThunk()));
+          );
+        } else {
+          await dispatch(
+            newCompanyAddress({
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country || null,
+              line1: "-",
+            }),
+          );
         }
         await dispatch(updateProfileInfoThunk());
         dispatch(saveRfqItem(data)).then(() => {
