@@ -330,11 +330,12 @@ interface CreateAddressR {
 
 interface CreateAddressS {
   type: typeof CREATE_ADDRESS_S;
-  return: any;
+  response: any;
 }
 
 interface CreateAddressF {
   type: typeof CREATE_ADDRESS_F;
+  error: any;
 }
 
 interface UpdateAddressR {
@@ -343,11 +344,12 @@ interface UpdateAddressR {
 
 interface UpdateAddressS {
   type: typeof UPDATE_ADDRESS_S;
-  return: any;
+  response: any;
 }
 
 interface UpdateAddressF {
   type: typeof UPDATE_ADDRESS_F;
+  error: any;
 }
 
 export type ProfileActionTypes =

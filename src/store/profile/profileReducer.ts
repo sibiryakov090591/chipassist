@@ -1,5 +1,6 @@
 import { updateObject } from "@src/utils/utility";
 import store from "@src/store";
+import { address } from "@src/store/checkout/checkoutReducer";
 import * as actionTypes from "./profileTypes";
 import * as authActionTypes from "../authentication/authTypes";
 
@@ -164,8 +165,30 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
         profileInfo: {
           ...state.profileInfo,
-          firsName: action.return.data.first_name,
-          lastName: action.return.data.last_name,
+          defaultBillingAddress: {
+            ...state.profileInfo.defaultBillingAddress,
+            first_name: action.response.data.first_name,
+            last_name: action.response.data.last_name,
+            company_name: action.response.data.company_name,
+            phone_number_str: action.response.data.phone_number_str,
+            country: action.response.data.country,
+            line1: action.response.data.line1,
+          },
+          addresses: [
+            ...state.profileInfo.addresses.map((element) =>
+              element.id === action.response.data.id
+                ? {
+                    ...element,
+                    first_name: action.response.data.first_name,
+                    last_name: action.response.data.last_name,
+                    company_name: action.response.data.company_name,
+                    phone_number_str: action.response.data.phone_number_str,
+                    country: action.response.data.country,
+                    line1: action.response.data.line1,
+                  }
+                : element,
+            ),
+          ],
         },
       };
 
@@ -174,8 +197,17 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
         profileInfo: {
           ...state.profileInfo,
-          firsName: action.return.data.first_name,
-          lastName: action.return.data.last_name,
+          addresses: [
+            {
+              first_name: action.response.data.first_name,
+              last_name: action.response.data.last_name,
+              company_name: action.response.data.company_name,
+              phone_number_str: action.response.data.phone_number_str,
+              country: action.response.data.country,
+              line1: action.response.data.line1,
+            },
+            ...state.profileInfo.addresses,
+          ],
         },
       };
     default:

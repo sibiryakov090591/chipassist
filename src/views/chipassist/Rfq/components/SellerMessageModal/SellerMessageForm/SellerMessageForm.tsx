@@ -37,6 +37,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useStyles } from "@src/views/chipassist/Rfq/components/RFQForm/styles";
 import {
   loadProfileInfoThunk,
+  newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
   updateProfileInfoThunk,
@@ -350,7 +351,18 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               country: formState.values.country ? formState.values.country : null,
               line1: profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
-          ).then(() => dispatch(loadProfileInfoThunk()));
+          );
+        } else {
+          await dispatch(
+            newCompanyAddress({
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country ? formState.values.country : null,
+              line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+            }),
+          );
         }
         await dispatch(updateProfileInfoThunk());
         dispatch(sendSellerMessage(data)).then(() => {
