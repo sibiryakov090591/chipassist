@@ -23,6 +23,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   pointer: {
     cursor: "pointer",
   },
+  firstChild: {
+    "& > *": {
+      background: "#faf7b6",
+    },
+  },
   lastChild: {
     borderBottom: "12px solid #eee",
   },
