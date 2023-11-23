@@ -87,8 +87,6 @@ interface Props {
 }
 
 interface RfqItemInterface {
-  partNumber: string;
-  prevPartNumber: string;
   country: string;
   quantity: string;
   price: string;
@@ -108,8 +106,6 @@ interface RfqItemInterface {
 }
 
 interface RfqItemTouched {
-  partNumber?: boolean;
-  prevPartNumber?: boolean;
   country?: boolean;
   quantity?: boolean;
   price?: boolean;
@@ -125,8 +121,6 @@ interface RfqItemTouched {
 }
 
 interface RfqItemErrors {
-  partNumber?: string[];
-  prevPartNumber?: string[];
   country?: string[];
   quantity?: string[];
   price?: string[];
@@ -159,8 +153,6 @@ interface FormState {
 const defaultState = (profile?: any): FormState => ({
   isValid: false,
   values: {
-    partNumber: "",
-    prevPartNumber: "",
     country: profile?.country || "",
     quantity: "",
     price: "",
@@ -252,9 +244,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       firstName: formSchema.firstName,
       lastName: formSchema.lastName,
       company_name: formSchema.companyName,
-      partNumber: {
-        presence: { allowEmpty: false, message: `^${t("column.part_number")} ${t("column.required")}` },
-      },
       quantity: {
         presence: { allowEmpty: false, message: `^${t("column.qty")} ${t("column.required")}` },
       },
@@ -441,6 +430,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
+    return console.log(errors, formState.values);
     if (errors) {
       return setFormState((prevState) => ({
         ...prevState,
@@ -500,7 +490,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         : null;
 
       const data = {
-        part_number: formState.values.prevPartNumber || formState.values.partNumber,
+        part_number: rfqItem.partNumber,
         quantity: formState.values.quantity,
         price:
           formState.values.price ||
