@@ -53,6 +53,24 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   biggerPrice: {
     color: "#fa4f4f",
   },
+  geoPin: {
+    paddingTop: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "& svg": {
+      fontSize: 12,
+    },
+    "& *": {
+      padding: 1,
+      fontSize: 11,
+      lineHeight: "11px",
+      fontWeight: "normal",
+    },
+  },
+  countryName: {
+    marginLeft: 2,
+  },
 }));
 
 export default "styles";
