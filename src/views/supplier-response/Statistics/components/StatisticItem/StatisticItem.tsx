@@ -27,6 +27,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
           [classes.odd]: !open && !isEven(index),
           [classes.open]: open,
           [classes.pointer]: isActiveArrow,
+          [classes.lastChild]: open && item.id === items[items.length - 1].id,
         })}
         onClick={isActiveArrow && toggleOpen}
       >
