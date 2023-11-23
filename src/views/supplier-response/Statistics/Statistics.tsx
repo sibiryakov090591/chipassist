@@ -87,16 +87,15 @@ const Statistics: React.FC = () => {
     if (data) {
       const newData = data.results.reduce((acc: State, item) => {
         const groupDate = new Date(item.date).toLocaleDateString();
+        const stockId = item.stockrecord_id || uuid();
         return {
           ...acc,
           [groupDate]: acc[groupDate]
             ? {
                 ...acc[groupDate],
-                [item.stockrecord_id]: acc[groupDate][item.stockrecord_id]
-                  ? [...acc[groupDate][item.stockrecord_id], item]
-                  : [item],
+                [stockId]: acc[groupDate][stockId] ? [...acc[groupDate][stockId], item] : [item],
               }
-            : { [item.stockrecord_id]: [item] },
+            : { [stockId]: [item] },
         };
       }, {});
       setGroups(newData);
