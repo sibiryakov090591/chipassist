@@ -19,6 +19,7 @@ export interface ResponseItem {
   competitive_price: number;
   date: string;
   manufacturer_name: string;
+  stockrecord_id: number;
   mpn: string;
   position: string;
   price: number;

@@ -15,6 +15,23 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       backgroundColor: "#f5f5f5",
     },
   },
+  open: {
+    "& > *": {
+      background: "#fffbe6",
+    },
+  },
+  pointer: {
+    cursor: "pointer",
+  },
+  tdArrow: {
+    padding: 0,
+  },
+  arrow: {
+    transition: "all 200ms ease",
+    "&.active": {
+      transform: "rotate(180deg)",
+    },
+  },
   repliedData: {
     "& span": {
       fontSize: "0.94rem",
