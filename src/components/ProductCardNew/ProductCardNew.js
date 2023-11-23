@@ -259,8 +259,8 @@ const ProductCardNew = (props) => {
   //   if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
   // };
 
-  const onCollapseText = (open) => () => {
-    setCollapseText(open);
+  const toggleCollapseText = () => {
+    setCollapseText((prev) => !prev);
   };
 
   return (
@@ -324,10 +324,13 @@ const ProductCardNew = (props) => {
                 }
                 autoEscape={true}
               />
-              {collapseText && isSmDown && product.description?.length > 100 && (
-                <span onClick={onCollapseText(false)} className={appTheme.hyperlink}>
-                  ...view more
-                </span>
+              {isSmDown && product.description?.length > 100 && (
+                <>
+                  {" "}
+                  <span onClick={toggleCollapseText} className={appTheme.hyperlink}>
+                    {collapseText ? "...view more" : "hide"}
+                  </span>
+                </>
               )}
             </div>
           </div>
