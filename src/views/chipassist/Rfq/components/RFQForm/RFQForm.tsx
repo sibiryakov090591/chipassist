@@ -430,7 +430,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
-    return console.log(errors, formState.values);
+
     if (errors) {
       return setFormState((prevState) => ({
         ...prevState,
@@ -541,7 +541,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
           return [...acc, sellerData];
         }, []);
 
-      dispatch(progressModalSetPartNumber(formState.values.partNumber, "rfq"));
+      dispatch(progressModalSetPartNumber(rfqItem.partNumber, "rfq"));
 
       console.log("MISC_SAVE:", formState.values);
       dispatch(changeMisc("rfq", formState.values, formState.values.email));
@@ -574,7 +574,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 ...defaultState(),
                 values: {
                   ...defaultState().values,
-                  partNumber: prevState.values.partNumber,
                   country: prevState.values.country,
                 },
               }));
@@ -622,7 +621,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 ...defaultState(),
                 values: {
                   ...defaultState().values,
-                  partNumber: prevState.values.partNumber,
                   country: prevState.values.country,
                 },
               }));
