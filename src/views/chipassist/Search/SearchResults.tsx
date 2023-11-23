@@ -399,7 +399,7 @@ const SearchResults = () => {
                 <Skeletons />
               ) : (
                 <div id={"productList"}>
-                  {!isSmDown && showRfqBar && <RfqBar />}
+                  {!isSmDown && showRfqBar && count > 0 && <RfqBar />}
                   <ProductsSegment>
                     {products?.map((product, key) => {
                       const rfq = rfqData.results.find((item) => item.id === product.id);

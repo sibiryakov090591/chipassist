@@ -44,9 +44,9 @@ const companyName = {
 const partNumber = {
   presence: { allowEmpty: false, message: `^${t("form_labels.part_number")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9 #,./-]*`,
+    pattern: `[a-zA-Z0-9 /#-,.+]*`,
     flags: "i",
-    message: `Only "a-z, A-Z, 0-9, /, #, -, ." are allowed in MPN`,
+    message: `Only "a-z, A-Z, 0-9, /, #, -, +, ." are allowed in MPN`,
   },
 };
 
