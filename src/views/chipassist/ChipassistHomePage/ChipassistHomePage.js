@@ -4,7 +4,6 @@ import { Page } from "@src/components";
 import { Box, Button, Container, Grid } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import clsx from "clsx";
-import combo_mobile from "@src/images/Homepage/devices_ca.png";
 import mobile from "@src/images/Homepage/mobile.png";
 import bom from "@src/images/Homepage/BOM2.png";
 import icon_1 from "@src/images/Homepage/board_aloupr.svg";
@@ -87,161 +86,157 @@ export const ChipassistHomePage = () => {
   return (
     <Page title={t("page_title", { name: constants.title })} description={t("page_description")}>
       <div className={classes.main}>
-        {isMdUp && (
-          <section className={classes.header}>
-            <Container maxWidth="lg" className={classes.headerContainer}>
-              <div>
-                <NavLink to="/sell-excess-inventory" className={classes.headerButtonLink}>
-                  Sell on <span className={classes.redColor}>ChipAssist</span>
-                </NavLink>
-              </div>
-              <div>
-                <a href="mailto:info@chipassist.com" className={classes.headerLink}>
-                  info@chipassist.com
-                </a>
-                <a href="tel:+41797137881" style={{ marginLeft: 18 }} className={classes.headerLink}>
-                  +41 79 713 7881
-                </a>
-                {!isAuthenticated ? (
-                  <>
-                    <NavLink to={"/auth/registration"} style={{ marginLeft: 40 }} className={classes.headerLink}>
-                      Register
+        <section className={classes.hero}>
+          {isMdUp && (
+            <div className={classes.heroMenuContainer}>
+              <Container maxWidth="lg">
+                <nav className={classes.heroMenu}>
+                  <Box display="flex" alignItems="center">
+                    {logoLink}
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/about_company`}>
+                      About us
                     </NavLink>
-                    {" / "}
-                    <NavLink to={"/auth/login"} className={classes.headerLink}>
-                      Sign In
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/parts`}>
+                      {t("menu.parts")}
                     </NavLink>
-                  </>
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/bom/create-file`}>
+                      {t("menu.bom")}
+                    </NavLink>
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/rfq-list-quotes`}>
+                      {"RFQ List"}
+                    </NavLink>
+                    {isAuthenticated && (
+                      <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
+                        {t("menu.profile")}
+                      </NavLink>
+                    )}
+                    {isAuthenticated ? (
+                      <NavLink className={`${classes.heroMenuLink}`} to={`/messages`}>
+                        {t("menu.chat")}
+                        <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+                      </NavLink>
+                    ) : (
+                      <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
+                        Contacts
+                      </a>
+                    )}
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
+                      {t("menu.blog")}
+                    </NavLink>
+                  </Box>
+                  <Box display="flex" alignItems="center">
+                    {!isAuthenticated ? (
+                      <>
+                        <NavLink to={"/auth/registration"} className={classes.headerLink}>
+                          Register
+                        </NavLink>
+                        <Box m="0 8px">/</Box>
+                        <NavLink to={"/auth/login"} style={{ marginRight: 16 }} className={classes.headerLink}>
+                          Sign In
+                        </NavLink>
+                      </>
+                    ) : (
+                      <NavLink
+                        id="profilebutton"
+                        to={"/logout"}
+                        onClick={logoutHandler}
+                        style={{ marginRight: 16 }}
+                        className={classes.headerLink}
+                      >
+                        Logout
+                      </NavLink>
+                    )}
+                    <NavLink to="/sell-excess-inventory" className={classes.headerButtonLink}>
+                      Sell on <span className={classes.redColor}>ChipAssist</span>
+                    </NavLink>
+                    {/* {cartBlock} */}
+                  </Box>
+                </nav>
+              </Container>
+            </div>
+          )}
+
+          <div className={classes.heroMain}>
+            <Container maxWidth="lg">
+              <h1 className={classes.heroTitle}>
+                Search for electronic parts. <br />
+                <span>Reinvented.</span>
+              </h1>
+              <SearchSuggestion
+                searchInputClass={classes.searchInput}
+                searchButtonClass={classes.searchIconButton}
+                searchIconClass={classes.searchIcon}
+                searchClearClass={classes.clearSearchIcon}
+                isHomePageSuggestions={true}
+              />
+              <TrySearchPn
+                partNumbers={partNumberExamples || partNumbers}
+                textClassName={classes.tryP}
+                pnClassName={classes.trySpan}
+              />
+              <div className={classes.heroItems}>
+                {isXsDown ? (
+                  <div className={classes.heroItem}>
+                    <h3 className={classes.heroItemTitle}>Search. Request. Buy.</h3>
+                    <p className={classes.heroItemText}>
+                      Search for products and see market availability. Place your requests with 300+ sellers in one
+                      click. Order and track with ChipAssist.
+                    </p>
+                  </div>
                 ) : (
-                  <NavLink
-                    id="profilebutton"
-                    to={"/logout"}
-                    onClick={logoutHandler}
-                    style={{ marginLeft: 40 }}
-                    className={classes.headerLink}
-                  >
-                    Logout
-                  </NavLink>
+                  <>
+                    <div className={classes.heroItem}>
+                      <h3 className={classes.heroItemTitle}>Search & buy</h3>
+                      <p className={classes.heroItemText}>
+                        Search and compare prices and market availability. Contact sellers and get special prices right
+                        through ChipAssist.
+                      </p>
+                    </div>
+                    <div className={classes.heroItem}>
+                      <h3 className={classes.heroItemTitle}>Request & get</h3>
+                      <p className={classes.heroItemText}>
+                        Place your request and get the dedicated offers from 300+ connected sellers from all over the
+                        world.
+                      </p>
+                    </div>
+                    <div className={classes.heroItem}>
+                      <h3 className={classes.heroItemTitle}>Order & track</h3>
+                      <p className={classes.heroItemText}>
+                        Order your product through ChipAssist and get safe and convinient purchasing and tracking.
+                      </p>
+                    </div>
+                  </>
                 )}
               </div>
             </Container>
-          </section>
-        )}
+          </div>
+        </section>
 
-        <section className={classes.hero}>
+        <section className={classes.today}>
           <Container maxWidth="lg">
-            {isMdUp && (
-              <nav className={classes.heroMenu}>
-                <Box display="flex" alignItems="center">
-                  {logoLink}
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/about_company`}>
-                    About us
-                  </NavLink>
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/parts`}>
-                    {t("menu.parts")}
-                  </NavLink>
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/bom/create-file`}>
-                    {t("menu.bom")}
-                  </NavLink>
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/rfq-list-quotes`}>
-                    {"RFQ List"}
-                  </NavLink>
-                  {isAuthenticated && (
-                    <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
-                      {t("menu.profile")}
-                    </NavLink>
-                  )}
-                  {isAuthenticated ? (
-                    <NavLink className={`${classes.heroMenuLink}`} to={`/messages`}>
-                      {t("menu.chat")}
-                      <ChatUnreadTotalCount className={classes.chatUnreadCount} />
-                    </NavLink>
-                  ) : (
-                    <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
-                      Contacts
-                    </a>
-                  )}
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
-                    {t("menu.blog")}
-                  </NavLink>
-                </Box>
-                <Box display="flex" alignItems="center">
-                  <NavLink to="/pcb" className={clsx(classes.headerButtonLink, classes.heroButtonLink)}>
-                    Request PCB
-                  </NavLink>
-                  {/* {cartBlock} */}
-                </Box>
-              </nav>
-            )}
-
-            <Grid container spacing={3} className={classes.heroMain}>
-              <Grid item xs={12} md={6}>
-                <Box className={classes.heroSearchBlock}>
-                  {!isXsDown ? (
-                    <>
-                      <h1 className={classes.heroTitle}>
-                        Global marketplace for <br />
-                        <span className={classes.blueColor}>simple purchases of electronic components</span>
-                      </h1>
-                      <h2 className={classes.heroSubTitle}>
-                        We believe finding electronic components should be easy. Shop across distributors,
-                        manufacturers, and parts, or compare pricing and monitor inventory.
-                      </h2>
-                    </>
-                  ) : (
-                    <>
-                      <h1 className={classes.heroTitle}>
-                        Request any part number <span className={classes.blueColor}>in few clicks</span>
-                      </h1>
-                      <h2 className={classes.heroSubTitle}>
-                        Shop across distributors, manufacturers, and parts. Compare pricing and monitor inventory.
-                      </h2>
-                    </>
-                  )}
-                  <SearchSuggestion
-                    searchInputClass={classes.searchInput}
-                    searchButtonClass={clsx(classes.searchIconButton, appTheme.topBarSearchButton)}
-                    searchIconClass={classes.searchIcon}
-                    searchClearClass={classes.clearSearchIcon}
-                    isHomePageSuggestions={true}
-                  />
-                  <TrySearchPn
-                    partNumbers={partNumberExamples || partNumbers}
-                    textClassName={classes.tryP}
-                    pnClassName={classes.trySpan}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <img className={classes.heroImg} src={combo_mobile} alt="combo_mobile" />
-              </Grid>
-            </Grid>
-
-            <Box className={classes.counts}>
-              <h3 className={clsx(classes.title, classes.countsTitle)}>
-                ChipAssist <span className={classes.redColor}>today</span>
-              </h3>
-              <Box className={classes.countsItems}>
-                <Box className={classes.countsItem}>
-                  <div className={classes.count}>20,000,000+</div>
-                  <div className={classes.countLabel}>Parts in the catalog</div>
-                </Box>
-                <Box className={classes.countsItem}>
-                  <div className={classes.count}>1,000+</div>
-                  <div className={classes.countLabel}>Active customers</div>
-                </Box>
-                <Box className={classes.countsItem}>
-                  <div className={classes.count}>130+</div>
-                  <div className={classes.countLabel}>Worldwide stocks</div>
-                </Box>
-                <Box className={classes.countsItem}>
-                  <div className={classes.count}>50+</div>
-                  <div className={classes.countLabel}>PCB manufacturers</div>
-                </Box>
-                <Box className={classes.countsItem}>
-                  <div className={classes.count}>40+</div>
-                  <div className={classes.countLabel}>Countries</div>
-                </Box>
+            <h3 className={clsx(classes.title, classes.countsTitle)}>
+              ChipAssist <span className={classes.redColor}>today</span>
+            </h3>
+            <Box className={classes.countsItems}>
+              <Box className={classes.countsItem}>
+                <div className={classes.count}>20,000,000+</div>
+                <div className={classes.countLabel}>Parts in the catalog</div>
+              </Box>
+              <Box className={classes.countsItem}>
+                <div className={classes.count}>1,000+</div>
+                <div className={classes.countLabel}>Active customers</div>
+              </Box>
+              <Box className={classes.countsItem}>
+                <div className={classes.count}>130+</div>
+                <div className={classes.countLabel}>Worldwide stocks</div>
+              </Box>
+              <Box className={classes.countsItem}>
+                <div className={classes.count}>50+</div>
+                <div className={classes.countLabel}>PCB manufacturers</div>
+              </Box>
+              <Box className={classes.countsItem}>
+                <div className={classes.count}>40+</div>
+                <div className={classes.countLabel}>Countries</div>
               </Box>
             </Box>
           </Container>
