@@ -191,7 +191,7 @@ const SupplierResponse: React.FC = () => {
             lead_time: responseRfq?.lead_time && Number(responseRfq.lead_time),
             comment: responseRfq?.comment || "",
             selected_manufacturer:
-              responseRfq?.manufacturer ||
+              (responseRfq?.manufacturer?.id && responseRfq?.manufacturer) ||
               (responseRfq?.manufacturers?.some((i) => i.id === item.manufacturer?.id)
                 ? item.manufacturer
                 : responseRfq?.manufacturers?.length
