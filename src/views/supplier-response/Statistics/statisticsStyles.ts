@@ -31,6 +31,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   thText: { width: "14%" },
   thQty: { width: "12%" },
   thArrow: { width: "40px", padding: 0 },
+  noWrap: {
+    whiteSpace: "nowrap",
+  },
 }));
 
 export default "styles";

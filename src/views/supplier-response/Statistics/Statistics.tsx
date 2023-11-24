@@ -211,8 +211,12 @@ const Statistics: React.FC = () => {
                           <TableCell className={classes.thQty}>Your quantity</TableCell>
                           <TableCell className={classes.thText}>Manufacturer</TableCell>
                           <TableCell className={classes.thQty}>Response date</TableCell>
-                          <TableCell className={classes.thQty}>Your price ({currency.symbol})</TableCell>
-                          <TableCell className={classes.thQty}>Competitive price ({currency.symbol})</TableCell>
+                          <TableCell className={classes.thQty}>
+                            Your <span className={classes.noWrap}>price ({currency.symbol})</span>
+                          </TableCell>
+                          <TableCell className={classes.thQty}>
+                            Competitive <span className={classes.noWrap}>price ({currency.symbol})</span>
+                          </TableCell>
                           <TableCell className={classes.thText}>Your position</TableCell>
                           <TableCell className={classes.thArrow}></TableCell>
                         </TableRow>
