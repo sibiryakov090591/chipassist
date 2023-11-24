@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   firstChild: {
     "& > *": {
-      background: "#faf7b6",
+      background: "#fff5c3",
     },
   },
   lastChild: {
