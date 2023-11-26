@@ -342,7 +342,7 @@ interface UpdateAddressR {
   type: typeof UPDATE_ADDRESS_R;
 }
 
-interface UpdateAddressS {
+export interface UpdateAddressS {
   type: typeof UPDATE_ADDRESS_S;
   response: any;
 }

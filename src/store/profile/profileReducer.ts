@@ -47,6 +47,40 @@ const updatePrevEmail = (state: actionTypes.ProfileState, action: actionTypes.Up
   return updateObject(state, { prevEmail: action.payload });
 };
 
+const updateAddress = (state: actionTypes.ProfileState, action: actionTypes.UpdateAddressS) => {
+  const newAdresses = [
+    ...state.profileInfo.addresses.map((elem) =>
+      elem.id === state.profileInfo.defaultBillingAddress.id
+        ? {
+            ...elem,
+            first_name: action.response.data.first_name,
+            last_name: action.response.data.last_name,
+            company_name: action.response.data.company_name,
+            phone_number_str: action.response.data.phone_number_str,
+            country: action.response.data.country,
+            line1: action.response.data.line1,
+          }
+        : elem,
+    ),
+  ];
+
+  const biggestIdElem = newAdresses.sort((elem1, elem2) => elem2.id - elem1.id)[0];
+
+  const newDefaultBilling = newAdresses.find((elem) => elem.is_default_for_billing) || biggestIdElem;
+
+  const newDefaultShipping = newAdresses.find((elem) => elem.is_default_for_shipping) || biggestIdElem;
+
+  return {
+    ...state,
+    profileInfo: {
+      ...state.profileInfo,
+      defaultBillingAddress: newDefaultBilling,
+      defaultShippingAddress: newDefaultShipping,
+      addresses: newAdresses,
+    },
+  };
+};
+
 export default function profile(state = initialState, action: actionTypes.ProfileActionTypes) {
   switch (action.type) {
     case actionTypes.CHANGE_PARTNER:
@@ -161,36 +195,7 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
       };
     case actionTypes.UPDATE_ADDRESS_S:
-      return {
-        ...state,
-        profileInfo: {
-          ...state.profileInfo,
-          defaultBillingAddress: {
-            ...state.profileInfo.defaultBillingAddress,
-            first_name: action.response.data.first_name,
-            last_name: action.response.data.last_name,
-            company_name: action.response.data.company_name,
-            phone_number_str: action.response.data.phone_number_str,
-            country: action.response.data.country,
-            line1: action.response.data.line1,
-          },
-          addresses: [
-            ...state.profileInfo.addresses.map((element) =>
-              element.id === action.response.data.id
-                ? {
-                    ...element,
-                    first_name: action.response.data.first_name,
-                    last_name: action.response.data.last_name,
-                    company_name: action.response.data.company_name,
-                    phone_number_str: action.response.data.phone_number_str,
-                    country: action.response.data.country,
-                    line1: action.response.data.line1,
-                  }
-                : element,
-            ),
-          ],
-        },
-      };
+      return updateAddress(state, action);
 
     case actionTypes.CREATE_ADDRESS_S:
       return {
