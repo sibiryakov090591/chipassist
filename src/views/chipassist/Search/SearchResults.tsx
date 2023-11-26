@@ -36,12 +36,21 @@ import DialogActions from "@material-ui/core/DialogActions";
 // import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
 import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
+import RfqBar from "@src/views/chipassist/Search/components/RfqBar/RfqBar";
+import { europeanCountries } from "@src/constants/countries";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
 import { ProductsSegment } from "../Categories/components/Products/Products";
 import ExtendedSearchBar from "./components/ProgressBar";
 import useSearchLoadResults from "./hooks/useSearchLoadResults";
+
+const allowedCountries = [
+  ...europeanCountries,
+  "USA", // the United States
+  "CAN", // Canada
+  "AUS", // Australia
+];
 
 const SearchResults = () => {
   const classes = useStyles();
@@ -95,6 +104,7 @@ const SearchResults = () => {
   const totalPages = useAppSelector((state) => state.search.totalPages);
   const rfqItem = useAppSelector((state) => state.rfq.rfqItem);
   const isNeedRfqModalOpenAgain = useAppSelector((state) => state.rfq.isNeedRfqModalOpenAgain);
+  const geolocation = useAppSelector((state) => state.profile.geolocation);
   const { isNeedModalOpenAgain, sellerId, sellerName, partNumber, stockrecordId } = useAppSelector(
     (state) => state.rfq.sellerMessageModal,
   );
@@ -102,6 +112,7 @@ const SearchResults = () => {
   // const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   const [requestedRFQ, setRequestedRFQ] = useState<any>(null);
+  const [showRfqBar, setShowRfqBar] = useState(false);
   const [hideSideBar, setHideSideBar] = useState(false);
   const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
@@ -137,6 +148,10 @@ const SearchResults = () => {
       ),
     },
   ]);
+
+  useEffect(() => {
+    if (geolocation) setShowRfqBar(allowedCountries.includes(geolocation.country_code_iso3));
+  }, [geolocation]);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -384,6 +399,7 @@ const SearchResults = () => {
                 <Skeletons />
               ) : (
                 <div id={"productList"}>
+                  {!isSmDown && showRfqBar && count > 0 && <RfqBar />}
                   <ProductsSegment>
                     {products?.map((product, key) => {
                       const rfq = rfqData.results.find((item) => item.id === product.id);

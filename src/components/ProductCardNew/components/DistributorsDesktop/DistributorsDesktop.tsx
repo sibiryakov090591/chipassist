@@ -23,6 +23,7 @@ import Star from "@src/images/search_page/star.png";
 import { toInteger } from "lodash";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
+import { correctUrl } from "@src/utils/transformUrl";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -364,6 +365,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               partner &&
               Object.prototype.hasOwnProperty.call(partner, "link_to_site") &&
               (!!val.product_url || !!partner.url);
+            const url = isShowProductLink && correctUrl(val.product_url || partner.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const isShowQualityCheck =
@@ -674,14 +676,11 @@ const DistributorsDesktop: React.FC<Props> = ({
                   <div>
                     {isShowProductLink ? (
                       <a
-                        href={val.product_url || partner.url}
+                        href={url}
                         target="_blank"
                         rel="noreferrer"
                         className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                        onClick={visitSellerHandler(
-                          { id: val.partner, name: val.partner_name },
-                          val.product_url || partner.url,
-                        )}
+                        onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
                       >
                         Visit site
                       </a>

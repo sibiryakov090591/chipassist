@@ -1,6 +1,57 @@
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 
+export const europeanCountries = [
+  "ALB", // Albania
+  "AND", // Andorra
+  "AUT", // Austria
+  "BLR", // Belarus
+  "BEL", // Belgium
+  "BIH", // Bosnia and Herzegovina
+  "BGR", // Bulgaria
+  "HRV", // Croatia
+  "CYP", // Cyprus
+  "CZE", // Czech Republic
+  "DNK", // Denmark
+  "EST", // Estonia
+  "FIN", // Finland
+  "FRA", // France
+  "DEU", // Germany
+  "GRC", // Greece
+  "HUN", // Hungary
+  "ISL", // Iceland
+  "IRL", // Ireland
+  "ITA", // Italy
+  "KAZ", // Kazakhstan
+  "KOS", // Kosovo
+  "LVA", // Latvia
+  "LIE", // Liechtenstein
+  "LTU", // Lithuania
+  "LUX", // Luxembourg
+  "MLT", // Malta
+  "MDA", // Moldova
+  "MCO", // Monaco
+  "MNE", // Montenegro
+  "NLD", // Netherlands
+  "MKD", // North Macedonia (formerly Macedonia)
+  "NOR", // Norway
+  "POL", // Poland
+  "PRT", // Portugal
+  "ROU", // Romania
+  "RUS", // Russia
+  "SMR", // San Marino
+  "SRB", // Serbia
+  "SVK", // Slovakia
+  "SVN", // Slovenia
+  "ESP", // Spain
+  "SWE", // Sweden
+  "CHE", // Switzerland
+  "TUR", // Turkey
+  "UKR", // Ukraine
+  "GBR", // United Kingdom
+  "VAT", // Vatican City
+];
+
 export const countriesList = [
   {
     url: `https://${constants.apiHost}/api/countries/AF/`,

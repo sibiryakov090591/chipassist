@@ -16,9 +16,12 @@ export interface StatisticsState {
 }
 
 export interface ResponseItem {
+  id: number;
+  country: string;
   competitive_price: number;
   date: string;
   manufacturer_name: string;
+  stockrecord_id: number;
   mpn: string;
   position: string;
   price: number;

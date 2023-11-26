@@ -132,7 +132,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register" }) => {
           )}
         </DialogContent>
         <Box pt={2}>
-          {registerData && !confirmed && (
+          {!confirmed && (
             <>
               {timer > 0 ? (
                 <div

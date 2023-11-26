@@ -54,6 +54,7 @@ const ProductCardNew = (props) => {
     },
   });
 
+  const [collapseText, setCollapseText] = useState(true);
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
   const [rfqStockrecords] = useState([]);
@@ -258,6 +259,10 @@ const ProductCardNew = (props) => {
   //   if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
   // };
 
+  const toggleCollapseText = () => {
+    setCollapseText((prev) => !prev);
+  };
+
   return (
     <Paper
       ref={ref}
@@ -314,9 +319,19 @@ const ProductCardNew = (props) => {
             <div className={`${appTheme.text} ${classes.description}`}>
               <Highlighter
                 searchWords={searchQueryArray}
-                textToHighlight={product.description || ""}
+                textToHighlight={
+                  collapseText && isSmDown ? product.description?.slice(0, 100) : product.description || ""
+                }
                 autoEscape={true}
               />
+              {isSmDown && product.description?.length > 100 && (
+                <>
+                  {" "}
+                  <span onClick={toggleCollapseText} className={appTheme.hyperlink}>
+                    {collapseText ? "...view more" : "hide"}
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </Box>

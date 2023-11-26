@@ -85,7 +85,7 @@ const PartNumberInput: React.FC<Props> = ({
   const onFieldChange = (e: any) => {
     if (e.target.value) {
       const prevValue = e.target.value;
-      e.target.value = e.target.value.replace(/[^a-zA-Z0-9# ,./-]/g, "");
+      e.target.value = e.target.value.replace(/[^a-zA-Z0-9# +,./-]/g, "");
       setShowTooltip(prevValue !== e.target.value);
     }
     onChange(e);
@@ -128,7 +128,7 @@ const PartNumberInput: React.FC<Props> = ({
               {...inputProps}
               {...(!showTooltip
                 ? { ...errorHandler }
-                : { error: true, helperText: 'Only "a-z, A-Z, 0-9, /, #, -, ." are allowed in MPN' })}
+                : { error: true, helperText: 'Only "a-z, A-Z, 0-9, /, #, -, +, ." are allowed in MPN' })}
             />
             {/* {!isDownSm && ( */}
             {/*  <Popper id={"mpn_field"} open={showTooltip} anchorEl={anchorEl}> */}

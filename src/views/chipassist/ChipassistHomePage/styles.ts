@@ -38,41 +38,57 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   headerLink: {
     fontSize: 13,
-    color: "#5c73a5",
+    color: "#fff",
     fontWeight: "bold",
     "&:hover": {
       textDecoration: "underline",
-      color: "#5c73a5",
+      color: "#fff",
     },
   },
   hero: {
-    background: "radial-gradient(circle at top left, #372859 20%, #1d1530 50%)",
+    position: "relative",
+    minHeight: "100vh",
+    background: "radial-gradient(circle at top left, #372859 14%, #e55972 5%)",
     padding: "20px 0 40px",
-    [theme.breakpoints.down("xs")]: {
-      paddingTop: 2,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "calc(100vh - 80px)",
+      background: "#e55972",
     },
   },
   today: {
     background: "radial-gradient(circle at top left, #372859 20%, #1d1530 50%)",
-    padding: "6rem 0",
+    padding: "3rem 0 2rem",
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 0",
     },
   },
+  heroMenuContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
   heroMenu: {
+    padding: "20px 0",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
   },
   heroMenuLink: {
     fontSize: 13,
-    color: "#d8d5df",
+    color: "#fff",
     fontWeight: "bold",
     marginRight: 28,
     position: "relative",
     "&:hover": {
       textDecoration: "underline",
-      color: "#d8d5df",
+      color: "#fff",
+    },
+    [theme.breakpoints.down(1000)]: {
+      marginRight: 20,
     },
   },
   heroButtonLink: {
@@ -87,6 +103,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     position: "absolute",
     top: "-7px",
     left: "85%",
+    background: theme.palette.app.green800,
   },
   cartBlock: {
     display: "flex",
@@ -134,58 +151,56 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     width: "100%",
   },
   heroMain: {
-    marginTop: 72,
+    maxWidth: 800,
+    marginTop: 65,
     [theme.breakpoints.down("sm")]: {
       marginTop: 12,
-    },
-  },
-  heroSearchBlock: {
-    marginRight: 24,
-    [theme.breakpoints.down("sm")]: {
-      marginRight: 0,
+      maxWidth: "none",
     },
   },
   heroTitle: {
     color: "#f2f1f4",
     fontSize: "3.5rem",
     lineHeight: "4rem",
-    marginBottom: 23,
+    marginBottom: "3rem",
+    "& span": {
+      color: "#234",
+    },
     [theme.breakpoints.down("sm")]: {
       fontSize: "2.8rem",
       lineHeight: "3.3rem",
-      textAlign: "center",
     },
     [theme.breakpoints.down("xs")]: {
-      maxWidth: 400,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
-  },
-  heroSubTitle: {
-    maxWidth: 440,
-    color: "#d8d5df",
-    fontSize: 18,
-    marginBottom: 40,
-    fontWeight: "normal",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 16,
-      margin: "0 auto 40px",
+      fontSize: "2.3rem",
       textAlign: "center",
     },
   },
-  heroImg: {
-    width: 440,
-    display: "block",
-    margin: "auto",
-    filter: "drop-shadow(0px 0px 60px #3f2e68)",
-    [theme.breakpoints.down("sm")]: {
-      width: "75%",
-      marginTop: 26,
-    },
+  heroItems: {
+    marginTop: "4rem",
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "30px",
     [theme.breakpoints.down("xs")]: {
-      width: "90%",
-      marginTop: 12,
+      alignItems: "center",
     },
+  },
+  heroItem: {
+    padding: "12px 0",
+    color: "#f2f1f4",
+    maxWidth: 370,
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center",
+      maxWidth: "none",
+    },
+  },
+  heroItemTitle: {
+    fontSize: "1.4rem",
+    fontWeight: "bold",
+    color: "#f2f1f4",
+  },
+  heroItemText: {
+    fontSize: "1.1rem",
+    color: "#f2f1f4",
   },
   searchInput: {
     border: "none",
@@ -205,10 +220,17 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     height: "41px",
     borderRadius: "50ch",
     width: 60,
-    transition: "background-color 150ms ease",
+    transition: "opacity 150ms ease",
     cursor: "pointer",
     position: "absolute",
     right: 0,
+    backgroundColor: theme.palette.app.green800,
+    "&:hover": {
+      opacity: 0.8,
+    },
+    "&:active": {
+      opacity: 0.8,
+    },
   },
   searchIcon: {
     fontSize: "26px",
@@ -225,30 +247,17 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   tryP: {
-    color: "#7cafdf",
-    fontSize: 13,
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
     paddingTop: 5,
     marginLeft: 16,
-    [theme.breakpoints.down("sm")]: {
-      color: theme.palette.white,
-      fontSize: 15,
-    },
   },
   trySpan: {
-    color: theme.palette.white,
-    fontWeight: 700,
+    color: "#234",
+    textDecoration: "underline",
     marginLeft: "7px",
-    [theme.breakpoints.up("md")]: {
-      "&:hover": {
-        cursor: "pointer",
-        textDecoration: "underline",
-      },
-    },
-    [theme.breakpoints.down("sm")]: {
-      color: "#7cafdf",
-      fontSize: 15,
-      borderBottom: "1px solid #7cafdf",
-    },
+    cursor: "pointer",
   },
   title: {
     fontSize: "2.2rem",
@@ -267,15 +276,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     padding: "10px 20px",
     marginTop: 10,
   },
-  counts: {
-    marginTop: 96,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 68,
-    },
-    [theme.breakpoints.down("xs")]: {
-      marginTop: 48,
-    },
-  },
   countsTitle: {
     marginBottom: 0,
     [theme.breakpoints.down("sm")]: {
@@ -287,8 +287,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     flexWrap: "wrap",
     justifyContent: "space-between",
     [theme.breakpoints.down(768)]: {
-      flexDirection: "column",
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
       justifyContent: "center",
+    },
+    [theme.breakpoints.down(500)]: {
+      gridTemplateColumns: "1fr",
     },
   },
   countsItem: {
@@ -324,9 +328,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     [theme.breakpoints.down("sm")]: {
       padding: "3rem 0",
     },
-  },
-  blueColor: {
-    color: "#7cafdf",
   },
   redColor: {
     color: "#e94160",
@@ -407,7 +408,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   workplace: {
     padding: "3rem 0",
-    backgroundColor: theme.palette.app.red400,
+    backgroundColor: theme.palette.app.red500,
   },
   imgWrapper: {
     [theme.breakpoints.down("sm")]: {
