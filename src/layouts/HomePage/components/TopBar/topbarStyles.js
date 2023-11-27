@@ -18,36 +18,13 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   searchIconButton: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "1px solid white",
-    height: "41px",
-    borderRadius: "0 3px 3px 0",
-    width: 60,
-    transition: "background-color 250ms",
+    backgroundColor: "theme.palette.app.red500 !important",
     "&:hover": {
-      cursor: "pointer",
+      backgroundColor: "theme.palette.app.red400 !important",
     },
-  },
-  clearSearchIcon: {
-    position: "absolute",
-    right: 70,
-    color: theme.palette.app.grey400,
-    cursor: "pointer",
-    transition: "all 300ms ease",
-    "&:hover": {
-      color: theme.palette.app.grey500,
+    "&:active": {
+      backgroundColor: "theme.palette.app.red400 !important",
     },
-  },
-  searchIcon: {
-    fontSize: "33px",
-  },
-  searchInput: {
-    border: "none",
-    width: "100%",
-    padding: "0 50px 0 17px",
-    borderRadius: "3px 0 0 3px",
   },
   searchPopper: {
     zIndex: theme.zIndex.appBar + 100,

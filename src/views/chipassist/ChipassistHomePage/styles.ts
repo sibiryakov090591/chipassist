@@ -220,10 +220,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     height: "41px",
     borderRadius: "50ch",
     width: 60,
-    transition: "opacity 150ms ease",
+    transition: "all 150ms ease",
     cursor: "pointer",
     position: "absolute",
     right: 0,
+  },
+  searchButtonColor: {
     backgroundColor: theme.palette.app.green800,
     "&:hover": {
       opacity: 0.8,
