@@ -202,7 +202,7 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
         profileInfo: {
           ...state.profileInfo,
-          addresses: [action.response.data, ...state.profileInfo.addresses],
+          addresses: [{ ...action.response.data }, ...state.profileInfo.addresses],
         },
       };
     default:
