@@ -164,7 +164,7 @@ export const ChipassistHomePage = () => {
               </h1>
               <SearchSuggestion
                 searchInputClass={classes.searchInput}
-                searchButtonClass={classes.searchIconButton}
+                searchButtonClass={clsx(classes.searchIconButton, classes.searchButtonColor)}
                 searchIconClass={classes.searchIcon}
                 searchClearClass={classes.clearSearchIcon}
                 isHomePageSuggestions={true}
