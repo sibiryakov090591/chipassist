@@ -13,7 +13,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import useAppTheme from "@src/theme/useAppTheme";
-import { useStyles } from "./helpStyles";
+import { useStyles } from "./aboutStyles";
 
 const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
   mainSection: {
@@ -69,7 +69,7 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
 //   return isIntersecting;
 // }
 
-export const Help = () => {
+export const About = () => {
   const classes = useStyles();
   const newClasses = useNewStyles();
   const appClasses = useAppTheme();
@@ -77,7 +77,7 @@ export const Help = () => {
   const [isOpenSecondDescription, setIsOpenSecondDescription] = useState(false);
   const [isOpenThirdDescription, setIsOpenThirdDescription] = useState(false);
   return (
-    <Page title={"Help"} description={"User guide for requests.chipassist.com"} className={classes.main}>
+    <Page title={"About"} description={"User guide for requests.chipassist.com"} className={classes.main}>
       <section
         className={classes.firstWay}
         // ref={ref}
@@ -257,13 +257,13 @@ export const Help = () => {
                 <Button className={clsx(appClasses.buttonCreate, newClasses.linkButton)} href={"/messages"}>
                   VIEW MESSAGES
                 </Button>
-                <Button
-                  variant={"outlined"}
-                  className={newClasses.button}
-                  onClick={() => setIsOpenSecondDescription((prevState) => !prevState)}
-                >
-                  {isOpenSecondDescription ? "CLOSE" : "DISCOVER"}
-                </Button>
+                {/* <Button */}
+                {/*  variant={"outlined"} */}
+                {/*  className={newClasses.button} */}
+                {/*  onClick={() => setIsOpenSecondDescription((prevState) => !prevState)} */}
+                {/* > */}
+                {/*  {isOpenSecondDescription ? "CLOSE" : "DISCOVER"} */}
+                {/* </Button> */}
               </div>
             </Grid>
             <Grid item sm={7} style={{ paddingTop: "6em" }}>
@@ -288,15 +288,15 @@ export const Help = () => {
               <h2 className={newClasses.title}>Easily create and exchange Purchase Orders and Invoices</h2>
               <p>Receive approved Purchase Orders (POs) from your custommers with all necessary details.</p>
               <p>Generate, preview and send Payment Invoices to your customers just in several clicks.</p>
-              <div>
-                <Button
-                  variant={"outlined"}
-                  className={newClasses.button}
-                  onClick={() => setIsOpenThirdDescription((prevState) => !prevState)}
-                >
-                  {isOpenThirdDescription ? "CLOSE" : "DISCOVER"}
-                </Button>
-              </div>
+              {/* <div> */}
+              {/*  <Button */}
+              {/*    variant={"outlined"} */}
+              {/*    className={newClasses.button} */}
+              {/*    onClick={() => setIsOpenThirdDescription((prevState) => !prevState)} */}
+              {/*  > */}
+              {/*    {isOpenThirdDescription ? "CLOSE" : "DISCOVER"} */}
+              {/*  </Button> */}
+              {/* </div> */}
             </Grid>
           </Grid>
         </Container>
@@ -325,4 +325,4 @@ export const Help = () => {
   );
 };
 
-export default Help;
+export default About;

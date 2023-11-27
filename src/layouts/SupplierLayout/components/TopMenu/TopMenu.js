@@ -38,9 +38,9 @@ const TopMenu = ({ isMobile }) => {
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
       <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/home`}>
+        <NavLink className={classes.topMenuItemLink} to={`/about`}>
           {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}
-          Home
+          About
         </NavLink>
       </div>
       <div className={itemClasses}>
