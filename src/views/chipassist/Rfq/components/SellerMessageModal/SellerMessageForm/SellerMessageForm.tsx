@@ -201,7 +201,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       setFormState(defaultState(profileInfo));
       setPhoneValue(profileInfo?.defaultBillingAddress?.phone_number_str || "");
     }
-  }, [profileInfo]);
+  }, []);
 
   useEffect(() => {
     if (open) {

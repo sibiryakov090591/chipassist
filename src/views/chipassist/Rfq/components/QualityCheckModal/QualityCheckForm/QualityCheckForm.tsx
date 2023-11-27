@@ -187,7 +187,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       setFormState(defaultState(profileInfo));
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
-  }, [profileInfo]);
+  }, []);
 
   useEffect(() => {
     if (open) {

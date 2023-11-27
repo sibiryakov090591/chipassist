@@ -53,12 +53,7 @@ const updateAddress = (state: actionTypes.ProfileState, action: actionTypes.Upda
       elem.id === state.profileInfo.defaultBillingAddress.id
         ? {
             ...elem,
-            first_name: action.response.data.first_name,
-            last_name: action.response.data.last_name,
-            company_name: action.response.data.company_name,
-            phone_number_str: action.response.data.phone_number_str,
-            country: action.response.data.country,
-            line1: action.response.data.line1,
+            ...action.response.data,
           }
         : elem,
     ),
