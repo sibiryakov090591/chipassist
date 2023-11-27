@@ -48,6 +48,7 @@ import Modal from "@material-ui/core/Modal";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import constants from "@src/constants/constants";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
+import FilterRegions from "@src/components/FiltersBar/FilterRegions";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -63,6 +64,7 @@ interface Filters {
   days: number;
   all: boolean;
   has_response: boolean;
+  regions: string[];
 }
 
 const SupplierResponse: React.FC = () => {
@@ -116,13 +118,22 @@ const SupplierResponse: React.FC = () => {
   }, [rfqResponseData]);
 
   useEffect(() => {
-    dispatch(loadMiscAction("rfq_response_filters")).finally((res: any) => {
+    const setData = (res: any = null) => {
       const data = {
         page: (page ? +page : res?.data?.page) || 1,
         page_size: (pageSize ? +pageSize : res?.data?.page_size) || 15,
         all: false,
         days: 7,
         has_response: hasResponse !== null ? hasResponse === "true" : res?.data?.has_response || true,
+        regions: res?.data?.regions || [
+          "africaCountries",
+          "arabStatesCountries",
+          "asiaPacificCountries",
+          "europeCountries",
+          "middleEastCountries",
+          "northAmericaCountries",
+          "southLatinAmericaCountries",
+        ],
       };
       if (!res?.data) {
         dispatch(saveMiscAction("rfq_response_filters", data));
@@ -131,7 +142,15 @@ const SupplierResponse: React.FC = () => {
       setUrl(navigate, "/supplier-response", data.page, data.page_size, {
         has_response: data.has_response,
       });
-    });
+    };
+
+    dispatch(loadMiscAction("rfq_response_filters"))
+      .then((res: any) => {
+        setData(res?.data);
+      })
+      .catch(() => {
+        setData();
+      });
   }, []);
 
   // return focus to the button when we transitioned from !open -> open
@@ -141,9 +160,17 @@ const SupplierResponse: React.FC = () => {
   }, [openPopper]);
 
   useEffect(() => {
-    if (selectedPartner || selectedPartner === false) {
+    if ((selectedPartner || selectedPartner === false) && filters) {
       dispatch(
-        getSupplierRfqs(page, pageSize, false, 7, selectedPartner === false ? false : selectedPartner.id, hasResponse),
+        getSupplierRfqs(
+          page,
+          pageSize,
+          false,
+          7,
+          selectedPartner === false ? false : selectedPartner.id,
+          hasResponse,
+          filters.regions,
+        ),
       ).then((data: any) => {
         if (data?.page !== Number(page)) {
           // In this case load last page
@@ -154,7 +181,7 @@ const SupplierResponse: React.FC = () => {
         }
       });
     }
-  }, [selectedPartner, page, pageSize, hasResponse, forceUpdate]);
+  }, [selectedPartner, filters, forceUpdate]);
 
   useEffect(() => {
     if (rfqs.results && currency) {
@@ -296,6 +323,23 @@ const SupplierResponse: React.FC = () => {
         }),
       );
     }
+  };
+
+  const onChangeRegions = (regions: string[]) => {
+    setFilters((prev) => ({ ...prev, page: 1, regions }));
+    setUrl(navigate, "/supplier-response", 1, pageSize, {
+      has_response: hasResponse,
+    });
+    dispatch(clearSupplierResponseData());
+    dispatch(
+      updateMiscAction("rfq_response_filters", {
+        data: {
+          ...filters,
+          page: 1,
+          regions,
+        },
+      }),
+    );
   };
 
   const onSubmit = () => {
@@ -495,6 +539,7 @@ const SupplierResponse: React.FC = () => {
               {/*  } */}
               {/*  label={"Show all"} */}
               {/* /> */}
+              <FilterRegions action={onChangeRegions} selected={filters?.regions || []} />
               <FilterHasResponseBar
                 disable={isLoading}
                 action={onChangeHasResponses}

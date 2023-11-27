@@ -12,6 +12,7 @@ import { getAuthToken } from "@src/utils/auth";
 import { Stockrecord, Product } from "@src/store/products/productTypes";
 import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { shouldUpdateCard } from "@src/store/common/commonActions";
+import * as countriesData from "@src/constants/countries";
 import * as actionTypes from "./rfqTypes";
 import { NewRfqItem, RfqActionTypes } from "./rfqTypes";
 
@@ -79,9 +80,17 @@ export const getSupplierRfqs = (
   days: number,
   sellerId: number | false,
   hasResponse: boolean,
+  regions: string[] = [],
 ) => (dispatch: Dispatch<any>) => {
   const dateFrom = Date.now() - 1000 * 60 * 60 * 24 * (days - 1); // last days
   const dateFormat = new Date(dateFrom).toISOString().slice(0, 10);
+  const countries = regions.reduce((acc, region) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const newItems = countriesData[region] || [];
+    return [...acc, ...newItems];
+  }, []);
+  console.log(countries);
   return dispatch({
     types: actionTypes.LOAD_RFQ,
     promise: (client: ApiClientInterface) =>

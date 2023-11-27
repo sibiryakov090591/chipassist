@@ -1,55 +1,257 @@
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 
-export const europeanCountries = [
-  "ALB", // Albania
-  "AND", // Andorra
-  "AUT", // Austria
-  "BLR", // Belarus
-  "BEL", // Belgium
-  "BIH", // Bosnia and Herzegovina
-  "BGR", // Bulgaria
-  "HRV", // Croatia
-  "CYP", // Cyprus
-  "CZE", // Czech Republic
-  "DNK", // Denmark
-  "EST", // Estonia
-  "FIN", // Finland
-  "FRA", // France
-  "DEU", // Germany
-  "GRC", // Greece
-  "HUN", // Hungary
-  "ISL", // Iceland
-  "IRL", // Ireland
-  "ITA", // Italy
-  "KAZ", // Kazakhstan
-  "KOS", // Kosovo
-  "LVA", // Latvia
-  "LIE", // Liechtenstein
-  "LTU", // Lithuania
-  "LUX", // Luxembourg
-  "MLT", // Malta
-  "MDA", // Moldova
-  "MCO", // Monaco
-  "MNE", // Montenegro
-  "NLD", // Netherlands
-  "MKD", // North Macedonia (formerly Macedonia)
-  "NOR", // Norway
-  "POL", // Poland
-  "PRT", // Portugal
-  "ROU", // Romania
-  "RUS", // Russia
-  "SMR", // San Marino
-  "SRB", // Serbia
-  "SVK", // Slovakia
-  "SVN", // Slovenia
-  "ESP", // Spain
-  "SWE", // Sweden
-  "CHE", // Switzerland
-  "TUR", // Turkey
-  "UKR", // Ukraine
-  "GBR", // United Kingdom
-  "VAT", // Vatican City
+export const africaCountries = [
+  "AGO",
+  "BFA",
+  "BDI",
+  "BEN",
+  "BWA",
+  "COD",
+  "CAF",
+  "COG",
+  "CIV",
+  "CMR",
+  "CPV",
+  "ESH",
+  "ERI",
+  "ETH",
+  "GAB",
+  "GHA",
+  "GMB",
+  "GIN",
+  "GNQ",
+  "GNB",
+  "KEN",
+  "LBR",
+  "LSO",
+  "MDG",
+  "MLI",
+  "MUS",
+  "MWI",
+  "MOZ",
+  "NAM",
+  "NER",
+  "NGA",
+  "RWA",
+  "SYC",
+  "SSD",
+  "SHN",
+  "SLE",
+  "SEN",
+  "STP",
+  "SWZ",
+  "TCD",
+  "TGO",
+  "TZA",
+  "UGA",
+  "MYT",
+  "ZAF",
+  "ZMB",
+  "ZWE",
+];
+
+export const arabStatesCountries = ["BHR", "DJI", "DZA", "COM", "MAR", "MRT", "PSE", "SDN", "SOM", "TUN"];
+
+export const asiaPacificCountries = [
+  "AFG",
+  "ATA",
+  "ASM",
+  "AUS",
+  "BGD",
+  "BRN",
+  "BTN",
+  "CCK",
+  "COK",
+  "CHN",
+  "CXR",
+  "FJI",
+  "FSM",
+  "GUM",
+  "HKG",
+  "HMD",
+  "IDN",
+  "IND",
+  "IOT",
+  "JPN",
+  "KGZ",
+  "KHM",
+  "KIR",
+  "PRK",
+  "KOR",
+  "KAZ",
+  "LAO",
+  "LKA",
+  "MHL",
+  "MMR",
+  "MNG",
+  "MAC",
+  "MNP",
+  "MDV",
+  "MYS",
+  "NCL",
+  "NFK",
+  "NPL",
+  "NRU",
+  "NIU",
+  "NZL",
+  "PYF",
+  "PNG",
+  "PHL",
+  "PAK",
+  "PCN",
+  "PLW",
+  "REU",
+  "SLB",
+  "SGP",
+  "SYR",
+  "ATF",
+  "THA",
+  "TJK",
+  "TKL",
+  "TKM",
+  "TON",
+  "TLS",
+  "TUV",
+  "TWN",
+  "UMI",
+  "UZB",
+  "VNM",
+  "VUT",
+  "WLF",
+  "WSM",
+];
+
+export const europeCountries = [
+  "AND",
+  "ALB",
+  "ARM",
+  "AUT",
+  "AZE",
+  "BIH",
+  "BEL",
+  "BGR",
+  "BLR",
+  "CHE",
+  "CYP",
+  "CZE",
+  "DEU",
+  "DNK",
+  "EST",
+  "ESP",
+  "FIN",
+  "FRO",
+  "FRA",
+  "FX",
+  "GBR",
+  "GEO",
+  "GIB",
+  "GRL",
+  "GRC",
+  "HRV",
+  "HUN",
+  "IRL",
+  "ISL",
+  "ITA",
+  "LIE",
+  "LTU",
+  "LUX",
+  "LVA",
+  "MCO",
+  "MDA",
+  "MKD",
+  "MLT",
+  "NLD",
+  "NOR",
+  "POL",
+  "PRT",
+  "ROU",
+  "RUS",
+  "SWE",
+  "SVN",
+  "SJM",
+  "SVK",
+  "SMR",
+  "TUR",
+  "UKR",
+  "VAT",
+  "SRB",
+  "MNE",
+  "ALA",
+  "GGY",
+  "IMN",
+  "JEY",
+];
+
+export const middleEastCountries = [
+  "ARE",
+  "EGY",
+  "ISR",
+  "IRQ",
+  "IRN",
+  "JOR",
+  "KWT",
+  "LBN",
+  "LBY",
+  "OMN",
+  "QAT",
+  "SAU",
+  "YEM",
+];
+
+export const northAmericaCountries = ["CAN", "SPM", "USA", "NIC"];
+
+export const southLatinAmericaCountries = [
+  "ATG",
+  "AIA",
+  "ANT",
+  "ARG",
+  "ABW",
+  "BRB",
+  "BMU",
+  "BOL",
+  "BRA",
+  "BHS",
+  "BVT",
+  "BLZ",
+  "CHL",
+  "COL",
+  "CRI",
+  "CUB",
+  "DMA",
+  "DOM",
+  "ECU",
+  "FLK",
+  "GRD",
+  "GUF",
+  "GLP",
+  "SGS",
+  "GTM",
+  "GUY",
+  "HND",
+  "HTI",
+  "JAM",
+  "KNA",
+  "CYM",
+  "LCA",
+  "MTQ",
+  "MSR",
+  "MEX",
+  "PAN",
+  "PER",
+  "PRI",
+  "PRY",
+  "SUR",
+  "SLV",
+  "TCA",
+  "TTO",
+  "URY",
+  "VCT",
+  "VEN",
+  "VGB",
+  "VIR",
+  "BLM",
+  "MAF",
 ];
 
 export const countriesList = [
