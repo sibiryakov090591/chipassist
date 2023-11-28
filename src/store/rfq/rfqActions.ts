@@ -80,26 +80,20 @@ export const getSupplierRfqs = (
   days: number,
   sellerId: number | false,
   hasResponse: boolean,
-  regions: string[] = [],
+  countries: string[] = [],
 ) => (dispatch: Dispatch<any>) => {
   const dateFrom = Date.now() - 1000 * 60 * 60 * 24 * (days - 1); // last days
   const dateFormat = new Date(dateFrom).toISOString().slice(0, 10);
-  const countries = regions.reduce((acc, region) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    const newItems = countriesData[region] || [];
-    return [...acc, ...newItems];
-  }, []);
-  console.log(countries);
+
   return dispatch({
     types: actionTypes.LOAD_RFQ,
     promise: (client: ApiClientInterface) =>
       client
-        .get(
+        .post(
           `/rfqs/sellers?seller_id=${sellerId || "FALSE"}&page=${page}&page_size=${pageSize}&all=${
             all ? "TRUE" : "FALSE"
           }&date_from=${dateFormat}&has_response=${hasResponse}`,
-          { cancelId: "load_supplier_requests" },
+          { data: { countries }, cancelId: "load_supplier_requests" },
         )
         .then((res) => res.data)
         .catch((e) => {
