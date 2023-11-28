@@ -1,12 +1,11 @@
 import { Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
-import background from "@src/images/Homepage/background.png";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   main: {
-    padding: "2rem 0",
-    backgroundImage: `url(${background});`,
+    // padding: "2rem 0",
+    // backgroundImage: `url(${background});`,
   },
   section: {
     padding: "2rem 0",
@@ -14,14 +13,32 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   pageTitleContainer: {
     margin: "0 auto",
     paddingBottom: "2rem",
-    textAlign: "center",
+    display: "flex",
+    flexDirection: "row",
   },
   pageTitle: {
-    color: theme.palette.app.red500,
-    marginBottom: "1rem",
+    fontSize: "46px",
+    textAlign: "left",
+    marginBottom: "26px",
+    color: "white",
+    // mixBlendMode: "difference",
   },
   pageDescription: {
-    fontSize: 18,
+    fontSize: "26px",
+    textAlign: "left",
+    marginBottom: "8px",
+    color: "#eee",
+    // mixBlendMode: "difference",
+  },
+  pageTitleImage: {
+    marginTop: "5rem",
+    marginBottom: "6rem",
+    boxShadow: "0px 0px 24px #bbb",
+  },
+  pageDescrSubDiv: {
+    color: "#ddd",
+    fontSize: "20px",
+    textAlign: "left",
   },
   title: {
     color: "#345",
@@ -82,6 +99,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "& p": {
       fontSize: 16,
     },
+  },
+  firstWay: {
+    backgroundColor: "#123",
+    width: "100vw",
+    color: "white",
+  },
+  howToGetStarted: {
+    backgroundColor: theme.palette.app.grey100,
   },
 }));
 
