@@ -118,6 +118,30 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       alignSelf: "flex-end",
       flexDirection: "column",
     },
+    countriesBlock: {
+      padding: "2px 2px 2px 16px",
+      maxHeight: "50vh",
+      overflow: "auto",
+      width: 250,
+    },
+    countriesWrapper: {
+      paddingLeft: 16,
+      display: "none",
+      "&.show": {
+        display: "block",
+      },
+    },
+    regionRow: {
+      display: "flex",
+      alignItems: "center",
+      "& > label": {
+        marginRight: 8,
+      },
+    },
+    extendedIcon: {
+      cursor: "pointer",
+      display: "flex",
+    },
   }),
 );
 

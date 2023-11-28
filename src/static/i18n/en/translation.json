@@ -115,6 +115,7 @@
     }
   },
   "common": {
+    "regions": "Regions",
     "show_filters": "Show filters",
     "hide_filters": "Hide filters",
     "min": "min",
