@@ -50,7 +50,6 @@ import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import {
-  loadProfileInfoThunk,
   newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
@@ -154,14 +153,14 @@ interface FormState {
 const defaultState = (profile?: any): FormState => ({
   isValid: false,
   values: {
-    country: profile?.country || "",
-    quantity: "",
-    price: "",
+    country: profile?.defaultBillingAddress?.country || "",
+    quantity: profile?.quantity || "",
+    price: profile?.price || "",
     // deliveryDate: getCurrentDate(),
     // validateDate: getCurrentDate(),
     // seller: [],
     // address: "",
-    comment: "",
+    comment: profile?.comment || "",
     email: profile?.email || "",
     firstName: profile?.firstName || "",
     lastName: profile?.lastName || "",
@@ -204,6 +203,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
   const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
+  const [isFirstRender, setIsfirstRender] = useState(true);
   const debouncedState = useDebounce(formState, 300);
 
   // const all_sellers = [
@@ -219,11 +219,14 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (profileInfo) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => {
+        return defaultState({ ...prevState.values, ...profileInfo });
+      });
+
       setBillingAddress(profileInfo.defaultBillingAddress);
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
-  }, []);
+  }, [profileInfo]);
 
   useEffect(() => {
     const formErrors = validate(formState.values, schema);
@@ -276,7 +279,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (rfqModalOpen) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "rfq_form_register_data",
@@ -302,7 +305,11 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         ...prevState,
         values: {
           ...prevState.values,
-          ...rfqItem,
+          ...{
+            ...rfqItem,
+            quantity: prevState.values.quantity || rfqItem.quantity,
+            comment: prevState.values.comment || rfqItem.comment,
+          },
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),
@@ -367,7 +374,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, type, checked } = e.target;
-
     const errors = { ...formState.errors };
     if (errors[name]) delete errors[name];
 
@@ -585,7 +591,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               setFormState((prevState) => ({
                 ...defaultState(),
                 values: {
-                  ...defaultState().values,
+                  ...defaultState({ ...prevState.values, ...profileInfo }).values,
                   country: prevState.values.country,
                 },
               }));
@@ -632,7 +638,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               setFormState((prevState) => ({
                 ...defaultState(),
                 values: {
-                  ...defaultState().values,
+                  ...defaultState({ ...prevState?.values, ...profileInfo }).values,
                   country: prevState.values.country,
                 },
               }));
@@ -845,7 +851,11 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 name="country"
                 size="small"
                 label={`${t("form_labels.delivery_to")} *`}
-                value={formState.values.country}
+                value={
+                  formState.values.country.split("/countries")[1] ||
+                  billingAddress?.country.split("/countries")[1] ||
+                  ""
+                }
                 onBlur={onBlurHandler("country")}
                 onChange={handleChange}
                 InputLabelProps={{
@@ -856,7 +866,11 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 {...errorProps("country")}
               >
                 {countries?.map((i: Record<string, any>) => (
-                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                  <MenuItem
+                    className={appTheme.selectMenuItem}
+                    key={i.url.split("/countries")[1]}
+                    value={i.url.split("/countries")[1]}
+                  >
                     {i.printable_name}
                   </MenuItem>
                 ))}
