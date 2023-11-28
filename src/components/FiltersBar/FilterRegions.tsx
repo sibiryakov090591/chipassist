@@ -3,11 +3,14 @@ import Button from "@material-ui/core/Button";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Popper from "@material-ui/core/Popper";
 import Grow from "@material-ui/core/Grow";
-import _ from "lodash";
 import Paper from "@material-ui/core/Paper";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { Checkbox, FormControlLabel, Box } from "@material-ui/core";
+import { Checkbox, FormControlLabel } from "@material-ui/core";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import * as countriesData from "@src/constants/countries";
+import { clsx } from "clsx";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -15,14 +18,30 @@ interface Props {
   selected: string[];
 }
 
-const regions = {
-  africaCountries: "Africa",
-  arabStatesCountries: "Arab States",
-  asiaPacificCountries: "Asia & Pacific",
-  europeCountries: "Europe",
-  middleEastCountries: "Middle East",
-  northAmericaCountries: "North America",
-  southLatinAmericaCountries: "South America",
+interface Data {
+  [key: string]: {
+    [key: string]: {
+      name: string;
+      checked: boolean;
+    };
+  };
+}
+
+const getRegionData = (iso3codes: string[]) => {
+  return iso3codes.reduce((acc, code) => {
+    const country = countriesData.countriesList.find((i) => i.iso_3166_1_a3 === code);
+    if (country) return { ...acc, [code]: { name: country.printable_name, checked: false } };
+    return acc;
+  }, {});
+};
+
+const stateData = {
+  Africa: getRegionData(countriesData.africaCountries),
+  Asia: getRegionData(countriesData.asiaPacificCountries),
+  Europe: getRegionData(countriesData.europeCountries),
+  "Middle East": getRegionData(countriesData.middleEastCountries),
+  "North America": getRegionData(countriesData.northAmericaCountries),
+  "South America": getRegionData(countriesData.southLatinAmericaCountries),
 };
 
 const FilterRegions: React.FC<Props> = ({ action, selected }) => {
@@ -30,24 +49,33 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
   const { t } = useI18n("common");
 
   const [open, setOpen] = useState(false);
-  const [selectedRegions, setSelectedRegions] = useState([]);
-  const [prevState, setPrevState] = useState([]);
+  const [data, setData] = useState<Data>(stateData);
+  const [extended, setExtended] = useState<{ [key: string]: boolean }>(
+    Object.keys(stateData).reduce((acc, region) => ({ ...acc, [region]: false }), {}),
+  );
+  const [wasChanged, setWasChanged] = useState(false);
 
   const anchorRef = useRef(null);
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(open);
 
   useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
+    if (!open) {
+      setWasChanged(false);
     }
-    prevOpen.current = open;
   }, [open]);
 
   useEffect(() => {
     if (selected) {
-      setSelectedRegions(selected);
-      setPrevState(selected);
+      const newData = { ...data };
+      selected.forEach((code) => {
+        Object.entries(newData).some(([region, countries]) => {
+          if (countries[code]) {
+            newData[region][code] = { ...countries[code], checked: true };
+            return true;
+          }
+          return false;
+        });
+      });
+      setData(newData);
     }
   }, [selected]);
 
@@ -55,17 +83,48 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
     setOpen((prev) => !prev);
   };
 
+  const onExtendedHandler = (region: string) => () => {
+    setExtended((prev) => ({ ...prev, [region]: !prev[region] }));
+  };
+
   const handleClose = () => {
-    if (!_.isEqual(prevState, selectedRegions)) action(selectedRegions);
+    if (wasChanged) {
+      const codes: string[] = [];
+      // eslint-disable-next-line guard-for-in
+      for (const region in data) {
+        for (const country in data[region]) {
+          if (data[region][country].checked) {
+            codes.push(country);
+          }
+        }
+      }
+      action(codes);
+    }
     setOpen(false);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeRegion = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    if (checked) {
-      return setSelectedRegions((prev) => [...prev, name]);
-    }
-    return setSelectedRegions((prev) => prev.filter((i) => i !== name));
+    if (!wasChanged) setWasChanged(true);
+    const newData = { ...data };
+    Object.entries(data[name]).forEach(([code, value]) => {
+      newData[name][code] = { ...value, checked };
+    });
+    setData(newData);
+  };
+
+  const onChangeCountry = (region: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    if (!wasChanged) setWasChanged(true);
+    const newData = { ...data };
+    Object.entries(data[region]).some(([code, value]) => {
+      if (code === name) {
+        newData[region][code] = { ...value, checked };
+        return true;
+      }
+      return false;
+    });
+    setData(newData);
   };
 
   return (
@@ -90,25 +149,50 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
           >
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
-                <Box p="2px 16px">
-                  {Object.entries(regions).map(([key, label]) => {
+                <div className={classes.countriesBlock}>
+                  {Object.entries(data).map(([region, countries]) => {
                     return (
-                      <div key={key}>
-                        <FormControlLabel
-                          name={key}
-                          control={
-                            <Checkbox
-                              className={classes.checkbox}
-                              onChange={onChange}
-                              checked={selectedRegions.includes(key)}
-                            />
-                          }
-                          label={label}
-                        />
+                      <div key={region}>
+                        <div className={classes.regionRow}>
+                          <FormControlLabel
+                            name={region}
+                            control={
+                              <Checkbox
+                                className={classes.checkbox}
+                                onChange={onChangeRegion}
+                                defaultChecked={true}
+                                checked={Object.values(data[region]).some((country) => country.checked)}
+                              />
+                            }
+                            label={region}
+                          />
+                          <span className={classes.extendedIcon} onClick={onExtendedHandler(region)}>
+                            {extended[region] ? <RemoveIcon /> : <AddIcon />}
+                          </span>
+                        </div>
+                        <div className={clsx(classes.countriesWrapper, { show: extended[region] })}>
+                          {Object.entries(countries).map(([code, value]) => {
+                            return (
+                              <div key={code}>
+                                <FormControlLabel
+                                  name={code}
+                                  control={
+                                    <Checkbox
+                                      className={classes.checkbox}
+                                      onChange={onChangeCountry(region)}
+                                      checked={value.checked}
+                                    />
+                                  }
+                                  label={value.name}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })}
-                </Box>
+                </div>
               </ClickAwayListener>
             </Paper>
           </Grow>

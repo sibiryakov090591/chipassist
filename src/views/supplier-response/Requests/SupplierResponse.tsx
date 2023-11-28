@@ -49,6 +49,7 @@ import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import constants from "@src/constants/constants";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 import FilterRegions from "@src/components/FiltersBar/FilterRegions";
+import * as countriesData from "@src/constants/countries";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -64,7 +65,7 @@ interface Filters {
   days: number;
   all: boolean;
   has_response: boolean;
-  regions: string[];
+  countries: string[];
 }
 
 const SupplierResponse: React.FC = () => {
@@ -125,14 +126,13 @@ const SupplierResponse: React.FC = () => {
         all: false,
         days: 7,
         has_response: hasResponse !== null ? hasResponse === "true" : res?.data?.has_response || true,
-        regions: res?.data?.regions || [
-          "africaCountries",
-          "arabStatesCountries",
-          "asiaPacificCountries",
-          "europeCountries",
-          "middleEastCountries",
-          "northAmericaCountries",
-          "southLatinAmericaCountries",
+        countries: res?.data?.countries || [
+          ...countriesData.africaCountries,
+          ...countriesData.asiaPacificCountries,
+          ...countriesData.europeCountries,
+          ...countriesData.middleEastCountries,
+          ...countriesData.northAmericaCountries,
+          ...countriesData.southLatinAmericaCountries,
         ],
       };
       if (!res?.data) {
@@ -169,7 +169,7 @@ const SupplierResponse: React.FC = () => {
           7,
           selectedPartner === false ? false : selectedPartner.id,
           hasResponse,
-          filters.regions,
+          filters.countries,
         ),
       ).then((data: any) => {
         if (data?.page !== Number(page)) {
@@ -325,8 +325,8 @@ const SupplierResponse: React.FC = () => {
     }
   };
 
-  const onChangeRegions = (regions: string[]) => {
-    setFilters((prev) => ({ ...prev, page: 1, regions }));
+  const onChangeCountries = (countries: string[]) => {
+    setFilters((prev) => ({ ...prev, page: 1, countries }));
     setUrl(navigate, "/supplier-response", 1, pageSize, {
       has_response: hasResponse,
     });
@@ -336,7 +336,7 @@ const SupplierResponse: React.FC = () => {
         data: {
           ...filters,
           page: 1,
-          regions,
+          countries,
         },
       }),
     );
@@ -539,7 +539,7 @@ const SupplierResponse: React.FC = () => {
               {/*  } */}
               {/*  label={"Show all"} */}
               {/* /> */}
-              <FilterRegions action={onChangeRegions} selected={filters?.regions || []} />
+              <FilterRegions action={onChangeCountries} selected={filters?.countries || []} />
               <FilterHasResponseBar
                 disable={isLoading}
                 action={onChangeHasResponses}

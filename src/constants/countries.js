@@ -51,8 +51,6 @@ export const africaCountries = [
   "ZWE",
 ];
 
-export const arabStatesCountries = ["BHR", "DJI", "DZA", "COM", "MAR", "MRT", "PSE", "SDN", "SOM", "TUN"];
-
 export const asiaPacificCountries = [
   "AFG",
   "ATA",
@@ -197,6 +195,16 @@ export const middleEastCountries = [
   "QAT",
   "SAU",
   "YEM",
+  "BHR",
+  "DJI",
+  "DZA",
+  "COM",
+  "MAR",
+  "MRT",
+  "PSE",
+  "SDN",
+  "SOM",
+  "TUN",
 ];
 
 export const northAmericaCountries = ["CAN", "SPM", "USA", "NIC"];
