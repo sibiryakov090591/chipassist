@@ -12,7 +12,6 @@ import { getAuthToken } from "@src/utils/auth";
 import { Stockrecord, Product } from "@src/store/products/productTypes";
 import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { shouldUpdateCard } from "@src/store/common/commonActions";
-import * as countriesData from "@src/constants/countries";
 import * as actionTypes from "./rfqTypes";
 import { NewRfqItem, RfqActionTypes } from "./rfqTypes";
 
