@@ -136,7 +136,7 @@ export const sendRfqsResponse = (sellerId: number) => (dispatch: any, getState: 
     types: [false, false, false],
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/response/`, {
+        .post(`/rfqs/response/?source=responses`, {
           data: {
             seller: sellerId,
             data,
