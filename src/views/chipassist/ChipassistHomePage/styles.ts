@@ -410,7 +410,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   workplace: {
     padding: "3rem 0",
-    backgroundColor: theme.palette.app.red500,
+    background: "#e55972",
   },
   imgWrapper: {
     [theme.breakpoints.down("sm")]: {
