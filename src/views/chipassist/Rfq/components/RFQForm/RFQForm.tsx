@@ -150,30 +150,6 @@ interface FormState {
   errors: RfqItemErrors;
 }
 
-const defaultState = (profile?: any): FormState => ({
-  isValid: false,
-  values: {
-    country: profile?.defaultBillingAddress?.country || "",
-    quantity: profile?.quantity || "",
-    price: profile?.price || "",
-    // deliveryDate: getCurrentDate(),
-    // validateDate: getCurrentDate(),
-    // seller: [],
-    // address: "",
-    comment: profile?.comment || "",
-    email: profile?.email || "",
-    firstName: profile?.firstName || "",
-    lastName: profile?.lastName || "",
-    // company_type: "Distributor",
-    // company_other_type: "",
-    company_name: profile?.defaultBillingAddress?.company_name || "",
-    policy_confirm: false,
-    receive_updates_confirm: false,
-  },
-  touched: {},
-  errors: {},
-});
-
 const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, className }) => {
   // const history = useHistory();
   // const location = useLocation();
@@ -202,8 +178,35 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
+  const defaultState = (profile?: any): FormState => ({
+    isValid: false,
+    values: {
+      country:
+        (profile?.defaultBillingAddress?.country &&
+          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+      quantity: profile?.quantity || "",
+      price: profile?.price || "",
+      // deliveryDate: getCurrentDate(),
+      // validateDate: getCurrentDate(),
+      // seller: [],
+      // address: "",
+      comment: profile?.comment || "",
+      email: profile?.email || "",
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
+      // company_type: "Distributor",
+      // company_other_type: "",
+      company_name: profile?.defaultBillingAddress?.company_name || "",
+      policy_confirm: false,
+      receive_updates_confirm: false,
+    },
+    touched: {},
+    errors: {},
+  });
   const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
-  const [isFirstRender, setIsfirstRender] = useState(true);
   const debouncedState = useDebounce(formState, 300);
 
   // const all_sellers = [
@@ -851,11 +854,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 name="country"
                 size="small"
                 label={`${t("form_labels.delivery_to")} *`}
-                value={
-                  formState.values.country.split("/countries")[1] ||
-                  billingAddress?.country.split("/countries")[1] ||
-                  ""
-                }
+                value={formState.values.country}
                 onBlur={onBlurHandler("country")}
                 onChange={handleChange}
                 InputLabelProps={{
@@ -866,11 +865,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 {...errorProps("country")}
               >
                 {countries?.map((i: Record<string, any>) => (
-                  <MenuItem
-                    className={appTheme.selectMenuItem}
-                    key={i.url.split("/countries")[1]}
-                    value={i.url.split("/countries")[1]}
-                  >
+                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
                     {i.printable_name}
                   </MenuItem>
                 ))}

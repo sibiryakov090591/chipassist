@@ -1,6 +1,4 @@
 import { updateObject } from "@src/utils/utility";
-import store from "@src/store";
-import { address } from "@src/store/checkout/checkoutReducer";
 import * as actionTypes from "./profileTypes";
 import * as authActionTypes from "../authentication/authTypes";
 

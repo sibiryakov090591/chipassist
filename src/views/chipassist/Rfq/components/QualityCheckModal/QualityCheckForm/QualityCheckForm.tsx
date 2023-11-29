@@ -33,7 +33,6 @@ import InputPhone from "@src/components/InputPhone/InputPhone";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import {
-  loadProfileInfoThunk,
   newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
@@ -184,14 +183,14 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
 
   useEffect(() => {
     if (profileInfo) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
-  }, []);
+  }, [profileInfo]);
 
   useEffect(() => {
     if (open) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "seller_message_form_register_data",
