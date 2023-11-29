@@ -28,11 +28,18 @@ interface Data {
 }
 
 const getRegionData = (iso3codes: string[]) => {
-  return iso3codes.reduce((acc, code) => {
+  const result = iso3codes.reduce((acc, code) => {
     const country = countriesData.countriesList.find((i) => i.iso_3166_1_a3 === code);
     if (country) return { ...acc, [code]: { name: country.printable_name, checked: false } };
     return acc;
   }, {});
+  // Sort by alphabet
+  return Object.entries(result)
+    .sort((a: any, b: any) => a[1].name.localeCompare(b[1].name))
+    .reduce((acc: any, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
 };
 
 const stateData = {
