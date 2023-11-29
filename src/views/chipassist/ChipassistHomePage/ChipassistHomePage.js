@@ -179,8 +179,8 @@ export const ChipassistHomePage = () => {
                   <div className={classes.heroItem}>
                     <h3 className={classes.heroItemTitle}>Search. Request. Buy.</h3>
                     <p className={classes.heroItemText}>
-                      Search for products and see market availability. Place your requests with 300+ sellers in one
-                      click. Order and track with ChipAssist.
+                      Search for products and see market availability. Place your requests to 300+ sellers in one click.
+                      Order and track with ChipAssist.
                     </p>
                   </div>
                 ) : (
