@@ -74,8 +74,7 @@ export const About = () => {
   const newClasses = useNewStyles();
   const appClasses = useAppTheme();
   const [isOpenFirstDescription, setIsOpenFirstDescription] = useState(false);
-  const [isOpenSecondDescription, setIsOpenSecondDescription] = useState(false);
-  const [isOpenThirdDescription, setIsOpenThirdDescription] = useState(false);
+
   return (
     <Page title={"About"} description={"User guide for requests.chipassist.com"} className={classes.main}>
       <section
