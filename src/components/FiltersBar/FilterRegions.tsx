@@ -50,6 +50,7 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<Data>(stateData);
+  const [count, setCount] = useState(null);
   const [extended, setExtended] = useState<{ [key: string]: boolean }>(
     Object.keys(stateData).reduce((acc, region) => ({ ...acc, [region]: false }), {}),
   );
@@ -66,6 +67,7 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
   useEffect(() => {
     if (selected) {
       const newData = { ...data };
+      setCount(selected.length);
       selected.forEach((code) => {
         Object.entries(newData).some(([region, countries]) => {
           if (countries[code]) {
@@ -136,7 +138,7 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
         onClick={toggleOpen}
         ref={anchorRef}
       >
-        {t("regions")}
+        {t("countries")} ({count})
         <KeyboardArrowDownIcon className={classes.viewsFIcon} />
       </Button>
       <Popper open={open} anchorEl={anchorRef.current} role={undefined} style={{ zIndex: 100 }} transition>
