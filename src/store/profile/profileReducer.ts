@@ -1,6 +1,7 @@
 import { updateObject } from "@src/utils/utility";
 import * as actionTypes from "./profileTypes";
 import * as authActionTypes from "../authentication/authTypes";
+import { Address } from "./profileTypes";
 
 const initialState: actionTypes.ProfileState = {
   profileInfo: null,
@@ -45,23 +46,30 @@ const updatePrevEmail = (state: actionTypes.ProfileState, action: actionTypes.Up
   return updateObject(state, { prevEmail: action.payload });
 };
 
-const updateAddress = (state: actionTypes.ProfileState, action: actionTypes.UpdateAddressS) => {
-  const newAdresses = [
-    ...state.profileInfo.addresses.map((elem) =>
-      elem.id === state.profileInfo.defaultBillingAddress.id
-        ? {
-            ...elem,
-            ...action.response.data,
-          }
-        : elem,
-    ),
-  ];
-
-  const biggestIdElem = newAdresses.sort((elem1, elem2) => elem2.id - elem1.id)[0];
-
-  const newDefaultBilling = newAdresses.find((elem) => elem.is_default_for_billing) || biggestIdElem;
-
-  const newDefaultShipping = newAdresses.find((elem) => elem.is_default_for_shipping) || biggestIdElem;
+const handleAddress = (
+  mode: "create" | "update",
+  state: actionTypes.ProfileState,
+  action: actionTypes.UpdateAddressS | actionTypes.CreateAddressS,
+) => {
+  let newAddresses: Address[] = [];
+  if (mode === "create") {
+    newAddresses = [{ ...action.response.data }, ...state.profileInfo.addresses];
+  }
+  if (mode === "update") {
+    newAddresses = [
+      ...state.profileInfo.addresses.map((elem) =>
+        elem.id === state.profileInfo.defaultBillingAddress.id
+          ? {
+              ...elem,
+              ...action.response.data,
+            }
+          : elem,
+      ),
+    ];
+  }
+  const biggestIdElem = newAddresses.sort((elem1, elem2) => elem2.id - elem1.id)[0];
+  const newDefaultBilling = newAddresses.find((elem) => elem.is_default_for_billing) || biggestIdElem;
+  const newDefaultShipping = newAddresses.find((elem) => elem.is_default_for_shipping) || biggestIdElem;
 
   return {
     ...state,
@@ -69,7 +77,7 @@ const updateAddress = (state: actionTypes.ProfileState, action: actionTypes.Upda
       ...state.profileInfo,
       defaultBillingAddress: newDefaultBilling,
       defaultShippingAddress: newDefaultShipping,
-      addresses: newAdresses,
+      addresses: newAddresses,
     },
   };
 };
@@ -188,16 +196,10 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
       };
     case actionTypes.UPDATE_ADDRESS_S:
-      return updateAddress(state, action);
-
+      return handleAddress("update", state, action);
     case actionTypes.CREATE_ADDRESS_S:
-      return {
-        ...state,
-        profileInfo: {
-          ...state.profileInfo,
-          addresses: [{ ...action.response.data }, ...state.profileInfo.addresses],
-        },
-      };
+      return handleAddress("create", state, action);
+
     default:
       return state;
   }

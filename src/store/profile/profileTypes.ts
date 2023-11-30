@@ -328,7 +328,7 @@ interface CreateAddressR {
   type: typeof CREATE_ADDRESS_R;
 }
 
-interface CreateAddressS {
+export interface CreateAddressS {
   type: typeof CREATE_ADDRESS_S;
   response: any;
 }
