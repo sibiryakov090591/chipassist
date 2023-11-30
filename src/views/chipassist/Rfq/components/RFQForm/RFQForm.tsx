@@ -50,7 +50,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import {
-  loadProfileInfoThunk,
+  newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
   updateProfileInfoThunk,
@@ -150,30 +150,6 @@ interface FormState {
   errors: RfqItemErrors;
 }
 
-const defaultState = (profile?: any): FormState => ({
-  isValid: false,
-  values: {
-    country: profile?.country || "",
-    quantity: "",
-    price: "",
-    // deliveryDate: getCurrentDate(),
-    // validateDate: getCurrentDate(),
-    // seller: [],
-    // address: "",
-    comment: "",
-    email: profile?.email || "",
-    firstName: profile?.firstName || "",
-    lastName: profile?.lastName || "",
-    // company_type: "Distributor",
-    // company_other_type: "",
-    company_name: profile?.defaultBillingAddress?.company_name || "",
-    policy_confirm: false,
-    receive_updates_confirm: false,
-  },
-  touched: {},
-  errors: {},
-});
-
 const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, className }) => {
   // const history = useHistory();
   // const location = useLocation();
@@ -202,6 +178,34 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
+  const defaultState = (profile?: any): FormState => ({
+    isValid: false,
+    values: {
+      country:
+        (profile?.defaultBillingAddress?.country &&
+          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+      quantity: profile?.quantity || "",
+      price: profile?.price || "",
+      // deliveryDate: getCurrentDate(),
+      // validateDate: getCurrentDate(),
+      // seller: [],
+      // address: "",
+      comment: profile?.comment || "",
+      email: profile?.email || "",
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
+      // company_type: "Distributor",
+      // company_other_type: "",
+      company_name: profile?.defaultBillingAddress?.company_name || "",
+      policy_confirm: false,
+      receive_updates_confirm: false,
+    },
+    touched: {},
+    errors: {},
+  });
   const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
   const debouncedState = useDebounce(formState, 300);
 
@@ -218,7 +222,10 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (profileInfo) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => {
+        return defaultState({ ...prevState.values, ...profileInfo });
+      });
+
       setBillingAddress(profileInfo.defaultBillingAddress);
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
@@ -275,7 +282,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (rfqModalOpen) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "rfq_form_register_data",
@@ -301,7 +308,11 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         ...prevState,
         values: {
           ...prevState.values,
-          ...rfqItem,
+          ...{
+            ...rfqItem,
+            quantity: prevState.values.quantity || rfqItem.quantity,
+            comment: prevState.values.comment || rfqItem.comment,
+          },
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),
@@ -366,7 +377,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, type, checked } = e.target;
-
     const errors = { ...formState.errors };
     if (errors[name]) delete errors[name];
 
@@ -562,7 +572,18 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               country: formState.values.country || null,
               line1: billingAddress.line1 || "-",
             }),
-          ).then(() => dispatch(loadProfileInfoThunk()));
+          );
+        } else {
+          await dispatch(
+            newCompanyAddress({
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country || null,
+              line1: "-",
+            }),
+          );
         }
         await dispatch(updateProfileInfoThunk());
         dispatch(saveRfqItem(data))
@@ -573,7 +594,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               setFormState((prevState) => ({
                 ...defaultState(),
                 values: {
-                  ...defaultState().values,
+                  ...defaultState({ ...prevState.values, ...profileInfo }).values,
                   country: prevState.values.country,
                 },
               }));
@@ -620,7 +641,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               setFormState((prevState) => ({
                 ...defaultState(),
                 values: {
-                  ...defaultState().values,
+                  ...defaultState({ ...prevState?.values, ...profileInfo }).values,
                   country: prevState.values.country,
                 },
               }));
