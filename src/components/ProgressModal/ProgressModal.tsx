@@ -102,6 +102,7 @@ const ProgressModal: React.FC = () => {
               // for quick Order
               // Quick order id disabled now
               dispatch(progressModalClose());
+              window.scrollTo({ top: 0 });
               navigate(`/password/request/${codeRes.code}`, {
                 state: { background: location.state?.background || location },
               });
