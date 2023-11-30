@@ -1326,7 +1326,8 @@
       "max": "No more than 100 characters",
       "digits": "Add at least one digit",
       "letters": "Add at least one letter",
-      "does_not_match": "Doesn't match"
+      "does_not_match": "Doesn't match",
+      "has": "Use latin symbols instead"
     },
     "after_request": {
       "title": "Set your password",
