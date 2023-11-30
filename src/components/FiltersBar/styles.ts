@@ -60,6 +60,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         marginBottom: 12,
       },
     },
+    strong: {
+      fontWeight: "bold",
+    },
+    countriesCount: {
+      marginLeft: 3,
+    },
     showButton: {
       fontSize: "12px",
       paddingBottom: "4px",
@@ -121,7 +127,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     countriesBlock: {
       padding: "2px 2px 2px 16px",
       maxHeight: "50vh",
-      overflow: "auto",
       width: 250,
     },
     countriesWrapper: {
@@ -134,6 +139,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     regionRow: {
       display: "flex",
       alignItems: "center",
+      justifyContent: "space-between",
+      paddingRight: 8,
       "& > label": {
         marginRight: 8,
       },

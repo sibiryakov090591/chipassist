@@ -539,12 +539,12 @@ const SupplierResponse: React.FC = () => {
               {/*  } */}
               {/*  label={"Show all"} */}
               {/* /> */}
-              <FilterRegions action={onChangeCountries} selected={filters?.countries || []} />
               <FilterHasResponseBar
                 disable={isLoading}
                 action={onChangeHasResponses}
                 hasResponse={filters?.has_response}
               />
+              <FilterRegions action={onChangeCountries} selected={filters?.countries || []} />
               <FilterPageSizeChoiceBar
                 storageKey={"rfq_response_page_size"}
                 action={onChangePageSize}

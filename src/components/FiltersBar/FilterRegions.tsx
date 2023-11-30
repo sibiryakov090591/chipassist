@@ -96,7 +96,7 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
     setExtended((prev) => ({ ...prev, [region]: !prev[region] }));
   };
 
-  const handleClose = () => {
+  const handleClose = (e: any) => {
     if (wasChanged) {
       const codes: string[] = [];
       // eslint-disable-next-line guard-for-in
@@ -108,6 +108,9 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
         }
       }
       action(codes);
+    }
+    if (anchorRef.current && anchorRef.current.contains(e.target)) {
+      return;
     }
     setOpen(false);
   };
@@ -139,24 +142,31 @@ const FilterRegions: React.FC<Props> = ({ action, selected }) => {
   return (
     <div>
       <Button
-        className={classes.showButton}
+        className={clsx(classes.showButton, { [classes.strong]: count < 246 })}
         aria-controls={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         onClick={toggleOpen}
         ref={anchorRef}
       >
-        {t("countries")} ({count})
+        {t("countries")}, <span className={classes.countriesCount}>show {count < 246 ? count : "all"}</span>
         <KeyboardArrowDownIcon className={classes.viewsFIcon} />
       </Button>
-      <Popper open={open} anchorEl={anchorRef.current} role={undefined} style={{ zIndex: 100 }} transition>
+      <Popper
+        open={open}
+        anchorEl={anchorRef.current}
+        placement={"bottom-start"}
+        role={undefined}
+        style={{ zIndex: 100 }}
+        transition
+      >
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin: placement === "bottom" ? "center top" : "center bottom",
+              transformOrigin: placement === "bottom-start" ? "center top" : "center bottom",
             }}
           >
-            <Paper>
+            <Paper style={{ overflow: "auto" }}>
               <ClickAwayListener onClickAway={handleClose}>
                 <div className={classes.countriesBlock}>
                   {Object.entries(data).map(([region, countries]) => {
