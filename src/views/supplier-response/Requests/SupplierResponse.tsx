@@ -48,8 +48,8 @@ import Modal from "@material-ui/core/Modal";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import constants from "@src/constants/constants";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
-import FilterRegions from "@src/components/FiltersBar/FilterRegions";
-import * as countriesData from "@src/constants/countries";
+// import FilterRegions from "@src/components/FiltersBar/FilterRegions";
+// import * as countriesData from "@src/constants/countries";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -65,7 +65,7 @@ interface Filters {
   days: number;
   all: boolean;
   has_response: boolean;
-  countries: string[];
+  // countries: string[];
 }
 
 const SupplierResponse: React.FC = () => {
@@ -126,14 +126,14 @@ const SupplierResponse: React.FC = () => {
         all: false,
         days: 7,
         has_response: hasResponse !== null ? hasResponse === "true" : res?.data?.has_response || true,
-        countries: res?.data?.countries || [
-          ...countriesData.africaCountries,
-          ...countriesData.asiaPacificCountries,
-          ...countriesData.europeCountries,
-          ...countriesData.middleEastCountries,
-          ...countriesData.northAmericaCountries,
-          ...countriesData.southLatinAmericaCountries,
-        ],
+        // countries: res?.data?.countries || [
+        //   ...countriesData.africaCountries,
+        //   ...countriesData.asiaPacificCountries,
+        //   ...countriesData.europeCountries,
+        //   ...countriesData.middleEastCountries,
+        //   ...countriesData.northAmericaCountries,
+        //   ...countriesData.southLatinAmericaCountries,
+        // ],
       };
       if (!res?.data) {
         dispatch(saveMiscAction("rfq_response_filters", data));
@@ -169,7 +169,7 @@ const SupplierResponse: React.FC = () => {
           7,
           selectedPartner === false ? false : selectedPartner.id,
           hasResponse,
-          filters.countries,
+          // filters.countries,
         ),
       ).then((data: any) => {
         if (data?.page !== Number(page)) {
@@ -325,22 +325,22 @@ const SupplierResponse: React.FC = () => {
     }
   };
 
-  const onChangeCountries = (countries: string[]) => {
-    setFilters((prev) => ({ ...prev, page: 1, countries }));
-    setUrl(navigate, "/supplier-response", 1, pageSize, {
-      has_response: hasResponse,
-    });
-    dispatch(clearSupplierResponseData());
-    dispatch(
-      updateMiscAction("rfq_response_filters", {
-        data: {
-          ...filters,
-          page: 1,
-          countries,
-        },
-      }),
-    );
-  };
+  // const onChangeCountries = (countries: string[]) => {
+  //   setFilters((prev) => ({ ...prev, page: 1, countries }));
+  //   setUrl(navigate, "/supplier-response", 1, pageSize, {
+  //     has_response: hasResponse,
+  //   });
+  //   dispatch(clearSupplierResponseData());
+  //   dispatch(
+  //     updateMiscAction("rfq_response_filters", {
+  //       data: {
+  //         ...filters,
+  //         page: 1,
+  //         countries,
+  //       },
+  //     }),
+  //   );
+  // };
 
   const onSubmit = () => {
     if (selectedPartner) {
@@ -544,7 +544,7 @@ const SupplierResponse: React.FC = () => {
                 action={onChangeHasResponses}
                 hasResponse={filters?.has_response}
               />
-              <FilterRegions action={onChangeCountries} selected={filters?.countries || []} />
+              {/* <FilterRegions action={onChangeCountries} selected={filters?.countries || []} /> */}
               <FilterPageSizeChoiceBar
                 storageKey={"rfq_response_page_size"}
                 action={onChangePageSize}
