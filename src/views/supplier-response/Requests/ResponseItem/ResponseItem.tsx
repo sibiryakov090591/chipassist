@@ -60,7 +60,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const savedResponse = useAppSelector((state) => responseItem?.id && state.rfq.rfqResponseData[responseItem.id]);
   // const countries = useAppSelector((state) => state.checkout.countries);
-  console.log(savedResponse);
+
   // const country = React.useMemo(() => {
   //   let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
   //   if (countryItem?.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");

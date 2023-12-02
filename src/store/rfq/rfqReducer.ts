@@ -204,17 +204,20 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
         ...state.rfqResponseData,
         [action.payload.id]: action.payload,
       };
+
       const updatedItems = Object.values(newData).reduce((acc, item) => {
         const priceWarning = Object.values(newData).some(
           (i) =>
             item.id !== i.id &&
             item.part_number === i.part_number &&
-            item.stock === i.stock &&
+            Number(item.stock) === Number(i.stock) &&
             item.datecode === i.datecode &&
-            item.price !== i.price,
+            Number(item.price) !== Number(i.price),
         );
+
         return { ...acc, [item.id]: { ...item, errors: { priceWarning } } };
       }, {});
+
       return updateObject(state, {
         rfqResponseData: updatedItems,
       });
