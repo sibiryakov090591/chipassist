@@ -58,6 +58,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const currency = useAppSelector((state) => state.currency.selected);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const savedResponse = useAppSelector((state) => responseItem?.id && state.rfq.rfqResponseData[responseItem.id]);
   // const countries = useAppSelector((state) => state.checkout.countries);
 
   // const country = React.useMemo(() => {
@@ -142,8 +143,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
   }, [item]);
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target;
-    const { value } = e.target;
+    const { name, value } = e.target;
+
     if (["price", "stock"].includes(name) && parseFloat(value) === 0) return false;
 
     if (!isActiveValidating) setIsActiveValidating(true);
@@ -454,7 +455,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       <td
         className={clsx(classes.input, {
           [classes.inputError]: isActiveValidating && !item.price,
-          [classes.bestPriseError]: !!item?.response_rfq?.summary?.best_price_other,
+          [classes.bestPriseError]:
+            !!item?.response_rfq?.summary?.best_price_other || !!savedResponse?.errors?.priceWarning,
         })}
       >
         <div>
@@ -468,7 +470,21 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             decimalScale={4}
             isAllowedZero={false}
           />
-          {!!item?.response_rfq?.summary?.best_price_other && (
+          {savedResponse?.errors?.priceWarning && (
+            <Tooltip
+              enterTouchDelay={1}
+              classes={{ tooltip: responseClasses.tooltip }}
+              title={
+                <div>
+                  You are trying to set a different price for the same product with the same stock quantity. Eventually
+                  the price will be overwritten by one of these prices.
+                </div>
+              }
+            >
+              <HelpIcon className={clsx(classes.helpIcon, classes.helpPriceIcon)} />
+            </Tooltip>
+          )}
+          {!savedResponse?.errors?.priceWarning && !!item?.response_rfq?.summary?.best_price_other && (
             <Tooltip
               enterTouchDelay={1}
               classes={{ tooltip: responseClasses.tooltip }}
