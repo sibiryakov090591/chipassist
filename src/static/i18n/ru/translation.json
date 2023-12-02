@@ -118,6 +118,7 @@
     }
   },
   "common": {
+    "countries": "Страны",
     "show_filters": "Показать фильтры",
     "hide_filters": "Спрятать фильтры",
     "min": "мин",
