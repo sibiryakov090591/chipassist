@@ -199,13 +199,29 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
     }
     case actionTypes.RFQS_NEED_UPDATE:
       return updateObject(state, { rfqsNeedUpdate: state.rfqsNeedUpdate + 1 });
-    case actionTypes.SAVE_RFQ_RESPONSE:
+    case actionTypes.SAVE_RFQ_RESPONSE: {
+      const newData: { [key: string]: actionTypes.ResponseItem } = {
+        ...state.rfqResponseData,
+        [action.payload.id]: action.payload,
+      };
+
+      const updatedItems = Object.values(newData).reduce((acc, item) => {
+        const priceWarning = Object.values(newData).some(
+          (i) =>
+            item.id !== i.id &&
+            item.part_number === i.part_number &&
+            Number(item.stock) === Number(i.stock) &&
+            item.datecode === i.datecode &&
+            Number(item.price) !== Number(i.price),
+        );
+
+        return { ...acc, [item.id]: { ...item, errors: { priceWarning } } };
+      }, {});
+
       return updateObject(state, {
-        rfqResponseData: {
-          ...state.rfqResponseData,
-          [action.payload.id]: action.payload,
-        },
+        rfqResponseData: updatedItems,
       });
+    }
     case actionTypes.REMOVE_RFQ_RESPONSE: {
       const newData = { ...state.rfqResponseData };
       delete newData[action.payload];

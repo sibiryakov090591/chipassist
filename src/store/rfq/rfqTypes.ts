@@ -151,6 +151,7 @@ export interface ResponseItem extends SellerRfqItem {
   selected_manufacturer: ResponseManufacturer;
   other_manufacturer_name: string;
   comment: string;
+  errors?: { [key: string]: boolean };
 }
 
 export interface RfqState {

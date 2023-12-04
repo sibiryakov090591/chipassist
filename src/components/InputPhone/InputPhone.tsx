@@ -4,6 +4,7 @@ import "react-phone-input-2/lib/material.css";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
+import { defaultCountry } from "@src/constants/countries";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -29,7 +30,7 @@ const InputPhone: React.FC<Props> = ({ label, value, onChange, small, error, hel
         </legend>
         <PhoneInput
           specialLabel={""}
-          country={geolocation?.country_code.toLowerCase() || "ee"}
+          country={geolocation?.country_code?.toLowerCase() || defaultCountry.code.toLowerCase()}
           value={value || ""}
           onChange={onChange}
           dropdownClass={classes.phoneSelectMenu}

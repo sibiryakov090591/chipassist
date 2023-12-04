@@ -59,6 +59,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const { selected, currencyList } = useAppSelector((state) => state.currency);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const savedResponse = useAppSelector((state) => responseItem?.id && state.rfq.rfqResponseData[responseItem.id]);
   // const countries = useAppSelector((state) => state.checkout.countries);
   const symbol =
     item?.requested_price?.currency &&
@@ -147,8 +148,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
   }, [item]);
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target;
-    const { value } = e.target;
+    const { name, value } = e.target;
+
     if (["price", "stock"].includes(name) && parseFloat(value) === 0) return false;
 
     if (!isActiveValidating) setIsActiveValidating(true);
@@ -466,7 +467,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       <td
         className={clsx(classes.input, {
           [classes.inputError]: isActiveValidating && !item.price,
-          [classes.bestPriseError]: !!item?.response_rfq?.summary?.best_price_other,
+          [classes.bestPriseError]:
+            !!item?.response_rfq?.summary?.best_price_other || !!savedResponse?.errors?.priceWarning,
         })}
       >
         <div>
@@ -480,7 +482,22 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             decimalScale={4}
             isAllowedZero={false}
           />
-          {!!item?.response_rfq?.summary?.best_price_other && (
+          {savedResponse?.errors?.priceWarning && (
+            <Tooltip
+              enterTouchDelay={1}
+              classes={{ tooltip: responseClasses.tooltip }}
+              title={
+                <div>
+                  You are trying to set a different price for the same product with the same stock quantity.
+                  <br />
+                  We recommend to set the same price for stockrecords with the same quantity and date code.
+                </div>
+              }
+            >
+              <HelpIcon className={clsx(classes.helpIcon, classes.helpPriceIcon)} />
+            </Tooltip>
+          )}
+          {!savedResponse?.errors?.priceWarning && !!item?.response_rfq?.summary?.best_price_other && (
             <Tooltip
               enterTouchDelay={1}
               classes={{ tooltip: responseClasses.tooltip }}
