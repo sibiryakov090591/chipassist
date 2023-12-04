@@ -47,10 +47,13 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
 
   // eslint-disable-next-line new-cap
   const schema = new passwordValidator();
+  // eslint-disable-next-line no-control-regex
+  const nonAsciiRegex = /[^\x00-\x7F]/;
   schema
+    .not(nonAsciiRegex) // Must contain ASCII symbols
     .has()
     .digits(1) // Must have at least 1 digit
-    .has(/^[a-zA-Z\d]+/) // Must contain latin symbols
+    .has()
     .letters(1) // Must have at least 1 letter
     .is()
     .min(9) // Minimum length 9
