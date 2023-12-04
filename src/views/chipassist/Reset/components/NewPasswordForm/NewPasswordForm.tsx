@@ -79,7 +79,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
 
     setValues({
       ...values,
-      [name]: value,
+      [name]: value?.trim(),
     });
   };
 
