@@ -50,6 +50,7 @@ import constants from "@src/constants/constants";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 // import FilterRegions from "@src/components/FiltersBar/FilterRegions";
 // import * as countriesData from "@src/constants/countries";
+import { format } from "date-fns";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -187,7 +188,7 @@ const SupplierResponse: React.FC = () => {
     if (rfqs.results && currency) {
       const newData: { [key: string]: IResponseItem[] } = {};
       ((rfqs.results as any) as SellerRfqItem[]).forEach((item) => {
-        const groupName = new Date(item.created).toLocaleDateString();
+        const groupName = format(new Date(item.created), "dd.MM.yyyy");
         const responseRfq = item.response_rfq || null;
         const responseItem = rfqResponseData[item.id];
 
