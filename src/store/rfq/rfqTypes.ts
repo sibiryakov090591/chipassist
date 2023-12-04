@@ -102,6 +102,8 @@ export interface SellerRfqItem {
   part_number: string;
   quantity: number;
   manufacturer: ResponseManufacturer;
+  price: number;
+  currency: CurrenciesAllowed;
   response_rfq: {
     your_quantity: number;
     unit_price: number;
@@ -140,6 +142,10 @@ export interface ResponseItem extends SellerRfqItem {
   alter_upc: string;
   created: string;
   currency: CurrenciesAllowed;
+  requested_price: {
+    price: number;
+    currency: CurrenciesAllowed;
+  };
   datecode: string;
   lead_time: number;
   selected_manufacturer: ResponseManufacturer;
