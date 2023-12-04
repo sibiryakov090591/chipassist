@@ -29,6 +29,7 @@ import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@sr
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { v4 as uuid } from "uuid";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
+import { format } from "date-fns";
 import { useStyles } from "./statisticsStyles";
 import Paginate from "../../../components/Paginate";
 import StatisticItem from "./components/StatisticItem/StatisticItem";
@@ -86,7 +87,7 @@ const Statistics: React.FC = () => {
   useEffect(() => {
     if (data) {
       const newData = data.results.reduce((acc: State, item) => {
-        const groupDate = new Date(item.date).toLocaleDateString();
+        const groupDate = format(new Date(item.date), "dd.MM.yyyy");
         const stockId = item.stockrecord_id || uuid();
         return {
           ...acc,
@@ -222,9 +223,11 @@ const Statistics: React.FC = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {Object.values(group).map((stocks, index) => {
-                          return <StatisticItem key={uuid()} items={stocks} index={index} />;
-                        })}
+                        {Object.values(group)
+                          .sort((a, b) => new Date(b[0].date).getTime() - new Date(a[0].date).getTime())
+                          .map((stocks, index) => {
+                            return <StatisticItem key={uuid()} items={stocks} index={index} />;
+                          })}
                       </TableBody>
                     </Table>
                   </div>

@@ -6,6 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { isEven } from "@src/utils/bom";
 import { TableCell, TableRow } from "@material-ui/core";
 // import useAppSelector from "@src/hooks/useAppSelector";
+import { format } from "date-fns";
 import { useStyles } from "./statisticItemStyles";
 
 interface Props {
@@ -54,9 +55,9 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
           <div className={classes.repliedData}>
             {date ? (
               <>
-                {date.toLocaleDateString()}
+                {format(date, "dd.MM.yyyy")}
                 <br />
-                <span>{date.toLocaleTimeString()}</span>
+                <span>{format(date, "HH:mm:ss")}</span>
               </>
             ) : (
               "-"
