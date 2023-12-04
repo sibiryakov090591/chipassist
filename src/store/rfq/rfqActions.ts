@@ -7,6 +7,7 @@ import {
   progressModalError,
   progressModalOpen,
   progressModalSuccess,
+  saveTemporaryRfq,
 } from "@src/store/progressModal/progressModalActions";
 import { getAuthToken } from "@src/utils/auth";
 import { Stockrecord, Product } from "@src/store/products/productTypes";
@@ -246,6 +247,7 @@ export const saveRfqItem = (rfq: { [key: string]: any }, token: string = null) =
         .catch((e) => {
           dispatch(progressModalOpen());
           dispatch(progressModalError(e.response?.data?.errors ? e.response.data.errors[0].error : ""));
+          dispatch(saveTemporaryRfq(rfq));
           console.log("***SAVE_RFQ_ERROR", e);
           throw e;
         }),
