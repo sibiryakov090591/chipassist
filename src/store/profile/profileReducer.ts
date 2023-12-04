@@ -1,6 +1,7 @@
 import { updateObject } from "@src/utils/utility";
 import * as actionTypes from "./profileTypes";
 import * as authActionTypes from "../authentication/authTypes";
+import { Address } from "./profileTypes";
 
 const initialState: actionTypes.ProfileState = {
   profileInfo: null,
@@ -43,6 +44,42 @@ const initialState: actionTypes.ProfileState = {
 const updatePrevEmail = (state: actionTypes.ProfileState, action: actionTypes.UpdatePrevEmail) => {
   localStorage.setItem("prev_user_email", action.payload);
   return updateObject(state, { prevEmail: action.payload });
+};
+
+const handleAddress = (
+  mode: "create" | "update",
+  state: actionTypes.ProfileState,
+  action: actionTypes.UpdateAddressS | actionTypes.CreateAddressS,
+) => {
+  let newAddresses: Address[] = [];
+  if (mode === "create") {
+    newAddresses = [{ ...action.response.data }, ...state.profileInfo.addresses];
+  }
+  if (mode === "update") {
+    newAddresses = [
+      ...state.profileInfo.addresses.map((elem) =>
+        elem.id === state.profileInfo.defaultBillingAddress.id
+          ? {
+              ...elem,
+              ...action.response.data,
+            }
+          : elem,
+      ),
+    ];
+  }
+  const biggestIdElem = newAddresses.sort((elem1, elem2) => elem2.id - elem1.id)[0];
+  const newDefaultBilling = newAddresses.find((elem) => elem.is_default_for_billing) || biggestIdElem;
+  const newDefaultShipping = newAddresses.find((elem) => elem.is_default_for_shipping) || biggestIdElem;
+
+  return {
+    ...state,
+    profileInfo: {
+      ...state.profileInfo,
+      defaultBillingAddress: newDefaultBilling,
+      defaultShippingAddress: newDefaultShipping,
+      addresses: newAddresses,
+    },
+  };
 };
 
 export default function profile(state = initialState, action: actionTypes.ProfileActionTypes) {
@@ -158,6 +195,11 @@ export default function profile(state = initialState, action: actionTypes.Profil
       return {
         ...state,
       };
+    case actionTypes.UPDATE_ADDRESS_S:
+      return handleAddress("update", state, action);
+    case actionTypes.CREATE_ADDRESS_S:
+      return handleAddress("create", state, action);
+
     default:
       return state;
   }

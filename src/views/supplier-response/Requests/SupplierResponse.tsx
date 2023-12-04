@@ -199,6 +199,10 @@ const SupplierResponse: React.FC = () => {
             stock: responseItem.stock,
             price: responseItem.price,
             currency: currency.code,
+            requested_price: {
+              price: item.price,
+              currency: item.currency,
+            },
             alter_upc: responseItem.alter_upc || "",
             datecode: responseItem.datecode,
             lead_time: responseItem.lead_time,
@@ -213,6 +217,10 @@ const SupplierResponse: React.FC = () => {
             stock: responseRfq?.your_quantity,
             price: responseRfq?.unit_price,
             currency: currency.code,
+            requested_price: {
+              price: item.price,
+              currency: item.currency,
+            },
             alter_upc: responseRfq?.alter_upc || item.part_number || "",
             datecode: responseRfq?.datecode || "",
             lead_time: responseRfq?.lead_time && Number(responseRfq.lead_time),

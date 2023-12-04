@@ -50,7 +50,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
   schema
     .has()
     .digits(1) // Must have at least 1 digit
-    .has()
+    .has(/^[a-zA-Z\d]+/) // Must contain latin symbols
     .letters(1) // Must have at least 1 letter
     .is()
     .min(9) // Minimum length 9
@@ -62,6 +62,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
 
     if (name === "password") {
       const errorsList = schema.validate(value, { list: true });
+
       setValidateErrors(errorsList);
       setNotMatchError(values.confirm !== value);
 

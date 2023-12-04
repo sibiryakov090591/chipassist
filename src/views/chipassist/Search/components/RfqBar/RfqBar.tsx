@@ -87,8 +87,10 @@ const RfqBar: React.FC = () => {
     }
 
     const { part_number, quantity, price } = formState.values;
-    const isProductExists = products?.some((i) => i.upc?.toUpperCase() === part_number);
-    dispatch(rfqModalOpen(part_number, quantity, null, price, null, null, "rfq", isProductExists ? 1 : null)); // productId required for creating RFQ from RFQForm instead missing product feedback
+    const pattern = /[^a-zA-Z0-9]/g;
+    const cleanPartNumber = part_number?.replace(pattern, "");
+    const isProductExists = products?.some((i) => i.upc?.replace(pattern, "")?.toUpperCase() === cleanPartNumber);
+    dispatch(rfqModalOpen(part_number, quantity, null, price, null, null, "rfq", isProductExists ? 1 : null)); // productId affects creating RFQ or creating missing product feedback
     return setFormState(defaultState);
   };
 

@@ -60,6 +60,18 @@ export const GET_PARTNER_INFORMATION = "@sellerProfile/GET_PARTNER_INFORMATION";
 
 export const SAVE_NEW_PARTNER_INFORMATION = "@sellerProfile/SAVE_NEW_PARTNER_INFORMATION";
 
+export const CREATE_ADDRESS_R = "@sellerProfile/CREATE_ADDRESS_R";
+export const CREATE_ADDRESS_S = "@sellerProfile/CREATE_ADDRESS_S";
+export const CREATE_ADDRESS_F = "@sellerProfile/CREATE_ADDRESS_F";
+
+export const CREATE_ADDRESS_ARRAY = [CREATE_ADDRESS_R, CREATE_ADDRESS_S, CREATE_ADDRESS_F];
+
+export const UPDATE_ADDRESS_R = "@sellerProfile/UPDATE_ADDRESS_R";
+export const UPDATE_ADDRESS_S = "@sellerProfile/UPDATE_ADDRESS_S";
+export const UPDATE_ADDRESS_F = "@sellerProfile/UPDATE_ADDRESS_F";
+
+export const UPDATE_ADDRESS_ARRAY = [UPDATE_ADDRESS_R, UPDATE_ADDRESS_S, UPDATE_ADDRESS_F];
+
 export interface ProfileState {
   profileInfo: ProfileInfo;
   selectedPartner: Partner | false;
@@ -312,6 +324,34 @@ interface GetPartnerInformationF {
   type: typeof GET_PARTNER_INFORMATION_F;
 }
 
+interface CreateAddressR {
+  type: typeof CREATE_ADDRESS_R;
+}
+
+export interface CreateAddressS {
+  type: typeof CREATE_ADDRESS_S;
+  response: any;
+}
+
+interface CreateAddressF {
+  type: typeof CREATE_ADDRESS_F;
+  error: any;
+}
+
+interface UpdateAddressR {
+  type: typeof UPDATE_ADDRESS_R;
+}
+
+export interface UpdateAddressS {
+  type: typeof UPDATE_ADDRESS_S;
+  response: any;
+}
+
+interface UpdateAddressF {
+  type: typeof UPDATE_ADDRESS_F;
+  error: any;
+}
+
 export type ProfileActionTypes =
   | ChangePartner
   | LogoutAction
@@ -345,4 +385,10 @@ export type ProfileActionTypes =
   | SaveNewPartnerInformation
   | GetPartnerInformationR
   | GetPartnerInformationS
-  | GetPartnerInformationF;
+  | GetPartnerInformationF
+  | CreateAddressR
+  | CreateAddressS
+  | CreateAddressF
+  | UpdateAddressR
+  | UpdateAddressS
+  | UpdateAddressF;
