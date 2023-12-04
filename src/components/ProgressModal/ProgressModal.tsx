@@ -367,7 +367,7 @@ const ProgressModal: React.FC = () => {
                     {errorMessage ? <div dangerouslySetInnerHTML={{ __html: errorMessage }} /> : t("error_message")}
                   </p>
                   {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
-                    <p className={classes.errorMessage}>Do you want to continue with the correct partnumber?</p>
+                    <p className={classes.errorMessage}>Would you like to send RFQ for the corrected part number?</p>
                   )}
                 </>
               )}
