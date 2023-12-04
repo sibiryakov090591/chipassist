@@ -488,8 +488,9 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
               classes={{ tooltip: responseClasses.tooltip }}
               title={
                 <div>
-                  You are trying to set a different price for the same product with the same stock quantity. Eventually
-                  the price will be overwritten by one of these prices.
+                  You are trying to set a different price for the same product with the same stock quantity.
+                  <br />
+                  We recommend to set the same price for stockrecords with the same quantity and date code.
                 </div>
               }
             >
