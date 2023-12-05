@@ -21,6 +21,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     textAlign: "left",
     marginBottom: "26px",
     color: "white",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "30px",
+    },
     // mixBlendMode: "difference",
   },
   pageDescription: {
@@ -28,6 +31,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     textAlign: "left",
     marginBottom: "8px",
     color: "#eee",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "20px",
+    },
     // mixBlendMode: "difference",
   },
   pageTitleImage: {
@@ -39,12 +45,18 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: "#ddd",
     fontSize: "20px",
     textAlign: "left",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "16px",
+    },
   },
   title: {
     color: "#345",
     marginBottom: "3rem",
     fontSize: "1.8rem",
     textAlign: "center",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   italic: {
     fontStyle: "italic",
