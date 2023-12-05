@@ -318,6 +318,14 @@ const ChipAssistApp = () => {
                 </Suspense>
               }
             />
+            <Route
+              path="/product/:partnumber"
+              element={
+                <Suspense fallback={}>
+                  <ProductView />
+                </Suspense>
+              }
+            />
             <Route path="/search" element={<SearchResults />} />
             {/* <Route */}
             {/*  path="/cart" */}

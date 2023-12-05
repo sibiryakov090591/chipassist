@@ -276,7 +276,9 @@ const ProductCardNew = (props) => {
         <Box display="flex" justifyContent="space-between">
           <div className={classes.imageColumn}>
             <Link
-              to={`/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}?productId=${product.id}`}
+              to={`/product/${encodeURIComponent(product.upc)}/${
+                sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
+              }`}
               // to={
               //   viewType === ID_ELFARO
               //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
@@ -294,7 +296,9 @@ const ProductCardNew = (props) => {
           </div>
           <div className={classes.titleColumn}>
             <Link
-              to={`/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}?productId=${product.id}`}
+              to={`/product/${encodeURIComponent(product.upc)}/${
+                sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
+              }`}
               // to={
               //   viewType === ID_ELFARO
               //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
