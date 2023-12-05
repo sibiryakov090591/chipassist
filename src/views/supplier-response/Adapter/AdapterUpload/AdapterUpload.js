@@ -111,12 +111,12 @@ const AdapterUpload = () => {
     ...columnsInitialState,
   });
   const [startingRow, setStartingRow] = useState(1);
-  const [storageFileName, setStorageFileName] = useState(null);
+  const [storageFile, setStorageFile] = useState(null);
 
   useEffect(() => {
-    if (storageFileName) {
+    if (storageFile) {
       setMiscCreated(false);
-      loadMisc(storageFileName).then((res) => {
+      loadMisc(storageFile.name).then((res) => {
         setMisc(res);
 
         if (res?.data) {
@@ -144,40 +144,7 @@ const AdapterUpload = () => {
         }
       });
     }
-  }, [storageFileName]);
-
-  useEffect(() => {
-    if (storageFileName) {
-      setMiscCreated(false);
-      loadMisc(storageFileName).then((res) => {
-        setMisc(res);
-
-        if (res?.data) {
-          const cols = res.data;
-          console.log("storageColumns: ", cols);
-          if (cols && cols.fields) setFields(cols.fields);
-          if (cols && cols.columnsIndexes) {
-            const resColumns = { ...columns };
-            let resColumnsIndexes = { ...columnsIndexes };
-            Object.keys(columnsInitialState).forEach((column) => {
-              const columnIndex = cols.columnsIndexes[column];
-              const value = columnIndexes[cols.columnsIndexes[column] - 1];
-              Object.keys(resColumns).forEach((key) => {
-                if (key !== resColumns && resColumns[key] === value) {
-                  resColumns[key] = "";
-                }
-                return true;
-              });
-              resColumns[column] = value;
-              resColumnsIndexes = { ...resColumnsIndexes, [column]: columnIndex };
-            });
-            setColumns(resColumns);
-            setColumnsIndexes(resColumnsIndexes);
-          }
-        }
-      });
-    }
-  }, [storageFileName]);
+  }, [storageFile]);
 
   useEffect(() => {
     if (!upload.uploading && !upload.error && !upload.fileErrors && file) {
@@ -185,7 +152,7 @@ const AdapterUpload = () => {
       setFile(null);
       setColumns({ ...columnsInitialState });
       setStartingRow(1);
-      setStorageFileName(null);
+      setStorageFile(null);
     }
   }, [upload]);
 
@@ -208,7 +175,7 @@ const AdapterUpload = () => {
 
     const fileName = `${slugify(acceptedFiles[0].name)}`;
     console.log("storageFileName: ", fileName);
-    setStorageFileName(fileName);
+    setStorageFile({ name: fileName });
     return true;
   };
 
@@ -266,9 +233,9 @@ const AdapterUpload = () => {
   const changeMisc = (data) => {
     if (miscCreated || (misc && misc.id)) {
       const miscData = misc ? misc.data : {};
-      updateMisc(storageFileName, { ...miscData, ...data });
+      updateMisc(storageFile?.name, { ...miscData, ...data });
     } else {
-      saveMisc(storageFileName, { ...data }).then((res) => {
+      saveMisc(storageFile?.name, { ...data }).then((res) => {
         setMiscCreated(true);
         if (res && res.id) setMisc(res);
       });
