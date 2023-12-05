@@ -5,11 +5,11 @@ import { useParams } from "react-router-dom";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { title } from "@src/constants/defaults";
 import { Page, ProductCard, ProductCardNew } from "@src/components";
-import { loadProductById } from "@src/store/products/productsActions";
+import { loadProductById, loadStockrecordById } from "@src/store/products/productsActions";
 import { addApiUrl } from "@src/utils/transformUrl";
 // import SidebarMenuBlock from "@src/components/SidebarMenu";
 // import Breadcrumbs from "@src/components/BreadCrumbs/BreadCrumbs";
-import { loadBomListThunk } from "@src/store/bom/bomActions";
+// import { loadBomListThunk } from "@src/store/bom/bomActions";
 import { isUrl } from "@src/utils/validation";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -18,11 +18,12 @@ import Preloader from "@src/components/Preloader/Preloader";
 
 import useAppSelector from "@src/hooks/useAppSelector";
 
-import { Attribute, ProductStateItem } from "@src/store/products/productTypes";
+import { Attribute, ProductStateItem, Stockrecord } from "@src/store/products/productTypes";
 import { getImage } from "@src/utils/product";
 import Error404 from "@src/views/chipassist/Error404";
 import placeholderImg from "@src/images/cpu.png";
 import constants from "@src/constants/constants";
+import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { useStyles } from "./productStyles";
 
 const img = require("@src/images/cpu.png");
@@ -71,7 +72,7 @@ export const getAttributes = (
 
 const ProductView = () => {
   // const [categoryState, setCategoryState] = useState({ activeNode: null, toggled: null });
-  const { partnumber, productId } = useParams<{ partnumber: string; productId: string }>();
+  const { partnumber, id } = useParams<{ partnumber: string; id: string }>();
   const classes = useStyles();
   const appTheme = useAppTheme();
   const { t } = useI18n("product.product_view");
@@ -81,6 +82,7 @@ const ProductView = () => {
   const [mainImage, setMainImg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEqualPartnumber, setIsEqualPartnumber] = useState(null);
+  // const [stockrecord, setStockrecord] = useState<Stockrecord>();
 
   const productData = useAppSelector((state) => state.products.productViewData);
   // const treeMenu = useAppSelector((state) => state.treeMenu.treeMenu);
@@ -101,7 +103,7 @@ const ProductView = () => {
   //     : "";
 
   const product = {
-    id: productId,
+    id: productData?.id,
     imgSrc: productImage,
     imgTitle,
     manufacturer: productData ? productData.manufacturer?.name : "",
@@ -130,22 +132,33 @@ const ProductView = () => {
   }, [productData]);
 
   useEffect(() => {
-    dispatch(loadBomListThunk(1, true));
     window.scrollTo({ top: 0 });
-    dispatch(loadProductById(productId)).finally(() => {
-      setIsLoading(false);
-    });
+    // dispatch(loadBomListThunk(1, true));
+    dispatch(loadStockrecordById(id)) // At first we suppose that it is stockrecord id
+      .then((sr: Stockrecord) => {
+        // setStockrecord(sr);
+        dispatch(loadProductById(sr.product)).finally(() => setIsLoading(false));
+      })
+      .catch(() => {
+        dispatch(loadProductById(id)).finally(() => setIsLoading(false)); // Otherwise we suppose that it is product id
+      });
   }, []);
 
-  // useEffect(() => {
-  //   if (productData?.id) {
-  //     setCategoryState((prevState) => ({ ...prevState, activeNode: productData.categories[0]?.id }));
-  //   }
-  // }, [productData]);
-
-  // const onToggleHandle = (node, toggled) => {
-  //   setCategoryState({ activeNode: node.id, toggled });
-  // };
+  useEffect(() => {
+    const { referrer } = document;
+    const { origin, search, href } = window.location;
+    const wasSent = sessionStorage.getItem("visit");
+    if (!wasSent && referrer && !referrer.includes(origin) && search.includes("utm_")) {
+      dispatch(
+        sendFeedbackMessageThunk("visit", {
+          href,
+          referrer,
+        }),
+      ).then(() => {
+        sessionStorage.setItem("visit", "true");
+      });
+    }
+  }, []);
 
   const getDownloadable = () => {
     const data: Attribute[] = [];
