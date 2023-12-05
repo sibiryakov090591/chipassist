@@ -2,7 +2,7 @@ const defaults = {
   title: "Elfaro",
   id: "elfaro",
   apiPath: "/api",
-  apiHost: "api.elfaro.ee",
+  apiHost: "api.chipassist.com", // "api.elfaro.ee",
   schema: "https",
   locales: ["ru", "en"],
   localeDefault: "en",
@@ -34,7 +34,7 @@ const defaults = {
   SHOW_FILTERS: false,
   jivoChat: false,
   YM: false,
-  GA: true,
+  GA: false,
   checkSiteVersion: true,
   checkSiteVersionPing: 6, // minutes
   showInn: true,

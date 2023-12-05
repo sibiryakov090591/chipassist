@@ -192,7 +192,7 @@ const Statistics: React.FC = () => {
             <div className={classes.empty}>You have not responded to any requests yet</div>
           )}
           {isSmDown && !isLoading && !!Object.keys(groups).length && (
-            <div className={classes.empty}>Statistics available only on desktop version</div>
+            <div className={classes.empty}>Statistics are available only in the desktop version</div>
           )}
 
           {!isSmDown && isAuthenticated && !isLoading && !!Object.keys(groups).length && (

@@ -12,9 +12,9 @@ import { NavigateFunction } from "react-router-dom";
 import { Dispatch } from "redux";
 import * as actionTypes from "./searchTypes";
 
-export const API_PATH = [ID_CHIPASSIST, ID_MASTER].includes(constants.id) ? "apiv2" : "api";
-export const SEARCH_URL = constants.id === ID_ELFARO ? "/searches/" : "/search/";
-export const SEARCH_URL_EXTENDED = constants.id === ID_ELFARO ? "/search_results/" : "/search_result/";
+export const API_PATH = [ID_CHIPASSIST, ID_MASTER, ID_ELFARO].includes(constants.id) ? "apiv2" : "api";
+export const SEARCH_URL = constants.id === ID_ELFARO ? "/search/" : "/search/"; // for elfaro was "/searches/"
+export const SEARCH_URL_EXTENDED = constants.id === ID_ELFARO ? "/search_result/" : "/search_result/"; // for elfaro was "/search_results/"
 
 const apiClient = new ApiClient();
 
