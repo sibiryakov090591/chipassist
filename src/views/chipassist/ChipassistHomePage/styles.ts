@@ -103,7 +103,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     position: "absolute",
     top: "-7px",
     left: "85%",
-    background: theme.palette.app.green800,
+    background: `${theme.palette.app.green800} !important`,
+    color: `#ffffff !important`,
   },
   cartBlock: {
     display: "flex",
