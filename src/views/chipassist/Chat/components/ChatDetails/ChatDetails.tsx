@@ -171,20 +171,15 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
     const result = {
       ...overallData,
+      part_number,
       price: "", // price field is required for the request
       currency: currency.code,
       prices,
       ...(!!stock && { stock_id: stock?.id }),
+      ...(!!selectedChat?.rfq?.id && { id: selectedChat?.rfq?.id }),
     };
 
-    dispatch(
-      updateStockrecord(
-        {
-          [part_number]: result,
-        },
-        selectedChat?.id,
-      ),
-    )
+    dispatch(updateStockrecord([result], selectedChat?.id))
       .then(() => {
         dispatch(
           showBottomLeftMessageAlertAction({
