@@ -311,7 +311,7 @@ const ChipAssistApp = () => {
             <Route path="/auth/reset/:token" element={<Reset />} />
             <Route path="/password/request/:token" element={<Reset />} />
             <Route
-              path="/product/:partnumber/:id"
+              path="/product/:partnumber/:stockrecordId"
               element={
                 <Suspense fallback={}>
                   <ProductView />

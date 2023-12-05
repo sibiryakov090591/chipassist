@@ -24,6 +24,7 @@ import Error404 from "@src/views/chipassist/Error404";
 import placeholderImg from "@src/images/cpu.png";
 import constants from "@src/constants/constants";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
+import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { useStyles } from "./productStyles";
 
 const img = require("@src/images/cpu.png");
@@ -72,11 +73,13 @@ export const getAttributes = (
 
 const ProductView = () => {
   // const [categoryState, setCategoryState] = useState({ activeNode: null, toggled: null });
-  const { partnumber, id } = useParams<{ partnumber: string; id: string }>();
+  const { partnumber, stockrecordId } = useParams<{ partnumber: string; stockrecordId: string }>();
   const classes = useStyles();
   const appTheme = useAppTheme();
   const { t } = useI18n("product.product_view");
   const dispatch = useAppDispatch();
+
+  const productId = useURLSearchParams("productId", false, null, false);
 
   // const [categoryState, setCategoryState] = useState({ activeNode: null, toggled: null });
   const [mainImage, setMainImg] = useState(null);
@@ -134,14 +137,16 @@ const ProductView = () => {
   useEffect(() => {
     window.scrollTo({ top: 0 });
     // dispatch(loadBomListThunk(1, true));
-    dispatch(loadStockrecordById(id)) // At first we suppose that it is stockrecord id
-      .then((sr: Stockrecord) => {
-        // setStockrecord(sr);
-        dispatch(loadProductById(sr.product)).finally(() => setIsLoading(false));
-      })
-      .catch(() => {
-        dispatch(loadProductById(id)).finally(() => setIsLoading(false)); // Otherwise we suppose that it is product id
-      });
+    if (productId) {
+      dispatch(loadProductById(productId)).finally(() => setIsLoading(false));
+    } else {
+      dispatch(loadStockrecordById(stockrecordId)) // At first we suppose that it is stockrecord id
+        .then((sr: Stockrecord) => {
+          // setStockrecord(sr);
+          dispatch(loadProductById(sr.product)).finally(() => setIsLoading(false));
+        })
+        .catch(() => setIsLoading(false));
+    }
   }, []);
 
   useEffect(() => {
