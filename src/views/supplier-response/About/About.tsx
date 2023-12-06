@@ -57,7 +57,7 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
 
   gridContainerMobile: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       display: "flex",
       flexDirection: "column-reverse",
     },
@@ -67,7 +67,7 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignSelf: "center",
     paddingTop: "6em",
     textAlign: "left",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       paddingTop: 0,
     },
   },
@@ -107,10 +107,10 @@ export const About = () => {
         }}
         id={"main"}
       >
-        <Container maxWidth="md" style={{ maxWidth: "1200px" }}>
+        <Container maxWidth="lg" style={{ maxWidth: "1200px" }}>
           <Grid
             container
-            spacing={2}
+            spacing={4}
             alignItems={"center"}
             style={{ paddingBottom: isDownSm ? "2em" : null }}
             className={newClasses.gridContainerMobile}
