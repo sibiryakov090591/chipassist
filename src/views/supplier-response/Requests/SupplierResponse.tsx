@@ -192,6 +192,17 @@ const SupplierResponse: React.FC = () => {
         const responseRfq = item.response_rfq || null;
         const responseItem = rfqResponseData[item.id];
 
+        let selected_manufacturer = responseItem?.selected_manufacturer;
+        if (!selected_manufacturer && responseRfq?.manufacturer?.id) {
+          selected_manufacturer = responseRfq?.manufacturers?.find((i) => i.id === responseRfq.manufacturer?.id);
+        }
+        if (!selected_manufacturer && item.manufacturer?.id) {
+          selected_manufacturer = responseRfq?.manufacturers?.find((i) => i.id === item.manufacturer?.id);
+        }
+        if (!selected_manufacturer && item.manufacturer?.id) {
+          selected_manufacturer = responseRfq?.manufacturers?.length ? responseRfq?.manufacturers[0] : null;
+        }
+
         const newItem: IResponseItem = {
           ...item,
           // index: filters?.page_size * (filters?.page - 1) + i + 1,
@@ -206,15 +217,7 @@ const SupplierResponse: React.FC = () => {
           datecode: responseItem ? responseItem.datecode : responseRfq?.datecode || "",
           lead_time: responseItem ? responseItem.lead_time : responseRfq?.lead_time && Number(responseRfq.lead_time),
           comment: responseItem ? responseItem.comment : responseRfq?.datecode || "",
-          selected_manufacturer: responseItem
-            ? responseItem.selected_manufacturer
-            : (responseRfq.manufacturer?.id
-                ? responseRfq?.manufacturers?.find((i) => i.id === responseRfq.manufacturer?.id)
-                : responseRfq?.manufacturers?.some((i) => i.id === item.manufacturer?.id)
-                ? responseRfq?.manufacturers?.find((i) => i.id === item.manufacturer?.id)
-                : responseRfq?.manufacturers?.length
-                ? responseRfq?.manufacturers[0]
-                : null) || null,
+          selected_manufacturer,
           other_manufacturer_name: "",
         };
 
