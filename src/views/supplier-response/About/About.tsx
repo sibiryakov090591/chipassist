@@ -101,10 +101,6 @@ export const About = () => {
       <section
         className={classes.firstWay}
         // ref={ref}
-        style={{
-          background: `linear-gradient(270deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
-          transition: "background 200 easy-out",
-        }}
         id={"main"}
       >
         <Container maxWidth="lg" style={{ maxWidth: "1200px" }}>

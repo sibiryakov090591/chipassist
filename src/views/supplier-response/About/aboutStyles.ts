@@ -113,9 +113,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   firstWay: {
-    backgroundColor: "#123",
     width: "100vw",
     color: "white",
+    background: `linear-gradient(270deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
+    transition: "background 200 easy-out",
+    [theme.breakpoints.down("xs")]: {
+      background: `linear-gradient(180deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
+      transition: "background 200 easy-out",
+    },
   },
   howToGetStarted: {
     backgroundColor: theme.palette.app.grey100,
