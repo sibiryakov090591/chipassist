@@ -21,6 +21,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     textAlign: "left",
     marginBottom: "26px",
     color: "white",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "30px",
+    },
     // mixBlendMode: "difference",
   },
   pageDescription: {
@@ -28,6 +31,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     textAlign: "left",
     marginBottom: "8px",
     color: "#eee",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "20px",
+    },
     // mixBlendMode: "difference",
   },
   pageTitleImage: {
@@ -39,12 +45,18 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: "#ddd",
     fontSize: "20px",
     textAlign: "left",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "16px",
+    },
   },
   title: {
     color: "#345",
     marginBottom: "3rem",
     fontSize: "1.8rem",
     textAlign: "center",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   italic: {
     fontStyle: "italic",
@@ -101,9 +113,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   firstWay: {
-    backgroundColor: "#123",
     width: "100vw",
     color: "white",
+    background: `linear-gradient(270deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
+    transition: "background 200 easy-out",
+    [theme.breakpoints.down("xs")]: {
+      background: `linear-gradient(180deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
+      transition: "background 200 easy-out",
+    },
   },
   howToGetStarted: {
     backgroundColor: theme.palette.app.grey100,
