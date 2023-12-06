@@ -192,50 +192,31 @@ const SupplierResponse: React.FC = () => {
         const responseRfq = item.response_rfq || null;
         const responseItem = rfqResponseData[item.id];
 
-        let newItem: IResponseItem;
-        if (responseItem) {
-          newItem = {
-            ...item,
-            // index: filters?.page_size * (filters?.page - 1) + i + 1,
-            stock: responseItem.stock,
-            price: responseItem.price,
-            currency: currency.code,
-            requested_price: {
-              price: item.price,
-              currency: item.currency,
-            },
-            alter_upc: responseItem.alter_upc || "",
-            datecode: responseItem.datecode,
-            lead_time: responseItem.lead_time,
-            comment: responseItem.comment || "",
-            selected_manufacturer: responseItem.selected_manufacturer || null,
-            other_manufacturer_name: "",
-          };
-        } else {
-          newItem = {
-            ...item,
-            // index: filters?.page_size * (filters?.page - 1) + i + 1,
-            stock: responseRfq?.your_quantity,
-            price: responseRfq?.unit_price,
-            currency: currency.code,
-            requested_price: {
-              price: item.price,
-              currency: item.currency,
-            },
-            alter_upc: responseRfq?.alter_upc || item.part_number || "",
-            datecode: responseRfq?.datecode || "",
-            lead_time: responseRfq?.lead_time && Number(responseRfq.lead_time),
-            comment: responseRfq?.comment || "",
-            selected_manufacturer:
-              (responseRfq?.manufacturer?.id && responseRfq?.manufacturer) ||
-              (responseRfq?.manufacturers?.some((i) => i.id === item.manufacturer?.id)
-                ? item.manufacturer
+        const newItem: IResponseItem = {
+          ...item,
+          // index: filters?.page_size * (filters?.page - 1) + i + 1,
+          stock: responseItem ? responseItem.stock : responseRfq?.your_quantity,
+          price: responseItem ? responseItem.price : responseRfq?.unit_price,
+          currency: currency.code,
+          requested_price: {
+            price: item.price,
+            currency: item.currency,
+          },
+          alter_upc: responseItem ? responseItem.alter_upc || "" : responseRfq?.alter_upc || item.part_number || "",
+          datecode: responseItem ? responseItem.datecode : responseRfq?.datecode || "",
+          lead_time: responseItem ? responseItem.lead_time : responseRfq?.lead_time && Number(responseRfq.lead_time),
+          comment: responseItem ? responseItem.comment : responseRfq?.datecode || "",
+          selected_manufacturer: responseItem
+            ? responseItem.selected_manufacturer
+            : (responseRfq.manufacturer?.id
+                ? responseRfq?.manufacturers?.find((i) => i.id === responseRfq.manufacturer?.id)
+                : responseRfq?.manufacturers?.some((i) => i.id === item.manufacturer?.id)
+                ? responseRfq?.manufacturers?.find((i) => i.id === item.manufacturer?.id)
                 : responseRfq?.manufacturers?.length
                 ? responseRfq?.manufacturers[0]
-                : null),
-            other_manufacturer_name: "",
-          };
-        }
+                : null) || null,
+          other_manufacturer_name: "",
+        };
 
         // if (newItem.stock && newItem.price && newItem.datecode && newItem.lead_time) dispatch(saveResponse(newItem));
         if (!newData[groupName]) {
