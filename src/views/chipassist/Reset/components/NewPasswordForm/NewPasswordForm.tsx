@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 import zxcvbn from "zxcvbn";
 import { useStyles } from "./styles";
 
-const NewPasswordForm = (props: { token: string; className: string }) => {
-  const { className, token, ...rest } = props;
+const NewPasswordForm = (props: { token: string; className: string; handler?: any }) => {
+  const { className, token, handler, ...rest } = props;
   const status = useAppSelector((state) => state.profile.resetPassword);
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -102,6 +102,7 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
               password: values.password,
             };
             dispatch(login(data, res.token, navigate, null));
+            if (handler) handler();
           } else {
             setShowLoginForm(true);
           }
@@ -167,7 +168,12 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
                   value={values.password}
                   variant="outlined"
                 />
-                <div className={`${classes.helper} ${validateErrors.length > 0 ? classes.helperActive : ""}`}>
+                <div
+                  className={clsx(classes.helper, {
+                    [classes.helperActive]: validateErrors.length > 0,
+                    [classes.helperPositionBottom]: !!handler,
+                  })}
+                >
                   {validateErrors.length > 0 && t(`reset.helper_text.${validateErrors[0]}`)}
                 </div>
               </div>
@@ -189,7 +195,12 @@ const NewPasswordForm = (props: { token: string; className: string }) => {
                 ) : (
                   <VisibilityIcon className={classes.visibilityIcon} onClick={showPasswordHandler} />
                 )}
-                <div className={`${classes.helper} ${isShowConfirmError ? classes.helperActive : ""}`}>
+                <div
+                  className={clsx(classes.helper, {
+                    [classes.helperActive]: isShowConfirmError,
+                    [classes.helperPositionBottom]: !!handler,
+                  })}
+                >
                   {t(`reset.helper_text.does_not_match`)}
                 </div>
               </div>
