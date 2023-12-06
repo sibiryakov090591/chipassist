@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Grid, Table, TableBody, TableCell, TableRow, Box, Container } from "@material-ui/core";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { title } from "@src/constants/defaults";
 import { Page, ProductCard, ProductCardNew } from "@src/components";
@@ -78,13 +78,14 @@ const ProductView = () => {
   const appTheme = useAppTheme();
   const { t } = useI18n("product.product_view");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const productId = useURLSearchParams("productId", false, null, false);
 
   // const [categoryState, setCategoryState] = useState({ activeNode: null, toggled: null });
   const [mainImage, setMainImg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isEqualPartnumber, setIsEqualPartnumber] = useState(null);
   // const [stockrecord, setStockrecord] = useState<Stockrecord>();
 
   const productData = useAppSelector((state) => state.products.productViewData);
@@ -123,12 +124,10 @@ const ProductView = () => {
   };
 
   useEffect(() => {
-    if (productData && productData.upc === decodeURIComponent(partnumber)) {
-      setIsEqualPartnumber(true);
-    } else {
-      setIsEqualPartnumber(false);
+    if (!isLoading && (!productData || productData.upc !== decodeURIComponent(partnumber))) {
+      navigate(`/search?query=${partnumber}`, { state: { background: location } });
     }
-  }, [productData]);
+  }, [productData, isLoading]);
 
   useEffect(() => {
     if (productData) setMainImg(getImage(productData));
@@ -204,8 +203,8 @@ const ProductView = () => {
               <Preloader title="" />
             </div>
           )}
-          {!isLoading && (isEqualPartnumber === false || !productData) && <Error404 />}
-          {!isLoading && isEqualPartnumber && (
+          {!isLoading && !productData && <Error404 />}
+          {!isLoading && productData && (
             <div>
               {/* <SidebarMenuBlock */}
               {/*  treeMenu={treeMenu} */}
