@@ -8,7 +8,7 @@ import invoices_image from "@src/images/suppliers_response/invoices.png";
 import export_img from "@src/images/suppliers_response/export.png";
 import better_price from "@src/images/suppliers_response/better_price.png";
 // import SendIcon from "@material-ui/icons/Send";
-import { Button, Container, Grid, Theme } from "@material-ui/core";
+import { Button, Container, Grid, Theme, useMediaQuery, useTheme } from "@material-ui/core";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppTheme } from "@src/themes/AppTheme";
@@ -31,8 +31,10 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontSize: "2.4rem",
     paddingTop: "2rem",
     fontWeight: 400,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2rem",
+    },
   },
-  containerWithinSection: {},
   button: {
     backgroundColor: "#fff",
     borderColor: "#dbdbdb",
@@ -51,6 +53,22 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
   linkButton: {
     "&:hover": {
       color: "white",
+    },
+  },
+
+  gridContainerMobile: {
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column-reverse",
+    },
+  },
+
+  gridTextStyle: {
+    alignSelf: "center",
+    paddingTop: "6em",
+    textAlign: "left",
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 0,
     },
   },
 }));
@@ -75,51 +93,47 @@ export const About = () => {
   const appClasses = useAppTheme();
   const [isOpenFirstDescription, setIsOpenFirstDescription] = useState(false);
 
+  const theme = useTheme();
+  const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Page title={"About"} description={"User guide for requests.chipassist.com"} className={classes.main}>
       <section
         className={classes.firstWay}
         // ref={ref}
-        style={{
-          background: `linear-gradient(270deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
-          transition: "background 200 easy-out",
-        }}
         id={"main"}
       >
-        <Container maxWidth="md" style={{ maxWidth: "1200px" }}>
-          <table width={"100%"}>
-            <tbody>
-              <tr>
-                <td width={"50%"}>
-                  <h1 className={classes.pageTitle}>New way of working with RFQs</h1>
-                  <p className={classes.pageDescription}>Many customers, one service:</p>
-                  <div className={classes.pageDescrSubDiv}>
-                    <p>- Get request from the customers worldwide</p>
-                    <p>- Compare your offer with competitive quotes</p>
-                    <p>- Discuss payment and delivery terms</p>
-                  </div>
-                </td>
-                <td width={"50%"}>
-                  <img className={clsx(classes.img, classes.pageTitleImage)} src={supplier_logo} alt="requests page" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <Container maxWidth="lg" style={{ maxWidth: "1200px" }}>
+          <Grid
+            container
+            spacing={4}
+            alignItems={"center"}
+            style={{ paddingBottom: isDownSm ? "2em" : null }}
+            className={newClasses.gridContainerMobile}
+          >
+            <Grid item md={6} sm={6}>
+              <h1 className={classes.pageTitle}>New way of working with RFQs</h1>
+              <p className={classes.pageDescription}>Many customers, one service:</p>
+              <div className={classes.pageDescrSubDiv}>
+                <p>- Get request from the customers worldwide</p>
+                <p>- Compare your offer with competitive quotes</p>
+                <p>- Discuss payment and delivery terms</p>
+              </div>
+            </Grid>
+            <Grid item md={6} sm={6}>
+              <img className={clsx(classes.img, classes.pageTitleImage)} src={supplier_logo} alt="requests page" />
+            </Grid>
+          </Grid>
         </Container>
       </section>
 
       <section className={classes.section}>
         <Container maxWidth={"lg"}>
-          <Grid container spacing={4} className={classes.gridContainer}>
+          <Grid container spacing={4} className={classes.gridContainer} alignItems={"center"}>
             <Grid item sm={7} style={{ paddingTop: "6em" }}>
               <img className={classes.img} src={requests_page} alt="requests page" />
             </Grid>
-            <Grid
-              item
-              sm={5}
-              className={classes.rightColumn}
-              style={{ alignSelf: "center", paddingTop: "6em", textAlign: "left" }}
-            >
+            <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
               <h2 className={newClasses.title}>Work with incoming requests in a completely new way</h2>
               <p>Get all your incoming requests for quotation (RFQs) streamlined and displayed in a convenient way.</p>
               <p>
@@ -161,8 +175,13 @@ export const About = () => {
           </section>
           <section className={classes.section}>
             <Container maxWidth="lg">
-              <Grid container spacing={4} className={classes.gridContainer}>
-                <Grid item sm={6} style={{ alignSelf: "center", paddingTop: "2em" }}>
+              <Grid
+                container
+                spacing={4}
+                className={clsx(classes.gridContainer, newClasses.gridContainerMobile)}
+                alignItems={"center"}
+              >
+                <Grid item sm={6} style={{ alignSelf: "center", paddingTop: isDownSm ? 0 : "2em" }}>
                   <h2 className={newClasses.title}>Use XLS format if you prefer</h2>
                   <p>
                     You also can export the list of the request to{" "}
@@ -178,7 +197,7 @@ export const About = () => {
           </section>
           <section className={classes.section}>
             <Container maxWidth="lg">
-              <Grid container spacing={4} className={classes.gridContainer}>
+              <Grid container spacing={4} className={classes.gridContainer} alignItems={"center"}>
                 <Grid item sm={6} className={classes.rightColumn} style={{ paddingTop: "6em" }}>
                   <img
                     style={{ marginBottom: 12 }}
@@ -187,7 +206,7 @@ export const About = () => {
                     alt="better price hint image"
                   />
                 </Grid>
-                <Grid item sm={6} style={{ alignSelf: "center", paddingTop: "4em" }}>
+                <Grid item sm={6} style={{ alignSelf: "center", paddingTop: isDownSm ? null : "4em" }}>
                   <h2 className={newClasses.title}>See competitive offers</h2>
                   <p className={classes.p}>
                     If you see the item`s price field is yellow after the response, it means that another supplier has
@@ -239,17 +258,17 @@ export const About = () => {
 
       <section className={classes.section} style={{ backgroundColor: "#fbfbfb" }}>
         <Container maxWidth={"lg"}>
-          <Grid container spacing={4} className={classes.gridContainer}>
-            <Grid
-              item
-              sm={5}
-              className={classes.rightColumn}
-              style={{ alignSelf: "center", paddingTop: "6em", textAlign: "left" }}
-            >
+          <Grid
+            container
+            spacing={4}
+            className={clsx(classes.gridContainer, newClasses.gridContainerMobile)}
+            alignItems={"center"}
+          >
+            <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
               <h2 className={newClasses.title}>Easy and convinient comunications with customers</h2>
               <p>Get all your incoming requests for quotaion (RFQs) streamlined and displayed in a convenient way.</p>
               <p>
-                See all request sorted by date with the origin country of the request and requested quantity for each
+                See all requests sorted by date with the origin country of the request and requested quantity for each
                 MPN.
               </p>
               <div>
@@ -274,16 +293,11 @@ export const About = () => {
 
       <section className={classes.section}>
         <Container maxWidth={"lg"}>
-          <Grid container spacing={4} className={classes.gridContainer}>
-            <Grid item sm={7} style={{ paddingTop: "6em", paddingBottom: "6em" }}>
+          <Grid container spacing={4} className={clsx(classes.gridContainer)} alignItems={"center"}>
+            <Grid item sm={5} style={{ paddingTop: "6em", paddingBottom: isDownSm ? null : "6em" }}>
               <img className={classes.img} style={{ boxShadow: "none" }} src={invoices_image} alt="invoices image" />
             </Grid>
-            <Grid
-              item
-              sm={5}
-              className={classes.rightColumn}
-              style={{ alignSelf: "center", paddingTop: "6em", textAlign: "left", paddingBottom: "6em" }}
-            >
+            <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
               <h2 className={newClasses.title}>Easily create and exchange Purchase Orders and Invoices</h2>
               <p>Receive approved Purchase Orders (POs) from your custommers with all necessary details.</p>
               <p>Generate, preview and send Payment Invoices to your customers just in several clicks.</p>
