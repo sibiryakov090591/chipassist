@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import SearchIcon from "@material-ui/icons/Search";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
-import MemoryOutlinedIcon from "@material-ui/icons/MemoryOutlined";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -36,10 +35,10 @@ const Menu: React.FC<Props> = ({ isMobile, linkClassName }) => {
         Components
       </NavLink>
       {!isMobile && <div className={classes.verticalLine}>|</div>}
-      <NavLink className={linkClassName || classes.link} to="/order-pcb">
-        {isMobile && <MemoryOutlinedIcon className={`${classes.icon}`} />}
-        Printed Boards
-      </NavLink>
+      {/* <NavLink className={linkClassName || classes.link} to="/order-pcb"> */}
+      {/*  {isMobile && <MemoryOutlinedIcon className={`${classes.icon}`} />} */}
+      {/*  Printed Boards */}
+      {/* </NavLink> */}
       {isMobile && isAuthenticated && (
         <NavLink className={linkClassName || classes.link} to={`/logout`} onClick={logoutHandler}>
           <ExitToAppOutlinedIcon className={`${classes.icon}`} />

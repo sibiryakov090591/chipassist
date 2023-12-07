@@ -18,6 +18,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderBottom: "0.5px solid #c6c6c6",
       background: theme.palette.primary.main,
       color: theme.palette.white,
+      "& th": {
+        background: theme.palette.primary.main,
+      },
     },
     trElfaro: {
       fontWeight: 300,

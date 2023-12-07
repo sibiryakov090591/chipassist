@@ -1,11 +1,13 @@
 import React from "react";
 import { Box, Hidden } from "@material-ui/core";
 import constants from "@src/constants/constants";
+import { NavLink } from "react-router-dom";
 import { useStyles } from "./styles";
-import Menu from "../Menu/Menu";
 
 declare const COMMITHASH: any;
 declare const BRANCH: any;
+
+const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 const Footer: React.FC = () => {
   const classes = useStyles();
@@ -20,6 +22,14 @@ const Footer: React.FC = () => {
   } catch (ReferenceError) {
     build = "any";
   }
+
+  const logoLink = (
+    <div className={classes.logoContainer}>
+      <NavLink to={"/"} style={{ color: "#ffffff" }}>
+        <img src={logo_img} className={classes.logo} alt="ELFARO Logo"></img>
+      </NavLink>
+    </div>
+  );
 
   return (
     <footer className={classes.footer}>
@@ -51,7 +61,7 @@ const Footer: React.FC = () => {
             {process.env.AWS_BRANCH === "master" ? BRANCH : process.env.AWS_BRANCH} | mode:{" "}
             {process.env.AWS_BRANCH === "master" ? "development" : "production"} | build: {build}
           </div>
-          <Menu isMobile={false} />
+          {logoLink}
         </Hidden>
       </div>
     </footer>
