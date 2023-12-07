@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     trTh: {
       fontWeight: 700,
       borderBottom: "0.5px solid #c6c6c6",
-      background: theme.palette.app.blue800,
+      background: theme.palette.primary.main,
       color: theme.palette.white,
     },
     trElfaro: {
@@ -132,6 +132,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: 60,
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        paddingRight: 24,
+      },
     },
     th1000: {
       width: 65,
@@ -142,11 +145,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: 70,
       textAlign: "right",
       padding: "7px",
-    },
-    thUpdated: {
-      width: 90,
-      textAlign: "center",
-      padding: "7px",
+      paddingRight: 24,
     },
     starIcon: {
       color: "#f5a623",
@@ -259,6 +258,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     tr100: {
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        paddingRight: 24,
+      },
     },
     tr1000: {
       textAlign: "right",
@@ -267,10 +269,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     tr10000: {
       textAlign: "right",
       padding: "7px",
-    },
-    trUpdated: {
-      textAlign: "center",
-      padding: "7px",
+      paddingRight: 24,
     },
     trDynamicPriceBasedOnNumInStock: {
       width: 70,

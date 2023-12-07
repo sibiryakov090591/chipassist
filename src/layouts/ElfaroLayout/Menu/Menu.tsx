@@ -26,9 +26,9 @@ const Menu: React.FC<Props> = ({ isMobile, linkClassName }) => {
 
   return (
     <div className={`${classes.container} ${isMobile ? classes.mobile : ""}`}>
-      <a className={linkClassName || classes.link} href={"https://www.elfaro.ee/"}>
+      <a className={linkClassName || classes.link} href={"https://chiponline.tech/"}>
         {isMobile && <HomeIcon className={`${classes.icon}`} />}
-        Elfaro Home
+        Home
       </a>
       {!isMobile && <div className={classes.verticalLine}>|</div>}
       <NavLink className={linkClassName || classes.link} to="/">

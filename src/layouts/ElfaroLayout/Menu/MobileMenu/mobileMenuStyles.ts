@@ -21,11 +21,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       backgroundColor: theme.palette.primary.main,
     },
     logo: {
-      width: 200,
-      marginTop: 10,
+      width: 140,
+      margin: "24px 32px 0",
       [theme.breakpoints.down("sm")]: {
         width: 110,
-        marginTop: 10,
       },
     },
     menuItem: {

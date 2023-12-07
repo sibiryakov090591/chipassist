@@ -290,7 +290,7 @@
     "confirm_order": {
       "title": "Please review and accept your order",
       "sub_title": "You can view, modify and accept your order. If you do not want to accept this order, you can decline it.",
-      "footer": "Your order was prepared by ELFARO OÜ. Having any questions please mail to: "
+      "footer": "Your order was prepared by ChipOnline. Having any questions please mail to: "
     }
   },
     "progress_modal": {

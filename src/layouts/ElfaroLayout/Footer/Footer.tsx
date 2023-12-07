@@ -26,20 +26,20 @@ const Footer: React.FC = () => {
       <div className={classes.container}>
         <Box display="flex">
           <div className={classes.address}>
-            <div className={classes.title}>ELFARO OÜ</div>
-            <address>Vesse poik, 4d, 11415, Tallinn, Estonia</address>
+            <div className={classes.title}>ChipOnline Services</div>
+            <address>24000, Serbia, Subotica, Korzo 1</address>
           </div>
           <div>
             <div className={classes.phone}>
               Phone:{" "}
-              <a className={classes.link} href="tel:+37253011314">
-                +372 5301 1314
+              <a className={classes.link} href="tel:+381621257226">
+                +381 62 1257 226
               </a>
             </div>
             <div>
               Email:{" "}
-              <a className={classes.link} href="mailto:sales@elfaro.ee">
-                sales@elfaro.ee
+              <a className={classes.link} href="mailto:info@chiponline.tech">
+                info@chiponline.tech
               </a>
             </div>
           </div>
