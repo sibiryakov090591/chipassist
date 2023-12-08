@@ -35,6 +35,7 @@ import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import ScrollUpButton from "react-scroll-up-button";
 import LoginAs from "@src/views/chipassist/LoginAs/LoginAs";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
+import Register from "@src/views/chipassist/Register/Register";
 import Product from "./views/elfaro/Product/Product";
 import { checkUserActivityStatus, saveUtm } from "./store/common/commonActions";
 import useAppDispatch from "./hooks/useAppDispatch";
@@ -42,7 +43,6 @@ import Home from "./views/elfaro/Home/Home";
 import Search from "./views/elfaro/Search/Search";
 import ElfaroLayout from "./layouts/ElfaroLayout/ElfaroLayout";
 import Login from "./views/chipassist/Login/Login";
-import HomeRestricted from "./views/chipassist/HomeRestricted/HomeRestricted";
 import AuthModal from "./views/elfaro/AuthModal/AuthModal";
 import Reset from "./views/chipassist/Reset/Reset";
 import Policy from "./views/chipassist/StaticPages/Policy";
@@ -189,7 +189,7 @@ const ElfaroApp = () => {
               path="/auth/registration"
               element={
                 <AuthModal>
-                  <HomeRestricted />
+                  <Register />
                 </AuthModal>
               }
             />
