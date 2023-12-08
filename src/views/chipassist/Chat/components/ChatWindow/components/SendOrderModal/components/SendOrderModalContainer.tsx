@@ -17,6 +17,7 @@ import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/p
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import useCurrency from "@src/hooks/useCurrency";
 
 type FormValues = {
   company_name: string;
@@ -43,11 +44,11 @@ export const SendOrderModalContainer: React.FC<{
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
+  const { currency, currencyPrice } = useCurrency();
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
-  const currencyList = useAppSelector((state) => state.currency.currencyList);
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const billingAddress = profileInfo?.defaultBillingAddress;
@@ -73,7 +74,7 @@ export const SendOrderModalContainer: React.FC<{
     },
   });
 
-  const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
+  // const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
   const quantity = watch("quantity");
   const price = !!stock && !!quantity && getPrice(+quantity, stock as any);
   const totalPrice = !!stock && !!quantity && !!price && quantity * price;
@@ -119,11 +120,12 @@ export const SendOrderModalContainer: React.FC<{
     }
     const orderData = {
       ...data,
-      price,
-      totalPrice,
+      price: currencyPrice(price, stock?.currency),
+      totalPrice: currencyPrice(totalPrice, stock?.currency),
       stockrecord: stock,
       mpn: rfq?.upc || stock?.upc,
       datecode: getStockDataCode(stock),
+      ...(!!currency?.code && { currency: currency.code }),
     };
     return dispatch(sendMessage(selectedChat.id, "''", orderData)).finally(() => setIsSending(false));
   };
@@ -140,18 +142,19 @@ export const SendOrderModalContainer: React.FC<{
         mpn: selectedChat?.title,
         line1: getValues("line1"),
         line4: getValues("line4"),
-        price,
+        price: currencyPrice(price, stock?.currency),
         country: getValues("country"),
         datecode: getStockDataCode(stock),
         postcode: getValues("postcode"),
         last_name: getValues("last_name"),
         first_name: getValues("first_name"),
-        totalPrice,
+        totalPrice: currencyPrice(totalPrice, stock?.currency),
         // stockrecord: stock,
         company_name: getValues("company_name"),
         quantity,
         additional_notes: getValues("additional_notes"),
         phone_number_str: getValues("phone_number_str") && `+${getValues("phone_number_str").replace(/[+]/g, "")}`,
+        ...(!!currency?.code && { currency: currency.code }),
       },
     };
     return dispatch(previewOrderPdf(selectedChat.id, data));
@@ -394,7 +397,9 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Unit price:</div>
-                  <div className={classes.value}>{(price && `${formatMoney(price)}${symbol}`) || "-"}</div>
+                  <div className={classes.value}>
+                    {(price && `${formatMoney(currencyPrice(price, stock.currency))}${currency?.symbol}`) || "-"}
+                  </div>
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Date code (DC):</div>
@@ -447,7 +452,10 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Expected total:</div>
-                  <div className={classes.value}>{(totalPrice && `${formatMoney(totalPrice)}${symbol}`) || "-"}</div>
+                  <div className={classes.value}>
+                    {(totalPrice && `${formatMoney(currencyPrice(totalPrice, stock?.currency))}${currency?.symbol}`) ||
+                      "-"}
+                  </div>
                 </Grid>
               </Grid>
 
