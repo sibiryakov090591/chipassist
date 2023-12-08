@@ -62,4 +62,11 @@ export const sendVerificationCode = (code: string[], email: string) => (dispatch
   });
 };
 
+export const saveTemporaryRfq = (rfq: any): ProgressModalActions => {
+  return {
+    type: actionTypes.SAVE_TEMP_RFQ,
+    payload: rfq,
+  };
+};
+
 export default "ProgressModalTypes";
