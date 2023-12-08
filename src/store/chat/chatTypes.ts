@@ -107,6 +107,7 @@ export interface ChatListItem {
     price: number;
   };
   rfq: {
+    id?: number;
     upc: string;
     quantity: number;
     price: number;

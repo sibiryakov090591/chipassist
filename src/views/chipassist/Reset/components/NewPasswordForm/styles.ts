@@ -77,6 +77,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         },
       },
     },
+    helperPositionBottom: {
+      left: -7,
+      top: "80%",
+      "&:before": {
+        top: -7,
+        left: 25,
+      },
+    },
     helperActive: {
       opacity: 1,
       transform: "translateY(50%)",

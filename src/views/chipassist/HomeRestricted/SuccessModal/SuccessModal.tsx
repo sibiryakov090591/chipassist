@@ -25,9 +25,10 @@ import { useStyles } from "./styles";
 interface Props {
   onCloseModal: () => void;
   type?: "reset" | "register";
+  handler?: any;
 }
 
-const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register" }) => {
+const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register", handler }) => {
   const appTheme = useAppTheme();
   const { t } = useI18n("restricted.success_modal");
   const classes = useStyles();
@@ -66,9 +67,13 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register" }) => {
     if (values.length === 4) {
       dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
         if (codeRes?.code) {
-          navigate(`/password/request/${codeRes?.code}`, {
-            state: { background: location.state?.background || location },
-          });
+          if (handler) {
+            handler(codeRes.code);
+          } else {
+            navigate(`/password/request/${codeRes?.code}`, {
+              state: { background: location.state?.background || location },
+            });
+          }
           onCloseModal();
         } else if (codeRes?.token) {
           dispatch(login({ email }, codeRes?.token, navigate, null));

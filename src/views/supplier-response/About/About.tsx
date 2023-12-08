@@ -135,9 +135,9 @@ export const About = () => {
             </Grid>
             <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
               <h2 className={newClasses.title}>Work with incoming requests in a completely new way</h2>
-              <p>Get all your incoming requests for quotaion (RFQs) streamlined and displayed in a convenient way.</p>
+              <p>Get all your incoming requests for quotation (RFQs) streamlined and displayed in a convenient way.</p>
               <p>
-                See all request sorted by date with the origin country of the request and requested quantity for each
+                See all requests sorted by date with the origin country of the request and requested quantity for each
                 MPN.
               </p>
               <div>
