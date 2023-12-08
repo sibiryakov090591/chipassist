@@ -16,6 +16,7 @@ import { Address } from "@src/store/profile/profileTypes";
 import { loadProfileInfoThunk, updateCompanyAddress } from "@src/store/profile/profileActions";
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import { ChatListStock } from "@src/store/chat/chatTypes";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 
 type FormValues = {
   company_name: string;
@@ -48,7 +49,6 @@ export const SendOrderModalContainer: React.FC<{
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
   const currencyList = useAppSelector((state) => state.currency.currencyList);
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
-
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const billingAddress = profileInfo?.defaultBillingAddress;
 
@@ -474,7 +474,11 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
               </Grid>
 
-              <Box display="flex" justifyContent="flex-end" mt="16px">
+              <Box display="flex" justifyContent="space-between" alignItems="center" mt="16px">
+                <Box display="flex" alignItems="center">
+                  <h3 style={{ margin: "0 12px 0 0" }}>Order currency:</h3>
+                  <FilterCurrency className={classes.currencyButton} />
+                </Box>
                 <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
                   Preview PDF
                 </span>
