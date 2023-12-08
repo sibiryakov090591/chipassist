@@ -133,11 +133,11 @@ const Statistics: React.FC = () => {
   };
 
   return (
-    <Page title={"Statistic"} description={"Statistic of supplier responses"}>
+    <Page title={"Statistic"} description={"Statistics of supplier responses"}>
       <section className={classes.section}>
         <Container maxWidth="xl">
           <Box display="flex" flexDirection="column" alignItems="flex-start">
-            <h1 className={requestsClasses.title}>Statistic of your responses</h1>
+            <h1 className={requestsClasses.title}>Statistics of your responses</h1>
             <SupplierSelect />
           </Box>
           {isAuthenticated && selectedPartner === false && (
@@ -192,7 +192,7 @@ const Statistics: React.FC = () => {
             <div className={classes.empty}>You have not responded to any requests yet</div>
           )}
           {isSmDown && !isLoading && !!Object.keys(groups).length && (
-            <div className={classes.empty}>Statistics are available only in the desktop version</div>
+            <div className={classes.empty}>The statistics are available only on the desktop version</div>
           )}
 
           {!isSmDown && isAuthenticated && !isLoading && !!Object.keys(groups).length && (
