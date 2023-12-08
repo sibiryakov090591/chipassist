@@ -51,6 +51,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
         <TableCell>{item.quantity ? formatMoney(item.quantity, 0) : "-"}</TableCell>
         <TableCell>{item.num_in_stock ? formatMoney(item.num_in_stock, 0) : "-"}</TableCell>
         <TableCell>{item.manufacturer_name || "-"}</TableCell>
+        <TableCell>{item.datecode || "-"}</TableCell>
         <TableCell>
           <div className={classes.repliedData}>
             {date ? (
