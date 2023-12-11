@@ -40,10 +40,10 @@ const MobileMenu: React.FC<Props> = ({ logo }) => {
             </div>
             <div style={{ padding: 20 }}>
               <div className={classes.link}>
-                <a href="mailto:sales@elfaro.ee">sales@elfaro.ee</a>
+                <a href="mailto:info@chiponline.tech">info@chiponline.tech</a>
               </div>
               <div className={classes.link}>
-                <a href="tel:+37259007750">+372 5900 7750</a>
+                <a href="tel:+381621257226">+381 62 1257 226</a>
               </div>
             </div>
           </Box>

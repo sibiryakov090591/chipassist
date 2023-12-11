@@ -59,7 +59,7 @@ const Pcb = () => {
         </Grid>
 
         <p className={classes.paragraph}>
-          <span className={classes.name}>Elfaro OÜ</span> is a technology partner of{" "}
+          <span className={classes.name}>ChipOnline</span> is a technology partner of{" "}
           <span className={classes.name}>ChipAssist</span>, a global ecosystem of electronic components and services
           providers.
           <br />

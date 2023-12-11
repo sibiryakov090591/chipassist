@@ -172,7 +172,7 @@ export const useStyles = makeStyles((theme) => ({
   quickOrderButton: {
     display: "flex",
     alignItems: "flex-end",
-    marginRight: 5,
+    marginTop: 5,
     "& > button": {
       whiteSpace: "nowrap",
       textTransform: "inherit",
