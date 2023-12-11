@@ -12,7 +12,7 @@ const Pcb = () => {
   const appTheme = useAppTheme();
 
   return (
-    <Page title="Printed Circuit Boards" description="Elfaro - search and order electronic components">
+    <Page title="Printed Circuit Boards" description="ChipOnline - search and order electronic components">
       <Container maxWidth="lg">
         <h1 className={classes.title}>Order your next PCB online</h1>
         <h2 className={classes.subTitle}>

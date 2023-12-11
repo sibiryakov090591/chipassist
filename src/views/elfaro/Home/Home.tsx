@@ -14,8 +14,8 @@ const Home: React.FC = () => {
 
   return (
     <Page
-      title="Elfaro - search and order electronic components"
-      description="Elfaro - search and order electronic components"
+      title="ChipOnline - search and order electronic components"
+      description="ChipOnline - search and order electronic components"
     >
       <Container maxWidth="xl">
         <h1 className={classes.title}>Instant search for more than 2,000,000+ components</h1>
