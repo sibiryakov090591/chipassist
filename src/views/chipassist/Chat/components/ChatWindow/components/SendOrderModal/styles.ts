@@ -52,6 +52,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "100%",
       },
     },
+    currencyButton: {
+      color: "#456",
+      fontSize: 14,
+      border: "1px solid #d4d4d4",
+    },
   }),
 );
 

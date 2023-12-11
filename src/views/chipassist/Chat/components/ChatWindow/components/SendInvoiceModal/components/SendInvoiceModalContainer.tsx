@@ -21,6 +21,8 @@ import {
   updateProfileInfoThunk,
 } from "@src/store/profile/profileActions";
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import useCurrency from "@src/hooks/useCurrency";
 
 type FormValues = {
   company_name: string;
@@ -48,11 +50,11 @@ export const SendInvoiceModalContainer: React.FC<{
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
+  const { currency, currencyPrice } = useCurrency();
 
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
-  const currencyList = useAppSelector((state) => state.currency.currencyList);
   const rfq = useAppSelector((state) => state.chat.selectedChat?.rfq);
 
   const { profileInfo, partnerProfile, selectedPartner } = useAppSelector((state) => state.profile);
@@ -83,9 +85,8 @@ export const SendInvoiceModalContainer: React.FC<{
   });
 
   const shippingFee = watch("shipping_fee");
-  const currency = currencyList.find((curr) => curr.code === stock?.currency)?.code;
   const quantity = purchaseOrder?.quantity || purchaseOrder?.requested_qty || rfq?.quantity || 0;
-  const unitPrice = !!stock && !!quantity && getPrice(+quantity, stock as any);
+  const unitPrice = !!stock && !!quantity && currencyPrice(getPrice(+quantity, stock as any), stock?.currency);
   const outPrice = !!unitPrice && quantity * unitPrice;
   const totalPrice = !!outPrice && outPrice + Number(shippingFee || 0);
 
@@ -170,6 +171,7 @@ export const SendInvoiceModalContainer: React.FC<{
         mpn: rfq?.upc || stock?.upc,
         datecode: getStockDataCode(stock),
         purchase_order: purchaseOrder,
+        ...(!!currency?.code && { currency: currency.code }),
       };
       return dispatch(sendMessage(selectedChat.id, "''", orderData, "invoice")).finally(() => setIsSending(false));
     }
@@ -202,6 +204,7 @@ export const SendInvoiceModalContainer: React.FC<{
         phone_number_str: getValues("phone") && `+${getValues("phone").replace(/[+]/g, "")}`,
         shipping_notes: getValues("shipping_notes"),
         shipping_fee: getValues("shipping_fee"),
+        ...(!!currency?.code && { currency: currency.code }),
       },
     };
     return dispatch(previewOrderPdf(selectedChat.id, data));
@@ -459,11 +462,11 @@ export const SendInvoiceModalContainer: React.FC<{
                   </Box>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>{`Unit price (${currency}):`}</div>
+                  <div className={classes.label}>{`Unit price (${currency?.code}):`}</div>
                   <div className={classes.value}>{(unitPrice && formatMoney(unitPrice)) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>{`Out price (${currency}):`}</div>
+                  <div className={classes.label}>{`Out price (${currency?.code}):`}</div>
                   <div className={classes.value}>{(outPrice && formatMoney(outPrice)) || "-"}</div>
                 </Grid>
               </Grid>
@@ -494,7 +497,7 @@ export const SendInvoiceModalContainer: React.FC<{
                 </Grid>
                 <Grid item sm={6} xs={12}>
                   <Box>
-                    <div className={classes.label}>{`Shipping cost (${currency}): *`}</div>
+                    <div className={classes.label}>{`Shipping cost (${currency?.code}): *`}</div>
                     <Controller
                       name="shipping_fee"
                       control={control}
@@ -549,12 +552,16 @@ export const SendInvoiceModalContainer: React.FC<{
 
               <h3>
                 <Box display="flex" justifyContent="space-between">
-                  <span>{`Total Amount Payable (${currency}):`}</span>
+                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
                   <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
                 </Box>
               </h3>
 
-              <Box display="flex" justifyContent="flex-end">
+              <Box display="flex" justifyContent="space-between" alignItems="center" mt="16px">
+                <Box display="flex" alignItems="center">
+                  <h3 style={{ margin: "0 12px 0 0" }}>Order currency:</h3>
+                  <FilterCurrency className={classes.currencyButton} />
+                </Box>
                 <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
                   Preview PDF
                 </span>
