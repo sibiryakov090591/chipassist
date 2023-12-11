@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
   const logoLink = (
     <div className={classes.logoContainer}>
       <NavLink to={"/"} style={{ color: "#ffffff" }}>
-        <img src={logo_img} className={classes.logo} alt="ELFARO Logo"></img>
+        <img src={logo_img} className={classes.logo} alt="ChipOnline logo"></img>
       </NavLink>
     </div>
   );

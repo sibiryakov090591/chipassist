@@ -170,8 +170,8 @@ const Product = () => {
 
   return (
     <Page
-      title={`Elfaro - ${productData?.upc || "search and order electronic components"}`}
-      description={`Elfaro - ${productData?.upc || "search and order electronic components"}`}
+      title={`ChipOnline - ${productData?.upc || "search and order electronic components"}`}
+      description={`ChipOnline - ${productData?.upc || "search and order electronic components"}`}
     >
       <Container maxWidth="xl">
         {loading && (
