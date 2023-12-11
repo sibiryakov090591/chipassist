@@ -222,6 +222,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         },
       },
     },
+    orderTableHeader: {
+      backgroundColor: "#345",
+    },
+    nowrap: {
+      whiteSpace: "nowrap",
+    },
     orderPdfLink: {
       display: "flex",
       justifyContent: "flex-end",
