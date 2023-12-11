@@ -76,7 +76,7 @@ export const SendOrderModalContainer: React.FC<{
 
   // const symbol = currencyList.find((curr) => curr.code === stock?.currency)?.symbol;
   const quantity = watch("quantity");
-  const price = !!stock && !!quantity && getPrice(+quantity, stock as any);
+  const price = !!stock && !!quantity && currencyPrice(getPrice(+quantity, stock as any), stock?.currency);
   const totalPrice = !!stock && !!quantity && !!price && quantity * price;
 
   const [step, setStep] = useState(1);
@@ -120,8 +120,8 @@ export const SendOrderModalContainer: React.FC<{
     }
     const orderData = {
       ...data,
-      price: currencyPrice(price, stock?.currency),
-      totalPrice: currencyPrice(totalPrice, stock?.currency),
+      price,
+      totalPrice,
       stockrecord: stock,
       mpn: rfq?.upc || stock?.upc,
       datecode: getStockDataCode(stock),
@@ -142,13 +142,13 @@ export const SendOrderModalContainer: React.FC<{
         mpn: selectedChat?.title,
         line1: getValues("line1"),
         line4: getValues("line4"),
-        price: currencyPrice(price, stock?.currency),
+        price,
         country: getValues("country"),
         datecode: getStockDataCode(stock),
         postcode: getValues("postcode"),
         last_name: getValues("last_name"),
         first_name: getValues("first_name"),
-        totalPrice: currencyPrice(totalPrice, stock?.currency),
+        totalPrice,
         // stockrecord: stock,
         company_name: getValues("company_name"),
         quantity,
@@ -397,9 +397,7 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Unit price:</div>
-                  <div className={classes.value}>
-                    {(price && `${formatMoney(currencyPrice(price, stock.currency))}${currency?.symbol}`) || "-"}
-                  </div>
+                  <div className={classes.value}>{(price && `${currency?.symbol}${formatMoney(price)}`) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
                   <div className={classes.label}>Date code (DC):</div>
@@ -453,8 +451,7 @@ export const SendOrderModalContainer: React.FC<{
                 <Grid item xs={6}>
                   <div className={classes.label}>Expected total:</div>
                   <div className={classes.value}>
-                    {(totalPrice && `${formatMoney(currencyPrice(totalPrice, stock?.currency))}${currency?.symbol}`) ||
-                      "-"}
+                    {(totalPrice && `${currency?.symbol}${formatMoney(totalPrice)}`) || "-"}
                   </div>
                 </Grid>
               </Grid>

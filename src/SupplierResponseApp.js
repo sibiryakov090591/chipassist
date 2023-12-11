@@ -43,6 +43,8 @@ import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import Profile from "@src/views/supplier-response/Profile/Profile";
 import Adapter from "@src/views/supplier-response/Adapter/Adapter";
 import About from "@src/views/supplier-response/About/About";
+import { getInitialCurrency } from "@src/utils/getInitials";
+import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
 
@@ -65,8 +67,7 @@ const SupplierResponseApp = () => {
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
 
-  // const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
-  const selectedCurrency = "USD";
+  const selectedCurrency = getInitialCurrency(useURLSearchParams("currency", false, null, false));
 
   useEffect(() => {
     // update old site version
