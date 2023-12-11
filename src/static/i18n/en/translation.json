@@ -340,7 +340,6 @@
     "page_description": "The BOM Tool makes it easy to upload a list of electronics components and compare distributor prices, saving both money and time. Publish a bill of materials right now for free.",
     "bom_list": "Processed BOMs",
     "no_saved_bom_lists": "You have no saved BOM-lists. ",
-    "you_can": "",
     "import": "Import it",
     "list_from_file": " from CSV/XLS.",
     "bom_create": "Create BOM",
@@ -1352,7 +1351,6 @@
     "404_title": "This page does not exist",
     "404_description": "We can't find the page you are looking for but you can find something useful clicking the links below.",
     "401_title": "401: We are sorry but we are not able to authenticate you.",
-    "401_description": "",
     "register_title": "It looks like this link has expired or it has already been used",
     "register_description": "Please mind that account and request confirmation links are valid for 24 hours"
   },

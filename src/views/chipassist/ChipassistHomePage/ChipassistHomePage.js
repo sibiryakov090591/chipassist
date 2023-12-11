@@ -31,6 +31,7 @@ import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import ReplyIcon from "@material-ui/icons/Reply";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
+import LangMenu from "@src/layouts/HomePage/components/TopBar/components/LangMenu/LangMenu";
 import { useStyles } from "./styles";
 
 const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
@@ -123,6 +124,7 @@ export const ChipassistHomePage = () => {
                     <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
                       {t("menu.blog")}
                     </NavLink>
+                    <LangMenu />
                   </Box>
                   <Box display="flex" alignItems="center">
                     {!isAuthenticated ? (

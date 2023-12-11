@@ -26,6 +26,7 @@ import { showHint } from "@src/store/rfqList/rfqListActions";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import { triggerReloadPage } from "@src/store/chat/chatActions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import LangMenu from "@src/layouts/HomePage/components/TopBar/components/LangMenu/LangMenu";
 import { useStyles } from "./topMenuStyles";
 
 const HtmlTooltip = withStyles(() => ({
@@ -226,6 +227,7 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       )}
+      <LangMenu />
       {isMobile && isAuthenticated && (
         <div className={itemClasses}>
           <NavLink className={`${classes.topMenuItemLink} top-menu-logout`} to={`/logout`} onClick={logoutHandler}>

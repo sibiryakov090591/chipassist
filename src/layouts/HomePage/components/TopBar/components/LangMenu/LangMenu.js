@@ -6,11 +6,14 @@ import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuList from "@material-ui/core/MenuList";
-import LanguageIcon from "@material-ui/icons/Language";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import flag_ru from "@src/images/lang_ru.svg";
 import flag_en from "@src/images/lang_en.svg";
-import { locales, showNewStyles } from "@src/constants/defaults";
+import flag_de from "@src/images/lang_de.svg";
+import flag_es from "@src/images/lang_es.svg";
+import flag_zh from "@src/images/lang_zh.svg";
+import flag_fr from "@src/images/lang_fr.svg";
+import { locales } from "@src/constants/defaults";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import { shouldUpdateBackend } from "@src/store/common/commonActions";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -38,6 +41,25 @@ const LangMenu = () => {
     setOpen(false);
   };
 
+  const CurrentImage = () => {
+    switch (i18n.language) {
+      case "en":
+        return <img className={classes.langFlag} src={flag_en} alt="flag_en" />;
+      case "ru":
+        return <img className={classes.langFlag} src={flag_ru} alt="flag_ru" />;
+      case "es":
+        return <img className={classes.langFlag} src={flag_es} alt="flag_es" />;
+      case "fr":
+        return <img className={classes.langFlag} src={flag_fr} alt="flag_fr" />;
+      case "de":
+        return <img className={classes.langFlag} src={flag_de} alt="flag_de" />;
+      case "ch":
+        return <img className={classes.langFlag} src={flag_zh} alt="flag_zh" />;
+      default:
+        return <img className={classes.langFlag} src={flag_en} alt="flag_en" />;
+    }
+  };
+
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
       event.preventDefault();
@@ -57,33 +79,19 @@ const LangMenu = () => {
 
   return (
     <div className={classes.langBlock}>
-      {showNewStyles ? (
+      {
         <div
           style={{ display: "flex", alignItems: "center", height: "100%", cursor: "pointer" }}
           onClick={handleToggle}
         >
           <div ref={anchorRef} aria-haspopup="true">
             <div style={{ display: "flex", alignItems: "center" }}>
-              {i18n.language === "en" ? (
-                <img className={classes.langFlag} src={flag_en} alt="flag_en" />
-              ) : (
-                <img className={classes.langFlag} src={flag_ru} alt="flag_en" />
-              )}
+              <CurrentImage />
               <ArrowDropDownIcon />
             </div>
           </div>
         </div>
-      ) : (
-        <div style={{ cursor: "pointer" }}>
-          <div ref={anchorRef} aria-haspopup="true" onClick={handleToggle}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {i18n.language}
-              <ArrowDropDownIcon />
-            </div>
-            <LanguageIcon className={classes.langIcon} />
-          </div>
-        </div>
-      )}
+      }
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -103,6 +111,7 @@ const LangMenu = () => {
                   id="lang-list"
                   onKeyDown={handleListKeyDown}
                   onClick={handleClose}
+                  defaultValue={i18n.language}
                 >
                   {locales.map((val) => (
                     <MenuItem className={appTheme.selectMenuItem} key={val} onClick={() => handleChangeLocale(val)}>
