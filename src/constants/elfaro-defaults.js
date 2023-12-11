@@ -1,5 +1,5 @@
 const defaults = {
-  title: "Elfaro",
+  title: "ChipOnline",
   id: "elfaro",
   apiPath: "/api",
   apiHost: "api.chipassist.com", // "api.elfaro.ee",
