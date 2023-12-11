@@ -139,8 +139,8 @@ const Search: React.FC = () => {
 
   return (
     <Page
-      title="Elfaro - search and order electronic components"
-      description="Elfaro - search and order electronic components"
+      title="ChipOnline - search and order electronic components"
+      description="ChipOnline - search and order electronic components"
     >
       <Container maxWidth="xl">
         <div>

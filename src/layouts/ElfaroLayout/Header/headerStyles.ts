@@ -21,11 +21,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   logoContainer: {
-    minWidth: "220px",
-    width: "220px",
+    minWidth: "160px",
+    width: "160px",
+    margin: "0 20px",
     [theme.breakpoints.down("xs")]: {
       minWidth: "160px",
       width: "160px",
+      margin: "0",
     },
   },
   logo: {
@@ -66,8 +68,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   searchIconButton: {
     height: "41px",
-    background: theme.palette.app.green800,
-    border: `1px solid ${theme.palette.app.green800}`,
+    background: theme.palette.secondary.main,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
 }));
 

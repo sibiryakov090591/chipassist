@@ -60,7 +60,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     paddingLeft: 5,
   },
   tryPn: {
-    color: "#1cebc4",
+    color: theme.palette.secondary.main,
     fontWeight: 700,
     paddingLeft: "7px",
     "&:hover": {

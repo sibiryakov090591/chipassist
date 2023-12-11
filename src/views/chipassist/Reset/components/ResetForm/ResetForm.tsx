@@ -40,8 +40,8 @@ interface FormState {
   loginError: string | null;
 }
 
-const ResetForm = (props: { className: string }) => {
-  const { className, ...rest } = props;
+const ResetForm = (props: { className: string; handler?: any }) => {
+  const { className, handler, ...rest } = props;
   const status = useAppSelector((state) => state.profile.resetPasswordRequest);
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -168,7 +168,7 @@ const ResetForm = (props: { className: string }) => {
         )}
       </form>
 
-      {successModalOpen && <SuccessModal onCloseModal={onCloseModal} type="reset" />}
+      {successModalOpen && <SuccessModal onCloseModal={onCloseModal} type="reset" handler={handler} />}
     </>
   );
 };

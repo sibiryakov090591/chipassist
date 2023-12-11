@@ -13,6 +13,7 @@ const initialState: actionTypes.ProgressModalState = {
   errorMessage: "",
   partNumber: localStorageData?.partNumber || "",
   requestType: localStorageData?.requestType || null,
+  tempRfq: null,
 };
 
 export default function progressModalReducer(state = initialState, action: actionTypes.ProgressModalActions) {
@@ -32,6 +33,8 @@ export default function progressModalReducer(state = initialState, action: actio
     case actionTypes.PROGRESS_MODAL_CLOSE:
       return { ...state, open: false };
 
+    case actionTypes.SAVE_TEMP_RFQ:
+      return { ...state, tempRfq: action.payload };
     default:
       return state;
   }
