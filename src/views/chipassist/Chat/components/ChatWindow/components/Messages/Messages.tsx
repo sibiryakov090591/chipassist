@@ -406,8 +406,12 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <th>MPN</th>
                                         <th>DC</th>
                                         <th>{isXsDown ? "Qty" : "Quantity"}</th>
-                                        <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
-                                        <th>{isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}</th>
+                                        <th className={classes.nowrap}>
+                                          {isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}
+                                        </th>
+                                        <th className={classes.nowrap}>
+                                          {isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}
+                                        </th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -494,12 +498,16 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                 <div className={classes.orderTableWrapper}>
                                   <table className={classes.orderTable}>
                                     <thead>
-                                      <tr style={{ backgroundColor: "#345" }}>
+                                      <tr className={classes.orderTableHeader}>
                                         <th>MPN</th>
                                         <th>DC</th>
                                         <th>{isXsDown ? "Qty" : "Quantity"}</th>
-                                        <th>{isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}</th>
-                                        <th>{`Out Price, ${symbol}`}</th>
+                                        <th className={classes.nowrap}>
+                                          {isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}
+                                        </th>
+                                        <th>
+                                          Out <span className={classes.nowrap}>Price, {symbol}</span>
+                                        </th>
                                       </tr>
                                     </thead>
                                     <tbody>

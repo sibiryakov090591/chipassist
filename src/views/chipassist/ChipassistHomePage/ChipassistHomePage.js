@@ -481,7 +481,10 @@ export const ChipassistHomePage = () => {
             <Grid container spacing={3}>
               <Grid item md={7} xs={12}>
                 <h2 className={classes.title}>
-                  Get your next <span className={classes.redColor}>PCB with us</span>
+                  Get your next{" "}
+                  <span className={classes.redColor}>
+                    PCB <span style={{ whiteSpace: "nowrap" }}>with us</span>
+                  </span>
                 </h2>
                 <p className={classes.pcbText}>
                   Just upload your Gerber files and engage with 50+ PCB suppliers to get the best offering in 48 hours.

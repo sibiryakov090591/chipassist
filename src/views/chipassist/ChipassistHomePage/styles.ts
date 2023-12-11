@@ -258,7 +258,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   trySpan: {
     color: "#234",
-    textDecoration: "underline",
+    borderBottom: "1px solid #234",
     marginLeft: "7px",
     cursor: "pointer",
   },
