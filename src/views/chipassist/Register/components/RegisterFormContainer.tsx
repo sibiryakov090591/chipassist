@@ -61,7 +61,7 @@ const RegisterFormContainer: React.FC<{ isExample?: boolean }> = ({ isExample })
         {constants.id === ID_ELFARO ? (
           <>
             <a target="_blank" rel="noreferrer" href="https://chiponline.tech/">
-              <img className={classes.logo} src={chiponline} alt="ChipOnline" />
+              <img style={{ marginBottom: 0 }} className={classes.logo} src={chiponline} alt="ChipOnline" />
             </a>
           </>
         ) : (

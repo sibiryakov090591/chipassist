@@ -88,6 +88,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     logo: {
       height: 42,
+      marginBottom: 15,
     },
   }),
 );

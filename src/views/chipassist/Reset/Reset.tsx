@@ -100,7 +100,12 @@ const Reset = () => {
             {constants.id === ID_ELFARO ? (
               <>
                 <a target="_blank" rel="noreferrer" href="https://chiponline.tech/">
-                  <img className={loginClasses.logo} src={chiponline} alt="ChipOnline logo" />
+                  <img
+                    style={{ marginBottom: 0 }}
+                    className={loginClasses.logo}
+                    src={chiponline}
+                    alt="ChipOnline logo"
+                  />
                 </a>
               </>
             ) : (
