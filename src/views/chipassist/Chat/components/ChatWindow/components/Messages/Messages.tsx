@@ -334,7 +334,12 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                   const symbol =
                     (orderData || invoiceData) &&
                     currencyList.find(
-                      (curr) => curr.code === (orderData?.stockrecord?.currency || invoiceData?.stockrecord?.currency),
+                      (curr) =>
+                        curr.code ===
+                        (orderData?.currency ||
+                          orderData?.stockrecord?.currency ||
+                          invoiceData?.currency ||
+                          invoiceData?.stockrecord?.currency),
                     )?.symbol;
 
                   return (
