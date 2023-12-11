@@ -26,7 +26,6 @@ import { Hidden, Tooltip } from "@material-ui/core";
 import InfoIcon from "@src/components/Icons/InfoIcon";
 import { Link } from "react-router-dom";
 import useAppSelector from "@src/hooks/useAppSelector";
-import StatusTooltip from "@src/components/ProductCard/components/StatusTooltip";
 import { ID_ELFARO, ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./distributorsDesktopStyles";
@@ -117,8 +116,6 @@ const DistributorsDesktop: React.FC<Props> = ({
             <th className={classes.th1000}>{formatMoney(1000, 0, ".", "`")}</th>
             <th className={classes.th10000}>{formatMoney(10000, 0, ".", "`")}</th>
           </Hidden>
-
-          <th className={classes.thUpdated}>{t("distributor.status")}</th>
           {constants.id === ID_ICSEARCH && (
             <th className={classes.thDistributorICsearch}>{t("distributor.distributor")}</th>
           )}
@@ -388,11 +385,6 @@ const DistributorsDesktop: React.FC<Props> = ({
                       </Hidden>
                     </React.Fragment>
                   )}
-                  {/* <td className={classes.trUpdated}>{dateLag}</td> */}
-                  <td className={classes.trUpdated}>
-                    {isAvaible ? <StatusTooltip status="online" /> : <StatusTooltip status="rfq" />}
-                    {val.show_date_updated && <div className={classes.dateUpdated}>{val.show_date_updated}</div>}
-                  </td>
                   {constants.id === ID_ICSEARCH && (
                     <td className={`${classes.trDistributorICsearch} product-seller`}>{val.partner_name}</td>
                   )}

@@ -388,7 +388,6 @@ const ProductCard = (props) => {
           )}
           {viewType === ID_ELFARO && (
             <div className={classes.elfaroActions}>
-              <div className={classes.quickOrderButton}>{quickOrderButton}</div>
               <div>
                 <div style={{ position: "relative" }}>
                   {!!elfaroQtyError && (
@@ -421,7 +420,14 @@ const ProductCard = (props) => {
                     isAllowedZero={false}
                   />
                 </div>
-                {isCartEnabled && addToCartButton({ marginTop: 5, marginLeft: 0, width: "100%" })}
+                {isCartEnabled &&
+                sortedStockrecords &&
+                sortedStockrecords[0] &&
+                sortedStockrecords[0].prices.some((i) => !!i.price) ? (
+                  addToCartButton({ marginTop: 5, marginLeft: 0, width: "100%" })
+                ) : (
+                  <div className={classes.quickOrderButton}>{quickOrderButton}</div>
+                )}
               </div>
             </div>
           )}

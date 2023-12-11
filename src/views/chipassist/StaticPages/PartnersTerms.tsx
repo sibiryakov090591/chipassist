@@ -30,7 +30,7 @@ const PartnersTerms = () => {
         </li>
         <li>Service Provider - ChipAssist AG or its Authorised Partner.</li>
         <li>
-          Authorised Partner - ELFARO OÜ, Estonia, performing purchasing of Components (materials), issuing invoices,
+          Authorised Partner - ChipOnline, Serbia, performing purchasing of Components (materials), issuing invoices,
           and providing logistics services.
         </li>
         <li>

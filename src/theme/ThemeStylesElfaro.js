@@ -235,7 +235,7 @@ const themeStylesElfaro = makeStyles((theme) => ({
     },
   },
   trTh: {
-    backgroundColor: theme.palette.app.blue800,
+    backgroundColor: theme.palette.primary.main,
     "& > th": {
       padding: "6px 16px",
     },

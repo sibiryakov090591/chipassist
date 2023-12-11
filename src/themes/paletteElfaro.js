@@ -9,13 +9,13 @@ export default {
   primary: {
     contrastText: white,
     dark: "#0D52A1",
-    main: "#2a82a7",
+    main: "#41424C",
     light: "#0074BC",
   },
   secondary: {
     contrastText: white,
     dark: "#7CAEDE",
-    main: "#ACD4EF",
+    main: "#00C6C3",
     light: "#F1F8FF",
   },
   error: {
@@ -38,7 +38,7 @@ export default {
   filtersButton: {
     background: "rgb(0, 59, 93)",
   },
-  tableHeader: "#3F7CAC",
+  tableHeader: "#41424C",
   tableEvenRow: "#f7f7f7",
   divider: colors.grey[200],
   colors,
@@ -58,8 +58,8 @@ export default {
   },
 
   app: {
-    green800: "#16be9f",
-    green700: "#21c483",
+    green800: "#00C6C3",
+    green700: "#12d2cf",
     green600: "#25DE94",
     green500: "#29F6A4",
     green400: "#93F9CE",

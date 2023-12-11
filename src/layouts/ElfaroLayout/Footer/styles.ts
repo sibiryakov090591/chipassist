@@ -20,6 +20,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignItems: "center",
     color: "#ffffff",
   },
+  logoContainer: {
+    minWidth: "160px",
+    width: "160px",
+  },
+  logo: {
+    width: "100%",
+    display: "block",
+  },
   title: {
     marginBottom: 5,
     fontWeight: "bold",

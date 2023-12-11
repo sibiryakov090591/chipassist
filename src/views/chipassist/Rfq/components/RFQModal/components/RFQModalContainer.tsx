@@ -1,6 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
-import { Box, Hidden } from "@material-ui/core";
+import { Box, Divider, Hidden, Link } from "@material-ui/core";
 import logo from "@src/images/logo/on_red.png";
 import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
 import RFQForm from "@src/views/chipassist/Rfq/components/RFQForm/RFQForm";
@@ -19,6 +19,9 @@ import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { batch } from "react-redux";
 import { clearRfqItem, rfqModalClose } from "@src/store/rfq/rfqActions";
+import { Link as RouterLink } from "react-router-dom";
+import ResetForm from "@src/views/chipassist/Reset/components/ResetForm/ResetForm";
+import NewPasswordForm from "@src/views/chipassist/Reset/components/NewPasswordForm/NewPasswordForm";
 
 export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boolean; isExample?: boolean }> = ({
   isAuth,
@@ -42,6 +45,8 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
   const partNumber = rfqItem.prevPartNumber || rfqItem.partNumber || "00000000000000";
 
   const [showLoginForm, setShowLoginForm] = React.useState(isLoginForm);
+  const [showResetForm, setShowResetForm] = React.useState(false);
+  const [resetPasswordToken, setResetPasswordToken] = React.useState("");
 
   React.useEffect(() => {
     if (((isAuthenticated && showLoginForm) || rfqModalOpen) && !isExample) setShowLoginForm(false);
@@ -58,6 +63,24 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
 
   const showSignIn = (open: boolean) => () => {
     setShowLoginForm(open);
+    setShowResetForm(false);
+  };
+
+  const showReset = (open: boolean) => (e: any) => {
+    e.preventDefault();
+    setShowResetForm(open);
+  };
+
+  const resetHandler = (resetToken: string) => {
+    setResetPasswordToken(resetToken);
+  };
+
+  const newPasswordHandler = () => {
+    batch(() => {
+      setShowLoginForm(false);
+      setShowResetForm(false);
+      setResetPasswordToken("");
+    });
   };
 
   return (
@@ -131,11 +154,33 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
             </div>
           </Hidden>
         )}
-        {showLoginForm ? (
+        {showLoginForm && !showResetForm && (
           <Box m="13px">
             <LoginForm className={null} isExample={isExample} />
+            <Divider style={{ margin: "16px 0" }} />
+            <Link
+              align="center"
+              component={RouterLink}
+              onClick={showReset(true)}
+              to={null}
+              underline="always"
+              variant="subtitle2"
+              className={appTheme.hyperlink}
+            >
+              {t("login.forgot_password")}
+            </Link>
           </Box>
-        ) : (
+        )}
+        {showResetForm && (
+          <Box m="13px">
+            {resetPasswordToken ? (
+              <NewPasswordForm token={resetPasswordToken} className={null} handler={newPasswordHandler} />
+            ) : (
+              <ResetForm className={null} handler={resetHandler} />
+            )}
+          </Box>
+        )}
+        {!showLoginForm && !showResetForm && (
           <RFQForm onCloseModalHandler={handleClose} isExample={isExample} isAuth={isAuth} />
         )}
       </div>

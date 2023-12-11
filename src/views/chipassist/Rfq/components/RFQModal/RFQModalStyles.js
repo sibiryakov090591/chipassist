@@ -35,6 +35,7 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       overflowY: "auto",
       padding: 12,
+      minWidth: 430,
     },
     [theme.breakpoints.down("xs")]: {
       display: "flex",
