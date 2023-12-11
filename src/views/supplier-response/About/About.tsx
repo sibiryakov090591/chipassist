@@ -33,6 +33,7 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontWeight: 400,
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
+      paddingTop: 0,
     },
   },
   button: {
@@ -67,25 +68,14 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
     alignSelf: "center",
     paddingTop: "6em",
     textAlign: "left",
+    [theme.breakpoints.down("sm") && theme.breakpoints.up("xs")]: {
+      paddingTop: "6rem!important",
+    },
     [theme.breakpoints.down("xs")]: {
-      paddingTop: 0,
+      paddingTop: "0!important",
     },
   },
 }));
-
-// export function useOnScreen(ref: RefObject<HTMLElement>) {
-//   const [isIntersecting, setIntersecting] = useState(false);
-//
-//   const observer = useMemo(() => new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting)), [ref]);
-//
-//   useEffect(() => {
-//     observer.observe(ref.current);
-//
-//     return () => observer.disconnect();
-//   }, []);
-//
-//   return isIntersecting;
-// }
 
 export const About = () => {
   const classes = useStyles();
@@ -297,7 +287,7 @@ export const About = () => {
             <Grid item sm={5} style={{ paddingTop: "6em", paddingBottom: isDownSm ? null : "6em" }}>
               <img className={classes.img} style={{ boxShadow: "none" }} src={invoices_image} alt="invoices image" />
             </Grid>
-            <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
+            <Grid item sm={6} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
               <h2 className={newClasses.title}>Easily create and exchange Purchase Orders and Invoices</h2>
               <p>Receive approved Purchase Orders (POs) from your custommers with all necessary details.</p>
               <p>Generate, preview and send Payment Invoices to your customers just in several clicks.</p>
