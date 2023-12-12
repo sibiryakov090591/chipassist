@@ -3,16 +3,14 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Card, CardContent, CardMedia, Typography, Divider, Link } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAddOutlined";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-
 import useAppTheme from "@src/theme/useAppTheme";
 import { title } from "@src/constants/defaults";
 import constants from "@src/constants/constants";
 import { ID_ELFARO, ID_ICSEARCH } from "@src/constants/server_constants";
-
-import logo from "@src/images/logos/en/logo_darkback.png";
-import chiponline from "@src/images/logos/elfaro/logo_darkback.png";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import { useStyles } from "../../Login/styles";
+
+const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 const RegisterFormContainer: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const classes = useStyles();
@@ -61,12 +59,15 @@ const RegisterFormContainer: React.FC<{ isExample?: boolean }> = ({ isExample })
         {constants.id === ID_ELFARO ? (
           <>
             <a target="_blank" rel="noreferrer" href="https://chiponline.tech/">
-              <img style={{ marginBottom: 0 }} className={classes.logo} src={chiponline} alt="ChipOnline" />
+              <img style={{ height: 28 }} className={classes.logo} src={logo_img} alt="ChipOnline" />
             </a>
+            <Typography color="inherit" variant="subtitle1">
+              {t("cover_text", { title })}
+            </Typography>
           </>
         ) : (
           <>
-            {constants.id !== ID_ICSEARCH && <img className={classes.logo} src={logo} alt="Chipassist logo" />}
+            {constants.id !== ID_ICSEARCH && <img className={classes.logo} src={logo_img} alt="Chipassist logo" />}
             <Typography color="inherit" variant="subtitle1">
               {t("cover_text", { title })}
             </Typography>

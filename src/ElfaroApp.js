@@ -36,17 +36,18 @@ import ScrollUpButton from "react-scroll-up-button";
 import LoginAs from "@src/views/chipassist/LoginAs/LoginAs";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import Register from "@src/views/chipassist/Register/Register";
+import { getAllSellers } from "@src/store/sellers/sellersActions";
 import Product from "./views/elfaro/Product/Product";
 import { checkUserActivityStatus, saveUtm } from "./store/common/commonActions";
 import useAppDispatch from "./hooks/useAppDispatch";
-import Home from "./views/elfaro/Home/Home";
+// import Home from "./views/elfaro/Home/Home";
 import Search from "./views/elfaro/Search/Search";
 import ElfaroLayout from "./layouts/ElfaroLayout/ElfaroLayout";
 import Login from "./views/chipassist/Login/Login";
 import AuthModal from "./views/elfaro/AuthModal/AuthModal";
 import Reset from "./views/chipassist/Reset/Reset";
-import Policy from "./views/chipassist/StaticPages/Policy";
-import Terms from "./views/chipassist/StaticPages/Terms";
+import Policy from "./views/elfaro/StaticPages/Policy";
+import Terms from "./views/elfaro/StaticPages/Terms";
 import { getGeolocation, loadProfileInfoThunk } from "./store/profile/profileActions";
 import { authCheckState, sendQuickRequestUnAuth } from "./store/authentication/authActions";
 import loadMaintenanceThunk from "./store/maintenance/maintenanceActions";
@@ -121,7 +122,7 @@ const ElfaroApp = () => {
       dispatch(getCurrency(selectedCurrency)).catch(() => {
         dispatch(getCurrency(selectedCurrency));
       });
-      // dispatch(getCountriesThunk());
+      dispatch(getAllSellers());
       dispatch(getGeolocation());
     });
   }, []);
@@ -221,7 +222,7 @@ const ElfaroApp = () => {
         )}
         <ElfaroLayout>
           <Routes location={background || location}>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Search />} />
             <Route path="/expired-link" element={<ErrorRegister />} />
             <Route path="/Test" element={<Test />} />
             <Route path="/login-as" element={<LoginAs />} />

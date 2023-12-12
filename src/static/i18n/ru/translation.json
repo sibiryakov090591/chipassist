@@ -711,6 +711,7 @@
     "column": {
       "product": "Продукт",
       "distributor": "Поставщик",
+      "location": "Расположение",
       "lead_time": "Срок",
       "price": "Цена",
       "stock": "Склад",

@@ -20,7 +20,7 @@ import { updatePrevEmail } from "@src/store/profile/profileActions";
 import MenuItem from "@material-ui/core/MenuItem";
 import SuccessModal from "@src/views/chipassist/HomeRestricted/SuccessModal/SuccessModal";
 import constants from "@src/constants/constants";
-import { ID_ELFARO, ID_ICSEARCH } from "@src/constants/server_constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
@@ -70,7 +70,6 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
   const dispatch: any = useAppDispatch();
   const { t } = useI18n("register");
   // const navigate = useNavigate();
-  const isChipOnline = constants.id === ID_ELFARO;
   const isIcSearch = constants.id === ID_ICSEARCH;
 
   const isLoading = useAppSelector((state) => state.auth.loading);
@@ -92,7 +91,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       email: formSchema.email,
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
-      ...(!isIcSearch && !isChipOnline && { policy_confirm: formSchema.policyConfirm }),
+      ...(!isIcSearch && { policy_confirm: formSchema.policyConfirm }),
     };
   }, []);
 
@@ -268,7 +267,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
             ))}
           </TextField>
           <div>
-            {!isIcSearch && !isChipOnline && (
+            {!isIcSearch && (
               <>
                 <div className={classes.policy}>
                   <FormControlLabel
