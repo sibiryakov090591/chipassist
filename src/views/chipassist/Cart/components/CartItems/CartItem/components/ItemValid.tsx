@@ -67,7 +67,7 @@ const ItemValid: React.FC<Props> = ({ stockrecord, quantity, rfq, sortedPrices, 
                     {currency.symbol}
                     {formatMoney(currencyPrice(getPrice(quantity, stockrecord), stockrecord?.price_currency)) || 0}
                   </span>
-                  {!!sortedPrices.length && (
+                  {!!sortedPrices?.length && (
                     <Tooltip
                       enterTouchDelay={1}
                       classes={{ tooltip: classes.priceTooltip }}

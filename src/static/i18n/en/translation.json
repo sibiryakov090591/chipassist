@@ -715,7 +715,7 @@
     "empty_3": "and select something.",
     "loading": "Loading cart ...",
     "show_in_modal": "Show in modal",
-    "checkout": "Request now",
+    "checkout": "Order now",
     "checkout_rfq": "Send RFQ",
     "log_in": "Continue",
     "back": "back to cart",
@@ -743,6 +743,7 @@
     "column": {
       "product": "Product",
       "distributor": "Distributor",
+      "location": "Stock location",
       "lead_time": "Lead time",
       "stock": "Stock",
       "price": "Price",

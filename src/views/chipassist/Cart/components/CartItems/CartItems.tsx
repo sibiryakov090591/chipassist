@@ -20,7 +20,7 @@ import { DataBody, DataField, DataHeader, DataRow, DataTable, DataValue } from "
 import useAppSelector from "@src/hooks/useAppSelector";
 import { ID_ELFARO } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
-import { getTotalPrices } from "@src/utils/cart";
+// import { getTotalPrices } from "@src/utils/cart";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import ConfirmRequestModal from "@src/views/chipassist/Cart/components/ConfirmRequestModal/ConfirmRequestModal";
@@ -54,7 +54,7 @@ const CartItems = () => {
   const { t } = useI18n("cart");
   const socketClient = useSocketClient("search");
 
-  const serviceTax = useAppSelector((state) => state.checkout.serviceTax);
+  // const serviceTax = useAppSelector((state) => state.checkout.serviceTax);
   const cart_loaded = useAppSelector((state) => state.cart.itemsLoaded);
   const cart = useAppSelector((state) => state.cart);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -294,9 +294,10 @@ const CartItems = () => {
                 <div>
                   {t("column.total")}:{" "}
                   <strong>
-                    {formatMoney(getTotalPrices(cost, serviceTax, currencyPrice).result || 0)} {currency.symbol}
+                    {currency.symbol}
+                    {formatMoney(cost || 0)}
                   </strong>
-                  {!!serviceTax && <span> {t("column.service_fee")}</span>}
+                  {/* {!!serviceTax && <span> {t("column.service_fee")}</span>} */}
                 </div>
                 {OrderBtn}
               </div>
@@ -334,10 +335,7 @@ const CartItems = () => {
                   <DataValue>{t("column.product")}</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct}`} gridArea="distributor">
-                  <DataValue>{t("column.distributor")}</DataValue>
-                </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="lead">
-                  <DataValue>{t("column.lead_time")}</DataValue>
+                  <DataValue>{t("column.location")}</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct}`} gridArea="moq">
                   <DataValue>{t("distributor.moq")}</DataValue>
@@ -360,33 +358,16 @@ const CartItems = () => {
 
             <DataBody>
               {cart_loaded &&
-                cartItems
-                  .filter((v) => !v.rfq)
-                  .map((item) => (
-                    <CartItem
-                      data={item}
-                      key={item.lineId}
-                      moveToRfqHandler={handleMoveToRfq}
-                      moveToOrderHandler={handleMoveToOrder}
-                      socketClient={socketClient}
-                      showUpdateButton={showUpdateAlert}
-                    />
-                  ))}
-              {cart_loaded &&
-                cartItems
-                  .filter((v) => !!v.rfq)
-                  .map((item) => (
-                    <React.Fragment key={item.lineId}>
-                      <CartItem
-                        data={item}
-                        key={item.lineId}
-                        moveToRfqHandler={handleMoveToRfq}
-                        moveToOrderHandler={handleMoveToOrder}
-                        socketClient={socketClient}
-                        showUpdateButton={showUpdateAlert}
-                      />
-                    </React.Fragment>
-                  ))}
+                cartItems.map((item) => (
+                  <CartItem
+                    data={item}
+                    key={item.lineId}
+                    moveToRfqHandler={handleMoveToRfq}
+                    moveToOrderHandler={handleMoveToOrder}
+                    socketClient={socketClient}
+                    showUpdateButton={showUpdateAlert}
+                  />
+                ))}
               {!cart_loaded && (
                 <div className={classes.tableContentWhiteSpace}>
                   <Preloader title={t("pcb.opening_page")} />
@@ -411,9 +392,10 @@ const CartItems = () => {
                 <div className={classes.estTotal}>
                   {t("column.total")}:{" "}
                   <strong>
-                    {formatMoney(getTotalPrices(cost, serviceTax, currencyPrice).result || 0)} {currency.symbol}
+                    {currency.symbol}
+                    {formatMoney(cost || 0)}
                   </strong>
-                  {!!serviceTax && <span> {t("column.service_fee")}</span>}
+                  {/* {!!serviceTax && <span> {t("column.service_fee")}</span>} */}
                 </div>
                 {/* {isShowMinCostHint && ( */}
                 {/*  <div className={clsx(cartPayClasses.minCost, classes.estTotal)}> */}
@@ -422,7 +404,7 @@ const CartItems = () => {
                 {/*  </div> */}
                 {/* )} */}
                 <ul className={classes.estTotalHint}>
-                  {!!serviceTax && <li>{t("total_hint_1", { num: serviceTax })}</li>}
+                  {/* {!!serviceTax && <li>{t("total_hint_1", { num: serviceTax })}</li>} */}
                   <li>{t("total_hint_2")}</li>
                 </ul>
               </div>

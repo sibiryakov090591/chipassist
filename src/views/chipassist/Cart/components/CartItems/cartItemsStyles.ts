@@ -171,15 +171,20 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: "#DCEDFF",
       [theme.breakpoints.down("sm")]: { marginLeft: 0, marginTop: "5px" },
     },
-
     itemsContainer: {
       marginTop: 10,
+      "& li": {
+        [theme.breakpoints.up("md")]: {
+          display: "flex",
+          alignItems: "center",
+        },
+      },
     },
     itemsGrid: {
       display: "grid !important",
-      gridTemplateColumns: "4fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 50px",
+      gridTemplateColumns: "3fr 1.3fr 1fr 1fr 1fr 1fr 1fr 50px",
       gridTemplateAreas: `
-        "product distributor moq stock lead price qty total actions"
+        "product distributor moq stock price qty total actions"
         "product-errors product-errors product-errors product-errors product-errors product-errors product-errors product-errors product-errors"
       `,
       [theme.breakpoints.down("sm")]: {

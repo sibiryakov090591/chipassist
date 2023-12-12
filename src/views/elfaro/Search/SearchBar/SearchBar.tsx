@@ -4,22 +4,8 @@ import SearchSuggestion from "@src/layouts/HomePage/components/TopBar/components
 import clsx from "clsx";
 import TrySearchPn from "@src/components/TrySearchPn/TrySearchPn";
 import useAppSelector from "@src/hooks/useAppSelector";
+import { partNumbers } from "@src/layouts/HomePage/components/TopBar/TopBar";
 import { useStyles } from "./searchBarStyles";
-
-const partNumbers = [
-  "MAX32",
-  "MSP430",
-  "AM29LV",
-  "RC1206",
-  "STM81",
-  "SM712",
-  "LM7805",
-  "LM809",
-  "BZX84C1",
-  "TXS0104E",
-  "HEDS Broadcom",
-  "LM358",
-];
 
 const SearchBar: React.FC = () => {
   const classes = useStyles();

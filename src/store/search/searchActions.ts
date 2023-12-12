@@ -61,9 +61,9 @@ export const loadSearchResultsActionThunk = (
 ) => {
   return async (dispatch: any) => {
     let filters = dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, baseFilters, component));
-    if (constants.id === ID_ELFARO) {
-      filters = { ...filters, rfq: localStorage.getItem("productStock") === "true" ? 0 : 1 };
-    }
+    // if (constants.id === ID_ELFARO) {
+    //   filters = { ...filters, rfq: localStorage.getItem("productStock") === "true" ? 0 : 1 };
+    // }
     if (otherParams) filters = { ...filters, ...otherParams };
     if (isFirstRequest) filters = { ...filters, query: window };
     // await dispatch(loadProductsRfqData(query, page, pageSize, orderBy));
