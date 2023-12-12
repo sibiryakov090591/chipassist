@@ -84,10 +84,7 @@ export default function rfqReducer(state = initialState, action: RfqActionTypes)
     case actionTypes.SAVE_RFQ_S:
       return { ...state, rfqSaving: false };
     case actionTypes.SAVE_RFQ_F: {
-      if (action.error?.response?.status === 400) {
-        return { ...state, rfqSaving: false, rfqErrors: action.error?.response?.data || "" };
-      }
-      return state;
+      return { ...state, rfqSaving: false, rfqErrors: action.error?.response?.data || [] };
     }
     case actionTypes.RFQ_UPDATE_R:
       return { ...state, rfqUpdate: { loading: true, error: false } };
