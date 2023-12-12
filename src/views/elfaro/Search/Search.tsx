@@ -13,11 +13,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useStyles as useSearchStyles } from "@src/views/chipassist/Search/searchResultsStyles";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Container } from "@material-ui/core";
-import FiltersContainer, {
-  FilterPageSizeChoiceBar,
-  FilterResultsBar,
-  FilterStockBar,
-} from "@src/components/FiltersBar";
+import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@src/components/FiltersBar";
 // import ExtendedSearchBar from "@src/views/chipassist/Search/components/ProgressBar";
 import { setUrlWithFilters } from "@src/utils/setUrl";
 import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";

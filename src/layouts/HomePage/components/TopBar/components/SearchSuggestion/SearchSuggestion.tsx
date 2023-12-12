@@ -17,8 +17,6 @@ import ClearIcon from "@material-ui/icons/Clear";
 import { batch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
-import { ID_ELFARO } from "@src/constants/server_constants";
-import constants from "@src/constants/constants";
 import clsx from "clsx";
 import { useStyles } from "./searchSuggestionStyles";
 
