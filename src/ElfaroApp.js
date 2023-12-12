@@ -36,6 +36,7 @@ import ScrollUpButton from "react-scroll-up-button";
 import LoginAs from "@src/views/chipassist/LoginAs/LoginAs";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import Register from "@src/views/chipassist/Register/Register";
+import { getAllSellers } from "@src/store/sellers/sellersActions";
 import Product from "./views/elfaro/Product/Product";
 import { checkUserActivityStatus, saveUtm } from "./store/common/commonActions";
 import useAppDispatch from "./hooks/useAppDispatch";
@@ -121,7 +122,7 @@ const ElfaroApp = () => {
       dispatch(getCurrency(selectedCurrency)).catch(() => {
         dispatch(getCurrency(selectedCurrency));
       });
-      // dispatch(getCountriesThunk());
+      dispatch(getAllSellers());
       dispatch(getGeolocation());
     });
   }, []);

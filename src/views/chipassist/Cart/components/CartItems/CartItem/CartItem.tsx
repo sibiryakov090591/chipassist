@@ -28,9 +28,9 @@ import { formatMoney } from "@src/utils/formatters";
 import { Stockrecord } from "@src/store/products/productTypes";
 import InfoIcon from "@src/components/Icons/InfoIcon";
 import { DataField, DataLabel, DataRow, DataValue } from "@src/components/DataTable/DataTable";
-import StatusChip from "@src/components/StatusChip/StatusChip";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import placeholderImg from "@src/images/cpu.png";
+import useAppSelector from "@src/hooks/useAppSelector";
 import { useStyles } from "./cartItemStyles";
 import ItemErrors from "./components/ItemErrros";
 import ItemValid from "./components/ItemValid";
@@ -44,6 +44,7 @@ const CartItem = (props: {
 }) => {
   const appTheme = useAppTheme();
   const classes = useStyles();
+  const { socketClient } = props;
   const {
     basket_id,
     lineId,
@@ -66,16 +67,19 @@ const CartItem = (props: {
     rfq,
     dateUpdated,
   } = props.data;
+  const dispatch = useAppDispatch();
+  const { t } = useI18n("cart");
+  const { currency, currencyPrice } = useCurrency();
+
+  const sellers = useAppSelector((state) => state.sellers.items);
+  const countries = useAppSelector((state) => state.checkout.countries);
 
   const [dynamicMoq, setDynamicMoq] = useState(0);
   const [mainImg, setMainImg] = useState(img);
   const [quantityValue, setQuantityValue] = useState(quantity);
   const [sortedPrices, setSortedPrices] = useState<Stockrecord["prices"]>([]);
-  // const [quantitySelectOpen, setQuantitySelectOpen] = useState(false);
-  const dispatch = useAppDispatch();
-  const { t } = useI18n("cart");
-  const { currency, currencyPrice } = useCurrency();
-  const { socketClient } = props;
+  const [sellerData, setSellerData] = useState<{ [key: string]: any }>(null);
+
   const debouncedQuantityValue = useDebounce(quantityValue, 500);
 
   useEffect(() => {
@@ -101,6 +105,16 @@ const CartItem = (props: {
       }
     }
   }, [debouncedQuantityValue]);
+
+  useEffect(() => {
+    if (sellers?.length && stockrecord) {
+      const seller = sellers.find((i) => i.id === stockrecord.partner);
+      const country = seller && countries.find((i) => i.iso_3166_1_a3 === seller.country);
+      if (seller) {
+        setSellerData({ ...seller, ...(country && { country }) });
+      }
+    }
+  }, [sellers, stockrecord]);
 
   useEffect(() => {
     if (stockrecord) {
@@ -196,9 +210,9 @@ const CartItem = (props: {
                 {description}
                 <br /> {attribute && `BOM: ${attribute}`}
               </div>
-              <div>
-                <StatusChip isRfq={!!rfq} />
-              </div>
+              {/* <div> */}
+              {/*  <StatusChip isRfq={!!rfq} /> */}
+              {/* </div> */}
             </div>
           </div>
           {isUpdating && (
@@ -214,29 +228,21 @@ const CartItem = (props: {
         </DataValue>
       </DataField>
       <DataField gridArea="distributor">
-        <DataLabel>{t("distributor.distributor")}</DataLabel>
+        <DataLabel>{t("distributor.location")}</DataLabel>
         <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving }, "cart-distributor")}>
-          {stockrecord?.partner_name}
+          {sellerData?.country?.printable_name || "-"}
         </DataValue>
       </DataField>
-      <Hidden smDown>
-        <DataField gridArea="lead">
-          <DataLabel>{t("column.lead_time")}</DataLabel>
-          <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-            {stockrecord?.lead_period_str || `-`}
-          </DataValue>
-        </DataField>
-      </Hidden>
       <DataField gridArea="moq">
         <DataLabel>{t("distributor.moq")}</DataLabel>
         <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          {dynamicMoq || 0}
+          {formatMoney(dynamicMoq || 0, 0)}
         </DataValue>
       </DataField>
       <DataField gridArea="stock">
         <DataLabel>{t("column.stock")}</DataLabel>
         <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          {numInStock}
+          {formatMoney(numInStock, 0)}
           {!rfq && getError("out_of_stock") && <div className={classes.error}>{getError("out_of_stock")}</div>}
         </DataValue>
       </DataField>
@@ -253,7 +259,7 @@ const CartItem = (props: {
                   {currency.symbol}
                   {formatMoney(currencyPrice(getPrice(quantityValue, stockrecord), stockrecord?.price_currency)) || 0}
                 </span>
-                {!!sortedPrices.length && (
+                {!!sortedPrices?.length && (
                   <Tooltip
                     enterTouchDelay={1}
                     classes={{ tooltip: classes.priceTooltip }}
@@ -332,7 +338,7 @@ const CartItem = (props: {
           {/* {(!!rfq || !!stockrecord.low_stock_threshold) && ( */}
           {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
           {/* {!rfq && !stockrecord.low_stock_threshold && ( */}
-          {!!sortedPrices.length && (
+          {!!sortedPrices?.length && (
             <span style={{ paddingTop: 10.5, paddingBottom: 10.5 }}>
               <b>
                 {currency.symbol}

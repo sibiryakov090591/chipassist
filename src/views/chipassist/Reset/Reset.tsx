@@ -6,18 +6,17 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import checkIsAuthenticated from "@src/utils/auth";
 import { title } from "@src/constants/defaults";
 import { Page } from "@src/components";
-import logo from "@src/images/logos/en/logo_darkback.png";
-import chiponline from "@src/images/logos/elfaro/logo_darkback.png";
 import constants from "@src/constants/constants";
 import { ID_ELFARO, ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import useAppTheme from "@src/theme/useAppTheme";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-
 import NewPasswordForm from "./components/NewPasswordForm/NewPasswordForm";
 import ResetForm from "./components/ResetForm/ResetForm";
 import { useStyles } from "./styles";
 import { useStyles as useLoginStyles } from "../Login/styles";
+
+const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 const Reset = () => {
   const classes = useStyles();
@@ -100,17 +99,17 @@ const Reset = () => {
             {constants.id === ID_ELFARO ? (
               <>
                 <a target="_blank" rel="noreferrer" href="https://chiponline.tech/">
-                  <img
-                    style={{ marginBottom: 0 }}
-                    className={loginClasses.logo}
-                    src={chiponline}
-                    alt="ChipOnline logo"
-                  />
+                  <img style={{ height: 28 }} className={loginClasses.logo} src={logo_img} alt="ChipOnline" />
                 </a>
+                <Typography color="inherit" variant="subtitle1">
+                  {t("cover_text", { title })}
+                </Typography>
               </>
             ) : (
               <>
-                {constants.id !== ID_ICSEARCH && <img className={loginClasses.logo} src={logo} alt="Chipassist logo" />}
+                {constants.id !== ID_ICSEARCH && (
+                  <img className={loginClasses.logo} src={logo_img} alt="Chipassist logo" />
+                )}
                 <Typography color="inherit" variant="subtitle1">
                   {t("cover_text", { title })}
                 </Typography>
