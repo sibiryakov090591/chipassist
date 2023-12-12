@@ -244,9 +244,9 @@ const CartItem = (props: {
         <DataLabel>{t("column.price")}</DataLabel>
         <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
           {/* {(!!rfq || !!stockrecord.low_stock_threshold) && ( */}
-          {!!rfq && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
+          {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
           {/* {!rfq && !stockrecord.low_stock_threshold && ( */}
-          {!rfq && (
+          {!!sortedPrices?.length && (
             <React.Fragment>
               <div style={{ display: "flex", whiteSpace: "nowrap" }}>
                 <span>
@@ -330,9 +330,9 @@ const CartItem = (props: {
         <DataLabel>{t("column.total")}</DataLabel>
         <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
           {/* {(!!rfq || !!stockrecord.low_stock_threshold) && ( */}
-          {!!rfq && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
+          {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
           {/* {!rfq && !stockrecord.low_stock_threshold && ( */}
-          {!rfq && (
+          {!!sortedPrices.length && (
             <span style={{ paddingTop: 10.5, paddingBottom: 10.5 }}>
               <b>
                 {currency.symbol}
