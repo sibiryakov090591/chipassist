@@ -40,7 +40,7 @@ import { getAllSellers } from "@src/store/sellers/sellersActions";
 import Product from "./views/elfaro/Product/Product";
 import { checkUserActivityStatus, saveUtm } from "./store/common/commonActions";
 import useAppDispatch from "./hooks/useAppDispatch";
-import Home from "./views/elfaro/Home/Home";
+// import Home from "./views/elfaro/Home/Home";
 import Search from "./views/elfaro/Search/Search";
 import ElfaroLayout from "./layouts/ElfaroLayout/ElfaroLayout";
 import Login from "./views/chipassist/Login/Login";
@@ -222,7 +222,7 @@ const ElfaroApp = () => {
         )}
         <ElfaroLayout>
           <Routes location={background || location}>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Search />} />
             <Route path="/expired-link" element={<ErrorRegister />} />
             <Route path="/Test" element={<Test />} />
             <Route path="/login-as" element={<LoginAs />} />

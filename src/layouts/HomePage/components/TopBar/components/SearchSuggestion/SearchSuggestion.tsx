@@ -146,7 +146,6 @@ const SearchSuggestion: React.FC<Props> = ({
   };
 
   const searchClickHandler = () => {
-    if (constants.id === ID_ELFARO && !value) return;
     if (query !== value || location.pathname !== search_pathname) {
       redirectToSearchPage(navigate, value, 1, pageSize);
     } else {

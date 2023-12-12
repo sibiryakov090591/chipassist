@@ -144,30 +144,28 @@ const Search: React.FC = () => {
     >
       <Container maxWidth="xl">
         <div>
-          {query && count !== 0 && (
-            <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
-              <Sticky
-                className={clsx(searchClasses.stickyContainer, classes.stickyContainer)}
-                topOffset={0}
-                onFixedToggle={fixedStickyContainerHeight}
-              >
-                <div className={commonClasses.filtersRow}>
-                  <FiltersContainer>
-                    {/* {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />} */}
-                    <FilterResultsBar count={count} />
-                    <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                    <FilterCurrency />
-                    <FilterPageSizeChoiceBar
-                      storageKey={`searchShowBy`}
-                      action={onChangePageSize}
-                      disable={isLoadingSearchResultsInProgress}
-                    />
-                    {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
-                  </FiltersContainer>
-                </div>
-              </Sticky>
-            </div>
-          )}
+          <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
+            <Sticky
+              className={clsx(searchClasses.stickyContainer, classes.stickyContainer)}
+              topOffset={0}
+              onFixedToggle={fixedStickyContainerHeight}
+            >
+              <div className={commonClasses.filtersRow}>
+                <FiltersContainer>
+                  {/* {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />} */}
+                  <FilterResultsBar count={count} />
+                  {/* <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} /> */}
+                  <FilterCurrency />
+                  <FilterPageSizeChoiceBar
+                    storageKey={`searchShowBy`}
+                    action={onChangePageSize}
+                    disable={isLoadingSearchResultsInProgress}
+                  />
+                  {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
+                </FiltersContainer>
+              </div>
+            </Sticky>
+          </div>
           {/* {isSmDown && !isLoadingSearchResultsInProgress && ( */}
           {/*  <div className={searchClasses.tableFiltersRow}> */}
           {/*    <FiltersContainer>{!isLoadingSearchResultsInProgress && <ExtendedSearchBar />}</FiltersContainer> */}
