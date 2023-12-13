@@ -51,6 +51,8 @@ import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 // import FilterRegions from "@src/components/FiltersBar/FilterRegions";
 // import * as countriesData from "@src/constants/countries";
 import { format } from "date-fns";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import useCurrency from "@src/hooks/useCurrency";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -78,6 +80,7 @@ const SupplierResponse: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const { currency, currencyPrice } = useCurrency();
 
   const page = useURLSearchParams("page", false, 1, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("rfq_response_page_size") || 15, false);
@@ -94,7 +97,6 @@ const SupplierResponse: React.FC = () => {
   const rfqs = useAppSelector((state) => state.rfq.rfqs);
   const rfqResponseData = useAppSelector((state) => state.rfq.rfqResponseData);
   const isLoading = useAppSelector((state) => state.rfq.rfqsLoading);
-  const currency = useAppSelector((state) => state.currency.selected);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   const [items, setItems] = useState<{ [key: string]: IResponseItem[] }>(null);
@@ -207,7 +209,9 @@ const SupplierResponse: React.FC = () => {
           ...item,
           // index: filters?.page_size * (filters?.page - 1) + i + 1,
           stock: responseItem ? responseItem.stock : responseRfq?.your_quantity,
-          price: responseItem ? responseItem.price : responseRfq?.unit_price,
+          price: responseItem
+            ? responseItem.price
+            : currencyPrice(responseRfq?.unit_price, responseRfq?.currency || "EUR"),
           currency: currency.code,
           requested_price: {
             price: item.price,
@@ -532,6 +536,7 @@ const SupplierResponse: React.FC = () => {
               {/*  } */}
               {/*  label={"Show all"} */}
               {/* /> */}
+              <FilterCurrency />
               <FilterHasResponseBar
                 disable={isLoading}
                 action={onChangeHasResponses}

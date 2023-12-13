@@ -7,6 +7,7 @@ import { isEven } from "@src/utils/bom";
 import { TableCell, TableRow } from "@material-ui/core";
 // import useAppSelector from "@src/hooks/useAppSelector";
 import { format } from "date-fns";
+import useCurrency from "@src/hooks/useCurrency";
 import { useStyles } from "./statisticItemStyles";
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 
 const StatisticItem: React.FC<Props> = ({ items, index }) => {
   const classes = useStyles();
+  const { currencyPrice } = useCurrency();
 
   // const countries = useAppSelector((state) => state.checkout.countries);
 
@@ -73,7 +75,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
               [classes.biggerPrice]: !!item.price && !!item.position?.includes("+"),
             })}
           >
-            {item.price ? formatMoney(item.price) : "-"}
+            {item.price ? formatMoney(currencyPrice(item.price, "EUR")) : "-"}
           </div>
         </TableCell>
         <TableCell>
@@ -84,7 +86,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
               [classes.biggerPrice]: !!item.competitive_price && !item.position?.includes("+"),
             })}
           >
-            {item.competitive_price ? formatMoney(item.competitive_price) : "-"}
+            {item.competitive_price ? formatMoney(currencyPrice(item.competitive_price, "EUR")) : "-"}
           </div>
         </TableCell>
         <TableCell>

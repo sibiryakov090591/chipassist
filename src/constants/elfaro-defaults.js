@@ -2,7 +2,7 @@ const defaults = {
   title: "ChipOnline",
   id: "elfaro",
   apiPath: "/api",
-  apiHost: "api.chipassist.com", // "api.elfaro.ee",
+  apiHost: "api.chiponline.tech",
   schema: "https",
   locales: ["ru", "en"],
   localeDefault: "en",
