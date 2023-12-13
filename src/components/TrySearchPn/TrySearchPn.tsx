@@ -30,9 +30,10 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const reloadSearchFlag = useAppSelector((state) => state.search.reloadSearchFlag);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
-  const [partNumbersArray, setPartNumbersArray] = useState(partNumbers);
+  const [partNumbersArray, setPartNumbersArray] = useState([]);
   const [randomPartNumber, setRandomPartNumber] = useState("");
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
     if (partNumbersArray && partNumbersArray.length < 2) {
       setPartNumbersArray(partNumbers);
     }
-  }, [partNumbersArray]);
+  }, [reloadSearchFlag]);
 
   const onTryHandler = () => {
     const val = randomPartNumber;
