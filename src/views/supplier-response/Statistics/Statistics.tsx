@@ -30,6 +30,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { v4 as uuid } from "uuid";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 import { format } from "date-fns";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import { useStyles } from "./statisticsStyles";
 import Paginate from "../../../components/Paginate";
 import StatisticItem from "./components/StatisticItem/StatisticItem";
@@ -175,6 +176,7 @@ const Statistics: React.FC = () => {
           <div className={clsx(commonClasses.filtersRow, commonClasses.filtersRowMargin)}>
             <FiltersContainer>
               <FilterResultsBar count={data?.total_count} />
+              <FilterCurrency />
               <FilterPageSizeChoiceBar
                 storageKey={"supplier_statistic_page_size"}
                 action={onChangePageSize}
