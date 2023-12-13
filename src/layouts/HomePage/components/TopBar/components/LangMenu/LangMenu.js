@@ -87,6 +87,7 @@ const LangMenu = () => {
           <div ref={anchorRef} aria-haspopup="true">
             <div style={{ display: "flex", alignItems: "center" }}>
               <CurrentImage />
+              <span style={{ fontSize: "1rem", fontWeight: 500, paddingLeft: "0.5em" }}>{i18n.language}</span>
               <ArrowDropDownIcon />
             </div>
           </div>

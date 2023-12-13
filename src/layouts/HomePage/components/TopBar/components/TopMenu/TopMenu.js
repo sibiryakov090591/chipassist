@@ -139,11 +139,11 @@ const TopMenu = ({ isMobile }) => {
             style={{ display: "flex", justifyContent: "center", flexDirection: "column", padding: "1.5em" }}
           >
             <span style={{ width: "100%", textAlign: "center", fontSize: "1.7em", marginTop: "10px" }}>
-              You can create group RFQ here
+              {t("hint.title")}
             </span>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", marginTop: "6px" }}>
               <p onClick={() => dispatch(showHint(false))} className={classes.gotItButton}>
-                Got it!
+                {t("hint.button")}
               </p>
             </div>
           </Paper>
@@ -163,7 +163,7 @@ const TopMenu = ({ isMobile }) => {
             to={`/rfq-list-quotes`}
           >
             {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-            {"RFQ List"}
+            {t("rfq_list")}
           </NavLink>
         </div>
       </HtmlTooltip>
