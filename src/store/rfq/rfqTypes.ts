@@ -107,6 +107,7 @@ export interface SellerRfqItem {
   response_rfq: {
     your_quantity: number;
     unit_price: number;
+    currency?: CurrenciesAllowed;
     datecode: string;
     alter_upc: string;
     created: string;
