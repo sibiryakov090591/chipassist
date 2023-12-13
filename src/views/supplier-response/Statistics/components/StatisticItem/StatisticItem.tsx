@@ -75,7 +75,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
               [classes.biggerPrice]: !!item.price && !!item.position?.includes("+"),
             })}
           >
-            {item.price ? formatMoney(currencyPrice(item.price, "EUR")) : "-"}
+            {item.price ? formatMoney(currencyPrice(item.price, "USD")) : "-"}
           </div>
         </TableCell>
         <TableCell>
@@ -86,7 +86,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
               [classes.biggerPrice]: !!item.competitive_price && !item.position?.includes("+"),
             })}
           >
-            {item.competitive_price ? formatMoney(currencyPrice(item.competitive_price, "EUR")) : "-"}
+            {item.competitive_price ? formatMoney(currencyPrice(item.competitive_price, "USD")) : "-"}
           </div>
         </TableCell>
         <TableCell>
