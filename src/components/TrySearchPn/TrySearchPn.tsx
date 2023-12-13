@@ -56,7 +56,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
     dispatch(saveSearchQueryAction(val));
     dispatch(setQueryValue(val));
     onTryClickAction(navigate, val, 1, pageSize, dispatch);
-    setPartNumbersArray((prevState) => prevState.filter((el) => el !== randomPartNumber));
+    if (partNumbers?.length > 2) setPartNumbersArray((prevState) => prevState.filter((el) => el !== randomPartNumber));
   };
 
   return (
