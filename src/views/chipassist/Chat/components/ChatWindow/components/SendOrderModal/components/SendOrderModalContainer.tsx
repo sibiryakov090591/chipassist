@@ -491,7 +491,7 @@ export const SendOrderModalContainer: React.FC<{
             </>
           )}
         </div>
-        <Box display="flex" justifyContent="space-between" alignItems="flex-end">
+        <Box display="flex" pb="16px" justifyContent="space-between" alignItems="flex-end">
           <Box>{step} / 2</Box>
           <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
             <Button

@@ -8,6 +8,7 @@ import { ChatListStock } from "@src/store/chat/chatTypes";
 
 import SendInvoiceModalContainer from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/components/SendInvoiceModalContainer";
 import { clsx } from "clsx";
+import { useStyles } from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/styles";
 
 interface Props {
   open: boolean;
@@ -18,6 +19,7 @@ interface Props {
 
 const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSending }) => {
   const commonClasses = useCommonStyles();
+  const classes = useStyles();
   return (
     <Modal
       open={open}
@@ -30,7 +32,7 @@ const SendInvoiceModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSen
       }}
     >
       <Fade in={open}>
-        <div className={clsx(commonClasses.paper, "fullScreen")}>
+        <div className={clsx(commonClasses.paper, "fullScreen", classes.paper)}>
           <SendInvoiceModalContainer
             open={open}
             stock={stock}
