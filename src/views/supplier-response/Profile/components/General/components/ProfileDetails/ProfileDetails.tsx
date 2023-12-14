@@ -15,16 +15,21 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     textAlign: "center",
     flexDirection: "column",
     paddingBottom: 0,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       flexDirection: "row",
+      width: "100%",
+      justifyContent: "space-evenly",
+    },
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
     },
   },
   avatar: {
     height: 100,
     width: 100,
-    [theme.breakpoints.down("xs")]: {
-      height: 55,
-      width: 55,
+    [theme.breakpoints.down("sm") && theme.breakpoints.up("xs")]: {
+      height: 150,
+      width: 150,
     },
   },
   actions: {
@@ -37,7 +42,7 @@ const ProfileDetails = () => {
   const profile = useAppSelector((state) => state.profile);
   const stateProfile = useAppSelector((state) => state.sellerProfile);
   const theme = useTheme();
-  const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
+  const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Card className={clsx(classes.root)}>
@@ -46,8 +51,21 @@ const ProfileDetails = () => {
           className={classes.avatar}
           src={stateProfile.isEditView ? stateProfile.logoURL : profile.partnerProfile.avatar}
         />
-        <Box display={"flex"} flexDirection={"column"} style={isDownXs ? { marginLeft: "15px" } : null}>
-          <p style={{ fontSize: "2rem", paddingBottom: "1rem", marginTop: "1rem", marginBottom: 0 }}>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          maxWidth={"50%"}
+          style={isDownSm ? { marginLeft: "15px" } : null}
+        >
+          <p
+            style={{
+              fontSize: "2rem",
+              paddingBottom: "1rem",
+              marginTop: "1rem",
+              marginBottom: 0,
+              wordWrap: "break-word",
+            }}
+          >
             {stateProfile.isEditView
               ? stateProfile.company_name
               : profile.partnerProfile.company_name || "Company name is not provided"}
