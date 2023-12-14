@@ -23,6 +23,7 @@ import { batch } from "react-redux";
 import { getCart } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import { clearRfqItem, rfqModalClose, saveRfqItem } from "@src/store/rfq/rfqActions";
 import { useStyles } from "./styles";
 
 const ProgressModal: React.FC = () => {
@@ -37,7 +38,7 @@ const ProgressModal: React.FC = () => {
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const { open, inProgress, success, error, errorMessage, partNumber, requestType } = useAppSelector(
+  const { open, inProgress, success, error, errorMessage, partNumber, requestType, tempRfq } = useAppSelector(
     (state) => state.progressModal,
   );
   const valueToken = useURLSearchParams("value", false, null, false);
@@ -50,6 +51,7 @@ const ProgressModal: React.FC = () => {
   const [sending, setSending] = useState(false);
   const [invalidCode, setInvalidCode] = useState(false);
   const [tokenForSetPassword, setTokenForSetPassword] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -91,6 +93,7 @@ const ProgressModal: React.FC = () => {
       const email = localStorage.getItem("registered_email");
       dispatch(sendVerificationCode(values, email)).then((codeRes: any) => {
         if (codeRes?.token) {
+          setToken(codeRes.token);
           dispatch(loadMiscAction("not_activated_request", email)).then((res: any) => {
             const data = res?.data?.data || res?.data;
             if (data && ["rfq", "pcb", "sellerMessage", "rfq_list", "qualityCheck"].includes(data.requestType)) {
@@ -102,6 +105,7 @@ const ProgressModal: React.FC = () => {
               // for quick Order
               // Quick order id disabled now
               dispatch(progressModalClose());
+              window.scrollTo({ top: 0 });
               navigate(`/password/request/${codeRes.code}`, {
                 state: { background: location.state?.background || location },
               });
@@ -137,6 +141,7 @@ const ProgressModal: React.FC = () => {
   const handleClose = () => {
     dispatch(progressModalClose());
     if (tokenForSetPassword) {
+      window.scrollTo({ top: 0 });
       navigate(`/password/request/${tokenForSetPassword}`, {
         state: { background: location.state?.background || location },
       });
@@ -156,6 +161,34 @@ const ProgressModal: React.FC = () => {
   const handleOnChange = (value: string) => {
     if (invalidCode) setInvalidCode(false);
     setValues(value.split(""));
+  };
+
+  const handleSubmitResending = () => {
+    if (isAuthenticated) {
+      dispatch(saveRfqItem({ ...tempRfq, part_number: errorMessage.split(" ").pop() })).then(() => {
+        batch(() => {
+          dispatch(clearRfqItem());
+          dispatch(rfqModalClose());
+        });
+      });
+      const email = localStorage.getItem("registered_email");
+      dispatch(deleteMiscAction("not_activated_request", email));
+      localStorage.removeItem("progress_modal_data");
+    } else {
+      dispatch(saveRfqItem({ ...registerData, ...tempRfq, part_number: errorMessage.split(" ").pop() }, token)).then(
+        () => {
+          batch(() => {
+            dispatch(clearRfqItem());
+            dispatch(rfqModalClose());
+          });
+        },
+      );
+      const email = localStorage.getItem("registered_email");
+      dispatch(deleteMiscAction("not_activated_request", email));
+      localStorage.removeItem("progress_modal_data");
+    }
+    // }
+    return false;
   };
 
   return (
@@ -334,12 +367,25 @@ const ProgressModal: React.FC = () => {
                   <p className={classes.errorMessage}>
                     {errorMessage ? <div dangerouslySetInnerHTML={{ __html: errorMessage }} /> : t("error_message")}
                   </p>
+                  {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
+                    <p className={classes.errorMessage}>Would you like to send RFQ for the corrected part number?</p>
+                  )}
                 </>
               )}
             </div>
           )}
           {success || error ? (
             <div className={classes.buttonContainer}>
+              {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
+                <Button
+                  variant="contained"
+                  className={appTheme.buttonCreate}
+                  onClick={handleSubmitResending}
+                  style={{ marginRight: "10px" }}
+                >
+                  {"Yes"}
+                </Button>
+              )}
               <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
                 {t("close_button")}
               </Button>

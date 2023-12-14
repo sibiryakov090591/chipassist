@@ -34,8 +34,8 @@ import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
-import InputPhone from "@src/components/InputPhone/InputPhone";
 import clsx from "clsx";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 
 interface FormStateValues {
   email?: string;
@@ -123,7 +123,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
 
   useEffect(() => {
     if (profileInfo) {
-      setBillingAddress(profileInfo.addresses?.sort((a, b) => a.id - b.id)[0] || null);
+      setBillingAddress(profileInfo.defaultBillingAddress || null);
     }
   }, [profileInfo]);
 
@@ -359,14 +359,13 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <div style={{ width: "100%" }}>
-                    <InputPhone
-                      label={t("rfq.column.phone")}
-                      value={phoneValue}
-                      onChange={onChangePhoneHandler}
-                      small
-                    />
-                  </div>
+                  <PhoneInputWrapper
+                    value={phoneValue}
+                    onChange={onChangePhoneHandler}
+                    small
+                    // classes={classes.textField}
+                    style={{ height: "37.63px", margin: 0 }}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField

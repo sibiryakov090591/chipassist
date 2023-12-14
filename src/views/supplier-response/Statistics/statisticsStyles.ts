@@ -17,68 +17,22 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   th: {
     width: "16%",
   },
-  thQty: {
-    width: "8%",
-  },
   thDate: {
     width: "20%",
   },
   table: {
+    tableLayout: "fixed",
     width: "100%",
-    borderCollapse: "collapse",
     border: `1px solid ${theme.palette.app.grey200}`,
-    "& li": {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+    "& td, th": {
       textAlign: "center",
-      padding: 6,
-      minHeight: 50,
-      [theme.breakpoints.down("sm")]: {
-        flexDirection: "column",
-        alignItems: "flex-start",
-        textAlign: "start",
-        padding: "16px",
-        "& > div:first-child": {
-          marginBottom: 4,
-          color: "#319cbc",
-        },
-        "& > div:nth-child(2)": {
-          fontSize: 22,
-        },
-      },
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 5,
-      borderTop: "none",
-      borderBottom: "none",
     },
   },
-  gridClass: {
-    display: "grid !important",
-    gridTemplateColumns: "1fr 0.75fr 0.75fr 1fr 1fr 0.75fr 0.75fr 1fr",
-    [theme.breakpoints.down("sm")]: {
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gridTemplateAreas: `
-      "mpn manufacturer"
-      "yourQty qty"
-      "yourPrice competitivePrice"
-      "position date"
-      `,
-    },
-    [theme.breakpoints.down("xs")]: {
-      gridTemplateColumns: "repeat(1, 1fr)",
-      gridTemplateAreas: `
-      "mpn"
-      "date"
-      "yourQty"
-      "qty"
-      "manufacturer"
-      "yourPrice"
-      "competitivePrice"
-      "position"
-      `,
-    },
+  thText: { width: "14%" },
+  thQty: { width: "12%" },
+  thArrow: { width: "40px", padding: 0 },
+  noWrap: {
+    whiteSpace: "nowrap",
   },
 }));
 

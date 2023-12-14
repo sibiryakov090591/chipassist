@@ -22,6 +22,7 @@ import { ResponseManufacturer } from "@src/store/manufacturers/manufacturersType
 import addBusinessDays from "date-fns/addBusinessDays";
 import { format, isWeekend, nextMonday } from "date-fns";
 import { NumberInput } from "@src/components/Inputs";
+import { formatMoney } from "@src/utils/formatters";
 import { useStyles } from "./responseItemStyles";
 import { useStyles as useResponseStyles } from "../supplierResponseStyles";
 
@@ -56,15 +57,20 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const debouncedItemValue = useDebounce(item, 200);
 
-  const currency = useAppSelector((state) => state.currency.selected);
+  const { selected, currencyList } = useAppSelector((state) => state.currency);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const countries = useAppSelector((state) => state.checkout.countries);
+  const savedResponse = useAppSelector((state) => responseItem?.id && state.rfq.rfqResponseData[responseItem.id]);
+  // const countries = useAppSelector((state) => state.checkout.countries);
+  const symbol =
+    item?.requested_price?.currency &&
+    (currencyList.find((curr) => curr.code === item.requested_price.currency)?.symbol ||
+      item?.requested_price.currency);
 
-  const country = React.useMemo(() => {
-    let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
-    if (countryItem?.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
-    return countryItem;
-  }, [countries]);
+  // const country = React.useMemo(() => {
+  //   let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
+  //   if (countryItem?.iso_3166_1_a3 === "RUS") countryItem = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
+  //   return countryItem;
+  // }, [countries]);
 
   useEffect(() => {
     if (item.created) {
@@ -142,8 +148,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
   }, [item]);
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.target;
-    const { value } = e.target;
+    const { name, value } = e.target;
+
     if (["price", "stock"].includes(name) && parseFloat(value) === 0) return false;
 
     if (!isActiveValidating) setIsActiveValidating(true);
@@ -292,7 +298,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
               [classes.inputError]: isActiveValidating && !item.price,
               [classes.bestPriseError]: !!item?.response_rfq?.summary?.best_price_other,
             })}
-            label={`Unit price (${currency.symbol}):`}
+            label={`Unit price (${selected?.symbol}):`}
             placeholder="Your unit price"
             variant="outlined"
             size="small"
@@ -387,10 +393,17 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             </Tooltip>
           )}
         </div>
-        {country && (
+        {/* {country && ( */}
+        {/*  <div className={classes.geoPin}> */}
+        {/*    <span className={`fi fi-${country.code.toLowerCase()}`} /> */}
+        {/*    <span className={classes.countryName}>{country.printable_name}</span> */}
+        {/*  </div> */}
+        {/* )} */}
+        {item?.requested_price?.price && symbol && (
           <div className={classes.geoPin}>
-            <span className={`fi fi-${country.code.toLowerCase()}`} />
-            <span className={classes.countryName}>{country.printable_name}</span>
+            <span>
+              Target price: {formatMoney(item.requested_price.price)} {symbol}
+            </span>
           </div>
         )}
         {repliedDate && <div className={classes.replied}>Replied {repliedDate}</div>}
@@ -454,7 +467,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       <td
         className={clsx(classes.input, {
           [classes.inputError]: isActiveValidating && !item.price,
-          [classes.bestPriseError]: !!item?.response_rfq?.summary?.best_price_other,
+          [classes.bestPriseError]:
+            !!item?.response_rfq?.summary?.best_price_other || !!savedResponse?.errors?.priceWarning,
         })}
       >
         <div>
@@ -468,7 +482,22 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
             decimalScale={4}
             isAllowedZero={false}
           />
-          {!!item?.response_rfq?.summary?.best_price_other && (
+          {savedResponse?.errors?.priceWarning && (
+            <Tooltip
+              enterTouchDelay={1}
+              classes={{ tooltip: responseClasses.tooltip }}
+              title={
+                <div>
+                  You are trying to set a different price for the same product with the same stock quantity.
+                  <br />
+                  We recommend to set the same price for stockrecords with the same quantity and date code.
+                </div>
+              }
+            >
+              <HelpIcon className={clsx(classes.helpIcon, classes.helpPriceIcon)} />
+            </Tooltip>
+          )}
+          {!savedResponse?.errors?.priceWarning && !!item?.response_rfq?.summary?.best_price_other && (
             <Tooltip
               enterTouchDelay={1}
               classes={{ tooltip: responseClasses.tooltip }}

@@ -13,11 +13,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useStyles as useSearchStyles } from "@src/views/chipassist/Search/searchResultsStyles";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Container } from "@material-ui/core";
-import FiltersContainer, {
-  FilterPageSizeChoiceBar,
-  FilterResultsBar,
-  FilterStockBar,
-} from "@src/components/FiltersBar";
+import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@src/components/FiltersBar";
 // import ExtendedSearchBar from "@src/views/chipassist/Search/components/ProgressBar";
 import { setUrlWithFilters } from "@src/utils/setUrl";
 import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";
@@ -139,35 +135,33 @@ const Search: React.FC = () => {
 
   return (
     <Page
-      title="Elfaro - search and order electronic components"
-      description="Elfaro - search and order electronic components"
+      title="ChipOnline - search and order electronic components"
+      description="ChipOnline - search and order electronic components"
     >
       <Container maxWidth="xl">
         <div>
-          {query && count !== 0 && (
-            <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
-              <Sticky
-                className={clsx(searchClasses.stickyContainer, classes.stickyContainer)}
-                topOffset={0}
-                onFixedToggle={fixedStickyContainerHeight}
-              >
-                <div className={commonClasses.filtersRow}>
-                  <FiltersContainer>
-                    {/* {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />} */}
-                    <FilterResultsBar count={count} />
-                    <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                    <FilterCurrency />
-                    <FilterPageSizeChoiceBar
-                      storageKey={`searchShowBy`}
-                      action={onChangePageSize}
-                      disable={isLoadingSearchResultsInProgress}
-                    />
-                    {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
-                  </FiltersContainer>
-                </div>
-              </Sticky>
-            </div>
-          )}
+          <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
+            <Sticky
+              className={clsx(searchClasses.stickyContainer, classes.stickyContainer)}
+              topOffset={0}
+              onFixedToggle={fixedStickyContainerHeight}
+            >
+              <div className={commonClasses.filtersRow}>
+                <FiltersContainer>
+                  {/* {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />} */}
+                  <FilterResultsBar count={count} />
+                  {/* <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} /> */}
+                  <FilterCurrency />
+                  <FilterPageSizeChoiceBar
+                    storageKey={`searchShowBy`}
+                    action={onChangePageSize}
+                    disable={isLoadingSearchResultsInProgress}
+                  />
+                  {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
+                </FiltersContainer>
+              </div>
+            </Sticky>
+          </div>
           {/* {isSmDown && !isLoadingSearchResultsInProgress && ( */}
           {/*  <div className={searchClasses.tableFiltersRow}> */}
           {/*    <FiltersContainer>{!isLoadingSearchResultsInProgress && <ExtendedSearchBar />}</FiltersContainer> */}

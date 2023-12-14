@@ -36,7 +36,7 @@ import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "@src/views/chipassist/Rfq/components/RFQForm/styles";
 import {
-  loadProfileInfoThunk,
+  newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
   updateProfileInfoThunk,
@@ -197,14 +197,14 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
   useEffect(() => {
     if (profileInfo) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
       setPhoneValue(profileInfo?.defaultBillingAddress?.phone_number_str || "");
     }
   }, [profileInfo]);
 
   useEffect(() => {
     if (open) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "seller_message_form_register_data",
@@ -339,23 +339,37 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
       if (isAuthenticated) {
         setIsLoading(true);
-        await dispatch(
-          updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
-            ...profileInfo.defaultBillingAddress,
-            first_name: formState.values.firstName,
-            last_name: formState.values.lastName,
-            company_name: formState.values.company_name,
-            phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-            country: formState.values.country ? formState.values.country : null,
-            line1: profileInfo?.defaultBillingAddress?.line1 || "-",
-          }),
-        ).then(() => dispatch(loadProfileInfoThunk()));
+        if (profileInfo?.defaultBillingAddress?.id) {
+          await dispatch(
+            updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
+              ...profileInfo.defaultBillingAddress,
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country ? formState.values.country : null,
+              line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+            }),
+          );
+        } else {
+          await dispatch(
+            newCompanyAddress({
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country ? formState.values.country : null,
+              line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+            }),
+          );
+        }
         await dispatch(updateProfileInfoThunk());
-        dispatch(sendSellerMessage(data)).then(() => {
-          if (onCloseModalHandler) dispatch(sellerMessageModalClose());
-          setIsLoading(false);
-          setFormState(defaultState(profileInfo));
-        });
+        dispatch(sendSellerMessage(data))
+          .then(() => {
+            if (onCloseModalHandler) dispatch(sellerMessageModalClose());
+            setFormState(defaultState(profileInfo));
+          })
+          .finally(() => setIsLoading(false));
       } else {
         setIsLoading(true);
         saveRequestToLocalStorage(data, data.part_number, "sellerMessage");

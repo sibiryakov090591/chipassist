@@ -54,6 +54,7 @@ const ProductCardNew = (props) => {
     },
   });
 
+  const [collapseText, setCollapseText] = useState(true);
   const [sortedStockrecords, setSortedStockrecords] = useState([]);
   const [availableStockrecords, setAvailableStockrecords] = useState([]);
   const [rfqStockrecords] = useState([]);
@@ -258,6 +259,10 @@ const ProductCardNew = (props) => {
   //   if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
   // };
 
+  const toggleCollapseText = () => {
+    setCollapseText((prev) => !prev);
+  };
+
   return (
     <Paper
       ref={ref}
@@ -271,11 +276,14 @@ const ProductCardNew = (props) => {
         <Box display="flex" justifyContent="space-between">
           <div className={classes.imageColumn}>
             <Link
-              to={
-                viewType === ID_ELFARO
-                  ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
-                  : `/product/${encodeURIComponent(product.upc)}/${product.id}`
-              }
+              to={`/product/${encodeURIComponent(product.upc)}/${
+                sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
+              }`}
+              // to={
+              //   viewType === ID_ELFARO
+              //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
+              //     : `/product/${encodeURIComponent(product.upc)}/${product.id}`
+              // }
               className={appTheme.hyperlink}
             >
               <img
@@ -288,11 +296,14 @@ const ProductCardNew = (props) => {
           </div>
           <div className={classes.titleColumn}>
             <Link
-              to={
-                viewType === ID_ELFARO
-                  ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
-                  : `/product/${encodeURIComponent(product.upc)}/${product.id}`
-              }
+              to={`/product/${encodeURIComponent(product.upc)}/${
+                sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
+              }`}
+              // to={
+              //   viewType === ID_ELFARO
+              //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
+              //     : `/product/${encodeURIComponent(product.upc)}/${product.id}`
+              // }
             >
               <div name="product_name" id="product_name_id" className={classes.title}>
                 <Highlighter
@@ -314,9 +325,19 @@ const ProductCardNew = (props) => {
             <div className={`${appTheme.text} ${classes.description}`}>
               <Highlighter
                 searchWords={searchQueryArray}
-                textToHighlight={product.description || ""}
+                textToHighlight={
+                  collapseText && isSmDown ? product.description?.slice(0, 100) : product.description || ""
+                }
                 autoEscape={true}
               />
+              {isSmDown && product.description?.length > 100 && (
+                <>
+                  {" "}
+                  <span onClick={toggleCollapseText} className={appTheme.hyperlink}>
+                    {collapseText ? "...view more" : "hide"}
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </Box>

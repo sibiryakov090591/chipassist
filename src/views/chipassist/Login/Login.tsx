@@ -9,12 +9,12 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { title } from "@src/constants/defaults";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH, ID_ELFARO, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
-import logo from "@src/images/logos/en/logo_darkback.png";
-import ca_logo_for_elfaro from "@src/images/elfaro/login_ca_logo.svg";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
 import LoginForm from "./components/LoginForm/LoginForm";
+
+const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const classes = useStyles();
@@ -98,19 +98,16 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
         >
           {constants.id === ID_ELFARO ? (
             <>
-              <a target="_blank" rel="noreferrer" href="https://chipassist.com/">
-                <img className={classes.logo} src={ca_logo_for_elfaro} alt="Chipassist logo" />
+              <a target="_blank" rel="noreferrer" href="https://chiponline.tech/">
+                <img style={{ height: 28 }} className={classes.logo} src={logo_img} alt="ChipOnline logo" />
               </a>
               <Typography color="inherit" variant="subtitle1">
-                Shopping cart is powered by{" "}
-                <a target="_blank" rel="noreferrer" className={classes.link} href="https://chipassist.com/">
-                  ChipAssist
-                </a>
+                {t("cover_text", { title })}
               </Typography>
             </>
           ) : (
             <>
-              {constants.id !== ID_ICSEARCH && <img className={classes.logo} src={logo} alt="Chipassist logo" />}
+              {constants.id !== ID_ICSEARCH && <img className={classes.logo} src={logo_img} alt="Chipassist logo" />}
               <Typography color="inherit" variant="subtitle1">
                 {t("cover_text", { title })}
               </Typography>

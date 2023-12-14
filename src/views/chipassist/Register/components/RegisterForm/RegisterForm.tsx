@@ -70,6 +70,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
   const dispatch: any = useAppDispatch();
   const { t } = useI18n("register");
   // const navigate = useNavigate();
+  const isIcSearch = constants.id === ID_ICSEARCH;
 
   const isLoading = useAppSelector((state) => state.auth.loading);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
@@ -90,7 +91,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       email: formSchema.email,
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
-      policy_confirm: formSchema.policyConfirm,
+      ...(!isIcSearch && { policy_confirm: formSchema.policyConfirm }),
     };
   }, []);
 
@@ -266,7 +267,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
             ))}
           </TextField>
           <div>
-            {constants.id !== ID_ICSEARCH && (
+            {!isIcSearch && (
               <>
                 <div className={classes.policy}>
                   <FormControlLabel

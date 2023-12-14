@@ -35,18 +35,18 @@ const lastName = {
 const companyName = {
   presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} \`~'}{><"!@#$%^&*)(-_=+.,?№;:/]*`,
+    pattern: `[\x00-\x7F ${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""}]*`,
     flags: "i",
-    message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits")}`,
+    message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits_and_symbols")}`,
   },
 };
 
 const partNumber = {
   presence: { allowEmpty: false, message: `^${t("form_labels.part_number")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9 #,./-]*`,
+    pattern: `[a-zA-Z0-9 -/#,.+]*`,
     flags: "i",
-    message: `Only "a-z, A-Z, 0-9, /, #, -, ." are allowed in MPN`,
+    message: `Only "a-z, A-Z, 0-9, /, #, -, +, ." are allowed in MPN`,
   },
 };
 
@@ -62,9 +62,9 @@ const city = {
 const postcode = {
   presence: { allowEmpty: false, message: `^${t("form_labels.postcode")} ${t("errors.required")}` },
   format: {
-    pattern: `[a-zA-Z0-9${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""} \`~'}{><"!@#$%^&*)(-_=+.,?№;:/]*`,
+    pattern: `[\x00-\x7F ${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""}]*`,
     flags: "i",
-    message: `^${t("form_labels.postcode")} ${t("errors.only_letters_and_digits")}`,
+    message: `^${t("form_labels.postcode")} ${t("errors.only_letters_and_digits_and_symbols")}`,
   },
 };
 

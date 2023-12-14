@@ -2,6 +2,16 @@ import urlJoin from "url-join";
 import urlUtils from "url";
 import { schema, apiHost, debug } from "../constants/defaults";
 
+export function correctUrl(url) {
+  if (!url) return null;
+
+  let correctedUrl = url.trim();
+  if (!correctedUrl.startsWith("http://") && !correctedUrl.startsWith("https://")) {
+    correctedUrl = `https:${correctedUrl.startsWith("//") ? "" : "//"}${correctedUrl}`;
+  }
+  return correctedUrl;
+}
+
 export function addhttp(url) {
   const trimedUrl = url.trim();
 

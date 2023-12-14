@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontWeight: "bold",
   },
   inStock: {
-    backgroundColor: "#287c9f",
+    backgroundColor: theme.palette.primary.main,
     borderRadius: 4,
     marginBottom: 6,
     padding: "2px 10px",
@@ -44,8 +44,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     width: "100%",
     display: "table",
     borderRadius: 5,
-    border: "1px solid #287c9f",
-    backgroundColor: "#287c9f",
+    border: `1px solid ${theme.palette.primary.main}`,
+    backgroundColor: theme.palette.primary.main,
     overflow: "hidden",
     "& *": {
       textAlign: "center",

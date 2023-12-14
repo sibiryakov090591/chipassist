@@ -1,7 +1,10 @@
+import constants from "@src/constants/constants";
+import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+
 export const getInitialCurrency = (urlParam = null) => {
   let selectedCurrency = urlParam;
-  if (window.location.pathname === "/supplier-response") selectedCurrency = "USD";
   if (!selectedCurrency) selectedCurrency = localStorage.getItem("currency");
+  if (!selectedCurrency && constants.id === ID_SUPPLIER_RESPONSE) selectedCurrency = "USD";
   if (selectedCurrency) selectedCurrency = selectedCurrency.toUpperCase();
   if (!["EUR", "RUB", "USD"].includes(selectedCurrency)) selectedCurrency = null;
   return selectedCurrency;

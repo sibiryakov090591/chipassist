@@ -18,7 +18,7 @@ const defaults = {
   },
   closedRegistration: false,
   extendedRegistration: true,
-  currencyChanger: false,
+  currencyChanger: true,
   selectedCurrencyList: ["USD", "EUR"], // ["RUB", "USD", "EUR"]
   builds: "AWS",
   userActivity: true,

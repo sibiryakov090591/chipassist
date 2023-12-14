@@ -5,6 +5,8 @@ export const PROGRESS_MODAL_CLOSE = "PROGRESS_MODAL_CLOSE";
 export const PROGRESS_MODAL_SET_PART_NUMBER = "PROGRESS_MODAL_SET_PART_NUMBER";
 export const PROGRESS_MODAL_SET_REQUEST_TYPE = "PROGRESS_MODAL_SET_REQUEST_TYPE";
 
+export const SAVE_TEMP_RFQ = "SAVE_TEMP_RFQ";
+
 export type RequestTypes = "rfq" | "pcb" | "order" | "sellerMessage" | "rfq_list" | "qualityCheck";
 
 // State
@@ -16,6 +18,7 @@ export interface ProgressModalState {
   errorMessage: string;
   partNumber: string;
   requestType: RequestTypes;
+  tempRfq: any;
 }
 
 export interface LocalStorageItem {
@@ -37,4 +40,13 @@ export interface SetPartNumberProgressModalAction {
   payload: { partNumber: string; requestType: RequestTypes };
 }
 
-export type ProgressModalActions = ProgressModalAction | SetPartNumberProgressModalAction | SetErrorProgressModalAction;
+export interface SaveTemporaryRfq {
+  type: typeof SAVE_TEMP_RFQ;
+  payload: any;
+}
+
+export type ProgressModalActions =
+  | ProgressModalAction
+  | SetPartNumberProgressModalAction
+  | SetErrorProgressModalAction
+  | SaveTemporaryRfq;

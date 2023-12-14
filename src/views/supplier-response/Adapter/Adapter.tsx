@@ -22,7 +22,7 @@ const Adapter: React.FC = () => {
   };
 
   return (
-    <Page title={"Statistic"} description={"Statistic of supplier responses"}>
+    <Page title={"Statistic"} description={"Statistics of supplier responses"}>
       <Container maxWidth="xl">
         <div className={requestsClasses.main}>
           <Box display="flex" flexDirection="column" alignItems="flex-start">

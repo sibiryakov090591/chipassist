@@ -1,8 +1,8 @@
 const defaults = {
-  title: "Elfaro",
+  title: "ChipOnline",
   id: "elfaro",
   apiPath: "/api",
-  apiHost: "api.elfaro.ee",
+  apiHost: "api.chiponline.tech",
   schema: "https",
   locales: ["ru", "en"],
   localeDefault: "en",
@@ -34,7 +34,7 @@ const defaults = {
   SHOW_FILTERS: false,
   jivoChat: false,
   YM: false,
-  GA: true,
+  GA: false,
   checkSiteVersion: true,
   checkSiteVersionPing: 6, // minutes
   showInn: true,

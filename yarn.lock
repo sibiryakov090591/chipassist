@@ -8758,9 +8758,6 @@ peek-readable@^4.1.0:
 pend@~1.2.0:
   version "1.2.0"
 
-perfect-scrollbar@^1.5.0:
-  version "1.5.5"
-
 performance-now@^2.1.0:
   version "2.1.0"
 
@@ -9481,12 +9478,6 @@ react-number-format@4.4.1:
 react-paginate@6.3.2:
   version "6.3.2"
   dependencies:
-    prop-types "^15.6.1"
-
-react-perfect-scrollbar@^1.5.3:
-  version "1.5.8"
-  dependencies:
-    perfect-scrollbar "^1.5.0"
     prop-types "^15.6.1"
 
 react-phone-input-2@2.14.0:

@@ -4,10 +4,10 @@ import clsx from "clsx";
 import { AppBar, Box, Container, Toolbar, Hidden } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+// import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import MobileMenu from "./MobileMenu/MobileMenu";
 import { useStyles } from "./topbarStyles";
-import CurrencyMenu from "../../HomePage/components/TopBar/components/CurrencyMenu/CurrencyMenu";
+// import CurrencyMenu from "../../HomePage/components/TopBar/components/CurrencyMenu/CurrencyMenu";
 import ProfileMenu from "../../HomePage/components/TopBar/components/ProfileMenu/index";
 import Authorized from "../../HomePage/components/TopBar/components/ProfileMenu/Authorized";
 import NotAuthorized from "../../HomePage/components/TopBar/components/ProfileMenu/NotAuthorized";
@@ -23,7 +23,7 @@ const TopBar: React.FC<Props> = ({ className }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
-  const currency = useAppSelector((state) => state.currency);
+  // const currency = useAppSelector((state) => state.currency);
 
   const logoLink = (
     <Link style={{ display: "flex" }} to="/" onClick={() => window.location.pathname === "/" && navigate(0)}>
@@ -40,24 +40,24 @@ const TopBar: React.FC<Props> = ({ className }) => {
               {logoLink}
               <TopMenu isMobile={false} />
               <Box display="flex">
-                {constants.currencyChanger && !!constants.selectedCurrencyList?.length && (
-                  <Box>
-                    <CurrencyMenu
-                      containerClassName={classes.langBlock}
-                      buttonComponent={
-                        <div style={{ display: "flex" }}>
-                          <div>
-                            <div>{currency?.selected?.code}</div>
-                            <div>{currency?.selected?.symbol}</div>
-                          </div>
-                          <div>
-                            <ArrowDropDownIcon />
-                          </div>
-                        </div>
-                      }
-                    />
-                  </Box>
-                )}
+                {/* {constants.currencyChanger && !!constants.selectedCurrencyList?.length && ( */}
+                {/*  <Box> */}
+                {/*    <CurrencyMenu */}
+                {/*      containerClassName={classes.langBlock} */}
+                {/*      buttonComponent={ */}
+                {/*        <div style={{ display: "flex" }}> */}
+                {/*          <div> */}
+                {/*            <div>{currency?.selected?.code}</div> */}
+                {/*            <div>{currency?.selected?.symbol}</div> */}
+                {/*          </div> */}
+                {/*          <div> */}
+                {/*            <ArrowDropDownIcon /> */}
+                {/*          </div> */}
+                {/*        </div> */}
+                {/*      } */}
+                {/*    /> */}
+                {/*  </Box> */}
+                {/* )} */}
                 <ProfileMenu>{isAuthenticated ? <Authorized /> : <NotAuthorized />}</ProfileMenu>
               </Box>
             </Toolbar>

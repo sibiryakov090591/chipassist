@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Page from "@src/components/Page";
-import { Button, Container, Box } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Box,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { loadSupplierStatistics } from "@src/store/supplierStatistics/statisticsActions";
@@ -17,8 +28,9 @@ import { ResponseItem as IResponseItem } from "@src/store/supplierStatistics/sta
 import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@src/components/FiltersBar";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { v4 as uuid } from "uuid";
-import { DataHeader, DataTable, DataRow, DataField, DataValue, DataBody } from "@src/components/DataTable/DataTable";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
+import { format } from "date-fns";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import { useStyles } from "./statisticsStyles";
 import Paginate from "../../../components/Paginate";
 import StatisticItem from "./components/StatisticItem/StatisticItem";
@@ -28,12 +40,20 @@ interface Filters {
   page_size: number;
 }
 
+interface State {
+  [key: string]: {
+    [key: string]: IResponseItem[];
+  };
+}
+
 const Statistics: React.FC = () => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const requestsClasses = useRequestsStyles();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const page = useURLSearchParams("page", false, 1, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("supplier_statistic_page_size"), false);
@@ -44,7 +64,7 @@ const Statistics: React.FC = () => {
   const currency = useAppSelector((state) => state.currency.selected);
 
   const [filters, setFilters] = useState<Filters>(null);
-  const [items, setItems] = useState<{ [key: string]: IResponseItem[] }>({});
+  const [groups, setGroups] = useState<State>({});
 
   useEffect(() => {
     dispatch(loadMiscAction("supplier_statistic_filters")).finally((res: any) => {
@@ -67,11 +87,20 @@ const Statistics: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      const newData = data.results.reduce((acc: { [key: string]: IResponseItem[] }, item) => {
-        const groupName = new Date(item.date).toLocaleDateString();
-        return { ...acc, [groupName]: acc[groupName] ? [...acc[groupName], item] : [item] };
+      const newData = data.results.reduce((acc: State, item) => {
+        const groupDate = format(new Date(item.date), "dd.MM.yyyy");
+        const stockId = item.stockrecord_id || uuid();
+        return {
+          ...acc,
+          [groupDate]: acc[groupDate]
+            ? {
+                ...acc[groupDate],
+                [stockId]: acc[groupDate][stockId] ? [...acc[groupDate][stockId], item] : [item],
+              }
+            : { [stockId]: [item] },
+        };
       }, {});
-      setItems(newData);
+      setGroups(newData);
     }
   }, [data]);
 
@@ -105,11 +134,11 @@ const Statistics: React.FC = () => {
   };
 
   return (
-    <Page title={"Statistic"} description={"Statistic of supplier responses"}>
+    <Page title={"Statistic"} description={"Statistics of supplier responses"}>
       <section className={classes.section}>
         <Container maxWidth="xl">
           <Box display="flex" flexDirection="column" alignItems="flex-start">
-            <h1 className={requestsClasses.title}>Statistic of your responses</h1>
+            <h1 className={requestsClasses.title}>Statistics of your responses</h1>
             <SupplierSelect />
           </Box>
           {isAuthenticated && selectedPartner === false && (
@@ -147,6 +176,7 @@ const Statistics: React.FC = () => {
           <div className={clsx(commonClasses.filtersRow, commonClasses.filtersRowMargin)}>
             <FiltersContainer>
               <FilterResultsBar count={data?.total_count} />
+              <FilterCurrency />
               <FilterPageSizeChoiceBar
                 storageKey={"supplier_statistic_page_size"}
                 action={onChangePageSize}
@@ -160,73 +190,60 @@ const Statistics: React.FC = () => {
               <Preloader title="Statistic are loading..." />
             </Box>
           )}
-          {(!isAuthenticated || (!isLoading && !Object.keys(items).length)) && (
+          {(!isAuthenticated || (!isLoading && !Object.keys(groups).length)) && (
             <div className={classes.empty}>You have not responded to any requests yet</div>
           )}
+          {isSmDown && !isLoading && !!Object.keys(groups).length && (
+            <div className={classes.empty}>The statistics are available only on the desktop version</div>
+          )}
 
-          {isAuthenticated && !isLoading && !!Object.keys(items).length && (
+          {!isSmDown && isAuthenticated && !isLoading && !!Object.keys(groups).length && (
             <div>
-              {!isLoading && items && !!Object.keys(items).length && (
-                <>
-                  {Object.entries(items).map((item) => {
-                    return (
-                      <div key={item[0]} className={requestsClasses.group}>
-                        <div className={requestsClasses.created}>
-                          <span>{item[0]}</span>
-                        </div>
-                        <DataTable
-                          className={classes.table}
-                          gridClass={classes.gridClass}
-                          gridAreasBreakpoint="sm"
-                          gridLabelsBreakpoint="sm"
-                        >
-                          <DataHeader>
-                            <DataRow className={appTheme.tableHeader}>
-                              <DataField gridArea="mpn">
-                                <DataValue>Requested MPN</DataValue>
-                              </DataField>
-                              <DataField gridArea="qty">
-                                <DataValue>Requested quantity</DataValue>
-                              </DataField>
-                              <DataField gridArea="yourQty">
-                                <DataValue>Your quantity</DataValue>
-                              </DataField>
-                              <DataField gridArea="manufacturer">
-                                <DataValue>Manufacturer</DataValue>
-                              </DataField>
-                              <DataField gridArea="date">
-                                <DataValue>Response date</DataValue>
-                              </DataField>
-                              <DataField gridArea="yourPrice">
-                                <DataValue>Your price ({currency.symbol})</DataValue>
-                              </DataField>
-                              <DataField gridArea="competitivePrice">
-                                <DataValue>Competitive price ({currency.symbol})</DataValue>
-                              </DataField>
-                              <DataField gridArea="position">
-                                <DataValue>Your position</DataValue>
-                              </DataField>
-                            </DataRow>
-                          </DataHeader>
-                          <DataBody>
-                            {item[1].map((i, index) => {
-                              return <StatisticItem key={uuid()} item={i} index={index} />;
-                            })}
-                          </DataBody>
-                        </DataTable>
-                      </div>
-                    );
-                  })}
-                  {data?.total_pages > 1 && (
-                    <Box paddingBottom={4} display="flex" justifyContent="center">
-                      <Paginate
-                        pageCount={data.total_pages}
-                        activePage={filters?.page}
-                        onPageChange={onPageChangeHandler}
-                      />
-                    </Box>
-                  )}
-                </>
+              {Object.entries(groups).map((entry) => {
+                const [date, group] = entry;
+                return (
+                  <div key={date} className={requestsClasses.group}>
+                    <div className={requestsClasses.created}>
+                      <span>{date}</span>
+                    </div>
+                    <Table className={classes.table}>
+                      <TableHead>
+                        <TableRow className={appTheme.tableHeader}>
+                          <TableCell className={classes.thText}>Requested MPN</TableCell>
+                          <TableCell className={classes.thQty}>Requested quantity</TableCell>
+                          <TableCell className={classes.thQty}>Your quantity</TableCell>
+                          <TableCell className={classes.thText}>Manufacturer</TableCell>
+                          <TableCell className={classes.thText}>DC</TableCell>
+                          <TableCell className={classes.thQty}>Response date</TableCell>
+                          <TableCell className={classes.thQty}>
+                            Your <span className={classes.noWrap}>price ({currency.symbol})</span>
+                          </TableCell>
+                          <TableCell className={classes.thQty}>
+                            Competitive <span className={classes.noWrap}>price ({currency.symbol})</span>
+                          </TableCell>
+                          <TableCell className={classes.thText}>Your position</TableCell>
+                          <TableCell className={classes.thArrow}></TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {Object.values(group)
+                          .sort((a, b) => new Date(b[0].date).getTime() - new Date(a[0].date).getTime())
+                          .map((stocks, index) => {
+                            return <StatisticItem key={uuid()} items={stocks} index={index} />;
+                          })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                );
+              })}
+              {data?.total_pages > 1 && (
+                <Box paddingBottom={4} display="flex" justifyContent="center">
+                  <Paginate
+                    pageCount={data.total_pages}
+                    activePage={filters?.page}
+                    onPageChange={onPageChangeHandler}
+                  />
+                </Box>
               )}
             </div>
           )}

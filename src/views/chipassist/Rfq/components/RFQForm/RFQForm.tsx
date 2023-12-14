@@ -50,7 +50,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import {
-  loadProfileInfoThunk,
+  newCompanyAddress,
   saveProfileInfo,
   updateCompanyAddress,
   updateProfileInfoThunk,
@@ -87,8 +87,6 @@ interface Props {
 }
 
 interface RfqItemInterface {
-  partNumber: string;
-  prevPartNumber: string;
   country: string;
   quantity: string;
   price: string;
@@ -108,8 +106,6 @@ interface RfqItemInterface {
 }
 
 interface RfqItemTouched {
-  partNumber?: boolean;
-  prevPartNumber?: boolean;
   country?: boolean;
   quantity?: boolean;
   price?: boolean;
@@ -125,8 +121,6 @@ interface RfqItemTouched {
 }
 
 interface RfqItemErrors {
-  partNumber?: string[];
-  prevPartNumber?: string[];
   country?: string[];
   quantity?: string[];
   price?: string[];
@@ -156,32 +150,6 @@ interface FormState {
   errors: RfqItemErrors;
 }
 
-const defaultState = (profile?: any): FormState => ({
-  isValid: false,
-  values: {
-    partNumber: "",
-    prevPartNumber: "",
-    country: profile?.country || "",
-    quantity: "",
-    price: "",
-    // deliveryDate: getCurrentDate(),
-    // validateDate: getCurrentDate(),
-    // seller: [],
-    // address: "",
-    comment: "",
-    email: profile?.email || "",
-    firstName: profile?.firstName || "",
-    lastName: profile?.lastName || "",
-    // company_type: "Distributor",
-    // company_other_type: "",
-    company_name: profile?.defaultBillingAddress?.company_name || "",
-    policy_confirm: false,
-    receive_updates_confirm: false,
-  },
-  touched: {},
-  errors: {},
-});
-
 const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, className }) => {
   // const history = useHistory();
   // const location = useLocation();
@@ -210,6 +178,34 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
+  const defaultState = (profile?: any): FormState => ({
+    isValid: false,
+    values: {
+      country:
+        (profile?.defaultBillingAddress?.country &&
+          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+        (geolocation?.country_code_iso3 &&
+          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+        defaultCountry.url,
+      quantity: profile?.quantity || "",
+      price: profile?.price || "",
+      // deliveryDate: getCurrentDate(),
+      // validateDate: getCurrentDate(),
+      // seller: [],
+      // address: "",
+      comment: profile?.comment || "",
+      email: profile?.email || "",
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
+      // company_type: "Distributor",
+      // company_other_type: "",
+      company_name: profile?.defaultBillingAddress?.company_name || "",
+      policy_confirm: false,
+      receive_updates_confirm: false,
+    },
+    touched: {},
+    errors: {},
+  });
   const [formState, setFormState] = useState<FormState>(defaultState(profileInfo));
   const debouncedState = useDebounce(formState, 300);
 
@@ -226,7 +222,10 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (profileInfo) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => {
+        return defaultState({ ...prevState.values, ...profileInfo });
+      });
+
       setBillingAddress(profileInfo.defaultBillingAddress);
       setPhoneValue(profileInfo.defaultBillingAddress.phone_number_str);
     }
@@ -252,9 +251,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       firstName: formSchema.firstName,
       lastName: formSchema.lastName,
       company_name: formSchema.companyName,
-      partNumber: {
-        presence: { allowEmpty: false, message: `^${t("column.part_number")} ${t("column.required")}` },
-      },
       quantity: {
         presence: { allowEmpty: false, message: `^${t("column.qty")} ${t("column.required")}` },
       },
@@ -286,7 +282,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   useEffect(() => {
     if (rfqModalOpen) {
-      setFormState(defaultState(profileInfo));
+      setFormState((prevState) => defaultState({ ...prevState.values, ...profileInfo }));
     } else if (!isAuthenticated) {
       localStorage.setItem(
         "rfq_form_register_data",
@@ -312,7 +308,11 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         ...prevState,
         values: {
           ...prevState.values,
-          ...rfqItem,
+          ...{
+            ...rfqItem,
+            quantity: prevState.values.quantity || rfqItem.quantity,
+            comment: prevState.values.comment || rfqItem.comment,
+          },
           ...(!isAuthenticated && registerData && { firstName: registerData.firstName }),
           ...(!isAuthenticated && registerData && { lastName: registerData.lastName }),
           ...(!isAuthenticated && registerData && { email: registerData.email }),
@@ -377,7 +377,6 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, type, checked } = e.target;
-
     const errors = { ...formState.errors };
     if (errors[name]) delete errors[name];
 
@@ -441,6 +440,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
     e.preventDefault();
 
     const errors = validate(formState.values, schema);
+
     if (errors) {
       return setFormState((prevState) => ({
         ...prevState,
@@ -500,7 +500,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         : null;
 
       const data = {
-        part_number: formState.values.prevPartNumber || formState.values.partNumber,
+        part_number: rfqItem.partNumber,
         quantity: formState.values.quantity,
         price:
           formState.values.price ||
@@ -551,7 +551,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
           return [...acc, sellerData];
         }, []);
 
-      dispatch(progressModalSetPartNumber(formState.values.partNumber, "rfq"));
+      dispatch(progressModalSetPartNumber(rfqItem.partNumber, "rfq"));
 
       console.log("MISC_SAVE:", formState.values);
       dispatch(changeMisc("rfq", formState.values, formState.values.email));
@@ -561,33 +561,46 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       if (isAuthenticated) {
         // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
         setIsLoading(true);
-        await dispatch(
-          updateCompanyAddress(billingAddress.id, {
-            ...billingAddress,
-            first_name: formState.values.firstName,
-            last_name: formState.values.lastName,
-            company_name: formState.values.company_name,
-            phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-            country: formState.values.country || null,
-            line1: billingAddress.line1 || "-",
-          }),
-        ).then(() => dispatch(loadProfileInfoThunk()));
+        if (billingAddress?.id) {
+          await dispatch(
+            updateCompanyAddress(billingAddress.id, {
+              ...billingAddress,
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country || null,
+              line1: billingAddress.line1 || "-",
+            }),
+          );
+        } else {
+          await dispatch(
+            newCompanyAddress({
+              first_name: formState.values.firstName,
+              last_name: formState.values.lastName,
+              company_name: formState.values.company_name,
+              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+              country: formState.values.country || null,
+              line1: "-",
+            }),
+          );
+        }
         await dispatch(updateProfileInfoThunk());
-        dispatch(saveRfqItem(data)).then(() => {
-          batch(() => {
-            setIsLoading(false);
-            dispatch(clearRfqItem());
-            if (onCloseModalHandler) dispatch(rfqModalClose());
-            setFormState((prevState) => ({
-              ...defaultState(),
-              values: {
-                ...defaultState().values,
-                partNumber: prevState.values.partNumber,
-                country: prevState.values.country,
-              },
-            }));
-          });
-        });
+        dispatch(saveRfqItem(data))
+          .then(() => {
+            batch(() => {
+              dispatch(clearRfqItem());
+              if (onCloseModalHandler) dispatch(rfqModalClose());
+              setFormState((prevState) => ({
+                ...defaultState(),
+                values: {
+                  ...defaultState({ ...prevState.values, ...profileInfo }).values,
+                  country: prevState.values.country,
+                },
+              }));
+            });
+          })
+          .finally(() => setIsLoading(false));
         if (sellersMessages?.length) {
           sellersMessages.forEach((messageData) => dispatch(sendSellerMessage(messageData)));
         }
@@ -628,8 +641,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               setFormState((prevState) => ({
                 ...defaultState(),
                 values: {
-                  ...defaultState().values,
-                  partNumber: prevState.values.partNumber,
+                  ...defaultState({ ...prevState?.values, ...profileInfo }).values,
                   country: prevState.values.country,
                 },
               }));

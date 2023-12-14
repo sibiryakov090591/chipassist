@@ -623,12 +623,13 @@ const OrderConfirm: React.FC = () => {
                       {t("confirm_order.footer")}
                       <a href="mailto:sales@elfaro.ee">sales@elfaro.ee</a>
                     </Typography>
-                    <a href="https://elfaro.ee" target="_blank" rel="noreferrer" className={classes.footerLogo}>
+                    <a href="https://chiponline.tech/" target="_blank" rel="noreferrer" className={classes.footerLogo}>
                       <img src={elfaro_logo} alt="logo" />
                     </a>
-                    <address style={{ marginBottom: 4 }}>ELFARO OÜ, Vesse poik, 4d, 11415, Tallinn, Estonia</address>
-                    <a href="tel:+37253011314">+372 5301 1314</a> | <a href="mailto:sales@elfaro.ee">sales@elfaro.ee</a>{" "}
-                    | <a href="https://elfaro.ee">https://elfaro.ee</a>
+                    <address style={{ marginBottom: 4 }}>ChipOnline, 24000, Serbia, Subotica, Korzo 1</address>
+                    <a href="tel:+381621257226">+381 62 1257 226</a> |{" "}
+                    <a href="mailto:info@chiponline.tech">info@chiponline.tech</a> |{" "}
+                    <a href="https://chiponline.tech/">https://chiponline.tech/</a>
                   </Box>
                 </Box>
               </>

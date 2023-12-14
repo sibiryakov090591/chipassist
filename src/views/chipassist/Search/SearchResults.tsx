@@ -37,7 +37,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
 import RfqBar from "@src/views/chipassist/Search/components/RfqBar/RfqBar";
-import { europeanCountries } from "@src/constants/countries";
+import { europeCountries } from "@src/constants/countries";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
@@ -46,7 +46,7 @@ import ExtendedSearchBar from "./components/ProgressBar";
 import useSearchLoadResults from "./hooks/useSearchLoadResults";
 
 const allowedCountries = [
-  ...europeanCountries,
+  ...europeCountries,
   "USA", // the United States
   "CAN", // Canada
   "AUS", // Australia
@@ -399,7 +399,7 @@ const SearchResults = () => {
                 <Skeletons />
               ) : (
                 <div id={"productList"}>
-                  {!isSmDown && showRfqBar && <RfqBar />}
+                  {!isSmDown && showRfqBar && count > 0 && <RfqBar />}
                   <ProductsSegment>
                     {products?.map((product, key) => {
                       const rfq = rfqData.results.find((item) => item.id === product.id);

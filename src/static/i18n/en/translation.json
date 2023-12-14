@@ -11,6 +11,7 @@
   "errors": {
     "only_letters": "can only contain Latin letters",
     "only_letters_and_digits": "can only contain Latin letters and digits",
+    "only_letters_and_digits_and_symbols": "can only contain Latin letters, digits and symbols",
     "privacy_policy": "You must agree to the terms of service",
     "email": "This is not a valid email",
     "corporate_email": "Please use a corporate email address (not gmail.com etc)",
@@ -114,6 +115,7 @@
     }
   },
   "common": {
+    "regions": "Countries",
     "show_filters": "Show filters",
     "hide_filters": "Hide filters",
     "min": "min",
@@ -288,7 +290,7 @@
     "confirm_order": {
       "title": "Please review and accept your order",
       "sub_title": "You can view, modify and accept your order. If you do not want to accept this order, you can decline it.",
-      "footer": "Your order was prepared by ELFARO OÜ. Having any questions please mail to: "
+      "footer": "Your order was prepared by ChipOnline. Having any questions please mail to: "
     }
   },
     "progress_modal": {
@@ -713,7 +715,7 @@
     "empty_3": "and select something.",
     "loading": "Loading cart ...",
     "show_in_modal": "Show in modal",
-    "checkout": "Quote now",
+    "checkout": "Order now",
     "checkout_rfq": "Send RFQ",
     "log_in": "Continue",
     "back": "back to cart",
@@ -741,6 +743,7 @@
     "column": {
       "product": "Product",
       "distributor": "Distributor",
+      "location": "Stock location",
       "lead_time": "Lead time",
       "stock": "Stock",
       "price": "Price",
@@ -1325,7 +1328,8 @@
       "max": "No more than 100 characters",
       "digits": "Add at least one digit",
       "letters": "Add at least one letter",
-      "does_not_match": "Doesn't match"
+      "does_not_match": "Doesn't match",
+      "not": "Use latin symbols instead"
     },
     "after_request": {
       "title": "Set your password",

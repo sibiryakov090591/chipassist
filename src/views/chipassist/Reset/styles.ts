@@ -53,7 +53,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       borderBottomRightRadius: 4,
       padding: theme.spacing(3),
       color: "#fff",
-      backgroundColor: theme.palette.app.blue500,
+      backgroundColor: theme.palette.primary.main,
       display: "flex",
       flexDirection: "column",
       justifyContent: "flex-end",

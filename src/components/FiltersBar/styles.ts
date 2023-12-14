@@ -60,6 +60,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         marginBottom: 12,
       },
     },
+    strong: {
+      fontWeight: "bold",
+    },
+    countriesCount: {
+      marginLeft: 3,
+    },
     showButton: {
       fontSize: "12px",
       paddingBottom: "4px",
@@ -117,6 +123,31 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     restFiltersContainer: {
       alignSelf: "flex-end",
       flexDirection: "column",
+    },
+    countriesBlock: {
+      padding: "2px 2px 2px 16px",
+      maxHeight: "50vh",
+      width: 250,
+    },
+    countriesWrapper: {
+      paddingLeft: 16,
+      display: "none",
+      "&.show": {
+        display: "block",
+      },
+    },
+    regionRow: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingRight: 8,
+      "& > label": {
+        marginRight: 8,
+      },
+    },
+    extendedIcon: {
+      cursor: "pointer",
+      display: "flex",
     },
   }),
 );

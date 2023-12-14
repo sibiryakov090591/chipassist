@@ -100,12 +100,12 @@ const BomUpload: React.FC = () => {
     ...columnsInitialState,
   });
   const [startingRow, setStartingRow] = useState(1);
-  const [storageFileName, setStorageFileName] = useState<string>(null);
+  const [storageFile, setStorageFile] = useState<{ name: string }>(null);
   const [selectErrors, setSelectErrors] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    if (storageFileName)
-      dispatch(loadMiscAction(storageFileName)).then((res: any) => {
+    if (storageFile)
+      dispatch(loadMiscAction(storageFile.name)).then((res: any) => {
         setMisc(res);
 
         if (res?.data) {
@@ -131,7 +131,7 @@ const BomUpload: React.FC = () => {
           }
         }
       });
-  }, [storageFileName]);
+  }, [storageFile]);
 
   useEffect(() => {
     if (!upload.uploading && !upload.error && file) {
@@ -139,7 +139,7 @@ const BomUpload: React.FC = () => {
       setFile(null);
       setColumns({ ...columnsInitialState });
       setStartingRow(1);
-      setStorageFileName(null);
+      setStorageFile(null);
     }
   }, [upload]);
 
@@ -167,7 +167,7 @@ const BomUpload: React.FC = () => {
     setStartingRow(1);
     const fileName = `${slugify(acceptedFiles[0].name)}`;
     console.log("123storageFileName: ", fileName);
-    setStorageFileName(`${fileName}`);
+    setStorageFile({ name: `${fileName}` });
     return true;
   };
 
@@ -240,9 +240,9 @@ const BomUpload: React.FC = () => {
   const changeMisc = (data: ColumnsState) => {
     if (miscCreated || misc?.id) {
       const miscData = misc?.data || {};
-      dispatch(updateMiscAction(storageFileName, { ...miscData, ...data }));
+      dispatch(updateMiscAction(storageFile?.name, { ...miscData, ...data }));
     } else {
-      dispatch(saveMiscAction(storageFileName, { ...data })).then((res: any) => {
+      dispatch(saveMiscAction(storageFile?.name, { ...data })).then((res: any) => {
         setMiscCreated(true);
         if (res?.id) setMisc(res);
       });

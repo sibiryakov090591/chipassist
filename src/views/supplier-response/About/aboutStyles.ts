@@ -1,12 +1,11 @@
 import { Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
-import background from "@src/images/Homepage/background.png";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   main: {
-    padding: "2rem 0",
-    backgroundImage: `url(${background});`,
+    // padding: "2rem 0",
+    // backgroundImage: `url(${background});`,
   },
   section: {
     padding: "2rem 0",
@@ -14,20 +13,50 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   pageTitleContainer: {
     margin: "0 auto",
     paddingBottom: "2rem",
-    textAlign: "center",
+    display: "flex",
+    flexDirection: "row",
   },
   pageTitle: {
-    color: theme.palette.app.red500,
-    marginBottom: "1rem",
+    fontSize: "46px",
+    textAlign: "left",
+    marginBottom: "26px",
+    color: "white",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "30px",
+    },
+    // mixBlendMode: "difference",
   },
   pageDescription: {
-    fontSize: 18,
+    fontSize: "26px",
+    textAlign: "left",
+    marginBottom: "8px",
+    color: "#eee",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "20px",
+    },
+    // mixBlendMode: "difference",
+  },
+  pageTitleImage: {
+    marginTop: "5rem",
+    marginBottom: "6rem",
+    boxShadow: "0px 0px 24px #bbb",
+  },
+  pageDescrSubDiv: {
+    color: "#ddd",
+    fontSize: "20px",
+    textAlign: "left",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "16px",
+    },
   },
   title: {
     color: "#345",
     marginBottom: "3rem",
     fontSize: "1.8rem",
     textAlign: "center",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   italic: {
     fontStyle: "italic",
@@ -82,6 +111,19 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     "& p": {
       fontSize: 16,
     },
+  },
+  firstWay: {
+    width: "100vw",
+    color: "white",
+    background: `linear-gradient(270deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
+    transition: "background 200 easy-out",
+    [theme.breakpoints.down("xs")]: {
+      background: `linear-gradient(180deg, rgba(2,0,36,1) 6%, rgba(17,34,51,1) 57%, rgba(40,79,119,1) 100%)`,
+      transition: "background 200 easy-out",
+    },
+  },
+  howToGetStarted: {
+    backgroundColor: theme.palette.app.grey100,
   },
 }));
 

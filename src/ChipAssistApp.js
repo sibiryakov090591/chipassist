@@ -57,7 +57,7 @@ import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
 import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
-import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/HomePage";
+import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -129,7 +129,7 @@ const ChipAssistApp = () => {
   const isRestricted = constants.closedRegistration;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
-  const [geoLoaded, setGeoLoaded] = useState(false);
+
   const dispatch = useAppDispatch();
   const isAuthToken = useAppSelector((state) => state.auth.token !== null);
   const maintenance = useAppSelector((state) => state.maintenance);
@@ -208,7 +208,7 @@ const ChipAssistApp = () => {
       });
       dispatch(getAllSellers());
       // dispatch(getCountriesThunk());
-      dispatch(getGeolocation()).finally(() => setGeoLoaded(true));
+      dispatch(getGeolocation());
     });
   }, []);
 
@@ -249,7 +249,6 @@ const ChipAssistApp = () => {
     return <Maintenance />;
   }
 
-  if (!geoLoaded) return null;
   return (
     <div style={{ height: "100%" }}>
       <ProvidedErrorBoundary>
@@ -312,7 +311,15 @@ const ChipAssistApp = () => {
             <Route path="/auth/reset/:token" element={<Reset />} />
             <Route path="/password/request/:token" element={<Reset />} />
             <Route
-              path="/product/:partnumber/:productId"
+              path="/product/:partnumber/:stockrecordId"
+              element={
+                <Suspense fallback={}>
+                  <ProductView />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/product/:partnumber"
               element={
                 <Suspense fallback={}>
                   <ProductView />

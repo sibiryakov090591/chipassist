@@ -18,6 +18,7 @@ import { batch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import constants from "@src/constants/constants";
 import { useState } from "react";
+import { ID_ELFARO } from "@src/constants/server_constants";
 import useExtendedSearch from "./useExtendedSearch";
 
 const useSearchLoadResults = () => {
@@ -42,7 +43,7 @@ const useSearchLoadResults = () => {
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
   let baseFilters = useURLSearchParams("base_filters", true, null, true);
   filtersValues.base_num_in_stock = localStorage.getItem("productStock") === "true" ? 1 : "";
-  if (constants.isNewSearchPage) {
+  if (constants.isNewSearchPage || constants.id === ID_ELFARO) {
     filtersValues = null;
     baseFilters = null;
   }
@@ -71,7 +72,8 @@ const useSearchLoadResults = () => {
       dispatch(
         loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, {
           smart_view,
-          ...(isFirstRequest && { href: encodeURIComponent(href), referrer: encodeURIComponent(document.referrer) }),
+          href: encodeURIComponent(href),
+          ...(isFirstRequest && { referrer: encodeURIComponent(document.referrer) }),
         }),
       )
         .then((res: any) => {

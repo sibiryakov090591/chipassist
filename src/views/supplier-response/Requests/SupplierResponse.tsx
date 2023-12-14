@@ -48,6 +48,11 @@ import Modal from "@material-ui/core/Modal";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import constants from "@src/constants/constants";
 import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
+// import FilterRegions from "@src/components/FiltersBar/FilterRegions";
+// import * as countriesData from "@src/constants/countries";
+import { format } from "date-fns";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import useCurrency from "@src/hooks/useCurrency";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -63,6 +68,7 @@ interface Filters {
   days: number;
   all: boolean;
   has_response: boolean;
+  // countries: string[];
 }
 
 const SupplierResponse: React.FC = () => {
@@ -74,6 +80,7 @@ const SupplierResponse: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const { currency, currencyPrice } = useCurrency();
 
   const page = useURLSearchParams("page", false, 1, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("rfq_response_page_size") || 15, false);
@@ -90,7 +97,6 @@ const SupplierResponse: React.FC = () => {
   const rfqs = useAppSelector((state) => state.rfq.rfqs);
   const rfqResponseData = useAppSelector((state) => state.rfq.rfqResponseData);
   const isLoading = useAppSelector((state) => state.rfq.rfqsLoading);
-  const currency = useAppSelector((state) => state.currency.selected);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   const [items, setItems] = useState<{ [key: string]: IResponseItem[] }>(null);
@@ -116,13 +122,21 @@ const SupplierResponse: React.FC = () => {
   }, [rfqResponseData]);
 
   useEffect(() => {
-    dispatch(loadMiscAction("rfq_response_filters")).finally((res: any) => {
+    const setData = (res: any = null) => {
       const data = {
         page: (page ? +page : res?.data?.page) || 1,
         page_size: (pageSize ? +pageSize : res?.data?.page_size) || 15,
         all: false,
         days: 7,
         has_response: hasResponse !== null ? hasResponse === "true" : res?.data?.has_response || true,
+        // countries: res?.data?.countries || [
+        //   ...countriesData.africaCountries,
+        //   ...countriesData.asiaPacificCountries,
+        //   ...countriesData.europeCountries,
+        //   ...countriesData.middleEastCountries,
+        //   ...countriesData.northAmericaCountries,
+        //   ...countriesData.southLatinAmericaCountries,
+        // ],
       };
       if (!res?.data) {
         dispatch(saveMiscAction("rfq_response_filters", data));
@@ -131,7 +145,15 @@ const SupplierResponse: React.FC = () => {
       setUrl(navigate, "/supplier-response", data.page, data.page_size, {
         has_response: data.has_response,
       });
-    });
+    };
+
+    dispatch(loadMiscAction("rfq_response_filters"))
+      .then((res: any) => {
+        setData(res?.data);
+      })
+      .catch(() => {
+        setData();
+      });
   }, []);
 
   // return focus to the button when we transitioned from !open -> open
@@ -141,9 +163,17 @@ const SupplierResponse: React.FC = () => {
   }, [openPopper]);
 
   useEffect(() => {
-    if (selectedPartner || selectedPartner === false) {
+    if ((selectedPartner || selectedPartner === false) && filters) {
       dispatch(
-        getSupplierRfqs(page, pageSize, false, 7, selectedPartner === false ? false : selectedPartner.id, hasResponse),
+        getSupplierRfqs(
+          page,
+          pageSize,
+          false,
+          7,
+          selectedPartner === false ? false : selectedPartner.id,
+          hasResponse,
+          // filters.countries,
+        ),
       ).then((data: any) => {
         if (data?.page !== Number(page)) {
           // In this case load last page
@@ -154,52 +184,46 @@ const SupplierResponse: React.FC = () => {
         }
       });
     }
-  }, [selectedPartner, page, pageSize, hasResponse, forceUpdate]);
+  }, [selectedPartner, filters, forceUpdate]);
 
   useEffect(() => {
     if (rfqs.results && currency) {
       const newData: { [key: string]: IResponseItem[] } = {};
       ((rfqs.results as any) as SellerRfqItem[]).forEach((item) => {
-        const groupName = new Date(item.created).toLocaleDateString();
+        const groupName = format(new Date(item.created), "dd.MM.yyyy");
         const responseRfq = item.response_rfq || null;
         const responseItem = rfqResponseData[item.id];
 
-        let newItem: IResponseItem;
-        if (responseItem) {
-          newItem = {
-            ...item,
-            // index: filters?.page_size * (filters?.page - 1) + i + 1,
-            stock: responseItem.stock,
-            price: responseItem.price,
-            currency: currency.code,
-            alter_upc: responseItem.alter_upc || "",
-            datecode: responseItem.datecode,
-            lead_time: responseItem.lead_time,
-            comment: responseItem.comment || "",
-            selected_manufacturer: responseItem.selected_manufacturer || null,
-            other_manufacturer_name: "",
-          };
-        } else {
-          newItem = {
-            ...item,
-            // index: filters?.page_size * (filters?.page - 1) + i + 1,
-            stock: responseRfq?.your_quantity,
-            price: responseRfq?.unit_price,
-            currency: currency.code,
-            alter_upc: responseRfq?.alter_upc || item.part_number || "",
-            datecode: responseRfq?.datecode || "",
-            lead_time: responseRfq?.lead_time && Number(responseRfq.lead_time),
-            comment: responseRfq?.comment || "",
-            selected_manufacturer:
-              responseRfq?.manufacturer ||
-              (responseRfq?.manufacturers?.some((i) => i.id === item.manufacturer?.id)
-                ? item.manufacturer
-                : responseRfq?.manufacturers?.length
-                ? responseRfq?.manufacturers[0]
-                : null),
-            other_manufacturer_name: "",
-          };
+        let selected_manufacturer = responseItem?.selected_manufacturer;
+        if (!selected_manufacturer && responseRfq?.manufacturer?.id) {
+          selected_manufacturer = responseRfq?.manufacturers?.find((i) => i.id === responseRfq.manufacturer?.id);
         }
+        if (!selected_manufacturer && item.manufacturer?.id) {
+          selected_manufacturer = responseRfq?.manufacturers?.find((i) => i.id === item.manufacturer?.id);
+        }
+        if (!selected_manufacturer && item.manufacturer?.id) {
+          selected_manufacturer = responseRfq?.manufacturers?.length ? responseRfq?.manufacturers[0] : null;
+        }
+
+        const newItem: IResponseItem = {
+          ...item,
+          // index: filters?.page_size * (filters?.page - 1) + i + 1,
+          stock: responseItem ? responseItem.stock : responseRfq?.your_quantity,
+          price: responseItem
+            ? responseItem.price
+            : currencyPrice(responseRfq?.unit_price, responseRfq?.currency || "USD"),
+          currency: currency.code,
+          requested_price: {
+            price: item.price,
+            currency: item.currency,
+          },
+          alter_upc: responseItem ? responseItem.alter_upc || "" : responseRfq?.alter_upc || item.part_number || "",
+          datecode: responseItem ? responseItem.datecode : responseRfq?.datecode || "",
+          lead_time: responseItem ? responseItem.lead_time : responseRfq?.lead_time && Number(responseRfq.lead_time),
+          comment: responseItem ? responseItem.comment : responseRfq?.datecode || "",
+          selected_manufacturer,
+          other_manufacturer_name: "",
+        };
 
         // if (newItem.stock && newItem.price && newItem.datecode && newItem.lead_time) dispatch(saveResponse(newItem));
         if (!newData[groupName]) {
@@ -297,6 +321,23 @@ const SupplierResponse: React.FC = () => {
       );
     }
   };
+
+  // const onChangeCountries = (countries: string[]) => {
+  //   setFilters((prev) => ({ ...prev, page: 1, countries }));
+  //   setUrl(navigate, "/supplier-response", 1, pageSize, {
+  //     has_response: hasResponse,
+  //   });
+  //   dispatch(clearSupplierResponseData());
+  //   dispatch(
+  //     updateMiscAction("rfq_response_filters", {
+  //       data: {
+  //         ...filters,
+  //         page: 1,
+  //         countries,
+  //       },
+  //     }),
+  //   );
+  // };
 
   const onSubmit = () => {
     if (selectedPartner) {
@@ -495,11 +536,13 @@ const SupplierResponse: React.FC = () => {
               {/*  } */}
               {/*  label={"Show all"} */}
               {/* /> */}
+              <FilterCurrency />
               <FilterHasResponseBar
                 disable={isLoading}
                 action={onChangeHasResponses}
                 hasResponse={filters?.has_response}
               />
+              {/* <FilterRegions action={onChangeCountries} selected={filters?.countries || []} /> */}
               <FilterPageSizeChoiceBar
                 storageKey={"rfq_response_page_size"}
                 action={onChangePageSize}

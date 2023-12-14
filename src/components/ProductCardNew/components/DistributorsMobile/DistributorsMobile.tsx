@@ -15,6 +15,7 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { correctUrl } from "@src/utils/transformUrl";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
@@ -75,6 +76,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
               const dynamicMoq = getDynamicMoq(val);
               const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
               const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
+              const url = isShowProductLink && correctUrl(val.product_url || seller?.url);
               const dateCode = getStockDataCode(val);
               const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
@@ -122,14 +124,11 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                       <td className={classes.tdActions}>
                         {isShowProductLink ? (
                           <a
-                            href={val.product_url || seller.url}
+                            href={url}
                             target="_blank"
                             rel="noreferrer"
                             className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                            onClick={visitSellerHandler(
-                              { id: val.partner, name: val.partner_name },
-                              val.product_url || seller.url,
-                            )}
+                            onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
                           >
                             {isXXSDown ? "Site" : "Visit site"}
                           </a>

@@ -5,7 +5,7 @@ import axios from "@src/utils/axios";
 import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
 import { isTestAccount } from "@src/utils/auth";
 import * as actionTypes from "./profileTypes";
-import { Partner } from "./profileTypes";
+import { CREATE_ADDRESS_ARRAY, Partner, UPDATE_ADDRESS_ARRAY } from "./profileTypes";
 
 export const isLoadingProfile = (val: boolean) => {
   return {
@@ -35,8 +35,8 @@ export const loadProfileInfoThunk = () => {
           avatar: response.photo,
           addressErrors: null,
           addresses,
-          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || null,
-          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || null,
+          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || {},
+          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || {},
           addressViewItem: {},
         };
         if (profileInfo.defaultBillingAddress) {
@@ -247,7 +247,7 @@ export const clearResetPasswordState = () => ({ type: actionTypes.RESET_PASSWORD
 export const newCompanyAddress = (data: any) => {
   return (dispatch: Dispatch<any>) => {
     return dispatch({
-      types: [false, false, false],
+      types: CREATE_ADDRESS_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
           .post(`/profile/address/`, {
@@ -295,7 +295,7 @@ export const deleteAddress = (id: number) => (dispatch: Dispatch<any>) => {
 export const updateCompanyAddress = (id: number, data: any) => {
   return (dispatch: Dispatch<any>) => {
     return dispatch({
-      types: [false, false, false],
+      types: UPDATE_ADDRESS_ARRAY,
       promise: (client: ApiClientInterface) =>
         client
           .patch(`/useraddresses/${id}/`, {

@@ -9,7 +9,7 @@ import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 // import FindInPageOutlinedIcon from "@material-ui/icons/FindInPageOutlined";
 // import PersonAddOutlinedIcon from "@material-ui/icons/PersonAddOutlined";
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
+import { staticI18n, useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 // import Feedback from "@src/views/chipassist/Feedback/Feedback";
 import { Hidden, Paper, Tooltip, Zoom } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -27,6 +27,17 @@ import { useTheme, withStyles } from "@material-ui/core/styles";
 import { triggerReloadPage } from "@src/store/chat/chatActions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles } from "./topMenuStyles";
+
+const { t: _t } = staticI18n("menu");
+export const chipAssistMenuList = [
+  { name: "home", url: "/", label: _t("home") },
+  { name: "parts", url: "/parts", label: _t("parts") },
+  { name: "bom-create", url: "/bom/create-file", label: _t("bom") },
+  { name: "rfq", url: "/rfq-list-quotes", label: "RFQ List" },
+  { name: "messages", url: "/messages", label: _t("chat") },
+  { name: "general", url: "/profile/general", label: _t("profile") },
+  { name: "blog", url: "/blog", label: _t("blog") },
+];
 
 const HtmlTooltip = withStyles(() => ({
   tooltip: {

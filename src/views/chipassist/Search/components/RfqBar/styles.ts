@@ -9,7 +9,22 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       marginBottom: 15,
       padding: "16px 21px 21px",
       backgroundColor: theme.palette.app.green800,
+      // animation: `$rfq-bar-show-up 1s`,
     },
+    // "@keyframes rfq-bar-show-up": {
+    //   "0%": {
+    //     filter: "drop-shadow(0px 0px -10px #ffed17)",
+    //   },
+    //   "20%": {
+    //     filter: "drop-shadow(0px 0px 0px #ffed17)",
+    //   },
+    //   "70%": {
+    //     filter: "drop-shadow(0px 0px 25px #ffed17)",
+    //   },
+    //   "100%": {
+    //     filter: "drop-shadow(0px 0px 0px #ffed17)",
+    //   },
+    // },
     title: {
       color: "#ffffff",
       fontWeight: "bold",

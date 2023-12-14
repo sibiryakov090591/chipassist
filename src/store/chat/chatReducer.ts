@@ -1,4 +1,5 @@
 import { getPartnerName } from "@src/utils/chat";
+import _ from "lodash";
 import * as actionTypes from "./chatTypes";
 import { ChatListItem, ChatListMessage } from "./chatTypes";
 
@@ -122,8 +123,9 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
         const updatedChat: ChatListItem = results.find((i: ChatListItem) => i.id === chat.id);
         if (
           updatedChat &&
-          Number(updatedChat.unread_messages) > 0 &&
-          Number(updatedChat.unread_messages) !== Number(chat.unread_messages)
+          ((Number(updatedChat.unread_messages) > 0 &&
+            Number(updatedChat.unread_messages) !== Number(chat.unread_messages)) ||
+            !_.isEqual((chat.stocks && chat.stocks[0]) || {}, (updatedChat.stocks && updatedChat.stocks[0]) || {}))
         ) {
           updatedChats.push({ ...updatedChat, partner_name: getPartnerName(updatedChat.partner) });
           if (updatedChat.id === state.selectedChat?.id) {
@@ -142,7 +144,11 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           results: [...newChats, ...updatedChats, ...filteredState],
           unread_total,
         },
-        ...(unreadCountSelectedChat > 0 && {
+        ...((unreadCountSelectedChat > 0 ||
+          !_.isEqual(
+            (updatedSelectedChat?.stocks && updatedSelectedChat.stocks[0]) || {},
+            (state.selectedChat?.stocks && state.selectedChat.stocks[0]) || {},
+          )) && {
           selectedChat: { ...state.selectedChat, ...updatedSelectedChat, unread_messages: unreadCountSelectedChat },
         }),
         messages: { ...state.messages, forceUpdate: state.messages.forceUpdate + 1 },

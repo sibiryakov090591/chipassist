@@ -79,9 +79,11 @@ export const getSupplierRfqs = (
   days: number,
   sellerId: number | false,
   hasResponse: boolean,
+  // countries: string[] = [],
 ) => (dispatch: Dispatch<any>) => {
   const dateFrom = Date.now() - 1000 * 60 * 60 * 24 * (days - 1); // last days
   const dateFormat = new Date(dateFrom).toISOString().slice(0, 10);
+
   return dispatch({
     types: actionTypes.LOAD_RFQ,
     promise: (client: ApiClientInterface) =>
@@ -90,6 +92,7 @@ export const getSupplierRfqs = (
           `/rfqs/sellers?seller_id=${sellerId || "FALSE"}&page=${page}&page_size=${pageSize}&all=${
             all ? "TRUE" : "FALSE"
           }&date_from=${dateFormat}&has_response=${hasResponse}`,
+          // { data: { countries }, cancelId: "load_supplier_requests" },
           { cancelId: "load_supplier_requests" },
         )
         .then((res) => res.data)
@@ -115,12 +118,14 @@ export const clearSupplierResponseData = () => {
 
 export const sendRfqsResponse = (sellerId: number) => (dispatch: any, getState: () => RootState) => {
   if (!sellerId) return false;
-  const data: any = {};
+  const data: any = [];
   Object.values(getState().rfq.rfqResponseData).forEach((rfq) => {
     let comment = rfq.comment.trim();
     if (rfq.other_manufacturer_name)
       comment = `${comment ? `${comment}; ` : ""}Manufacturer name: ${rfq.other_manufacturer_name}`;
-    data[rfq.part_number] = {
+    data.push({
+      id: rfq.id,
+      part_number: rfq.part_number,
       price: rfq.price,
       stock: Number(rfq.stock || 0),
       lead_time: rfq.lead_time,
@@ -128,15 +133,14 @@ export const sendRfqsResponse = (sellerId: number) => (dispatch: any, getState: 
       comment,
       alter_upc: rfq.alter_upc?.trim() || "",
       currency: rfq.currency,
-      id: rfq.id,
       manufacturer_id: rfq.selected_manufacturer?.id || null,
-    };
+    });
   });
   return dispatch({
     types: [false, false, false],
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/response/`, {
+        .post(`/rfqs/response/?source=response`, {
           data: {
             seller: sellerId,
             data,
