@@ -16,7 +16,44 @@ import clsx from "clsx";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { triggerReloadPage } from "@src/store/chat/chatActions";
+import { ID_MASTER } from "@src/constants/server_constants";
 import { useStyles } from "./topMenuStyles";
+
+export const responsesMenuList = [
+  { name: "about", url: "/about", label: "About", getIcon: (className) => <HelpOutlineIcon className={className} /> },
+  {
+    name: "requests",
+    url: "/supplier-response",
+    label: "Requests",
+    getIcon: (className) => <HomeIcon className={className} />,
+  },
+  {
+    name: "statistics",
+    url: "/statistics",
+    label: "Statistics",
+    getIcon: (className) => <EqualizerIcon className={className} />,
+  },
+  {
+    name: "messages",
+    url: "/messages",
+    label: "Messages",
+    getIcon: (className) => <ChatOutlinedIcon className={className} />,
+  },
+  ...(constants.id === ID_MASTER && [
+    {
+      name: "upload",
+      url: "/adapter/upload",
+      label: "Data File Upload",
+      getIcon: (className) => <PublishIcon className={className} />,
+    },
+  ]),
+  {
+    name: "profile",
+    url: "/profile/general",
+    label: "Profile",
+    getIcon: (className) => <SettingsIcon className={className} />,
+  },
+];
 
 const TopMenu = ({ isMobile }) => {
   const classes = useStyles();
@@ -37,52 +74,27 @@ const TopMenu = ({ isMobile }) => {
 
   return (
     <div className={`${classes.topMenu} ${isMobile ? classes.topMenuMobile : ""}`}>
-      <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/about`}>
-          {isMobile && <HelpOutlineIcon className={`${classes.topMenuItemIcon}`} />}
-          About
-        </NavLink>
-      </div>
-      <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/supplier-response`}>
-          {isMobile && <HomeIcon className={`${classes.topMenuItemIcon}`} />}
-          Requests
-        </NavLink>
-      </div>
-      <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/statistics`}>
-          {isMobile && <EqualizerIcon className={`${classes.topMenuItemIcon}`} />}
-          Statistics
-        </NavLink>
-      </div>
-      {constants.title === "Master" && (
-        <div className={itemClasses}>
-          <NavLink className={classes.topMenuItemLink} to={`/adapter/upload`}>
-            {isMobile && <PublishIcon className={`${classes.topMenuItemIcon}`} />}
-            Data File Upload
-          </NavLink>
-        </div>
-      )}
-      <div className={itemClasses}>
-        <NavLink className={classes.topMenuItemLink} to={`/messages`} onClick={reloadChatPage}>
-          {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          <span style={{ position: "relative" }}>
-            Messages
-            <ChatUnreadTotalCount className={classes.chatUnreadCount} />
-          </span>
-        </NavLink>
-      </div>
-      <div className={itemClasses}>
-        <NavLink
-          className={clsx(classes.topMenuItemLink, {
-            active: window.location.pathname.includes("/profile/"),
-          })}
-          to={`/profile/general`}
-        >
-          {isMobile && <SettingsIcon className={`${classes.topMenuItemIcon}`} />}
-          Profile
-        </NavLink>
-      </div>
+      {responsesMenuList.map((item) => {
+        if (!item) return null;
+        return (
+          <div key={item.name} className={itemClasses}>
+            <NavLink
+              className={clsx(
+                classes.topMenuItemLink,
+                item.name === "profile" && {
+                  active: window.location.pathname.includes("/profile/"),
+                },
+              )}
+              to={item.url}
+              onClick={item.name === "messages" && reloadChatPage}
+            >
+              {isMobile && item.getIcon(classes.topMenuItemIcon)}
+              {item.label}
+              {item.name === "messages" && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+            </NavLink>
+          </div>
+        );
+      })}
       {isMobile && isAuthenticated && (
         <div className={itemClasses}>
           <div className={`${classes.topMenuItemLink} top-menu-logout`} onClick={logoutHandler}>

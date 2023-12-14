@@ -1,10 +1,14 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Typography } from "@material-ui/core";
-import { useI18n, staticI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import { Page } from "@src/components";
 import image from "@src/images/404_page/chip2_404r.png";
 import { NavLink } from "react-router-dom";
+import constants from "@src/constants/constants";
+import { ID_CHIPASSIST, ID_ELFARO, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { responsesMenuList } from "@src/layouts/SupplierLayout/components/TopMenu/TopMenu";
+import { chipAssistMenuList } from "@src/layouts/HomePage/components/TopBar/components/TopMenu/TopMenu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,16 +45,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const { t: _t } = staticI18n("menu");
-const topMenuList = [
-  { name: "home", url: "/", label: _t("home") },
-  { name: "parts", url: "/parts", label: _t("parts") },
-  { name: "bom-create", url: "/bom/create-file", label: _t("bom") },
-  { name: "rfq", url: "/rfq-list-quotes", label: "RFQ List" },
-  { name: "messages", url: "/messages", label: _t("chat") },
-  { name: "general", url: "/profile/general", label: _t("profile") },
-  { name: "blog", url: "/blog", label: _t("blog") },
-];
+const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
+const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+const isChipOnline = constants.id === ID_ELFARO;
+
+let topMenuList = [];
+if (isChipAssist) {
+  topMenuList = chipAssistMenuList.filter((i) => !!i);
+}
+if (isSupplierResponse) {
+  topMenuList = responsesMenuList.filter((i) => !!i);
+}
 
 const Error404 = () => {
   const classes = useStyles();
@@ -68,16 +73,28 @@ const Error404 = () => {
         {t("404_description")}
       </Typography>
       <div className={classes.menuContainer}>
-        {topMenuList.map((item, index) => {
-          return (
-            <React.Fragment key={index}>
-              <NavLink className={classes.menuItem} to={item.url}>
-                {item.label}
-              </NavLink>
-              {topMenuList.length - 1 > index && <span className={classes.divider}>|</span>}
-            </React.Fragment>
-          );
-        })}
+        {!isChipOnline &&
+          topMenuList.map((item, index) => {
+            return (
+              <React.Fragment key={index}>
+                <NavLink className={classes.menuItem} to={item.url}>
+                  {item.label}
+                </NavLink>
+                {topMenuList.length - 1 > index && <span className={classes.divider}>|</span>}
+              </React.Fragment>
+            );
+          })}
+        {isChipOnline && (
+          <>
+            <a className={classes.menuItem} href={"https://chiponline.tech/"}>
+              ChipOnline Website
+            </a>
+            <span className={classes.divider}>|</span>
+            <NavLink className={classes.menuItem} to={"/search"}>
+              Online Shop
+            </NavLink>
+          </>
+        )}
       </div>
     </Page>
   );
