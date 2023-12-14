@@ -211,7 +211,7 @@ const SupplierResponse: React.FC = () => {
           stock: responseItem ? responseItem.stock : responseRfq?.your_quantity,
           price: responseItem
             ? responseItem.price
-            : currencyPrice(responseRfq?.unit_price, responseRfq?.currency || "EUR"),
+            : currencyPrice(responseRfq?.unit_price, responseRfq?.currency || "USD"),
           currency: currency.code,
           requested_price: {
             price: item.price,
