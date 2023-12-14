@@ -141,6 +141,7 @@ const ProgressModal: React.FC = () => {
   const handleClose = () => {
     dispatch(progressModalClose());
     if (tokenForSetPassword) {
+      window.scrollTo({ top: 0 });
       navigate(`/password/request/${tokenForSetPassword}`, {
         state: { background: location.state?.background || location },
       });

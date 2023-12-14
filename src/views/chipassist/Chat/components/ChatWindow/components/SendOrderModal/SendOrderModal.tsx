@@ -5,6 +5,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import Fade from "@material-ui/core/Fade";
 import { ChatListStock } from "@src/store/chat/chatTypes";
 import { clsx } from "clsx";
+import { useStyles } from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/styles";
 import SendOrderModalContainer from "./components/SendOrderModalContainer";
 
 interface Props {
@@ -16,7 +17,7 @@ interface Props {
 
 const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSending }) => {
   const commonClasses = useCommonStyles();
-
+  const classes = useStyles();
   return (
     <Modal
       open={open}
@@ -29,7 +30,7 @@ const SendOrderModal: React.FC<Props> = ({ open, stock, onCloseModal, setIsSendi
       }}
     >
       <Fade in={open}>
-        <div className={clsx(commonClasses.paper, "fullScreen")}>
+        <div className={clsx(commonClasses.paper, "fullScreen", classes.paper)}>
           <SendOrderModalContainer open={open} stock={stock} onCloseModal={onCloseModal} setIsSending={setIsSending} />
         </div>
       </Fade>

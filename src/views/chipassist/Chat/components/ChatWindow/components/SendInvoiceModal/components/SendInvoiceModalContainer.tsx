@@ -213,7 +213,7 @@ export const SendInvoiceModalContainer: React.FC<{
   const onSubmitHandler = () => handleSubmit(onSubmit)();
 
   return (
-    <div className={isExample ? clsx(commonClasses.paper, "fullScreen") : commonClasses.displayContents}>
+    <div className={isExample ? clsx(commonClasses.paper, "fullScreen", classes.paper) : commonClasses.displayContents}>
       <form style={{ minHeight: 600 }} className={classes.form}>
         <div>
           {step === 1 && (
@@ -556,6 +556,30 @@ export const SendInvoiceModalContainer: React.FC<{
                   <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
                 </Box>
               </h3>
+              <h3>
+                <Box display="flex" justifyContent="space-between">
+                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
+                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
+                </Box>
+              </h3>
+              <h3>
+                <Box display="flex" justifyContent="space-between">
+                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
+                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
+                </Box>
+              </h3>
+              <h3>
+                <Box display="flex" justifyContent="space-between">
+                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
+                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
+                </Box>
+              </h3>
+              <h3>
+                <Box display="flex" justifyContent="space-between">
+                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
+                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
+                </Box>
+              </h3>
 
               <Box display="flex" justifyContent="space-between" alignItems="center" mt="16px">
                 <Box display="flex" alignItems="center">
@@ -569,7 +593,7 @@ export const SendInvoiceModalContainer: React.FC<{
             </>
           )}
         </div>
-        <Box display="flex" justifyContent="space-between" alignItems="flex-end">
+        <Box display="flex" pb="16px" justifyContent="space-between" alignItems="flex-end">
           <Box>{step} / 2</Box>
           <Box mt={2} minWidth="70%" className={commonClasses.actionsRow}>
             <Button
