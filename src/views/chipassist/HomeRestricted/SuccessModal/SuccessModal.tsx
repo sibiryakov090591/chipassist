@@ -70,6 +70,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register", handle
           if (handler) {
             handler(codeRes.code);
           } else {
+            window.scrollTo({ top: 0 });
             navigate(`/password/request/${codeRes?.code}`, {
               state: { background: location.state?.background || location },
             });
