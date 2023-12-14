@@ -78,7 +78,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
               )}
               {!isAuthenticated && showLoginForm && (
                 <div onClick={showSignIn(false)} className={classes.link}>
-                  <DoubleArrowIcon /> Back to RFQ
+                  <DoubleArrowIcon /> {t("seller_message.back")} RFQ
                 </div>
               )}
             </div>
@@ -122,7 +122,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
               <span onClick={showSignIn(!showLoginForm)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                 {showLoginForm ? (
                   <span className={classes.backToRfq}>
-                    <DoubleArrowIcon /> Back to RFQ
+                    <DoubleArrowIcon /> {t("seller_message.back")} RFQ
                   </span>
                 ) : (
                   t("restricted.sign_in")

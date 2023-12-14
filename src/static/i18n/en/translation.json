@@ -1132,7 +1132,13 @@
       "message_placeholder": "Dear {{seller}}, I’d like to contact you regarding your offer for {{mpn}} on {{constantsTitle}}.",
       "send": "Send",
       "sending": "Sending",
-      "close": "Close"
+      "close": "Close",
+      "back": "Back to",
+      "request_quality": "Request quality check",
+      "request_message": {
+        "p1": "You are about to request the quality check for",
+        "p2": "from"
+      }
     }
   },
   "pcb_new": {
