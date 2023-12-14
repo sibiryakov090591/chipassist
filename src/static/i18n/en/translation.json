@@ -673,7 +673,21 @@
     "in_stock_hint_3": "filter OFF",
     "in_stock_hint_4": " to see all alternatives",
     "in_stock_hint_5": "Additional products available by RFQ",
-    "in_stock_hint_6": "Or send us a request:"
+    "in_stock_hint_6": "Or send us a request:",
+    "tutorial": {
+      "dialog": {
+        "greetings": {
+          "h": "First time on ChipAssist?",
+          "p": "Check out our quick interactive guide"
+        },
+        "yes": "Yes, please",
+        "skip": "Skip"
+      },
+      "search": "Put a part number in this search bar and you will find a list of results.",
+      "create_rfq": "You can send us a request for this product or contact the seller directly."
+    },
+    "request_block": "You have requested this product at",
+    "rfq_header": "Please try to search another seller or the part number you are interested in."
   },
   "component": {
     "attribute": "Attribute",
@@ -1139,6 +1153,26 @@
         "p1": "You are about to request the quality check for",
         "p2": "from"
       }
+    },
+    "list": {
+      "h": {
+        "modal": "Your list of requests:",
+        "desktop": "Enter your quote list"
+      },
+      "target_price": "Target price",
+      "add_row": {
+        "mobile": "+ Add new product",
+        "desktop": "+ Add new line"
+      },
+      "login_section": {
+        "h": "Please provide an information about yourself ",
+        "p": {
+          "p1": "If you already have an account you can",
+          "p2": "login here"
+        }
+      },
+      "accept": "Send multiple RFQ"
+
     }
   },
   "pcb_new": {
