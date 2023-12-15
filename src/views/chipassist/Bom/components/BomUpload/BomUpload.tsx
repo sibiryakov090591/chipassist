@@ -104,7 +104,9 @@ const BomUpload: React.FC = () => {
   const [selectErrors, setSelectErrors] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    if (storageFile)
+    if (storageFile) {
+      setMiscCreated(false);
+      setMisc(null);
       dispatch(loadMiscAction(storageFile.name)).then((res: any) => {
         setMisc(res);
 
@@ -131,6 +133,7 @@ const BomUpload: React.FC = () => {
           }
         }
       });
+    }
   }, [storageFile]);
 
   useEffect(() => {
