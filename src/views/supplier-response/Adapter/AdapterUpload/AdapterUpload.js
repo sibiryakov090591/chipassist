@@ -116,6 +116,7 @@ const AdapterUpload = () => {
   useEffect(() => {
     if (storageFile) {
       setMiscCreated(false);
+      setMisc(null);
       loadMisc(storageFile.name).then((res) => {
         setMisc(res);
 
