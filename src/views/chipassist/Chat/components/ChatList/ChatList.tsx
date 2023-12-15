@@ -32,6 +32,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
 
   const { chatList, selectedChat, filters } = useAppSelector((state) => state.chat);
   const { profileInfo, selectedPartner } = useAppSelector((state) => state.profile);
+  const currencyList = useAppSelector((state) => state.currency.currencyList);
 
   useEffect(() => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });
@@ -111,6 +112,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
             const quantity = item.details?.quantity || item.rfq?.quantity;
             const price = item.details?.price || item.rfq?.price;
             const partNumber = item.title || item.rfq?.upc;
+            const currency = currencyList?.find((curr) => curr.code === item.rfq?.currency);
 
             return (
               <div
@@ -143,7 +145,9 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                   <Box display="flex" justifyContent="space-between" className={classes.info}>
                     <div className={classes.ellipsisText}>{item.partner_name}</div>
                     {!!quantity && !!price && (
-                      <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
+                      <div>{`${quantity} x ${formatMoney(price)} ${currency?.symbol || "€"} = ${formatMoney(
+                        quantity * price,
+                      )} ${currency?.symbol || "€"}`}</div>
                     )}
                   </Box>
                 </div>

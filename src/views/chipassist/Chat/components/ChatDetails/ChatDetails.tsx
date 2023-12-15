@@ -57,6 +57,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
   const quantity = selectedChat?.details?.quantity || selectedChat?.rfq?.quantity;
   const price = selectedChat?.details?.price || selectedChat?.rfq?.price;
+  const rfqCurrency = currencyList?.find((curr) => curr.code === selectedChat?.rfq?.currency);
 
   const [prevChatId, setPrevChatId] = useState<number>(null);
   const [startAnimation, setStartAnimation] = useState(false);
@@ -527,11 +528,11 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
               </div>
               <div>
                 <h5>Target price</h5>
-                <div>{price ? `${formatMoney(price)} €` : "-"}</div>
+                <div>{price ? `${formatMoney(price)} ${rfqCurrency?.symbol || "€"}` : "-"}</div>
               </div>
               <div>
                 <h5>Total</h5>
-                <div>{price ? `${formatMoney(quantity * price)} €` : "-"}</div>
+                <div>{price ? `${formatMoney(quantity * price)} ${rfqCurrency?.symbol || "€"}` : "-"}</div>
               </div>
             </Box>
           </div>
