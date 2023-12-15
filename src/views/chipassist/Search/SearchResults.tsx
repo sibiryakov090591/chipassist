@@ -300,15 +300,15 @@ const SearchResults = () => {
         {/* Step-by-step tutorial */}
         <Dialog className={classes.tourDialog} aria-labelledby="simple-dialog-title" open={open}>
           <DialogTitle>
-            <h2>First time on ChipAssist?</h2>
-            <p>Check out our quick interactive guide</p>
+            <h2>{t("tutorial.dialog.greetings.h")}</h2>
+            <p>{t("tutorial.dialog.greetings.p")}</p>
           </DialogTitle>
           <DialogActions>
             <Button className={appTheme.buttonCreate} onClick={onStartTour} variant="contained">
-              Yes, please
+              {t("tutorial.dialog.yes")}
             </Button>
             <Button className={classes.skipTourButton} onClick={onCloseTour} variant="outlined">
-              Skip
+              {t("tutorial.dialog.skip")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -488,16 +488,11 @@ const SearchResults = () => {
                   <div className={classes.searchResultEmpty}>
                     {requestedRFQ && (
                       <div className={classes.requestedBlock}>
-                        You have requested this product at{" "}
-                        {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
+                        {t("request_header")} {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
                       </div>
                     )}
                     <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
-                    {disabledRFQForm && (
-                      <h3 className={classes.rfqHeader}>
-                        Please try to search another seller or the part number you are interested in.
-                      </h3>
-                    )}
+                    {disabledRFQForm && <h3 className={classes.rfqHeader}>{t("rfq_header")}</h3>}
                     {!disabledRFQForm && (
                       <>
                         <h3

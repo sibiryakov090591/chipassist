@@ -196,7 +196,16 @@
     "try_search": "Or try an example search:",
     "try_search_mobile": "Try sample search:",
     "hello": "Sign in",
-    "account": "Account"
+    "account": "Account",
+    "about_us": "About us",
+    "rfq_list": "RFQ List",
+    "contacts": "Contacts",
+    "register": "Register",
+    "sell_on": "Sell on",
+    "hint": {
+      "title": "You can create group RFQ here",
+      "button": "Got it!"
+    }
   },
   "sell_excess": {
     "page_title": "Selling stocks & excessive inventory on {{name}}",
@@ -290,7 +299,7 @@
     "confirm_order": {
       "title": "Please review and accept your order",
       "sub_title": "You can view, modify and accept your order. If you do not want to accept this order, you can decline it.",
-      "footer": "Your order was prepared by ChipOnline. Having any questions please mail to: "
+      "footer": "Your order was prepared by ELFARO OÜ. Having any questions please mail to: "
     }
   },
     "progress_modal": {
@@ -340,7 +349,6 @@
     "page_description": "The BOM Tool makes it easy to upload a list of electronics components and compare distributor prices, saving both money and time. Publish a bill of materials right now for free.",
     "bom_list": "Processed BOMs",
     "no_saved_bom_lists": "You have no saved BOM-lists. ",
-    "you_can": "",
     "import": "Import it",
     "list_from_file": " from CSV/XLS.",
     "bom_create": "Create BOM",
@@ -665,7 +673,21 @@
     "in_stock_hint_3": "filter OFF",
     "in_stock_hint_4": " to see all alternatives",
     "in_stock_hint_5": "Additional products available by RFQ",
-    "in_stock_hint_6": "Or send us a request:"
+    "in_stock_hint_6": "Or send us a request:",
+    "tutorial": {
+      "dialog": {
+        "greetings": {
+          "h": "First time on ChipAssist?",
+          "p": "Check out our quick interactive guide"
+        },
+        "yes": "Yes, please",
+        "skip": "Skip"
+      },
+      "search": "Put a part number in this search bar and you will find a list of results.",
+      "create_rfq": "You can send us a request for this product or contact the seller directly."
+    },
+    "request_block": "You have requested this product at",
+    "rfq_header": "Please try to search another seller or the part number you are interested in."
   },
   "component": {
     "attribute": "Attribute",
@@ -715,7 +737,7 @@
     "empty_3": "and select something.",
     "loading": "Loading cart ...",
     "show_in_modal": "Show in modal",
-    "checkout": "Order now",
+    "checkout": "Quote now",
     "checkout_rfq": "Send RFQ",
     "log_in": "Continue",
     "back": "back to cart",
@@ -743,7 +765,6 @@
     "column": {
       "product": "Product",
       "distributor": "Distributor",
-      "location": "Stock location",
       "lead_time": "Lead time",
       "stock": "Stock",
       "price": "Price",
@@ -809,6 +830,91 @@
   },
   "home": {
     "page_title": "Search electronic parts, components prices|Datasheets & inventory-{{name}}",
+    "page_title_1": {
+      "slogan": "Search for electronic parts.",
+      "reinvented": "Reinvented."
+    },
+    "hero_item1": {
+      "mobile": {
+        "h": "Search. Request. Buy.",
+        "p": "Search for products and see market availability. Place your requests to 300+ sellers in one click. Order and track with "
+      },
+      "desktop": {
+        "h": "Search & buy",
+        "p": "Search and compare prices and market availability. Contact sellers and get special prices right through "
+      }
+    },
+    "hero_item2": {
+      "h": "Request & get",
+      "p": "Place your request and get the dedicated offers from 300+ connected sellers from all over the world."
+    },
+    "hero_item3": {
+      "h": "Order & track",
+      "p": " Order your product through ChipAssist and get safe and convinient purchasing and tracking."
+    },
+
+    "today": {
+      "h": "today",
+      "count_item1": "Parts in the catalog",
+      "count_item2": "Active customers",
+      "count_item3": "Worldwide stocks",
+      "count_item4": "PCB manufacturers",
+      "count_item5": "Countries"
+    },
+
+    "services": {
+      "h": {
+        "all": "All services ",
+        "in": "in pne place"
+      }
+    },
+
+    "connect": {
+      "title": {
+        "connecting": "Connecting the",
+        "world": "world of electronics"
+      },
+      "subtitle": "You can buy from several suppliers at once and send requests for the components you need.",
+      "connect_item1": {
+        "title": "Join the trusted ecosystem",
+        "text": "Engage with the network of 1000+ trusted clients worldwide."
+      },
+      "connect_item2": {
+        "title": "Save marketing budget",
+        "text": "Get ready-made customer`s requests right into your sales pipeline."
+      },
+      "connect_item3": {
+        "title": "Manage your excess stocks",
+        "text": " Quickly and efficiently sell your surpluses and overstocks on the market."
+      },
+      "connect_item4": {
+        "title": "in your software",
+        "text": {
+          "p1": "Integrate",
+          "p2": "with your software through our advanced API."
+        }
+      }
+    },
+    "partners": {
+      "title": "Partner with",
+      "subtitle": "Partner with ChipAssist for API integrations, excess data stocks, user requests, and market trends to enhance your business capabilities. Gain an edge in the market and stay ahead of the curve."
+    },
+
+    "pcb": {
+      "title": {
+        "p1": "Get your next",
+        "p2": "PCB with us"
+      },
+      "subtitle": "Just upload your Gerber files and engage with 50+ PCB suppliers to get the best offering in 48 hours.",
+      "ul": {
+        "li1": "Send us freeform PCB specification or specify all necessary details",
+        "li2": "Get professional assistance from our qualified engineering team",
+        "li3": "Choose the best terms from proposed quotations from different vendors",
+        "li4": "Control the quality of PCBs with our on-site QC team"
+      },
+      "button": "Request PCB"
+    },
+
     "title": "Welcome to {{name}}!",
     "page_description": "Global marketplace for sourcing electronic components. To compare prices and monitor inventory, shop across 180 distributors & manufacturers, and 20 000 000 parts.",
     "advanced_section": {
@@ -824,13 +930,26 @@
       "line_2": "Getting a competitive price offering in 48 hours",
       "line_3": "Seamless logistics from every country and every supplier",
       "line_4": "One contact point for all of your requests, purchases and deliveries",
-      "line_5": "Quality inspection, warranty support and return policy with no barriers"
+      "line_5": "Quality inspection, warranty support and return policy with no barriers",
+      "new_line1": {
+        "p1": "ChipAssist introduces",
+        "p2": "Rapid RFQ Exchange",
+        "p3": "service"
+      },
+      "new_line2": "Your every request is automatically sent to the tens of independent suppliers giving you the best possible price offering available on the market",
+      "sign_up": "Sign up now"
     },
     "bom_sections": {
+      "title": "Working with",
+
       "paragraph_1": "Load your BOM list and find and order all the needed parts all at once - review, check and modify proposed offerings.",
       "paragraph_2": "Reduce the risks by checking the “health” of your lists, prices surges and availability timeline."
     },
     "excess_sections": {
+      "h1": {
+        "p1": "Sell your excess",
+        "p2": "inventory"
+      },
       "paragraph_1": "If you are OEM or EMS we can display your Excess Stock to our customers worldwide and sell it hassle-free.",
       "paragraph_2": "We will provide you with the efficient sales channel for your surplus components, whatever country you are in.",
       "button": "Connect your stock"
@@ -850,6 +969,10 @@
       "text_6": "No more blind shots. Compare offers and find a manufacturer that will meet your standards from within hundreds of European and world OEMs, ODMs and EMSs."
     },
     "contacts": {
+      "new_title": {
+        "p1": "Our",
+        "p2": "contacts"
+      },
       "title": "OUR CONTACTS",
       "name": "ChipAssist AG",
       "address_1": "Gubelstrasse 11, c/o Bratschi AG,",
@@ -1023,7 +1146,33 @@
       "message_placeholder": "Dear {{seller}}, I’d like to contact you regarding your offer for {{mpn}} on {{constantsTitle}}.",
       "send": "Send",
       "sending": "Sending",
-      "close": "Close"
+      "close": "Close",
+      "back": "Back to",
+      "request_quality": "Request quality check",
+      "request_message": {
+        "p1": "You are about to request the quality check for",
+        "p2": "from"
+      }
+    },
+    "list": {
+      "h": {
+        "modal": "Your list of requests:",
+        "desktop": "Enter your quote list"
+      },
+      "target_price": "Target price",
+      "add_row": {
+        "mobile": "+ Add new product",
+        "desktop": "+ Add new line"
+      },
+      "login_section": {
+        "h": "Please provide an information about yourself ",
+        "p": {
+          "p1": "If you already have an account you can",
+          "p2": "login here"
+        }
+      },
+      "accept": "Send multiple RFQ"
+
     }
   },
   "pcb_new": {
@@ -1353,7 +1502,6 @@
     "404_title": "This page does not exist",
     "404_description": "We can't find the page you are looking for but you can find something useful clicking the links below.",
     "401_title": "401: We are sorry but we are not able to authenticate you.",
-    "401_description": "",
     "register_title": "It looks like this link has expired or it has already been used",
     "register_description": "Please mind that account and request confirmation links are valid for 24 hours"
   },
@@ -1426,5 +1574,23 @@
       "distributor_question_8": "8. How is the price on the website determined? Is it a supplier's price, or is there a markup?",
       "distributor_answer_8": "The price listed on the website is the price set by the supplier themselves. A markup or discount may be applied by the supplier depending on their pricing strategy or current promotions."
     }
+  },
+
+  "footer": {
+    "follow_us": "Follow us",
+    "requests": "Requests",
+    "statistics": "Statistics",
+    "messages": "Messages",
+    "help": "Help",
+    "about_us": "About us",
+    "products": "Products",
+    "bom": "Tool",
+    "rfq_list": "RFQ List",
+    "sell_on": "Sell on",
+    "request": "Request",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "blog": "Blog",
+    "contact_us": "Contact us"
   }
 }
