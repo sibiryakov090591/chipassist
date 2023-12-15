@@ -214,7 +214,7 @@ export const SendInvoiceModalContainer: React.FC<{
 
   return (
     <div className={isExample ? clsx(commonClasses.paper, "fullScreen", classes.paper) : commonClasses.displayContents}>
-      <form style={{ minHeight: 600 }} className={classes.form}>
+      <form className={clsx(classes.form, classes.invoiceForm)}>
         <div>
           {step === 1 && (
             <>
@@ -550,30 +550,6 @@ export const SendInvoiceModalContainer: React.FC<{
 
               <Divider className={classes.divider} />
 
-              <h3>
-                <Box display="flex" justifyContent="space-between">
-                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
-                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
-                </Box>
-              </h3>
-              <h3>
-                <Box display="flex" justifyContent="space-between">
-                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
-                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
-                </Box>
-              </h3>
-              <h3>
-                <Box display="flex" justifyContent="space-between">
-                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
-                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
-                </Box>
-              </h3>
-              <h3>
-                <Box display="flex" justifyContent="space-between">
-                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
-                  <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
-                </Box>
-              </h3>
               <h3>
                 <Box display="flex" justifyContent="space-between">
                   <span>{`Total Amount Payable (${currency?.code}):`}</span>

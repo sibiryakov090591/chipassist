@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     form: {
       width: 500,
-      minHeight: 440,
+      minHeight: 465,
       height: "100%",
       textAlign: "start",
       display: "flex",
@@ -23,6 +23,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
       "& h3:not(:first-child)": {
         marginTop: 16,
+      },
+    },
+    invoiceForm: {
+      [theme.breakpoints.up("sm")]: {
+        minHeight: 612,
       },
     },
     label: {
