@@ -11,6 +11,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import clsx from "clsx";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./footerStyles";
 
 const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
@@ -34,6 +35,7 @@ const Footer = () => {
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
+  const { t } = useI18n("footer");
 
   return (
     <div className={classes.root}>
@@ -61,7 +63,7 @@ const Footer = () => {
                 <Box display="flex" flexWrap="wrap">
                   <Box className={clsx(classes.navGroup, classes.contactClass)}>
                     <Box display={"flex"} flexDirection={"column"} style={{ marginBottom: isDownSm ? "2rem" : 0 }}>
-                      <p className={classes.titleClass}>Follow us</p>
+                      <p className={classes.titleClass}>{t("follow_us")}</p>
                       <Grid container direction={"row"} spacing={1} wrap={"nowrap"}>
                         <Grid item>
                           <a
@@ -104,16 +106,16 @@ const Footer = () => {
                   {isSupplierResponse && (
                     <Box className={classes.navGroup}>
                       <NavLink className={classes.navLink} to={"/supplier-response"}>
-                        Requests
+                        {t("requests")}
                       </NavLink>
                       <NavLink className={classes.navLink} to={"/statistics"}>
-                        Statistics
+                        {t("statistics")}
                       </NavLink>
                       <NavLink className={classes.navLink} to={"/messages"}>
-                        Messages
+                        {t("messages")}
                       </NavLink>
                       <NavLink className={classes.navLink} to={"/help"}>
-                        Help
+                        {t("help")}
                       </NavLink>
                     </Box>
                   )}
@@ -123,24 +125,24 @@ const Footer = () => {
                         <>
                           <Box className={classes.navGroup}>
                             <NavLink className={classes.navLink} to={"/about_company"}>
-                              About us
+                              {t("about_us")}
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/parts"}>
-                              Products
+                              {t("products")}
                             </NavLink>
                             <Hidden smDown>
                               <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                                BOM Tool
+                                BOM {t("bom")}
                               </NavLink>
                             </Hidden>
                             <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
-                              RFQ List
+                              {t("RFQ List")}
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
-                              Sell on ChipAssist
+                              {t("sell_on")} ChipAssist
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/pcb"}>
-                              Request PCB
+                              {t("request")} PCB
                             </NavLink>
                           </Box>
                         </>
@@ -148,26 +150,26 @@ const Footer = () => {
                         <>
                           <Box className={classes.navGroup}>
                             <NavLink className={classes.navLink} to={"/about_company"}>
-                              About us
+                              {t("about_us")}
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/parts"}>
-                              Products
+                              {t("products")}
                             </NavLink>
                             <Hidden smDown>
                               <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                                BOM Tool
+                                BOM {t("bom")}
                               </NavLink>
                             </Hidden>
                           </Box>
                           <Box className={classes.navGroup}>
                             <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
-                              RFQ List
+                              {t("RFQ List")}
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
-                              Sell on ChipAssist
+                              {t("sell_on")} ChipAssist
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/pcb"}>
-                              Request PCB
+                              {t("request")} PCB
                             </NavLink>
                           </Box>
                         </>
@@ -177,15 +179,15 @@ const Footer = () => {
                   <Box display="flex" flexWrap="wrap">
                     <Box className={classes.navGroup}>
                       <NavLink className={classes.navLink} to={"/terms_of_services"}>
-                        Terms & Conditions
+                        {t("terms")}
                       </NavLink>
                       <NavLink className={classes.navLink} to={"/privacy_policy"}>
-                        Privacy Policy
+                        {t("privacy")}
                       </NavLink>
                       {!isSupplierResponse && (
                         <>
                           <NavLink className={classes.navLink} to={`/blog`}>
-                            Blog
+                            {t("blog")}
                           </NavLink>
                           <NavLink className={classes.navLink} to={"/FAQ"}>
                             FAQ
@@ -198,7 +200,7 @@ const Footer = () => {
                 {!isDownSm && (
                   <Box className={clsx(classes.navGroup, classes.contactInfoBox)}>
                     <p className={classes.titleClass} style={{ marginBottom: "3px" }}>
-                      Contact us:{" "}
+                      {t("contact_us")}:{" "}
                     </p>
                     <a className={classes.navLink} href="mailto:info@chipassist.com">
                       info@chipassist.com
