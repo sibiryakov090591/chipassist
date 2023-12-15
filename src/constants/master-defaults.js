@@ -4,7 +4,7 @@ const defaults = {
   apiPath: "/api",
   apiHost: "api.camaster.site",
   schema: "https",
-  locales: ["en", "ru"],
+  locales: ["en", "ru", "es", "fr", "de", "ch"],
   localeDefault: "en",
   showFeedback: true,
   debug: true,
