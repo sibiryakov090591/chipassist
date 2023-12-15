@@ -88,8 +88,10 @@ const TopMenu = ({ isMobile }) => {
               onClick={item.name === "messages" && reloadChatPage}
             >
               {isMobile && item.getIcon(classes.topMenuItemIcon)}
-              {item.label}
-              {item.name === "messages" && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+              <span style={{ position: "relative" }}>
+                {item.label}
+                {item.name === "messages" && <ChatUnreadTotalCount className={classes.chatUnreadCount} />}
+              </span>
             </NavLink>
           </div>
         );
