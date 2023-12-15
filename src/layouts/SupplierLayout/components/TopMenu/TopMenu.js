@@ -16,7 +16,6 @@ import clsx from "clsx";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { triggerReloadPage } from "@src/store/chat/chatActions";
-import { ID_MASTER } from "@src/constants/server_constants";
 import { useStyles } from "./topMenuStyles";
 
 export const responsesMenuList = [
@@ -39,7 +38,7 @@ export const responsesMenuList = [
     label: "Messages",
     getIcon: (className) => <ChatOutlinedIcon className={className} />,
   },
-  ...(constants.id === ID_MASTER && [
+  ...(constants.title === "Master" && [
     {
       name: "upload",
       url: "/adapter/upload",
