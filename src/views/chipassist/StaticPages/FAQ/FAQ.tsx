@@ -89,15 +89,15 @@ const FAQ = () => {
                       <p className={classes.answer}>
                         {element.label_answer === "user_answer_3" ? (
                           <>
-                            You have two options. You can use our{" "}
+                            {t("options.p1")}{" "}
                             <Link to={`/rfq-list-quotes`} className={appTheme.hyperlink}>
-                              group RFQ feature
+                              {t("options.p2")}
                             </Link>{" "}
-                            sending a request for up to 20 products at once. Also you can upload your{" "}
+                            {t("options.p3")}{" "}
                             <Link to={`/bom/create-file`} className={appTheme.hyperlink}>
-                              BOM list
+                              {t("options.p4")}
                             </Link>{" "}
-                            with up to 100 lines on a free account and up to 1000 lines on a paid account.
+                            {t("options.p5")}
                           </>
                         ) : (
                           t(element.label_answer)

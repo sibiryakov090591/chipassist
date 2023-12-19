@@ -245,8 +245,13 @@
       "phone": "Your phone",
       "country": "Your country",
       "stock": "Number of stock lines (approximately)",
-      "button": "Send"
-    }
+      "button": "Send",
+      "title": {
+        "p1": "How",
+        "p2": "it works"
+      }
+    },
+    "title": "helps turn your excessive inventory into profits."
   },
   "catalog": {
     "page_title": "Catalog of electronic components",
@@ -1507,16 +1512,35 @@
   },
   "static_pages": {
     "about_company": {
+      "title": "What is",
       "page_title": "About {{name}}: Global marketplace for sourcing electronic components.",
       "page_description": "{{name}} is a marketplace for electronic parts. Look up any electronic component you need in an easy way.Learn more about {{name}} now!",
       "sub_header": "Your Go-To Worldwide Marketplace for Electronic Components",
       "company_name": "ChipAssist'",
+      "sub_title": {
+        "p1": "Experience the Power of",
+        "p2": "Tools"
+      },
       "search_tool": "Powerful Search Engine",
       "search_tool_description": "Our robust search engine allows for rapid and seamless comparison of millions of components. Easily select and purchase parts from distributors, making the sourcing process efficient and hassle-free.",
       "bom_tool": "User-Friendly BOM Tool",
       "bom_tool_description": "With our intuitive BOM (Bill of Materials) tool, you can edit, save, and generate BOMs, providing a comprehensive snapshot of costs and product availability for your desired components. Stay informed about price fluctuations and availability timelines to mitigate risks and optimize your procurement strategy.",
       "api_tool": "Seamless API Integration",
-      "api_tool_description": "Another key feature is our seamless API integration capability, which allows users to connect their own applications with the platform’s database of products and components, making data collection easier than ever before."
+      "api_tool_description": "Another key feature is our seamless API integration capability, which allows users to connect their own applications with the platform’s database of products and components, making data collection easier than ever before.",
+      "paragraph": {
+        "firs": "ChipAssist is the ultimate global marketplace for sourcing electronic parts and components. Our platform provides users with easy access to stock levels and costs from hundreds of international distributors of electronics by simply entering a manufacturer component number.",
+        "second": " ChipAssist offers more than just stock data to electronics professionals looking for thorough technical component data. Our extensive part specifications, datasheets, CAD models, images, and more are displayed, allowing customers to make faster purchasing decisions while still receiving accurate pricing and inventory availability comparisons from distributors."
+      },
+      "footer": {
+        "first": {
+          "p1": "Join the",
+          "p2": "community now to maximize your ability to source electronic components. Experience a procurement process that is seamless, effective, and reliable."
+        },
+        "second": {
+          "p1": "For more information about data, search results, and using ChipAssist please click",
+          "p2": "here"
+        }
+      }
     },
     "for_distributors": {
       "header": "For Distributors"
@@ -1572,7 +1596,14 @@
       "distributor_question_7": "7. How often do you think it will be reasonable to deliver files? Once a week?",
       "distributor_answer_7": "That depends on how frequently changes occur. If new parts arrive and old ones are sold every day, we recommend updating the data on a daily basis.",
       "distributor_question_8": "8. How is the price on the website determined? Is it a supplier's price, or is there a markup?",
-      "distributor_answer_8": "The price listed on the website is the price set by the supplier themselves. A markup or discount may be applied by the supplier depending on their pricing strategy or current promotions."
+      "distributor_answer_8": "The price listed on the website is the price set by the supplier themselves. A markup or discount may be applied by the supplier depending on their pricing strategy or current promotions.",
+      "options": {
+        "p1": "You have two options. You can use our",
+        "p2": "group RFQ feature",
+        "p3": "sending a request for up to 20 products at once. Also you can upload your",
+        "p4": "BOM list",
+        "p5": "with up to 100 lines on a free account and up to 1000 lines on a paid account."
+      }
     }
   },
 
@@ -1592,5 +1623,55 @@
     "privacy": "Privacy Policy",
     "blog": "Blog",
     "contact_us": "Contact us"
+  },
+
+  "partner_terms": {
+    "h1": {
+      "p1": "Terms and conditions",
+      "p2": "platform for suppliers"
+    },
+    "terms": {
+      "li1": "Supplier - a company that a) provides its stocks for sale on Service Provider’s platform and/or b) was granted access to the rapid RFQ exchange service.",
+      "li2": "Service Provider - ChipAssist AG or its Authorised Partner.",
+      "li3": "Authorised Partner - ChipOnline, Serbia, performing purchasing of Components (materials), issuing invoices, and providing logistics services.",
+      "li4": "Components (materials) - any products of a Supplier intended for sale using the Service Provider’s platform."
+    },
+    "supplier_undertakes": "The Supplier undertakes to",
+    "list": {
+      "li1": "In relation to Components (materials) origin and compatibility",
+      "li1_subtitles": {
+        "li1": "supply Components (materials) that are not counterfeit or forgery.",
+        "li2": "provide information regarding the original manufacturer.",
+        "li3": "provide part-numbers cross-reference for the compatible Components (materials) as applicable."
+      },
+      "li2": "In relation to Components (materials) quality and condition:",
+      "li2_subtitles": {
+        "li1": "supply new Components (materials), unless otherwise explicitly agreed between the Supplier and the Service Provider on a case-by-case basis.",
+        "li2": "supply Components (materials) in good condition, i.e. ensuring the performance according to the original characteristics.",
+        "li3": "store and transport Components (materials) according to the corresponding requirements of an original manufacturer.",
+        "li4": "inform the Service Provider regarding all possible issues related to the quality and condition of Components (materials), e.g. unreadable or unavailable marking and/or labelling, damaged or non-original packaging, storage conditions violation, etc."
+      },
+
+      "li3": "In relation to Components (materials) price",
+      "li3_subtitles": {
+        "li1": "to provide a price for Components (materials) in order of priority: through API, in a stock file, on a request from the Service Provider.",
+        "li2": "to fix the price for 72 hours after the moment of provision, unless otherwise separately agreed between the Supplier and the Service Provider."
+      },
+
+      "li4": "In relation to warranty",
+      "li4_subtitles": {
+        "li1": "inform explicitly about warranty period and conditions.",
+        "li2": "return any payments made by the Service Provider for the Components (materials) of inadequate quality or, in cases agreed with an end customer, provide a replacement. Transportation of Components (materials) and corresponding replacement the Supplier performs at own expense."
+      },
+
+      "li5": "In relation to confidentiality",
+      "li5_subtitles": "use and share with third parties information received from the Service Provider or retrieved from the ChipAssist.com site exclusively for the purpose of a) Components (materials) sales and b) promotion of the Service Provider’s platform.",
+      "footer": "The Supplier acknowledges that the Service Provider can change these Terms and Conditions without separate notification to improve customers’ and own interests protection."
+    }
+
+  },
+
+  "policy": {
+
   }
 }
