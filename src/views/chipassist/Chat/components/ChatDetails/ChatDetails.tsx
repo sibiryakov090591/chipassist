@@ -23,6 +23,7 @@ import { clearStockErrors, updateStockrecord } from "@src/store/chat/chatActions
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { getStockDataCode } from "@src/utils/product";
+import { deepEqual } from "@src/utils/validation";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -62,6 +63,8 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const [prevChatId, setPrevChatId] = useState<number>(null);
   const [startAnimation, setStartAnimation] = useState(false);
   const [isShowPrices, setIsShowPrices] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [prevStockData, setPrevStockData] = useState<any>(null);
   const [, setForceRender] = useState(false);
   const [currency, setCurrency] = useState<Currency>({
     symbol: "$",
@@ -123,6 +126,8 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       dispatch(clearStockErrors());
       setIsShowPrices(false);
       setPrevChatId(selectedChat.id);
+      setPrevStockData(JSON.parse(JSON.stringify(getValues()))); // deep copy
+      setDisabled(true);
     }
   }, [selectedChat]);
 
@@ -156,6 +161,16 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
     setForceRender((prev) => !prev);
   };
 
+  const handleCustomChange = (fieldName: any, value: any) => {
+    // Update the form value using setValue
+    setValue(fieldName, value);
+
+    // Define the difference between the prev and new states
+    const newStockData = getValues();
+    const isEqual = deepEqual(newStockData, prevStockData);
+    setDisabled(isEqual);
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     const part_number = selectedChat?.title || selectedChat?.rfq?.upc;
     const overallData = Object.fromEntries(Object.entries(data).filter(([key]) => key !== "prices"));
@@ -182,6 +197,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
     dispatch(updateStockrecord([result], selectedChat?.id))
       .then(() => {
+        setDisabled(true);
         dispatch(
           showBottomLeftMessageAlertAction({
             text: "Your stock was updated successfully!",
@@ -252,6 +268,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      onChange={(e: any) => {
+                        handleCustomChange(e.target.name, e.target.value);
+                      }}
                       className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.num_in_stock })}
                       error={errors.stock}
                       helperText={errors.stock?.message}
@@ -297,6 +316,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      onChange={(e: any) => {
+                        handleCustomChange(e.target.name, e.target.value);
+                      }}
                       className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.price })}
                       value={getValues("prices")[0].amount}
                       error={errors?.prices && errors.prices[0]?.amount}
@@ -327,6 +349,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      onChange={(e: any) => {
+                        handleCustomChange(e.target.name, e.target.value);
+                      }}
                       className={clsx(classes.input, { [classes.fieldHint]: !!stockrecordErrors?.price })}
                       value={getValues("prices")[0].price}
                       error={errors?.prices && errors.prices[0]?.price}
@@ -375,6 +400,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                onChange={(e: any) => {
+                                  handleCustomChange(e.target.name, e.target.value);
+                                }}
                                 className={classes.input}
                                 value={item.amount}
                                 error={errors?.prices && errors.prices[index]?.amount}
@@ -405,6 +433,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                             render={({ field }) => (
                               <NumberInput
                                 {...field}
+                                onChange={(e: any) => {
+                                  handleCustomChange(e.target.name, e.target.value);
+                                }}
                                 className={classes.input}
                                 value={item.price}
                                 error={errors?.prices && errors.prices[index]?.price}
@@ -432,11 +463,27 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             <div className={classes.grid}>
               <div>
                 <div className={classes.label}>Date Code (DC):</div>
-                <TextField {...register("datecode")} variant="outlined" size="small" fullWidth />
+                <TextField
+                  {...register("datecode")}
+                  onChange={(e: any) => {
+                    handleCustomChange(e.target.name, e.target.value);
+                  }}
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                />
               </div>
               <div>
                 <div className={classes.label}>Packaging:</div>
-                <TextField {...register("packaging")} variant="outlined" size="small" fullWidth />
+                <TextField
+                  {...register("packaging")}
+                  onChange={(e: any) => {
+                    handleCustomChange(e.target.name, e.target.value);
+                  }}
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                />
               </div>
               <div>
                 <div className={classes.label}>MOQ:</div>
@@ -452,6 +499,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      onChange={(e: any) => {
+                        handleCustomChange(e.target.name, e.target.value);
+                      }}
                       className={classes.input}
                       error={errors.moq}
                       helperText={errors.moq?.message}
@@ -477,6 +527,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   render={({ field }) => (
                     <NumberInput
                       {...field}
+                      onChange={(e: any) => {
+                        handleCustomChange(e.target.name, e.target.value);
+                      }}
                       className={classes.input}
                       error={errors.mpq}
                       helperText={errors.mpq?.message}
@@ -491,7 +544,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             </div>
             <Box p="5px" mt="3px">
               <Button
-                disabled={isUpdating || !stock}
+                disabled={disabled || isUpdating || !stock}
                 type="submit"
                 className={clsx(appTheme.buttonCreate, classes.updateButton)}
                 variant="contained"
