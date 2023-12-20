@@ -23,6 +23,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ReactDOM from "react-dom";
 import SendInvoiceModal from "@src/views/chipassist/Chat/components/ChatWindow/components/SendInvoiceModal/SendInvoiceModal";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -44,6 +45,7 @@ const MessageInput: React.FC<Props> = ({
   minLoadedPage,
   onShowDetails,
 }) => {
+  const { t } = useI18n("chat.message_input");
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
@@ -208,23 +210,51 @@ const MessageInput: React.FC<Props> = ({
 
     let value = "";
     if (type === "confirm") {
-      value = `Dear ${name}! We have ${partNumber} available. We can ship up to ${numInStock}pcs at ${price}${symbol} unit price${
-        datecode ? ` with ${datecode} date code` : ""
-      }. If you are interested, please send us a Purchase Order (PO).`;
+      // value = `Dear ${name}! We have ${partNumber} available. We can ship up to ${numInStock}pcs at ${price}${symbol} unit price${
+      //   datecode ? ` with ${datecode} date code` : ""
+      // }. If you are interested, please send us a Purchase Order (PO).`;
+      value = t("types.confirm", {
+        name: `${name}`,
+        partNumber: `${partNumber}`,
+        numInStock: `${numInStock}`,
+        price: `${price}`,
+        symbol: `${symbol}`,
+        datacode: `${datecode ? ` with ${datecode} date code` : ""}`,
+      });
     }
     if (type === "update_price") {
-      value = `Dear ${name}! Unfortunately, the unit price for ${partNumber} was updated. Now we can ship up to ${numInStock}pcs at ${price}${symbol} unit price${
-        datecode ? ` with ${datecode} date code` : ""
-      }. If you are interested, please send us a Purchase Order (PO).`;
+      // value = `Dear ${name}! Unfortunately, the unit price for ${partNumber} was updated. Now we can ship up to ${numInStock}pcs at ${price}${symbol} unit price${
+      //   datecode ? ` with ${datecode} date code` : ""
+      // }. If you are interested, please send us a Purchase Order (PO).`;
+      value = t("types.update_price", {
+        name: `${name}`,
+        partNumber: `${partNumber}`,
+        numInStock: `${numInStock}`,
+        price: `${price}`,
+        symbol: `${symbol}`,
+        datacode: `${datecode ? ` with ${datecode} date code` : ""}`,
+      });
     }
     if (type === "update_qty") {
-      value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you are interested in this stock please send us a Purchase Order (PO).`;
+      // value = `Dear ${name}! Thank you for your request. Currently we have only ${numInStock} units of ${partNumber} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is ${price}${symbol}. If you are interested in this stock please send us a Purchase Order (PO).`;
+      value = t("types.update_qty", {
+        name: `${name}`,
+        partNumber: `${partNumber}`,
+        numInStock: `${numInStock}`,
+      });
     }
     if (type === "out_stock") {
-      value = `Dear ${name}! Thank you for your request. Unfortunately, ${partNumber} is currently out of stock. However, we are actively working to replenish our stock and expect ${partNumber} to be available soon.`;
+      // value = `Dear ${name}! Thank you for your request. Unfortunately, ${partNumber} is currently out of stock. However, we are actively working to replenish our stock and expect ${partNumber} to be available soon.`;
+      value = t("types.out_stock", {
+        name: `${name}`,
+        partNumber: `${partNumber}`,
+      });
     }
     if (type === "later") {
-      value = `Dear ${name}! Thank you for your request. We will provide you the details a bit later. Thank you!`;
+      // value = `Dear ${name}! Thank you for your request. We will provide you the details a bit later. Thank you!`;
+      value = t("types.later", {
+        name: `${name}`,
+      });
     }
     if (error) setError("");
     return setMessage(value);
@@ -244,7 +274,7 @@ const MessageInput: React.FC<Props> = ({
         className={clsx(appTheme.buttonCreate, classes.sendOrderButton)}
         onClick={isSupplierResponse ? onOpenInvoiceModal : onOpenOrderModal}
       >
-        {isSupplierResponse ? "Send invoice" : "Send PO"}
+        {isSupplierResponse ? t("send_inv") : t("send_po")}
       </Button>
     );
     const container = document.getElementById("chat-order-button-container");
@@ -259,7 +289,7 @@ const MessageInput: React.FC<Props> = ({
       <Box m={isXsDown ? "0 12px 8px" : "0"}>{crateOrderButton()}</Box>
       {isSupplierResponse && (
         <div style={{ textAlign: "center", color: "#345", fontWeight: "bold", marginBottom: 4 }}>
-          Please send your response directly to the customer:
+          {t("pls_response")}:
         </div>
       )}
       <Box display="flex" flexWrap="wrap" gridGap="6px" m="0 12px 8px">
@@ -268,21 +298,21 @@ const MessageInput: React.FC<Props> = ({
             {!!stock && (
               <>
                 <div className={classes.hint} onClick={onSetHintMessage("confirm")}>
-                  Confirm stock
+                  {t("supplier_response.conf_stock")}
                 </div>
                 <div className={classes.hint} onClick={onSetHintMessage("update_price")}>
-                  Update price
+                  {t("supplier_response.upd_price")}
                 </div>
                 <div className={classes.hint} onClick={onSetHintMessage("update_qty")}>
-                  Update quantity
+                  {t("supplier_response.upd_quantity")}
                 </div>
               </>
             )}
             <div className={classes.hint} onClick={onSetHintMessage("out_stock")}>
-              No stock
+              {t("supplier_response.no_stock")}
             </div>
             <div className={classes.hint} onClick={onSetHintMessage("later")}>
-              Reply later
+              {t("supplier_response.reply_later")}
             </div>
           </>
         )}
@@ -304,7 +334,7 @@ const MessageInput: React.FC<Props> = ({
             onChange={handleChange}
             onKeyDown={onEnterHandler}
             value={message}
-            placeholder="Type a message"
+            placeholder={t("placeholder")}
           />
           {!!message && (
             <Box display="flex">
