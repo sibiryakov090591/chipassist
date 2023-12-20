@@ -24,7 +24,7 @@ import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
-import { ResponseItem as IResponseItem } from "@src/store/supplierStatistics/statisticsTypes";
+import { StatisticsItem } from "@src/store/supplierStatistics/statisticsTypes";
 import FiltersContainer, { FilterPageSizeChoiceBar, FilterResultsBar } from "@src/components/FiltersBar";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { v4 as uuid } from "uuid";
@@ -42,7 +42,7 @@ interface Filters {
 
 interface State {
   [key: string]: {
-    [key: string]: IResponseItem[];
+    [key: string]: StatisticsItem[];
   };
 }
 
@@ -88,8 +88,8 @@ const Statistics: React.FC = () => {
   useEffect(() => {
     if (data) {
       const newData = data.results.reduce((acc: State, item) => {
-        const groupDate = format(new Date(item.date), "dd.MM.yyyy");
-        const stockId = item.stockrecord_id || uuid();
+        const groupDate = format(new Date(item.response_created), "dd.MM.yyyy");
+        const stockId = uuid(); //  item.stockrecord_id || uuid();
         return {
           ...acc,
           [groupDate]: acc[groupDate]
@@ -227,7 +227,10 @@ const Statistics: React.FC = () => {
                       </TableHead>
                       <TableBody>
                         {Object.values(group)
-                          .sort((a, b) => new Date(b[0].date).getTime() - new Date(a[0].date).getTime())
+                          .sort(
+                            (a, b) =>
+                              new Date(b[0].response_created).getTime() - new Date(a[0].response_created).getTime(),
+                          )
                           .map((stocks, index) => {
                             return <StatisticItem key={uuid()} items={stocks} index={index} />;
                           })}

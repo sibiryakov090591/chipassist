@@ -23,14 +23,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   pointer: {
     cursor: "pointer",
   },
-  firstChild: {
-    "& > *": {
-      background: "#fff5c3",
-    },
-  },
-  lastChild: {
-    borderBottom: "12px solid #eee",
-  },
+  // firstChild: {
+  //   "& > *": {
+  //     background: "#fff5c3",
+  //   },
+  // },
+  // lastChild: {
+  //   borderBottom: "12px solid #eee",
+  // },
   tdArrow: {
     padding: 0,
   },
