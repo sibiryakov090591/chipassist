@@ -85,9 +85,19 @@ module.exports = {
   },
   optimization: {
     minimize: isProd,
-    // splitChunks: {
-    //   chunks: "all",
-    // },
+    sideEffects: true,
+    usedExports: true,
+    splitChunks: {
+      chunks: "all",
+      maxSize: 500000,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
   },
   devtool: isDev ? "cheap-module-source-map" : "source-map",
   devServer: {
