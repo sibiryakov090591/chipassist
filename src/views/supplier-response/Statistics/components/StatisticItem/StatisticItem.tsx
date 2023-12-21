@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ResponseItem as IResponseItem } from "@src/store/supplierStatistics/statisticsTypes";
+import { StatisticsItem } from "@src/store/supplierStatistics/statisticsTypes";
 import clsx from "clsx";
 import { formatMoney } from "@src/utils/formatters";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -11,7 +11,7 @@ import useCurrency from "@src/hooks/useCurrency";
 import { useStyles } from "./statisticItemStyles";
 
 interface Props {
-  items: IResponseItem[];
+  items: StatisticsItem[];
   index: number;
 }
 
@@ -25,8 +25,8 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
 
   const toggleOpen = () => setOpen((prev) => !prev);
 
-  const createRow = (item: any, isFirstRow = false) => {
-    const date = new Date(item.date);
+  const createRow = (item: StatisticsItem, isFirstRow = false) => {
+    const date = new Date(item.response_created);
     const isActiveArrow = isFirstRow && items?.length > 1;
     // let country = countries?.find((i) => i.iso_3166_1_a3 === item.country);
     // if (country?.iso_3166_1_a3 === "RUS") country = countries?.find((i) => i.iso_3166_1_a3 === "KAZ");
@@ -36,13 +36,13 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
           [classes.odd]: !open && !isEven(index),
           [classes.open]: open,
           [classes.pointer]: isActiveArrow,
-          [classes.firstChild]: open && item.id === items[0].id,
-          [classes.lastChild]: open && item.id === items[items.length - 1].id,
+          // [classes.firstChild]: open && item.id === items[0].id,
+          // [classes.lastChild]: open && item.id === items[items.length - 1].id,
         })}
         onClick={isActiveArrow && toggleOpen}
       >
         <TableCell>
-          <div className={classes.strong}>{item.mpn?.toUpperCase() || "-"}</div>
+          <div className={classes.strong}>{item.rfq_mpn?.toUpperCase() || "-"}</div>
           {/* {country && ( */}
           {/*  <div className={classes.geoPin}> */}
           {/*    <span className={`fi fi-${country.code.toLowerCase()}`} /> */}
@@ -50,10 +50,10 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
           {/*  </div> */}
           {/* )} */}
         </TableCell>
-        <TableCell>{item.quantity ? formatMoney(item.quantity, 0) : "-"}</TableCell>
-        <TableCell>{item.num_in_stock ? formatMoney(item.num_in_stock, 0) : "-"}</TableCell>
+        <TableCell>{item.rfq_quantity ? formatMoney(item.rfq_quantity, 0) : "-"}</TableCell>
+        <TableCell>{item.response_quantity ? formatMoney(item.response_quantity, 0) : "-"}</TableCell>
         <TableCell>{item.manufacturer_name || "-"}</TableCell>
-        <TableCell>{item.datecode || "-"}</TableCell>
+        <TableCell>{item.response_datecode || "-"}</TableCell>
         <TableCell>
           <div className={classes.repliedData}>
             {date ? (
@@ -70,12 +70,12 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
         <TableCell>
           <div
             className={clsx({
-              [classes.strong]: !!item.price,
-              [classes.lowPrice]: !!item.price && !item.position?.includes("+"),
-              [classes.biggerPrice]: !!item.price && !!item.position?.includes("+"),
+              [classes.strong]: !!item.response_price,
+              [classes.lowPrice]: !!item.response_price && !item.position?.includes("+"),
+              [classes.biggerPrice]: !!item.response_price && !!item.position?.includes("+"),
             })}
           >
-            {item.price ? formatMoney(currencyPrice(item.price, item.currency || "USD")) : "-"}
+            {item.response_price ? formatMoney(currencyPrice(item.response_price, item.your_currency || "USD")) : "-"}
           </div>
         </TableCell>
         <TableCell>
@@ -94,7 +94,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
         <TableCell>
           <div
             className={clsx(classes.position, classes.strong, {
-              [classes.lowPrice]: !!item.position?.includes("-") || (!item.competitive_price && !!item.price),
+              [classes.lowPrice]: !!item.position?.includes("-") || (!item.competitive_price && !!item.response_price),
               [classes.biggerPrice]: !!item.position?.includes("+"),
             })}
           >
