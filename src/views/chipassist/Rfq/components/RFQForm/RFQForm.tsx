@@ -481,33 +481,29 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       if (formState.values.comment) comment += ` Additional: ${formState.values.comment};`;
 
       const sr = rfqItem?.stockrecord;
-      const srPrice = sr && getPrice(+formState.values.quantity, sr);
-
-      let availableMinPriceCurrency: CurrenciesAllowed = null;
-      const availableMinPrice = rfqItem?.product
-        ? rfqItem.product.stockrecords &&
-          rfqItem.product.stockrecords
-            .filter((i) => isProductAvailable(i))
-            .reduce((acc, i) => {
-              const price = getPrice(+formState.values.quantity, i, false);
-              if (!price) return acc;
-              if (!acc || +price < acc) {
-                availableMinPriceCurrency = i.price_currency;
-                return +price;
-              }
-              return acc;
-            }, 0)
-        : null;
+      // const srPrice = sr && getPrice(+formState.values.quantity, sr);
+      //
+      // let availableMinPriceCurrency: CurrenciesAllowed = null;
+      // const availableMinPrice = rfqItem?.product
+      //   ? rfqItem.product.stockrecords &&
+      //     rfqItem.product.stockrecords
+      //       .filter((i) => isProductAvailable(i))
+      //       .reduce((acc, i) => {
+      //         const price = getPrice(+formState.values.quantity, i, false);
+      //         if (!price) return acc;
+      //         if (!acc || +price < acc) {
+      //           availableMinPriceCurrency = i.price_currency;
+      //           return +price;
+      //         }
+      //         return acc;
+      //       }, 0)
+      //   : null;
 
       const data = {
         part_number: rfqItem.partNumber,
         quantity: formState.values.quantity,
-        price:
-          formState.values.price ||
-          (availableMinPrice ? `${availableMinPrice.toFixed(2)}` : srPrice ? `${srPrice}` : rfqItem?.price || null),
-        currency:
-          (formState.values.price && currency.code) ||
-          (availableMinPrice ? availableMinPriceCurrency : srPrice ? sr.price_currency : rfqItem?.currency || null),
+        price: formState.values.price || null,
+        currency: (formState.values.price && currency.code) || null,
         // delivery_date: moment.utc(item.deliveryDate).format().slice(0, 19),
         // valid_date: moment.utc(item.validateDate).format().slice(0, 19),
         seller: sr ? [{ id: sr.partner, name: sr.partner_name }] : null,

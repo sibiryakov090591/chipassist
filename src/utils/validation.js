@@ -8,6 +8,44 @@ import { addhttp } from "./transformUrl";
 
 const i18n = logMessages;
 
+export function deepEqual(value1, value2) {
+  // Handle primitive values
+  if (value1 === value2) {
+    return true;
+  }
+
+  // Handle arrays
+  if (Array.isArray(value1) || Array.isArray(value2)) {
+    if (value1.length !== value2.length) {
+      return false;
+    }
+
+    return value1.every((item, index) => deepEqual(item, value2[index]));
+  }
+
+  // Handle objects
+  if (typeof value1 === "object" && value1 !== null && typeof value2 === "object" && value2 !== null) {
+    const keys1 = Object.keys(value1);
+    const keys2 = Object.keys(value2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+
+    for (const key of keys1) {
+      if (!keys2.includes(key) || !deepEqual(value1[key], value2[key])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // Handle type conversion for other cases
+  // eslint-disable-next-line eqeqeq
+  return value1 == value2;
+}
+
 export const isEmpty = (value) => value === undefined || value === null || value === "";
 const join = (rules) => (value, data) =>
   rules.map((rule) => rule(value, data)).filter((error) => !!error)[0]; /* first error */
