@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { batch } from "react-redux";
-// import { useHistory, useLocation } from "react-router-dom";
-// import { DatePicker } from "@material-ui/pickers";
 import {
   TextField,
   Button,
@@ -13,16 +11,8 @@ import {
   Box,
   InputAdornment,
 } from "@material-ui/core";
-// import moment from "moment";
-// import { orderBy } from "lodash";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-// import { DATE_FORMAT } from "@src/config";
 import { clearRfqItem, rfqModalClose, saveRfqItem, sendSellerMessage } from "@src/store/rfq/rfqActions";
-// import { getAllSellers } from "@src/store/sellers/sellersActions";
-// import { searchAcReturn } from "@src/store/search/searchActions";
-// import { getCurrentDate } from "@src/store/rfq/rfqReducer";
-// import BaseFilterDropdown from "@src/views/chipassist/Search/components/BaseFilterDropdown/BaseFilterDropdown";
-// import { AutocompleteDropdown } from "@src/components";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -35,11 +25,8 @@ import {
   changeMisc,
   saveRequestToLocalStorage,
 } from "@src/store/progressModal/progressModalActions";
-
-import { getPrice, isProductAvailable } from "@src/utils/product";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
-import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
