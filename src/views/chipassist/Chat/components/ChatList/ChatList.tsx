@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { format } from "date-fns";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
+  const { t } = useI18n("chat.chat_list");
   const classes = useStyles();
   const chatClasses = useChatStyles();
   const dispatch = useAppDispatch();
@@ -85,7 +87,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
       <div ref={chatListRef} className={classes.list}>
         {!chatList.results.length && (
           <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-            {chatList.isLoading ? <Preloader /> : <h5 className={chatClasses.emptyMessage}>You have no chats</h5>}
+            {chatList.isLoading ? <Preloader /> : <h5 className={chatClasses.emptyMessage}>{t("no_chats")}</h5>}
           </Box>
         )}
         <InfiniteScroll
@@ -138,8 +140,8 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                   <div className={classes.ellipsisText}>
                     {lastMessage?.po || lastMessage?.invoice
                       ? lastMessage?.po
-                        ? "Purchase Order (PO)"
-                        : "Payment Invoice"
+                        ? t("PO")
+                        : t("PI")
                       : lastMessage?.text || (lastMessage?.message_files && lastMessage?.message_files[0]?.file)}
                   </div>
                   <Box display="flex" justifyContent="space-between" className={classes.info}>

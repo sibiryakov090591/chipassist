@@ -19,6 +19,7 @@ import { useStyles } from "@src/views/chipassist/Login/components/LoginForm/styl
 import useAppTheme from "@src/theme/useAppTheme";
 import { isAuthPage, setAuthToken } from "@src/utils/auth";
 import { useNavigate } from "react-router-dom";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 
 const schema = {
   username: {
@@ -53,6 +54,7 @@ interface FormState {
 const LoginFormAs = (props: { className: string }) => {
   const { className, ...rest } = props;
 
+  const { t } = useI18n("login_form_as");
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch: any = useAppDispatch();
@@ -142,7 +144,7 @@ const LoginFormAs = (props: { className: string }) => {
           error={hasError("username")}
           fullWidth
           helperText={hasError("username") ? formState.errors.username[0] : null}
-          label="Email address"
+          label={t("email")}
           name="username"
           id="username"
           onChange={handleChange}
@@ -159,7 +161,7 @@ const LoginFormAs = (props: { className: string }) => {
         name="signin"
         variant="contained"
       >
-        Sign in as
+        {t("sign_in")}
       </Button>
     </form>
   );
