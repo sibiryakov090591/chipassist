@@ -8,6 +8,7 @@ import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { Link, useParams } from "react-router-dom";
 import { getArticle, getBlogList } from "@src/store/blog/blogActions";
 import clsx from "clsx";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 import { useStyles as useBlogStyles } from "../../styles";
 
@@ -18,6 +19,7 @@ const Article: React.FC = () => {
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down(720));
 
+  const { t } = useI18n("blog.article");
   const { selected, isLoading, list, filters } = useAppSelector((state) => state.blog);
   const { slug } = useParams();
 
@@ -41,10 +43,10 @@ const Article: React.FC = () => {
       <Container maxWidth="lg" className={classes.container}>
         <div className={classes.content}>
           <div className={classes.wrapper}>
-            {isLoading && <Preloader title="Article is loading..." />}
+            {isLoading && <Preloader title={t("loading")} />}
             {!isLoading && !selected?.id && (
               <Box display="flex" justifyContent="center" p="32px 0">
-                <h5>The article does not exist</h5>
+                <h5>{t("no_art")}</h5>
               </Box>
             )}
             {!isLoading && !!selected?.id && (
@@ -67,7 +69,7 @@ const Article: React.FC = () => {
               </Link>
             )}
             <Link className={classes.paginationLink} to={`/blog`}>
-              Return to blog
+              {t("return")}
             </Link>
             {!!selected?.next?.title && (
               <Link

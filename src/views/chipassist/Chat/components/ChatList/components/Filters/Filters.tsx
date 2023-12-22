@@ -72,7 +72,7 @@ const Filters: React.FC = () => {
             <InputLabel id="chat-filters-upc-label">{t("part_n")}</InputLabel>
             <Select
               labelId="chat-filters-upc-label"
-              label="Part number"
+              label={t("part_n")}
               IconComponent={ExpandMoreRoundedIcon}
               name="upc"
               value={values.upc || ""}

@@ -1837,6 +1837,113 @@
         "reply_later": "Reply later"
       },
       "placeholder": "Type a message"
+    },
+
+    "messages": {
+      "request_block": "Request for {{qty}}pcs {{upc}}{{price}}.",
+      "no_messages": "You have no messages",
+      "is_supplier_resp": {
+        "true": "You have no chats yet. You&apos;ll see new messages here when customers click <strong>&quot;Contact seller&quot;</strong> button on",
+        "false": "To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the search page<br /><br />Go to search page"
+      },
+      "empty_text": " To start communication select a chat with the {{role}}",
+      "buyer": "buyer",
+      "seller": "seller",
+      "sender": "You",
+      "table": {
+        "quantity": "quantity",
+        "price": {
+          "v1": "Price",
+          "v2": "Unit Price"
+        },
+        "total": {
+          "v1": "Total",
+          "v2": "Total Price"
+        }
+      },
+      "view_po": "View PO in PDF",
+      "customer": "Customer",
+      "seller_h": "Seller",
+      "out_price": "Out <span className={classes.nowrap}>Price, {{symbol}}</span>",
+      "shipping": "Shipping",
+      "notes": "Notes",
+      "view_invoice": "View Invoice in PDF"
+    },
+
+    "send_invoice": {
+      "exw": "Ex-Works",
+      "fca": "Free to Carrier",
+      "fas": "Free Alongside Ship",
+      "fob": "Free On Board",
+      "cfr": "Cost and Freight",
+      "cif": "Cost, Insurance and Freight",
+      "cpt": "Carriage Paid To",
+      "cip": "Carriage And Insurance Paid To",
+      "dap": "Delivered At Place",
+      "dpu": "Delivered At Place Unloaded",
+      "ddp": "Delivered Duty Paid",
+      "company_name": "Company name",
+      "work_phone": "Work phone",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "country": "Country",
+      "city": "City",
+      "postal_code": "Postal code",
+      "address": "Address",
+      "buyer_details": "Buyer details",
+      "product": "Product",
+      "dc": "Date code",
+      "packaging": "Packaging",
+      "qty": "Quantity",
+      "u_price": "Unit price",
+      "out_price": "Out price",
+      "shipping": "Shipping",
+      "shipping_type": "Shipping type",
+      "shipping_fee": "Shipping cost",
+      "add_notes": "Additional notes",
+      "delivery_etc": "Delivery terms etc.",
+      "total_amount": "Total Amount Payable",
+      "ord_curr": "Order currency",
+      "preview": "Preview PDF",
+      "send": "Send",
+      "next": "Next",
+      "back": "Back",
+      "cansel": "Cansel",
+      "selected": "Selected for billing and shipping",
+      "req_qty": "Qty is required",
+      "moq_is": "MOQ is",
+
+      "validation": {
+        "company_name": "Company name is required",
+        "first_name": "First name is required",
+        "last_name": "Last name is required",
+        "country": "Country is required",
+        "city": "City is required",
+        "postal_code": "Postal code is required",
+        "address": "Address is required",
+        "shipping_fee": "Shipping cost is required",
+        "req_qty": "Qty is required",
+        "moq_is": "MOQ is",
+        "at_least": "At least 1",
+        "in_stock": "In stock {{num_in_stock}} pcs."
+      }
+    },
+    "upload_file": {
+      "send": "Send files",
+      "type": "Type a message"
+    }
+
+  },
+
+  "blog": {
+    "blog": "Blog",
+    "search": "Search",
+    "no_art": "No articles",
+    "loading": "Articles are loading...",
+    "article": {
+      "loading": "Article are loading...",
+      "no_art": "The article does not exist",
+      "return": "Return to blog"
     }
   }
 

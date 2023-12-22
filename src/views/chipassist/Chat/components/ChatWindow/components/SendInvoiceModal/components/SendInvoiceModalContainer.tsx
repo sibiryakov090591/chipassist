@@ -23,6 +23,7 @@ import {
 import { previewOrderPdf, sendMessage } from "@src/store/chat/chatActions";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import useCurrency from "@src/hooks/useCurrency";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 
 type FormValues = {
   company_name: string;
@@ -51,7 +52,7 @@ export const SendInvoiceModalContainer: React.FC<{
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const { currency, currencyPrice } = useCurrency();
-
+  const { t } = useI18n("chat.send_invoice");
   const checkout = useAppSelector((state) => state.checkout);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
   const selectedChat = useAppSelector((state) => state.chat.selectedChat);
@@ -227,7 +228,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "Company name is required",
+                        message: t("validation.company_name"),
                       },
                     }}
                     render={({ field }) => (
@@ -236,7 +237,7 @@ export const SendInvoiceModalContainer: React.FC<{
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        label="Company name *"
+                        label={`${t("company_name")} *`}
                         error={!!errors.company_name}
                         helperText={errors.company_name?.message}
                         variant="outlined"
@@ -259,7 +260,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     render={({ field }) => (
                       <PhoneInputWrapper
                         {...field}
-                        label="Work phone"
+                        label={t("work_phone")}
                         small={true}
                         style={{ height: "37.63px", margin: 0 }}
                         // error={!!errors.phone}
@@ -275,7 +276,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "First name is required",
+                        message: t("validation.first_name"),
                       },
                     }}
                     render={({ field }) => (
@@ -284,7 +285,7 @@ export const SendInvoiceModalContainer: React.FC<{
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        label="First name *"
+                        label={`${t("first_name")} *`}
                         error={!!errors.first_name}
                         helperText={errors.first_name?.message}
                         variant="outlined"
@@ -301,7 +302,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "Last name is required",
+                        message: t("validation.last_name"),
                       },
                     }}
                     render={({ field }) => (
@@ -310,7 +311,7 @@ export const SendInvoiceModalContainer: React.FC<{
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        label="Last name *"
+                        label={`${t("last_name")}*`}
                         error={!!errors.last_name}
                         helperText={errors.last_name?.message}
                         variant="outlined"
@@ -327,7 +328,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "Country is required",
+                        message: t("validation.country"),
                       },
                     }}
                     render={({ field }) => (
@@ -338,7 +339,7 @@ export const SendInvoiceModalContainer: React.FC<{
                           shrink: true,
                         }}
                         name="country"
-                        label="Country *"
+                        label={`${t("country")} *`}
                         fullWidth
                         size="small"
                         select
@@ -361,7 +362,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "City is required",
+                        message: t("validation.city"),
                       },
                     }}
                     render={({ field }) => (
@@ -370,7 +371,7 @@ export const SendInvoiceModalContainer: React.FC<{
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        label="City *"
+                        label={`${t("city")} *`}
                         error={!!errors.city}
                         helperText={errors.city?.message}
                         variant="outlined"
@@ -387,7 +388,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "Postal code is required",
+                        message: t("validation.postal_code"),
                       },
                     }}
                     render={({ field }) => (
@@ -396,7 +397,7 @@ export const SendInvoiceModalContainer: React.FC<{
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        label="Postal code *"
+                        label={`${t("postal_code")} *`}
                         error={!!errors.postcode}
                         helperText={errors.postcode?.message}
                         variant="outlined"
@@ -413,7 +414,7 @@ export const SendInvoiceModalContainer: React.FC<{
                     rules={{
                       required: {
                         value: true,
-                        message: "Address is required",
+                        message: t("validation.address"),
                       },
                     }}
                     render={({ field }) => (
@@ -422,7 +423,7 @@ export const SendInvoiceModalContainer: React.FC<{
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        label="Address *"
+                        label={`${t("address")} *`}
                         error={!!errors.address}
                         helperText={errors.address?.message}
                         variant="outlined"
@@ -434,50 +435,50 @@ export const SendInvoiceModalContainer: React.FC<{
                 </Grid>
               </Grid>
 
-              <h3>Buyer details</h3>
+              <h3>{t("buyer_details")}</h3>
               <AddressData item={purchaseOrder} />
             </>
           )}
 
           {step === 2 && (
             <>
-              <h3>Product</h3>
+              <h3>{t("product")}:</h3>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <div className={classes.label}>MPN:</div>
                   <div className={classes.value}>{stock?.upc || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>Date code (DC):</div>
+                  <div className={classes.label}>{t("dc")} (DC):</div>
                   <div className={classes.value}>{getStockDataCode(stock) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>Packaging:</div>
+                  <div className={classes.label}>{t("packaging")}:</div>
                   <div className={classes.value}>{stock?.packaging || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
                   <Box>
-                    <div className={classes.label}>Quantity:</div>
+                    <div className={classes.label}>{t("qty")}:</div>
                     <div className={classes.value}>{quantity || "-"}</div>
                   </Box>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>{`Unit price (${currency?.code}):`}</div>
+                  <div className={classes.label}>{`${t("u_price")} (${currency?.code}):`}</div>
                   <div className={classes.value}>{(unitPrice && formatMoney(unitPrice)) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>{`Out price (${currency?.code}):`}</div>
+                  <div className={classes.label}>{`${t("out_price")} (${currency?.code}):`}</div>
                   <div className={classes.value}>{(outPrice && formatMoney(outPrice)) || "-"}</div>
                 </Grid>
               </Grid>
 
               <Divider className={classes.divider} />
 
-              <h3>Shipping:</h3>
+              <h3>{t("shipping")}:</h3>
               <Grid container spacing={1}>
                 <Grid item sm={6} xs={12}>
                   <Box>
-                    <div className={classes.label}>Shipping type: *</div>
+                    <div className={classes.label}>{t("shipping_type")}: *</div>
                     <Controller
                       name="shipping_notes"
                       control={control}
@@ -497,14 +498,14 @@ export const SendInvoiceModalContainer: React.FC<{
                 </Grid>
                 <Grid item sm={6} xs={12}>
                   <Box>
-                    <div className={classes.label}>{`Shipping cost (${currency?.code}): *`}</div>
+                    <div className={classes.label}>{`${t("shipping_fee")} (${currency?.code}): *`}</div>
                     <Controller
                       name="shipping_fee"
                       control={control}
                       rules={{
                         required: {
                           value: true,
-                          message: "Shipping cost is required",
+                          message: t("validation.shipping_fee"),
                         },
                       }}
                       render={({ field }) => (
@@ -525,7 +526,7 @@ export const SendInvoiceModalContainer: React.FC<{
                 </Grid>
               </Grid>
 
-              <h3>Additional notes:</h3>
+              <h3>{t("add_notes")}:</h3>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Controller
@@ -538,7 +539,7 @@ export const SendInvoiceModalContainer: React.FC<{
                           shrink: true,
                         }}
                         fullWidth
-                        label="Delivery terms etc."
+                        label={t("delivery_etc")}
                         variant="outlined"
                         multiline
                         rows={2}
@@ -552,18 +553,18 @@ export const SendInvoiceModalContainer: React.FC<{
 
               <h3>
                 <Box display="flex" justifyContent="space-between">
-                  <span>{`Total Amount Payable (${currency?.code}):`}</span>
+                  <span>{`${t("total_amount")} (${currency?.code}):`}</span>
                   <span>{totalPrice ? formatMoney(totalPrice) : "-"}</span>
                 </Box>
               </h3>
 
               <Box display="flex" justifyContent="space-between" alignItems="center" mt="16px">
                 <Box display="flex" alignItems="center">
-                  <h3 style={{ margin: "0 12px 0 0" }}>Order currency:</h3>
+                  <h3 style={{ margin: "0 12px 0 0" }}>{t("ord_curr")}:</h3>
                   <FilterCurrency className={classes.currencyButton} />
                 </Box>
                 <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
-                  Preview PDF
+                  {t("preview")}
                 </span>
               </Box>
             </>
@@ -577,14 +578,14 @@ export const SendInvoiceModalContainer: React.FC<{
               className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
               onClick={isExample ? null : step <= 1 ? onCloseModal : goToStep("prev")}
             >
-              {step <= 1 ? "Cancel" : "Back"}
+              {step <= 1 ? t("cansel") : t("back")}
             </Button>
             <Button
               onClick={isExample ? onSubmitHandler : step >= 2 ? onSubmitHandler : goToStep("next")}
               variant="contained"
               className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
             >
-              {step >= 2 ? "Send" : "Next"}
+              {step >= 2 ? t("back") : t("next")}
             </Button>
           </Box>
         </Box>

@@ -6,6 +6,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
 import placeholderImg from "@src/images/file.png";
 import FallbackImage from "@src/components/FallbackImage/FallbackImage";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles as useMessageInputStyles } from "../MessageInput/styles";
 import { useStyles } from "./styles";
 
@@ -38,7 +39,7 @@ const UploadFilesModal: React.FC<Props> = ({
   const messageInputClasses = useMessageInputStyles();
   const textareaRef = useRef(null);
   const textareaWrapperRef = useRef(null);
-
+  const { t } = useI18n("chat");
   const [val, setVal] = React.useState(message);
 
   React.useEffect(() => {
@@ -83,7 +84,7 @@ const UploadFilesModal: React.FC<Props> = ({
       <div className={classes.formContainer}>
         <div className={classes.formHeader}>
           <Typography className={classes.title} variant="h4" component="h4" gutterBottom>
-            Send files
+            {t("upload_file.send")}
           </Typography>
           <div>
             <AddBoxIcon onClick={onAddFiles} className={classes.addButton} />
@@ -106,7 +107,7 @@ const UploadFilesModal: React.FC<Props> = ({
               onChange={handleChange}
               onKeyDown={onEnterHandler}
               value={val}
-              placeholder="Type a message"
+              placeholder={t("upload_file.type")}
             />
             {!!message && (
               <Box display="flex">
