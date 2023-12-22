@@ -16,7 +16,7 @@ function AddressData({ item }: any) {
         {item?.is_default_for_billing && (
           <TableRow>
             <TableCell colSpan={2} className={classes.selected}>
-              Selected for billing and shipping
+              {t("chat.send_invoice.selected")}
             </TableCell>
           </TableRow>
         )}
