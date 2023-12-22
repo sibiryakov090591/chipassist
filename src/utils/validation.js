@@ -1,14 +1,13 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable consistent-return */
 import validator from "validator";
-import isPostalCode from "validator/es/lib/isPostalCode";
 import logMessages from "../i18nDefault/logMessages";
 // https://www.npmjs.com/package/validator
 import { addhttp } from "./transformUrl";
 
 const i18n = logMessages;
 
-export function deepEqual(value1, value2) {
+export function deepEqualNotStrict(value1, value2) {
   // Handle primitive values
   if (value1 === value2) {
     return true;
@@ -20,7 +19,7 @@ export function deepEqual(value1, value2) {
       return false;
     }
 
-    return value1.every((item, index) => deepEqual(item, value2[index]));
+    return value1.every((item, index) => deepEqualNotStrict(item, value2[index]));
   }
 
   // Handle objects
@@ -33,7 +32,7 @@ export function deepEqual(value1, value2) {
     }
 
     for (const key of keys1) {
-      if (!keys2.includes(key) || !deepEqual(value1[key], value2[key])) {
+      if (!keys2.includes(key) || !deepEqualNotStrict(value1[key], value2[key])) {
         return false;
       }
     }
@@ -66,15 +65,6 @@ export const isInvalidMonth = (value) => isEmpty(value) || value.length !== 2;
 export const isInvalidYear = (value) => isEmpty(value) || value.length !== 2;
 
 export const isInvalidCvc = (value) => isEmpty(value) || value.length !== 3;
-
-export const isInvalidPostCode = (value, locale) => {
-  try {
-    const test = isPostalCode(value, locale);
-    return !test;
-  } catch (error) {
-    return false;
-  }
-};
 
 export function specialCharCheck(value) {
   const regExpWhiteList = /^[\w.+-|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+$/;

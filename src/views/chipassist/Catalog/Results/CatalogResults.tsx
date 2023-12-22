@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container/Container";
 import Preloader from "@src/components/Preloader/Preloader";
 import { v4 as uuidv4 } from "uuid";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { getCatalogCategoriesThunk, getCatalogProducts } from "@src/store/categories/categoriesActions";
+import { getCatalogCategoriesThunk, getCatalogProducts } from "@src/store/catalog/catalogActions";
 import { Paginate } from "@src/components";
 import { Box, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -125,7 +125,7 @@ const CatalogResults: React.FC = () => {
   const catalogUrl = matchResult && matchResult[1];
   const titleRef = useRef(null);
 
-  const normalizeData = useAppSelector((state) => state.categories.catalog.normalizeData);
+  const normalizeData = useAppSelector((state) => state.catalog.normalizeData);
 
   const [products, setProducts] = useState(null);
   const [isProductsLoading, setIsProductsLoading] = useState(true);
@@ -290,6 +290,11 @@ const CatalogResults: React.FC = () => {
             )}
             {!isProductsLoading && products && (
               <div className={classes.resultsWrapper}>
+                {!products.results.length && (
+                  <div className={classes.categoryNotFound}>
+                    <h2 className={classes.notFound}>{t("not_results")}</h2>
+                  </div>
+                )}
                 {!!products.results.length && (
                   <>
                     <h1 ref={titleRef}>{category?.name}</h1>

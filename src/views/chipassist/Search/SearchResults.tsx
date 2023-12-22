@@ -41,7 +41,6 @@ import { europeCountries } from "@src/constants/countries";
 import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
-import { ProductsSegment } from "../Categories/components/Products/Products";
 import ExtendedSearchBar from "./components/ProgressBar";
 import useSearchLoadResults from "./hooks/useSearchLoadResults";
 
@@ -400,7 +399,7 @@ const SearchResults = () => {
               ) : (
                 <div id={"productList"}>
                   {!isSmDown && showRfqBar && count > 0 && <RfqBar />}
-                  <ProductsSegment>
+                  <div>
                     {products?.map((product, key) => {
                       const rfq = rfqData.results.find((item) => item.id === product.id);
                       return constants.isNewSearchPage ? (
@@ -415,7 +414,7 @@ const SearchResults = () => {
                         <ProductCard key={product.id} product={product} searchQuery={query} />
                       );
                     })}
-                  </ProductsSegment>
+                  </div>
                   {!constants.isNewSearchPage &&
                     (baseFilters?.base_in_stock || filtersValues?.base_num_in_stock) &&
                     count > 0 &&

@@ -1,11 +1,54 @@
 import _ from "lodash";
-import { Product, Stockrecord } from "@src/store/products/productTypes";
+import { Product, ProductStateItem, Stockrecord } from "@src/store/products/productTypes";
 import { RfqItem } from "@src/store/rfq/rfqTypes";
 import { addApiUrl } from "@src/utils/transformUrl";
+import { isUrl } from "@src/utils/validation";
 import { getComparator, stableSort } from "./sort";
 
 const isImage = require("is-image");
 const placeholderImg = require("@src/images/cpu.png");
+
+export const getAttributes = (
+  data: ProductStateItem,
+): {
+  [key: string]: {
+    name: string;
+    value: string | number | string[] | number[];
+  }[];
+} => {
+  if (!data || !data.attributes) return {};
+  const groups: {
+    [key: string]: {
+      name: string;
+      value: string | number | string[] | number[];
+    }[];
+  } = {};
+  const attributes = data.attributes.filter((attr) => attr.value && !isUrl(attr.value) && attr.name !== "Manufacturer");
+  attributes.forEach((val) => {
+    let group_name = "Others";
+    if (val.group) group_name = val.group.name;
+    const item = { name: val.name === "Lead Time" ? "Manufacturer Lead Time" : val.name, value: val.value };
+
+    if (groups[group_name]) {
+      groups[group_name].push(item);
+    } else {
+      groups[group_name] = [item];
+    }
+  });
+
+  const sortedKeys = Object.keys(groups).sort((a, b) => {
+    if (a.toLowerCase() < b.toLowerCase()) return -1;
+    if (a.toLowerCase() > b.toLowerCase()) return 1;
+    return 0;
+  });
+
+  const result = sortedKeys.reduce((acc: any, val) => {
+    acc[val] = groups[val];
+    return acc;
+  }, {});
+
+  return result;
+};
 
 export const getDynamicMoq = (stockrecord: Stockrecord) => {
   let moq = stockrecord?.moq || 1;

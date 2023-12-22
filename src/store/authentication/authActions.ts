@@ -272,7 +272,6 @@ export const authCheckState = () => {
         dispatch(saveEmailAction(localStorage.getItem("email")));
 
         dispatch(getUserAddressThunk());
-        // dispatch(getCountriesThunk());
       }
     }
     if (isCartEnabled) dispatch(getCart());

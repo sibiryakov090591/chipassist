@@ -190,14 +190,6 @@ const CartAddress: React.FC<Props> = ({ type, backHandler, isValidBillingAddress
         }
         break;
       case "postcode":
-        // if (!isEmpty(data.country)) {
-        //   const urlParts = data.country.split("/");
-        //   const locale = urlParts[urlParts.length - 2];
-
-        //   if (isInvalidPostCode(value, locale)) {
-        //     error = t("address.postcode_error");
-        //   }
-        // }
         if (isEmpty(value)) {
           error = t("address.postcode_error");
         }

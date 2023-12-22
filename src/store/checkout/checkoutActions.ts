@@ -132,20 +132,6 @@ export const switchBillingDuplicate = () => ({
   type: actionTypes.SWITCH_BILLING_DUPLICATE,
 });
 
-export const getCountriesThunk = () => {
-  return (dispatch: any) => {
-    dispatch({
-      types: actionTypes.GET_COUNTRIES,
-      promise: (client: ApiClientInterface) => client.get(`/countries/`).then((res) => res.data),
-    }).then((response: any) => {
-      dispatch({
-        type: actionTypes.SAVE_COUNTRIES,
-        payload: response,
-      });
-    });
-  };
-};
-
 export const quickOrderCheckoutThunk = (token = "") => {
   return (dispatch: any, getState: () => RootState) => {
     const { address, billingAddress } = getState().checkout;

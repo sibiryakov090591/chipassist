@@ -116,7 +116,6 @@ const LoginFormAs = (props: { className: string }) => {
         }
         if (isCartEnabled) dispatch(getCart());
         dispatch(getUserAddressThunk());
-        // dispatch(getCountriesThunk());
       })
       .catch((error: any) => {
         const textError = "Incorrect data";
