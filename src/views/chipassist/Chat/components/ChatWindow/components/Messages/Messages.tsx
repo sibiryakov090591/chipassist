@@ -24,6 +24,7 @@ import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Paper, Grid, useTheme, useMediaQuery } from "@material-ui/core";
 import { format } from "date-fns";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
@@ -35,6 +36,7 @@ interface Props {
 }
 
 const Messages: React.FC<Props> = ({ onShowDetails }) => {
+  const { t } = useI18n("chat.messages");
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const theme = useTheme();
@@ -249,9 +251,13 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
       <div className={classes.requestItem}>
         <ScheduleRoundedIcon className={classes.requestItemIcon} />
         <div>
-          <strong>{`Request for ${selectedChat.rfq.quantity}pcs ${selectedChat.rfq.upc}${
-            selectedChat.rfq.price ? ` at ${formatMoney(selectedChat.rfq.price)} €` : ""
-          }.`}</strong>{" "}
+          <strong>
+            {t("request_block", {
+              qty: `${selectedChat.rfq.quantity}`,
+              upc: `${selectedChat.rfq.upc}`,
+              price: `${selectedChat.rfq.price ? ` at ${formatMoney(selectedChat.rfq.price)} €` : ""}`,
+            })}
+          </strong>{" "}
           {date}
         </div>
       </div>
@@ -267,7 +273,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
           ) : selectedChat ? (
             <Box display="flex" flexDirection="column" alignItems="center">
               <img className={classes.chatImage} src={chatIcon} alt="Chat icon" />
-              <h5>You have no messages</h5>
+              <h5>{t("no_messages")}</h5>
             </Box>
           ) : (
             <Box display="flex" flexDirection="column" alignItems="center">
@@ -276,16 +282,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                 <h5 className={classes.emptyText}>
                   {isSupplierResponse ? (
                     <>
-                      You have no chats yet. You&apos;ll see new messages here when customers click{" "}
-                      <strong>&quot;Contact seller&quot;</strong> button on ChipAssist.
+                      <span dangerouslySetInnerHTML={{ __html: t("is_supplier_resp.true") }}></span> ChipAssist.
                     </>
                   ) : (
                     <>
-                      To start a chat about any product use <strong>&quot;Contact seller&quot;</strong> button on the
-                      search page
-                      <br />
-                      <br />
-                      Go to search page{" "}
+                      {t("is_supplier_resp.false")}{" "}
                       <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
                         https://chipassist.com/search
                       </a>
@@ -294,7 +295,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                 </h5>
               ) : (
                 <h5 className={classes.emptyText}>
-                  To start communication select a chat with the {isSupplierResponse ? "buyer" : "seller"}
+                  {t("empty_text", { role: `${isSupplierResponse ? t("buyer") : t("seller")}` })}
                 </h5>
               )}
             </Box>
@@ -356,7 +357,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                       >
                         <div className={classes.messageInfo}>
                           <span className={classes.messageFrom}>
-                            {item.sender === "You" ? "You" : selectedChat?.partner_name}
+                            {item.sender === "You" ? t("sender") : selectedChat?.partner_name}
                           </span>
                           <span className={classes.messageDate}>
                             {time}
@@ -405,12 +406,12 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                       <tr style={{ backgroundColor: "#345" }}>
                                         <th>MPN</th>
                                         <th>DC</th>
-                                        <th>{isXsDown ? "Qty" : "Quantity"}</th>
+                                        <th>{isXsDown ? "QTY" : "Quantity"}</th>
                                         <th className={classes.nowrap}>
-                                          {isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}
+                                          {isXsDown ? `${t("price.v1")}, ${symbol}` : `${t("price.v2")}, ${symbol}`}
                                         </th>
                                         <th className={classes.nowrap}>
-                                          {isXsDown ? `Total, ${symbol}` : `Total Price, ${symbol}`}
+                                          {isXsDown ? `${t("total.v1")}, ${symbol}` : `${t("total.v2")}, ${symbol}`}
                                         </th>
                                       </tr>
                                     </thead>
@@ -428,7 +429,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     <div className={classes.orderPdfLink}>
                                       <img src={pdf_icon} alt="file icon" />
                                       <a href={orderPdf.url} target="_blank" rel="noreferrer">
-                                        View PO in PDF
+                                        {t("view_po")}
                                       </a>
                                     </div>
                                   )}
@@ -441,7 +442,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   <Grid container>
                                     <Grid item sm={6} xs={12}>
                                       <div className={classes.orderAddressTitle}>
-                                        <strong>Customer:</strong>
+                                        <strong>{t("customer")}:</strong>
                                       </div>
                                       {purchaseOrder?.company_name && (
                                         <div>
@@ -468,7 +469,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     </Grid>
                                     <Grid item sm={6} xs={12}>
                                       <div className={classes.orderAddressTitle}>
-                                        <strong>Seller:</strong>
+                                        <strong>{t("seller_h")}:</strong>
                                       </div>
                                       {invoiceData?.company_name && (
                                         <div>
@@ -506,7 +507,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                           {isXsDown ? `Price, ${symbol}` : `Unit Price, ${symbol}`}
                                         </th>
                                         <th>
-                                          Out <span className={classes.nowrap}>Price, {symbol}</span>
+                                          <span
+                                            dangerouslySetInnerHTML={{
+                                              __html: `${t("out_price", { symbol: `${symbol}` })}`,
+                                            }}
+                                          ></span>
                                         </th>
                                       </tr>
                                     </thead>
@@ -521,7 +526,9 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                       <tr>
                                         <td colSpan={5}>
                                           <Box display="flex" justifyContent="space-between" alignItems="center">
-                                            <div>Shipping: {invoiceData?.shipping_notes}</div>
+                                            <div>
+                                              {t("shipping")}: {invoiceData?.shipping_notes}
+                                            </div>
                                             <div>
                                               {invoiceData?.shipping_fee ? formatMoney(invoiceData.shipping_fee) : "-"}
                                             </div>
@@ -532,7 +539,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <td colSpan={5}>
                                           <Box display="flex" justifyContent="space-between" alignItems="center">
                                             <div>
-                                              <strong>Total:</strong>
+                                              <strong>{t("total.v1")}:</strong>
                                             </div>
                                             <div>
                                               <strong>
@@ -550,7 +557,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                   {invoiceData?.additional_notes && (
                                     <div className={classes.notes}>
                                       <div>
-                                        <strong>Notes:</strong>
+                                        <strong>{t("notes")}:</strong>
                                       </div>
                                       <div>{invoiceData.additional_notes}</div>
                                     </div>
@@ -559,7 +566,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                     <div className={classes.orderPdfLink}>
                                       <img src={pdf_icon} alt="file icon" />
                                       <a href={orderPdf.url} target="_blank" rel="noreferrer">
-                                        View Invoice in PDF
+                                        {t("view_invoice")}
                                       </a>
                                     </div>
                                   )}
@@ -626,7 +633,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
           {isSending && (
             <div className={classes.messageItem}>
               <div className={classes.messageInfo}>
-                <span className={classes.messageFrom}>You</span>
+                <span className={classes.messageFrom}>{t("sender")}</span>
                 <span className={classes.messageDate}>{new Date().toLocaleTimeString().slice(0, 5)}</span>
               </div>
               <Preloader />

@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { clsx } from "clsx";
 import FallbackImage from "@src/components/FallbackImage/FallbackImage";
 import placeholderImg from "@src/images/no-article-image.png";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 const Blog: React.FC = () => {
@@ -20,6 +21,7 @@ const Blog: React.FC = () => {
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
 
+  const { t } = useI18n("blog");
   const { isLoading, list, filters } = useAppSelector((state) => state.blog);
 
   const [searchValue, setSearchValue] = useState("");
@@ -58,7 +60,7 @@ const Blog: React.FC = () => {
       <Container maxWidth="lg">
         <div className={classes.header}>
           <h1>
-            ChipAssist <span>Blog</span>
+            ChipAssist <span>{t("blog")}</span>
           </h1>
           <TextField
             className={classes.searchInput}
@@ -67,17 +69,17 @@ const Blog: React.FC = () => {
             InputProps={{
               endAdornment: <SearchIcon onClick={onSearchHandler} />,
             }}
-            placeholder="Search"
+            placeholder={t("search")}
             value={searchValue}
             onChange={onChangeSearch}
             onKeyDown={onEnterHandler}
           />
         </div>
         <Box display="flex" justifyContent="center">
-          {isLoading && <Preloader title="Articles are loading..." />}
+          {isLoading && <Preloader title={t("loading")} />}
           {!isLoading && !list.results.length && (
             <Box display="flex" justifyContent="center" p="32px 0">
-              <h5>No articles</h5>
+              <h5>{t("no_art")}</h5>
             </Box>
           )}
         </Box>
