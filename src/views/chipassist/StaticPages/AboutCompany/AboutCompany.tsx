@@ -22,7 +22,7 @@ const AboutCompany = () => {
           <Grid container spacing={4} direction={"row"} alignItems={"center"} justify={"center"}>
             <Grid item md={6} xs={12}>
               <h1 className={classes.title}>
-                What is <span className={classes.redColor}>ChipAssist?</span>
+                {t("title")} <span className={classes.redColor}>ChipAssist?</span>
               </h1>
             </Grid>
             <Grid item md={12} xs={12}>
@@ -32,19 +32,10 @@ const AboutCompany = () => {
 
           <Grid style={{ marginTop: 16 }} container spacing={4}>
             <Grid item md={6} xs={12}>
-              <p className={classes.paragraph}>
-                ChipAssist is the ultimate global marketplace for sourcing electronic parts and components. Our platform
-                provides users with easy access to stock levels and costs from hundreds of international distributors of
-                electronics by simply entering a manufacturer component number.
-              </p>
+              <p className={classes.paragraph}>{t("paragraph.first")}</p>
             </Grid>
             <Grid item md={6} xs={12}>
-              <p className={classes.paragraph}>
-                ChipAssist offers more than just stock data to electronics professionals looking for thorough technical
-                component data. Our extensive part specifications, datasheets, CAD models, images, and more are
-                displayed, allowing customers to make faster purchasing decisions while still receiving accurate pricing
-                and inventory availability comparisons from distributors.
-              </p>
+              <p className={classes.paragraph}>{t("paragraph.second")}</p>
             </Grid>
           </Grid>
         </Container>
@@ -55,7 +46,7 @@ const AboutCompany = () => {
           <Grid container spacing={4} direction={"row"} alignItems={"center"} justify={"center"}>
             <Grid item md={12} xs={12}>
               <h2 className={clsx(classes.title, classes.subTitle)}>
-                Experience the Power of <span className={classes.redColor}>{t("company_name")}s</span> Tools
+                {t("sub_title.p1")} <span className={classes.redColor}>{t("company_name")}s</span> {t("sub_title.p2")}
               </h2>
             </Grid>
           </Grid>
@@ -81,16 +72,14 @@ const AboutCompany = () => {
           <Grid container spacing={6} direction={"column"}>
             <Grid item md={12} xs={12}>
               <p className={classes.footerTitle}>
-                Join the <span className={classes.redColor}>ChipAssist</span> community now to maximize your ability to
-                source electronic components. Experience a procurement process that is seamless, effective, and
-                reliable.
+                {t("footer.first.p1")} <span className={classes.redColor}>ChipAssist</span> {t("footer.first.p2")}
               </p>
             </Grid>
             <Grid item md={12} xs={12}>
               <p className={classes.footerTitle}>
-                For more information about data, search results, and using ChipAssist please click{" "}
+                {t("footer.second.p1")}{" "}
                 <NavLink className={classes.link} to={"/FAQ"}>
-                  here
+                  {t("footer.second.p2")}
                 </NavLink>
               </p>
             </Grid>

@@ -24,6 +24,7 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { getStockDataCode } from "@src/utils/product";
 import { deepEqualNotStrict } from "@src/utils/validation";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -42,6 +43,7 @@ type FormValues = {
 };
 
 const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
+  const { t } = useI18n("chat.chat_details");
   const classes = useStyles();
   const appTheme = useAppTheme();
   const chatWindowClasses = useChatWindowStyles();
@@ -63,9 +65,9 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
   const [prevChatId, setPrevChatId] = useState<number>(null);
   const [startAnimation, setStartAnimation] = useState(false);
   const [isShowPrices, setIsShowPrices] = useState(false);
+  const [, setForceRender] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [prevStockData, setPrevStockData] = useState<any>(null);
-  const [, setForceRender] = useState(false);
   const [currency, setCurrency] = useState<Currency>({
     symbol: "$",
     code: "USD",
@@ -200,7 +202,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         setDisabled(true);
         dispatch(
           showBottomLeftMessageAlertAction({
-            text: "Your stock was updated successfully!",
+            text: t("statuses.success"),
             severity: "success",
           }),
         );
@@ -208,7 +210,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
       .catch(() => {
         dispatch(
           showBottomLeftMessageAlertAction({
-            text: "The update failed!",
+            text: t("statuses.error"),
             severity: "warning",
           }),
         );
@@ -233,15 +235,15 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
         [classes.animation]: startAnimation,
       })}
     >
-      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>Update stock data please!</Paper>}
+      {!isXsDown && !!stockrecordErrors && <Paper className={classes.popper}>{t("upd_pls")}</Paper>}
       <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.header}>
         {stockUpdatingMode ? (
           <div>
-            <h2 className={chatWindowClasses.title}>Your stock on ChipAssist</h2>
+            <h2 className={chatWindowClasses.title}>{t("is_updating.true")} ChipAssist</h2>
             <div className={classes.text}>{selectedChat?.title || selectedChat?.rfq?.upc}</div>
           </div>
         ) : (
-          <h2>Details</h2>
+          <h2>{t("is_updating.false")}</h2>
         )}
         <CloseIcon className={classes.closeIcon} onClick={onCloseHandler} />
       </Box>
@@ -258,11 +260,11 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   rules={{
                     required: {
                       value: true,
-                      message: "Required",
+                      message: t("validation.required"),
                     },
                     min: {
                       value: 1,
-                      message: "At least 1",
+                      message: t("validation.at_least"),
                     },
                   }}
                   render={({ field }) => (
@@ -283,7 +285,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 />
               </div>
               <div>
-                <div className={classes.label}>Currency:</div>
+                <div className={classes.label}>{t("currency")}:</div>
                 <FormControl variant="outlined" size="small" fullWidth>
                   <Select value={currency.code} onChange={handleCurrencyChange}>
                     {currencyList.map((val) => {
@@ -299,18 +301,18 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 </FormControl>
               </div>
               <div>
-                <div className={classes.label}>Quantity break #1:</div>
+                <div className={classes.label}>{t("qty_break")} #1:</div>
                 <Controller
                   name={`prices[0].amount`}
                   control={control}
                   rules={{
                     min: {
                       value: 1,
-                      message: "At least 1",
+                      message: t("validation.at_least"),
                     },
                     required: {
                       value: !!priceBreaks[0].price,
-                      message: "Required",
+                      message: t("validation.required"),
                     },
                   }}
                   render={({ field }) => (
@@ -332,18 +334,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 />
               </div>
               <div>
-                <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                <div className={classes.label}>
+                  {t("u_price")} ({currency.symbol}):
+                </div>
                 <Controller
                   name={`prices[0].price`}
                   control={control}
                   rules={{
                     min: {
                       value: 0.0001,
-                      message: "More than 0",
+                      message: t("validation.more_than"),
                     },
                     required: {
                       value: !!priceBreaks[0].amount,
-                      message: "Required",
+                      message: t("validation.required"),
                     },
                   }}
                   render={({ field }) => (
@@ -371,7 +375,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 variant="contained"
                 onClick={onShowPrices}
               >
-                {isShowPrices ? "Hide price breaks" : "Show price breaks"}
+                {isShowPrices ? t("is_show_price.true") : t("is_show_price.false")}
                 <KeyboardArrowDownIcon className={clsx(classes.priceArrow, { active: isShowPrices })} />
               </Button>
             </Box>
@@ -383,18 +387,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                     return (
                       <React.Fragment key={index}>
                         <div>
-                          <div className={classes.label}>Quantity break #{index + 1}:</div>
+                          <div className={classes.label}>
+                            {t("qty_break")} #{index + 1}:
+                          </div>
                           <Controller
                             name={`prices[${index}].amount`}
                             control={control}
                             rules={{
                               min: {
                                 value: 1,
-                                message: "At least 1",
+                                message: t("validation.at_least"),
                               },
                               required: {
                                 value: !!priceBreaks[index].price,
-                                message: "Required",
+                                message: t("validation.required"),
                               },
                             }}
                             render={({ field }) => (
@@ -416,18 +422,20 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                           />
                         </div>
                         <div>
-                          <div className={classes.label}>Unit price ({currency.symbol}):</div>
+                          <div className={classes.label}>
+                            {t("u_price")} ({currency.symbol}):
+                          </div>
                           <Controller
                             name={`prices[${index}].price`}
                             control={control}
                             rules={{
                               min: {
                                 value: 0.0001,
-                                message: "More than 0",
+                                message: t("validation.more_than"),
                               },
                               required: {
                                 value: !!priceBreaks[index].amount,
-                                message: "Required",
+                                message: t("validation.required"),
                               },
                             }}
                             render={({ field }) => (
@@ -456,7 +464,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   className={appTheme.hyperlink}
                   onClick={createPriceBreak}
                 >
-                  Add more
+                  {t("add_more")}
                 </span>
               </div>
             )}
@@ -474,7 +482,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 />
               </div>
               <div>
-                <div className={classes.label}>Packaging:</div>
+                <div className={classes.label}>{t("packaging")}:</div>
                 <TextField
                   {...register("packaging")}
                   onChange={(e: any) => {
@@ -493,7 +501,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   rules={{
                     min: {
                       value: 1,
-                      message: "At least 1",
+                      message: t("validation.at_least"),
                     },
                   }}
                   render={({ field }) => (
@@ -521,7 +529,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   rules={{
                     min: {
                       value: 1,
-                      message: "At least 1",
+                      message: t("validation.at_least"),
                     },
                   }}
                   render={({ field }) => (
@@ -550,7 +558,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                 variant="contained"
               >
                 {isUpdating && <CircularProgress className={commonClasses.progressCircle} size="1.5em" />}
-                Update
+                {t("update")}
               </Button>
             </Box>
             {!!selectedChat?.rfq?.upc && (
@@ -563,7 +571,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View on ChipAssist
+                  {t("view_on")} ChipAssist
                 </a>
               </Box>
             )}
@@ -576,15 +584,15 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
             {/* </Box> */}
             <Box display="flex" justifyContent="space-between" className={classes.requestData}>
               <div>
-                <h5>Quantity</h5>
+                <h5>{t("qty")}</h5>
                 <div>{quantity ? formatMoney(quantity, 0) : "-"}</div>
               </div>
               <div>
-                <h5>Target price</h5>
+                <h5>{t("target_p")}</h5>
                 <div>{price ? `${formatMoney(price)} ${rfqCurrency?.symbol || "€"}` : "-"}</div>
               </div>
               <div>
-                <h5>Total</h5>
+                <h5>{t("total")}</h5>
                 <div>{price ? `${formatMoney(quantity * price)} ${rfqCurrency?.symbol || "€"}` : "-"}</div>
               </div>
             </Box>

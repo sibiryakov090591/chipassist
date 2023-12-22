@@ -22,7 +22,7 @@ export const SellExcess = () => {
           <Grid container spacing={4}>
             <Grid item md={6} xs={12}>
               <h1 className={classes.topTitle}>
-                <span className={classes.redColor}>ChipAssist</span> helps turn your excessive inventory into profits.
+                <span className={classes.redColor}>ChipAssist</span> {t("title")}
               </h1>
               <p className={classes.paragraph}>{t("top.paragraph_1")}</p>
               <p className={classes.paragraph}>{t("top.paragraph_2")}</p>
@@ -75,7 +75,7 @@ export const SellExcess = () => {
               <Box className={classes.workTextWrapper}>
                 <Box>
                   <h2 className={classes.workTitle}>
-                    How <span className={classes.redColor}>it works</span>
+                    {t("how_works.title.p1")} <span className={classes.redColor}>{t("how_works.title.p2")}</span>
                   </h2>
                   <ul className={classes.ul}>
                     <li className={classes.li}>{t("how_works.li_1")}</li>

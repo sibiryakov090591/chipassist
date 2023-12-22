@@ -319,7 +319,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
                         checked={!!getValues("is_default_for_billing")}
                       />
                     }
-                    label="This address is default for billing and shipping"
+                    label={t("default_address_label")}
                   />
                 )}
               />

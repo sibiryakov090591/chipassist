@@ -6,6 +6,10 @@ import { initReactI18next, useTranslation } from "react-i18next";
 import { localeDefault, locales } from "@src/constants/defaults";
 import enTranslate from "@src/static/i18n/en/translation.json";
 import ruTranslate from "@src/static/i18n/ru/translation.json";
+import deTranslate from "@src/static/i18n/de/translation.json";
+import frTranslate from "@src/static/i18n/fr/translation.json";
+import esTranslate from "@src/static/i18n/es/translation.json";
+import chTranslate from "@src/static/i18n/ch/translation.json";
 
 i18n
   // можно использовать определение языка в браузере https://github.com/i18next/i18next-browser-languageDetector
@@ -29,6 +33,10 @@ i18n
     resources: {
       en: { translation: enTranslate },
       ru: { translation: ruTranslate },
+      es: { translation: esTranslate },
+      de: { translation: deTranslate },
+      ch: { translation: chTranslate },
+      fr: { translation: frTranslate },
     },
   })
   .then();

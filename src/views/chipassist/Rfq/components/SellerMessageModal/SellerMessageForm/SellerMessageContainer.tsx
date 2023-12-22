@@ -68,7 +68,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
               )}
               {!isAuthenticated && showLoginForm && (
                 <div onClick={showSignIn(false)} className={rfqModalClasses.link}>
-                  <DoubleArrowIcon /> Back to RFQ
+                  <DoubleArrowIcon /> {t("back")} RFQ
                 </div>
               )}
             </div>
@@ -102,7 +102,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
               <span onClick={showSignIn(!showLoginForm)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                 {showLoginForm ? (
                   <span className={rfqModalClasses.backToRfq}>
-                    <DoubleArrowIcon /> Back to RFQ
+                    <DoubleArrowIcon /> {t("back")} RFQ
                   </span>
                 ) : (
                   t("restricted.sign_in")
