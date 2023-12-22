@@ -124,7 +124,7 @@ export const ChipassistHomePage = () => {
                     <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
                       {t("menu.blog")}
                     </NavLink>
-                    <LangMenu />
+                    {constants.SHOW_LANG_SWITCHER && <LangMenu />}
                   </Box>
                   <Box display="flex" alignItems="center">
                     {!isAuthenticated ? (

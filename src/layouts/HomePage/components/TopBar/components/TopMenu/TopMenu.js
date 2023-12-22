@@ -238,7 +238,7 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       )}
-      <LangMenu />
+      {constants.SHOW_LANG_SWITCHER && <LangMenu />}
       {isMobile && isAuthenticated && (
         <div className={itemClasses}>
           <NavLink className={`${classes.topMenuItemLink} top-menu-logout`} to={`/logout`} onClick={logoutHandler}>

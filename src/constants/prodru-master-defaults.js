@@ -4,6 +4,7 @@ const defaults = {
   apiPath: "/api",
   apiHost: "api.dev.icsearch.ru",
   schema: "https",
+  SHOW_LANG_SWITCHER: false,
   locales: ["ru", "en"],
   localeDefault: "ru",
   showFeedback: true,

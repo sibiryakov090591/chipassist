@@ -4,6 +4,7 @@ const defaults = {
   apiPath: "/api",
   apiHost: "api.chiponline.tech",
   schema: "https",
+  SHOW_LANG_SWITCHER: false,
   locales: ["ru", "en"],
   localeDefault: "en",
   showFeedback: true,
