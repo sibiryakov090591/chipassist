@@ -38,7 +38,6 @@ import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
 import RfqBar from "@src/views/chipassist/Search/components/RfqBar/RfqBar";
 import { europeCountries } from "@src/constants/countries";
-import Filters from "./components/Filters/Filters";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
 import ExtendedSearchBar from "./components/ProgressBar";
@@ -112,8 +111,6 @@ const SearchResults = () => {
 
   const [requestedRFQ, setRequestedRFQ] = useState<any>(null);
   const [showRfqBar, setShowRfqBar] = useState(false);
-  const [hideSideBar, setHideSideBar] = useState(false);
-  const [isRightSidebar, setIsRightSidebar] = useState(false);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
@@ -187,12 +184,6 @@ const SearchResults = () => {
   }, [isNeedModalOpenAgain]);
 
   useEffect(() => {
-    const menuPosition = localStorage.getItem("sidebarMenuRightPosition") === "true";
-    setIsRightSidebar(menuPosition);
-
-    const hideMenu = localStorage.getItem("sidebarMenuHide") === "true";
-    setHideSideBar(hideMenu);
-
     return () => {
       dispatch(changeQueryAction(""));
       console.log(`SEARCH. Unmount search component. Query cleared. Token: ${getAuthToken()}`);
@@ -255,24 +246,6 @@ const SearchResults = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // const onOrderChange = (value: string) => {
-  //   localStorage.setItem("mainOrderBy", value);
-  //   setUrlWithFilters(window.location.pathname, navigate, query, page, pageSize, value, filtersValues, baseFilters);
-  // };
-
-  // const openRfqModal = () => {
-  //   if (isAuthenticated) {
-  //     dispatch(rfqModalOpen(_query));
-  //   } else {
-  //     navigate("/auth/login");
-  //   }
-  // };
-
-  const onHideMenuHandle = () => {
-    localStorage.setItem("sidebarMenuHide", `${!hideSideBar}`);
-    setHideSideBar(!hideSideBar);
-  };
-
   const onChangeInStock = () => {
     setUrlWithFilters(
       window.location.pathname,
@@ -326,223 +299,182 @@ const SearchResults = () => {
         {/* Step-by-step tutorial */}
 
         <div className={classes.main}>
-          <div
-            className={clsx(classes.searchPageLayout, {
-              [classes.rightPosition]: isRightSidebar,
-              right: isRightSidebar,
-              hideFilters: hideSideBar || !constants.SHOW_FILTERS,
-              removeFilters: !constants.SHOW_FILTERS,
-            })}
-          >
-            <div
-              className={clsx(classes.searchPageSidebar, {
-                [classes.rightPosition]: isRightSidebar,
-                right: isRightSidebar,
-                hideFilters: hideSideBar || !constants.SHOW_FILTERS,
-                removeFilters: !constants.SHOW_FILTERS,
-              })}
-            >
-              {constants.SHOW_FILTERS && (
-                <Filters
-                  isRightSidebar={isRightSidebar}
-                  togglePosition={() => setIsRightSidebar(!isRightSidebar)}
-                  onHideToggle={onHideMenuHandle}
-                  isHideFilters={hideSideBar}
-                />
-              )}
-            </div>
-            <div className={classes.searchPageResults}>
-              {count !== 0 && (
-                <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
-                  <Sticky
-                    className={clsx(classes.stickyContainer, {
-                      [classes.stickyContainerMarginDesktop]: !isSmDown,
-                      [classes.stickyContainerMarginMobile]: isSmDown,
-                    })}
-                    topOffset={0}
-                    onFixedToggle={fixedStickyContainerHeight}
-                  >
-                    <div className={commonClasses.filtersRow}>
-                      <FiltersContainer filtersCountToCollapse={4}>
-                        {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
-                        <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
-                        {!constants.isNewSearchPage && (
-                          <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                        )}
-                        <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                        <FilterCurrency />
-                        {!isSmDown && (
-                          <FilterPageSizeChoiceBar
-                            storageKey={`searchShowBy`}
-                            action={onChangePageSize}
-                            disable={isLoadingSearchResultsInProgress}
-                          />
-                        )}
-                        {/* <FilterOrderByBar */}
-                        {/*  value={orderBy} */}
-                        {/*  onChange={onOrderChange} */}
-                        {/*  disable={isLoadingSearchResultsInProgress} */}
-                        {/* /> */}
-                      </FiltersContainer>
-                    </div>
-                  </Sticky>
-                </div>
-              )}
-              {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (
-                <div style={{ padding: "0 0 4px" }}>
-                  <FiltersContainer>{!isLoadingSearchResultsInProgress && <ExtendedSearchBar />}</FiltersContainer>
-                </div>
-              )}
-
-              {isLoadingSearchResultsInProgress ? (
-                <Skeletons />
-              ) : (
-                <div id={"productList"}>
-                  {!isSmDown && showRfqBar && count > 0 && <RfqBar />}
-                  <div>
-                    {products?.map((product, key) => {
-                      const rfq = rfqData.results.find((item) => item.id === product.id);
-                      return constants.isNewSearchPage ? (
-                        <ProductCardNew
-                          key={product.id}
-                          product={product}
-                          rfqData={rfq}
-                          searchQuery={query}
-                          id={`product-item-${key}`}
+          <div className={classes.searchPageResults}>
+            {count !== 0 && (
+              <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
+                <Sticky
+                  className={clsx(classes.stickyContainer, {
+                    [classes.stickyContainerMarginDesktop]: !isSmDown,
+                    [classes.stickyContainerMarginMobile]: isSmDown,
+                  })}
+                  topOffset={0}
+                  onFixedToggle={fixedStickyContainerHeight}
+                >
+                  <div className={commonClasses.filtersRow}>
+                    <FiltersContainer filtersCountToCollapse={4}>
+                      {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
+                      <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
+                      {!constants.isNewSearchPage && (
+                        <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+                      )}
+                      <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+                      <FilterCurrency />
+                      {!isSmDown && (
+                        <FilterPageSizeChoiceBar
+                          storageKey={`searchShowBy`}
+                          action={onChangePageSize}
+                          disable={isLoadingSearchResultsInProgress}
                         />
-                      ) : (
-                        <ProductCard key={product.id} product={product} searchQuery={query} />
-                      );
-                    })}
+                      )}
+                      {/* <FilterOrderByBar */}
+                      {/*  value={orderBy} */}
+                      {/*  onChange={onOrderChange} */}
+                      {/*  disable={isLoadingSearchResultsInProgress} */}
+                      {/* /> */}
+                    </FiltersContainer>
                   </div>
-                  {!constants.isNewSearchPage &&
-                    (baseFilters?.base_in_stock || filtersValues?.base_num_in_stock) &&
-                    count > 0 &&
-                    !!rfqsHintCount && (
-                      <div style={{ marginTop: 30, textAlign: "center" }}>
-                        <div className={classes.hintText_1}>{t("in_stock_hint_5")}</div>
-                        <div className={classes.hintText_2}>
-                          {t("in_stock_hint_2")}
-                          <span className={clsx(appTheme.hyperlink, classes.link)} onClick={onChangeInStock}>
-                            {t("in_stock_hint_3")}
-                          </span>
-                          {t("in_stock_hint_4")}
-                        </div>
-                      </div>
-                    )}
-                </div>
-              )}
-              {isExtendedSearchStarted && count === 0 && (constants.isNewSearchPage ? rfqData.count === 0 : true) && (
-                <div className={classes.searchResultEmpty}>
-                  <h2>{t("extended_progress")}</h2>
-                  <div style={{ maxWidth: "320px", margin: "auto" }}>
-                    <Progress />
-                  </div>
-                </div>
-              )}
-              {!constants.isNewSearchPage &&
-                !isLoadingSearchResultsInProgress &&
-                !isExtendedSearchStarted &&
-                count === 0 && (
-                  <div className={classes.searchResultEmpty}>
-                    <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
+                </Sticky>
+              </div>
+            )}
+            {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (
+              <div style={{ padding: "0 0 4px" }}>
+                <FiltersContainer>{!isLoadingSearchResultsInProgress && <ExtendedSearchBar />}</FiltersContainer>
+              </div>
+            )}
 
-                    {baseFilters?.base_in_stock || (filtersValues.base_num_in_stock && !!rfqsHintCount) ? (
-                      <div style={{ marginBottom: 20 }}>
-                        <div className={classes.hintText_1}>{t("in_stock_hint_1")}</div>
-                        <div className={classes.hintText_2}>
-                          {t("in_stock_hint_2")}
-                          <span className={clsx(appTheme.hyperlink, classes.link)} onClick={onChangeInStock}>
-                            {t("in_stock_hint_3")}
-                          </span>
-                          {t("in_stock_hint_4")}
-                        </div>
-                        <div style={{ fontSize: "1.2rem" }} className={classes.hintText_1}>
-                          {t("in_stock_hint_6")}
-                        </div>
-                      </div>
-                    ) : (
-                      <h3
-                        className={classes.rfqHeader}
-                        dangerouslySetInnerHTML={{
-                          __html: t("rfq.modal_header", {
-                            interpolation: { escapeValue: false },
-                            partNumber: rfqItem.partNumber,
-                            title: t("rfq.request"),
-                          }),
-                        }}
-                        style={{ marginBottom: 20 }}
+            {isLoadingSearchResultsInProgress ? (
+              <Skeletons />
+            ) : (
+              <div id={"productList"}>
+                {!isSmDown && showRfqBar && count > 0 && <RfqBar />}
+                <div>
+                  {products?.map((product, key) => {
+                    const rfq = rfqData.results.find((item) => item.id === product.id);
+                    return constants.isNewSearchPage ? (
+                      <ProductCardNew
+                        key={product.id}
+                        product={product}
+                        rfqData={rfq}
+                        searchQuery={query}
+                        id={`product-item-${key}`}
                       />
-                    )}
+                    ) : (
+                      <ProductCard key={product.id} product={product} searchQuery={query} />
+                    );
+                  })}
+                </div>
+                {!constants.isNewSearchPage &&
+                  (baseFilters?.base_in_stock || filtersValues?.base_num_in_stock) &&
+                  count > 0 &&
+                  !!rfqsHintCount && (
+                    <div style={{ marginTop: 30, textAlign: "center" }}>
+                      <div className={classes.hintText_1}>{t("in_stock_hint_5")}</div>
+                      <div className={classes.hintText_2}>
+                        {t("in_stock_hint_2")}
+                        <span className={clsx(appTheme.hyperlink, classes.link)} onClick={onChangeInStock}>
+                          {t("in_stock_hint_3")}
+                        </span>
+                        {t("in_stock_hint_4")}
+                      </div>
+                    </div>
+                  )}
+              </div>
+            )}
+            {isExtendedSearchStarted && count === 0 && (constants.isNewSearchPage ? rfqData.count === 0 : true) && (
+              <div className={classes.searchResultEmpty}>
+                <h2>{t("extended_progress")}</h2>
+                <div style={{ maxWidth: "320px", margin: "auto" }}>
+                  <Progress />
+                </div>
+              </div>
+            )}
+            {!constants.isNewSearchPage &&
+              !isLoadingSearchResultsInProgress &&
+              !isExtendedSearchStarted &&
+              count === 0 && (
+                <div className={classes.searchResultEmpty}>
+                  <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
+
+                  {baseFilters?.base_in_stock || (filtersValues.base_num_in_stock && !!rfqsHintCount) ? (
+                    <div style={{ marginBottom: 20 }}>
+                      <div className={classes.hintText_1}>{t("in_stock_hint_1")}</div>
+                      <div className={classes.hintText_2}>
+                        {t("in_stock_hint_2")}
+                        <span className={clsx(appTheme.hyperlink, classes.link)} onClick={onChangeInStock}>
+                          {t("in_stock_hint_3")}
+                        </span>
+                        {t("in_stock_hint_4")}
+                      </div>
+                      <div style={{ fontSize: "1.2rem" }} className={classes.hintText_1}>
+                        {t("in_stock_hint_6")}
+                      </div>
+                    </div>
+                  ) : (
+                    <h3
+                      className={classes.rfqHeader}
+                      dangerouslySetInnerHTML={{
+                        __html: t("rfq.modal_header", {
+                          interpolation: { escapeValue: false },
+                          partNumber: rfqItem.partNumber,
+                          title: t("rfq.request"),
+                        }),
+                      }}
+                      style={{ marginBottom: 20 }}
+                    />
+                  )}
+                  <div style={{ maxWidth: 500, margin: "0 auto" }}>
+                    <RFQForm />
+                  </div>
+                </div>
+              )}
+
+            {constants.isNewSearchPage && !isLoadingSearchResultsInProgress && !isExtendedSearchStarted && count === 0 && (
+              <div className={classes.searchResultEmpty}>
+                {requestedRFQ && (
+                  <div className={classes.requestedBlock}>
+                    You have requested this product at {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
+                  </div>
+                )}
+                <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
+                {disabledRFQForm && (
+                  <h3 className={classes.rfqHeader}>
+                    Please try to search another seller or the part number you are interested in.
+                  </h3>
+                )}
+                {!disabledRFQForm && (
+                  <>
+                    <h3
+                      className={classes.rfqHeader}
+                      dangerouslySetInnerHTML={{
+                        __html: t("rfq.modal_header", {
+                          interpolation: { escapeValue: false },
+                          partNumber: rfqItem.partNumber,
+                          title: t("rfq.request"),
+                        }),
+                      }}
+                      style={{ marginBottom: 20 }}
+                    />
+                    <p
+                      className={classes.rfqText}
+                      dangerouslySetInnerHTML={{
+                        __html: t("rfq.modal_text", {
+                          interpolation: { escapeValue: false },
+                          partNumber: rfqItem.partNumber,
+                        }),
+                      }}
+                    />
                     <div style={{ maxWidth: 500, margin: "0 auto" }}>
                       <RFQForm />
                     </div>
-                  </div>
+                  </>
                 )}
-
-              {constants.isNewSearchPage &&
-                !isLoadingSearchResultsInProgress &&
-                !isExtendedSearchStarted &&
-                count === 0 && (
-                  <div className={classes.searchResultEmpty}>
-                    {requestedRFQ && (
-                      <div className={classes.requestedBlock}>
-                        You have requested this product at{" "}
-                        {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
-                      </div>
-                    )}
-                    <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
-                    {disabledRFQForm && (
-                      <h3 className={classes.rfqHeader}>
-                        Please try to search another seller or the part number you are interested in.
-                      </h3>
-                    )}
-                    {!disabledRFQForm && (
-                      <>
-                        <h3
-                          className={classes.rfqHeader}
-                          dangerouslySetInnerHTML={{
-                            __html: t("rfq.modal_header", {
-                              interpolation: { escapeValue: false },
-                              partNumber: rfqItem.partNumber,
-                              title: t("rfq.request"),
-                            }),
-                          }}
-                          style={{ marginBottom: 20 }}
-                        />
-                        <p
-                          className={classes.rfqText}
-                          dangerouslySetInnerHTML={{
-                            __html: t("rfq.modal_text", {
-                              interpolation: { escapeValue: false },
-                              partNumber: rfqItem.partNumber,
-                            }),
-                          }}
-                        />
-                        <div style={{ maxWidth: 500, margin: "0 auto" }}>
-                          <RFQForm />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-
-              <div className={classes.paginationBlock}>
-                {!isLoadingSearchResultsInProgress && count > 0 && totalPages > 1 && (
-                  <Paginate pageCount={totalPages} activePage={currentPage} onPageChange={onPageChangeHandle} />
-                )}
-                {/* {constants.isNewSearchPage && */}
-                {/*  !isLoadingSearchResultsInProgress && */}
-                {/*  count === 0 && */}
-                {/*  rfqData.count > 0 && */}
-                {/*  rfqData.total_pages > 1 && ( */}
-                {/*    <Paginate */}
-                {/*      pageCount={rfqData.total_pages} */}
-                {/*      activePage={rfqData.page} */}
-                {/*      onPageChange={onPageChangeHandle} */}
-                {/*    /> */}
-                {/*  )} */}
               </div>
+            )}
+
+            <div className={classes.paginationBlock}>
+              {!isLoadingSearchResultsInProgress && count > 0 && totalPages > 1 && (
+                <Paginate pageCount={totalPages} activePage={currentPage} onPageChange={onPageChangeHandle} />
+              )}
             </div>
           </div>
         </div>

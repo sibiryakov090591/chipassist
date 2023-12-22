@@ -31,7 +31,6 @@ const defaults = {
   userActivitySessionWhitespace: 0.2, // minutes
   showNewStyles: false,
   STOCK_RECORD_PERIOD_OF_RELEVANCE: 72, // hours
-  SHOW_FILTERS: false,
   jivoChat: false,
   YM: true,
   GA: true,
