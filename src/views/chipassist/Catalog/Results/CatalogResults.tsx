@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container/Container";
 import Preloader from "@src/components/Preloader/Preloader";
 import { v4 as uuidv4 } from "uuid";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { getCatalogCategoriesThunk, getCatalogProducts } from "@src/store/catalog/catalogActions";
+import { getCatalog, getCatalogProducts } from "@src/store/catalog/catalogActions";
 import { Paginate } from "@src/components";
 import { Box, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -142,7 +142,7 @@ const CatalogResults: React.FC = () => {
       setCategory(cat || false);
       setIsCategoryLoading(false);
     } else {
-      dispatch(getCatalogCategoriesThunk());
+      dispatch(getCatalog());
     }
   }, [catalogUrl, normalizeData]);
 

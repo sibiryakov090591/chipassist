@@ -4,7 +4,7 @@ import { RootState } from "@src/store";
 import { removeHost } from "@src/utils/transformUrl";
 import * as actionTypes from "./catalogTypes";
 
-const getCategoriesDepth = (depth: number): any => {
+const getCatalogDepth = (depth: number): any => {
   return {
     types: [actionTypes.GET_CATALOG_R, false, false],
     promise: (client: ApiClientInterface) =>
@@ -12,7 +12,7 @@ const getCategoriesDepth = (depth: number): any => {
         .get(`categories/?dictionary=true&depth=${depth}`)
         // .then((res) => res.data)
         .catch((e) => {
-          console.log("***GET_CATEGORIES_ERROR", e);
+          console.log("***GET_CATALOG_ERROR", e);
           throw e;
         }),
   };
@@ -26,13 +26,13 @@ export const getCatalogProducts = (id: number | string, page = 1): any => {
         .get(`categories/${id}/dictionaryproducts/?page=${page || 1}`)
         .then((res) => res.data)
         .catch((e) => {
-          console.log("***GET_CATEGORIES_ERROR", e);
+          console.log("***GET_CATALOG_ERROR", e);
           throw e;
         }),
   };
 };
 
-const getCategoriesDepthNext = (nextLink: string): any => {
+const getCatalogDepthNext = (nextLink: string): any => {
   return {
     types: [false, false, false],
     promise: (client: ApiClientInterface) =>
@@ -40,13 +40,13 @@ const getCategoriesDepthNext = (nextLink: string): any => {
         .get(removeHost(nextLink))
         // .then((res) => res.data)
         .catch((e) => {
-          console.log("***GET_CATEGORIES_ERROR", e);
+          console.log("***GET_CATALOG_ERROR", e);
           throw e;
         }),
   };
 };
 
-const saveCategoriesDepth = (depth: number, data: actionTypes.CatalogCategory[]): actionTypes.SaveCatalogAction => {
+const saveCatalogDepth = (depth: number, data: actionTypes.CatalogCategory[]): actionTypes.SaveCatalogAction => {
   return {
     type: actionTypes.SAVE_CATALOG_DEPTH,
     payload: {
@@ -56,32 +56,32 @@ const saveCategoriesDepth = (depth: number, data: actionTypes.CatalogCategory[])
   };
 };
 
-const getNextCategoriesCatalogThunk = (depth: number, nextLink: string): any => {
+const getNextCatalogThunk = (depth: number, nextLink: string): any => {
   return async (dispatch: Dispatch<any>) => {
-    const response = await dispatch(getCategoriesDepthNext(removeHost(nextLink)));
+    const response = await dispatch(getCatalogDepthNext(removeHost(nextLink)));
     if (response.status < 400) {
-      dispatch(saveCategoriesDepth(depth, response.data.results));
+      dispatch(saveCatalogDepth(depth, response.data.results));
     }
     if (response.data.links.next) {
-      dispatch(getNextCategoriesCatalogThunk(depth, response.data.links.next));
+      dispatch(getNextCatalogThunk(depth, response.data.links.next));
     }
     return response?.data;
   };
 };
 
 /* eslint-disable no-await-in-loop */
-export const getCatalogCategoriesThunk = () => {
+export const getCatalog = () => {
   return async (dispatch: Dispatch<any>, getState: () => RootState) => {
     if (!getState().catalog.loaded) {
       // Load all categories
       for (let depth = 1; depth < 5; depth += 1) {
-        const res = await dispatch(getCategoriesDepth(depth));
+        const res = await dispatch(getCatalogDepth(depth));
         if (res.status < 400) {
-          dispatch(saveCategoriesDepth(depth, res.data.results));
+          dispatch(saveCatalogDepth(depth, res.data.results));
         }
         if (res.data.links.next) {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const nextRes = await dispatch(getNextCategoriesCatalogThunk(depth, res.data.links.next));
+          const nextRes = await dispatch(getNextCatalogThunk(depth, res.data.links.next));
         }
       }
       dispatch(setLoadedCatalog());

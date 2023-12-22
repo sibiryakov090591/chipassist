@@ -22,7 +22,7 @@ const LoginAs = () => {
         <CardMedia
           className={classes.media}
           // eslint-disable-next-line global-require
-          image={require("@src/components/Authentication/auth.png")}
+          image={require("@src/images/auth.png")}
         >
           <Typography color="inherit" variant="subtitle1">
             Connecting the world of electronics
