@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { v4 as uuidv4 } from "uuid";
 import { NavLink } from "react-router-dom";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { getCatalogCategoriesThunk } from "@src/store/categories/categoriesActions";
+import { getCatalog } from "@src/store/catalog/catalogActions";
 import { useStyles } from "./styles";
 
 const Catalog: React.FC = () => {
@@ -16,10 +16,10 @@ const Catalog: React.FC = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
-  const catalog = useAppSelector((state) => state.categories.catalog);
+  const catalog = useAppSelector((state) => state.catalog);
 
   useEffect(() => {
-    if (!catalog.loaded && !catalog.loading) dispatch(getCatalogCategoriesThunk());
+    if (!catalog.loaded && !catalog.loading) dispatch(getCatalog());
   }, []);
 
   return (

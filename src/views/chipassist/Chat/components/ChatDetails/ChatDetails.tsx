@@ -23,7 +23,7 @@ import { clearStockErrors, updateStockrecord } from "@src/store/chat/chatActions
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { getStockDataCode } from "@src/utils/product";
-import { deepEqual } from "@src/utils/validation";
+import { deepEqualNotStrict } from "@src/utils/validation";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
@@ -169,7 +169,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
     // Define the difference between the prev and new states
     const newStockData = getValues();
-    const isEqual = deepEqual(newStockData, prevStockData);
+    const isEqual = deepEqualNotStrict(newStockData, prevStockData);
     setDisabled(isEqual);
   };
 

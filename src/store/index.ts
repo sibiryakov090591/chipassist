@@ -10,10 +10,10 @@ import { CheckoutState } from "@src/store/checkout/checkoutTypes";
 import { AlertsState } from "@src/store/alerts/alertsTypes";
 import { AuthState } from "@src/store/authentication/authTypes";
 import { ProgressModalState } from "@src/store/progressModal/progressModalTypes";
-import { CategoriesState } from "@src/store/categories/categoriesTypes";
+import { CatalogState } from "@src/store/catalog/catalogTypes";
 import { AdapterState } from "@src/store/adapter/adapterTypes";
+import catalog from "./catalog/catalogReducer";
 import auth from "./authentication/authReducer";
-import categories from "./categories/categoriesReducer";
 import treeMenuReducer from "./treeMenu/treeMenuReducer";
 import products from "./products/productsReducer";
 import { ProductsState } from "./products/productTypes";
@@ -52,10 +52,10 @@ const rootReducer = () =>
     auth,
     bom,
     blog,
+    catalog,
     chat,
     common,
     currency,
-    categories,
     cart,
     checkout,
     chart,
@@ -85,7 +85,7 @@ export interface RootState {
   common: CommonState;
   currency: CurrencyState;
   auth: AuthState;
-  categories: CategoriesState;
+  catalog: CatalogState;
   treeMenu: any;
   products: ProductsState;
   search: SearchState;

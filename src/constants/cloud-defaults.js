@@ -21,7 +21,6 @@ const defaults = {
   showNewStyles: false,
   rfqsGroup: "time", // time|date
   STOCK_RECORD_PERIOD_OF_RELEVANCE: 72, // hours
-  SHOW_FILTERS: true,
   checkSiteVersion: true,
   checkSiteVersionPing: 6, // minutes
   CART_ITEM_PERIOD_OF_RELEVANCE: 72, // hours

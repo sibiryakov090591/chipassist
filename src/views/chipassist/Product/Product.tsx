@@ -3,23 +3,16 @@ import { v4 as uuidv4 } from "uuid";
 import { Grid, Table, TableBody, TableCell, TableRow, Box, Container } from "@material-ui/core";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { title } from "@src/constants/defaults";
 import { Page, ProductCard, ProductCardNew } from "@src/components";
 import { loadProductById, loadStockrecordById } from "@src/store/products/productsActions";
 import { addApiUrl } from "@src/utils/transformUrl";
-// import SidebarMenuBlock from "@src/components/SidebarMenu";
-// import Breadcrumbs from "@src/components/BreadCrumbs/BreadCrumbs";
-// import { loadBomListThunk } from "@src/store/bom/bomActions";
 import { isUrl } from "@src/utils/validation";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppTheme from "@src/theme/useAppTheme";
-
 import Preloader from "@src/components/Preloader/Preloader";
-
 import useAppSelector from "@src/hooks/useAppSelector";
-
-import { Attribute, ProductStateItem, Stockrecord } from "@src/store/products/productTypes";
-import { getImage } from "@src/utils/product";
+import { Attribute, Stockrecord } from "@src/store/products/productTypes";
+import { getAttributes, getImage } from "@src/utils/product";
 import Error404 from "@src/views/chipassist/Error404";
 import placeholderImg from "@src/images/cpu.png";
 import constants from "@src/constants/constants";
@@ -29,50 +22,7 @@ import { useStyles } from "./productStyles";
 
 const img = require("@src/images/cpu.png");
 
-export const getAttributes = (
-  data: ProductStateItem,
-): {
-  [key: string]: {
-    name: string;
-    value: string | number | string[] | number[];
-  }[];
-} => {
-  if (!data || !data.attributes) return {};
-  const groups: {
-    [key: string]: {
-      name: string;
-      value: string | number | string[] | number[];
-    }[];
-  } = {};
-  const attributes = data.attributes.filter((attr) => attr.value && !isUrl(attr.value) && attr.name !== "Manufacturer");
-  attributes.forEach((val) => {
-    let group_name = "Others";
-    if (val.group) group_name = val.group.name;
-    const item = { name: val.name === "Lead Time" ? "Manufacturer Lead Time" : val.name, value: val.value };
-
-    if (groups[group_name]) {
-      groups[group_name].push(item);
-    } else {
-      groups[group_name] = [item];
-    }
-  });
-
-  const sortedKeys = Object.keys(groups).sort((a, b) => {
-    if (a.toLowerCase() < b.toLowerCase()) return -1;
-    if (a.toLowerCase() > b.toLowerCase()) return 1;
-    return 0;
-  });
-
-  const result = sortedKeys.reduce((acc: any, val) => {
-    acc[val] = groups[val];
-    return acc;
-  }, {});
-
-  return result;
-};
-
 const ProductView = () => {
-  // const [categoryState, setCategoryState] = useState({ activeNode: null, toggled: null });
   const { partnumber, stockrecordId } = useParams<{ partnumber: string; stockrecordId: string }>();
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -83,28 +33,15 @@ const ProductView = () => {
 
   const productId = useURLSearchParams("productId", false, null, false);
 
-  // const [categoryState, setCategoryState] = useState({ activeNode: null, toggled: null });
+  const productData = useAppSelector((state) => state.products.productViewData);
+
   const [mainImage, setMainImg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   // const [stockrecord, setStockrecord] = useState<Stockrecord>();
 
-  const productData = useAppSelector((state) => state.products.productViewData);
-  // const treeMenu = useAppSelector((state) => state.treeMenu.treeMenu);
-
-  const downloadsReady = false;
-
-  // const cats = productData && productData.categories && productData.categories.length > 0 && productData.categories[0];
-  // const categoriesId = cats && cats.id;
   const local_images = productData ? productData.images : [];
   const productImage = local_images.length > 0 ? addApiUrl(local_images[0].original) : img;
   const imgTitle = local_images.length > 0 && local_images[0].caption;
-  // const logo =
-  //   productData &&
-  //   productData.stockrecords &&
-  //   productData.stockrecords.length &&
-  //   productData.stockrecords[0].manufacturer
-  //     ? productData.stockrecords[0].manufacturer.logo || productData.stockrecords[0].manufacturer.logo_url
-  //     : "";
 
   const product = {
     id: productData?.id,
@@ -135,7 +72,6 @@ const ProductView = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    // dispatch(loadBomListThunk(1, true));
     if (productId) {
       dispatch(loadProductById(productId)).finally(() => setIsLoading(false));
     } else {
@@ -206,21 +142,9 @@ const ProductView = () => {
           {!isLoading && !productData && <Error404 />}
           {!isLoading && productData && (
             <div>
-              {/* <SidebarMenuBlock */}
-              {/*  treeMenu={treeMenu} */}
-              {/*  activeNode={categoryState.activeNode} */}
-              {/*  toggled={categoryState.toggled} */}
-              {/*  onToggleNode={onToggleHandle} */}
-              {/* /> */}
               <div className={classes.cartContainer}>
                 <h1 className={classes.title}>{t("title")}</h1>
                 <div className={classes.priceModel}>{product && product.model}</div>
-                {/* <div className={classes.topRow}> */}
-                {/*  <Breadcrumbs categoriesId={categoriesId} /> */}
-                {/*  <div className={classes.rightColumn}> */}
-                {/*    <img className={classes.logoImg} src={logo} /> */}
-                {/*  </div> */}
-                {/* </div> */}
 
                 <Box className={classes.dataContainer}>
                   <Box className={classes.imagesContainer}>
@@ -277,27 +201,8 @@ const ProductView = () => {
                         </Grid>
                       </Grid>
                     </div>
-                    {downloadsReady && (
-                      <Box>
-                        <div className={classes.blockTitle}>{t("cad_title")}</div>
-                        <div className={classes.priceModel}>{t("cad_model")}</div>
-                        <Box className={classes.cadModelsRow}>
-                          <div className={classes.imgBlock}>
-                            <div className={classes.imgColumn}>
-                              <div className={classes.imgHeader}>Symbol</div>
-                              <img src={product.symbolImg} />
-                            </div>
-                            <div className={classes.imgColumn}>
-                              <div className={classes.imgHeader}>Footprint</div>
-                              <img src={product.footPrintImage} />
-                            </div>
-                          </div>
-                          <div className={classes.selectRow}>{t("policy", { title })}</div>
-                        </Box>
-                      </Box>
-                    )}
                     <div className={classes.documentsBlock}>
-                      {downloadables && !!downloadables.length && (
+                      {!!downloadables?.length && (
                         <>
                           <div className={classes.blockTitle}>{t("documents")}</div>
                           <div className={classes.documentsDescription}>
@@ -306,24 +211,22 @@ const ProductView = () => {
                               {product && product.manufacturer} {product && product.model}
                             </strong>
                             .
-                            {downloadables && (
-                              <ul style={{ padding: 20 }}>
-                                {downloadables.map((attr, i) => {
-                                  return (
-                                    <li key={`${attr.id}-${i}`}>
-                                      <a
-                                        className={appTheme.hyperlink}
-                                        href={attr.value as string}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                      >
-                                        {attr.name}
-                                      </a>
-                                    </li>
-                                  );
-                                })}
-                              </ul>
-                            )}
+                            <ul style={{ padding: 20 }}>
+                              {downloadables.map((attr, i) => {
+                                return (
+                                  <li key={`${attr.id}-${i}`}>
+                                    <a
+                                      className={appTheme.hyperlink}
+                                      href={attr.value as string}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      {attr.name}
+                                    </a>
+                                  </li>
+                                );
+                              })}
+                            </ul>
                           </div>
                         </>
                       )}
