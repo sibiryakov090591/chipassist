@@ -365,7 +365,7 @@ const BomList: React.FC = () => {
           <Paper square className={`${classes.bomListPaper}`}>
             {(isListLoading || bomCopying) && (
               <Box display="flex" alignItems="center" justifyContent="center" padding={10}>
-                <Preloader title={bomCopying ? "Copying..." : ""} />
+                <Preloader title={bomCopying ? t("copying") : ""} />
               </Box>
             )}
 
