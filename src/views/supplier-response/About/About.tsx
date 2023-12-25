@@ -13,6 +13,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppTheme } from "@src/themes/AppTheme";
 import useAppTheme from "@src/theme/useAppTheme";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./aboutStyles";
 
 const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -31,6 +32,7 @@ const useNewStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontSize: "2.4rem",
     paddingTop: "2rem",
     fontWeight: 400,
+    lineHeight: 1,
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
       paddingTop: 0,
@@ -83,6 +85,7 @@ export const About = () => {
   const appClasses = useAppTheme();
   const [isOpenFirstDescription, setIsOpenFirstDescription] = useState(false);
 
+  const { t } = useI18n("supplier_response.about");
   const theme = useTheme();
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -102,12 +105,12 @@ export const About = () => {
             className={newClasses.gridContainerMobile}
           >
             <Grid item md={6} sm={6}>
-              <h1 className={classes.pageTitle}>New way of working with RFQs</h1>
-              <p className={classes.pageDescription}>Many customers, one service:</p>
+              <h1 className={classes.pageTitle}>{t("top_elem.title")}</h1>
+              <p className={classes.pageDescription}>{t("top_elem.subtitle")}:</p>
               <div className={classes.pageDescrSubDiv}>
-                <p>- Get request from the customers worldwide</p>
-                <p>- Compare your offer with competitive quotes</p>
-                <p>- Discuss payment and delivery terms</p>
+                <p>- {t("top_elem.p1")}</p>
+                <p>- {t("top_elem.p1")}</p>
+                <p>- {t("top_elem.p1")}</p>
               </div>
             </Grid>
             <Grid item md={6} sm={6}>
@@ -124,22 +127,19 @@ export const About = () => {
               <img className={classes.img} src={requests_page} alt="requests page" />
             </Grid>
             <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
-              <h2 className={newClasses.title}>Work with incoming requests in a completely new way</h2>
-              <p>Get all your incoming requests for quotation (RFQs) streamlined and displayed in a convenient way.</p>
-              <p>
-                See all requests sorted by date with the origin country of the request and requested quantity for each
-                MPN.
-              </p>
+              <h2 className={newClasses.title}>{t("request_page.title")}</h2>
+              <p>{t("request_page.subtitle")}</p>
+              <p>{t("request_page.p1")}</p>
               <div>
                 <Button className={clsx(appClasses.buttonCreate, newClasses.linkButton)} href={"/supplier-response"}>
-                  VIEW REQUESTS
+                  {t("buttons.view_req")}
                 </Button>
                 <Button
                   variant={"outlined"}
                   className={newClasses.button}
                   onClick={() => setIsOpenFirstDescription((prevState) => !prevState)}
                 >
-                  {isOpenFirstDescription ? "CLOSE" : "DISCOVER"}
+                  {isOpenFirstDescription ? t("buttons.close") : t("buttons.discover")}
                 </Button>
               </div>
             </Grid>
@@ -151,16 +151,8 @@ export const About = () => {
         <>
           <section className={clsx(classes.section)}>
             <Container maxWidth="lg">
-              <p className={classes.p}>
-                You can provide your{" "}
-                <span className={newClasses.highlight}>stock, unit price, date code and lead time</span> for every item
-                you like. Additionally you can provide an alternative MPN and comments describing any information you
-                would like to provide.
-              </p>
-              <p className={classes.p}>
-                Once you have provided all the information required, just hit the “SEND DATA” button and your responses
-                will be submitted to our database and provided to the customers.
-              </p>
+              <p className={classes.p} dangerouslySetInnerHTML={{ __html: t("req_page_desc.p3") }}></p>
+              <p className={classes.p}>{t("req_page_desc.p2")}</p>
             </Container>
           </section>
           <section className={classes.section}>
@@ -172,12 +164,8 @@ export const About = () => {
                 alignItems={"center"}
               >
                 <Grid item sm={6} style={{ alignSelf: "center", paddingTop: isDownSm ? 0 : "2em" }}>
-                  <h2 className={newClasses.title}>Use XLS format if you prefer</h2>
-                  <p>
-                    You also can export the list of the request to{" "}
-                    <span className={newClasses.highlight}>.xls file</span>. This might be useful if you like to prepare
-                    your responses in .xls format.
-                  </p>
+                  <h2 className={newClasses.title}>{t("req_page_desc.h")}</h2>
+                  <p dangerouslySetInnerHTML={{ __html: t("req_page_desc.p3") }}></p>
                 </Grid>
                 <Grid item sm={6} className={classes.rightColumn} style={{ paddingTop: "2em" }}>
                   <img style={{ width: 300 }} className={classes.img} src={export_img} alt="export buttons" />
@@ -197,50 +185,26 @@ export const About = () => {
                   />
                 </Grid>
                 <Grid item sm={6} style={{ alignSelf: "center", paddingTop: isDownSm ? null : "4em" }}>
-                  <h2 className={newClasses.title}>See competitive offers</h2>
-                  <p className={classes.p}>
-                    If you see the item`s price field is yellow after the response, it means that another supplier has
-                    suggested a better price for this request. You can try reducing the price to provide a competitive
-                    offer.
-                  </p>
+                  <h2 className={newClasses.title}>{t("req_page_desc.h_2")}</h2>
+                  <p className={classes.p}>{t("req_page_desc.p4")}</p>
                 </Grid>
               </Grid>
             </Container>
           </section>
           <section className={clsx(classes.section, classes.howToGetStarted)}>
             <Container maxWidth="lg">
-              <h2 className={newClasses.title}>How to get started</h2>
-              <p className={classes.p}>
-                If you are <span className={newClasses.highlight}>not yet subscribed</span> to a daily requests list and
-                don’t have an account at{" "}
-                <a href="https://requests.chipassist.com" target="_blank" rel="noreferrer">
-                  https://requests.chipassist.com
-                </a>{" "}
-                please send us an email to <a href="mailto:connect@chipassist.com">connect@chipassist.com</a>
-              </p>
-              <p className={classes.p}>
-                If you already have an account you can visit{" "}
-                <a href="https://requests.chipassist.com" target="_blank" rel="noreferrer">
-                  https://requests.chipassist.com
-                </a>{" "}
-                any time to see new requests and respond to them.
-              </p>
+              <h2 className={newClasses.title}>{t("req_page_desc.h_3")}</h2>
+              <p className={classes.p} dangerouslySetInnerHTML={{ __html: t("req_page_desc.p5") }}></p>
+              <p className={classes.p} dangerouslySetInnerHTML={{ __html: t("req_page_desc.p6") }}></p>
             </Container>
           </section>
           <section className={clsx(classes.section, classes.howToGetStarted)}>
             <Container maxWidth="lg">
-              <h2 className={newClasses.title}>Limitations and suggestions</h2>
-              <div className={classes.italic}>Time matters</div>
-              <p className={classes.p}>
-                Earlier received responses have better chances to be accepted by a customer. Due to this we suggest you
-                to respond to the requests as fast as you can.
-              </p>
-              <div className={classes.italic}>Be responsible with your responses</div>
-              <p className={classes.p}>
-                Received quotes are communicated to the customers. Due to this they{" "}
-                <strong>should be valid for at least 72 hours</strong>. Please mind that if you are unable to supply the
-                goods at the responded price, this fact might be considered as a mislead.
-              </p>
+              <h2 className={newClasses.title}>{t("req_page_desc.h_4")}</h2>
+              <div className={classes.italic}>{t("req_page_desc.subtitle")}</div>
+              <p className={classes.p}>{t("req_page.desc.p7")}</p>
+              <div className={classes.italic}>{t("req_page_desc.subtitle_2")}</div>
+              <p className={classes.p} dangerouslySetInnerHTML={{ __html: t("req_page_desc.p8") }}></p>
             </Container>
           </section>
         </>
@@ -255,15 +219,12 @@ export const About = () => {
             alignItems={"center"}
           >
             <Grid item sm={5} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
-              <h2 className={newClasses.title}>Easy and convinient comunications with customers</h2>
-              <p>Get all your incoming requests for quotaion (RFQs) streamlined and displayed in a convenient way.</p>
-              <p>
-                See all requests sorted by date with the origin country of the request and requested quantity for each
-                MPN.
-              </p>
+              <h2 className={newClasses.title}>{t("messages.title")}</h2>
+              <p>{t("messages.subtitle")}</p>
+              <p>{t("messages.p1")}</p>
               <div>
                 <Button className={clsx(appClasses.buttonCreate, newClasses.linkButton)} href={"/messages"}>
-                  VIEW MESSAGES
+                  {t("buttons.view_mess")}
                 </Button>
                 {/* <Button */}
                 {/*  variant={"outlined"} */}
@@ -288,9 +249,9 @@ export const About = () => {
               <img className={classes.img} style={{ boxShadow: "none" }} src={invoices_image} alt="invoices image" />
             </Grid>
             <Grid item sm={6} className={clsx(classes.rightColumn, newClasses.gridTextStyle)}>
-              <h2 className={newClasses.title}>Easily create and exchange Purchase Orders and Invoices</h2>
-              <p>Receive approved Purchase Orders (POs) from your custommers with all necessary details.</p>
-              <p>Generate, preview and send Payment Invoices to your customers just in several clicks.</p>
+              <h2 className={newClasses.title}>{t("po_i.title")}</h2>
+              <p>{t("po_i.p1")}</p>
+              <p>{t("po_i.p2")}</p>
               {/* <div> */}
               {/*  <Button */}
               {/*    variant={"outlined"} */}
