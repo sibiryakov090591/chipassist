@@ -102,7 +102,7 @@ const Blog: React.FC = () => {
                         <p dangerouslySetInnerHTML={{ __html: item.intro }} />{" "}
                       </div>
                       <Box display="flex" justifyContent="space-between" mt="12px">
-                        <span className={clsx(appTheme.hyperlink, classes.link)}>Read more...</span>
+                        <span className={clsx(appTheme.hyperlink, classes.link)}>{t("read_more")}</span>
                         <span className={classes.date}>{new Date(item.date).toDateString()}</span>
                       </Box>
                     </div>

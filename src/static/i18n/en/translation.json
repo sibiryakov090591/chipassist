@@ -561,6 +561,17 @@
         "file-too-large": "Maximum file size is {{size}} Mb",
         "file-too-much-rows-1": "To load BOM lists containing more than 100 lines, please consider upgrading your account to the paid level.",
         "file-too-much-rows-2": "To upgrade your account please write to {{email}}."
+      },
+      "if_not_IC": {
+        "title": "Master your Bill of Materials with intelligence and flexibility",
+        "subtitle": "Quickly evaluate millions of parts from tens of suppliers saving time and increasing quotation accuracy.",
+        "list_title": "Place your selections into the cart and order up to 1000 different components at once.",
+        "list": {
+          "li1": "Access millions of part numbers available online or via requests",
+          "li2": "Compare the prices and availability",
+          "li3": "Import from XLS or CSV",
+          "li4": "Save selected options to re-order BOM later"
+        }
       }
     },
     "file": {
@@ -590,7 +601,8 @@
       "text_1": "If you click “Apply” all quantities will be recalculated according to the formula: reference quantity * number of sets.",
       "apply": "Apply",
       "cancel": "Сancel"
-    }
+    },
+    "copying": "Copying..."
   },
   "distributor": {
     "distributor": "Distributor",
@@ -1500,7 +1512,53 @@
     "offer": " offer",
     "offer_plural": " offers",
     "circular_progress_tooltip": "{{count}} hour left to reply. Responses to the request are accepted within {{validTime}} hours.",
-    "circular_progress_tooltip_plural": "{{count}} hours left to reply. Responses to the request are accepted within {{validTime}} hours."
+    "circular_progress_tooltip_plural": "{{count}} hours left to reply. Responses to the request are accepted within {{validTime}} hours.",
+    "about": {
+      "top_elem": {
+        "title": "New way of working with RFQs",
+        "subtitle": "Many customers, one service",
+        "p1": "Get request from the customers worldwide",
+        "p2": "Compare your offer with competitive quotes",
+        "p3": "Discuss payment and delivery terms"
+      },
+      "request_page": {
+        "title": "Work with incoming requests in a completely new way",
+        "subtitle": "Get all your incoming requests for quotation (RFQs) streamlined and displayed in a convenient way.",
+        "p1": "See all requests sorted by date with the origin country of the request and requested quantity for each MPN."
+      },
+      "req_page_desc": {
+        "p1": "You can provide your <span className={newClasses.highlight}>stock, unit price, date code and lead time</span> for every item you like. Additionally you can provide an alternative MPN and comments describing any information you would like to provide.",
+        "p2": "Once you have provided all the information required, just hit the “SEND DATA” button and your responses will be submitted to our database and provided to the customers.",
+        "h": "Use XLS format if you prefer",
+        "p3": "You also can export the list of the request to <span className={newClasses.highlight}>.xls file</span>. This might be useful if you like to prepare your responses in .xls format.",
+        "h_2": "See competitive offers",
+        "p4": "If you see the item`s price field is yellow after the response, it means that another supplier has suggested a better price for this request. You can try reducing the price to provide a competitive offer.",
+        "h_3": "How to get started",
+        "p5": " If you are <span className={newClasses.highlight}>not yet subscribed</span> to a daily requests list and don’t have an account at <a href=\"https://requests.chipassist.com\" target=\"_blank\" rel=\"noreferrer\">https://requests.chipassist.com</a> please send us an email to <a href=\"mailto:connect@chipassist.com\">connect@chipassist.com</a>",
+        "p6": "If you already have an account you can visit <a href=\"https://requests.chipassist.com\" target=\"_blank\" rel=\"noreferrer\">https://requests.chipassist.com</a> any time to see new requests and respond to them.",
+        "h_4": "Limitations and suggestions",
+        "subtitle": "Time matters",
+        "p7": "Earlier received responses have better chances to be accepted by a customer. Due to this we suggest you to respond to the requests as fast as you can.",
+        "subtitle_2": "Be responsible with your responses",
+        "p8": "Received quotes are communicated to the customers. Due to this they <strong>should be valid for at least 72 hours</strong>. Please mind that if you are unable to supply the goods at the responded price, this fact might be considered as a mislead."
+      },
+      "messages": {
+        "title": "Easy and convinient comunications with customers",
+        "subtitle": "Get all your incoming requests for quotaion (RFQs) streamlined and displayed in a convenient way.",
+        "p1": "See all requests sorted by date with the origin country of the request and requested quantity for each MPN."
+      },
+      "po_i": {
+        "title": "Easily create and exchange Purchase Orders and Invoices",
+        "p1": "Receive approved Purchase Orders (POs) from your custommers with all necessary details.",
+        "p2": "Generate, preview and send Payment Invoices to your customers just in several clicks."
+      },
+      "buttons": {
+        "view_req": "VIEW REQUESTS",
+        "view_mess": "VIEW MESSAGES",
+        "close": "CLOSE",
+        "discover": "DISCOVER"
+      }
+    }
   },
   "error": {
     "back": "Home page",
@@ -1940,12 +1998,15 @@
     "search": "Search",
     "no_art": "No articles",
     "loading": "Articles are loading...",
+    "read_more": "Read more...",
     "article": {
       "loading": "Article are loading...",
       "no_art": "The article does not exist",
       "return": "Return to blog"
     }
   }
+
+
 
 
 }
