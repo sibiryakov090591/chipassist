@@ -16,6 +16,7 @@ export const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 16,
     marginBottom: 18,
+    marginTop: 0,
   },
   tableScroll: {
     maxHeight: 400,
