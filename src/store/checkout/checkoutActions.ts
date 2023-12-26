@@ -459,7 +459,7 @@ export const getServiceTax = () => (dispatch: any) => {
     types: [null, null, null],
     promise: (client: ApiClientInterface) =>
       client
-        .get(`apiv2/taxes`, {
+        .get(`apiv2/taxes/?page_size=500`, {
           noapi: true,
         })
         .then((res) => res?.data)

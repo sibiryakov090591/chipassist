@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/styles";
 import Footer from "@src/components/Footer/Footer";
 import { scrollbarWidth } from "@src/config";
 import { clsx } from "clsx";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { TopBar } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -81,11 +83,17 @@ const HomePage = (props) => {
 
   const isShowFooter = window.location.pathname !== "/messages";
   const isHomePage = window.location.pathname === "/";
+  const isChipAssist = constants.id !== ID_ICSEARCH;
 
   return (
     <div className={classes.wrapper}>
-      <TopBar className={clsx(classes.topBar, { [classes.fixedHeight]: !isHomePage, [classes.home]: isHomePage })} />
-      <div className={isHomePage ? classes.homeContainer : classes.container}>
+      <TopBar
+        className={clsx(classes.topBar, {
+          [classes.fixedHeight]: !isHomePage || !isChipAssist,
+          [classes.home]: isHomePage && isChipAssist,
+        })}
+      />
+      <div className={isHomePage && isChipAssist ? classes.homeContainer : classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
       {isShowFooter && <Footer />}

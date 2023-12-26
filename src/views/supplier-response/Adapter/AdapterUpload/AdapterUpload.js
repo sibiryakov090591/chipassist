@@ -20,6 +20,7 @@ const fieldsInitialState = {
   noheader_row: "",
   supplier: "",
   currency: "EUR",
+  request_mode: "default",
   // separator: "",
   // encoding: "",
 };
