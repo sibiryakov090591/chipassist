@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 
 const Terms = () => {
   const { t } = useI18n("terms");
+  const isICSearch = constants.id === ID_ICSEARCH;
+  const link = isICSearch ? "https://icsearch.ru" : "https://chipassist.com";
+  const name = isICSearch ? "ICSearch" : "ChipAssist AG";
+
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
@@ -14,7 +20,7 @@ const Terms = () => {
       <p style={{ color: "#595959", fontSize: 14, fontWeight: 600 }}>{t("last_updated")}</p>
       <br />
       <p>
-        {t("p1.p1")} ChipAssist AG {t("p1.p2")} <a href="https://chipassist.com">https://chipassist.com</a> {t("p1.p3")}
+        {t("p1.p1")} {name} {t("p1.p2")} <a href={link}>{link}</a> {t("p1.p3")}
       </p>
       <p>{t("p2")}</p>
       <p>{t("p3")}</p>

@@ -317,7 +317,9 @@ const SearchResults = () => {
                       {!constants.isNewSearchPage && (
                         <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
                       )}
-                      <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+                      {constants.isNewSearchPage && (
+                        <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+                      )}
                       <FilterCurrency />
                       {!isSmDown && (
                         <FilterPageSizeChoiceBar

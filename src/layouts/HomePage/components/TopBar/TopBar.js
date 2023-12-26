@@ -140,7 +140,7 @@ const TopBar = (props) => {
         {...rest}
         className={clsx({
           [classes.root]: true,
-          [classes.homePageTopBar]: isMdUp && isHomePage,
+          [classes.homePageTopBar]: isChipAssist && isMdUp && isHomePage,
           [className]: true,
           collapse,
         })}
