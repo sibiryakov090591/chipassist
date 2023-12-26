@@ -46,7 +46,7 @@
     "error_file_upload": "Fehler beim Hochladen der Datei",
     "upload": {
       "create_file": "Aus Datei erstellen",
-      "uploading": "Hochladen Ihrer Datei",
+      "uploading": "Laden Sie Ihre Datei hoch",
       "uploading_description": "Stellen Sie beim Hochladen Ihrer Datei sicher, dass keine Fehler vorliegen",
       "upload": "Hochladen",
       "drag": "Ziehen <strong>XLS</strong><br /> oder <strong>CSV</strong> (Semikolon als Trennzeichen)<br /> Dateien hier oder ",
@@ -190,13 +190,22 @@
     "rfqs": "Anfragen",
     "chat": "Mitteilungen",
     "pcb": "Gedruckte Tafeln",
-    "bom": "Stücklisten-Tool",
+    "bom": "Werkzeug",
     "cart": "Wagen",
     "search_placeholder": "Suche nach MPN, Hersteller oder Schlüsselwörtern",
     "try_search": "Oder versuchen Sie es mit einer Beispielsuche:",
     "try_search_mobile": "Versuchen Sie es mit einer Beispielsuche:",
     "hello": "anmelden",
-    "account": "Konto"
+    "account": "Konto",
+    "about_us": "Über uns",
+    "rfq_list": "RFQ-Liste",
+    "contacts": "Kontakte",
+    "register": "Registrieren",
+    "sell_on": "Verkaufen auf",
+    "hint": {
+      "title": "Hier können Sie eine Gruppenanfrage erstellen",
+      "button": "Habe es!"
+    }
   },
   "sell_excess": {
     "page_title": "Aktien verkaufen {{name}}",
@@ -210,7 +219,7 @@
       "title": "Warum Ihre überschüssigen Bestände mit ChipAssist verkaufen?",
       "card_1": {
         "title": "Zugang zum internationalen Markt",
-        "text": "Ihre überschüssigen Lagerbestände werden für die Kunden und Partner von ChipAssist auf der ganzen Welt sichtbar."
+        "text": "Ihre überschüssigen Bestände werden für die Kunden und Partner von ChipAssist auf der ganzen Welt sichtbar."
       },
       "card_2": {
         "title": "Vollständige Kontrolle und Transparenz",
@@ -218,7 +227,7 @@
       },
       "card_3": {
         "title": "Schnelle und profitable Deals",
-        "text": "Direkte Kundenverbindungen und eine effektive Datenintegration helfen dabei, Ihren überschüssigen Lagerbestand mit der richtigen Zielgruppe zu verbinden."
+        "text": "Direkte Kundenverbindungen und effektive Datenintegration helfen dabei, Ihren überschüssigen Lagerbestand der richtigen Zielgruppe zuzuordnen."
       },
       "card_4": {
         "title": "Unterstützung beim Deal",
@@ -236,8 +245,13 @@
       "phone": "Dein Telefon",
       "country": "Dein Land",
       "stock": "Anzahl der Lagerbestände (ungefähr)",
-      "button": "Schicken"
-    }
+      "button": "Schicken",
+      "title": {
+        "p1": "Wie",
+        "p2": "Es klappt"
+      }
+    },
+    "title": "hilft dabei, Ihren überschüssigen Lagerbestand in Gewinne umzuwandeln."
   },
   "catalog": {
     "page_title": "Katalog elektronischer Komponenten",
@@ -329,7 +343,7 @@
     "file_uploaded": "Die Datei wurde erfolgreich hochgeladen",
     "not_logged_in": "Sie sind nicht angemeldet. Bitte melden Sie sich an oder registrieren Sie sich.",
     "error": "Fehler",
-    "error_file_upload_backend": "Fehler beim Verarbeiten der Stücklistendatei auf dem Server",
+    "error_file_upload_backend": "Fehler bei der Verarbeitung der Stücklistendatei auf dem Server",
     "error_file_upload": "Fehler beim Hochladen der Datei",
     "select_product": "Ausgewähltes Produkt",
     "select_distributor": "Händler auswählen",
@@ -505,7 +519,7 @@
       "bom_name": "Stücklistenname",
       "bom_saved": "Bom {{name}} Gerettet.",
       "error": "Fehler – versuchen Sie es später noch einmal!",
-      "helper_text": "Der Stücklistenname ist erforderlich"
+      "helper_text": "Der Name der Stückliste ist erforderlich"
     },
     "resolve": {
       "title": "Zusammenführungskonflikt lösen",
@@ -547,6 +561,17 @@
         "file-too-large": "Die maximale Dateigröße beträgt {{size}} Mb",
         "file-too-much-rows-1": "Um Stücklisten mit mehr als 100 Zeilen zu laden, ziehen Sie bitte ein Upgrade Ihres Kontos auf die kostenpflichtige Ebene in Betracht.",
         "file-too-much-rows-2": "Um Ihr Konto zu aktualisieren, schreiben Sie bitte an {{email}}."
+      },
+      "if_not_IC": {
+        "title": "Beherrschen Sie Ihre Stückliste mit Intelligenz und Flexibilität",
+        "subtitle": "Bewerten Sie schnell Millionen von Teilen von Dutzenden Lieferanten, sparen Sie Zeit und erhöhen Sie die Angebotsgenauigkeit.",
+        "list_title": "Legen Sie Ihre Auswahl in den Warenkorb und bestellen Sie bis zu 1000 verschiedene Komponenten auf einmal.",
+        "list": {
+          "li1": "Greifen Sie auf Millionen von Teilenummern zu, die online oder über Anfragen verfügbar sind",
+          "li2": "Vergleichen Sie Preise und Verfügbarkeit",
+          "li3": "Import aus XLS oder CSV",
+          "li4": "Speichern Sie ausgewählte Optionen, um die Stückliste später neu zu bestellen"
+        }
       }
     },
     "file": {
@@ -573,10 +598,11 @@
     },
     "sets": {
       "title": "Ändern Sie die Anzahl der Sätze",
-      "text_1": "Wenn Sie auf „Anwenden“ klicken, werden alle Mengen nach der Formel: Referenzmenge * Anzahl der Sätze neu berechnet.",
+      "text_1": "Wenn Sie auf „Übernehmen“ klicken, werden alle Mengen nach der Formel: Referenzmenge * Anzahl der Sätze neu berechnet.",
       "apply": "Anwenden",
       "cancel": "Abbrechen"
-    }
+    },
+    "copying": "Kopieren..."
   },
   "distributor": {
     "distributor": "Verteiler",
@@ -591,7 +617,7 @@
     "qty": "Menge",
     "moq": "Mindestbestellmenge",
     "pkg": "Pkg",
-    "for_moq": "für Mindestbestellmenge",
+    "for_moq": "für MOQ",
     "for_amount": "für Menge",
     "mpq": "MPQ",
     "updated": "Aktualisiert",
@@ -622,7 +648,7 @@
     "status_rfq_hint": "Verfügbarkeit und/oder Preis müssen auf Anfrage bestätigt werden",
     "price": "Preis",
     "exclusive_status": "Produkt mit hoher Nachfrage, bitte Preis anfragen",
-    "exclusive_tooltip": "Sie können dieses Produkt anfragen und wir ermitteln für Sie den Preis",
+    "exclusive_tooltip": "Sie können dieses Produkt anfragen und wir ermitteln den Preis für Sie",
     "show_more_stocks": "{{count}} Aktie",
     "show_more_stocks_plural": "{{count}} Aktien",
     "product_view": {
@@ -664,7 +690,21 @@
     "in_stock_hint_3": "Filter AUS",
     "in_stock_hint_4": " um alle Alternativen zu sehen",
     "in_stock_hint_5": "Weitere Produkte per Anfrage erhältlich",
-    "in_stock_hint_6": "Oder senden Sie uns eine Anfrage:"
+    "in_stock_hint_6": "Oder senden Sie uns eine Anfrage:",
+    "tutorial": {
+      "dialog": {
+        "greetings": {
+          "h": "Zum ersten Mal auf ChipAssist?",
+          "p": "Schauen Sie sich unseren kurzen interaktiven Leitfaden an"
+        },
+        "yes": "Ja, bitte",
+        "skip": "Überspringen"
+      },
+      "search": "Geben Sie in diese Suchleiste eine Teilenummer ein und Sie erhalten eine Ergebnisliste.",
+      "create_rfq": "Sie können uns eine Anfrage für dieses Produkt senden oder sich direkt an den Verkäufer wenden."
+    },
+    "request_block": "Sie haben dieses Produkt unter angefordert",
+    "rfq_header": "Versuchen Sie bitte, nach einem anderen Verkäufer oder der Teilenummer zu suchen, an der Sie interessiert sind."
   },
   "component": {
     "attribute": "Attribut",
@@ -725,7 +765,7 @@
     "your_invoice": "Ihre Rechnung",
     "your_order": "Hier können Sie Ihre Bestellungen einsehen",
     "products_update": "Einige Artikel sind möglicherweise veraltet. ",
-    "order_header": "Die Rechnung für diese Artikel erhalten Sie nach der Bestätigung",
+    "order_header": "Sie erhalten die Rechnung für diese Artikel, sobald diese bestätigt sind",
     "order_add_button": "Zur Bestellung wechseln",
     "rfq_header": "Sie erhalten für diese Artikel ein gesondertes Angebot, sobald wir deren Verfügbarkeit bestätigt haben",
     "rfq_add_button": "Gehen Sie zur Angebotsanfrage",
@@ -807,6 +847,86 @@
   },
   "home": {
     "page_title": "Suchen Sie nach Preisen für elektronische Teile und Komponenten|Datenblätter{{name}}",
+    "page_title_1": {
+      "slogan": "Suche nach elektronischen Teilen.",
+      "reinvented": "Neu erfunden."
+    },
+    "hero_item1": {
+      "mobile": {
+        "h": "Suchen. ",
+        "p": "Suchen Sie nach Produkten und sehen Sie sich die Marktverfügbarkeit an.  "
+      },
+      "desktop": {
+        "h": "Suchen",
+        "p": "Suchen und vergleichen Sie Preise und Marktverfügbarkeit.  "
+      }
+    },
+    "hero_item2": {
+      "h": "Anfrage",
+      "p": "Platzieren Sie Ihre Anfrage und erhalten Sie die speziellen Angebote von 300 verbundenen Verkäufern aus der ganzen Welt."
+    },
+    "hero_item3": {
+      "h": "Befehl",
+      "p": " Bestellen Sie Ihr Produkt über ChipAssist und profitieren Sie von einer sicheren und bequemen Kauf- und Nachverfolgungsfunktion."
+    },
+    "today": {
+      "h": "Heute",
+      "count_item1": "Teile im Katalog",
+      "count_item2": "Aktive Kunden",
+      "count_item3": "Weltweite Lagerbestände",
+      "count_item4": "Leiterplattenhersteller",
+      "count_item5": "Länder"
+    },
+    "services": {
+      "h": {
+        "all": "Alle Dienstleistungen ",
+        "in": "an einem Ort"
+      }
+    },
+    "connect": {
+      "title": {
+        "connecting": "Anschließen der",
+        "world": "Welt der Elektronik"
+      },
+      "subtitle": "Sie können bei mehreren Lieferanten gleichzeitig einkaufen und Anfragen für die von Ihnen benötigten Komponenten senden.",
+      "connect_item1": {
+        "title": "Treten Sie dem vertrauenswürdigen Ökosystem bei",
+        "text": "Arbeiten Sie mit dem Netzwerk von 1000 vertrauenswürdigen Kunden weltweit zusammen."
+      },
+      "connect_item2": {
+        "title": "Sparen Sie Marketingbudget",
+        "text": "Integrieren Sie vorgefertigte Kundenanfragen direkt in Ihre Vertriebspipeline."
+      },
+      "connect_item3": {
+        "title": "Verwalten Sie Ihre Überbestände",
+        "text": " Verkaufen Sie Ihre Überbestände und Überbestände schnell und effizient am Markt."
+      },
+      "connect_item4": {
+        "title": "in Ihrer Software",
+        "text": {
+          "p1": "Integrieren",
+          "p2": "mit Ihrer Software über unsere fortschrittliche API."
+        }
+      }
+    },
+    "partners": {
+      "title": "Partner mit",
+      "subtitle": "Arbeiten Sie mit ChipAssist für API-Integrationen, überschüssige Datenbestände, Benutzeranfragen und Markttrends zusammen, um Ihre Geschäftsmöglichkeiten zu verbessern. "
+    },
+    "pcb": {
+      "title": {
+        "p1": "Holen Sie sich Ihren nächsten",
+        "p2": "Leiterplatte bei uns"
+      },
+      "subtitle": "Laden Sie einfach Ihre Gerber-Dateien hoch und treten Sie mit 50 Leiterplattenlieferanten in Kontakt, um innerhalb von 48 Stunden das beste Angebot zu erhalten.",
+      "ul": {
+        "li1": "Senden Sie uns eine Freiform-PCB-Spezifikation oder geben Sie alle erforderlichen Details an",
+        "li2": "Erhalten Sie professionelle Unterstützung von unserem qualifizierten Ingenieurteam",
+        "li3": "Wählen Sie die besten Konditionen aus den Angebotsvorschlägen verschiedener Anbieter aus",
+        "li4": "Kontrollieren Sie die Qualität von Leiterplatten mit unserem QC-Team vor Ort"
+      },
+      "button": "Leiterplatte anfordern"
+    },
     "title": "Willkommen zu {{name}}!",
     "page_description": "Globaler Marktplatz für die Beschaffung elektronischer Komponenten. ",
     "advanced_section": {
@@ -822,13 +942,25 @@
       "line_2": "Erhalten Sie innerhalb von 48 Stunden ein wettbewerbsfähiges Preisangebot",
       "line_3": "Nahtlose Logistik aus jedem Land und jedem Lieferanten",
       "line_4": "Ein Ansprechpartner für alle Ihre Anfragen, Einkäufe und Lieferungen",
-      "line_5": "Qualitätsprüfung, Garantieunterstützung und Rückgaberecht ohne Hindernisse"
+      "line_5": "Qualitätsprüfung, Garantieunterstützung und Rückgaberecht ohne Hindernisse",
+      "new_line1": {
+        "p1": "ChipAssist stellt vor",
+        "p2": "Schneller RFQ-Austausch",
+        "p3": "Service"
+      },
+      "new_line2": "Jede Ihrer Anfragen wird automatisch an Dutzende unabhängige Lieferanten gesendet, die Ihnen das bestmögliche Preisangebot auf dem Markt bieten",
+      "sign_up": "Jetzt registrieren"
     },
     "bom_sections": {
+      "title": "Arbeiten mit",
       "paragraph_1": "Laden Sie Ihre Stücklistenliste und finden und bestellen Sie alle benötigten Teile auf einmal – überprüfen, prüfen und ändern Sie vorgeschlagene Angebote.",
       "paragraph_2": "Reduzieren Sie die Risiken, indem Sie den „Zustand“ Ihrer Listen, Preissteigerungen und den Verfügbarkeitszeitraum überprüfen."
     },
     "excess_sections": {
+      "h1": {
+        "p1": "Verkaufen Sie Ihren Überschuss",
+        "p2": "Inventar"
+      },
       "paragraph_1": "Wenn Sie OEM oder EMS sind, können wir Ihren überschüssigen Lagerbestand unseren Kunden weltweit anzeigen und ihn problemlos verkaufen.",
       "paragraph_2": "Wir bieten Ihnen den effizienten Vertriebskanal für Ihre überschüssigen Komponenten, egal in welchem ​​Land Sie sich befinden.",
       "button": "Verbinden Sie Ihren Bestand"
@@ -848,6 +980,10 @@
       "text_6": "Keine blinden Schüsse mehr. "
     },
     "contacts": {
+      "new_title": {
+        "p1": "Unser",
+        "p2": "Kontakte"
+      },
       "title": "UNSERE KONTAKTE",
       "name": "ChipAssist AG",
       "address_1": "Gubelstrasse 11, c/o Bratschi AG,",
@@ -903,6 +1039,8 @@
     "save_changes": "Änderungen speichern",
     "removing": "Entfernen...",
     "remove_pic": "Bild entfernen",
+    "address_data_title": "Für Abrechnung und Versand ausgewählt",
+    "default_address_label": "Diese Adresse ist die Standardadresse für Rechnung und Versand",
     "general": {
       "title": "Allgemein",
       "profile": "Benutzerdaten / Rechnungsadresse",
@@ -991,7 +1129,7 @@
       "created": "Erstellt",
       "status": "Status",
       "partner": "Partner",
-      "target_price": "Zielpreis (optional)",
+      "target_price": "Richtpreis (optional)",
       "target_delivery_date": "Geplanter Liefertermin",
       "valid": "Gültig bis",
       "seller": "Verkäufer",
@@ -1021,7 +1159,32 @@
       "message_placeholder": "Liebling {{seller}}Ich möchte Sie bezüglich Ihres Angebots kontaktieren {{mpn}} An {{constantsTitle}}.",
       "send": "Schicken",
       "sending": "Senden",
-      "close": "Schließen"
+      "close": "Schließen",
+      "back": "Zurück zu",
+      "request_quality": "Qualitätsprüfung anfordern",
+      "request_message": {
+        "p1": "Sie sind dabei, die Qualitätsprüfung für anzufordern",
+        "p2": "aus"
+      }
+    },
+    "list": {
+      "h": {
+        "modal": "Ihre Wunschliste:",
+        "desktop": "Geben Sie Ihre Angebotsliste ein"
+      },
+      "target_price": "Zielpreis",
+      "add_row": {
+        "mobile": "Neues Produkt hinzufügen",
+        "desktop": "Neue Zeile hinzufügen"
+      },
+      "login_section": {
+        "h": "Bitte machen Sie Angaben zu Ihrer Person ",
+        "p": {
+          "p1": "Wenn Sie bereits ein Konto haben, können Sie dies tun",
+          "p2": "Hier anmelden"
+        }
+      },
+      "accept": "Senden Sie mehrere RFQs"
     }
   },
   "pcb_new": {
@@ -1083,7 +1246,7 @@
       "thickness": "Dicke",
       "x": "Panelgröße X",
       "y": "Panelgröße Y",
-      "base": "Laminiertes Grundmaterial",
+      "base": "Laminiertes Basismaterial",
       "unit_x": "Gerätegröße X",
       "unit_y": "Gerätegröße Y",
       "copper": "Fertige Cu-Dicke / Kupfergewicht",
@@ -1120,8 +1283,8 @@
       "title": "Auswahl der PCB-Spezifikation",
       "board_type": "Board-Typ:",
       "board_type_hint": "Eine einzelne Platine oder ein Array, das entweder aus der gleichen Art von Platinen oder einer Mischung verschiedener Designs besteht",
-      "x_out": "X-out-Zulage im Panel:",
-      "x_out_hint": "Im Panel waren fehlerhafte Leiterplatten vorhanden. Wenn Sie die X-out-Zulage im Panel nicht akzeptieren, erhöhen sich die Kosten um 30 %.",
+      "x_out": "X-Out-Zulässigkeit im Panel:",
+      "x_out_hint": "Im Panel waren fehlerhafte Leiterplatten vorhanden. Wenn Sie die X-Out-Zulage im Panel nicht akzeptieren, erhöhen sich die Kosten um 30 %.",
       "break_away": "Abreißschiene:",
       "break_away_hint": "Breakaway-Schienen werden verwendet, um eine Vielzahl ungewöhnlicher Platinenformen aufzunehmen und den erforderlichen Abstand zwischen Bauteil und Platinenkante zu schaffen",
       "route_process": "Routenprozess:",
@@ -1341,7 +1504,53 @@
     "offer": " Angebot",
     "offer_plural": " bietet an",
     "circular_progress_tooltip": "{{count}} Noch eine Stunde Zeit, um zu antworten.  {{validTime}} Std.",
-    "circular_progress_tooltip_plural": "{{count}} Stunden verbleiben, um zu antworten.  {{validTime}} Std."
+    "circular_progress_tooltip_plural": "{{count}} Stunden verbleiben, um zu antworten.  {{validTime}} Std.",
+    "about": {
+      "top_elem": {
+        "title": "Neue Art der Arbeit mit RFQs",
+        "subtitle": "Viele Kunden, ein Service",
+        "p1": "Erhalten Sie Anfragen von Kunden weltweit",
+        "p2": "Vergleichen Sie Ihr Angebot mit Konkurrenzangeboten",
+        "p3": "Besprechen Sie Zahlungs- und Lieferbedingungen"
+      },
+      "request_page": {
+        "title": "Arbeiten Sie mit eingehenden Anfragen auf eine völlig neue Art und Weise",
+        "subtitle": "Erhalten Sie alle Ihre eingehenden Angebotsanfragen (RFQs) optimiert und auf praktische Weise angezeigt.",
+        "p1": "Sehen Sie sich alle Anfragen nach Datum sortiert mit dem Herkunftsland der Anfrage und der angeforderten Menge für jede MPN an."
+      },
+      "req_page_desc": {
+        "p1": "Sie können Ihre bereitstellen <span className={newClasses.highlight}>Lagerbestand, Stückpreis, Datumscode und Lieferzeit</span> für jeden Artikel, den Sie mögen. ",
+        "p2": "Sobald Sie alle erforderlichen Informationen angegeben haben, klicken Sie einfach auf die Schaltfläche „DATEN SENDEN“ und Ihre Antworten werden an unsere Datenbank übermittelt und den Kunden zur Verfügung gestellt.",
+        "h": "Verwenden Sie bei Bedarf das XLS-Format",
+        "p3": "Sie können die Liste der Anfragen auch nach exportieren <span className={newClasses.highlight}>.xls-Datei</span>. ",
+        "h_2": "Sehen Sie sich konkurrenzfähige Angebote an",
+        "p4": "Wenn Sie nach der Antwort sehen, dass das Preisfeld des Artikels gelb ist, bedeutet das, dass ein anderer Lieferant einen besseren Preis für diese Anfrage vorgeschlagen hat. ",
+        "h_3": "Wie man anfängt",
+        "p5": " Wenn du bist <span className={newClasses.highlight}>noch nicht abonniert</span> zu einer täglichen Anfrageliste hinzufügen und kein Konto bei haben <a href=\"https://requests.chipassist.com\" target=\"_blank\" rel=\"noreferrer\">https://requests.chipassist.com</a> Bitte senden Sie uns eine E-Mail an <a href=\"mailto:connect@chipassist.com\">connect@chipassist.com</a>",
+        "p6": "Wenn Sie bereits ein Konto haben, können Sie es besuchen <a href=\"https://requests.chipassist.com\" target=\"_blank\" rel=\"noreferrer\">https://requests.chipassist.com</a> jederzeit, um neue Anfragen einzusehen und darauf zu reagieren.",
+        "h_4": "Einschränkungen und Vorschläge",
+        "subtitle": "Zeit ist wichtig",
+        "p7": "Früher eingegangene Antworten haben bessere Chancen, von einem Kunden akzeptiert zu werden. ",
+        "subtitle_2": "Gehen Sie verantwortungsvoll mit Ihren Antworten um",
+        "p8": "Eingegangene Angebote werden den Kunden mitgeteilt.  <strong>sollte mindestens 72 Stunden gültig sein</strong>. "
+      },
+      "messages": {
+        "title": "Einfache und bequeme Kommunikation mit Kunden",
+        "subtitle": "Erhalten Sie alle Ihre eingehenden Angebotsanfragen (RFQs) optimiert und auf praktische Weise angezeigt.",
+        "p1": "Sehen Sie sich alle Anfragen nach Datum sortiert mit dem Herkunftsland der Anfrage und der angeforderten Menge für jede MPN an."
+      },
+      "po_i": {
+        "title": "Erstellen und tauschen Sie ganz einfach Bestellungen und Rechnungen aus",
+        "p1": "Erhalten Sie genehmigte Bestellungen (POs) von Ihren Kunden mit allen erforderlichen Details.",
+        "p2": "Erstellen Sie mit nur wenigen Klicks Zahlungsrechnungen, zeigen Sie sie in der Vorschau an und senden Sie sie an Ihre Kunden."
+      },
+      "buttons": {
+        "view_req": "ANFRAGEN ANZEIGEN",
+        "view_mess": "NACHRICHTEN ANZEIGEN",
+        "close": "SCHLIESSEN",
+        "discover": "ENTDECKEN"
+      }
+    }
   },
   "error": {
     "back": "Startseite",
@@ -1355,16 +1564,35 @@
   },
   "static_pages": {
     "about_company": {
+      "title": "Was ist",
       "page_title": "Um {{name}}: Globaler Marktplatz für die Beschaffung elektronischer Komponenten.",
       "page_description": "{{name}} ist ein Marktplatz für elektronische Teile.  {{name}} Jetzt!",
       "sub_header": "Ihr weltweiter Marktplatz für elektronische Komponenten",
       "company_name": "ChipAssist'",
+      "sub_title": {
+        "p1": "Erleben Sie die Kraft von",
+        "p2": "Werkzeuge"
+      },
       "search_tool": "Leistungsstarke Suchmaschine",
       "search_tool_description": "Unsere robuste Suchmaschine ermöglicht einen schnellen und nahtlosen Vergleich von Millionen von Komponenten. ",
       "bom_tool": "Benutzerfreundliches Stücklistentool",
       "bom_tool_description": "Mit unserem intuitiven BOM-Tool (Bill of Materials) können Sie Stücklisten bearbeiten, speichern und generieren und so einen umfassenden Überblick über Kosten und Produktverfügbarkeit für Ihre gewünschten Komponenten erhalten. ",
       "api_tool": "Nahtlose API-Integration",
-      "api_tool_description": "Ein weiteres wichtiges Merkmal ist unsere nahtlose API-Integrationsfunktion, die es Benutzern ermöglicht, ihre eigenen Anwendungen mit der Produkt- und Komponentendatenbank der Plattform zu verbinden und so die Datenerfassung einfacher als je zuvor zu machen."
+      "api_tool_description": "Ein weiteres wichtiges Merkmal ist unsere nahtlose API-Integrationsfunktion, die es Benutzern ermöglicht, ihre eigenen Anwendungen mit der Produkt- und Komponentendatenbank der Plattform zu verbinden und so die Datenerfassung einfacher als je zuvor zu machen.",
+      "paragraph": {
+        "firs": "ChipAssist ist der ultimative globale Marktplatz für die Beschaffung elektronischer Teile und Komponenten. ",
+        "second": " ChipAssist bietet Elektronikfachleuten, die nach umfassenden technischen Komponentendaten suchen, mehr als nur Bestandsdaten. "
+      },
+      "footer": {
+        "first": {
+          "p1": "Treten Sie der bei",
+          "p2": "Nutzen Sie jetzt die Community, um Ihre Möglichkeiten zur Beschaffung elektronischer Komponenten zu maximieren. "
+        },
+        "second": {
+          "p1": "Für weitere Informationen zu Daten, Suchergebnissen und der Verwendung von ChipAssist klicken Sie bitte",
+          "p2": "Hier"
+        }
+      }
     },
     "for_distributors": {
       "header": "Für Distributoren"
@@ -1383,7 +1611,7 @@
     },
     "faq": {
       "page_title": "FAQ – Für Benutzer – ChipAssist",
-      "page_description": "ChipAssist ist eine Suchmaschine für elektronische Bauteile. ",
+      "page_description": "ChipAssist ist eine Suchmaschine für elektronische Komponenten. ",
       "header": "Häufig gestellte Fragen",
       "subtitle_user": "Für Benutzer",
       "user_question_1": "1. Was ist ChipAssist?",
@@ -1420,7 +1648,340 @@
       "distributor_question_7": "7. Wie oft halten Sie es für sinnvoll, Dateien zuzustellen? ",
       "distributor_answer_7": "Das hängt davon ab, wie häufig Änderungen auftreten. ",
       "distributor_question_8": "8. Wie wird der Preis auf der Website ermittelt? ",
-      "distributor_answer_8": "Der auf der Website angegebene Preis ist der vom Anbieter selbst festgelegte Preis. "
+      "distributor_answer_8": "Der auf der Website angegebene Preis ist der vom Anbieter selbst festgelegte Preis. ",
+      "options": {
+        "p1": "Sie haben zwei Möglichkeiten. ",
+        "p2": "Gruppen-RFQ-Funktion",
+        "p3": "Senden Sie eine Anfrage für bis zu 20 Produkte gleichzeitig. ",
+        "p4": "Stücklistenliste",
+        "p5": "mit bis zu 100 Zeilen auf einem kostenlosen Konto und bis zu 1000 Zeilen auf einem kostenpflichtigen Konto."
+      }
+    }
+  },
+  "footer": {
+    "follow_us": "Folgen Sie uns",
+    "requests": "Anfragen",
+    "statistics": "Statistiken",
+    "messages": "Mitteilungen",
+    "help": "Helfen",
+    "about_us": "Über uns",
+    "products": "Produkte",
+    "bom": "Werkzeug",
+    "rfq_list": "RFQ-Liste",
+    "sell_on": "Verkaufen auf",
+    "request": "Anfrage",
+    "terms": "Bedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "blog": "Blog",
+    "contact_us": "Kontaktiere uns"
+  },
+  "partner_terms": {
+    "h1": {
+      "p1": "Geschäftsbedingungen",
+      "p2": "Plattform für Lieferanten"
+    },
+    "terms": {
+      "li1": "Lieferant – ein Unternehmen, das a) seine Lagerbestände auf der Plattform des Dienstleisters zum Verkauf bereitstellt und/oder b) Zugang zum schnellen RFQ-Austauschdienst erhalten hat.",
+      "li2": "Dienstleister – ChipAssist AG oder ihr autorisierter Partner.",
+      "li3": "Autorisierter Partner – ChipOnline, Serbien, der den Einkauf von Komponenten (Materialien) durchführt, Rechnungen ausstellt und Logistikdienstleistungen erbringt.",
+      "li4": "Komponenten (Materialien) – alle Produkte eines Lieferanten, die zum Verkauf über die Plattform des Dienstleisters vorgesehen sind."
+    },
+    "supplier_undertakes": "Der Lieferant verpflichtet sich dazu",
+    "list": {
+      "li1": "In Bezug auf die Herkunft und Kompatibilität der Komponenten (Materialien).",
+      "li1_subtitles": {
+        "li1": "Lieferung von Komponenten (Materialien), die nicht gefälscht oder gefälscht sind.",
+        "li2": "geben Auskunft über den Originalhersteller.",
+        "li3": "Geben Sie ggf. Teilenummern-Querverweise für die kompatiblen Komponenten (Materialien) an."
+      },
+      "li2": "In Bezug auf die Qualität und den Zustand der Komponenten (Materialien):",
+      "li2_subtitles": {
+        "li1": "Lieferung neuer Komponenten (Materialien), sofern zwischen dem Lieferanten und dem Dienstleister im Einzelfall nicht ausdrücklich etwas anderes vereinbart wurde.",
+        "li2": "Komponenten (Materialien) in gutem Zustand liefern, d. h. die Leistung gemäß den ursprünglichen Eigenschaften sicherstellen.",
+        "li3": "Lagern und transportieren Sie Komponenten (Materialien) gemäß den entsprechenden Anforderungen eines Originalherstellers.",
+        "li4": "Informieren Sie den Dienstleister über alle möglichen Probleme im Zusammenhang mit der Qualität und dem Zustand von Komponenten (Materialien), z. B. "
+      },
+      "li3": "Im Verhältnis zum Preis der Komponenten (Materialien).",
+      "li3_subtitles": {
+        "li1": "Bereitstellung eines Preises für Komponenten (Materialien) in der Reihenfolge ihrer Priorität: über API, in einer Lagerdatei, auf Anfrage des Dienstanbieters.",
+        "li2": "den Preis für 72 Stunden nach dem Zeitpunkt der Bereitstellung festzulegen, sofern zwischen dem Lieferanten und dem Dienstleister nichts anderes vereinbart wurde."
+      },
+      "li4": "In Bezug auf die Garantie",
+      "li4_subtitles": {
+        "li1": "Informieren Sie uns ausdrücklich über die Garantiedauer und -bedingungen.",
+        "li2": "vom Dienstleister geleistete Zahlungen für qualitativ mangelhafte Komponenten (Materialien) zurückzuerstatten oder, in mit dem Endkunden vereinbarten Fällen, Ersatz zu leisten. "
+      },
+      "li5": "In Bezug auf die Vertraulichkeit",
+      "li5_subtitles": "Informationen, die Sie vom Dienstanbieter erhalten oder von der Website ChipAssist.com abgerufen haben, ausschließlich für a) den Verkauf von Komponenten (Materialien) und b) die Werbung für die Plattform des Dienstanbieters zu verwenden und an Dritte weiterzugeben.",
+      "footer": "Der Lieferant erkennt an, dass der Dienstleister diese Allgemeinen Geschäftsbedingungen ohne gesonderte Benachrichtigung ändern kann, um den Schutz der Kunden und seiner eigenen Interessen zu verbessern."
+    }
+  },
+  "policy": {
+    "h1": "Datenschutzrichtlinie für",
+    "p1": {
+      "part1": "Bei",
+      "part2": {
+        "p1": "erreichbar von",
+        "p2": "Eine unserer Hauptprioritäten ist die Privatsphäre unserer Besucher. "
+      }
+    },
+    "p2": "Wenn Sie weitere Fragen haben oder weitere Informationen zu unserer Datenschutzrichtlinie benötigen, zögern Sie nicht, uns zu kontaktieren.",
+    "p3": {
+      "p1": "Diese Datenschutzrichtlinie gilt nur für unsere Online-Aktivitäten und gilt für Besucher unserer Website in Bezug auf die Informationen, die sie in ChipAssist geteilt und/oder gesammelt haben. "
+    },
+    "consent": "Zustimmung",
+    "by_using": "Durch die Nutzung unserer Website stimmen Sie hiermit unserer Datenschutzrichtlinie zu und stimmen deren Bedingungen zu.",
+    "information": "Informationen, die wir sammeln",
+    "p4": "Die personenbezogenen Daten, um deren Bereitstellung Sie gebeten werden, und die Gründe, warum Sie zur Bereitstellung dieser Daten aufgefordert werden, werden Ihnen an dem Punkt mitgeteilt, an dem wir Sie um die Bereitstellung Ihrer personenbezogenen Daten bitten.",
+    "p5": "Wenn Sie uns direkt kontaktieren, erhalten wir möglicherweise zusätzliche Informationen über Sie, wie Ihren Namen, Ihre E-Mail-Adresse, Ihre Telefonnummer, den Inhalt der Nachricht und/oder der Anhänge, die Sie uns senden, sowie alle anderen Informationen, die Sie uns möglicherweise zur Verfügung stellen.",
+    "p6": "Wenn Sie sich für ein Konto registrieren, fragen wir Sie möglicherweise nach Ihren Kontaktinformationen, einschließlich Angaben wie Name, Firmenname, Adresse, E-Mail-Adresse und Telefonnummer.",
+    "how_we": "Wie wir Ihre Informationen verwenden",
+    "p7": "Wir nutzen die von uns gesammelten Informationen auf verschiedene Weise, unter anderem um",
+    "list": {
+      "li1": "Bereitstellung, Betrieb und Pflege unserer Website",
+      "li2": "Verbessern, personalisieren und erweitern Sie unsere Website",
+      "li3": "Verstehen und analysieren Sie, wie Sie unsere Website nutzen",
+      "li4": "Entwickeln Sie neue Produkte, Dienste, Features und Funktionen",
+      "li5": "Zur Kommunikation mit Ihnen, entweder direkt oder über einen unserer Partner, einschließlich für den Kundenservice, um Ihnen Updates und andere Informationen im Zusammenhang mit der Website bereitzustellen sowie für Marketing- und Werbezwecke",
+      "li6": "Senden Sie Ihnen E-Mails",
+      "li7": "Betrug erkennen und verhindern"
+    },
+    "log_files": "Protokolldateien",
+    "p8": "folgt einem Standardverfahren zur Verwendung von Protokolldateien. ",
+    "advertising": "Datenschutzrichtlinien für Werbepartner",
+    "p9": "In dieser Liste finden Sie die Datenschutzrichtlinien für jeden Werbepartner von",
+    "p10": "Ad-Server oder Ad-Netzwerke von Drittanbietern verwenden Technologien wie Cookies, JavaScript oder Web Beacons, die in ihren jeweiligen Anzeigen verwendet werden, und Links, die auf ChipAssist erscheinen und direkt an den Browser des Benutzers gesendet werden. ",
+    "p11": {
+      "p1": "Beachten Sie, dass",
+      "p2": "hat keinen Zugriff auf oder Kontrolle über diese Cookies, die von Drittwerbetreibenden verwendet werden."
+    },
+    "third_party": "Datenschutzrichtlinien Dritter",
+    "p12": "Die Datenschutzrichtlinie gilt nicht für andere Werbetreibende oder Websites. ",
+    "p13": "Sie können Cookies über Ihre individuellen Browseroptionen deaktivieren. ",
+    "CCPA": "CCPA-Datenschutzrechte (Meine persönlichen Daten nicht verkaufen)",
+    "p14": "Nach dem CCPA haben kalifornische Verbraucher unter anderem das Recht darauf",
+    "p15": "Fordern Sie ein Unternehmen, das personenbezogene Daten eines Verbrauchers erfasst, auf, die Kategorien und spezifischen personenbezogenen Daten offenzulegen, die ein Unternehmen über Verbraucher erfasst hat.",
+    "p16": "Fordern Sie ein Unternehmen auf, alle personenbezogenen Daten über den Verbraucher zu löschen, die ein Unternehmen gesammelt hat.",
+    "p17": "Fordern Sie ein Unternehmen, das personenbezogene Daten eines Verbrauchers verkauft, auf, die personenbezogenen Daten des Verbrauchers nicht zu verkaufen.",
+    "p18": "Wenn Sie eine Anfrage stellen, haben wir einen Monat Zeit, um Ihnen zu antworten. ",
+    "GDPR": "DSGVO-Datenschutzrechte",
+    "p19": "Wir möchten sicherstellen, dass Sie alle Ihre Datenschutzrechte vollständig kennen. ",
+    "p20": "Das Recht auf Zugriff – Sie haben das Recht, Kopien Ihrer personenbezogenen Daten anzufordern. ",
+    "p21": "Das Recht auf Berichtigung – Sie haben das Recht, von uns die Berichtigung von Informationen zu verlangen, die Ihrer Meinung nach unrichtig sind. ",
+    "p22": "Das Recht auf Löschung – Sie haben unter bestimmten Bedingungen das Recht, von uns die Löschung Ihrer personenbezogenen Daten zu verlangen.",
+    "p23": "Das Recht auf Einschränkung der Verarbeitung – Sie haben das Recht, unter bestimmten Bedingungen zu verlangen, dass wir die Verarbeitung Ihrer personenbezogenen Daten einschränken.",
+    "p24": "Das Recht, der Verarbeitung zu widersprechen – Sie haben unter bestimmten Bedingungen das Recht, der Verarbeitung Ihrer personenbezogenen Daten durch uns zu widersprechen.",
+    "p25": "Das Recht auf Datenübertragbarkeit – Sie haben das Recht zu verlangen, dass wir die von uns erfassten Daten unter bestimmten Bedingungen an eine andere Organisation oder direkt an Sie übertragen.",
+    "p26": "Wenn Sie eine Anfrage stellen, haben wir einen Monat Zeit, um Ihnen zu antworten. "
+  },
+  "terms": {
+    "h": "GESCHÄFTSBEDINGUNGEN",
+    "last_updated": "Zuletzt aktualisiert am 01. Januar 2021",
+    "p1": {
+      "p1": "Diese Nutzungsbedingungen stellen eine rechtsverbindliche Vereinbarung dar, die zwischen Ihnen persönlich oder im Namen einer juristischen Person („Ihnen“) und getroffen wird",
+      "p2": "(„Unternehmen“, „wir“, „uns“ oder „unser“), bezüglich Ihres Zugriffs auf und Ihrer Nutzung",
+      "p3": "Website sowie alle anderen Medienformen, Medienkanäle, mobilen Websites oder mobilen Anwendungen, die damit in Zusammenhang stehen, verlinkt oder anderweitig damit verbunden sind (zusammen die „Website“). "
+    },
+    "p2": " Ergänzende Geschäftsbedingungen oder Dokumente, die von Zeit zu Zeit auf der Website veröffentlicht werden, werden hiermit ausdrücklich durch Bezugnahme einbezogen. ",
+    "p3": "Die auf der Website bereitgestellten Informationen sind nicht für die Weitergabe an oder die Nutzung durch eine natürliche oder juristische Person in einer Gerichtsbarkeit oder einem Land bestimmt, in der eine solche Verbreitung oder Nutzung gegen Gesetze oder Vorschriften verstoßen würde oder die uns einer Registrierungspflicht innerhalb dieser Gerichtsbarkeit oder dieses Landes unterwerfen würde ",
+    "p4": " Die Website ist nicht auf die Einhaltung branchenspezifischer Vorschriften (Health Insurance Portability and Accountability Act (HIPAA), Federal Information Security Management Act (FISMA) usw.) zugeschnitten. Wenn Ihre Interaktionen also solchen Gesetzen unterliegen würden, dürfen Sie dies nicht tun ",
+    "p5": " Die Website richtet sich an Benutzer, die mindestens 18 Jahre alt sind. ",
+    "intellectual_property": "RECHTE AN GEISTIGEM EIGENTUM",
+    "p6": "Sofern nicht anders angegeben, sind die Website und die Marktplatzangebote unser Eigentum und alle Quellcodes, Datenbanken, Funktionen, Software, Website-Designs, Audiodaten, Videos, Texte, Fotos und Grafiken auf der Website (zusammen der „Inhalt“) ",
+    "p7": " Vorausgesetzt, dass Sie zur Nutzung der Website berechtigt sind, erhalten Sie eine eingeschränkte Lizenz für den Zugriff auf die Website und deren Nutzung sowie zum Herunterladen oder Drucken einer Kopie eines beliebigen Teils des Inhalts, auf den Sie ordnungsgemäß Zugriff erhalten haben, und zwar ausschließlich für Ihre persönlichen, nicht kommerziellen Zwecke ",
+    "user_permission": "BENUTZERVERSICHERUNGEN",
+    "p8": "Durch die Nutzung der Website oder der Marktplatzangebote erklären und garantieren Sie, dass: (1) alle von Ihnen übermittelten Registrierungsinformationen wahr, genau, aktuell und vollständig sind; ",
+    "p9": "Wenn Sie unwahre, ungenaue, nicht aktuelle oder unvollständige Informationen angeben, haben wir das Recht, Ihr Konto zu sperren oder zu kündigen und jegliche aktuelle oder zukünftige Nutzung der Website (oder eines Teils davon) zu verweigern.",
+    "p10": "Sie dürfen die Website oder die Marktplatzangebote nicht für illegale oder unbefugte Zwecke nutzen und bei der Nutzung der Marktplatzangebote auch keine Gesetze verletzen. ",
+    "p11": "Wir sind ein Dienstleister und geben keine Zusicherungen hinsichtlich der Sicherheit, Wirksamkeit, Angemessenheit, Genauigkeit, Verfügbarkeit, Preise, Bewertungen, Rezensionen oder Rechtmäßigkeit der auf der Website oder den über die Website angezeigten oder angebotenen Marktplatzangebote enthaltenen Informationen. ",
+    "user_registration": "BENUTZER REGISTRATION",
+    "p12": "Möglicherweise müssen Sie sich auf der Website registrieren, um auf die Marketplace-Angebote zugreifen zu können. ",
+    "marketplace": "MARKTPLATZANGEBOTE",
+    "p13": "Wir bemühen uns, die Farben, Funktionen, Spezifikationen und Details der auf der Website verfügbaren Marktplatzangebote so genau wie möglich darzustellen. ",
+    "p14": "Wir behalten uns das Recht vor, die Mengen der auf der Website angebotenen oder verfügbaren Marktplatzangebote zu begrenzen. ",
+    "purchases": "KÄUFE UND ZAHLUNG",
+    "p15": "Wir akzeptieren die folgenden Zahlungsarten",
+    "p_list": {
+      "li1": "Visa",
+      "li2": "MasterCard"
+    },
+    "p16": "Sie erklären sich damit einverstanden, für alle über die Website getätigten Käufe der Marktplatzangebote aktuelle, vollständige und genaue Kauf- und Kontoinformationen anzugeben. ",
+    "p17": " Sie erklären sich damit einverstanden, alle Gebühren zu den dann für Ihre Einkäufe geltenden Preisen sowie alle anfallenden Versandkosten zu zahlen, und Sie ermächtigen uns, bei der Aufgabe Ihrer Bestellung dem von Ihnen gewählten Zahlungsanbieter diese Beträge in Rechnung zu stellen. ",
+    "p18": "Wir behalten uns das Recht vor, über die Website aufgegebene Bestellungen abzulehnen. ",
+    "return": "RÜCKGABE-/RÜCKERSTATTUNGSBEDINGUNGEN",
+    "p19": "Bitte lesen Sie unsere auf der Website veröffentlichten Rückgabebedingungen, bevor Sie einen Kauf tätigen.",
+    "prohibited": "VERBOTENE AKTIVITÄTEN",
+    "p20": "Es ist Ihnen nicht gestattet, auf die Website zuzugreifen oder sie für einen anderen Zweck als den zu nutzen, für den wir die Website zur Verfügung stellen. ",
+    "p21": "Als Benutzer der Website erklären Sie sich damit einverstanden, dies nicht zu tun",
+    "last_part": "<ol style={{ marginLeft: 40 }}>\n        <li>\n          Systematisches Abrufen von Daten oder anderen Inhalten von der Website, um direkt oder indirekt a\n          \n        </li>\n        <li>\n          Uns und andere Benutzer auszutricksen, zu betrügen oder in die Irre zu führen, insbesondere bei dem Versuch, an sensible Konten zu gelangen\n          \n        </li>\n        <li>\n          Sicherheitsrelevante Funktionen der Website, einschließlich Funktionen, zu umgehen, zu deaktivieren oder anderweitig zu beeinträchtigen\n          \n        </li>\n        <li>Sie verunglimpfen, beflecken oder schädigen unserer Meinung nach uns und/oder die Website.</li>\n        <li>Verwenden Sie die von der Website erhaltenen Informationen, um eine andere Person zu belästigen, zu missbrauchen oder zu schädigen.</li>\n        <li>Unsere Supportdienste missbräuchlich nutzen oder falsche Berichte über Missbrauch oder Fehlverhalten einreichen.</li>\n        <li>Nutzen Sie die Website in einer Weise, die nicht mit den geltenden Gesetzen oder Vorschriften vereinbar ist.</li>\n        <li>Beteiligen Sie sich am unbefugten Framing oder Verlinken der Website.</li>\n        <li>\n          Hochladen oder Übertragen (oder Versuch des Hochladens oder Übertragens) von Viren, Trojanern oder anderem Material, einschließlich\n          \n        </li>\n        <li>\n          Beteiligen Sie sich an einer automatisierten Nutzung des Systems, z. B. der Verwendung von Skripts zum Senden von Kommentaren oder Nachrichten oder der Verwendung anderer\n          \n        </li>\n        <li>Löschen Sie den Urheberrechts- oder anderen Eigentumsrechtshinweis von allen Inhalten.</li>\n        <li>Versuchen Sie, sich als ein anderer Benutzer oder eine andere Person auszugeben oder den Benutzernamen eines anderen Benutzers zu verwenden.</li>\n        <li>\n          Hochladen oder Übertragen (oder Versuch des Hochladens oder Übertragens) von Material, das als passiv oder aktiv fungiert\n          \n        </li>\n        <li>\n          Die Website oder die damit verbundenen Netzwerke oder Dienste stören, unterbrechen oder eine unangemessene Belastung für sie darstellen\n          \n        </li>\n        <li>\n          Einen unserer Mitarbeiter oder Vertreter, die an der Bereitstellung von Teilen davon beteiligt sind, zu belästigen, zu belästigen, einzuschüchtern oder zu bedrohen\n          \n        </li>\n        <li>\n          Versuchen Sie, alle Maßnahmen der Website zu umgehen, die darauf abzielen, den Zugriff auf die Website oder Teile davon zu verhindern oder einzuschränken\n          \n        </li>\n        <li>\n          Kopieren oder Anpassen der Software der Website, einschließlich, aber nicht beschränkt auf Flash, PHP, HTML, JavaScript oder anderen Code.\n        </li>\n        <li>\n          Sofern dies nicht gesetzlich zulässig ist, dürfen Sie keines davon entschlüsseln, dekompilieren, disassemblieren oder zurückentwickeln\n          \n        </li>\n        <li>\n          Es sei denn, dies ist das Ergebnis einer Standard-Suchmaschinen- oder Internetbrowser-Nutzung, Verwendung, Einführung, Entwicklung oder\n          \n        </li>\n        <li>Beauftragen Sie einen Einkäufer oder Einkäufer, um auf der Website Einkäufe zu tätigen.</li>\n        <li>\n          Nehmen Sie keine unbefugte Nutzung der Marketplace-Angebote vor, einschließlich der Erhebung von Benutzernamen und/oder E-Mail-Adressen\n          \n        </li>\n        <li>\n          Nutzen Sie die Marktplatzangebote im Rahmen jeglicher Bemühungen, mit uns zu konkurrieren oder die Website und/oder die Website anderweitig zu nutzen\n          \n        </li>\n      </ol>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>NUTZERGENERIERTE BEITRÄGE</h2>\n      <p>\n        Die Website bietet Benutzern nicht die Möglichkeit, Inhalte einzureichen oder zu veröffentlichen. \n      </p>\n      <ol style={{ marginLeft: 40 }}>\n        <li>\n          Die Erstellung, Verbreitung, Übertragung, öffentliche Darstellung oder Aufführung sowie der Zugriff, das Herunterladen oder\n          \n        </li>\n        <li>\n          Sie sind der Urheber und Eigentümer von oder verfügen über die erforderlichen Lizenzen, Rechte, Einwilligungen, Freigaben und Genehmigungen\n          \n        </li>\n        <li>\n          Sie verfügen über die schriftliche Zustimmung, Freigabe und/oder Erlaubnis jeder einzelnen identifizierbaren Einzelperson in\n          \n        </li>\n        <li>Ihre Beiträge sind nicht falsch, ungenau oder irreführend.</li>\n        <li>\n          Bei Ihren Beiträgen handelt es sich nicht um unaufgeforderte oder unbefugte Werbung, Verkaufsförderungsmaterialien, Schneeballsysteme usw.\n          \n        </li>\n        <li>\n          Ihre Beiträge sind nicht obszön, unanständig, lasziv, schmutzig, gewalttätig, belästigend, verleumderisch, verleumderisch oder\n          \n        </li>\n        <li>Ihre Beiträge verspotten, verspotten, verunglimpfen, einschüchtern oder beleidigen niemanden.</li>\n        <li>\n          Ihre Beiträge werden nicht dazu verwendet, andere Personen zu belästigen oder zu bedrohen (im rechtlichen Sinne dieser Bedingungen).\n          \n        </li>\n        <li>Ihre Beiträge verstoßen nicht gegen geltende Gesetze, Vorschriften oder Regeln.</li>\n        <li>Ihre Beiträge verletzen nicht die Privatsphäre oder Veröffentlichungsrechte Dritter.</li>\n        <li>\n          Ihre Beiträge verstoßen weder gegen geltendes Recht in Bezug auf Kinderpornografie noch beabsichtigen sie dies auf andere Weise\n          \n        </li>\n        <li>\n          Ihre Beiträge enthalten keine beleidigenden Kommentare, die sich auf Rasse, nationale Herkunft, Geschlecht usw. beziehen.\n          \n        </li>\n        <li>\n          Ihre Beiträge verstoßen nicht anderweitig gegen eine Bestimmung dieser Bedingungen und verweisen auch nicht auf Material, das gegen eine Bestimmung dieser Bedingungen verstößt\n          \n        </li>\n      </ol>\n      <p>\n        Jede Nutzung der Website oder der Marktplatzangebote unter Verstoß gegen das Vorstehende verstößt gegen diese Nutzungsbedingungen und\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>BEITRAGSLIZENZ</h2>\n      <p>\n        Sie und die Website stimmen zu, dass wir auf alle von Ihnen übermittelten Informationen und personenbezogenen Daten zugreifen, diese speichern, verarbeiten und nutzen dürfen\n        \n      </p>\n      <p>\n        Indem Sie Vorschläge oder sonstiges Feedback zur Website einreichen, erklären Sie sich damit einverstanden, dass wir diese nutzen und weitergeben dürfen\n        \n      </p>\n      <p>\n        Wir erheben keinen Anspruch auf Eigentum an Ihren Beiträgen. \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>EINREICHUNGEN</h2>\n      <p>\n        Sie erkennen an und stimmen zu, dass alle Fragen, Kommentare, Vorschläge, Ideen, Rückmeldungen oder andere Informationen\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>WEBSITES UND INHALTE DRITTER</h2>\n      <p>\n        Die Website kann Links zu anderen Websites enthalten (oder Sie werden möglicherweise über die Website oder die Marktplatzangebote weitergeleitet).\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>WERBEKUNDEN</h2>\n      <p>\n        Wir gestatten Werbetreibenden, ihre Werbung und andere Informationen in bestimmten Bereichen der Website anzuzeigen, z\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>STANDORTVERWALTUNG</h2>\n      <p>\n        Wir behalten uns das Recht, aber nicht die Verpflichtung vor: (1) die Website auf Verstöße gegen diese Nutzungsbedingungen zu überwachen; \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>DATENSCHUTZRICHTLINIE</h2>\n      <p>\n        Datenschutz und Sicherheit liegen uns am Herzen. \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>LAUFZEIT UND KÜNDIGUNG</h2>\n      <p>\n        Diese Nutzungsbedingungen bleiben während Ihrer Nutzung der Website in vollem Umfang in Kraft und wirksam. \n      </p>\n      <p>\n        Wenn wir Ihr Konto aus irgendeinem Grund kündigen oder sperren, ist es Ihnen untersagt, sich zu registrieren und ein neues zu erstellen\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>ÄNDERUNGEN UND UNTERBRECHUNGEN</h2>\n      <p>\n        Wir behalten uns das Recht vor, den Inhalt der Website jederzeit und aus beliebigem Grund nach unserem Ermessen zu ändern, zu modifizieren oder zu entfernen\n        \n      </p>\n      <p>\n        Wir können nicht garantieren, dass die Website und die Marktplatzangebote jederzeit verfügbar sind. \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>GELTENDES RECHT</h2>\n      <p>\n        Diese Bedingungen unterliegen den Gesetzen der Schweiz und der Nutzung des Vereinigten Königreichs und werden entsprechend ausgelegt\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>Streitbeilegung</h2>\n      <h3 style={{ fontSize: 17, color: \"#000000\" }}>Informelle Verhandlungen</h3>\n      <p>\n        Um die Lösung zu beschleunigen und die Kosten von Streitigkeiten, Kontroversen oder Ansprüchen im Zusammenhang mit diesen Nutzungsbedingungen zu kontrollieren\n        \n      </p>\n      <h3 style={{ fontSize: 17, color: \"#000000\" }}>Verbindliches Schiedsverfahren</h3>\n      <p>\n        Alle Streitigkeiten, die sich aus den Beziehungen zwischen den Vertragsparteien dieses Vertrags ergeben, werden von einem entschieden\n        \n      </p>\n      <h3 style={{ fontSize: 17, color: \"#000000\" }}>Einschränkungen</h3>\n      <p>\n        Die Parteien vereinbaren, dass jedes Schiedsverfahren auf die Streitigkeit zwischen den Parteien einzeln beschränkt ist. \n      </p>\n      <h3 style={{ fontSize: 17, color: \"#000000\" }}>Ausnahmen von informellen Verhandlungen und Schiedsverfahren</h3>\n      <p>\n        Die Parteien sind sich darüber einig, dass die folgenden Streitigkeiten nicht den oben genannten Bestimmungen zur informellen Regelung unterliegen\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>KORREKTUREN</h2>\n      <p>\n        Es kann sein, dass auf der Website Informationen enthalten sind, die Tippfehler, Ungenauigkeiten oder Auslassungen enthalten\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>HAFTUNGSAUSSCHLUSS</h2>\n      <p>\n        DIE WEBSITE UND DIE MARKTPLATZANGEBOTE WERDEN IM IST-ZUSTAND UND WIE VERFÜGBAR ZUR VERFÜGUNG GESTELLT. \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>HAFTUNGSBESCHRÄNKUNGEN</h2>\n      <p>\n        IN KEINEM FALL ÜBERNEHMEN WIR ODER UNSERE DIREKTOREN, MITARBEITER ODER VERTRETER IHNEN ODER DRITTEN GEGENÜBER HAFTUNG FÜR DIREKTE,\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>SCHADENERSATZ</h2>\n      <p>\n        Sie erklären sich damit einverstanden, uns zu verteidigen, zu entschädigen und schadlos zu halten, einschließlich unserer Tochtergesellschaften, verbundenen Unternehmen und aller unserer\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>BENUTZERDATEN</h2>\n      <p>\n        Wir speichern bestimmte Daten, die Sie an die Website übermitteln, zum Zweck der Verwaltung der Leistung der Website\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>ELEKTRONISCHE KOMMUNIKATION, TRANSAKTIONEN UND SIGNATUREN</h2>\n      <p>\n        Der Besuch der Website, das Versenden von E-Mails an uns und das Ausfüllen von Online-Formularen stellen elektronische Kommunikation dar. \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>BENUTZER UND EINWOHNER IN KALIFORNIEN</h2>\n      <p>\n        Wenn eine Beschwerde bei uns nicht zufriedenstellend gelöst werden kann, können Sie sich an die Beschwerdeunterstützungseinheit des wenden\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>VERSCHIEDENES</h2>\n      <p>\n        Diese Nutzungsbedingungen und alle von uns auf der Website oder in Bezug auf den Marktplatz veröffentlichten Richtlinien oder Betriebsregeln\n        \n      </p>\n\n      <h2 style={{ fontSize: 19, color: \"#000000\" }}>KONTAKTIERE UNS</h2>\n      <p>\n        Um eine Beschwerde bezüglich der Website oder der Marktplatzangebote zu klären oder weitere Informationen zu erhalten\n        \n      </p>\n\n      <div style={{ fontWeight: 600, color: \"#595959 \" }}>ChipAssist AG</div>\n      <div style={{ fontWeight: 600, color: \"#595959 \" }}>\n        Gubelstrasse 11, c/o Bratschi AG, Zweigniederlassung Zug, 6300 Zug, Schweiz\n      </div>\n      <div style={{ fontWeight: 600, color: \"#595959 \" }}>Zug</div>\n      <div style={{ fontWeight: 600, color: \"#595959 \" }}>Schweiz</div>\n      <div style={{ fontWeight: 600, color: \"#595959 \" }}>Telefon: 41 79 713 78 81</div>\n      <div style={{ fontWeight: 600, color: \"#595959 \" }}>info@chipassist.com</div>"
+  },
+  "login_form_as": {
+    "email": "E-Mail-Adresse",
+    "sign_in": "Melden Sie sich an als",
+    "sign_in_on": "Melden Sie sich auf der internen Plattform an",
+    "connecting": "Die Welt der Elektronik verbinden"
+  },
+  "chat": {
+    "chat_details": {
+      "statuses": {
+        "error": "Das Update ist fehlgeschlagen!",
+        "success": "Ihr Bestand wurde erfolgreich aktualisiert!"
+      },
+      "upd_pls": "Bitte Bestandsdaten aktualisieren!",
+      "is_updating": {
+        "true": "Ihr Vorrat an",
+        "false": "Einzelheiten"
+      },
+      "validation": {
+        "required": "Erforderlich",
+        "at_least": "Mindestens 1",
+        "more_than": "Mehr als 0"
+      },
+      "currency": "Währung",
+      "qty_break": "Mengenbruch",
+      "u_price": "Einzelpreis",
+      "is_show_price": {
+        "true": "Preisnachlässe ausblenden",
+        "false": "Preisnachlässe anzeigen"
+      },
+      "add": "Fügen Sie weitere hinzu",
+      "packaging": "Verpackung",
+      "update": "Aktualisieren",
+      "view_on": "Anschauen",
+      "qty": "Menge",
+      "target_p": "Zielpreis",
+      "total": "Gesamt"
+    },
+    "chat_list": {
+      "no_chats": "Sie haben keine Chats",
+      "PO": "Bestellung (PO)",
+      "PI": "Rechnung",
+      "filters": {
+        "part_n": "Artikelnummer"
+      }
+    },
+    "message_input": {
+      "types": {
+        "confirm": "Liebling {{name}}!  {{partNumber}} verfügbar.  {{numInStock}}Stück bei {{price}}{{symbol}} Einzelpreis{{datecode}}. ",
+        "update_price": "Liebling {{name}}!  {{partNumber}} wurde aktualisiert.  {{price}}{{symbol}} Einzelpreis{{datecode}}. ",
+        "update_qty": "Liebling {{name}}!  {{numInStock}} Einheiten von {{partNumber}} auf Lager.  {{price}}{{symbol}}. ",
+        "out_stock": "Liebling {{name}}!  {{partNumber}} ist derzeit nicht vorrätig.  {{partNumber}} bald verfügbar sein.",
+        "later": "Liebling {{name}}! "
+      },
+      "send_inv": "Rechnung senden",
+      "send_po": "Bestellung senden",
+      "pls_response": "Bitte senden Sie Ihre Antwort direkt an den Kunden",
+      "supplier_response": {
+        "conf_stock": "Lagerbestand bestätigen",
+        "upd_price": "Preis aktualisieren",
+        "upd_quantity": "Menge aktualisieren",
+        "no_stock": "Kein Bestand",
+        "reply_later": "Antworten Sie später"
+      },
+      "placeholder": "Geben Sie eine Nachricht ein"
+    },
+    "messages": {
+      "request_block": "Anfrage für {{qty}}Stck {{upc}}{{price}}.",
+      "no_messages": "Du hast keine Nachrichten",
+      "is_supplier_resp": {
+        "true": "Sie haben noch keine Chats.  <strong></strong> Knopf an",
+        "false": "Um einen Chat über die Verwendung eines Produkts zu starten <strong></strong> Schaltfläche auf der Suchseite<br /><br />Gehen Sie zur Suchseite"
+      },
+      "empty_text": " Um die Kommunikation zu starten, wählen Sie einen Chat mit dem aus {{role}}",
+      "buyer": "Käufer",
+      "seller": "Verkäufer",
+      "sender": "Du",
+      "table": {
+        "quantity": "Menge",
+        "price": {
+          "v1": "Preis",
+          "v2": "Einzelpreis"
+        },
+        "total": {
+          "v1": "Gesamt",
+          "v2": "Gesamtpreis"
+        }
+      },
+      "view_po": "Bestellung als PDF anzeigen",
+      "customer": "Kunde",
+      "seller_h": "Verkäufer",
+      "out_price": "Aus <span className={classes.nowrap}>Preis, {{symbol}}</span>",
+      "shipping": "Versand",
+      "notes": "Anmerkungen",
+      "view_invoice": "Rechnung als PDF ansehen"
+    },
+    "send_invoice": {
+      "exw": "Ab Werk",
+      "fca": "Kostenlos für den Spediteur",
+      "fas": "Kostenlos neben dem Schiff",
+      "fob": "Frei an Bord",
+      "cfr": "Kosten und Fracht",
+      "cif": "Kosten, Versicherung und Fracht",
+      "cpt": "Frachtfrei",
+      "cip": "Transport und Versicherung bezahlt an",
+      "dap": "Lieferung Vor-Ort",
+      "dpu": "Lieferung am entladenen Ort",
+      "ddp": "Verzollt geliefert",
+      "company_name": "Name der Firma",
+      "work_phone": "Arbeitshandy",
+      "first_name": "Vorname",
+      "last_name": "Familienname, Nachname",
+      "country": "Land",
+      "city": "Stadt",
+      "postal_code": "Postleitzahl",
+      "address": "Adresse",
+      "buyer_details": "Angaben zum Käufer",
+      "product": "Produkt",
+      "dc": "Datumscode",
+      "packaging": "Verpackung",
+      "qty": "Menge",
+      "u_price": "Einzelpreis",
+      "out_price": "Unser Preis",
+      "shipping": "Versand",
+      "shipping_type": "Versandart",
+      "shipping_fee": "Versandkosten",
+      "add_notes": "Zusätzliche Bemerkungen",
+      "delivery_etc": "Lieferbedingungen usw.",
+      "total_amount": "Zu zahlender Gesamtbetrag",
+      "ord_curr": "Bestellwährung",
+      "preview": "PDF-Vorschau anzeigen",
+      "send": "Schicken",
+      "next": "Nächste",
+      "back": "Zurück",
+      "cansel": "Cansel",
+      "selected": "Für Abrechnung und Versand ausgewählt",
+      "req_qty": "Menge ist erforderlich",
+      "moq_is": "MOQ ist",
+      "validation": {
+        "company_name": "Firmenname ist erforderlich",
+        "first_name": "Vorname ist erforderlich",
+        "last_name": "Nachname ist erforderlich",
+        "country": "Land ist erforderlich",
+        "city": "Stadt ist erforderlich",
+        "postal_code": "Postleitzahl ist erforderlich",
+        "address": "Adresse ist erforderlich",
+        "shipping_fee": "Versandkosten sind erforderlich",
+        "req_qty": "Menge ist erforderlich",
+        "moq_is": "MOQ ist",
+        "at_least": "Mindestens 1",
+        "in_stock": "Auf Lager {{num_in_stock}} Stck."
+      }
+    },
+    "upload_file": {
+      "send": "Dateien senden",
+      "type": "Geben Sie eine Nachricht ein"
+    }
+  },
+  "blog": {
+    "blog": "Blog",
+    "search": "Suchen",
+    "no_art": "Keine Artikel",
+    "loading": "Artikel werden geladen...",
+    "read_more": "Mehr lesen...",
+    "article": {
+      "loading": "Artikel wird geladen...",
+      "no_art": "Der Artikel existiert nicht",
+      "return": "Zurück zum Blog"
     }
   }
 }
