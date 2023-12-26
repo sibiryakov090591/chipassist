@@ -476,16 +476,14 @@ const ChipAssistApp = () => {
                 }
               />
             )}
-            {constants.id !== ID_ICSEARCH && (
-              <Route
-                path={"/rfq-list-quotes"}
-                element={
-                  <Suspense fallback={<Preloader title={""} />}>
-                    <RfqList />
-                  </Suspense>
-                }
-              />
-            )}
+            <Route
+              path={"/rfq-list-quotes"}
+              element={
+                <Suspense fallback={<Preloader title={""} />}>
+                  <RfqList />
+                </Suspense>
+              }
+            />
             {constants.id !== ID_ICSEARCH && (
               <Route
                 path="/terms_of_services"
