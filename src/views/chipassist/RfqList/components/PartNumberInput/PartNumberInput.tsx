@@ -50,9 +50,9 @@ const PartNumberInput: React.FC<Props> = ({
     dispatch(onSuggestionsClearRequested());
   };
 
-  const renderSuggestion = (suggestion: any) => <span>{suggestion.name}</span>;
+  const renderSuggestion = (suggestion: any) => <span>{suggestion?.name}</span>;
 
-  const getSuggestionValue = (suggestion: any) => suggestion.name;
+  const getSuggestionValue = (suggestion: any) => suggestion?.name;
 
   const onFieldFocus = () => {
     // setAnchorEl(e.target);
@@ -96,7 +96,7 @@ const PartNumberInput: React.FC<Props> = ({
       <Autosuggest
         onSuggestionSelected={onSuggestionSelected}
         theme={suggestTheme}
-        suggestions={suggestions}
+        suggestions={suggestions || []}
         onSuggestionsFetchRequested={onSuggestionsFetchRequestedHandler}
         onSuggestionsClearRequested={onSuggestionsClearRequestedHandler}
         getSuggestionValue={getSuggestionValue}
