@@ -298,15 +298,15 @@ const BomUpload: React.FC = () => {
               </>
             ) : (
               <div className={classes.contentWrapper}>
-                <h2 className={classes.title}>{t("if_not_IC.title")}</h2>
-                <p className={classes.text}>{t("if_not_IC.subtitle")}</p>
+                <h2 className={classes.title}>{t("upload.if_not_IC.title")}</h2>
+                <p className={classes.text}>{t("upload.if_not_IC.subtitle")}</p>
                 <Hidden smDown>
-                  <p className={classes.text}>{t("if_not_IC.list_title")}</p>
+                  <p className={classes.text}>{t("upload.if_not_IC.list_title")}</p>
                   <ul className={classes.list}>
-                    <li>{t("if_not_IC.list.li1")}</li>
-                    <li>{t("if_not_IC.list.li2")}</li>
-                    <li>{t("if_not_IC.list.li3")}</li>
-                    <li>{t("if_not_IC.list.li4")}</li>
+                    <li>{t("upload.if_not_IC.list.li1")}</li>
+                    <li>{t("upload.if_not_IC.list.li2")}</li>
+                    <li>{t("upload.if_not_IC.list.li3")}</li>
+                    <li>{t("upload.if_not_IC.list.li4")}</li>
                   </ul>
                 </Hidden>
               </div>

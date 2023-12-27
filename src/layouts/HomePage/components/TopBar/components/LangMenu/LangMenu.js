@@ -27,6 +27,8 @@ const LangMenu = () => {
   const { i18n } = useI18n();
   const dispatch = useAppDispatch();
 
+  const langMapping = { en: "English", de: "Deutsch", ru: "Русский", es: "Español", fr: "Le Français", ch: "漢語" };
+
   const handleChangeLocale = (locale) => {
     if (i18n.language === locale) return;
     i18n.changeLanguage(locale, () => dispatch(shouldUpdateBackend()));
@@ -41,8 +43,8 @@ const LangMenu = () => {
     setOpen(false);
   };
 
-  const CurrentImage = () => {
-    switch (i18n.language) {
+  const CurrentImage = ({ val }) => {
+    switch (val) {
       case "en":
         return <img className={classes.langFlag} src={flag_en} alt="flag_en" />;
       case "ru":
@@ -86,7 +88,7 @@ const LangMenu = () => {
         >
           <div ref={anchorRef} aria-haspopup="true">
             <div style={{ display: "flex", alignItems: "center" }}>
-              <CurrentImage />
+              <CurrentImage val={i18n.language} />
               <span style={{ fontSize: "1rem", fontWeight: 500, paddingLeft: "0.5em" }}>{i18n.language}</span>
               <ArrowDropDownIcon />
             </div>
@@ -115,8 +117,20 @@ const LangMenu = () => {
                   defaultValue={i18n.language}
                 >
                   {locales.map((val) => (
-                    <MenuItem className={appTheme.selectMenuItem} key={val} onClick={() => handleChangeLocale(val)}>
-                      {val}
+                    <MenuItem
+                      className={appTheme.selectMenuItem}
+                      style={{
+                        border: i18n.language === val ? "1px black solid" : null,
+                        // paddingLeft: 1,
+                        // paddingRight: 1,
+                        // width: "100%",
+                        // display: "flex",
+                      }}
+                      key={val}
+                      onClick={() => handleChangeLocale(val)}
+                    >
+                      <CurrentImage val={val} />
+                      <span style={{ marginLeft: "10px" }}>{langMapping[val]}</span>
                     </MenuItem>
                   ))}
                 </MenuList>
