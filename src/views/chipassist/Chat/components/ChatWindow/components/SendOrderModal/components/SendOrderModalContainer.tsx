@@ -170,7 +170,7 @@ export const SendOrderModalContainer: React.FC<{
         <div>
           {(isExample ? pageNum : step) === 1 && (
             <>
-              <h3 style={{ marginBottom: 20 }}>Company</h3>
+              <h3 style={{ marginBottom: 20 }}>{t("company")}</h3>
               <Grid container spacing={3}>
                 <Grid item sm={6} xs={12}>
                   <Controller
@@ -394,11 +394,11 @@ export const SendOrderModalContainer: React.FC<{
               <h3>{t("product")}</h3>
               <Grid container spacing={2} className={classes.productCard}>
                 <Grid item xs={6}>
-                  <div className={classes.label}>MPN:</div>
+                  <div className={classes.label}>{t("mpn")}:</div>
                   <div className={classes.value}>{stock?.upc || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>${t("u_price")}:</div>
+                  <div className={classes.label}>{t("u_price")}:</div>
                   <div className={classes.value}>{(price && `${currency?.symbol}${formatMoney(price)}`) || "-"}</div>
                 </Grid>
                 <Grid item xs={6}>
@@ -411,7 +411,7 @@ export const SendOrderModalContainer: React.FC<{
                 </Grid>
                 <Grid item xs={6}>
                   <Box>
-                    <div className={classes.label}>Requested qty *</div>
+                    <div className={classes.label}>{t("requested_qty")} *</div>
                     <Controller
                       name="quantity"
                       control={control}
@@ -451,7 +451,7 @@ export const SendOrderModalContainer: React.FC<{
                   </Box>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className={classes.label}>Expected total:</div>
+                  <div className={classes.label}>{t("expected_total")}:</div>
                   <div className={classes.value}>
                     {(totalPrice && `${currency?.symbol}${formatMoney(totalPrice)}`) || "-"}
                   </div>
@@ -501,14 +501,14 @@ export const SendOrderModalContainer: React.FC<{
               className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
               onClick={step <= 1 ? onCloseModal : goToStep("prev")}
             >
-              {step <= 1 ? t("cansel") : t("back")}
+              {step <= 1 ? t("cancel") : t("back")}
             </Button>
             <Button
               onClick={step >= 2 ? onSubmitHandler : goToStep("next")}
               variant="contained"
               className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
             >
-              {step >= 2 ? t("back") : t("next")}
+              {step >= 2 ? t("send") : t("next")}
             </Button>
           </Box>
         </Box>

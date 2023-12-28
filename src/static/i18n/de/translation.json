@@ -1948,7 +1948,7 @@
       "send": "Schicken",
       "next": "Nächste",
       "back": "Zurück",
-      "cansel": "Cansel",
+      "cancel": "Cancel",
       "selected": "Für Abrechnung und Versand ausgewählt",
       "req_qty": "Menge ist erforderlich",
       "moq_is": "MOQ ist",

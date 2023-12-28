@@ -21,7 +21,7 @@ import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
 import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Paper, Grid, useTheme, useMediaQuery } from "@material-ui/core";
 import { format } from "date-fns";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -30,6 +30,8 @@ import Preloader from "../../../Skeleton/Preloader";
 import UnreadMessagesLabel from "./UnreadMessagesLabel";
 
 const FileDownload = require("js-file-download");
+
+const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 
 interface Props {
   onShowDetails: () => void;
@@ -282,13 +284,18 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                 <h5 className={classes.emptyText}>
                   {isSupplierResponse ? (
                     <>
-                      <span dangerouslySetInnerHTML={{ __html: t("is_supplier_resp.true") }}></span> ChipAssist.
+                      <span dangerouslySetInnerHTML={{ __html: t("is_supplier_resp.true") }}></span>{" "}
+                      {isChipAssist ? "ChipAssist" : "ICSearch"}.
                     </>
                   ) : (
                     <>
-                      {t("is_supplier_resp.false")}{" "}
-                      <a href="https://chipassist.com/search" target={"_blank"} rel={"noreferrer"}>
-                        https://chipassist.com/search
+                      <span dangerouslySetInnerHTML={{ __html: t("is_supplier_resp.false") }}></span>{" "}
+                      <a
+                        href={`https://${isChipAssist ? "chipassist.com" : "icsearch.ru"}/search`}
+                        target={"_blank"}
+                        rel={"noreferrer"}
+                      >
+                        {`https://${isChipAssist ? "chipassist.com" : "icsearch.ru"}/search`}
                       </a>
                     </>
                   )}
@@ -318,7 +325,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
             if (!list?.length) return null;
             const todayDate = new Date().toLocaleDateString();
             const groupDate = list[0]?.created && new Date(list[0].created).toLocaleDateString();
-            const dateLabel = todayDate === groupDate ? "Today" : groupDate;
+            const dateLabel = todayDate === groupDate ? t("today") : groupDate;
 
             return (
               <div key={i} className={classes.group}>
