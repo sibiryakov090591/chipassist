@@ -665,7 +665,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"quantity"}
-                      label={`${t("qty")} *`}
+                      label={`${t("column.qty")} *`}
                       placeholder={"ex. 100"}
                       value={elem.quantity}
                       size="small"
@@ -714,7 +714,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"quantity"}
-                      label={`${t("qty")} *`}
+                      label={`${t("column.qty")} *`}
                       placeholder={"ex. 100"}
                       value={elem.quantity}
                       size="small"
@@ -770,7 +770,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
             >
               <Button
                 variant={"contained"}
-                className={classes.addButton}
+                className={appTheme.buttonPrimary}
                 onClick={addButtonClickHandler}
                 disabled={rfqListState.values.length === maxRfqRows}
               >
@@ -785,7 +785,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
       <section className={classes.section}>
         <Container maxWidth={"lg"}>
           <Box>
-            <h3 className={classes.titleH3}>Add additional details into your request</h3>
+            <h3 className={classes.titleH3}>{t("list.details_title")}</h3>
 
             <TextField
               style={{ width: "100%" }}

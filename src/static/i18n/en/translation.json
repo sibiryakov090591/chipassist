@@ -1190,8 +1190,8 @@
           "p2": "login here"
         }
       },
-      "accept": "Send multiple RFQ"
-
+      "accept": "Send multiple RFQ",
+      "details_title": "Add additional details into your request"
     }
   },
   "pcb_new": {
@@ -1990,9 +1990,7 @@
       "send": "Send files",
       "type": "Type a message"
     }
-
   },
-
   "blog": {
     "blog": "Blog",
     "search": "Search",
@@ -2005,8 +2003,4 @@
       "return": "Return to blog"
     }
   }
-
-
-
-
 }
