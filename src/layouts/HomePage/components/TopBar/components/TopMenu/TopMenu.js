@@ -130,7 +130,7 @@ const TopMenu = ({ isMobile }) => {
             to={`/bom/create-file`}
           >
             {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-            BOM-{t("bom")}
+            {t("bom")}
           </NavLink>
         </div>
       </Hidden>

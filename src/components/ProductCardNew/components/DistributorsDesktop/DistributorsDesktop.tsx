@@ -24,6 +24,8 @@ import { toInteger } from "lodash";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { correctUrl } from "@src/utils/transformUrl";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -360,6 +362,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             if (!val) return null;
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
+            const partnerName = constants.id === ID_ICSEARCH ? "Импорт + таможня" : val.partner_name;
             const partner = partners?.find((i: any) => i.id === val.partner);
             const isShowProductLink =
               partner &&
@@ -444,10 +447,10 @@ const DistributorsDesktop: React.FC<Props> = ({
                             </div>
                           }
                         >
-                          <span className={clsx(classes.partnerName, appTheme.hyperlink)}>{val.partner_name}</span>
+                          <span className={clsx(classes.partnerName, appTheme.hyperlink)}>{partnerName}</span>
                         </Tooltip>
                       ) : (
-                        <span className={classes.partnerName}>{val.partner_name}</span>
+                        <span className={classes.partnerName}>{partnerName}</span>
                       )}
                       {dateUpdated && (
                         <div className={classes.dateUpdated}>
