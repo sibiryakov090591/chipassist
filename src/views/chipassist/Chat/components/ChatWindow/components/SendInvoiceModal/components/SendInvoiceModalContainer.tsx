@@ -578,7 +578,7 @@ export const SendInvoiceModalContainer: React.FC<{
               className={clsx(appTheme.buttonPrimary, appTheme.buttonMinWidth)}
               onClick={isExample ? null : step <= 1 ? onCloseModal : goToStep("prev")}
             >
-              {step <= 1 ? t("cansel") : t("back")}
+              {step <= 1 ? t("cancel") : t("back")}
             </Button>
             <Button
               onClick={isExample ? onSubmitHandler : step >= 2 ? onSubmitHandler : goToStep("next")}

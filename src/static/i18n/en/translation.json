@@ -1190,8 +1190,8 @@
           "p2": "login here"
         }
       },
-      "accept": "Send multiple RFQ"
-
+      "accept": "Send multiple RFQ",
+      "details_title": "Add additional details into your request"
     }
   },
   "pcb_new": {
@@ -1898,6 +1898,7 @@
     },
 
     "messages": {
+      "today": "Today",
       "request_block": "Request for {{qty}}pcs {{upc}}{{price}}.",
       "no_messages": "You have no messages",
       "is_supplier_resp": {
@@ -1953,8 +1954,11 @@
       "dc": "Date code",
       "packaging": "Packaging",
       "qty": "Quantity",
+      "requested_qty": "Requested qty",
+      "mpn": "MPN",
       "u_price": "Unit price",
       "out_price": "Out price",
+      "expected_total": "Expected total",
       "shipping": "Shipping",
       "shipping_type": "Shipping type",
       "shipping_fee": "Shipping cost",
@@ -1966,11 +1970,11 @@
       "send": "Send",
       "next": "Next",
       "back": "Back",
-      "cansel": "Cansel",
+      "cancel": "Cancel",
       "selected": "Selected for billing and shipping",
       "req_qty": "Qty is required",
       "moq_is": "MOQ is",
-
+      "company": "Company",
       "validation": {
         "company_name": "Company name is required",
         "first_name": "First name is required",
@@ -1990,9 +1994,7 @@
       "send": "Send files",
       "type": "Type a message"
     }
-
   },
-
   "blog": {
     "blog": "Blog",
     "search": "Search",
@@ -2005,8 +2007,4 @@
       "return": "Return to blog"
     }
   }
-
-
-
-
 }
