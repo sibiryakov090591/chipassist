@@ -628,7 +628,28 @@
     "moq_big": "Unit price",
     "price_upon_request": "Price will be available upon request",
     "show_all": "Show All",
-    "show_fewer": "Show Fewer"
+    "show_fewer": "Show Fewer",
+    "seller": "Seller",
+    "partner_url": {
+      "true": "Check this product on seller`s website or request it on ChipAssist",
+      "false": "You can request this product directly on ChipAssist"
+    },
+    "view_on": "View on seller`s website",
+    "quick_r": "Quick request",
+    "global": "Global",
+    "q_check": {
+      "descr": "You can have 10% OFF for component quality check before purchase. Request quality check on product purchase or by clicking the button below.",
+      "button": "Get quality check",
+      "off": "10% OFF",
+      "name": "QUALITY CHECK"
+    },
+    "visit": " Visit site",
+    "contact": "Contact seller",
+
+    "site": "Site",
+    "con": "Contact",
+    "package": "Package",
+    "price_b": "Price breaks"
   },
   "product": {
     "cost": "Total price",
@@ -660,7 +681,25 @@
       "documents": "Documents",
       "documents_text": "Download datasheets and manufacturer documentation for ",
       "technical": "Technical specifications"
-    }
+    },
+    "collapse_text": {
+      "true": "...view more",
+      "false": "hide"
+    },
+    "by_req": "By request",
+    "avg_price": "Average price",
+    "in_stock": "In stock",
+    "suppliers": "Suppliers",
+    "del_time": "Delivery time",
+    "avg_qty": "Average quantity",
+    "prod_on_offline": "Products on offline stocks are available by request",
+
+    "want_to_see_more": "Want to see more offers? Place your RFQ and sellers will respond to your request in 48 hours.",
+    "target_price": "Target price",
+    "already_req": "You have already requested <strong>{{requestedQty}}pcs </strong> of this product",
+    "requested": "Requested",
+    "get_more": "Get more quotes",
+    "get_additional": "Get additional quotes from connected sellers"
   },
   "search": {
     "page_title": "Search Results",
