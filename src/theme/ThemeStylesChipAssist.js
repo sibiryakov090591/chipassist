@@ -107,6 +107,19 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       },
     },
   },
+
+  selectedMenuItemLang: {
+    backgroundColor: "#deebff",
+    "&:hover": {
+      backgroundColor: "#deebff",
+    },
+    "&:focus": {
+      backgroundColor: "#deebff",
+      "&:hover": {
+        backgroundColor: "#deebff",
+      },
+    },
+  },
   buttonMinWidth: {
     [theme.breakpoints.up("sm")]: {
       minWidth: 165,

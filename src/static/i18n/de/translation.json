@@ -190,7 +190,7 @@
     "rfqs": "Anfragen",
     "chat": "Mitteilungen",
     "pcb": "Gedruckte Tafeln",
-    "bom": "Werkzeug",
+    "bom": "BOM Werkzeug",
     "cart": "Wagen",
     "search_placeholder": "Suche nach MPN, Hersteller oder Schlüsselwörtern",
     "try_search": "Oder versuchen Sie es mit einer Beispielsuche:",
@@ -615,7 +615,7 @@
     "no_prices": "Keine Preise",
     "lead_period": "Lieferung",
     "qty": "Menge",
-    "moq": "Mindestbestellmenge",
+    "moq": "MOQ",
     "pkg": "Pkg",
     "for_moq": "für MOQ",
     "for_amount": "für Menge",
@@ -628,7 +628,28 @@
     "moq_big": "Einzelpreis",
     "price_upon_request": "Der Preis ist auf Anfrage erhältlich",
     "show_all": "Zeige alles",
-    "show_fewer": "Weniger anzeigen"
+    "show_fewer": "Weniger anzeigen",
+    "seller": "Verkäufer",
+    "partner_url": {
+      "true": "Überprüfen Sie dieses Produkt auf der Website des Verkäufers oder fordern Sie es bei ChipAssist an",
+      "false": "Sie können dieses Produkt direkt bei ChipAssist anfordern"
+    },
+    "view_on": "Auf der Website des Verkäufers ansehen",
+    "quick_r": "Kurze Anfrage",
+    "global": "Global",
+    "q_check": {
+      "descr": "Sie erhalten 10 % Rabatt auf die Qualitätsprüfung der Komponenten vor dem Kauf. ",
+      "button": "Holen Sie sich einen Qualitätscheck",
+      "off": "10% REDUZIERT",
+      "name": "QUALITÄTSPRÜFUNG"
+    },
+    "visit": " Besucherseite",
+    "contact": "Verkäufer kontaktieren",
+
+    "site": "Website",
+    "con": "Kontakt",
+    "package": "Paket",
+    "price_b": "Preisnachlässe"
   },
   "product": {
     "cost": "Gesamtpreis",
@@ -660,7 +681,25 @@
       "documents": "Unterlagen",
       "documents_text": "Laden Sie Datenblätter und Herstellerdokumentation herunter für ",
       "technical": "Technische Spezifikationen"
-    }
+    },
+    "collapse_text": {
+      "true": "...mehr sehen",
+      "false": "verstecken"
+    },
+    "by_req": "Auf Wunsch",
+    "avg_price": "Durchschnittlicher Preis",
+    "in_stock": "Auf Lager",
+    "suppliers": "Lieferanten",
+    "del_time": "Lieferzeit",
+    "avg_qty": "Durchschnittliche Menge",
+    "prod_on_offline": "Produkte aus Offline-Lagerbeständen sind auf Anfrage erhältlich",
+
+    "want_to_see_more": "Möchten Sie weitere Angebote sehen? ",
+    "target_price": "Zielpreis",
+    "already_req": "Sie haben bereits eine Anfrage gestellt <strong>{{requestedQty}}Stck </strong> dieses Produkts",
+    "requested": "Angefordert",
+    "get_more": "Holen Sie sich weitere Angebote",
+    "get_additional": "Erhalten Sie zusätzliche Angebote von verbundenen Verkäufern"
   },
   "search": {
     "page_title": "Suchergebnisse",
@@ -1666,7 +1705,7 @@
     "help": "Helfen",
     "about_us": "Über uns",
     "products": "Produkte",
-    "bom": "Werkzeug",
+    "bom": "BOM Werkzeug",
     "rfq_list": "RFQ-Liste",
     "sell_on": "Verkaufen auf",
     "request": "Anfrage",
