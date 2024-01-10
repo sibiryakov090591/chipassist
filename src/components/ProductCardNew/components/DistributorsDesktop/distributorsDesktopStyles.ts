@@ -523,6 +523,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     geoPin: {
       fontSize: "1rem",
     },
+    sortLabel: {
+      color: "white!important",
+    },
   }),
 );
 

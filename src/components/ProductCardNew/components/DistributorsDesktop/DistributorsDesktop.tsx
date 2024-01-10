@@ -95,6 +95,8 @@ const DistributorsDesktop: React.FC<Props> = ({
     direction: "asc",
   });
 
+  const isICSearch = constants.id === "icsearch";
+
   useEffect(() => {
     if (sortedStockrecords) {
       const res = sortedStockrecords
@@ -223,6 +225,8 @@ const DistributorsDesktop: React.FC<Props> = ({
                 active={sortBy?.name === "updatedTime"}
                 direction={(sortBy?.name === "updatedTime" && sortBy?.direction) || "asc"}
                 onClick={() => changeSort("updatedTime")}
+                // style={isICSearch && { color: "white" }}
+                classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
               >
                 <span className={classes.divider}>/</span>
                 {t("distributor.updated")}

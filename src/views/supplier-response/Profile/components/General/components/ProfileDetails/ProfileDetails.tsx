@@ -8,13 +8,22 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
-  root: {},
+  root: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   content: {
     display: "flex",
     alignItems: "center",
     textAlign: "center",
     flexDirection: "column",
     paddingBottom: 0,
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "row",
+      width: "80%",
+      justifyContent: "space-evenly",
+    },
     [theme.breakpoints.down("sm")]: {
       flexDirection: "row",
       width: "100%",
