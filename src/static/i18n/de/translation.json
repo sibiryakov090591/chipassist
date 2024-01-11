@@ -901,11 +901,11 @@
       }
     },
     "hero_item2": {
-      "h": "Anfrage",
+      "h": "Anfordern und bekommen",
       "p": "Platzieren Sie Ihre Anfrage und erhalten Sie die speziellen Angebote von 300 verbundenen Verkäufern aus der ganzen Welt."
     },
     "hero_item3": {
-      "h": "Befehl",
+      "h": "Bestellen und verfolgen",
       "p": " Bestellen Sie Ihr Produkt über ChipAssist und profitieren Sie von einer sicheren und bequemen Kauf- und Nachverfolgungsfunktion."
     },
     "today": {
@@ -955,16 +955,16 @@
     "pcb": {
       "title": {
         "p1": "Holen Sie sich Ihren nächsten",
-        "p2": "Leiterplatte bei uns"
+        "p2": "PCB bei uns"
       },
       "subtitle": "Laden Sie einfach Ihre Gerber-Dateien hoch und treten Sie mit 50 Leiterplattenlieferanten in Kontakt, um innerhalb von 48 Stunden das beste Angebot zu erhalten.",
       "ul": {
         "li1": "Senden Sie uns eine Freiform-PCB-Spezifikation oder geben Sie alle erforderlichen Details an",
         "li2": "Erhalten Sie professionelle Unterstützung von unserem qualifizierten Ingenieurteam",
         "li3": "Wählen Sie die besten Konditionen aus den Angebotsvorschlägen verschiedener Anbieter aus",
-        "li4": "Kontrollieren Sie die Qualität von Leiterplatten mit unserem QC-Team vor Ort"
+        "li4": "Kontrollieren Sie die Qualität von PCB mit unserem QC-Team vor Ort"
       },
-      "button": "Leiterplatte anfordern"
+      "button": "PCB anfordern"
     },
     "title": "Willkommen zu {{name}}!",
     "page_description": "Globaler Marktplatz für die Beschaffung elektronischer Komponenten. ",
@@ -992,7 +992,7 @@
     },
     "bom_sections": {
       "title": "Arbeiten mit",
-      "paragraph_1": "Laden Sie Ihre Stücklistenliste und finden und bestellen Sie alle benötigten Teile auf einmal – überprüfen, prüfen und ändern Sie vorgeschlagene Angebote.",
+      "paragraph_1": "Laden Sie Ihre BOM liste und finden und bestellen Sie alle benötigten Teile auf einmal – überprüfen, prüfen und ändern Sie vorgeschlagene Angebote.",
       "paragraph_2": "Reduzieren Sie die Risiken, indem Sie den „Zustand“ Ihrer Listen, Preissteigerungen und den Verfügbarkeitszeitraum überprüfen."
     },
     "excess_sections": {
@@ -1014,9 +1014,9 @@
       "sub_title_4": "STEUERGERÄTE",
       "text_4": "Entdecken Sie den Katalog mit Eingabe-Controllern und kundenspezifischen Silikontastaturen für eingebettete Geräte mit Optionen zur sofortigen Online-Bestellung.",
       "sub_title_5": "LED-BILDSCHIRME",
-      "text_5": "Alles, vom kleinen B",
+      "text_5": "Von kleinen schwarz-weißen LED-Streifen bis hin zu großen Vollfarbbildschirmen ist in zahlreichen Kategorien auf dem Markt alles zu finden.",
       "sub_title_6": "OEM/ODM/EMS-HÄUSER",
-      "text_6": "Keine blinden Schüsse mehr. "
+      "text_6": "Keine blinden Schüsse mehr. Vergleichen Sie Angebote und finden Sie unter Hunderten von europäischen und weltweiten OEMs, ODMs und EMS einen Hersteller, der Ihren Standards entspricht."
     },
     "contacts": {
       "new_title": {
