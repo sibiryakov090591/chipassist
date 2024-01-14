@@ -257,7 +257,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
             {t("request_block", {
               qty: `${selectedChat.rfq.quantity}`,
               upc: `${selectedChat.rfq.upc}`,
-              price: `${selectedChat.rfq.price ? ` at ${formatMoney(selectedChat.rfq.price)} €` : ""}`,
+              price: `${
+                selectedChat.rfq.price
+                  ? `at ${formatMoney(selectedChat.rfq.price)} ${selectedChat.rfq.currency === "EUR" ? "€" : "$"}`
+                  : ""
+              }`,
             })}
           </strong>{" "}
           {date}
@@ -381,7 +385,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                 <div className={classes.orderAddress}>
                                   <Grid container>
                                     <Grid item sm={6} xs={12}>
-                                      <div>
+                                      <div style={{ overflowWrap: "anywhere" }}>
                                         {orderData?.company_name ? <strong>{orderData.company_name}</strong> : "-"}
                                       </div>
                                       <div>
@@ -452,7 +456,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <strong>{t("customer")}:</strong>
                                       </div>
                                       {purchaseOrder?.company_name && (
-                                        <div>
+                                        <div style={{ overflowWrap: "anywhere" }}>
                                           <strong>{purchaseOrder.company_name}</strong>
                                         </div>
                                       )}
@@ -546,7 +550,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <td colSpan={5}>
                                           <Box display="flex" justifyContent="space-between" alignItems="center">
                                             <div>
-                                              <strong>{t("total.v1")}:</strong>
+                                              <strong>{t("table.total.v1")}:</strong>
                                             </div>
                                             <div>
                                               <strong>
