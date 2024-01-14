@@ -74,26 +74,28 @@ const TopBar = (props) => {
 
   const isShowHint = useAppSelector((state) => state.rfqList.showHint);
 
-  const [collapse, setСollapse] = useState(false);
+  const [collapse, setCollapse] = useState(!isChipAssist);
 
   useEffect(() => {
     if (isMdUp || isHomePage) {
       window.addEventListener("scroll", listener);
     }
     return () => {
-      if (isHomePage && collapse) setСollapse(false);
+      if (isHomePage && collapse) setCollapse(false);
       window.removeEventListener("scroll", listener);
     };
   }, [collapse, isMdUp, isHomePage]);
 
   const listener = () => {
-    if (window.pageYOffset > (isHomePage ? 500 : 60)) {
-      if (!collapse) {
-        setСollapse(true);
-        dispatch(showHint(false));
+    if (isChipAssist) {
+      if (window.pageYOffset > (isHomePage ? 500 : 60)) {
+        if (!collapse) {
+          setCollapse(true);
+          dispatch(showHint(false));
+        }
+      } else if (collapse) {
+        setCollapse(false);
       }
-    } else if (collapse) {
-      setСollapse(false);
     }
   };
 

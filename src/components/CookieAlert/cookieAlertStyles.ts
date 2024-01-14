@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       zIndex: 1000,
       [theme.breakpoints.down("sm")]: {
         height: "initial",
-        bottom: "-180px",
+        bottom: "-280px",
       },
     },
     open: {
