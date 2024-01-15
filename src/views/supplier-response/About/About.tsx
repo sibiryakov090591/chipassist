@@ -109,8 +109,8 @@ export const About = () => {
               <p className={classes.pageDescription}>{t("top_elem.subtitle")}:</p>
               <div className={classes.pageDescrSubDiv}>
                 <p>- {t("top_elem.p1")}</p>
-                <p>- {t("top_elem.p1")}</p>
-                <p>- {t("top_elem.p1")}</p>
+                <p>- {t("top_elem.p2")}</p>
+                <p>- {t("top_elem.p3")}</p>
               </div>
             </Grid>
             <Grid item md={6} sm={6}>

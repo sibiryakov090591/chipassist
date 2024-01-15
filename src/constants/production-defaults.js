@@ -5,7 +5,7 @@ const defaults = {
   apiHost: "api.chipassist.com",
   schema: "https",
   SHOW_LANG_SWITCHER: false,
-  locales: ["en", "ru"],
+  locales: ["en", "de"],
   localeDefault: "en",
   showFeedback: true,
   debug: false,
