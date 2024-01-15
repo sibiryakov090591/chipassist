@@ -585,7 +585,7 @@ export const SendInvoiceModalContainer: React.FC<{
               variant="contained"
               className={clsx(appTheme.buttonCreate, appTheme.buttonMinWidth)}
             >
-              {step >= 2 ? t("back") : t("next")}
+              {step >= 2 ? t("send") : t("next")}
             </Button>
           </Box>
         </Box>

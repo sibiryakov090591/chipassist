@@ -251,6 +251,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         padding: 12,
       },
     },
+    companyName: {
+      width: "100%",
+    },
   }),
 );
 
