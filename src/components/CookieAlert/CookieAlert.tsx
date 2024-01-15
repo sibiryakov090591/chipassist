@@ -24,7 +24,9 @@ const CookieAlert = () => {
   useEffect(() => {
     if (!localStorage.getItem("cookie_accepted")) {
       dispatch(loadMiscAction("cookie")).then((res: any) => {
+        // console.log(res.data);
         if (!res.data) {
+          console.log("open");
           setOpen(true);
         }
       });
