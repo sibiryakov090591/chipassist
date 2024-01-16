@@ -23,10 +23,6 @@ const FilterCurrency: React.FC<Props> = ({ className }) => {
     setClicked((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    console.log(currency);
-  }, [currency]);
-
   return (
     <ClickOutsideListener onClickOutside={() => setClicked((prevState) => (prevState ? false : prevState))}>
       <CurrencyMenu

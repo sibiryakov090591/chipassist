@@ -176,7 +176,6 @@ const ProgressModal: React.FC = () => {
     localStorage.setItem("product_request_hint_disabled", "true");
 
     if (isAuthenticated) {
-      console.log(tempRfq);
       dispatch(saveRfqItem({ ...tempRfq.rfq, part_number: errorMessage.split(" ").pop() })).then(() => {
         batch(() => {
           dispatch(clearRfqItem());
