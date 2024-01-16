@@ -172,24 +172,41 @@ const themeStylesICsearch = makeStyles((theme) => ({
       backgroundColor: theme.palette.app.blue500,
     },
   },
+  // buttonCreate: {
+  //   color: theme.palette.white,
+  //   backgroundColor: theme.palette.app.green700,
+  //   "&.Mui-disabled": {
+  //     color: theme.palette.app.grey300,
+  //     backgroundColor: theme.palette.app.grey200,
+  //   },
+  //   "&:hover": {
+  //     color: `${theme.palette.white} !important`,
+  //     backgroundColor: theme.palette.app.green600,
+  //   },
+  //   "&:active": {
+  //     color: theme.palette.white,
+  //     backgroundColor: theme.palette.app.green700,
+  //   },
+  //   "&:focus": {
+  //     color: `${theme.palette.white} !important`,
+  //     backgroundColor: theme.palette.app.green700,
+  //   },
+  // },
   buttonCreate: {
     color: theme.palette.white,
-    backgroundColor: theme.palette.app.green700,
+    backgroundColor: theme.palette.app.green800,
     "&.Mui-disabled": {
       color: theme.palette.app.grey300,
       backgroundColor: theme.palette.app.grey200,
     },
     "&:hover": {
-      color: `${theme.palette.white} !important`,
-      backgroundColor: theme.palette.app.green600,
+      backgroundColor: "rgb(67,198,169)", // green800
     },
     "&:active": {
-      color: theme.palette.white,
-      backgroundColor: theme.palette.app.green700,
+      backgroundColor: theme.palette.app.green800,
     },
     "&:focus": {
-      color: `${theme.palette.white} !important`,
-      backgroundColor: theme.palette.app.green700,
+      backgroundColor: theme.palette.app.green800,
     },
   },
   buttonAddToBom: {

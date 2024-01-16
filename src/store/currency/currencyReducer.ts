@@ -29,11 +29,17 @@ const currencies: actionTypes.Currency[] = [
 
 const initialState: actionTypes.CurrencyState = {
   currencyList: currencies,
-  initial: currencies.find((val) => val?.code === localCurrencyCode) || currencies.find((val) => val?.code === "EUR"),
-  default: currencies.find((val) => val?.code === "EUR"),
-  selected: currencies.find((val) => val?.code === localCurrencyCode) || currencies.find((val) => val?.code === "EUR"),
+  initial:
+    currencies.find((val) => val?.code === localCurrencyCode) ||
+    currencies.find((val) => (constants.id === "icsearch" ? val?.code === "RUB" : val?.code === "EUR")),
+  default: currencies.find((val) => (constants.id === "icsearch" ? val?.code === "RUB" : val?.code === "EUR")),
+  selected:
+    currencies.find((val) => val?.code === localCurrencyCode) ||
+    currencies.find((val) => (constants.id === "icsearch" ? val?.code === "RUB" : val?.code === "EUR")),
   rates_from: {},
 };
+
+console.log(initialState);
 
 export default function common(state = initialState, action: actionTypes.CommonActionTypes) {
   switch (action.type) {
