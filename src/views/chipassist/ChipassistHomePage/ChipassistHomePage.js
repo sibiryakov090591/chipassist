@@ -31,6 +31,7 @@ import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import ReplyIcon from "@material-ui/icons/Reply";
 import ChatUnreadTotalCount from "@src/components/ChatUnreadTotalCount/ChatUnreadTotalCount";
+import LangMenu from "@src/layouts/HomePage/components/TopBar/components/LangMenu/LangMenu";
 import { useStyles } from "./styles";
 
 const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
@@ -94,7 +95,7 @@ export const ChipassistHomePage = () => {
                   <Box display="flex" alignItems="center">
                     {logoLink}
                     <NavLink className={`${classes.heroMenuLink}`} to={`/about_company`}>
-                      About us
+                      {t("menu.about_us")}
                     </NavLink>
                     <NavLink className={`${classes.heroMenuLink}`} to={`/parts`}>
                       {t("menu.parts")}
@@ -103,7 +104,7 @@ export const ChipassistHomePage = () => {
                       {t("menu.bom")}
                     </NavLink>
                     <NavLink className={`${classes.heroMenuLink}`} to={`/rfq-list-quotes`}>
-                      {"RFQ List"}
+                      {t("menu.rfq_list")}
                     </NavLink>
                     {isAuthenticated && (
                       <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
@@ -117,22 +118,23 @@ export const ChipassistHomePage = () => {
                       </NavLink>
                     ) : (
                       <a className={`${classes.heroMenuLink}`} href="#contacts" onClick={scrollTo(contactsRef)}>
-                        Contacts
+                        {t("menu.contacts")}
                       </a>
                     )}
                     <NavLink className={`${classes.heroMenuLink}`} to={`/blog`}>
                       {t("menu.blog")}
                     </NavLink>
+                    {constants.SHOW_LANG_SWITCHER && <LangMenu />}
                   </Box>
                   <Box display="flex" alignItems="center">
                     {!isAuthenticated ? (
                       <>
                         <NavLink to={"/auth/registration"} className={classes.headerLink}>
-                          Register
+                          {t("menu.register")}
                         </NavLink>
                         <Box m="0 8px">/</Box>
                         <NavLink to={"/auth/login"} style={{ marginRight: 16 }} className={classes.headerLink}>
-                          Sign In
+                          {t("menu.sign_in")}
                         </NavLink>
                       </>
                     ) : (
@@ -143,11 +145,11 @@ export const ChipassistHomePage = () => {
                         style={{ marginRight: 16 }}
                         className={classes.headerLink}
                       >
-                        Logout
+                        {t("menu.logout")}
                       </NavLink>
                     )}
                     <NavLink to="/sell-excess-inventory" className={classes.headerButtonLink}>
-                      Sell on <span className={classes.redColor}>ChipAssist</span>
+                      {t("menu.sell_on")} <span className={classes.redColor}>ChipAssist</span>
                     </NavLink>
                     {/* {cartBlock} */}
                   </Box>
@@ -159,8 +161,8 @@ export const ChipassistHomePage = () => {
           <div className={classes.heroMain}>
             <Container maxWidth="lg">
               <h1 className={classes.heroTitle}>
-                Search for electronic parts. <br />
-                <span>Reinvented.</span>
+                {t("page_title_1.slogan")} <br />
+                <span>{t("page_title_1.reinvented")}</span>
               </h1>
               <SearchSuggestion
                 searchInputClass={classes.searchInput}
@@ -177,33 +179,22 @@ export const ChipassistHomePage = () => {
               <div className={classes.heroItems}>
                 {isXsDown ? (
                   <div className={classes.heroItem}>
-                    <h3 className={classes.heroItemTitle}>Search. Request. Buy.</h3>
-                    <p className={classes.heroItemText}>
-                      Search for products and see market availability. Place your requests to 300+ sellers in one click.
-                      Order and track with ChipAssist.
-                    </p>
+                    <h3 className={classes.heroItemTitle}>{t("hero_item1.mobile.h")}</h3>
+                    <p className={classes.heroItemText}>{t("hero_item1.mobile.p")}ChipAssist.</p>
                   </div>
                 ) : (
                   <>
                     <div className={classes.heroItem}>
-                      <h3 className={classes.heroItemTitle}>Search & buy</h3>
-                      <p className={classes.heroItemText}>
-                        Search and compare prices and market availability. Contact sellers and get special prices right
-                        through ChipAssist.
-                      </p>
+                      <h3 className={classes.heroItemTitle}>{t("hero_item1.desktop.h")}</h3>
+                      <p className={classes.heroItemText}>{t("hero_item1.desktop.p")}ChipAssist.</p>
                     </div>
                     <div className={classes.heroItem}>
-                      <h3 className={classes.heroItemTitle}>Request & get</h3>
-                      <p className={classes.heroItemText}>
-                        Place your request and get the dedicated offers from 300+ connected sellers from all over the
-                        world.
-                      </p>
+                      <h3 className={classes.heroItemTitle}>{t("hero_item2.h")}</h3>
+                      <p className={classes.heroItemText}>{t("hero_item2.p")}</p>
                     </div>
                     <div className={classes.heroItem}>
-                      <h3 className={classes.heroItemTitle}>Order & track</h3>
-                      <p className={classes.heroItemText}>
-                        Order your product through ChipAssist and get safe and convinient purchasing and tracking.
-                      </p>
+                      <h3 className={classes.heroItemTitle}>{t("hero_item3.h")}</h3>
+                      <p className={classes.heroItemText}>{t("hero_item3.p")}</p>
                     </div>
                   </>
                 )}
@@ -215,28 +206,28 @@ export const ChipassistHomePage = () => {
         <section className={classes.today}>
           <Container maxWidth="lg">
             <h3 className={clsx(classes.title, classes.countsTitle)}>
-              ChipAssist <span className={classes.redColor}>today</span>
+              ChipAssist <span className={classes.redColor}>{t("today.h")}</span>
             </h3>
             <Box className={classes.countsItems}>
               <Box className={classes.countsItem}>
                 <div className={classes.count}>20,000,000+</div>
-                <div className={classes.countLabel}>Parts in the catalog</div>
+                <div className={classes.countLabel}>{t("today.count_item1")}</div>
               </Box>
               <Box className={classes.countsItem}>
                 <div className={classes.count}>1,000+</div>
-                <div className={classes.countLabel}>Active customers</div>
+                <div className={classes.countLabel}>{t("today.count_item2")}</div>
               </Box>
               <Box className={classes.countsItem}>
                 <div className={classes.count}>130+</div>
-                <div className={classes.countLabel}>Worldwide stocks</div>
+                <div className={classes.countLabel}>{t("today.count_item3")}</div>
               </Box>
               <Box className={classes.countsItem}>
                 <div className={classes.count}>50+</div>
-                <div className={classes.countLabel}>PCB manufacturers</div>
+                <div className={classes.countLabel}>{t("today.count_item4")}</div>
               </Box>
               <Box className={classes.countsItem}>
                 <div className={classes.count}>40+</div>
-                <div className={classes.countLabel}>Countries</div>
+                <div className={classes.countLabel}>{t("today.count_item5")}</div>
               </Box>
             </Box>
           </Container>
@@ -245,7 +236,8 @@ export const ChipassistHomePage = () => {
         <section ref={aboutUsRef} className={classes.services}>
           <Container maxWidth="lg">
             <h2 style={{ textAlign: "center" }} className={clsx(classes.title, classes.titleDark)}>
-              All services <span className={classes.redColor}>in one place</span>
+              {t("services.h.all")}
+              <span className={classes.redColor}>{t("services.h.in")}</span>
             </h2>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} md={4}>
@@ -307,11 +299,11 @@ export const ChipassistHomePage = () => {
               </Grid>
               <Grid item md={6} xs={12} style={{ textAlign: "center" }}>
                 <p style={{ marginBottom: 10 }} className={classes.workplaceText}>
-                  ChipAssist introduces <strong>Rapid RFQ Exchange</strong> service
+                  {t("workplace_section.new_line1.p1")} <strong>{t("workplace_section.new_line1.p2")}</strong>{" "}
+                  {t("workplace_section.new_line1.p3")}
                 </p>
                 <p style={{ fontSize: "1.2rem" }} className={classes.workplaceText}>
-                  Your every request is automatically sent to the tens of independent suppliers giving you the best
-                  possible price offering available on the market
+                  {t("workplace_section.new_line2")}
                 </p>
                 <Box className={classes.workplaceListWrapper}>
                   <p className={classes.workplaceListTitle}>
@@ -334,7 +326,7 @@ export const ChipassistHomePage = () => {
                       variant="contained"
                       className={clsx(appTheme.buttonCreate, classes.button, classes.registerButton)}
                     >
-                      Sign up now
+                      {t("workplace_section.sign_up")}
                     </Button>
                   </div>
                 )}
@@ -346,45 +338,37 @@ export const ChipassistHomePage = () => {
         <section className={classes.connect}>
           <Container maxWidth="lg">
             <h2 style={{ marginBottom: 0 }} className={clsx(classes.title)}>
-              Connecting the <span className={classes.redColor}>world of electronics</span>
+              {t("connect.title.connecting")} <span className={classes.redColor}>{t("connect.title.world")}</span>
             </h2>
-            <p className={classes.connectSubTitle}>
-              You can buy from several suppliers at once and send requests for the components you need.
-            </p>
+            <p className={classes.connectSubTitle}>{t("connect.subtitle")}</p>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} md={3}>
                 <div className={classes.connectItem}>
                   <div className={classes.connectItemIndex}>1</div>
-                  <div className={classes.connectItemTitle}>Join the trusted ecosystem</div>
-                  <div className={classes.connectItemText}>
-                    Engage with the network of 1000+ trusted clients worldwide.
-                  </div>
+                  <div className={classes.connectItemTitle}>{t("connect.connect_item1.title")}</div>
+                  <div className={classes.connectItemText}>{t("connect.connect_item1.text")}</div>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <div className={classes.connectItem}>
                   <div className={classes.connectItemIndex}>2</div>
-                  <div className={classes.connectItemTitle}>Save marketing budget</div>
-                  <div className={classes.connectItemText}>
-                    Get ready-made customer`s requests right into your sales pipeline.
-                  </div>
+                  <div className={classes.connectItemTitle}>{t("connect.connect_item2.title")}</div>
+                  <div className={classes.connectItemText}>{t("connect.connect_item2.text")}</div>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <div className={classes.connectItem}>
                   <div className={classes.connectItemIndex}>3</div>
-                  <div className={classes.connectItemTitle}>Manage your excess stocks</div>
-                  <div className={classes.connectItemText}>
-                    Quickly and efficiently sell your surpluses and overstocks on the market.
-                  </div>
+                  <div className={classes.connectItemTitle}>{t("connect.connect_item3.title")}</div>
+                  <div className={classes.connectItemText}>{t("connect.connect_item3.text")}</div>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <div className={classes.connectItem}>
                   <div className={classes.connectItemIndex}>4</div>
-                  <div className={classes.connectItemTitle}>ChipAssist in your software</div>
+                  <div className={classes.connectItemTitle}>ChipAssist {t("connect.connect_item4.title")}</div>
                   <div className={classes.connectItemText}>
-                    Integrate ChipAssist with your software through our advanced API.
+                    {t("connect.connect_item4.text.p1")} ChipAssist {t("connect.connect_item4.text.p2")}
                   </div>
                 </div>
               </Grid>
@@ -395,12 +379,9 @@ export const ChipassistHomePage = () => {
         <section className={classes.partners} id="partners">
           <Container maxWidth="lg">
             <h1 style={{ textAlign: "center" }} className={clsx(classes.title, classes.titleDark)}>
-              Partner with <span className={classes.redColor}>ChipAssist</span>
+              {t("partners.title")} <span className={classes.redColor}>ChipAssist</span>
             </h1>
-            <p className={classes.partnersText}>
-              Partner with ChipAssist for API integrations, excess data stocks, user requests, and market trends to
-              enhance your business capabilities. Gain an edge in the market and stay ahead of the curve.
-            </p>
+            <p className={classes.partnersText}>{t("partners.subtitle")}</p>
             <Grid style={{ borderBottom: "1px solid #eee" }} container>
               <Grid item xs={6} sm={3} className={classes.partnersItem}>
                 <a
@@ -457,7 +438,7 @@ export const ChipassistHomePage = () => {
               <Grid item md={7} xs={12}>
                 <Box className={classes.excessTextWrapper}>
                   <h1 className={clsx(classes.title, classes.titleDark, classes.excessTitle)}>
-                    Sell your excess <span className={classes.redColor}>inventory</span>
+                    {t("excess_sections.h1.p1")} <span className={classes.redColor}>{t("excess_sections.h1.p2")}</span>
                   </h1>
                   <p className={classes.bomText}>{t("excess_sections.paragraph_1")}</p>
                   <p className={classes.bomText}>{t("excess_sections.paragraph_2")}</p>
@@ -481,19 +462,14 @@ export const ChipassistHomePage = () => {
             <Grid container spacing={3}>
               <Grid item md={7} xs={12}>
                 <h2 className={classes.title}>
-                  Get your next{" "}
-                  <span className={classes.redColor}>
-                    PCB <span style={{ whiteSpace: "nowrap" }}>with us</span>
-                  </span>
+                  {t("pcb.title.p1")} <span className={classes.redColor}>{t("pcb.title.p2")}</span>
                 </h2>
-                <p className={classes.pcbText}>
-                  Just upload your Gerber files and engage with 50+ PCB suppliers to get the best offering in 48 hours.
-                </p>
+                <p className={classes.pcbText}>{t("pcb.subtitle")}</p>
                 <ul className={classes.pcbList}>
-                  <li>Send us freeform PCB specification or specify all necessary details</li>
-                  <li>Get professional assistance from our qualified engineering team</li>
-                  <li>Choose the best terms from proposed quotations from different vendors</li>
-                  <li>Control the quality of PCBs with our on-site QC team</li>
+                  <li>{t("pcb.ul.li1")}</li>
+                  <li>{t("pcb.ul.li2")}</li>
+                  <li>{t("pcb.ul.li3")}</li>
+                  <li>{t("pcb.ul.li4")}</li>
                 </ul>
                 <div className={classes.actionWrapper}>
                   <Button
@@ -504,7 +480,7 @@ export const ChipassistHomePage = () => {
                     variant="contained"
                     className={clsx(appTheme.buttonCreate, classes.button)}
                   >
-                    Request PCB
+                    {t("pcb.button")}
                   </Button>
                 </div>
               </Grid>
@@ -522,7 +498,7 @@ export const ChipassistHomePage = () => {
             <Grid container spacing={3}>
               <Grid item md={6} xs={12}>
                 <h2 className={clsx(classes.title, classes.titleDark, classes.bomTitle)}>
-                  Working with <span className={classes.redColor}>BOMs</span>
+                  {t("bom_sections.title")} <span className={classes.redColor}>BOMs</span>
                 </h2>
                 <p className={classes.bomText}>{t("bom_sections.paragraph_1")}</p>
                 <p className={classes.bomText}>{t("bom_sections.paragraph_2")}</p>
@@ -554,7 +530,7 @@ export const ChipassistHomePage = () => {
             <Grid container spacing={3}>
               <Grid item md={6} xs={12} className={classes.contactsItemWrapper}>
                 <h2 style={{ textAlign: "start" }} className={clsx(classes.title, classes.titleDark)}>
-                  Our <span className={classes.redColor}>contacts</span>
+                  {t("contacts.new_title.p1")} <span className={classes.redColor}>{t("contacts.new_title.p2")}</span>
                 </h2>
                 <p className={classes.contactsName}>{t("contacts.name")}</p>
                 <p className={classes.contactsAddress}>

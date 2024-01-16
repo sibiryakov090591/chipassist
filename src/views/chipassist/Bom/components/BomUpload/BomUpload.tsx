@@ -104,7 +104,9 @@ const BomUpload: React.FC = () => {
   const [selectErrors, setSelectErrors] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    if (storageFile)
+    if (storageFile) {
+      setMiscCreated(false);
+      setMisc(null);
       dispatch(loadMiscAction(storageFile.name)).then((res: any) => {
         setMisc(res);
 
@@ -131,6 +133,7 @@ const BomUpload: React.FC = () => {
           }
         }
       });
+    }
   }, [storageFile]);
 
   useEffect(() => {
@@ -295,20 +298,15 @@ const BomUpload: React.FC = () => {
               </>
             ) : (
               <div className={classes.contentWrapper}>
-                <h2 className={classes.title}>Master your Bill of Materials with intelligence and flexibility</h2>
-                <p className={classes.text}>
-                  Quickly evaluate millions of parts from tens of suppliers saving time and increasing quotation
-                  accuracy.
-                </p>
+                <h2 className={classes.title}>{t("upload.if_not_IC.title")}</h2>
+                <p className={classes.text}>{t("upload.if_not_IC.subtitle")}</p>
                 <Hidden smDown>
-                  <p className={classes.text}>
-                    Place your selections into the cart and order up to 1000 different components at once.
-                  </p>
+                  <p className={classes.text}>{t("upload.if_not_IC.list_title")}</p>
                   <ul className={classes.list}>
-                    <li>Access millions of part numbers available online or via requests</li>
-                    <li>Compare the prices and availability</li>
-                    <li>Import from XLS or CSV</li>
-                    <li>Save selected options to re-order BOM later</li>
+                    <li>{t("upload.if_not_IC.list.li1")}</li>
+                    <li>{t("upload.if_not_IC.list.li2")}</li>
+                    <li>{t("upload.if_not_IC.list.li3")}</li>
+                    <li>{t("upload.if_not_IC.list.li4")}</li>
                   </ul>
                 </Hidden>
               </div>

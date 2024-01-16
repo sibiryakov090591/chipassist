@@ -4,7 +4,8 @@ const defaults = {
   apiPath: "/api",
   apiHost: "api.camaster.site",
   schema: "https",
-  locales: ["en", "ru"],
+  SHOW_LANG_SWITCHER: true,
+  locales: ["en", "de"],
   localeDefault: "en",
   showFeedback: true,
   debug: true,
@@ -31,7 +32,6 @@ const defaults = {
   userActivitySessionWhitespace: 0.2, // minutes
   showNewStyles: false,
   STOCK_RECORD_PERIOD_OF_RELEVANCE: 72, // hours
-  SHOW_FILTERS: false,
   jivoChat: false,
   YM: false,
   GA: false,

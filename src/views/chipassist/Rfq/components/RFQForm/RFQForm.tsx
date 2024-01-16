@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { batch } from "react-redux";
-// import { useHistory, useLocation } from "react-router-dom";
-// import { DatePicker } from "@material-ui/pickers";
 import {
   TextField,
   Button,
@@ -13,16 +11,8 @@ import {
   Box,
   InputAdornment,
 } from "@material-ui/core";
-// import moment from "moment";
-// import { orderBy } from "lodash";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-// import { DATE_FORMAT } from "@src/config";
 import { clearRfqItem, rfqModalClose, saveRfqItem, sendSellerMessage } from "@src/store/rfq/rfqActions";
-// import { getAllSellers } from "@src/store/sellers/sellersActions";
-// import { searchAcReturn } from "@src/store/search/searchActions";
-// import { getCurrentDate } from "@src/store/rfq/rfqReducer";
-// import BaseFilterDropdown from "@src/views/chipassist/Search/components/BaseFilterDropdown/BaseFilterDropdown";
-// import { AutocompleteDropdown } from "@src/components";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -34,12 +24,10 @@ import {
   progressModalSetPartNumber,
   changeMisc,
   saveRequestToLocalStorage,
+  saveTemporaryRfq,
 } from "@src/store/progressModal/progressModalActions";
-
-import { getPrice, isProductAvailable } from "@src/utils/product";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
-import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
@@ -481,33 +469,29 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       if (formState.values.comment) comment += ` Additional: ${formState.values.comment};`;
 
       const sr = rfqItem?.stockrecord;
-      const srPrice = sr && getPrice(+formState.values.quantity, sr);
-
-      let availableMinPriceCurrency: CurrenciesAllowed = null;
-      const availableMinPrice = rfqItem?.product
-        ? rfqItem.product.stockrecords &&
-          rfqItem.product.stockrecords
-            .filter((i) => isProductAvailable(i))
-            .reduce((acc, i) => {
-              const price = getPrice(+formState.values.quantity, i, false);
-              if (!price) return acc;
-              if (!acc || +price < acc) {
-                availableMinPriceCurrency = i.price_currency;
-                return +price;
-              }
-              return acc;
-            }, 0)
-        : null;
+      // const srPrice = sr && getPrice(+formState.values.quantity, sr);
+      //
+      // let availableMinPriceCurrency: CurrenciesAllowed = null;
+      // const availableMinPrice = rfqItem?.product
+      //   ? rfqItem.product.stockrecords &&
+      //     rfqItem.product.stockrecords
+      //       .filter((i) => isProductAvailable(i))
+      //       .reduce((acc, i) => {
+      //         const price = getPrice(+formState.values.quantity, i, false);
+      //         if (!price) return acc;
+      //         if (!acc || +price < acc) {
+      //           availableMinPriceCurrency = i.price_currency;
+      //           return +price;
+      //         }
+      //         return acc;
+      //       }, 0)
+      //   : null;
 
       const data = {
         part_number: rfqItem.partNumber,
         quantity: formState.values.quantity,
-        price:
-          formState.values.price ||
-          (availableMinPrice ? `${availableMinPrice.toFixed(2)}` : srPrice ? `${srPrice}` : rfqItem?.price || null),
-        currency:
-          (formState.values.price && currency.code) ||
-          (availableMinPrice ? availableMinPriceCurrency : srPrice ? sr.price_currency : rfqItem?.currency || null),
+        price: formState.values.price || null,
+        currency: (formState.values.price && currency.code) || null,
         // delivery_date: moment.utc(item.deliveryDate).format().slice(0, 19),
         // valid_date: moment.utc(item.validateDate).format().slice(0, 19),
         seller: sr ? [{ id: sr.partner, name: sr.partner_name }] : null,
@@ -558,6 +542,8 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
       localStorage.setItem("before_unload_alert_disabled", "true");
       localStorage.setItem("product_request_hint_disabled", "true");
+      dispatch(saveTemporaryRfq({ rfq: data, formState: formState.values }));
+
       if (isAuthenticated) {
         // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
         setIsLoading(true);

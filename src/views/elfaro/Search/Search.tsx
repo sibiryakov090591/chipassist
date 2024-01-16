@@ -4,7 +4,6 @@ import constants from "@src/constants/constants";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useSearchLoadResults from "@src/views/chipassist/Search/hooks/useSearchLoadResults";
-import { ProductsSegment } from "@src/views/chipassist/Categories/components/Products/Products";
 import { Page, Paginate, ProductCard } from "@src/components";
 import { getPrice, isDuplicateStockrecord, isProductAvailable } from "@src/utils/product";
 import { Product } from "@src/store/products/productTypes";
@@ -170,7 +169,7 @@ const Search: React.FC = () => {
           {isLoadingSearchResultsInProgress ? (
             <Skeletons />
           ) : (
-            <ProductsSegment>
+            <div>
               {result.map((product) => (
                 <ProductCard
                   key={product.stockrecords[0]?.id}
@@ -179,7 +178,7 @@ const Search: React.FC = () => {
                   viewType={constants.id}
                 />
               ))}
-            </ProductsSegment>
+            </div>
           )}
           {(baseFilters?.base_in_stock || filtersValues?.base_num_in_stock) && count > 0 && !!rfqsHintCount && (
             <div style={{ marginTop: 30, textAlign: "center" }}>

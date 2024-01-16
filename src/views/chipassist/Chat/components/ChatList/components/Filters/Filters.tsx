@@ -8,6 +8,7 @@ import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import CloseIcon from "@material-ui/icons/Close";
 import constants from "@src/constants/constants";
 import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 interface Values {
@@ -16,6 +17,7 @@ interface Values {
 }
 
 const Filters: React.FC = () => {
+  const { t } = useI18n("chat.chat_list.filters");
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
@@ -67,10 +69,10 @@ const Filters: React.FC = () => {
       {filters && (
         <Box display="flex" gridGap="8px">
           <FormControl classes={{ root: classes.root }} variant="outlined" size="small" className={classes.select}>
-            <InputLabel id="chat-filters-upc-label">Part number</InputLabel>
+            <InputLabel id="chat-filters-upc-label">{t("part_n")}</InputLabel>
             <Select
               labelId="chat-filters-upc-label"
-              label="Part number"
+              label={t("part_n")}
               IconComponent={ExpandMoreRoundedIcon}
               name="upc"
               value={values.upc || ""}

@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useStyles as useChatStyles } from "@src/views/chipassist/Chat/styles";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { format } from "date-fns";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 import Preloader from "../Skeleton/Preloader";
 
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
+  const { t } = useI18n("chat.chat_list");
   const classes = useStyles();
   const chatClasses = useChatStyles();
   const dispatch = useAppDispatch();
@@ -32,6 +34,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
 
   const { chatList, selectedChat, filters } = useAppSelector((state) => state.chat);
   const { profileInfo, selectedPartner } = useAppSelector((state) => state.profile);
+  const currencyList = useAppSelector((state) => state.currency.currencyList);
 
   useEffect(() => {
     if (chatListRef.current) chatListRef.current.scrollTo({ top: 0 });
@@ -84,7 +87,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
       <div ref={chatListRef} className={classes.list}>
         {!chatList.results.length && (
           <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-            {chatList.isLoading ? <Preloader /> : <h5 className={chatClasses.emptyMessage}>You have no chats</h5>}
+            {chatList.isLoading ? <Preloader /> : <h5 className={chatClasses.emptyMessage}>{t("no_chats")}</h5>}
           </Box>
         )}
         <InfiniteScroll
@@ -111,6 +114,7 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
             const quantity = item.details?.quantity || item.rfq?.quantity;
             const price = item.details?.price || item.rfq?.price;
             const partNumber = item.title || item.rfq?.upc;
+            const currency = currencyList?.find((curr) => curr.code === item.rfq?.currency);
 
             return (
               <div
@@ -136,14 +140,16 @@ const ChatList: React.FC<Props> = ({ showList, onShowList }) => {
                   <div className={classes.ellipsisText}>
                     {lastMessage?.po || lastMessage?.invoice
                       ? lastMessage?.po
-                        ? "Purchase Order (PO)"
-                        : "Payment Invoice"
+                        ? t("PO")
+                        : t("PI")
                       : lastMessage?.text || (lastMessage?.message_files && lastMessage?.message_files[0]?.file)}
                   </div>
                   <Box display="flex" justifyContent="space-between" className={classes.info}>
                     <div className={classes.ellipsisText}>{item.partner_name}</div>
                     {!!quantity && !!price && (
-                      <div>{`${quantity} x ${formatMoney(price)} € = ${formatMoney(quantity * price)} €`}</div>
+                      <div>{`${quantity} x ${formatMoney(price)} ${currency?.symbol || "€"} = ${formatMoney(
+                        quantity * price,
+                      )} ${currency?.symbol || "€"}`}</div>
                     )}
                   </Box>
                 </div>

@@ -20,6 +20,7 @@ const fieldsInitialState = {
   noheader_row: "",
   supplier: "",
   currency: "EUR",
+  request_mode: "default",
   // separator: "",
   // encoding: "",
 };
@@ -116,6 +117,7 @@ const AdapterUpload = () => {
   useEffect(() => {
     if (storageFile) {
       setMiscCreated(false);
+      setMisc(null);
       loadMisc(storageFile.name).then((res) => {
         setMisc(res);
 

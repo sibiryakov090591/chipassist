@@ -16,11 +16,11 @@ function AddressData({ item }: any) {
         {item?.is_default_for_billing && (
           <TableRow>
             <TableCell colSpan={2} className={classes.selected}>
-              Selected for billing and shipping
+              {t("chat.send_invoice.selected")}
             </TableCell>
           </TableRow>
         )}
-        <TableRow>
+        <TableRow style={{ overflowWrap: "anywhere" }}>
           <TableCell className={classes.tableHeader}>{t("cart.address.company_name")}</TableCell>
           <TableCell>{item?.company_name || ""}</TableCell>
         </TableRow>

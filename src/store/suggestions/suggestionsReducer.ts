@@ -10,8 +10,8 @@ const initialState: actionTypes.SuggestionState = {
 const updateSuggestionsSuccess = (action: any, state: actionTypes.SuggestionState) => {
   return updateObject(state, {
     loading: false,
-    suggestions: action.response.data.map((name: string) => ({ name })),
-    search: action.response.search,
+    suggestions: action.response?.data?.map((name: string) => ({ name })),
+    search: action.response?.search,
   });
 };
 

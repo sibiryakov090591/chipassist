@@ -40,7 +40,6 @@ import IcsearchHomePage from "@src/views/chipassist/IcsearchHomePage/IcsearchHom
 import SellExcess from "@src/views/chipassist/SellExcess/SellExcess";
 import { getServiceTax } from "@src/store/checkout/checkoutActions";
 import ProgressModal from "@src/components/ProgressModal/ProgressModal";
-import { loadCategoriesThunk } from "@src/store/categories/categoriesActions";
 import { authCheckState, sendQuickRequestUnAuth } from "@src/store/authentication/authActions";
 import Preloader from "@src/components/Preloader/Preloader";
 import AddProductToListModal from "@src/components/Alerts/AddProductToListModal";
@@ -199,15 +198,13 @@ const ChipAssistApp = () => {
       // dispatch(loadStockListIds());
       dispatch(loadMaintenanceThunk());
       dispatch(authCheckState());
-      // dispatch(categoriesActions.getCategoriesThunk());
-      if (constants.SHOW_FILTERS) dispatch(loadCategoriesThunk());
+
       dispatch(getServiceTax());
       dispatch(getDefaultServiceCurrency());
       dispatch(getCurrency(selectedCurrency)).catch(() => {
         setTimeout(() => dispatch(getCurrency(selectedCurrency)), 1000);
       });
       dispatch(getAllSellers());
-      // dispatch(getCountriesThunk());
       dispatch(getGeolocation());
     });
   }, []);
@@ -479,16 +476,14 @@ const ChipAssistApp = () => {
                 }
               />
             )}
-            {constants.id !== ID_ICSEARCH && (
-              <Route
-                path={"/rfq-list-quotes"}
-                element={
-                  <Suspense fallback={<Preloader title={""} />}>
-                    <RfqList />
-                  </Suspense>
-                }
-              />
-            )}
+            <Route
+              path={"/rfq-list-quotes"}
+              element={
+                <Suspense fallback={<Preloader title={""} />}>
+                  <RfqList />
+                </Suspense>
+              }
+            />
             {constants.id !== ID_ICSEARCH && (
               <Route
                 path="/terms_of_services"

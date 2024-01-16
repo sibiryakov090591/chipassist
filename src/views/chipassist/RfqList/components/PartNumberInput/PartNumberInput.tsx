@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { onSuggestionsClearRequested, onSuggestionsFetchRequested } from "@src/store/suggestions/suggestionsActions";
 import useAppSelector from "@src/hooks/useAppSelector";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -30,6 +31,7 @@ const PartNumberInput: React.FC<Props> = ({
   blurHandler,
 }) => {
   const classes = useStyles();
+  const { t } = useI18n("rfq");
   // const theme = useTheme();
   // const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
   const suggestions = useAppSelector((state) => state.suggestions.suggestions);
@@ -50,9 +52,9 @@ const PartNumberInput: React.FC<Props> = ({
     dispatch(onSuggestionsClearRequested());
   };
 
-  const renderSuggestion = (suggestion: any) => <span>{suggestion.name}</span>;
+  const renderSuggestion = (suggestion: any) => <span>{suggestion?.name}</span>;
 
-  const getSuggestionValue = (suggestion: any) => suggestion.name;
+  const getSuggestionValue = (suggestion: any) => suggestion?.name;
 
   const onFieldFocus = () => {
     // setAnchorEl(e.target);
@@ -96,7 +98,7 @@ const PartNumberInput: React.FC<Props> = ({
       <Autosuggest
         onSuggestionSelected={onSuggestionSelected}
         theme={suggestTheme}
-        suggestions={suggestions}
+        suggestions={suggestions || []}
         onSuggestionsFetchRequested={onSuggestionsFetchRequestedHandler}
         onSuggestionsClearRequested={onSuggestionsClearRequestedHandler}
         getSuggestionValue={getSuggestionValue}
@@ -117,7 +119,7 @@ const PartNumberInput: React.FC<Props> = ({
               disabled={disabled}
               variant={"outlined"}
               name={"MPN"}
-              label={"Part number *"}
+              label={`${t("column.part_number")} *`}
               placeholder={"ex. KNP100"}
               size="small"
               fullWidth

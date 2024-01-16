@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardMedia, Typography, Divider, Link } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAddOutlined";
-import authImage from "@src/components/Authentication/auth.png";
+import authImage from "@src/images/auth.png";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Page } from "@src/components";
 import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";

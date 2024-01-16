@@ -94,7 +94,7 @@ const Reset = () => {
           <CardMedia
             className={classes.media}
             // eslint-disable-next-line global-require
-            image={constants.id === ID_ICSEARCH ? require("@src/components/Authentication/auth.png") : ""}
+            image={constants.id === ID_ICSEARCH ? require("@src/images/auth.png") : ""}
           >
             {constants.id === ID_ELFARO ? (
               <>

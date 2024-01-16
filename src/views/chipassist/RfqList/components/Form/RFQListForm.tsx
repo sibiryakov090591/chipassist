@@ -641,9 +641,9 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
           <Box className={classes.listBox}>
             <Box display={"flex"} justifyContent={"space-between"} flexDirection={"row"} style={{ width: "100%" }}>
               {isModalMode ? (
-                <h1 className={classes.modalTitle}>Your list of requests:</h1>
+                <h1 className={classes.modalTitle}>{t("list.h.modal")}</h1>
               ) : (
-                <h1 className={classes.titleH1}>Enter your quote list</h1>
+                <h1 className={classes.titleH1}>{t("list.h.desktop")}</h1>
               )}
               <FilterCurrency />
             </Box>
@@ -659,51 +659,13 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                     return false;
                   }}
                 />
-
-                {/* <TextField */}
-                {/*  disabled={elem.isDisabled} */}
-                {/*  variant={"outlined"} */}
-                {/*  name={"manufacturer"} */}
-                {/*  label={"Manufacturer"} */}
-                {/*  placeholder={"ex. Schneider Electric"} */}
-                {/*  defaultValue={elem.manufacturer} */}
-                {/*  size="small" */}
-                {/*  fullWidth */}
-                {/*  InputLabelProps={{ */}
-                {/*    shrink: true, */}
-                {/*  }} */}
-                {/*  className={classes.rfqInput} */}
-                {/*  onChange={(event) => handleRfqListChange(event, key)} */}
-                {/* /> */}
-                {/* <ManufacturerInput */}
-                {/*  styleClasses={classes.rfqInput} */}
-                {/*  style={{ width: "100%" }} */}
-                {/*  globalOnChange={(event: any) => handleRfqListChange(event, key)} */}
-                {/* /> */}
                 {!isDownMd ? (
                   <>
-                    {/* <TextField */}
-                    {/*  disabled={elem.isDisabled} */}
-                    {/*  variant={"outlined"} */}
-                    {/*  name={"quantity"} */}
-                    {/*  label={"Quantity *"} */}
-                    {/*  placeholder={"ex. 100"} */}
-                    {/*  defaultValue={elem.quantity} */}
-                    {/*  size="small" */}
-                    {/*  InputLabelProps={{ */}
-                    {/*    shrink: true, */}
-                    {/*  }} */}
-                    {/*  fullWidth={isDownMd} */}
-                    {/*  className={clsx(classes.rfqInput, classes.quantityTextField)} */}
-                    {/*  onChange={(event) => handleRfqListChange(event, key)} */}
-                    {/*  onBlur={onRfqBlurHandler("quantity", key)} */}
-                    {/*  {...rfqErrorProps("quantity", key)} */}
-                    {/* /> */}
                     <NumberInput
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"quantity"}
-                      label={"Quantity *"}
+                      label={`${t("column.qty")} *`}
                       placeholder={"ex. 100"}
                       value={elem.quantity}
                       size="small"
@@ -724,7 +686,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"price"}
-                      label={"Target price"}
+                      label={t("list.target_price")}
                       placeholder={"ex. 200"}
                       size="small"
                       InputLabelProps={{
@@ -752,7 +714,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"quantity"}
-                      label={"Quantity *"}
+                      label={`${t("column.qty")} *`}
                       placeholder={"ex. 100"}
                       value={elem.quantity}
                       size="small"
@@ -773,7 +735,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={elem.isDisabled}
                       variant={"outlined"}
                       name={"price"}
-                      label={"Target price"}
+                      label={t("list.target_price")}
                       placeholder={"ex. 200"}
                       size="small"
                       InputLabelProps={{
@@ -808,11 +770,11 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
             >
               <Button
                 variant={"contained"}
-                className={classes.addButton}
+                className={appTheme.buttonPrimary}
                 onClick={addButtonClickHandler}
                 disabled={rfqListState.values.length === maxRfqRows}
               >
-                {!isDownMd ? <>+ Add new line</> : <>+ Add new product</>}
+                {!isDownMd ? <>{t("list.add_row.desktop")}</> : <>{t("list.add_row.mobile")}</>}
               </Button>
               {!isDownMd && <span>{`${rfqListState.values.length}/${maxRfqRows}`}</span>}
             </div>
@@ -823,7 +785,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
       <section className={classes.section}>
         <Container maxWidth={"lg"}>
           <Box>
-            <h3 className={classes.titleH3}>Add additional details into your request</h3>
+            <h3 className={classes.titleH3}>{t("list.details_title")}</h3>
 
             <TextField
               style={{ width: "100%" }}
@@ -849,9 +811,9 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         <section className={clsx(classes.section)}>
           <Container maxWidth={"lg"} className={classes.regContainer}>
             <Box className={classes.regContainerStyle}>
-              <h2 className={classes.titleH2}>Please provide an information about yourself </h2>
+              <h2 className={classes.titleH2}>{t("list.login_section.h")} </h2>
               <p style={{ color: "#456" }}>
-                If you already have an account you can <NavLink to={"/auth/login"}>login here</NavLink>
+                {t("list.login_section.p.p1")} <NavLink to={"/auth/login"}>{t("list.login_section.p.p2")}</NavLink>
               </p>
               <Container maxWidth={"lg"} style={isModalMode ? { padding: 0 } : {}}>
                 <Box className={`${classes.regBoxContainer} rfq-modal-form`}>
@@ -1054,7 +1016,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                   width={"35px"}
                   style={{ color: "white", paddingRight: "1em" }}
                 />
-                Send multiple RFQ
+                {t("list.accept")}
               </>
             )}
           </Button>

@@ -105,6 +105,10 @@ export const checkFileState = (fileId: number) => {
             setTimeout(() => dispatch(checkFileState(fileId)), 1000);
             break;
           }
+          case "PENDING": {
+            setTimeout(() => dispatch(checkFileState(fileId)), 1000);
+            break;
+          }
           case "COMPLETED": {
             if (response.errors?.length) {
               dispatch(

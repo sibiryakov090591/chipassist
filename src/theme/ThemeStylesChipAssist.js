@@ -101,7 +101,20 @@ const themeStylesChipAssist = makeStyles((theme) => ({
       },
     },
     "&.Mui-selected": {
-      backgroundColor: "#b2d4ff",
+      backgroundColor: "#deebff",
+      "&:hover": {
+        backgroundColor: "#deebff",
+      },
+    },
+  },
+
+  selectedMenuItemLang: {
+    backgroundColor: "#deebff",
+    "&:hover": {
+      backgroundColor: "#deebff",
+    },
+    "&:focus": {
+      backgroundColor: "#deebff",
       "&:hover": {
         backgroundColor: "#deebff",
       },

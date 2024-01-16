@@ -4,11 +4,17 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { loadProductById, loadStockrecordById } from "@src/store/products/productsActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { Stockrecord } from "@src/store/products/productTypes";
-import { getDynamicMoq, getImage, getPrice, getValidQuantityPriceStatus, isProductAvailable } from "@src/utils/product";
+import {
+  getAttributes,
+  getDynamicMoq,
+  getImage,
+  getPrice,
+  getValidQuantityPriceStatus,
+  isProductAvailable,
+} from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";
 import useCurrency from "@src/hooks/useCurrency";
 import { useStyles as useProductStyles } from "@src/views/chipassist/Product/productStyles";
-import { getAttributes } from "@src/views/chipassist/Product/Product";
 import { Button, Table, TableBody, TableCell, TableRow, Box, Container } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { addCartItem } from "@src/store/cart/cartActions";
@@ -18,7 +24,6 @@ import Error404 from "@src/views/chipassist/Error404";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import useAppTheme from "@src/theme/useAppTheme";
 import { rfqModalOpen } from "@src/store/rfq/rfqActions";
-// import QuickOrderModal from "@src/views/elfaro/Product/components/QuickOrderModal/QuickOrderModal";
 import { Page } from "@src/components";
 import placeholderImg from "@src/images/cpu.png";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
@@ -122,13 +127,6 @@ const Product = () => {
     }
   }, [stockrecord]);
 
-  // useEffect(() => {
-  //   if (stockrecordId && productData && MOQ) {
-  //     const amounts = prices.filter((v) => v > MOQ);
-  //     amounts.unshift(MOQ);
-  //     setPrices(amounts);
-  //   }
-  // }, [stockrecord, productData, MOQ]);
   useEffect(() => {
     if (stockrecordId && stockrecord?.prices && MOQ) {
       setPrices(
@@ -159,14 +157,7 @@ const Product = () => {
     }
   };
 
-  const sendRfqOpenModal = () => {
-    // return !isAuthenticated && isAvailable
-    //   ? setOpenQuickOrderModal(true)
-    //   : dispatch(
-    //       rfqModalOpen(productData.upc, orderQty, (formatMoney(getPrice(orderQty, stockrecord, false)) as any) || ""),
-    //     );
-    dispatch(rfqModalOpen(productData.upc, orderQty, stockrecord));
-  };
+  const sendRfqOpenModal = () => dispatch(rfqModalOpen(productData.upc, orderQty, stockrecord));
 
   return (
     <Page
@@ -325,7 +316,6 @@ const Product = () => {
                       </Box>
                       <div>
                         <Button className={clsx(appTheme.buttonCreate, classes.rfqButton)} onClick={sendRfqOpenModal}>
-                          {/* {!isAuthenticated && isAvailable ? "Quick order" : "Send request"} */}
                           {isAuthenticated ? "Send request" : "Quick request"}
                         </Button>
                       </div>
@@ -354,15 +344,6 @@ const Product = () => {
                 )}
               </div>
             </div>
-
-            {/* {openQuickOrderModal && ( */}
-            {/*  <QuickOrderModal */}
-            {/*    product={productData} */}
-            {/*    stockrecord={stockrecord} */}
-            {/*    qty={orderQty} */}
-            {/*    handleClose={() => setOpenQuickOrderModal(false)} */}
-            {/*  /> */}
-            {/* )} */}
           </section>
         )}
       </Container>

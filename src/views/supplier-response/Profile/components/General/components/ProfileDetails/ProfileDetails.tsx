@@ -8,13 +8,22 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
-  root: {},
+  root: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   content: {
     display: "flex",
     alignItems: "center",
     textAlign: "center",
     flexDirection: "column",
     paddingBottom: 0,
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "row",
+      width: "80%",
+      justifyContent: "space-evenly",
+    },
     [theme.breakpoints.down("sm")]: {
       flexDirection: "row",
       width: "100%",
@@ -43,7 +52,7 @@ const ProfileDetails = () => {
   const stateProfile = useAppSelector((state) => state.sellerProfile);
   const theme = useTheme();
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <Card className={clsx(classes.root)}>
       <CardContent className={classes.content}>
@@ -54,16 +63,19 @@ const ProfileDetails = () => {
         <Box
           display={"flex"}
           flexDirection={"column"}
-          maxWidth={"50%"}
+          // maxWidth={"50%"}
+          width={"100%"}
           style={isDownSm ? { marginLeft: "15px" } : null}
         >
           <p
             style={{
-              fontSize: "2rem",
+              fontSize: isDownXs ? "1.5rem" : "2rem",
               paddingBottom: "1rem",
               marginTop: "1rem",
               marginBottom: 0,
               wordWrap: "break-word",
+              textAlign: "center",
+              maxWidth: "100%",
             }}
           >
             {stateProfile.isEditView

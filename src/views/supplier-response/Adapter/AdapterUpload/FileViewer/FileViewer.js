@@ -15,6 +15,7 @@ import PublishIcon from "@material-ui/icons/Publish";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import CurrencyMenu from "@src/components/CurrencyMenu/CurrencyMenu";
+import SelectButton from "@src/components/SelectButton/SelectButton";
 import { useStyles } from "./fileViewerStyles";
 
 const csvFormats = ["csv"];
@@ -22,6 +23,12 @@ const excelFormats = ["xls", "xlsx"];
 
 const EXCEL_FORMAT = "EXCEL_FORMAT";
 const CSV_FORMAT = "CSV_FORMAT";
+
+const requestModeOptions = [
+  { label: "Default", value: "default" },
+  { label: "Database", value: "database" },
+  { label: "API Octopart", value: "api_octopart" },
+];
 
 const FileViewer = ({
   file,
@@ -438,6 +445,16 @@ const FileViewer = ({
               </div>
             </>
           )}
+          <Box display="flex" alignItems="center" gap="16px">
+            <h3 style={{ margin: "0 16px 0 0" }} className={classes.title}>
+              Request mode:
+            </h3>
+            <SelectButton
+              selected={fields.request_mode}
+              options={requestModeOptions}
+              onChange={onFieldChange("request_mode")}
+            />
+          </Box>
           {/* <div className={classes.startingRowInfo}> */}
           {/*  <FormControlLabel */}
           {/*    control={<Checkbox name="noheader_row" onChange={onFullexportChange} checked={fullexport} />} */}

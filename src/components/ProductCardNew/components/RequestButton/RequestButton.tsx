@@ -8,6 +8,7 @@ import { rfqModalOpen } from "@src/store/rfq/rfqActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
 import { DisableProductRequestHint } from "@src/store/products/productsActions";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 
 interface Props {
   requestedQty?: number;
@@ -21,6 +22,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
+  const { t } = useI18n("product");
   const sendRfqOpenModal = () => {
     dispatch(DisableProductRequestHint());
     dispatch(rfqModalOpen(product.upc, 1, null, null, null, product, "rfq", product.id));
@@ -34,16 +36,16 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
         className={clsx("tutorial-create-rfq", appTheme.buttonCreate, classes.requestButton)}
         onClick={sendRfqOpenModal}
       >
-        {requestedQty ? "Requested" : "Get more quotes"}
+        {requestedQty ? t("requested") : t("get_more")}
       </Button>
       <CustomPopper productId={product.id} />
 
       {!!requestedQty && isAuthenticated ? (
         <div className={classes.requestButtonHelpText}>
-          {`You have already requested`} <strong>{`${requestedQty}pcs`} </strong> {`of this product`}
+          <span dangerouslySetInnerHTML={{ __html: `${t("already_req", { requestedQty })}` }}></span>
         </div>
       ) : (
-        <div className={classes.requestButtonHelpText}>Get additional quotes from connected sellers</div>
+        <div className={classes.requestButtonHelpText}>{t("get_additional")}</div>
       )}
     </div>
   );

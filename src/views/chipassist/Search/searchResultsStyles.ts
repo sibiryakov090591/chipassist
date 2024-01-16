@@ -10,66 +10,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     categoryRow: {},
     categoryCont: {},
-    searchPageLayout: {
-      display: "grid",
-      gridGap: 20,
-      gridTemplateColumns: "350px 1fr 350px",
-      gridTemplateAreas: "'fil cont cont'",
-      [theme.breakpoints.down("md")]: {
-        gridTemplateAreas: "'cont cont cont'",
-        gridTemplateColumns: "1fr 1fr 1fr",
-        paddingLeft: "2em",
-        flexDirection: "initial",
-      },
-      position: "relative",
-      "&.hideFilters": {
-        paddingLeft: "2em",
-        gridTemplateAreas: "'cont cont cont'",
-      },
-      "&.right.hideFilters": {
-        paddingLeft: 0,
-        paddingRight: "2em",
-      },
-      "&.removeFilters": {
-        paddingLeft: 0,
-        paddingRight: 0,
-      },
-    },
-    searchPageSidebar: {
-      transition: "all 200ms ease",
-      transform: "translateX(2em)",
-      paddingRight: 20,
-      gridArea: "fil",
-      [theme.breakpoints.down("md")]: {
-        position: "absolute",
-        zIndex: 2,
-        padding: 0,
-      },
-      "&.hideFilters": {
-        position: "absolute",
-        top: 0,
-        left: "calc(-350px - 2em)",
-        bottom: 0,
-        width: "350px",
-      },
-      "&.right": {
-        transform: "translateX(-2em)",
-        "&.hideFilters": {
-          position: "absolute",
-          top: 0,
-          left: "auto",
-          right: "calc(-350px - 2em)",
-          bottom: 0,
-          width: "350px",
-        },
-      },
-    },
-    rightPosition: {
-      gridTemplateAreas: "'cont cont fil'",
-    },
     searchPageResults: {
       width: "100%",
-      gridArea: "cont",
     },
     stickyContainer: {
       minHeight: "auto !important",

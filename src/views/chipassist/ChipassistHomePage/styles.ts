@@ -265,6 +265,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   title: {
     fontSize: "2.2rem",
     marginBottom: 26,
+    lineHeight: "3.3rem",
     color: "#ffffff",
     [theme.breakpoints.down("sm")]: {
       textAlign: "center",

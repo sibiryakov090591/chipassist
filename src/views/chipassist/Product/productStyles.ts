@@ -306,21 +306,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     marginBottom: "10px",
     width: "100%",
   },
-  imgBlock: {
-    display: "flex",
-  },
-  imgColumn: {
-    width: "50%",
-  },
-  imgHeader: {
-    fontSize: "18px",
-  },
-  selectRow: {
-    display: "flex",
-    fontSize: "14px",
-    margin: "12px 0 7px 0",
-    alignItems: "baseline",
-  },
   selectButton: {
     color: theme.palette.white,
     backgroundColor: "#232f3e",

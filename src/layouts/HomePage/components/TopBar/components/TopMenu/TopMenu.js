@@ -26,6 +26,7 @@ import { showHint } from "@src/store/rfqList/rfqListActions";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import { triggerReloadPage } from "@src/store/chat/chatActions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import LangMenu from "@src/layouts/HomePage/components/TopBar/components/LangMenu/LangMenu";
 import { useStyles } from "./topMenuStyles";
 
 const { t: _t } = staticI18n("menu");
@@ -149,11 +150,11 @@ const TopMenu = ({ isMobile }) => {
             style={{ display: "flex", justifyContent: "center", flexDirection: "column", padding: "1.5em" }}
           >
             <span style={{ width: "100%", textAlign: "center", fontSize: "1.7em", marginTop: "10px" }}>
-              You can create group RFQ here
+              {t("hint.title")}
             </span>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", marginTop: "6px" }}>
               <p onClick={() => dispatch(showHint(false))} className={classes.gotItButton}>
-                Got it!
+                {t("hint.button")}
               </p>
             </div>
           </Paper>
@@ -173,7 +174,7 @@ const TopMenu = ({ isMobile }) => {
             to={`/rfq-list-quotes`}
           >
             {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-            {"RFQ List"}
+            {t("rfq_list")}
           </NavLink>
         </div>
       </HtmlTooltip>
@@ -237,6 +238,7 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       )}
+      {constants.SHOW_LANG_SWITCHER && <LangMenu />}
       {isMobile && isAuthenticated && (
         <div className={itemClasses}>
           <NavLink className={`${classes.topMenuItemLink} top-menu-logout`} to={`/logout`} onClick={logoutHandler}>

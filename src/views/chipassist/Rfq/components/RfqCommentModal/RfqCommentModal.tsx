@@ -69,7 +69,7 @@ function RfqCommentModal({ onClose, rfq }: RfqCommentModalProps) {
 
         <Box mt={3} display="flex" alignItems="center" justifyContent="flex-end" className={classes.controls}>
           <Button className={appTheme.buttonPrimary} variant="contained" onClick={onClose}>
-            Close
+            {t("close")}
           </Button>
           <Button
             variant="contained"

@@ -1,3 +1,5 @@
+import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
+
 export const LOAD_STATISTICS_R = "@supplierStatistics/LOAD_STATISTICS_R";
 export const LOAD_STATISTICS_S = "@supplierStatistics/LOAD_STATISTICS_S";
 export const LOAD_STATISTICS_F = "@supplierStatistics/LOAD_STATISTICS_F";
@@ -10,23 +12,25 @@ export interface StatisticsState {
     page_size: number;
     page: number;
     count: number;
-    results: ResponseItem[];
+    results: StatisticsItem[];
   };
   isLoading: boolean;
 }
 
-export interface ResponseItem {
-  id: number;
+export interface StatisticsItem {
+  rfq_id: number;
+  rfq_quantity: number;
+  rfq_mpn: string;
+  response_quantity: number;
+  response_price: number;
+  response_created: string;
+  response_datecode: string;
   country: string;
-  competitive_price: number;
-  date: string;
   manufacturer_name: string;
-  stockrecord_id: number;
-  mpn: string;
+  competitive_price: number;
+  your_currency: CurrenciesAllowed;
+  competitive_currency: CurrenciesAllowed;
   position: string;
-  price: number;
-  quantity: number;
-  num_in_stock: number;
 }
 
 interface LoadStatisticsRequestAction {
