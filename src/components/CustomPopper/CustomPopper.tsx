@@ -4,6 +4,7 @@ import useStyles from "@src/components/CustomPopper/styles";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { clsx } from "clsx";
 import { Paper } from "@material-ui/core";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 
 interface Props {
   productId: number;
@@ -11,7 +12,7 @@ interface Props {
 
 export const CustomPopper: React.FC<Props> = ({ productId }) => {
   const classes = useStyles();
-
+  const { t } = useI18n("distributor.popper");
   const { intoViewportProductId, isShow } = useAppSelector((state) => state.products.requestHint);
 
   const [open, setOpen] = useState(false);
@@ -32,10 +33,10 @@ export const CustomPopper: React.FC<Props> = ({ productId }) => {
   return (
     <Paper elevation={3} className={clsx(classes.wrapper, { [classes.active]: open })}>
       <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
-        <span>No appropriate offers?</span>
+        <span>{t("title")}</span>
         <CloseIcon className={classes.closeIcon} onClick={handleClosePopper} />
       </div>
-      <p>Click this button and request the quotes.</p>
+      <p>{t("description")}</p>
     </Paper>
   );
 };

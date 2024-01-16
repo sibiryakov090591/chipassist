@@ -189,6 +189,7 @@ export const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     fontWeight: "bold",
     height: 38,
+    minWidth: "200px",
   },
   requestButtonHelpText: {
     maxWidth: 200,
