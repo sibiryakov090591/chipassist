@@ -97,6 +97,8 @@ const TopMenu = ({ isMobile }) => {
 
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 
+  const notIcSearch = constants.id !== "icsearch";
+
   const reloadChatPage = () => {
     if (isXsChat) dispatch(triggerReloadPage());
   };
@@ -178,21 +180,23 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       </HtmlTooltip>
-      <div className={itemClasses}>
-        <NavLink
-          className={clsx(classes.topMenuItemLink, {
-            [classes.active]: window.location.pathname.includes("/messages"),
-          })}
-          to={`/messages`}
-          onClick={reloadChatPage}
-        >
-          {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
-          <span style={{ position: "relative" }}>
-            {t("chat")}
-            <ChatUnreadTotalCount className={classes.chatUnreadCount} />
-          </span>
-        </NavLink>
-      </div>
+      {notIcSearch && (
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, {
+              [classes.active]: window.location.pathname.includes("/messages"),
+            })}
+            to={`/messages`}
+            onClick={reloadChatPage}
+          >
+            {isMobile && <ChatOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
+            <span style={{ position: "relative" }}>
+              {t("chat")}
+              <ChatUnreadTotalCount className={classes.chatUnreadCount} />
+            </span>
+          </NavLink>
+        </div>
+      )}
       {isAuthenticated && (
         <>
           {/* <div className={itemClasses}> */}
