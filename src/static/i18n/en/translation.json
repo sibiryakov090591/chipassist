@@ -649,7 +649,12 @@
     "site": "Site",
     "con": "Contact",
     "package": "Package",
-    "price_b": "Price breaks"
+    "price_b": "Price breaks",
+
+    "popper":{
+      "title": "No appropriate offers?",
+      "description": "Click this button and request the quotes."
+    }
   },
   "product": {
     "cost": "Total price",

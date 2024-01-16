@@ -174,7 +174,7 @@ const TopBar = (props) => {
                   >
                     {isChipAssist ? "info@chipassist.com" : "info@icsearch.ru"}
                   </a>
-                  {!is1180Down && (
+                  {!is1180Down && isChipAssist && (
                     <a
                       href={`tel:${isChipAssist ? "+41797137881" : "+78126280016"}`}
                       style={{ marginLeft: 18 }}

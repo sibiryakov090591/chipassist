@@ -53,6 +53,7 @@ interface SellerMessageItemInterface {
   quantity: number;
   price: number;
   country: string;
+  address: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -68,6 +69,7 @@ interface SellerMessageItemTouched {
   quantity?: boolean;
   price?: boolean;
   country?: boolean;
+  address?: boolean;
   email?: boolean;
   firstName?: boolean;
   lastName?: boolean;
@@ -83,6 +85,7 @@ interface SellerMessageItemErrors {
   quantity?: string[];
   price?: string[];
   country?: string[];
+  address?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
@@ -125,6 +128,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
   const countries = useAppSelector((state) => state.checkout.countries);
   const currency = useAppSelector((state) => state.currency.selected);
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
+  const isICSearch = constants.id === "icsearch";
   const defaultState = (profile?: any): FormState => ({
     isValid: false,
     values: {
@@ -141,6 +145,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
         (geolocation?.country_code_iso3 &&
           countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
         defaultCountry.url,
+      address: "",
       email: profile?.email || "",
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
@@ -348,7 +353,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country ? formState.values.country : null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
             }),
           );
         } else {
@@ -359,7 +364,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country ? formState.values.country : null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
             }),
           );
         }
@@ -583,27 +588,44 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               <div className={classes.phone}>
                 <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
               </div>
-              <TextField
-                variant="outlined"
-                name="country"
-                size="small"
-                label={`${t("form_labels.delivery_to")} *`}
-                value={formState.values.country}
-                onBlur={onBlurHandler("country")}
-                onChange={handleChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                select
-                style={{ textAlign: "start", width: "100%" }}
-                {...errorProps("country")}
-              >
-                {countries?.map((i: Record<string, any>) => (
-                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                    {i.printable_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {isICSearch ? (
+                <TextField
+                  variant="outlined"
+                  name="address"
+                  size="small"
+                  label={`Адрес`}
+                  placeholder={"Город/Регион"}
+                  value={formState.values.address}
+                  onBlur={onBlurHandler("address")}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ textAlign: "start", width: "100%" }}
+                ></TextField>
+              ) : (
+                <TextField
+                  variant="outlined"
+                  name="country"
+                  size="small"
+                  label={`${t("form_labels.delivery_to")} *`}
+                  value={formState.values.country}
+                  onBlur={onBlurHandler("country")}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  select
+                  style={{ textAlign: "start", width: "100%" }}
+                  {...errorProps("country")}
+                >
+                  {countries?.map((i: Record<string, any>) => (
+                    <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                      {i.printable_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
             </div>
             {/* {formState.values.company_type === "Other" && ( */}
             {/*  <div className={classes.formRow}> */}
