@@ -39,8 +39,6 @@ const initialState: actionTypes.CurrencyState = {
   rates_from: {},
 };
 
-console.log(initialState);
-
 export default function common(state = initialState, action: actionTypes.CommonActionTypes) {
   switch (action.type) {
     case actionTypes.SET_DEFAULT_CURRENCY:
