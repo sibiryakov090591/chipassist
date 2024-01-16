@@ -62,10 +62,10 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
       <table cellPadding="0" cellSpacing="0" className={classes.table}>
         <thead>
           <tr className={classes.headers}>
-            <th className={classes.tdSeller}>Seller</th>
-            <th className={classes.tdStock}>Stock</th>
+            <th className={classes.tdSeller}>{t("distributor.seller")}</th>
+            <th className={classes.tdStock}>{t("distributor.stock")}</th>
             {!isXsDown && <th className={classes.tdPrice}>DC</th>}
-            <th className={classes.tdPrice}>{isXsDown ? "Price" : "Unit price"}</th>
+            <th className={classes.tdPrice}>{isXsDown ? t("distributor.price") : t("distributor.moq_big")}</th>
             <th className={classes.tdActions}></th>
             <th className={classes.tdIcon} />
           </tr>
@@ -130,7 +130,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             className={clsx(appTheme.hyperlink, classes.partnerLink)}
                             onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
                           >
-                            {isXXSDown ? "Site" : "Visit site"}
+                            {isXXSDown ? t("sistributor.site") : t("distributor.visit")}
                           </a>
                         ) : (
                           <Button
@@ -139,7 +139,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                             onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
                             size="small"
                           >
-                            {isXXSDown ? "Contact" : "Contact seller"}
+                            {isXXSDown ? t("distributor.con") : t("distributor.contact")}
                           </Button>
                         )}
                       </td>
@@ -184,13 +184,13 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                               </div>
                             )}
                             <div>
-                              <div className={classes.detailsLabel}>Package</div>
+                              <div className={classes.detailsLabel}>{t("distributor.package")}</div>
                               <div>{val.packaging || ""}</div>
                             </div>
                           </Box>
                           {!!sortedPrices.length && (
                             <Box p="5px 10px">
-                              <div className={classes.detailsLabel}>Price breaks</div>
+                              <div className={classes.detailsLabel}>{t("distributor.price_b")}</div>
                               <table className={classes.table}>
                                 <tbody>
                                   {sortedPrices.map((price) => {

@@ -22,11 +22,13 @@ import { formatMoney } from "@src/utils/formatters";
 import RequestButton from "@src/components/ProductCardNew/components/RequestButton/RequestButton";
 import { useInView } from "react-intersection-observer";
 import { SetProductIntoViewport } from "@src/store/products/productsActions";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
 
 const ProductCardNew = (props) => {
+  const { t } = useI18n("product");
   const { product, searchQuery, viewType } = props;
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -334,7 +336,7 @@ const ProductCardNew = (props) => {
                 <>
                   {" "}
                   <span onClick={toggleCollapseText} className={appTheme.hyperlink}>
-                    {collapseText ? "...view more" : "hide"}
+                    {collapseText ? t("collapse_text.true") : t("collapse_text.false")}
                   </span>
                 </>
               )}
@@ -393,9 +395,9 @@ const ProductCardNew = (props) => {
                     ? `${formatMoney(currencyPrice((rfq.min_price + rfq.max_price) / 2, rfq.min_price_currency))} ${
                         currency.selected.symbol
                       }`
-                    : "By request"}
+                    : t("by_req")}
                 </div>
-                {!initialMobileCard && <div>Average price</div>}
+                {!initialMobileCard && <div>{t("avg_price")}</div>}
               </div>
             </Box>
             <Box display="flex" alignItems="center" className={classes.iconWrapper}>
@@ -404,9 +406,9 @@ const ProductCardNew = (props) => {
               </div>
               <div className={classes.iconValueWrapper}>
                 <div className={classes.iconValue}>
-                  {rfq?.num_in_stock ? formatMoney(rfq.num_in_stock, 0) : "By request"}
+                  {rfq?.num_in_stock ? formatMoney(rfq.num_in_stock, 0) : t("by_req")}
                 </div>
-                {!initialMobileCard && <div>In stock</div>}
+                {!initialMobileCard && <div>{t("in_stock")}</div>}
               </div>
             </Box>
             {!isXsDown && (
@@ -416,7 +418,7 @@ const ProductCardNew = (props) => {
                 </div>
                 <div className={classes.iconValueWrapper}>
                   <div className={classes.iconValue}>{rfq?.sellers ? `${rfq.sellers}+` : "1+"}</div>
-                  {!initialMobileCard && <div>Suppliers</div>}
+                  {!initialMobileCard && <div>{t("suppliers")}</div>}
                 </div>
               </Box>
             )}
@@ -426,7 +428,7 @@ const ProductCardNew = (props) => {
               </div>
               <div className={classes.iconValueWrapper}>
                 <div className={classes.iconValue}>2-4 weeks</div>
-                {!initialMobileCard && <div>Delivery time</div>}
+                {!initialMobileCard && <div>{t("del_time")}</div>}
               </div>
             </Box>
             {!isXsDown && (
@@ -438,7 +440,7 @@ const ProductCardNew = (props) => {
                   <div className={classes.iconValue}>
                     {rfq?.min_moq ? formatMoney((rfq.min_moq + rfq.max_moq) / 2, 0) : "1"}
                   </div>
-                  {!initialMobileCard && <div>Average quantity</div>}
+                  {!initialMobileCard && <div>{t("avg_qty")}</div>}
                 </div>
               </Box>
             )}
@@ -463,9 +465,7 @@ const ProductCardNew = (props) => {
           {/* </Collapse> */}
         </>
       )}
-      {!availableStockrecords.length && (
-        <div className={classes.rfqHint}>Products on offline stocks are available by request</div>
-      )}
+      {!availableStockrecords.length && <div className={classes.rfqHint}>{t("prod_on_offline")}</div>}
     </Paper>
   );
 };

@@ -20,6 +20,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { showHint } from "@src/store/rfqList/rfqListActions";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./topbarStyles";
 // import LangMenu from "./components/LangMenu/LangMenu";
 import ProfileMenu from "./components/ProfileMenu";
@@ -58,6 +59,7 @@ const TopBar = (props) => {
   const { className, ...rest } = props;
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
   const appTheme = useAppTheme();
+  const { t } = useI18n("menu");
   const classes = useStyles();
   const homePageClasses = useHomePageStyles();
   const navigate = useNavigate();
@@ -74,26 +76,28 @@ const TopBar = (props) => {
 
   const isShowHint = useAppSelector((state) => state.rfqList.showHint);
 
-  const [collapse, setСollapse] = useState(false);
+  const [collapse, setCollapse] = useState(!isChipAssist);
 
   useEffect(() => {
     if (isMdUp || isHomePage) {
       window.addEventListener("scroll", listener);
     }
     return () => {
-      if (isHomePage && collapse) setСollapse(false);
+      if (isHomePage && collapse) setCollapse(false);
       window.removeEventListener("scroll", listener);
     };
   }, [collapse, isMdUp, isHomePage]);
 
   const listener = () => {
-    if (window.pageYOffset > (isHomePage ? 500 : 60)) {
-      if (!collapse) {
-        setСollapse(true);
-        dispatch(showHint(false));
+    if (isChipAssist) {
+      if (window.pageYOffset > (isHomePage ? 500 : 60)) {
+        if (!collapse) {
+          setCollapse(true);
+          dispatch(showHint(false));
+        }
+      } else if (collapse) {
+        setCollapse(false);
       }
-    } else if (collapse) {
-      setСollapse(false);
     }
   };
 
@@ -153,7 +157,7 @@ const TopBar = (props) => {
                 <div style={{ width: is1180Down ? 145 : 250 }}>
                   {isChipAssist && (
                     <NavLink to="/sell-excess-inventory" className={homePageClasses.headerButtonLink}>
-                      Sell on <span className={homePageClasses.redColor}>ChipAssist</span>
+                      {t("sell_on")} <span className={homePageClasses.redColor}>ChipAssist</span>
                     </NavLink>
                   )}
                 </div>

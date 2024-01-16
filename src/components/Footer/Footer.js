@@ -132,11 +132,11 @@ const Footer = () => {
                             </NavLink>
                             <Hidden smDown>
                               <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                                BOM {t("bom")}
+                                {t("bom")}
                               </NavLink>
                             </Hidden>
                             <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
-                              {t("RFQ List")}
+                              {t("rfq_list")}
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
                               {t("sell_on")} ChipAssist
@@ -157,13 +157,13 @@ const Footer = () => {
                             </NavLink>
                             <Hidden smDown>
                               <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                                BOM {t("bom")}
+                                {t("bom")}
                               </NavLink>
                             </Hidden>
                           </Box>
                           <Box className={classes.navGroup}>
                             <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
-                              {t("RFQ List")}
+                              {t("rfq_list")}
                             </NavLink>
                             <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
                               {t("sell_on")} ChipAssist

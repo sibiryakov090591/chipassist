@@ -95,6 +95,8 @@ const DistributorsDesktop: React.FC<Props> = ({
     direction: "asc",
   });
 
+  const isICSearch = constants.id === "icsearch";
+
   useEffect(() => {
     if (sortedStockrecords) {
       const res = sortedStockrecords
@@ -216,16 +218,18 @@ const DistributorsDesktop: React.FC<Props> = ({
               direction={(sortBy?.name === "partner_name" && sortBy?.direction) || "asc"}
               onClick={() => changeSort("partner_name")}
             >
-              Seller
+              {t("distributor.seller")}
             </TableSortLabel>
             {!isSmDown && (
               <TableSortLabel
                 active={sortBy?.name === "updatedTime"}
                 direction={(sortBy?.name === "updatedTime" && sortBy?.direction) || "asc"}
                 onClick={() => changeSort("updatedTime")}
+                // style={isICSearch && { color: "white" }}
+                classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
               >
                 <span className={classes.divider}>/</span>
-                Updated
+                {t("distributor.updated")}
               </TableSortLabel>
             )}
           </th>
@@ -235,7 +239,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               direction={(sortBy?.name === "num_in_stock" && sortBy?.direction) || "desc"}
               onClick={() => changeSort("num_in_stock")}
             >
-              Stock
+              {t("distributor.stock")}
             </TableSortLabel>
           </th>
           <th className={classes.thIcon}></th>
@@ -426,8 +430,8 @@ const DistributorsDesktop: React.FC<Props> = ({
                               {/* <Rating value={4} readOnly /> */}
                               <p>
                                 {val.partner_url
-                                  ? "Check this product on seller`s website or request it on ChipAssist"
-                                  : "You can request this product directly on ChipAssist"}
+                                  ? t("distributor.partner_url.true")
+                                  : t("distributor.partner_url.false")}
                               </p>
                               {val.partner_url && (
                                 <Box mb={0.5}>
@@ -437,12 +441,12 @@ const DistributorsDesktop: React.FC<Props> = ({
                                     rel="noreferrer"
                                     className={appTheme.hyperlink}
                                   >
-                                    View on seller`s website
+                                    {t("distributor.view_on")}
                                   </a>
                                 </Box>
                               )}
                               <Button variant="contained" className={appTheme.buttonCreate} onClick={rfqOpenModal}>
-                                Quick request
+                                {t("distributor.quick_r")}
                               </Button>
                             </div>
                           }
@@ -469,7 +473,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                       {country && (
                         <div className={clsx(classes.dateUpdated, classes.country)}>
                           <LocationOnOutlinedIcon fontSize={"small"} className={classes.geoPin} />
-                          {partner.global === "1" ? "Global" : country}
+                          {partner.global === "1" ? t("distributor.global") : country}
                         </div>
                       )}
                     </div>
@@ -484,8 +488,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                         }}
                         title={
                           <div>
-                            You can have 10% OFF for component quality check before purchase. Request quality check on
-                            product purchase or by clicking the button below.
+                            {t("distributor.q_check.descr")}
                             <Box mt="12px">
                               <Button
                                 variant="contained"
@@ -493,7 +496,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                                 className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
                                 onClick={qualityCheckOpenModal(val.partner, val.partner_name, val.id)}
                               >
-                                Get quality check
+                                {t("distributor.q_check.button")}
                               </Button>
                             </Box>
                           </div>
@@ -501,9 +504,9 @@ const DistributorsDesktop: React.FC<Props> = ({
                       >
                         <div className={classes.qualityCheck}>
                           <HelpOutlineOutlinedIcon />
-                          10% OFF
+                          {t("distributor.q_check.off")}
                           <br />
-                          QUALITY CHECK
+                          {t("distributor.q_check.name")}
                         </div>
                       </Tooltip>
                     )}
@@ -685,7 +688,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                         className={clsx(appTheme.hyperlink, classes.partnerLink)}
                         onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
                       >
-                        Visit site
+                        {t("distributor.visit")}
                       </a>
                     ) : (
                       <Button
@@ -694,7 +697,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                         className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
                         onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
                       >
-                        Contact seller
+                        {t("distributor.contact")}
                       </Button>
                     )}
                   </div>

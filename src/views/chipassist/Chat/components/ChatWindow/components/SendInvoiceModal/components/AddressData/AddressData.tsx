@@ -20,7 +20,7 @@ function AddressData({ item }: any) {
             </TableCell>
           </TableRow>
         )}
-        <TableRow>
+        <TableRow style={{ overflowWrap: "anywhere" }}>
           <TableCell className={classes.tableHeader}>{t("cart.address.company_name")}</TableCell>
           <TableCell>{item?.company_name || ""}</TableCell>
         </TableRow>

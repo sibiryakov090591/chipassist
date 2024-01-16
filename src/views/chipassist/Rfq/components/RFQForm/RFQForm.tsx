@@ -24,6 +24,7 @@ import {
   progressModalSetPartNumber,
   changeMisc,
   saveRequestToLocalStorage,
+  saveTemporaryRfq,
 } from "@src/store/progressModal/progressModalActions";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
@@ -541,6 +542,8 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
       localStorage.setItem("before_unload_alert_disabled", "true");
       localStorage.setItem("product_request_hint_disabled", "true");
+      dispatch(saveTemporaryRfq({ rfq: data, formState: formState.values }));
+
       if (isAuthenticated) {
         // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
         setIsLoading(true);

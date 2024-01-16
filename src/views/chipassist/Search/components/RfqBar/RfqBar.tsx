@@ -8,6 +8,7 @@ import { rfqModalOpen } from "@src/store/rfq/rfqActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import formSchema from "@src/utils/formSchema";
 import validate from "validate.js";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 interface FormStateValues {
@@ -32,6 +33,7 @@ const RfqBar: React.FC = () => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
+  const { t } = useI18n("product");
 
   const query = useAppSelector((state) => state.search.query);
   const currency = useAppSelector((state) => state.currency.selected);
@@ -96,9 +98,7 @@ const RfqBar: React.FC = () => {
 
   return (
     <Paper elevation={3} className={classes.root}>
-      <div className={classes.title}>
-        Want to see more offers? Place your RFQ and sellers will respond to your request in 48 hours.
-      </div>
+      <div className={classes.title}>{t("want_to_see_more")}</div>
       <form onSubmit={handleSubmit} className={classes.form}>
         <TextField
           className={classes.input}
@@ -108,7 +108,7 @@ const RfqBar: React.FC = () => {
           size="small"
           value={formState.values.part_number || ""}
           onChange={handleChange}
-          placeholder="Part number"
+          placeholder={t("part_number")}
           error={!!formState.errors.part_number}
           helperText={!!formState.errors.part_number && formState.errors.part_number[0]}
         />
@@ -121,7 +121,7 @@ const RfqBar: React.FC = () => {
           onChange={handleChange}
           decimalScale={0}
           isAllowedZero={false}
-          placeholder="Quantity"
+          placeholder={t("qty")}
         />
         <NumberInput
           style={{ width: "100%" }}
@@ -135,10 +135,10 @@ const RfqBar: React.FC = () => {
           onChange={handleChange}
           decimalScale={4}
           isAllowedZero={true}
-          placeholder={`Target price (${currency?.code || "EUR"})`}
+          placeholder={`${t("target_price")} (${currency?.code || "EUR"})`}
         />
         <Button variant="contained" className={clsx(appTheme.buttonPrimary, classes.button)} type="submit">
-          SEND RFQ
+          {t("send_rfq")}
         </Button>
       </form>
     </Paper>

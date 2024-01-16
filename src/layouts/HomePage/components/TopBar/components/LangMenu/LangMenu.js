@@ -118,14 +118,14 @@ const LangMenu = () => {
                 >
                   {locales.map((val) => (
                     <MenuItem
-                      className={appTheme.selectMenuItem}
-                      style={{
-                        border: i18n.language === val ? "1px black solid" : null,
-                        // paddingLeft: 1,
-                        // paddingRight: 1,
-                        // width: "100%",
-                        // display: "flex",
-                      }}
+                      className={i18n.language === val ? appTheme.selectedMenuItemLang : null}
+                      // style={{
+                      //   border: i18n.language === val ? "1px black solid" : null,
+                      //   // paddingLeft: 1,
+                      //   // paddingRight: 1,
+                      //   // width: "100%",
+                      //   // display: "flex",
+                      // }}
                       key={val}
                       onClick={() => handleChangeLocale(val)}
                     >

@@ -469,7 +469,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     contactSellerButton: {
       textTransform: "none",
       fontWeight: "bold",
-      whiteSpace: "nowrap",
     },
     partnerLink: {
       color: "#16697a !important",
@@ -523,6 +522,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     geoPin: {
       fontSize: "1rem",
+    },
+    sortLabel: {
+      color: "white!important",
     },
   }),
 );

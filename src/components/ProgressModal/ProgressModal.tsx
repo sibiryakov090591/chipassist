@@ -11,7 +11,9 @@ import { authSignupAction, login, sendQuickRequestUnAuth } from "@src/store/auth
 import clsx from "clsx";
 import { useStyles as useRegisterStyles } from "@src/views/chipassist/HomeRestricted/SuccessModal/styles";
 import {
+  changeMisc,
   progressModalClose,
+  progressModalSetPartNumber,
   progressModalSuccess,
   sendVerificationCode,
 } from "@src/store/progressModal/progressModalActions";
@@ -164,25 +166,36 @@ const ProgressModal: React.FC = () => {
   };
 
   const handleSubmitResending = () => {
+    const newPartNumber = errorMessage.split(" ").pop();
+    dispatch(progressModalSetPartNumber(newPartNumber, "rfq"));
+
+    console.log("MISC_SAVE:", { ...tempRfq.formState, partNumber: newPartNumber });
+    dispatch(changeMisc("rfq", { ...tempRfq.formState, partNumber: newPartNumber }, tempRfq.formState.email));
+
+    localStorage.setItem("before_unload_alert_disabled", "true");
+    localStorage.setItem("product_request_hint_disabled", "true");
+
     if (isAuthenticated) {
-      dispatch(saveRfqItem({ ...tempRfq, part_number: errorMessage.split(" ").pop() })).then(() => {
+      console.log(tempRfq);
+      dispatch(saveRfqItem({ ...tempRfq.rfq, part_number: errorMessage.split(" ").pop() })).then(() => {
         batch(() => {
           dispatch(clearRfqItem());
           dispatch(rfqModalClose());
         });
       });
-      const email = localStorage.getItem("registered_email");
-      dispatch(deleteMiscAction("not_activated_request", email));
+      // const email = localStorage.getItem("email");
+      // console.log(email);
+      // dispatch(deleteMiscAction("not_activated_request", email));
       localStorage.removeItem("progress_modal_data");
     } else {
-      dispatch(saveRfqItem({ ...registerData, ...tempRfq, part_number: errorMessage.split(" ").pop() }, token)).then(
-        () => {
-          batch(() => {
-            dispatch(clearRfqItem());
-            dispatch(rfqModalClose());
-          });
-        },
-      );
+      dispatch(
+        saveRfqItem({ ...registerData, ...tempRfq.rfq, part_number: errorMessage.split(" ").pop() }, token),
+      ).then(() => {
+        batch(() => {
+          dispatch(clearRfqItem());
+          dispatch(rfqModalClose());
+        });
+      });
       const email = localStorage.getItem("registered_email");
       dispatch(deleteMiscAction("not_activated_request", email));
       localStorage.removeItem("progress_modal_data");

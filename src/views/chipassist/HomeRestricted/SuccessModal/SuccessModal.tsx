@@ -104,7 +104,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register", handle
           {confirmed ? (
             <span style={{ fontSize: "1.6rem", fontWeight: 600 }}>{t("confirmed.title")}</span>
           ) : (
-            <span style={{ fontSize: "1.6rem", fontWeight: 600 }}>{t("un_auth.title")}</span>
+            <span style={{ fontSize: "1.6rem", fontWeight: 600 }}>{t("un_auth.text_1")}</span>
           )}
         </DialogTitle>
         <DialogContent className={classes.dialog}>
@@ -112,7 +112,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register", handle
             <p className={classes.description}>{t("confirmed.text_1")}</p>
           ) : (
             <>
-              <p className={classes.description}>{t("un_auth.text_1")}</p>
+              {/* <p className={classes.description}>{t("un_auth.text_1")}</p> */}
               <div style={{ position: "relative", paddingBottom: 12 }}>
                 <OtpInput
                   values={values}
