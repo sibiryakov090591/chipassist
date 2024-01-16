@@ -433,7 +433,7 @@ const SearchResults = () => {
               <div className={classes.searchResultEmpty}>
                 {requestedRFQ && (
                   <div className={classes.requestedBlock}>
-                    {t("request_header")} {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
+                    {t("request_block")} {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
                   </div>
                 )}
                 <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
