@@ -318,8 +318,8 @@
       "send_link": "Send code again",
       "close_button": "Close",
       "progress": {
-        "rfq_title": "Your request for quotation (RFQ) for <span>{{partNumber}}</span> needs to be confirmed",
-        "rfq_text": "Please enter the verification code to confirm your RFQ ",
+        "rfq_title": "Your request for <span>{{partNumber}}</span> needs to be confirmed",
+        "rfq_text": "Please enter the verification code below ",
         "pcb_title": "Your request for PCB needs to be confirmed",
         "pcb_text": "Please enter the verification code to confirm your PCB",
         "order_title": "Your request for quotation (RFQ) needs to be confirmed",
@@ -964,7 +964,7 @@
     "pcb": {
       "title": {
         "p1": "Get your next",
-        "p2": "PCB with us"
+        "p2": "with us"
       },
       "subtitle": "Just upload your Gerber files and engage with 50+ PCB suppliers to get the best offering in 48 hours.",
       "ul": {
