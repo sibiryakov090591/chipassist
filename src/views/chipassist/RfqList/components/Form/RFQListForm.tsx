@@ -47,6 +47,7 @@ import { useStyles } from "./styles";
 
 interface RegInterface {
   country: string;
+  address: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -88,6 +89,7 @@ interface RfqErrors {
 interface RegTouched {
   comment?: string[];
   country?: string[];
+  address?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
@@ -100,6 +102,7 @@ interface RegTouched {
 interface RegErrors {
   comment?: string[];
   country?: string[];
+  address?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
@@ -129,6 +132,7 @@ const defaultState = (): FormState => ({
   values: {
     comment: "",
     country: "",
+    address: "",
     email: "",
     firstName: "",
     lastName: "",
@@ -191,6 +195,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
   const [prevFilledInputIndex, setPrevFilledInputIndex] = useState(0);
   const [phoneValue, setPhoneValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const isICSearch = constants.id === "icsearch";
 
   const addButtonClickHandler = () => {
     const newRfq: RfqItem = {
@@ -895,27 +900,44 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       <MenuItem value="Other">{t("column.other")}</MenuItem>
                     </TextField>
 
-                    <TextField
-                      variant="outlined"
-                      name="country"
-                      size="small"
-                      label={`${t("form_labels.delivery_to")} *`}
-                      value={formState.values.country}
-                      onBlur={onBlurHandler("country")}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      select
-                      style={{ textAlign: "start", width: "100%" }}
-                      {...errorProps("country")}
-                    >
-                      {countries?.map((i: Record<string, any>) => (
-                        <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                          {i.printable_name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                    {isICSearch ? (
+                      <TextField
+                        variant="outlined"
+                        name="address"
+                        size="small"
+                        label={`Адрес`}
+                        placeholder={"Город/Регион"}
+                        value={formState.values.address}
+                        onBlur={onBlurHandler("address")}
+                        onChange={handleChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        style={{ textAlign: "start", width: "100%" }}
+                      ></TextField>
+                    ) : (
+                      <TextField
+                        variant="outlined"
+                        name="country"
+                        size="small"
+                        label={`${t("form_labels.delivery_to")} *`}
+                        value={formState.values.country}
+                        onBlur={onBlurHandler("country")}
+                        onChange={handleChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        select
+                        style={{ textAlign: "start", width: "100%" }}
+                        {...errorProps("country")}
+                      >
+                        {countries?.map((i: Record<string, any>) => (
+                          <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                            {i.printable_name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
 
                     {formState.values.company_type === "Other" && (
                       <TextField

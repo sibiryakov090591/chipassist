@@ -89,15 +89,13 @@ const TopBar = (props) => {
   }, [collapse, isMdUp, isHomePage]);
 
   const listener = () => {
-    if (isChipAssist) {
-      if (window.pageYOffset > (isHomePage ? 500 : 60)) {
-        if (!collapse) {
-          setCollapse(true);
-          dispatch(showHint(false));
-        }
-      } else if (collapse) {
-        setCollapse(false);
+    if (window.pageYOffset > (isHomePage ? 500 : 60)) {
+      if (!collapse) {
+        setCollapse(true);
+        dispatch(showHint(false));
       }
+    } else if (collapse) {
+      setCollapse(false);
     }
   };
 
@@ -245,7 +243,7 @@ const TopBar = (props) => {
                 {/* {cartBlock} */}
               </div>
             </div>
-            <Collapse in={isHomePage ? collapse : true}>
+            <Collapse in={isHomePage && isChipAssist ? collapse : true}>
               <div className={classes.searchContainer}>
                 <SearchSuggestion
                   searchInputClass={homePageClasses.searchInput}
