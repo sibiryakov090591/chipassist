@@ -76,12 +76,12 @@ interface Props {
 
 interface RfqItemInterface {
   country: string;
+  address: string;
   quantity: string;
   price: string;
   // deliveryDate: string;
   // validateDate: string;
   // seller: Array<any>;
-  // address: string;
   comment: string;
   email: string;
   firstName: string;
@@ -95,6 +95,7 @@ interface RfqItemInterface {
 
 interface RfqItemTouched {
   country?: boolean;
+  address?: boolean;
   quantity?: boolean;
   price?: boolean;
   comment?: boolean;
@@ -110,6 +111,7 @@ interface RfqItemTouched {
 
 interface RfqItemErrors {
   country?: string[];
+  address?: string[];
   quantity?: string[];
   price?: string[];
   comment?: string[];
@@ -166,6 +168,8 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
+  const isICSearch = constants.id === "icsearch";
+
   const defaultState = (profile?: any): FormState => ({
     isValid: false,
     values: {
@@ -175,6 +179,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         (geolocation?.country_code_iso3 &&
           countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
         defaultCountry.url,
+      address: "",
       quantity: profile?.quantity || "",
       price: profile?.price || "",
       // deliveryDate: getCurrentDate(),
@@ -556,7 +561,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country || null,
-              line1: billingAddress.line1 || "-",
+              line1: billingAddress.line1 || isICSearch ? formState.values.address : "-" || "-",
             }),
           );
         } else {
@@ -567,7 +572,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country || null,
-              line1: "-",
+              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
             }),
           );
         }
@@ -835,27 +840,44 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 small
                 style={{ height: "37.63px", margin: !isDownKey && "13px" }}
               />
-              <TextField
-                variant="outlined"
-                name="country"
-                size="small"
-                label={`${t("form_labels.delivery_to")} *`}
-                value={formState.values.country}
-                onBlur={onBlurHandler("country")}
-                onChange={handleChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                select
-                style={{ textAlign: "start", width: "100%" }}
-                {...errorProps("country")}
-              >
-                {countries?.map((i: Record<string, any>) => (
-                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                    {i.printable_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {isICSearch ? (
+                <TextField
+                  variant="outlined"
+                  name="address"
+                  size="small"
+                  label={`Адрес`}
+                  placeholder={"Город/Регион"}
+                  value={formState.values.address}
+                  onBlur={onBlurHandler("address")}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ textAlign: "start", width: "100%" }}
+                ></TextField>
+              ) : (
+                <TextField
+                  variant="outlined"
+                  name="country"
+                  size="small"
+                  label={`${t("form_labels.delivery_to")} *`}
+                  value={formState.values.country}
+                  onBlur={onBlurHandler("country")}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  select
+                  style={{ textAlign: "start", width: "100%" }}
+                  {...errorProps("country")}
+                >
+                  {countries?.map((i: Record<string, any>) => (
+                    <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                      {i.printable_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
             </>
           }
         </div>
