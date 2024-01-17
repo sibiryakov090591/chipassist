@@ -28,6 +28,8 @@ const Reset = () => {
   const { t } = useI18n("reset");
   const location = useLocation();
 
+  const isNotICSearch = constants.id !== "icsearch";
+
   useEffect(() => {
     if (checkIsAuthenticated()) {
       navigate("/");
@@ -61,7 +63,7 @@ const Reset = () => {
                 <li>{t("after_request.li_1")}</li>
                 <li>{t("after_request.li_2")}</li>
                 <li>{t("after_request.li_3")}</li>
-                <li>{t("after_request.li_4", { name: constants.title })}</li>
+                {isNotICSearch && <li>{t("after_request.li_4", { name: constants.title })}</li>}
               </ul>
             </Hidden>
           </CardMedia>

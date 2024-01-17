@@ -462,7 +462,11 @@ export const ChipassistHomePage = () => {
             <Grid container spacing={3}>
               <Grid item md={7} xs={12}>
                 <h2 className={classes.title}>
-                  {t("pcb.title.p1")} <span className={classes.redColor}>{t("pcb.title.p2")}</span>
+                  {t("pcb.title.p1")}{" "}
+                  <span className={classes.redColor}>
+                    PCB {isXsDown && <br />}
+                    {t("pcb.title.p2")}
+                  </span>
                 </h2>
                 <p className={classes.pcbText}>{t("pcb.subtitle")}</p>
                 <ul className={classes.pcbList}>

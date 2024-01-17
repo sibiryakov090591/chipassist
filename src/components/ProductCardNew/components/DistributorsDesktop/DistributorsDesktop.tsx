@@ -25,7 +25,7 @@ import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { correctUrl } from "@src/utils/transformUrl";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
+// import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -217,6 +217,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               active={sortBy?.name === "partner_name"}
               direction={(sortBy?.name === "partner_name" && sortBy?.direction) || "asc"}
               onClick={() => changeSort("partner_name")}
+              classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
             >
               {t("distributor.seller")}
             </TableSortLabel>
@@ -238,6 +239,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               active={sortBy?.name === "num_in_stock"}
               direction={(sortBy?.name === "num_in_stock" && sortBy?.direction) || "desc"}
               onClick={() => changeSort("num_in_stock")}
+              classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
             >
               {t("distributor.stock")}
             </TableSortLabel>
@@ -259,6 +261,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               active={sortBy?.name === "moq"}
               direction={(sortBy?.name === "moq" && sortBy?.direction) || "desc"}
               onClick={() => changeSort("moq")}
+              classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
             >
               {t("distributor.moq")}
             </TableSortLabel>
@@ -273,6 +276,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 active={sortBy?.name === "datecode_sort_value"}
                 direction={(sortBy?.name === "datecode_sort_value" && sortBy?.direction) || "desc"}
                 onClick={() => changeSort("datecode_sort_value")}
+                classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
               >
                 DC
               </TableSortLabel>
@@ -290,6 +294,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               active={sortBy?.name === "price_1"}
               direction={(sortBy?.name === "price_1" && sortBy?.direction) || "asc"}
               onClick={() => changeSort("price_1")}
+              classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
             >
               {formatMoney(1, 0, ".", "`")}
             </TableSortLabel>
@@ -299,6 +304,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               active={sortBy?.name === "price_10"}
               direction={(sortBy?.name === "price_10" && sortBy?.direction) || "asc"}
               onClick={() => changeSort("price_10")}
+              classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
             >
               {formatMoney(10, 0, ".", "`")}
             </TableSortLabel>
@@ -308,6 +314,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               active={sortBy?.name === "price_100"}
               direction={(sortBy?.name === "price_100" && sortBy?.direction) || "asc"}
               onClick={() => changeSort("price_100")}
+              classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
             >
               {formatMoney(100, 0, ".", "`")}
             </TableSortLabel>
@@ -318,6 +325,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 active={sortBy?.name === "price_1000"}
                 direction={(sortBy?.name === "price_1000" && sortBy?.direction) || "asc"}
                 onClick={() => changeSort("price_1000")}
+                classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
               >
                 {formatMoney(1000, 0, ".", "`")}
               </TableSortLabel>
@@ -327,6 +335,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 active={sortBy?.name === "price_10000"}
                 direction={(sortBy?.name === "price_10000" && sortBy?.direction) || "asc"}
                 onClick={() => changeSort("price_10000")}
+                classes={isICSearch && { icon: classes.sortLabel, root: classes.sortLabel }}
               >
                 {formatMoney(10000, 0, ".", "`")}
               </TableSortLabel>
@@ -366,7 +375,9 @@ const DistributorsDesktop: React.FC<Props> = ({
             if (!val) return null;
             if (!showMore[val.partner] && index > 0) return null;
             if (showMore[val.partner] && index === 0) return null; // Do not show combined item
-            const partnerName = constants.id === ID_ICSEARCH ? "Импорт + таможня" : val.partner_name;
+            // const partnerName = constants.id === ID_ICSEARCH ? "Импорт + таможня" : val.partner_name;
+            const partnerName = val.partner_name;
+
             const partner = partners?.find((i: any) => i.id === val.partner);
             const isShowProductLink =
               partner &&
