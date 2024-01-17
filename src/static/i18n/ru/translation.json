@@ -988,7 +988,7 @@
     "response_make": "Ответить",
     "order": "Заказать",
     "request": "Запросить",
-    "modal_header": "{{title}} <span>{{partNumber}}</span> компонент",
+    "modal_header": "{{title}} компонент",
     "modal_text": "Мы запросим предложения на <strong>{{partNumber}}</strong> у всех подключенных продавцов. Вы получите ответы на свой почтовый ящик.",
     "sellers_responses": "Ответы продавцов",
     "show_less": "Показать меньше",
