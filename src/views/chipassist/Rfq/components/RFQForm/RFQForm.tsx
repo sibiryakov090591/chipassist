@@ -563,7 +563,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country || null,
-              line1: billingAddress.line1 || isICSearch ? formState.values.address : "-" || "-",
+              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
           );
         } else {
@@ -574,7 +574,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country || null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
           );
         }

@@ -526,6 +526,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     sortLabel: {
       color: "white!important",
     },
+    sortLabelIcon: {
+      color: "white!important",
+      opacity: "1!important",
+      "&:hover": {
+        opacity: "0.5!important",
+      },
+    },
   }),
 );
 

@@ -594,6 +594,9 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         registerData.policy_confirm = formState.values.policy_confirm;
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
+        if (isICSearch) {
+          registerData.line1 = formState.values.address;
+        }
         registerData = Object.fromEntries(
           Object.entries(registerData)
             .map((i: any) => {

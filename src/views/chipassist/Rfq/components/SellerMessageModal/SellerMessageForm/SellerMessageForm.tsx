@@ -353,7 +353,8 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country ? formState.values.country : null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              // line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
           );
         } else {
@@ -364,7 +365,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country ? formState.values.country : null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
           );
         }
@@ -405,6 +406,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
           receive_updates_confirm: formState.values.receive_updates_confirm,
           country: country?.iso_3166_1_a3,
         };
+        if (isICSearch) {
+          registerData.line1 = formState.values.address;
+        }
 
         registerData = Object.fromEntries(
           Object.entries(registerData)
