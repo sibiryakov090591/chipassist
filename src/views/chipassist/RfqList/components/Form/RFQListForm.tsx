@@ -51,8 +51,7 @@ interface RegInterface {
   email: string;
   firstName: string;
   lastName: string;
-  company_type: string;
-  company_other_type: string;
+  company_name: string;
   policy_confirm: boolean;
   receive_updates_confirm: boolean;
   comment: string;
@@ -93,8 +92,7 @@ interface RegTouched {
   email?: string[];
   firstName?: string[];
   lastName?: string[];
-  company_type?: string[];
-  company_other_type?: string[];
+  company_name?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
 }
@@ -106,8 +104,7 @@ interface RegErrors {
   email?: string[];
   firstName?: string[];
   lastName?: string[];
-  company_type?: string[];
-  company_other_type?: string[];
+  company_name?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
   [key: string]: string[];
@@ -136,8 +133,7 @@ const defaultState = (): FormState => ({
     email: "",
     firstName: "",
     lastName: "",
-    company_type: "Distributor",
-    company_other_type: "",
+    company_name: "",
     policy_confirm: false,
     receive_updates_confirm: false,
   },
@@ -275,16 +271,10 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         firstName: formSchema.firstName,
         lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-
-        ...(formState.values.company_type === "Other" && {
-          company_other_type: {
-            presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
-          },
-        }),
       };
     }
     return sch;
-  }, [isAuthenticated, formState.values.company_type]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     let country: any = null;
@@ -538,25 +528,25 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
         defaultCountry;
       const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
-      let company_type: string;
-      try {
-        company_type = !isAuthenticated
-          ? formState.values.company_type === "Other"
-            ? formState.values.company_other_type
-            : formState.values.company_type
-          : billingAddress?.notes.match(/company_variant: (.+)/) &&
-            billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
-      } catch {
-        company_type = null;
-      }
+      // let company_type: string;
+      // try {
+      //   company_type = !isAuthenticated
+      //     ? formState.values.company_type === "Other"
+      //       ? formState.values.company_other_type
+      //       : formState.values.company_type
+      //     : billingAddress?.notes.match(/company_variant: (.+)/) &&
+      //       billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
+      // } catch {
+      //   company_type = null;
+      // }
       // const company_name = !isAuthenticated
       //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
       //   : billingAddress?.company_name;
-      const company_name = billingAddress?.company_name;
+      const company_name = formState.values.company_name || billingAddress?.company_name;
       let details = `Delivery to: ${country?.printable_name};`;
       if (phone) details += ` Phone: ${phone};`;
       if (company_name) details += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
-      if (company_type) details += ` Company type: ${company_type};`;
+      // if (company_type) details += ` Company type: ${company_type};`;
       if (formState.values.comment) details += ` ${formState.values.comment};`;
 
       data = data.map((elem) => ({ ...elem, comment: details }));
@@ -601,13 +591,12 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         registerData.last_name = formState.values.lastName;
         registerData.phone_number_str = phoneValue ? `+${phoneValue}` : null;
         registerData.company_name = company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "";
-        registerData.company_variant =
-          formState.values.company_type === "Other"
-            ? formState.values.company_other_type
-            : formState.values.company_type;
         registerData.policy_confirm = formState.values.policy_confirm;
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
+        if (isICSearch) {
+          registerData.line1 = formState.values.address;
+        }
         registerData = Object.fromEntries(
           Object.entries(registerData)
             .map((i: any) => {
@@ -853,25 +842,46 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={isAuthenticated}
                       {...errorProps("lastName")}
                     />
-                    <TextField
-                      style={{ width: "100%" }}
-                      name="email"
-                      label={`${t(
-                        constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-                      )} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.email}
-                      onBlur={onBlurHandler("email")}
-                      onChange={handleChange}
-                      disabled={isAuthenticated}
-                      {...errorProps("email")}
-                    />
+                    {!isICSearch && (
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="email"
+                        label={`${t(
+                          constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                        )} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.email}
+                        onBlur={onBlurHandler("email")}
+                        onChange={handleChange}
+                        disabled={isAuthenticated}
+                        {...errorProps("email")}
+                      />
+                    )}
                   </Box>
                   <Box className={classes.formRow}>
+                    {isICSearch && (
+                      <TextField
+                        style={{ width: "100%" }}
+                        name="email"
+                        label={`${t(
+                          constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                        )} *`}
+                        variant="outlined"
+                        size="small"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        value={formState.values.email}
+                        onBlur={onBlurHandler("email")}
+                        onChange={handleChange}
+                        disabled={isAuthenticated}
+                        {...errorProps("email")}
+                      />
+                    )}
                     <PhoneInputWrapper
                       label={t("column.phone")}
                       value={phoneValue}
@@ -879,43 +889,25 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       small
                       style={{ margin: isDownKey ? "8px 0" : "13px", height: !isDownKey && "auto" }}
                     />
-                    <TextField
-                      style={{ textAlign: "start", width: "100%" }}
-                      fullWidth
-                      name="company_type"
-                      label={`${t("column.company_type")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={formState.values.company_type}
-                      select
-                      onChange={handleChange}
-                    >
-                      <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
-                      <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
-                      <MenuItem value="Design organization">{t("column.design")}</MenuItem>
-                      <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
-                      <MenuItem value="Other">{t("column.other")}</MenuItem>
-                    </TextField>
-
-                    {isICSearch ? (
+                    {!isICSearch && (
                       <TextField
+                        style={{ width: "100%" }}
+                        name="company_name"
+                        label={`${t("form_labels.company_name")} *`}
                         variant="outlined"
-                        name="address"
                         size="small"
-                        label={`Адрес`}
-                        placeholder={"Город/Регион"}
-                        value={formState.values.address}
-                        onBlur={onBlurHandler("address")}
-                        onChange={handleChange}
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        style={{ textAlign: "start", width: "100%" }}
-                      ></TextField>
-                    ) : (
+                        value={formState.values.company_name}
+                        onBlur={onBlurHandler("company_name")}
+                        onChange={handleChange}
+                        // disabled={isAuthenticated}
+                        {...errorProps("company_name")}
+                      />
+                    )}
+
+                    {!isICSearch && (
                       <TextField
                         variant="outlined"
                         name="country"
@@ -938,24 +930,25 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         ))}
                       </TextField>
                     )}
-
-                    {formState.values.company_type === "Other" && (
+                  </Box>
+                  {isICSearch && (
+                    <Box className={classes.formRow}>
                       <TextField
-                        style={{ width: "100%" }}
-                        name="company_other_type"
-                        label={`${t("column.company_other_type")} *`}
                         variant="outlined"
+                        name="address"
                         size="small"
+                        label={`Адрес`}
+                        placeholder={"Город/Регион"}
+                        value={formState.values.address}
+                        onBlur={onBlurHandler("address")}
+                        onChange={handleChange}
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={formState.values.company_other_type}
-                        onChange={handleChange}
-                        onBlur={onBlurHandler("company_other_type")}
-                        {...errorProps("company_other_type")}
-                      />
-                    )}
-                  </Box>
+                        style={{ textAlign: "start", width: "100%" }}
+                      ></TextField>
+                    </Box>
+                  )}
                 </Box>
                 <Box
                   style={{

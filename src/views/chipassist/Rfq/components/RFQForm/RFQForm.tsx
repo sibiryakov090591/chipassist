@@ -173,12 +173,13 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const defaultState = (profile?: any): FormState => ({
     isValid: false,
     values: {
-      country:
-        (profile?.defaultBillingAddress?.country &&
-          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
-        (geolocation?.country_code_iso3 &&
-          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-        defaultCountry.url,
+      country: !isICSearch
+        ? (profile?.defaultBillingAddress?.country &&
+            countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+          (geolocation?.country_code_iso3 &&
+            countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+          defaultCountry.url
+        : defaultCountry.url,
       address: "",
       quantity: profile?.quantity || "",
       price: profile?.price || "",
@@ -329,12 +330,13 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         ...prevState,
         values: {
           ...prevState.values,
-          country:
-            (billingAddress?.country &&
-              countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
-            (geolocation?.country_code_iso3 &&
-              countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-            defaultCountry.url,
+          country: !isICSearch
+            ? (billingAddress?.country &&
+                countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
+              (geolocation?.country_code_iso3 &&
+                countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+              defaultCountry.url
+            : defaultCountry.url,
         },
       };
     });
@@ -561,7 +563,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country || null,
-              line1: billingAddress.line1 || isICSearch ? formState.values.address : "-" || "-",
+              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
           );
         } else {
@@ -572,7 +574,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               company_name: formState.values.company_name,
               phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
               country: formState.values.country || null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
             }),
           );
         }
@@ -613,6 +615,9 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         registerData.policy_confirm = formState.values.policy_confirm;
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
+        if (isICSearch) {
+          registerData.line1 = formState.values.address;
+        }
         registerData = Object.fromEntries(
           Object.entries(registerData)
             .map((i: any) => {

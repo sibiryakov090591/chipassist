@@ -76,7 +76,7 @@ const TopBar = (props) => {
 
   const isShowHint = useAppSelector((state) => state.rfqList.showHint);
 
-  const [collapse, setCollapse] = useState(!isChipAssist);
+  const [collapse, setCollapse] = useState(false);
 
   useEffect(() => {
     if (isMdUp || isHomePage) {
