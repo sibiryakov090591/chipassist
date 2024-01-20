@@ -47,7 +47,7 @@ import { useStyles } from "./styles";
 
 interface RegInterface {
   country: string;
-  address: string;
+  inn: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -88,7 +88,7 @@ interface RfqErrors {
 interface RegTouched {
   comment?: string[];
   country?: string[];
-  address?: string[];
+  inn?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
@@ -100,7 +100,7 @@ interface RegTouched {
 interface RegErrors {
   comment?: string[];
   country?: string[];
-  address?: string[];
+  inn?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
@@ -129,7 +129,7 @@ const defaultState = (): FormState => ({
   values: {
     comment: "",
     country: "",
-    address: "",
+    inn: "",
     email: "",
     firstName: "",
     lastName: "",
@@ -263,6 +263,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
       country: {
         presence: { allowEmpty: false, message: `^${t("form_labels.country")} ${t("column.required")}` },
       },
+      inn: formSchema.inn,
     };
     if (!isAuthenticated) {
       sch = {
@@ -595,7 +596,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
         if (isICSearch) {
-          registerData.line1 = formState.values.address;
+          registerData.inn = formState.values.inn;
         }
         registerData = Object.fromEntries(
           Object.entries(registerData)
@@ -842,46 +843,25 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       disabled={isAuthenticated}
                       {...errorProps("lastName")}
                     />
-                    {!isICSearch && (
-                      <TextField
-                        style={{ width: "100%" }}
-                        name="email"
-                        label={`${t(
-                          constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-                        )} *`}
-                        variant="outlined"
-                        size="small"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={formState.values.email}
-                        onBlur={onBlurHandler("email")}
-                        onChange={handleChange}
-                        disabled={isAuthenticated}
-                        {...errorProps("email")}
-                      />
-                    )}
+                    <TextField
+                      style={{ width: "100%" }}
+                      name="email"
+                      label={`${t(
+                        constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
+                      )} *`}
+                      variant="outlined"
+                      size="small"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={formState.values.email}
+                      onBlur={onBlurHandler("email")}
+                      onChange={handleChange}
+                      disabled={isAuthenticated}
+                      {...errorProps("email")}
+                    />
                   </Box>
                   <Box className={classes.formRow}>
-                    {isICSearch && (
-                      <TextField
-                        style={{ width: "100%" }}
-                        name="email"
-                        label={`${t(
-                          constants.activateCorporateEmailValidation ? "form_labels.corp_email" : "form_labels.email",
-                        )} *`}
-                        variant="outlined"
-                        size="small"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={formState.values.email}
-                        onBlur={onBlurHandler("email")}
-                        onChange={handleChange}
-                        disabled={isAuthenticated}
-                        {...errorProps("email")}
-                      />
-                    )}
                     <PhoneInputWrapper
                       label={t("column.phone")}
                       value={phoneValue}
@@ -889,23 +869,22 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       small
                       style={{ margin: isDownKey ? "8px 0" : "13px", height: !isDownKey && "auto" }}
                     />
-                    {!isICSearch && (
-                      <TextField
-                        style={{ width: "100%" }}
-                        name="company_name"
-                        label={`${t("form_labels.company_name")} *`}
-                        variant="outlined"
-                        size="small"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        value={formState.values.company_name}
-                        onBlur={onBlurHandler("company_name")}
-                        onChange={handleChange}
-                        // disabled={isAuthenticated}
-                        {...errorProps("company_name")}
-                      />
-                    )}
+
+                    <TextField
+                      style={{ width: "100%" }}
+                      name="company_name"
+                      label={`${t("form_labels.company_name")} *`}
+                      variant="outlined"
+                      size="small"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={formState.values.company_name}
+                      onBlur={onBlurHandler("company_name")}
+                      onChange={handleChange}
+                      // disabled={isAuthenticated}
+                      {...errorProps("company_name")}
+                    />
 
                     {!isICSearch && (
                       <TextField
@@ -930,25 +909,23 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         ))}
                       </TextField>
                     )}
-                  </Box>
-                  {isICSearch && (
-                    <Box className={classes.formRow}>
+                    {isICSearch && (
                       <TextField
                         variant="outlined"
-                        name="address"
+                        name="inn"
                         size="small"
-                        label={`Адрес`}
-                        placeholder={"Город/Регион"}
-                        value={formState.values.address}
-                        onBlur={onBlurHandler("address")}
+                        label={`ИНН *`}
+                        value={formState.values.inn}
+                        onBlur={onBlurHandler("inn")}
                         onChange={handleChange}
                         InputLabelProps={{
                           shrink: true,
                         }}
                         style={{ textAlign: "start", width: "100%" }}
+                        {...errorProps("inn")}
                       ></TextField>
-                    </Box>
-                  )}
+                    )}
+                  </Box>
                 </Box>
                 <Box
                   style={{

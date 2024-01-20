@@ -76,7 +76,7 @@ interface Props {
 
 interface RfqItemInterface {
   country: string;
-  address: string;
+  inn: string;
   quantity: string;
   price: string;
   // deliveryDate: string;
@@ -95,7 +95,7 @@ interface RfqItemInterface {
 
 interface RfqItemTouched {
   country?: boolean;
-  address?: boolean;
+  inn?: boolean;
   quantity?: boolean;
   price?: boolean;
   comment?: boolean;
@@ -111,7 +111,7 @@ interface RfqItemTouched {
 
 interface RfqItemErrors {
   country?: string[];
-  address?: string[];
+  inn?: string[];
   quantity?: string[];
   price?: string[];
   comment?: string[];
@@ -180,7 +180,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
             countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url
         : defaultCountry.url,
-      address: "",
+      inn: "",
       quantity: profile?.quantity || "",
       price: profile?.price || "",
       // deliveryDate: getCurrentDate(),
@@ -251,6 +251,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       country: {
         presence: { allowEmpty: false, message: `^${t("form_labels.country")} ${t("column.required")}` },
       },
+      inn: formSchema.inn,
       // price: {
       // presence: { allowEmpty: false, message: `^${t("column.price")} ${t("column.required")}` },
       // numericality: {
@@ -554,27 +555,33 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       if (isAuthenticated) {
         // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
         setIsLoading(true);
+        let newAddressData: any = {
+          first_name: formState.values.firstName,
+          last_name: formState.values.lastName,
+          company_name: formState.values.company_name,
+          phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+          country: formState.values.country || null,
+          line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+        };
+
+        if (isICSearch) {
+          newAddressData = {
+            ...newAddressData,
+            inn: formState.values.inn,
+          };
+        }
+
         if (billingAddress?.id) {
           await dispatch(
             updateCompanyAddress(billingAddress.id, {
               ...billingAddress,
-              first_name: formState.values.firstName,
-              last_name: formState.values.lastName,
-              company_name: formState.values.company_name,
-              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-              country: formState.values.country || null,
-              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
+              ...newAddressData,
             }),
           );
         } else {
           await dispatch(
             newCompanyAddress({
-              first_name: formState.values.firstName,
-              last_name: formState.values.lastName,
-              company_name: formState.values.company_name,
-              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-              country: formState.values.country || null,
-              line1: isICSearch ? formState.values.address || "-" : profileInfo?.defaultBillingAddress?.line1 || "-",
+              ...newAddressData,
             }),
           );
         }
@@ -616,7 +623,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
         if (isICSearch) {
-          registerData.line1 = formState.values.address;
+          registerData.inn = formState.values.inn;
         }
         registerData = Object.fromEntries(
           Object.entries(registerData)
@@ -758,21 +765,31 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 disabled={isAuthenticated}
                 {...errorProps("email")}
               />
-              <TextField
-                style={{ width: "100%" }}
-                name="company_name"
-                label={`${t("form_labels.company_name")} *`}
-                variant="outlined"
-                size="small"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={formState.values.company_name}
-                onBlur={onBlurHandler("company_name")}
-                onChange={handleChange}
-                // disabled={isAuthenticated}
-                {...errorProps("company_name")}
-              />
+              {!isICSearch ? (
+                <TextField
+                  style={{ width: "100%" }}
+                  name="company_name"
+                  label={`${t("form_labels.company_name")} *`}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.values.company_name}
+                  onBlur={onBlurHandler("company_name")}
+                  onChange={handleChange}
+                  // disabled={isAuthenticated}
+                  {...errorProps("company_name")}
+                />
+              ) : (
+                <PhoneInputWrapper
+                  label={t("column.phone")}
+                  value={phoneValue}
+                  onChange={onChangePhoneHandler}
+                  small
+                  style={{ height: "37.63px", margin: !isDownKey && "13px" }}
+                />
+              )}
             </div>
           </>
         }
@@ -838,27 +855,45 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
           {/* )} */}
           {
             <>
-              <PhoneInputWrapper
-                label={t("column.phone")}
-                value={phoneValue}
-                onChange={onChangePhoneHandler}
-                small
-                style={{ height: "37.63px", margin: !isDownKey && "13px" }}
-              />
+              {isICSearch ? (
+                <TextField
+                  style={{ width: "100%" }}
+                  name="company_name"
+                  label={`${t("form_labels.company_name")} *`}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.values.company_name}
+                  onBlur={onBlurHandler("company_name")}
+                  onChange={handleChange}
+                  // disabled={isAuthenticated}
+                  {...errorProps("company_name")}
+                />
+              ) : (
+                <PhoneInputWrapper
+                  label={t("column.phone")}
+                  value={phoneValue}
+                  onChange={onChangePhoneHandler}
+                  small
+                  style={{ height: "37.63px", margin: !isDownKey && "13px" }}
+                />
+              )}
               {isICSearch ? (
                 <TextField
                   variant="outlined"
-                  name="address"
+                  name="inn"
                   size="small"
-                  label={`Адрес`}
-                  placeholder={"Город/Регион"}
-                  value={formState.values.address}
-                  onBlur={onBlurHandler("address")}
+                  label={`ИНН *`}
+                  value={formState.values.inn}
+                  onBlur={onBlurHandler("inn")}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   style={{ textAlign: "start", width: "100%" }}
+                  {...errorProps("inn")}
                 ></TextField>
               ) : (
                 <TextField

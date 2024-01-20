@@ -31,6 +31,7 @@ interface FormStateValues {
   first_name?: string;
   last_name?: string;
   country?: string;
+  inn?: string;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
 }
@@ -40,6 +41,7 @@ interface FormStateErrors {
   first_name?: string[];
   last_name?: string[];
   country?: string[];
+  inn?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
   [key: string]: string[];
@@ -50,6 +52,7 @@ interface FormStateTouched {
   first_name?: boolean;
   last_name?: boolean;
   country?: boolean;
+  inn?: boolean;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
   [key: string]: boolean;
@@ -92,6 +95,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
       ...(!isIcSearch && { policy_confirm: formSchema.policyConfirm }),
+      inn: formSchema.inn,
     };
   }, []);
 
@@ -249,23 +253,38 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
             value={formState.values.email || ""}
             variant="outlined"
           />
-          <TextField
-            fullWidth
-            variant="outlined"
-            name="country"
-            label={t("form_labels.country")}
-            value={formState.values.country || ""}
-            onChange={handleChange}
-            onBlur={onBlurHandler("country")}
-            select
-            style={{ textAlign: "start" }}
-          >
-            {countries.map((item: Record<string, any>) => (
-              <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
-                {item.printable_name}
-              </MenuItem>
-            ))}
-          </TextField>
+          {isIcSearch ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              name="inn"
+              label={"ИНН *"}
+              value={formState.values.inn || ""}
+              helperText={hasError("inn") ? t(formState.errors.inn[0]) : null}
+              onChange={handleChange}
+              onBlur={onBlurHandler("inn")}
+              style={{ textAlign: "start" }}
+            ></TextField>
+          ) : (
+            <TextField
+              fullWidth
+              variant="outlined"
+              name="country"
+              label={t("form_labels.country")}
+              value={formState.values.country || ""}
+              onChange={handleChange}
+              onBlur={onBlurHandler("country")}
+              select
+              style={{ textAlign: "start" }}
+            >
+              {countries.map((item: Record<string, any>) => (
+                <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
+                  {item.printable_name}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+
           <div>
             {!isIcSearch && (
               <>
