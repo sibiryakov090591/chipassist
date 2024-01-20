@@ -221,13 +221,12 @@ const DistributorsDesktop: React.FC<Props> = ({
             >
               {t("distributor.seller")}
             </TableSortLabel>
-            {!isSmDown && (
+            {!isSmDown && !isICSearch && (
               <TableSortLabel
                 active={sortBy?.name === "updatedTime"}
                 direction={(sortBy?.name === "updatedTime" && sortBy?.direction) || "asc"}
                 onClick={() => changeSort("updatedTime")}
                 // style={isICSearch && { color: "white" }}
-                classes={isICSearch && { icon: classes.sortLabelIcon, root: classes.sortLabel }}
               >
                 <span className={classes.divider}>/</span>
                 {t("distributor.updated")}

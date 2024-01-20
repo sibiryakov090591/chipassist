@@ -17,6 +17,7 @@ const RegisterFormContainer: React.FC<{ isExample?: boolean }> = ({ isExample })
   const appTheme = useAppTheme();
   const location = useLocation();
   const { t } = useI18n("register");
+  const isICSearch = constants.id === "icsearch";
 
   // useEffect(() => {
   //   if (checkIsAuthenticated()) {
@@ -36,7 +37,7 @@ const RegisterFormContainer: React.FC<{ isExample?: boolean }> = ({ isExample })
         <Typography gutterBottom variant="h3">
           {t("sign_up")}
         </Typography>
-        <Typography variant="subtitle2">{t("sign_up_description")}</Typography>
+        {!isICSearch && <Typography variant="subtitle2">{t("sign_up_description")}</Typography>}
         <RegisterForm className={classes.loginForm} isExample={isExample} />
         <Divider className={classes.divider} />
         <Link
