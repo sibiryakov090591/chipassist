@@ -7,6 +7,7 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 // import { useNavigate } from "react-router-dom";
 // import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 // import { orderByValues } from "./FilterOrderByBar";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 const SmartView: React.FC<Props> = ({ disable }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const { t } = useI18n("distributor");
   // const navigate = useNavigate();
 
   // const { page, pageSize, query } = useAppSelector((state) => state.search);
@@ -51,7 +53,7 @@ const SmartView: React.FC<Props> = ({ disable }) => {
           disabled={disable}
         />
       }
-      label="Smart view"
+      label={t("smart_view")}
     />
   );
 };
