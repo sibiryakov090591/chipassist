@@ -135,11 +135,19 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: isProd ? "robots.prod.txt" : "robots.dev.txt",
+          from: isProd ? id==="icsearch" ? "robots.prod.ics.txt" :"robots.prod.txt" : "robots.dev.txt",
           to: "robots.txt",
         },
       ],
     }),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: id==="icsearch" ? "static/sitemap.ics.txt" : "static/sitemap.chip.txt",
+            to: "sitemap.txt",
+          },
+        ],
+      }),
     new CopyPlugin({
       patterns: [{ from: logos.fromPath, to: logos.distPath }],
     }),

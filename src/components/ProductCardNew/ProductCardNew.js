@@ -383,8 +383,8 @@ const ProductCardNew = (props) => {
 
       {!availableStockrecords.length && (
         <>
-          <div className={classes.availableItemsHint}>AVAILABLE ON OFFLINE STOCKS:</div>
-          <div className={classes.iconsContainer}>
+          <div className={classes.availableItemsHint}>{t("available_on_offline")}:</div>
+          <div className={rfq?.min_moq ? classes.iconsContainer : classes.iconsNoMoqContainer}>
             <Box display="flex" alignItems="center" className={classes.iconWrapper}>
               <div className="product-card-icon-wrapper">
                 <img src={usd_icon} alt="usd" />
@@ -422,16 +422,20 @@ const ProductCardNew = (props) => {
                 </div>
               </Box>
             )}
-            <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+            <Box
+              display="flex"
+              alignItems="center"
+              className={rfq?.min_moq ? classes.iconWrapper : classes.iconNoMoqWrapper}
+            >
               <div className="product-card-icon-wrapper">
                 <img src={time_icon} alt="delivery" />
               </div>
               <div className={classes.iconValueWrapper}>
-                <div className={classes.iconValue}>2-4 weeks</div>
+                <div className={classes.iconValue}>2-4 {t("weeks")}</div>
                 {!initialMobileCard && <div>{t("del_time")}</div>}
               </div>
             </Box>
-            {!isXsDown && (
+            {!isXsDown && rfq?.min && (
               <Box display="flex" alignItems="center" className={classes.iconWrapper}>
                 <div className="product-card-icon-wrapper">
                   <img src={moq_icon} alt="moq" />
