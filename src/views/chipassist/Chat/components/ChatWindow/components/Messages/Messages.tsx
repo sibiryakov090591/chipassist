@@ -419,10 +419,14 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
                                         <th>DC</th>
                                         <th>{isXsDown ? "QTY" : "Quantity"}</th>
                                         <th className={classes.nowrap}>
-                                          {isXsDown ? `${t("price.v1")}, ${symbol}` : `${t("price.v2")}, ${symbol}`}
+                                          {isXsDown
+                                            ? `${t("table.price.v1")}, ${symbol}`
+                                            : `${t("table.price.v2")}, ${symbol}`}
                                         </th>
                                         <th className={classes.nowrap}>
-                                          {isXsDown ? `${t("total.v1")}, ${symbol}` : `${t("total.v2")}, ${symbol}`}
+                                          {isXsDown
+                                            ? `${t("table.total.v1")}, ${symbol}`
+                                            : `${t("table.total.v2")}, ${symbol}`}
                                         </th>
                                       </tr>
                                     </thead>
