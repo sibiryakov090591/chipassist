@@ -57,6 +57,7 @@ import { getAllSellers } from "@src/store/sellers/sellersActions";
 import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
+import PrivacyPolicy from "@src/views/chipassist/StaticPages/PrivacyPolicy";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -452,6 +453,16 @@ const ChipAssistApp = () => {
                 element={
                   <Suspense fallback={<Preloader title={""} />}>
                     <Policy />
+                  </Suspense>
+                }
+              />
+            )}
+            {constants.id === ID_ICSEARCH && (
+              <Route
+                path="/privacy_policy"
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <PrivacyPolicy />
                   </Suspense>
                 }
               />

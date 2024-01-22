@@ -286,8 +286,8 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
           )}
 
           <div>
-            {!isIcSearch && (
-              <>
+            <>
+              {!isIcSearch && (
                 <div className={classes.policy}>
                   <FormControlLabel
                     control={
@@ -301,34 +301,38 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
                     label={t("feedback.form.receive_updates_confirm")}
                   />
                 </div>
+              )}
 
-                <div className={classes.policy}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="policy_confirm"
-                        className={appTheme.checkbox}
-                        checked={formState.values.policy_confirm || false}
-                        onChange={handleChange}
-                      />
-                    }
-                    label={
-                      <>
-                        {t("feedback.form.policy_agree")}
-                        <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                          {t("feedback.form.terms_of_services")}
-                        </Link>
-                        {t("feedback.form.and")}
-                        <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                          {t("feedback.form.privacy_policy")}
-                        </Link>{" "}
-                        *
-                      </>
-                    }
-                  />
-                </div>
-              </>
-            )}
+              <div className={classes.policy}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="policy_confirm"
+                      className={appTheme.checkbox}
+                      checked={formState.values.policy_confirm || false}
+                      onChange={handleChange}
+                    />
+                  }
+                  label={
+                    <>
+                      {t("feedback.form.policy_agree")}
+                      {!isIcSearch && (
+                        <>
+                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                            {t("feedback.form.terms_of_services")}
+                          </Link>
+                          {t("feedback.form.and")}
+                        </>
+                      )}
+                      <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                        {t("feedback.form.privacy_policy")}
+                      </Link>{" "}
+                      *
+                    </>
+                  }
+                />
+              </div>
+            </>
             {hasError("policy_confirm") && (
               <FormHelperText error>{t(formState.errors.policy_confirm[0])}</FormHelperText>
             )}
