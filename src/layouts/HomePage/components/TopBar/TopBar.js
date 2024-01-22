@@ -252,13 +252,15 @@ const TopBar = (props) => {
                   searchClearClass={homePageClasses.clearSearchIcon}
                   isHomePageSuggestions={true}
                 />
+                {!isChipAssist && (
+                  <TrySearchPn
+                    partNumbers={partNumberExamples || partNumbers}
+                    textClassName={classes.tryP}
+                    pnClassName={classes.trySpan}
+                  />
+                )}
               </div>
             </Collapse>
-            {/* <TrySearchPn */}
-            {/*  partNumbers={partNumberExamples || partNumbers} */}
-            {/*  textClassName={classes.tryP} */}
-            {/*  pnClassName={classes.trySpan} */}
-            {/* /> */}
           </div>
         </Hidden>
       </AppBar>

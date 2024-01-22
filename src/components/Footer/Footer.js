@@ -221,7 +221,15 @@ const Footer = () => {
         ) : (
           <Container className={classes.icsearchContainer} maxWidth="lg">
             <Grid className={classes.wrapper} container>
-              <Grid item md={6} xs={12}></Grid>
+              <Grid item md={6} xs={12}>
+                <Box className={classes.contactInfoBox}>
+                  <span className={classes.titleClass}>Адес</span>
+                  <p>Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412</p>
+
+                  <span className={classes.titleClass}>Реквизиты</span>
+                  <p>ИНН 7813635698 / ОГРН 1197847128478</p>
+                </Box>
+              </Grid>
               <Grid item md={6} xs={12}>
                 <Box className={classes.contactsWrapper}>
                   <Box className={classes.contactsInner}>
@@ -230,6 +238,9 @@ const Footer = () => {
                     </Box>
                     <Box className={classes.mail}>
                       <a href="mailto:info@icsearch.ru">info@icsearch.ru</a>
+                    </Box>
+                    <Box>
+                      <a href="tel:+78126280016">+7 (812) 628-00-16</a>
                     </Box>
                   </Box>
                 </Box>

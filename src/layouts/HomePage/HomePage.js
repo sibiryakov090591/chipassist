@@ -6,6 +6,7 @@ import { scrollbarWidth } from "@src/config";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { useTheme } from "@material-ui/core";
 import { TopBar } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +37,24 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  topBarICSMobile: {
+    maxHeight: 145,
+    zIndex: 1000,
+    position: "fixed",
+    transition: "all 250ms ease",
+    width: "100vw",
+    paddingRight: `${scrollbarWidth}px`,
+    [theme.breakpoints.up("md")]: {
+      "&.collapse": {
+        height: 80,
+        paddingTop: 0,
+      },
+    },
+  },
   fixedHeight: {
     height: 127,
     [theme.breakpoints.down("sm")]: {
-      height: 133,
+      height: 145,
     },
   },
   container: {
@@ -84,11 +99,13 @@ const HomePage = (props) => {
   const isShowFooter = window.location.pathname !== "/messages";
   const isHomePage = window.location.pathname === "/";
   const isChipAssist = constants.id !== ID_ICSEARCH;
+  const theme = useTheme();
+  const isXsDown = theme.breakpoints.down("xs");
 
   return (
     <div className={classes.wrapper}>
       <TopBar
-        className={clsx(classes.topBar, {
+        className={clsx(!isChipAssist && isXsDown ? classes.topBarICSMobile : classes.topBar, {
           [classes.fixedHeight]: !isHomePage || !isChipAssist,
           [classes.home]: isHomePage && isChipAssist,
         })}
