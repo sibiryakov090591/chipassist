@@ -654,7 +654,8 @@
     "popper":{
       "title": "No appropriate offers?",
       "description": "Click this button and request the quotes."
-    }
+    },
+    "smart_view": "Smart View"
   },
   "product": {
     "cost": "Total price",
@@ -704,7 +705,9 @@
     "already_req": "You have already requested <strong>{{requestedQty}}pcs </strong> of this product",
     "requested": "Requested",
     "get_more": "Get more quotes",
-    "get_additional": "Get additional quotes from connected sellers"
+    "get_additional": "Get additional quotes from connected sellers",
+    "available_on_offline": "AVAILABLE ON OFFLINE STOCKS",
+    "weeks": "weeks"
   },
   "search": {
     "page_title": "Search Results",

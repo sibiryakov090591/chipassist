@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /auth
+Disallow: /dev-tools/*
+Sitemap: https://icsearch.com/sitemap.txt

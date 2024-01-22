@@ -26,6 +26,7 @@ import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { correctUrl } from "@src/utils/transformUrl";
 import constants from "@src/constants/constants";
 // import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { ru, enUS } from "date-fns/locale";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -470,6 +471,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                         <div className={classes.dateUpdated}>
                           {formatDistanceToNowStrict(dateUpdated, {
                             addSuffix: true,
+                            locale: isICSearch ? ru : enUS,
                           })}
                         </div>
                       )}
