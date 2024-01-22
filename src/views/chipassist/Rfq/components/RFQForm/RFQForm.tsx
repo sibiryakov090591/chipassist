@@ -395,7 +395,10 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
     return setFormState((prevState) => ({
       ...prevState,
-      values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
+      values: {
+        ...prevState.values,
+        [name]: name === "email" ? value?.replace(/ /g, "") : name === "inn" ? value?.replace(/\D/g, "") : value,
+      },
       touched: {
         ...prevState.touched,
         [name]: false,
@@ -885,7 +888,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                   variant="outlined"
                   name="inn"
                   size="small"
-                  label={`ИНН *`}
+                  label={`ИНН компании*`}
                   value={formState.values.inn}
                   onBlur={onBlurHandler("inn")}
                   onChange={handleChange}

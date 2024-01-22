@@ -403,7 +403,10 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
     return setFormState((prevState) => ({
       ...prevState,
       isValid: _.isEmpty(errors),
-      values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
+      values: {
+        ...prevState.values,
+        [name]: name === "email" ? value?.replace(/ /g, "") : name === "inn" ? value?.replace(/\D/g, "") : value,
+      },
       touched: {
         ...prevState.touched,
         [name]: false,
@@ -914,7 +917,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         variant="outlined"
                         name="inn"
                         size="small"
-                        label={`ИНН *`}
+                        label={`ИНН компании*`}
                         value={formState.values.inn}
                         onBlur={onBlurHandler("inn")}
                         onChange={handleChange}

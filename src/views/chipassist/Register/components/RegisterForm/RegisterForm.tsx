@@ -148,7 +148,14 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
         ...prevState,
         values: {
           ...prevState.values,
-          [name]: type === "checkbox" ? checked : name === "email" ? value?.replace(/ /g, "") : value,
+          [name]:
+            type === "checkbox"
+              ? checked
+              : name === "email"
+              ? value?.replace(/ /g, "")
+              : name === "inn"
+              ? value?.replace(/\D/g, "")
+              : value,
         },
         touched: {
           ...prevState.touched,
@@ -258,7 +265,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
               fullWidth
               variant="outlined"
               name="inn"
-              label={"ИНН *"}
+              label={"ИНН компании*"}
               value={formState.values.inn || ""}
               helperText={hasError("inn") ? t(formState.errors.inn[0]) : null}
               onChange={handleChange}
