@@ -1,6 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Box, MenuList, Popper, Paper, Grow, ClickAwayListener, MenuItem, Button, Hidden } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
+import {
+  Box,
+  MenuList,
+  Popper,
+  Paper,
+  Grow,
+  ClickAwayListener,
+  MenuItem,
+  Button,
+  Hidden,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import clsx from "clsx";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -9,25 +21,18 @@ import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
-
-const ProfileMenuItem = ({ to, title }) => {
-  return (
-    <li>
-      <Link to={to}>
-        <MenuItem component="div">{title}</MenuItem>
-      </Link>
-    </li>
-  );
-};
 
 const Authorized = () => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(localStorage.getItem("email"));
   const anchorRef = React.useRef(null);
@@ -46,23 +51,44 @@ const Authorized = () => {
     }
   }, [email]);
 
+  const ProfileMenuItem = ({ to, label }) => {
+    return (
+      <li>
+        <NavLink end to={to} className={({ isActive }) => isActive && classes.activeMenuItem}>
+          <MenuItem component="div">{label}</MenuItem>
+        </NavLink>
+      </li>
+    );
+  };
+
+  const profileItems = React.useMemo(() => {
+    if (isSupplierResponse) return [];
+
+    return [
+      { to: `/profile/general`, title: t("general") },
+      { to: `/profile/company/addresses`, title: t("profile.company.address") },
+      { to: `/profile/requests`, title: t("rfqs") },
+      { to: `/profile/orders?page=${ordersPage || 1}`, title: t("orders") },
+      isSmUp && { to: `/profile/bom-list`, title: t("bom") },
+    ].filter((i) => !!i);
+  }, []);
+
   const listItems = React.useMemo(() => {
-    if (constants.id === ID_SUPPLIER_RESPONSE) {
+    if (isSupplierResponse) {
       return [
         { to: `/supplier-response`, title: "Requests" },
         { to: `/help`, title: "Help" },
       ];
     }
     return [
-      { to: `/profile/general`, title: t("general") },
-      { to: `/profile/company/addresses`, title: t("profile.company.address") },
-      { to: `/profile/orders?page=${ordersPage || 1}`, title: t("orders") },
-      // {to: `/profile/notifications`, title: t("notifications")},
-      { to: `/profile/requests`, title: t("rfqs") },
+      { to: `/`, title: t("home") },
+      { to: `/parts`, title: t("parts") },
+      { to: `/bom/create-file`, title: t("bom") },
       { to: `/pcb`, title: t("pcb") },
-      { to: `/bom/bom-list`, title: t("bom") },
-      // {to: `/auth/feedback`, title: t("feedback")},
-    ];
+      { to: `/rfq-list-quotes`, title: t("rfq_list") },
+      isChipAssist && { to: `/messages`, title: t("chat") },
+      isChipAssist && { to: `/blog`, title: t("blog") },
+    ].filter((i) => !!i);
   }, []);
 
   const handleToggle = () => {
@@ -140,14 +166,39 @@ const Authorized = () => {
                     onKeyDown={handleListKeyDown}
                     onClick={handleClose}
                   >
-                    {constants.id === ID_SUPPLIER_RESPONSE && selectedPartner && (
-                      <div style={{ borderBottom: "1px solid #eee", padding: "0 16px 6px", fontWeight: "bold" }}>
-                        {selectedPartner.name}
-                      </div>
+                    {isSupplierResponse && (
+                      <>
+                        {selectedPartner && (
+                          <div style={{ borderBottom: "1px solid #eee", padding: "0 16px 6px", fontWeight: "bold" }}>
+                            {selectedPartner.name}
+                          </div>
+                        )}
+                        {listItems.map((link, index) => (
+                          <ProfileMenuItem key={index} to={link.to} label={link.title} />
+                        ))}
+                      </>
                     )}
-                    {listItems.map((link, index) => (
-                      <ProfileMenuItem key={index} to={link.to} title={link.title} />
-                    ))}
+                    {!isSupplierResponse && (
+                      <>
+                        {listItems.map((link, index) => (
+                          <ProfileMenuItem key={index} to={link.to} label={link.title} />
+                        ))}
+                        <div
+                          style={{
+                            marginTop: 8,
+                            borderTop: "1px solid #eee",
+                            fontStyle: "italic",
+                            padding: "6px 16px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {t("profile_divider")}
+                        </div>
+                        {profileItems.map((link, index) => (
+                          <ProfileMenuItem key={index} to={link.to} label={link.title} />
+                        ))}
+                      </>
+                    )}
                     <MenuItem component="div" onClick={logoutHandler}>
                       {t("logout")}
                     </MenuItem>

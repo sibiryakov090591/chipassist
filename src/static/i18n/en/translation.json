@@ -205,7 +205,8 @@
     "hint": {
       "title": "You can create group RFQ here",
       "button": "Got it!"
-    }
+    },
+    "profile_divider": "Profile menu"
   },
   "sell_excess": {
     "page_title": "Selling stocks & excessive inventory on {{name}}",
@@ -654,7 +655,8 @@
     "popper":{
       "title": "No appropriate offers?",
       "description": "Click this button and request the quotes."
-    }
+    },
+    "smart_view": "Smart View"
   },
   "product": {
     "cost": "Total price",
@@ -704,7 +706,9 @@
     "already_req": "You have already requested <strong>{{requestedQty}}pcs </strong> of this product",
     "requested": "Requested",
     "get_more": "Get more quotes",
-    "get_additional": "Get additional quotes from connected sellers"
+    "get_additional": "Get additional quotes from connected sellers",
+    "available_on_offline": "AVAILABLE ON OFFLINE STOCKS",
+    "weeks": "weeks"
   },
   "search": {
     "page_title": "Search Results",
@@ -1228,7 +1232,7 @@
         "desktop": "+ Add new line"
       },
       "login_section": {
-        "h": "Please provide an information about yourself ",
+        "h": "Please provide information about yourself ",
         "p": {
           "p1": "If you already have an account you can",
           "p2": "login here"

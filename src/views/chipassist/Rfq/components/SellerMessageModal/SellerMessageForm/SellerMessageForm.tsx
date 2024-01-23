@@ -53,7 +53,7 @@ interface SellerMessageItemInterface {
   quantity: number;
   price: number;
   country: string;
-  address: string;
+  inn: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -69,7 +69,7 @@ interface SellerMessageItemTouched {
   quantity?: boolean;
   price?: boolean;
   country?: boolean;
-  address?: boolean;
+  inn?: boolean;
   email?: boolean;
   firstName?: boolean;
   lastName?: boolean;
@@ -85,7 +85,7 @@ interface SellerMessageItemErrors {
   quantity?: string[];
   price?: string[];
   country?: string[];
-  address?: string[];
+  inn?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
@@ -145,7 +145,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
         (geolocation?.country_code_iso3 &&
           countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
         defaultCountry.url,
-      address: "",
+      inn: "",
       email: profile?.email || "",
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
@@ -184,6 +184,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
       message: {
         presence: { allowEmpty: false, message: `^${t("form_labels.message")} ${t("column.required")}` },
       },
+      inn: formSchema.inn,
     };
     if (!isAuthenticated) {
       sch = {
@@ -306,7 +307,10 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
     return setFormState((prevState) => ({
       ...prevState,
-      values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
+      values: {
+        ...prevState.values,
+        [name]: name === "email" ? value?.replace(/ /g, "") : name === "inn" ? value?.replace(/\D/g, "") : value,
+      },
       touched: {
         ...prevState.touched,
         [name]: false,
@@ -344,27 +348,32 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
 
       if (isAuthenticated) {
         setIsLoading(true);
+        let newAddressData: any = {
+          first_name: formState.values.firstName,
+          last_name: formState.values.lastName,
+          company_name: formState.values.company_name,
+          phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+          country: formState.values.country || null,
+          line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+        };
+
+        if (isICSearch) {
+          newAddressData = {
+            ...newAddressData,
+            inn: formState.values.inn,
+          };
+        }
         if (profileInfo?.defaultBillingAddress?.id) {
           await dispatch(
             updateCompanyAddress(profileInfo?.defaultBillingAddress?.id, {
               ...profileInfo.defaultBillingAddress,
-              first_name: formState.values.firstName,
-              last_name: formState.values.lastName,
-              company_name: formState.values.company_name,
-              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-              country: formState.values.country ? formState.values.country : null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              ...newAddressData,
             }),
           );
         } else {
           await dispatch(
             newCompanyAddress({
-              first_name: formState.values.firstName,
-              last_name: formState.values.lastName,
-              company_name: formState.values.company_name,
-              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-              country: formState.values.country ? formState.values.country : null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              ...newAddressData,
             }),
           );
         }
@@ -405,6 +414,9 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
           receive_updates_confirm: formState.values.receive_updates_confirm,
           country: country?.iso_3166_1_a3,
         };
+        if (isICSearch) {
+          registerData.inn = formState.values.inn;
+        }
 
         registerData = Object.fromEntries(
           Object.entries(registerData)
@@ -550,20 +562,27 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                 disabled={isAuthenticated}
                 {...errorProps("email")}
               />
-              <TextField
-                style={{ width: "100%" }}
-                name="company_name"
-                label={`${t("form_labels.company_name")} *`}
-                variant="outlined"
-                size="small"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={formState.values.company_name}
-                onBlur={onBlurHandler("company_name")}
-                onChange={handleChange}
-                {...errorProps("company_name")}
-              />
+              {!isICSearch ? (
+                <TextField
+                  style={{ width: "100%" }}
+                  name="company_name"
+                  label={`${t("form_labels.company_name")} *`}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.values.company_name}
+                  onBlur={onBlurHandler("company_name")}
+                  onChange={handleChange}
+                  // disabled={isAuthenticated}
+                  {...errorProps("company_name")}
+                />
+              ) : (
+                <div className={classes.phone}>
+                  <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
+                </div>
+              )}
             </div>
             <div className={classes.formRow}>
               {/* <TextField */}
@@ -585,23 +604,40 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
               {/*  <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem> */}
               {/*  <MenuItem value="Other">{t("column.other")}</MenuItem> */}
               {/* </TextField> */}
-              <div className={classes.phone}>
-                <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
-              </div>
+              {isICSearch ? (
+                <TextField
+                  style={{ width: "100%" }}
+                  name="company_name"
+                  label={`${t("form_labels.company_name")} *`}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.values.company_name}
+                  onBlur={onBlurHandler("company_name")}
+                  onChange={handleChange}
+                  {...errorProps("company_name")}
+                />
+              ) : (
+                <div className={classes.phone}>
+                  <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
+                </div>
+              )}
               {isICSearch ? (
                 <TextField
                   variant="outlined"
-                  name="address"
+                  name="inn"
                   size="small"
-                  label={`Адрес`}
-                  placeholder={"Город/Регион"}
-                  value={formState.values.address}
-                  onBlur={onBlurHandler("address")}
+                  label={`ИНН компании *`}
+                  value={formState.values.inn}
+                  onBlur={onBlurHandler("inn")}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   style={{ textAlign: "start", width: "100%" }}
+                  {...errorProps("inn")}
                 ></TextField>
               ) : (
                 <TextField
@@ -645,19 +681,21 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
             {/*    /> */}
             {/*  </div> */}
             {/* )} */}
-            {constants.id !== ID_ICSEARCH && !isAuthenticated && (
+            {!isAuthenticated && (
               <Box display="flex" flexDirection="column" ml={2} mt={1}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="receive_updates_confirm"
-                      className={appTheme.checkbox}
-                      checked={formState.values.receive_updates_confirm || false}
-                      onChange={handleChange}
-                    />
-                  }
-                  label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                />
+                {!isICSearch && (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="receive_updates_confirm"
+                        className={appTheme.checkbox}
+                        checked={formState.values.receive_updates_confirm || false}
+                        onChange={handleChange}
+                      />
+                    }
+                    label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                  />
+                )}
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -670,10 +708,14 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                   label={
                     <>
                       {t("feedback.form.policy_agree")}
-                      <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                        {t("feedback.form.terms_of_services")}
-                      </Link>
-                      {t("feedback.form.and")}
+                      {!isICSearch && (
+                        <>
+                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                            {t("feedback.form.terms_of_services")}
+                          </Link>
+                          {t("feedback.form.and")}
+                        </>
+                      )}
                       <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                         {t("feedback.form.privacy_policy")}
                       </Link>{" "}

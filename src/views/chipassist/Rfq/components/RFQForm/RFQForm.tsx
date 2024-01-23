@@ -76,7 +76,7 @@ interface Props {
 
 interface RfqItemInterface {
   country: string;
-  address: string;
+  inn: string;
   quantity: string;
   price: string;
   // deliveryDate: string;
@@ -95,7 +95,7 @@ interface RfqItemInterface {
 
 interface RfqItemTouched {
   country?: boolean;
-  address?: boolean;
+  inn?: boolean;
   quantity?: boolean;
   price?: boolean;
   comment?: boolean;
@@ -111,7 +111,7 @@ interface RfqItemTouched {
 
 interface RfqItemErrors {
   country?: string[];
-  address?: string[];
+  inn?: string[];
   quantity?: string[];
   price?: string[];
   comment?: string[];
@@ -173,13 +173,14 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const defaultState = (profile?: any): FormState => ({
     isValid: false,
     values: {
-      country:
-        (profile?.defaultBillingAddress?.country &&
-          countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
-        (geolocation?.country_code_iso3 &&
-          countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-        defaultCountry.url,
-      address: "",
+      country: !isICSearch
+        ? (profile?.defaultBillingAddress?.country &&
+            countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
+          (geolocation?.country_code_iso3 &&
+            countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+          defaultCountry.url
+        : defaultCountry.url,
+      inn: "",
       quantity: profile?.quantity || "",
       price: profile?.price || "",
       // deliveryDate: getCurrentDate(),
@@ -250,6 +251,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       country: {
         presence: { allowEmpty: false, message: `^${t("form_labels.country")} ${t("column.required")}` },
       },
+      inn: formSchema.inn,
       // price: {
       // presence: { allowEmpty: false, message: `^${t("column.price")} ${t("column.required")}` },
       // numericality: {
@@ -329,12 +331,13 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         ...prevState,
         values: {
           ...prevState.values,
-          country:
-            (billingAddress?.country &&
-              countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
-            (geolocation?.country_code_iso3 &&
-              countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
-            defaultCountry.url,
+          country: !isICSearch
+            ? (billingAddress?.country &&
+                countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
+              (geolocation?.country_code_iso3 &&
+                countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
+              defaultCountry.url
+            : defaultCountry.url,
         },
       };
     });
@@ -392,7 +395,10 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
 
     return setFormState((prevState) => ({
       ...prevState,
-      values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
+      values: {
+        ...prevState.values,
+        [name]: name === "email" ? value?.replace(/ /g, "") : name === "inn" ? value?.replace(/\D/g, "") : value,
+      },
       touched: {
         ...prevState.touched,
         [name]: false,
@@ -552,27 +558,33 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       if (isAuthenticated) {
         // if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`; // replace for fix double plus
         setIsLoading(true);
+        let newAddressData: any = {
+          first_name: formState.values.firstName,
+          last_name: formState.values.lastName,
+          company_name: formState.values.company_name,
+          phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
+          country: formState.values.country || null,
+          line1: profileInfo?.defaultBillingAddress?.line1 || "-",
+        };
+
+        if (isICSearch) {
+          newAddressData = {
+            ...newAddressData,
+            inn: formState.values.inn,
+          };
+        }
+
         if (billingAddress?.id) {
           await dispatch(
             updateCompanyAddress(billingAddress.id, {
               ...billingAddress,
-              first_name: formState.values.firstName,
-              last_name: formState.values.lastName,
-              company_name: formState.values.company_name,
-              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-              country: formState.values.country || null,
-              line1: billingAddress.line1 || isICSearch ? formState.values.address : "-" || "-",
+              ...newAddressData,
             }),
           );
         } else {
           await dispatch(
             newCompanyAddress({
-              first_name: formState.values.firstName,
-              last_name: formState.values.lastName,
-              company_name: formState.values.company_name,
-              phone_number_str: phoneValue ? `+${phoneValue.replace(/\+/g, "")}` : null,
-              country: formState.values.country || null,
-              line1: profileInfo?.defaultBillingAddress?.line1 || isICSearch ? formState.values.address : "-" || "-",
+              ...newAddressData,
             }),
           );
         }
@@ -613,6 +625,9 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         registerData.policy_confirm = formState.values.policy_confirm;
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
+        if (isICSearch) {
+          registerData.inn = formState.values.inn;
+        }
         registerData = Object.fromEntries(
           Object.entries(registerData)
             .map((i: any) => {
@@ -753,21 +768,31 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                 disabled={isAuthenticated}
                 {...errorProps("email")}
               />
-              <TextField
-                style={{ width: "100%" }}
-                name="company_name"
-                label={`${t("form_labels.company_name")} *`}
-                variant="outlined"
-                size="small"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={formState.values.company_name}
-                onBlur={onBlurHandler("company_name")}
-                onChange={handleChange}
-                // disabled={isAuthenticated}
-                {...errorProps("company_name")}
-              />
+              {!isICSearch ? (
+                <TextField
+                  style={{ width: "100%" }}
+                  name="company_name"
+                  label={`${t("form_labels.company_name")} *`}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.values.company_name}
+                  onBlur={onBlurHandler("company_name")}
+                  onChange={handleChange}
+                  // disabled={isAuthenticated}
+                  {...errorProps("company_name")}
+                />
+              ) : (
+                <PhoneInputWrapper
+                  label={t("column.phone")}
+                  value={phoneValue}
+                  onChange={onChangePhoneHandler}
+                  small
+                  style={{ height: "37.63px", margin: !isDownKey && "13px" }}
+                />
+              )}
             </div>
           </>
         }
@@ -833,27 +858,45 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
           {/* )} */}
           {
             <>
-              <PhoneInputWrapper
-                label={t("column.phone")}
-                value={phoneValue}
-                onChange={onChangePhoneHandler}
-                small
-                style={{ height: "37.63px", margin: !isDownKey && "13px" }}
-              />
+              {isICSearch ? (
+                <TextField
+                  style={{ width: "100%" }}
+                  name="company_name"
+                  label={`${t("form_labels.company_name")} *`}
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.values.company_name}
+                  onBlur={onBlurHandler("company_name")}
+                  onChange={handleChange}
+                  // disabled={isAuthenticated}
+                  {...errorProps("company_name")}
+                />
+              ) : (
+                <PhoneInputWrapper
+                  label={t("column.phone")}
+                  value={phoneValue}
+                  onChange={onChangePhoneHandler}
+                  small
+                  style={{ height: "37.63px", margin: !isDownKey && "13px" }}
+                />
+              )}
               {isICSearch ? (
                 <TextField
                   variant="outlined"
-                  name="address"
+                  name="inn"
                   size="small"
-                  label={`Адрес`}
-                  placeholder={"Город/Регион"}
-                  value={formState.values.address}
-                  onBlur={onBlurHandler("address")}
+                  label={`ИНН компании*`}
+                  value={formState.values.inn}
+                  onBlur={onBlurHandler("inn")}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   style={{ textAlign: "start", width: "100%" }}
+                  {...errorProps("inn")}
                 ></TextField>
               ) : (
                 <TextField
@@ -917,19 +960,21 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         {/*    /> */}
         {/*  </div> */}
         {/* )} */}
-        {!isAuthenticated && constants.id !== ID_ICSEARCH && (
+        {!isAuthenticated && (
           <Box display="flex" flexDirection="column" ml={2} mb={1}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="receive_updates_confirm"
-                  className={appTheme.checkbox}
-                  checked={formState.values.receive_updates_confirm}
-                  onChange={handleChange}
-                />
-              }
-              label={<>{t("feedback.form.receive_updates_confirm")}</>}
-            />
+            {!isICSearch && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="receive_updates_confirm"
+                    className={appTheme.checkbox}
+                    checked={formState.values.receive_updates_confirm}
+                    onChange={handleChange}
+                  />
+                }
+                label={<>{t("feedback.form.receive_updates_confirm")}</>}
+              />
+            )}
 
             <FormControlLabel
               control={
@@ -943,10 +988,14 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
               label={
                 <>
                   {t("feedback.form.policy_agree")}
-                  <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                    {t("feedback.form.terms_of_services")}
-                  </Link>
-                  {t("feedback.form.and")}
+                  {!isICSearch && (
+                    <>
+                      <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                        {t("feedback.form.terms_of_services")}
+                      </Link>
+                      {t("feedback.form.and")}
+                    </>
+                  )}
                   <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                     {t("feedback.form.privacy_policy")}
                   </Link>{" "}

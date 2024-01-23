@@ -302,7 +302,9 @@ const BomList: React.FC = () => {
         {constants.id === ID_ICSEARCH && (
           <Box className={classes.hintList}>
             <p>- {t("hint_1")}</p>
-            <p>- {t("hint_2")}</p>
+            <p>
+              - {t("hint_2")} <Link to="/bom/create-file">{t("bom_create_file")}</Link>
+            </p>
           </Box>
         )}
         {mergeEnabled && (

@@ -205,7 +205,8 @@
     "hint": {
       "title": "Hier können Sie eine Gruppenanfrage erstellen",
       "button": "Habe es!"
-    }
+    },
+    "profile_divider": "Profilmenü"
   },
   "sell_excess": {
     "page_title": "Aktien verkaufen {{name}}",

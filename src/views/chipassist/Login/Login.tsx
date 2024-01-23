@@ -23,7 +23,7 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { t } = useI18n("login");
-
+  const isICSearch = constants.id === "icsearch";
   useEffect(() => {
     if (!isExample) {
       if (checkIsAuthenticated()) {
@@ -58,7 +58,7 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
           <Typography gutterBottom variant="h3">
             {t("sign_in")}
           </Typography>
-          <Typography variant="subtitle2">{t("sign_in_description")}</Typography>
+          {!isICSearch && <Typography variant="subtitle2">{t("sign_in_description")}</Typography>}
           {isExample ? (
             <LoginForm className={classes.loginForm} isExample={true} />
           ) : (

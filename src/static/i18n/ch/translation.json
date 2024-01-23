@@ -196,7 +196,8 @@
     "try_search": "或者尝试搜索示例：",
     "try_search_mobile": "尝试示例搜索：",
     "hello": "登入",
-    "account": "帐户"
+    "account": "帐户",
+    "profile_divider": "個人資料菜單"
   },
   "sell_excess": {
     "page_title": "出售股票 {{name}}",

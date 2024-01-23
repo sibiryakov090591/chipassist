@@ -31,6 +31,7 @@ interface FormStateValues {
   first_name?: string;
   last_name?: string;
   country?: string;
+  inn?: string;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
 }
@@ -40,6 +41,7 @@ interface FormStateErrors {
   first_name?: string[];
   last_name?: string[];
   country?: string[];
+  inn?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
   [key: string]: string[];
@@ -50,6 +52,7 @@ interface FormStateTouched {
   first_name?: boolean;
   last_name?: boolean;
   country?: boolean;
+  inn?: boolean;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
   [key: string]: boolean;
@@ -92,6 +95,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
       ...(!isIcSearch && { policy_confirm: formSchema.policyConfirm }),
+      inn: formSchema.inn,
     };
   }, []);
 
@@ -144,7 +148,14 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
         ...prevState,
         values: {
           ...prevState.values,
-          [name]: type === "checkbox" ? checked : name === "email" ? value?.replace(/ /g, "") : value,
+          [name]:
+            type === "checkbox"
+              ? checked
+              : name === "email"
+              ? value?.replace(/ /g, "")
+              : name === "inn"
+              ? value?.replace(/\D/g, "")
+              : value,
         },
         touched: {
           ...prevState.touched,
@@ -249,26 +260,41 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
             value={formState.values.email || ""}
             variant="outlined"
           />
-          <TextField
-            fullWidth
-            variant="outlined"
-            name="country"
-            label={t("form_labels.country")}
-            value={formState.values.country || ""}
-            onChange={handleChange}
-            onBlur={onBlurHandler("country")}
-            select
-            style={{ textAlign: "start" }}
-          >
-            {countries.map((item: Record<string, any>) => (
-              <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
-                {item.printable_name}
-              </MenuItem>
-            ))}
-          </TextField>
+          {isIcSearch ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              name="inn"
+              label={"ИНН компании*"}
+              value={formState.values.inn || ""}
+              helperText={hasError("inn") ? t(formState.errors.inn[0]) : null}
+              onChange={handleChange}
+              onBlur={onBlurHandler("inn")}
+              style={{ textAlign: "start" }}
+            ></TextField>
+          ) : (
+            <TextField
+              fullWidth
+              variant="outlined"
+              name="country"
+              label={t("form_labels.country")}
+              value={formState.values.country || ""}
+              onChange={handleChange}
+              onBlur={onBlurHandler("country")}
+              select
+              style={{ textAlign: "start" }}
+            >
+              {countries.map((item: Record<string, any>) => (
+                <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
+                  {item.printable_name}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+
           <div>
-            {!isIcSearch && (
-              <>
+            <>
+              {!isIcSearch && (
                 <div className={classes.policy}>
                   <FormControlLabel
                     control={
@@ -282,34 +308,38 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
                     label={t("feedback.form.receive_updates_confirm")}
                   />
                 </div>
+              )}
 
-                <div className={classes.policy}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        name="policy_confirm"
-                        className={appTheme.checkbox}
-                        checked={formState.values.policy_confirm || false}
-                        onChange={handleChange}
-                      />
-                    }
-                    label={
-                      <>
-                        {t("feedback.form.policy_agree")}
-                        <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                          {t("feedback.form.terms_of_services")}
-                        </Link>
-                        {t("feedback.form.and")}
-                        <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                          {t("feedback.form.privacy_policy")}
-                        </Link>{" "}
-                        *
-                      </>
-                    }
-                  />
-                </div>
-              </>
-            )}
+              <div className={classes.policy}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="policy_confirm"
+                      className={appTheme.checkbox}
+                      checked={formState.values.policy_confirm || false}
+                      onChange={handleChange}
+                    />
+                  }
+                  label={
+                    <>
+                      {t("feedback.form.policy_agree")}
+                      {!isIcSearch && (
+                        <>
+                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                            {t("feedback.form.terms_of_services")}
+                          </Link>
+                          {t("feedback.form.and")}
+                        </>
+                      )}
+                      <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                        {t("feedback.form.privacy_policy")}
+                      </Link>{" "}
+                      *
+                    </>
+                  }
+                />
+              </div>
+            </>
             {hasError("policy_confirm") && (
               <FormHelperText error>{t(formState.errors.policy_confirm[0])}</FormHelperText>
             )}

@@ -27,6 +27,7 @@ import { useTheme, withStyles } from "@material-ui/core/styles";
 import { triggerReloadPage } from "@src/store/chat/chatActions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import LangMenu from "@src/layouts/HomePage/components/TopBar/components/LangMenu/LangMenu";
+import { MemoryOutlined } from "@material-ui/icons";
 import { useStyles } from "./topMenuStyles";
 
 const { t: _t } = staticI18n("menu");
@@ -114,17 +115,15 @@ const TopMenu = ({ isMobile }) => {
           {t("home")}
         </NavLink>
       </div>
-      {isChipAssist && (
-        <div className={itemClasses}>
-          <NavLink
-            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}
-            to={`/parts`}
-          >
-            {isMobile && <ListAltIcon className={`${classes.topMenuItemIcon}`} />}
-            {t("parts")}
-          </NavLink>
-        </div>
-      )}
+      <div className={itemClasses}>
+        <NavLink
+          className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}
+          to={`/parts`}
+        >
+          {isMobile && <ListAltIcon className={`${classes.topMenuItemIcon}`} />}
+          {t("parts")}
+        </NavLink>
+      </div>
       <Hidden smDown>
         <div className={itemClasses}>
           <NavLink
@@ -136,15 +135,17 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       </Hidden>
-      {/* <div className={itemClasses}> */}
-      {/*  <NavLink */}
-      {/*    className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })} */}
-      {/*    to={`/pcb`} */}
-      {/*  > */}
-      {/*    {isMobile && <MemoryOutlinedIcon className={`${classes.topMenuItemIcon}`} />} */}
-      {/*    {t("pcb")} */}
-      {/*  </NavLink> */}
-      {/* </div> */}
+      {!isChipAssist && (
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })}
+            to={`/pcb`}
+          >
+            {isMobile && <MemoryOutlined className={`${classes.topMenuItemIcon}`} />}
+            {t("pcb")}
+          </NavLink>
+        </div>
+      )}
       <HtmlTooltip
         title={
           <Paper

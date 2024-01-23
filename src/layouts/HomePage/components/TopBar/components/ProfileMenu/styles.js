@@ -6,6 +6,11 @@ export const useStyles = makeStyles((theme) => ({
     // height: "17px",
     // color: "#f0f0f0",
   },
+  activeMenuItem: {
+    "& > div": {
+      backgroundColor: "#eee",
+    },
+  },
   accountSpan2: {
     display: "inline-flex",
     alignItems: "center",

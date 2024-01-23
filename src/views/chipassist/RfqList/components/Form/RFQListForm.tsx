@@ -47,12 +47,11 @@ import { useStyles } from "./styles";
 
 interface RegInterface {
   country: string;
-  address: string;
+  inn: string;
   email: string;
   firstName: string;
   lastName: string;
-  company_type: string;
-  company_other_type: string;
+  company_name: string;
   policy_confirm: boolean;
   receive_updates_confirm: boolean;
   comment: string;
@@ -89,12 +88,11 @@ interface RfqErrors {
 interface RegTouched {
   comment?: string[];
   country?: string[];
-  address?: string[];
+  inn?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
-  company_type?: string[];
-  company_other_type?: string[];
+  company_name?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
 }
@@ -102,12 +100,11 @@ interface RegTouched {
 interface RegErrors {
   comment?: string[];
   country?: string[];
-  address?: string[];
+  inn?: string[];
   email?: string[];
   firstName?: string[];
   lastName?: string[];
-  company_type?: string[];
-  company_other_type?: string[];
+  company_name?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
   [key: string]: string[];
@@ -132,12 +129,11 @@ const defaultState = (): FormState => ({
   values: {
     comment: "",
     country: "",
-    address: "",
+    inn: "",
     email: "",
     firstName: "",
     lastName: "",
-    company_type: "Distributor",
-    company_other_type: "",
+    company_name: "",
     policy_confirm: false,
     receive_updates_confirm: false,
   },
@@ -267,6 +263,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
       country: {
         presence: { allowEmpty: false, message: `^${t("form_labels.country")} ${t("column.required")}` },
       },
+      inn: formSchema.inn,
     };
     if (!isAuthenticated) {
       sch = {
@@ -275,16 +272,10 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         firstName: formSchema.firstName,
         lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
-
-        ...(formState.values.company_type === "Other" && {
-          company_other_type: {
-            presence: { allowEmpty: false, message: `^${t("column.company_other_type")} ${t("column.required")}` },
-          },
-        }),
       };
     }
     return sch;
-  }, [isAuthenticated, formState.values.company_type]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     let country: any = null;
@@ -412,7 +403,10 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
     return setFormState((prevState) => ({
       ...prevState,
       isValid: _.isEmpty(errors),
-      values: { ...prevState.values, [name]: name === "email" ? value?.replace(/ /g, "") : value },
+      values: {
+        ...prevState.values,
+        [name]: name === "email" ? value?.replace(/ /g, "") : name === "inn" ? value?.replace(/\D/g, "") : value,
+      },
       touched: {
         ...prevState.touched,
         [name]: false,
@@ -538,25 +532,25 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
         defaultCountry;
       const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
-      let company_type: string;
-      try {
-        company_type = !isAuthenticated
-          ? formState.values.company_type === "Other"
-            ? formState.values.company_other_type
-            : formState.values.company_type
-          : billingAddress?.notes.match(/company_variant: (.+)/) &&
-            billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
-      } catch {
-        company_type = null;
-      }
+      // let company_type: string;
+      // try {
+      //   company_type = !isAuthenticated
+      //     ? formState.values.company_type === "Other"
+      //       ? formState.values.company_other_type
+      //       : formState.values.company_type
+      //     : billingAddress?.notes.match(/company_variant: (.+)/) &&
+      //       billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
+      // } catch {
+      //   company_type = null;
+      // }
       // const company_name = !isAuthenticated
       //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
       //   : billingAddress?.company_name;
-      const company_name = billingAddress?.company_name;
+      const company_name = formState.values.company_name || billingAddress?.company_name;
       let details = `Delivery to: ${country?.printable_name};`;
       if (phone) details += ` Phone: ${phone};`;
       if (company_name) details += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
-      if (company_type) details += ` Company type: ${company_type};`;
+      // if (company_type) details += ` Company type: ${company_type};`;
       if (formState.values.comment) details += ` ${formState.values.comment};`;
 
       data = data.map((elem) => ({ ...elem, comment: details }));
@@ -601,13 +595,12 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         registerData.last_name = formState.values.lastName;
         registerData.phone_number_str = phoneValue ? `+${phoneValue}` : null;
         registerData.company_name = company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "";
-        registerData.company_variant =
-          formState.values.company_type === "Other"
-            ? formState.values.company_other_type
-            : formState.values.company_type;
         registerData.policy_confirm = formState.values.policy_confirm;
         registerData.receive_updates_confirm = formState.values.receive_updates_confirm;
         registerData.country = country?.iso_3166_1_a3;
+        if (isICSearch) {
+          registerData.inn = formState.values.inn;
+        }
         registerData = Object.fromEntries(
           Object.entries(registerData)
             .map((i: any) => {
@@ -879,43 +872,24 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       small
                       style={{ margin: isDownKey ? "8px 0" : "13px", height: !isDownKey && "auto" }}
                     />
+
                     <TextField
-                      style={{ textAlign: "start", width: "100%" }}
-                      fullWidth
-                      name="company_type"
-                      label={`${t("column.company_type")} *`}
+                      style={{ width: "100%" }}
+                      name="company_name"
+                      label={`${t("form_labels.company_name")} *`}
                       variant="outlined"
                       size="small"
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      value={formState.values.company_type}
-                      select
+                      value={formState.values.company_name}
+                      onBlur={onBlurHandler("company_name")}
                       onChange={handleChange}
-                    >
-                      <MenuItem value="Distributor">{t("column.distributor")}</MenuItem>
-                      <MenuItem value="Industrial manufacturer">{t("column.manufacturer")}</MenuItem>
-                      <MenuItem value="Design organization">{t("column.design")}</MenuItem>
-                      <MenuItem value="Supply chain services provider">{t("column.provider")}</MenuItem>
-                      <MenuItem value="Other">{t("column.other")}</MenuItem>
-                    </TextField>
+                      // disabled={isAuthenticated}
+                      {...errorProps("company_name")}
+                    />
 
-                    {isICSearch ? (
-                      <TextField
-                        variant="outlined"
-                        name="address"
-                        size="small"
-                        label={`Адрес`}
-                        placeholder={"Город/Регион"}
-                        value={formState.values.address}
-                        onBlur={onBlurHandler("address")}
-                        onChange={handleChange}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ textAlign: "start", width: "100%" }}
-                      ></TextField>
-                    ) : (
+                    {!isICSearch && (
                       <TextField
                         variant="outlined"
                         name="country"
@@ -938,22 +912,21 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         ))}
                       </TextField>
                     )}
-
-                    {formState.values.company_type === "Other" && (
+                    {isICSearch && (
                       <TextField
-                        style={{ width: "100%" }}
-                        name="company_other_type"
-                        label={`${t("column.company_other_type")} *`}
                         variant="outlined"
+                        name="inn"
                         size="small"
+                        label={`ИНН компании*`}
+                        value={formState.values.inn}
+                        onBlur={onBlurHandler("inn")}
+                        onChange={handleChange}
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        value={formState.values.company_other_type}
-                        onChange={handleChange}
-                        onBlur={onBlurHandler("company_other_type")}
-                        {...errorProps("company_other_type")}
-                      />
+                        style={{ textAlign: "start", width: "100%" }}
+                        {...errorProps("inn")}
+                      ></TextField>
                     )}
                   </Box>
                 </Box>
@@ -990,10 +963,14 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         label={
                           <>
                             {t("feedback.form.policy_agree")}
-                            <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                              {t("feedback.form.terms_of_services")}
-                            </Link>
-                            {t("feedback.form.and")}
+                            {!isICSearch && (
+                              <>
+                                <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                                  {t("feedback.form.terms_of_services")}
+                                </Link>
+                                {t("feedback.form.and")}
+                              </>
+                            )}
                             <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                               {t("feedback.form.privacy_policy")}
                             </Link>{" "}
