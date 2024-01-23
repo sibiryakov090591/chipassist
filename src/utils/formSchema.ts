@@ -99,8 +99,10 @@ const inn = {
   ...(constants.id === ID_ICSEARCH && {
     presence: { allowEmpty: false, message: `^${t("form_labels.inn")} ${t("errors.required")}` },
     length: {
+      minimum: 10,
       maximum: 12,
       tooLong: `^${t("form_labels.inn")} ${t("errors.too_long", { count: 12 })}`,
+      tooShort: `^${t("form_labels.inn")} ${t("errors.too_short", { count: 10 })}`,
     },
   }),
 };
