@@ -205,7 +205,8 @@
     "hint": {
       "title": "You can create group RFQ here",
       "button": "Got it!"
-    }
+    },
+    "profile_divider": "Profile menu"
   },
   "sell_excess": {
     "page_title": "Selling stocks & excessive inventory on {{name}}",

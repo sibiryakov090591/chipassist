@@ -196,7 +196,8 @@
     "try_search": "O prueba una búsqueda de ejemplo:",
     "try_search_mobile": "Pruebe la búsqueda de muestra:",
     "hello": "Iniciar sesión",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "profile_divider": "Menú de perfil"
   },
   "sell_excess": {
     "page_title": "Vender acciones {{name}}",
