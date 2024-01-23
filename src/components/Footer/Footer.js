@@ -220,32 +220,79 @@ const Footer = () => {
           </Container>
         ) : (
           <Container className={classes.icsearchContainer} maxWidth="lg">
-            <Grid className={classes.wrapper} container>
-              <Grid item md={6} xs={12}>
-                <Box className={classes.contactInfoBox}>
-                  <span className={classes.titleClass}>Адес</span>
-                  <p>Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412</p>
+            {/* <Grid className={classes.wrapper} container> */}
+            {/*  <Grid item md={6} xs={12}> */}
+            {/*    <Box className={classes.contactInfoBox}> */}
+            {/*      <span className={classes.titleClass}>Адес</span> */}
+            {/*      <p>Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412</p> */}
 
-                  <span className={classes.titleClass}>Реквизиты</span>
-                  <p>ИНН 7813635698 / ОГРН 1197847128478</p>
-                </Box>
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <Box className={classes.contactsWrapper}>
-                  <Box className={classes.contactsInner}>
-                    <Box>
-                      <img alt="Logo" className={classes.logoImg} src={logo} />
-                    </Box>
-                    <Box className={classes.mail}>
-                      <a href="mailto:info@icsearch.ru">info@icsearch.ru</a>
-                    </Box>
-                    <Box>
-                      <a href="tel:+78126280016">+7 (812) 628-00-16</a>
+            {/*      <span className={classes.titleClass}> */}
+            {/*        Реквизиты */}
+            {/*        <br /> */}
+            {/*      </span> */}
+            {/*      <span> */}
+            {/*        ИНН 7813635698 */}
+            {/*        <br /> */}
+            {/*      </span> */}
+            {/*      <span>ОГРН 1197847128478</span> */}
+            {/*    </Box> */}
+            {/*  </Grid> */}
+            {/*  <Grid item md={6} xs={12}> */}
+            {/*    <Box className={classes.contactsWrapper}> */}
+            {/*      <Box className={classes.contactsInner}> */}
+            {/*        <Box> */}
+            {/*          <img alt="Logo" className={classes.logoImg} src={logo} /> */}
+            {/*        </Box> */}
+            {/*        <Box className={classes.mail}> */}
+            {/*          <a href="mailto:info@icsearch.ru">info@icsearch.ru</a> */}
+            {/*        </Box> */}
+            {/*        <Box> */}
+            {/*          <a href="tel:+78126280016">+7 (812) 628-00-16</a> */}
+            {/*        </Box> */}
+            {/*      </Box> */}
+            {/*    </Box> */}
+            {/*  </Grid> */}
+            {/* </Grid> */}
+
+            <Box className={classes.footerWrapper}>
+              <Box className={classes.logo}>
+                <a href="/">
+                  <img alt="Logo" className={classes.logoImg} src={logo} />
+                  <br />
+                </a>
+
+                <>
+                  <Box className={classes.navLink}>
+                    <a style={{ color: "white" }} href="mailto:info@icsearch.ru">
+                      info@icsearch.ru
+                    </a>
+                  </Box>
+                  <Box className={classes.navLink}>
+                    <a style={{ color: "white" }} href="tel:+78126280016">
+                      +7 (812) 628-00-16
+                    </a>
+                  </Box>
+                </>
+              </Box>
+              <Box display="flex" className={classes.nav}>
+                <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
+                  <Box display="flex" flexWrap="wrap">
+                    <Box className={classes.navGroup}>
+                      <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                        {t("privacy")}
+                      </NavLink>
+                      <span style={{ color: "white", fontSize: "12px" }}>
+                        ИНН 7813635698 / ОГРН 1197847128478
+                        <br />
+                      </span>
+                      <p style={{ color: "white", width: "70%", fontSize: "12px" }}>
+                        Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
+                      </p>
                     </Box>
                   </Box>
                 </Box>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
             <div className={classes.commit}>
               version: {process.env.AWS_COMMIT_ID || COMMITHASH} | branch:{" "}
               {process.env.AWS_BRANCH === "master" ? BRANCH : process.env.AWS_BRANCH} | mode:{" "}

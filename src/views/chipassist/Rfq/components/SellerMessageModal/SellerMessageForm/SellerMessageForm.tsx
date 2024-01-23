@@ -681,19 +681,21 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
             {/*    /> */}
             {/*  </div> */}
             {/* )} */}
-            {constants.id !== ID_ICSEARCH && !isAuthenticated && (
+            {!isAuthenticated && (
               <Box display="flex" flexDirection="column" ml={2} mt={1}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="receive_updates_confirm"
-                      className={appTheme.checkbox}
-                      checked={formState.values.receive_updates_confirm || false}
-                      onChange={handleChange}
-                    />
-                  }
-                  label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                />
+                {!isICSearch && (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="receive_updates_confirm"
+                        className={appTheme.checkbox}
+                        checked={formState.values.receive_updates_confirm || false}
+                        onChange={handleChange}
+                      />
+                    }
+                    label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                  />
+                )}
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -706,10 +708,14 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                   label={
                     <>
                       {t("feedback.form.policy_agree")}
-                      <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                        {t("feedback.form.terms_of_services")}
-                      </Link>
-                      {t("feedback.form.and")}
+                      {!isICSearch && (
+                        <>
+                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                            {t("feedback.form.terms_of_services")}
+                          </Link>
+                          {t("feedback.form.and")}
+                        </>
+                      )}
                       <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                         {t("feedback.form.privacy_policy")}
                       </Link>{" "}

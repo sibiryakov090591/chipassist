@@ -963,10 +963,14 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         label={
                           <>
                             {t("feedback.form.policy_agree")}
-                            <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                              {t("feedback.form.terms_of_services")}
-                            </Link>
-                            {t("feedback.form.and")}
+                            {!isICSearch && (
+                              <>
+                                <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                                  {t("feedback.form.terms_of_services")}
+                                </Link>
+                                {t("feedback.form.and")}
+                              </>
+                            )}
                             <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                               {t("feedback.form.privacy_policy")}
                             </Link>{" "}
