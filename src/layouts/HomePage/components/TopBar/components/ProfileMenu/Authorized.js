@@ -83,7 +83,7 @@ const Authorized = () => {
     return [
       { to: `/`, title: t("home") },
       { to: `/parts`, title: t("parts") },
-      { to: `/bom/bom-list`, title: t("bom") },
+      { to: `/bom/create-file`, title: t("bom") },
       { to: `/pcb`, title: t("pcb") },
       { to: `/rfq-list-quotes`, title: t("rfq_list") },
       isChipAssist && { to: `/messages`, title: t("chat") },
