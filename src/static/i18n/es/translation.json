@@ -341,6 +341,7 @@
     "page_description": "La herramienta BOM facilita cargar una lista de componentes electrónicos y comparar precios de distribuidores, ahorrando tiempo y dinero. ",
     "bom_list": "Listas de materiales procesadas",
     "no_saved_bom_lists": "No tiene listas de materiales guardadas. ",
+    "you_can": "Puede ",
     "import": "importarlo",
     "list_from_file": " desde CSV/XLS.",
     "bom_create": "Crear lista de materiales",

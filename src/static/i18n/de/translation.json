@@ -355,6 +355,7 @@
     "page_description": "Mit dem BOM-Tool können Sie ganz einfach eine Liste elektronischer Komponenten hochladen und Händlerpreise vergleichen, was sowohl Geld als auch Zeit spart. ",
     "bom_list": "Verarbeitete Stücklisten",
     "no_saved_bom_lists": "Sie haben keine gespeicherten Stücklisten. ",
+    "you_can": "Du kannst ",
     "import": "Importieren Sie es",
     "list_from_file": " aus CSV/XLS.",
     "bom_create": "Stückliste erstellen",
