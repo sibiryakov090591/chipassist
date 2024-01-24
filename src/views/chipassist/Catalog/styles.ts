@@ -1,6 +1,8 @@
 import { createStyles, makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core";
 import { AppTheme } from "@src/themes/AppTheme";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
+import constants from "@src/constants/constants";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
@@ -11,7 +13,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       marginTop: 20,
     },
     title: {
-      color: theme.palette.app.red500,
+      color: constants.id === ID_ICSEARCH ? theme.palette.app.green700 : theme.palette.app.red500,
       fontSize: 30,
       textAlign: "center",
     },
