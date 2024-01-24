@@ -196,7 +196,8 @@
     "try_search": "或者尝试搜索示例：",
     "try_search_mobile": "尝试示例搜索：",
     "hello": "登入",
-    "account": "帐户"
+    "account": "帐户",
+    "profile_divider": "個人資料菜單"
   },
   "sell_excess": {
     "page_title": "出售股票 {{name}}",
@@ -340,6 +341,7 @@
     "page_description": "BOM 工具可以轻松上传电子元件列表并比较经销商价格，从而节省金钱和时间。",
     "bom_list": "已处理的 BOM",
     "no_saved_bom_lists": "您没有保存的 BOM 列表。 ",
+    "you_can": "你可以 ",
     "import": "导入它",
     "list_from_file": " 来自 CSV/XLS。",
     "bom_create": "创建物料清单",

@@ -115,17 +115,15 @@ const TopMenu = ({ isMobile }) => {
           {t("home")}
         </NavLink>
       </div>
-      {isChipAssist && (
-        <div className={itemClasses}>
-          <NavLink
-            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}
-            to={`/parts`}
-          >
-            {isMobile && <ListAltIcon className={`${classes.topMenuItemIcon}`} />}
-            {t("parts")}
-          </NavLink>
-        </div>
-      )}
+      <div className={itemClasses}>
+        <NavLink
+          className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}
+          to={`/parts`}
+        >
+          {isMobile && <ListAltIcon className={`${classes.topMenuItemIcon}`} />}
+          {t("parts")}
+        </NavLink>
+      </div>
       <Hidden smDown>
         <div className={itemClasses}>
           <NavLink

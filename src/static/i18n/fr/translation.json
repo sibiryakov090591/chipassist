@@ -196,7 +196,8 @@
     "try_search": "Ou essayez un exemple de recherche :",
     "try_search_mobile": "Essayez un exemple de recherche :",
     "hello": "Se connecter",
-    "account": "Compte"
+    "account": "Compte",
+    "profile_divider": "Menu Profil"
   },
   "sell_excess": {
     "page_title": "Vendre des actions {{name}}",
@@ -340,6 +341,7 @@
     "page_description": "L'outil BOM facilite le téléchargement d'une liste de composants électroniques et la comparaison des prix des distributeurs, ce qui permet d'économiser du temps et de l'argent. ",
     "bom_list": "Nomenclatures traitées",
     "no_saved_bom_lists": "Vous n'avez aucune liste de nomenclatures enregistrée. ",
+    "you_can": "Tu peux ",
     "import": "Importez-le",
     "list_from_file": " à partir de CSV/XLS.",
     "bom_create": "Créer une nomenclature",

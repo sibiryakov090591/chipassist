@@ -286,8 +286,6 @@ const BomUpload: React.FC = () => {
                 {file === null ? (
                   <Box className={classes.sectionTitle}>
                     <p>- {t("upload.hint_1")}</p>
-                    <p>- {t("upload.hint_2")}</p>
-                    <p>- {t("upload.hint_3")}</p>
                   </Box>
                 ) : (
                   <Box className={classes.sectionTitle}>
