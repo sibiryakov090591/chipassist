@@ -260,8 +260,7 @@ const Footer = () => {
                   <img alt="Logo" className={classes.logoImg} src={logo} />
                   <br />
                 </a>
-
-                <>
+                <div style={{ marginLeft: "0.7em" }}>
                   <Box className={classes.navLink}>
                     <a style={{ color: "white" }} href="mailto:info@icsearch.ru">
                       info@icsearch.ru
@@ -272,22 +271,44 @@ const Footer = () => {
                       +7 (812) 628-00-16
                     </a>
                   </Box>
-                </>
+                </div>
               </Box>
               <Box display="flex" className={classes.nav}>
                 <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
                   <Box display="flex" flexWrap="wrap">
                     <Box className={classes.navGroup}>
+                      <NavLink className={classes.navLink} to={"/parts"}>
+                        {t("products")}
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                        {t("bom")}
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                        {t("rfq_list")}
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/pcb"}>
+                        {t("menu.pcb")}
+                      </NavLink>
                       <NavLink className={classes.navLink} to={"/privacy_policy"}>
                         {t("privacy")}
                       </NavLink>
+                    </Box>
+                  </Box>
+                  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                    <Box className={classes.navGroup} style={{ width: "65%" }}>
                       <span style={{ color: "white", fontSize: "12px" }}>
-                        ИНН 7813635698 / ОГРН 1197847128478
+                        {"ООО 'ИНЕЛСО'"}
                         <br />
                       </span>
-                      <p style={{ color: "white", width: "70%", fontSize: "12px" }}>
+                      <span style={{ color: "white", fontSize: "12px" }}>
                         Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
-                      </p>
+                        <br />
+                      </span>
+                      <span style={{ color: "white", fontSize: "12px" }}>
+                        ИНН 7813635698
+                        <br />
+                      </span>
+                      <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
                     </Box>
                   </Box>
                 </Box>
