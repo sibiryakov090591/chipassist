@@ -51,7 +51,7 @@ You have to compress a content of dist folder to `dist.zip` and deploy it using 
 - folder for requests: `www_requests_master`
 
 #### ChipOnline:
-To get the token you can log in your CA prod account using `static.164.7.9.5.clients.your-server.de` instead `api.chiponline.tech` 
+To get the token you can log in to your CA prod account using `static.164.7.9.5.clients.your-server.de` instead `api.chiponline.tech` 
 
 - POST url: `https://static.164.7.9.5.clients.your-server.de/api/zip_upload/`
 
