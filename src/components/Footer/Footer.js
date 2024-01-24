@@ -286,6 +286,9 @@ const Footer = () => {
                       <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
                         {t("rfq_list")}
                       </NavLink>
+                      <NavLink className={classes.navLink} to={"/pcb"}>
+                        {t("menu.pcb")}
+                      </NavLink>
                       <NavLink className={classes.navLink} to={"/privacy_policy"}>
                         {t("privacy")}
                       </NavLink>
