@@ -25,12 +25,19 @@ const saveCategories = (depth: number, data: actionTypes.CatalogCategory[], stat
   });
 };
 
-const createCategoryUrlName = (name: string, parentUrl = "") => {
-  const normalizeUrl = name
-    .toLowerCase()
-    .replace(/&amp;/g, "")
-    .replace(/[\W_]{1,}/g, "-")
-    .replace(/^-|-$/g, "");
+const createCategoryUrlName = (name: string, parentUrl = "", slugOnly = false) => {
+  const normalizeUrl = slugOnly
+    ? name
+        .split(" ")
+        .join("-")
+        .replaceAll(/[(),/+]/g, "")
+        .replaceAll("&", "amp")
+        .toLowerCase()
+    : name
+        .toLowerCase()
+        .replace(/&amp;/g, "")
+        .replace(/[\W_]{1,}/g, "-")
+        .replace(/^-|-$/g, "");
   return parentUrl ? `${parentUrl}/${normalizeUrl}` : normalizeUrl;
 };
 
@@ -42,6 +49,7 @@ const createNormalizeChild = (item: any, parent: any, depth: number, state: acti
   const normalizeItem: any = { ...item };
   normalizeItem.breadcrumbs = [...parent.breadcrumbs, { id: parent.id, name: parent.name, depth, url: parent.url }];
   normalizeItem.name = normalizeCategoryName(item.name);
+  normalizeItem.slug = createCategoryUrlName(item.name, null, true);
   normalizeItem.url = createCategoryUrlName(item.name, parent.url);
   if (normalizeItem.has_children) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -68,6 +76,7 @@ const setNormalizeCatalogData = (state: actionTypes.CatalogState) => {
     normalizeItem.breadcrumbs = [];
     normalizeItem.name = normalizeCategoryName(item.name);
     normalizeItem.url = createCategoryUrlName(item.name);
+    normalizeItem.slug = createCategoryUrlName(item.name, null, true);
 
     if (item.children.length) {
       normalizeItem.children = item.children.map((child: any) => {

@@ -41,7 +41,7 @@ const Catalog: React.FC = () => {
               return (
                 <div key={uuidv4()} className={classes.categoryWrapper}>
                   <NavLink to={`/parts/${category.url}`} className={clsx(classes.categoryLink, classes.depth1Name)}>
-                    {category.name}
+                    {t(`${category.slug}`)}
                   </NavLink>
                   {!!category.children.length && (
                     <div className={classes.depth2Wrapper}>
@@ -56,7 +56,7 @@ const Catalog: React.FC = () => {
                                 [classes.underline]: false,
                               })}
                             >
-                              {depth_2.name}
+                              {t(`${depth_2.slug}`)}
                             </NavLink>
                             {!!depth_2.children.length && (
                               <div className={classes.depth3Wrapper}>
@@ -67,7 +67,7 @@ const Catalog: React.FC = () => {
                                         to={`/parts/${depth_3.url}`}
                                         className={clsx(classes.categoryLink, classes.depth3Name)}
                                       >
-                                        {depth_3.name}
+                                        {t(depth_3.slug)}
                                       </NavLink>
                                       {!!depth_3.children.length && (
                                         <div className={classes.depth4Wrapper}>
@@ -78,7 +78,7 @@ const Catalog: React.FC = () => {
                                                   to={`/parts/${depth_4.url}`}
                                                   className={clsx(classes.categoryLink, classes.depth4Name)}
                                                 >
-                                                  {depth_4.name}
+                                                  {t(`${depth_4.slug}`)}
                                                 </NavLink>
                                                 {!!depth_4.children.length && (
                                                   <div className={classes.depth5Wrapper}>
@@ -89,7 +89,7 @@ const Catalog: React.FC = () => {
                                                             to={`/parts/${depth_5.url}`}
                                                             className={clsx(classes.categoryLink, classes.depth5Name)}
                                                           >
-                                                            {depth_5.name}
+                                                            {t(depth_5.slug)}
                                                           </NavLink>
                                                         </div>
                                                       );
