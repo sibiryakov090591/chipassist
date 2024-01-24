@@ -98,8 +98,6 @@ const TopMenu = ({ isMobile }) => {
 
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 
-  const notIcSearch = constants.id !== "icsearch";
-
   const reloadChatPage = () => {
     if (isXsChat) dispatch(triggerReloadPage());
   };
@@ -135,17 +133,6 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       </Hidden>
-      {!isChipAssist && (
-        <div className={itemClasses}>
-          <NavLink
-            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })}
-            to={`/pcb`}
-          >
-            {isMobile && <MemoryOutlined className={`${classes.topMenuItemIcon}`} />}
-            {t("pcb")}
-          </NavLink>
-        </div>
-      )}
       <HtmlTooltip
         title={
           <Paper
@@ -181,7 +168,18 @@ const TopMenu = ({ isMobile }) => {
           </NavLink>
         </div>
       </HtmlTooltip>
-      {notIcSearch && (
+      {!isChipAssist && (
+        <div className={itemClasses}>
+          <NavLink
+            className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })}
+            to={`/pcb`}
+          >
+            {isMobile && <MemoryOutlined className={`${classes.topMenuItemIcon}`} />}
+            {t("pcb")}
+          </NavLink>
+        </div>
+      )}
+      {isChipAssist && (
         <div className={itemClasses}>
           <NavLink
             className={clsx(classes.topMenuItemLink, {

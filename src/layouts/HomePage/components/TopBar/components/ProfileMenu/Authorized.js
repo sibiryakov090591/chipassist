@@ -87,8 +87,8 @@ const Authorized = () => {
       { to: `/`, title: t("home") },
       { to: `/parts`, title: t("parts") },
       { to: `/bom/create-file`, title: t("bom") },
-      { to: `/pcb`, title: t("pcb") },
       { to: `/rfq-list-quotes`, title: t("rfq_list") },
+      { to: `/pcb`, title: t("pcb") },
       isChipAssist && { to: `/messages`, title: t("chat") },
       isChipAssist && { to: `/blog`, title: t("blog") },
     ].filter((i) => !!i);
@@ -121,6 +121,16 @@ const Authorized = () => {
 
   const logoutHandler = () => dispatch(logout());
 
+  const avatarIcon = (styles = null) => {
+    return avatar ? (
+      <div style={styles} className={classes.avatarWrapper}>
+        <img className={classes.avatarImg} src={avatar} alt="avatar" />
+      </div>
+    ) : (
+      <AccountCircleIcon style={styles} className={classes.accountIcon} />
+    );
+  };
+
   return (
     <Box className={classes.showBy} display="flex">
       <Box display="flex" style={{ position: "relative" }}>
@@ -140,13 +150,7 @@ const Authorized = () => {
               <span className="profile-email">{title}</span>
             </Hidden>
           )}
-          {avatar ? (
-            <div className={classes.avatarWrapper}>
-              <img className={classes.avatarImg} src={avatar} alt="avatar" />
-            </div>
-          ) : (
-            <AccountCircleIcon className={classes.accountIcon} />
-          )}
+          {avatarIcon()}
           <ArrowDropDownIcon />
         </Button>
         <Popper
@@ -160,7 +164,7 @@ const Authorized = () => {
         >
           {({ TransitionProps }) => (
             <Grow {...TransitionProps}>
-              <Paper>
+              <Paper elevation={3}>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
                     className={classes.menuList}
@@ -179,32 +183,32 @@ const Authorized = () => {
                         {listItems.map((link, index) => (
                           <ProfileMenuItem key={index} to={link.to} label={link.title} />
                         ))}
+                        <MenuItem component="div" onClick={logoutHandler}>
+                          {t("logout")}
+                        </MenuItem>
                       </>
                     )}
                     {!isSupplierResponse && (
                       <>
-                        {listItems.map((link, index) => (
-                          <ProfileMenuItem key={index} to={link.to} label={link.title} />
-                        ))}
-                        <div
-                          style={{
-                            marginTop: 8,
-                            borderTop: "1px solid #eee",
-                            fontStyle: "italic",
-                            padding: "6px 16px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {t("profile_divider")}
+                        <div>
+                          {listItems.map((link, index) => (
+                            <ProfileMenuItem key={index} to={link.to} label={link.title} />
+                          ))}
                         </div>
-                        {profileItems.map((link, index) => (
-                          <ProfileMenuItem key={index} to={link.to} label={link.title} />
-                        ))}
+                        <div>
+                          <div className={classes.profileLabel}>
+                            {avatarIcon({ margin: "0 4px 0 0" })}
+                            {t("profile_divider")}
+                          </div>
+                          {profileItems.map((link, index) => (
+                            <ProfileMenuItem key={index} to={link.to} label={link.title} />
+                          ))}
+                          <MenuItem component="div" onClick={logoutHandler}>
+                            {t("logout")}
+                          </MenuItem>
+                        </div>
                       </>
                     )}
-                    <MenuItem component="div" onClick={logoutHandler}>
-                      {t("logout")}
-                    </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

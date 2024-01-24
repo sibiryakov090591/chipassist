@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   activeMenuItem: {
     "& > div": {
-      backgroundColor: "#eee",
+      backgroundColor: "#e8e8e8",
     },
   },
   accountSpan2: {
@@ -110,6 +110,16 @@ export const useStyles = makeStyles((theme) => ({
     height: "100%",
     width: "100%",
     objectFit: "cover",
+  },
+  profileLabel: {
+    marginTop: 8,
+    borderTop: "1px solid #eee",
+    padding: "12px 16px",
+    color: "#adabab",
+    fontSize: "0.885rem",
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
   },
 }));
 
