@@ -76,8 +76,11 @@ const Authorized = () => {
   const listItems = React.useMemo(() => {
     if (isSupplierResponse) {
       return [
+        { to: `/about`, title: "About" },
         { to: `/supplier-response`, title: "Requests" },
-        { to: `/help`, title: "Help" },
+        { to: `/statistics`, title: "Statistics" },
+        { to: `/messages`, title: "Messages" },
+        { to: `/profile/general`, title: "Profile" },
       ];
     }
     return [
