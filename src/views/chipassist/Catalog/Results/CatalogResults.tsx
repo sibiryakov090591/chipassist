@@ -212,7 +212,8 @@ const CatalogResults: React.FC = () => {
                             crumb?.name
                               .split(" ")
                               .join("-")
-                              .replaceAll(/[(),/]/g, "")
+                              .replaceAll(/[(),/+]/g, "")
+                              .replaceAll("&", "amp")
                               .toLowerCase(),
                           )}
                         </NavLink>
@@ -220,44 +221,19 @@ const CatalogResults: React.FC = () => {
                       </span>
                     );
                   })}
-                  <span className={classes.disabledLink}>
-                    {t(
-                      category.name
-                        .split(" ")
-                        .join("-")
-                        .replaceAll(/[(),/]/g, "")
-                        .replaceAll("&", "amp")
-                        .toLowerCase(),
-                    )}
-                  </span>
+                  <span className={classes.disabledLink}>{t(category.slug)}</span>
 
                   {category.children && !!category.children.length && (
                     <div>
                       <div className={classes.categoryWrapper}>
-                        <div className={classes.categoryTitle}>
-                          {t(
-                            category.name
-                              .split(" ")
-                              .join("-")
-                              .replaceAll(/[(),/]/g, "")
-                              .replaceAll("&", "amp")
-                              .toLowerCase(),
-                          )}
-                        </div>
+                        <div className={classes.categoryTitle}>{t(category.slug)}</div>
 
                         <div className={classes.depth2Wrapper}>
                           {category.children.map((depth_2: any) => {
                             return (
                               <div key={uuidv4()}>
                                 <NavLink className={classes.categoryLink} to={`/parts/${depth_2.url}`}>
-                                  {t(
-                                    depth_2.name
-                                      .split(" ")
-                                      .join("-")
-                                      .replaceAll(/[(),/]/g, "")
-                                      .replaceAll("&", "amp")
-                                      .toLowerCase(),
-                                  )}
+                                  {t(depth_2.slug)}
                                 </NavLink>
                                 {depth_2.children && !!depth_2.children.length && (
                                   <div className={classes.depth3Wrapper}>
@@ -265,14 +241,7 @@ const CatalogResults: React.FC = () => {
                                       return (
                                         <div key={uuidv4()}>
                                           <NavLink className={classes.categoryLink} to={`/parts/${depth_3.url}`}>
-                                            {t(
-                                              depth_3.name
-                                                .split(" ")
-                                                .join("-")
-                                                .replaceAll(/[(),/]/g, "")
-                                                .replaceAll("&", "amp")
-                                                .toLowerCase(),
-                                            )}
+                                            {t(depth_3.slug)}
                                           </NavLink>
                                           {depth_3.children && !!depth_3.children.length && (
                                             <div className={classes.depth3Wrapper}>
@@ -283,14 +252,7 @@ const CatalogResults: React.FC = () => {
                                                       className={classes.categoryLink}
                                                       to={`/parts/${depth_4.url}`}
                                                     >
-                                                      {t(
-                                                        depth_4.name
-                                                          .split(" ")
-                                                          .join("-")
-                                                          .replaceAll(/[(),/]/g, "")
-                                                          .replaceAll("&", "amp")
-                                                          .toLowerCase(),
-                                                      )}
+                                                      {t(depth_4.slug)}
                                                     </NavLink>
                                                     {depth_4.children && !!depth_4.children.length && (
                                                       <div className={classes.depth3Wrapper}>
@@ -301,14 +263,7 @@ const CatalogResults: React.FC = () => {
                                                                 className={classes.categoryLink}
                                                                 to={`/parts/${depth_5.url}`}
                                                               >
-                                                                {t(
-                                                                  depth_5.name
-                                                                    .split(" ")
-                                                                    .join("-")
-                                                                    .replaceAll(/[(),/]/g, "")
-                                                                    .replaceAll("&", "amp")
-                                                                    .toLowerCase(),
-                                                                )}
+                                                                {t(depth_5.slug)}
                                                               </NavLink>
                                                             </div>
                                                           );
