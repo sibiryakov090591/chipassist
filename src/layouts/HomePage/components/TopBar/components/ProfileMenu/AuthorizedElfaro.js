@@ -102,9 +102,9 @@ const AuthorizedElfaro = () => {
                     onClick={handleClose}
                   >
                     <MenuItem>
-                      <a href={"https://www.elfaro.ee"}>Home</a>
+                      <a href={"https://www.chiponline.tech"}>Home</a>
                     </MenuItem>
-                    <ProfileMenuItem to={`/`} title="Products" />
+                    <ProfileMenuItem to={`/`} title="Components" />
                     <MenuItem component="div" onClick={logoutHandler}>
                       {t("logout")}
                     </MenuItem>
