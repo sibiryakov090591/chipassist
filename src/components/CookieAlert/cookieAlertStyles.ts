@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
     },
     container: {
-      display: "flex",
+      display: "flex!important",
       alignItems: "center",
       justifyContent: "space-between",
     },
