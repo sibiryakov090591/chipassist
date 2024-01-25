@@ -150,10 +150,6 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
     dispatch(saveProfileInfo(updatedProfileInfo));
   };
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let validValue = value;
