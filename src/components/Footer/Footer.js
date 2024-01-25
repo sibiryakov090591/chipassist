@@ -272,30 +272,9 @@ const Footer = () => {
                     </a>
                   </Box>
                 </div>
-              </Box>
-              <Box display="flex" className={classes.nav}>
-                <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
-                  <Box display="flex" flexWrap="wrap">
-                    <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLink} to={"/parts"}>
-                        {t("products")}
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                        {t("bom")}
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
-                        {t("rfq_list")}
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={"/pcb"}>
-                        {t("menu.pcb")}
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={"/privacy_policy"}>
-                        {t("privacy")}
-                      </NavLink>
-                    </Box>
-                  </Box>
-                  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
-                    <Box className={classes.navGroup} style={{ width: "65%" }}>
+                <Hidden smUp>
+                  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} textAlign={"start"}>
+                    <Box className={classes.navGroup} style={{ width: "69%" }}>
                       <span style={{ color: "white", fontSize: "12px" }}>
                         {"ООО 'ИНЕЛСО'"}
                         <br />
@@ -311,6 +290,60 @@ const Footer = () => {
                       <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
                     </Box>
                   </Box>
+                </Hidden>
+              </Box>
+              <Box display="flex" className={classes.nav}>
+                <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
+                  <Box display="flex" flexWrap="wrap">
+                    <Box className={classes.navGroup}>
+                      <NavLink className={classes.navLink} to={"/parts"}>
+                        {t("products")}
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                        {t("bom")}
+                      </NavLink>
+                      <Hidden smDown>
+                        <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                          {t("rfq_list")}
+                        </NavLink>
+                        <NavLink className={classes.navLink} to={"/pcb"}>
+                          {t("menu.pcb")}
+                        </NavLink>
+                        <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                          {t("privacy")}
+                        </NavLink>
+                      </Hidden>
+                    </Box>
+                  </Box>
+                  <Hidden smUp>
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                      <NavLink className={classes.navLink} to={"/pcb"}>
+                        {t("menu.pcb")}
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                        {t("privacy")}
+                      </NavLink>
+                    </Box>
+                  </Hidden>
+                  <Hidden smDown>
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                      <Box className={classes.navGroup} style={{ width: "65%" }}>
+                        <span style={{ color: "white", fontSize: "12px" }}>
+                          {"ООО 'ИНЕЛСО'"}
+                          <br />
+                        </span>
+                        <span style={{ color: "white", fontSize: "12px" }}>
+                          Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
+                          <br />
+                        </span>
+                        <span style={{ color: "white", fontSize: "12px" }}>
+                          ИНН 7813635698
+                          <br />
+                        </span>
+                        <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
+                      </Box>
+                    </Box>
+                  </Hidden>
                 </Box>
               </Box>
             </Box>

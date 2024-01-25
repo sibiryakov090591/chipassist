@@ -95,6 +95,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
       company_name: formSchema.companyName,
       postcode: formSchema.postcode,
       line1: formSchema.address,
+      inn: formSchema.inn,
     };
   }, []);
 
@@ -149,12 +150,17 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
     dispatch(saveProfileInfo(updatedProfileInfo));
   };
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let validValue = value;
 
     if (name === "inn") {
       if (value.length > 12) validValue = value.slice(0, 12);
+      validValue = value?.replace(/\D/g, "");
     }
 
     if (errors[name]) {
@@ -297,10 +303,10 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
                 value={addressData?.inn || ""}
                 disabled={!!billingAddress?.inn}
                 variant="outlined"
-                error={!!errors.inn}
+                error={!!validateErrors.inn}
                 size={isXsDown ? "small" : "medium"}
                 helperText={
-                  (errors.inn && errors.inn.message) ||
+                  (validateErrors.inn && validateErrors.inn[0]) ||
                   (!!billingAddress?.inn && (
                     <span className={classes.innHelperWrapper}>
                       {t("general.inn_helper")}
