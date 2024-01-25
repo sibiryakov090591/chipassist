@@ -80,6 +80,7 @@ const TopBar = (props) => {
 
   useEffect(() => {
     if (isMdUp || isHomePage) {
+      window.removeEventListener("scroll", listener);
       window.addEventListener("scroll", listener);
     }
     return () => {
@@ -89,7 +90,7 @@ const TopBar = (props) => {
   }, [collapse, isMdUp, isHomePage]);
 
   const listener = () => {
-    if (window.pageYOffset > (isHomePage ? 500 : 60)) {
+    if (window.pageYOffset > (isHomePage && isChipAssist ? 500 : 60)) {
       if (!collapse) {
         setCollapse(true);
         dispatch(showHint(false));
