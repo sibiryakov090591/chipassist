@@ -7,6 +7,10 @@
 
 [requests.camaster.site](https://requests.camaster.site) — Dev requests
 
+[shop.chiponline.tech](https://shop.chiponline.tech) — Prod shop ChipOnline
+
+[icsearch.ru](https://icsearch.ru) — Prod ICSearch
+
 ### Git clone
 
 Create and set the SSH key to GitLab before.
@@ -33,18 +37,30 @@ Clone repo: `git clone ssh://git@gitlab.icsearch.ru:2233/developers/fe_spaceone.
 You have to compress a content of dist folder to `dist.zip` and deploy it using Postman. Add `Authorization: Token <token>` header. Add `file` and `folder` keys into `form-data`. Folder's value vary depending on a project. 
 
 #### Production:
-- POST `https://api.chipassist.com/api/zip_upload/`
+- POST url: `https://api.chipassist.com/api/zip_upload/`
 
 - folder for chipassist: `www`
 
 - folder for requests: `www_requests`
 
 #### Master:
-- POST `https://api.camaster.site/api/zip_upload/`
+- POST url: `https://api.camaster.site/api/zip_upload/`
 
 - folder for chipassist: `www_master`
 
 - folder for requests: `www_requests_master`
+
+#### ChipOnline:
+To get the token you can log in to your CA prod account using `static.164.7.9.5.clients.your-server.de` instead `api.chiponline.tech` 
+
+- POST url: `https://static.164.7.9.5.clients.your-server.de/api/zip_upload/`
+
+- folder: `chiponline`
+
+#### ICSearch:
+- POST url: `https://api.icsearch.ru/api/zip_upload/`
+
+- folder: `www`
 
 ### Additional:
 
