@@ -1,6 +1,7 @@
 import { Theme } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/styles";
 import { AppTheme } from "@src/themes/AppTheme";
+import { scrollbarWidth } from "@src/config";
 
 export const useStyles = makeStyles((theme: Theme & AppTheme) =>
   createStyles({
@@ -15,32 +16,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     stickyContainer: {
       minHeight: "auto !important",
-      "& > div": {
-        zIndex: 10,
-        "&.sticky": {
-          left: 0,
-          right: 0,
-          width: "100% !important",
-          "& > div": {
-            backgroundColor: "#f8f8f8",
-            boxShadow: "0px 1px 0px #f0f0f0",
-            width: "100vw",
-            paddingRight: 16,
-          },
-        },
-      },
-    },
-    stickyContainerMarginDesktop: {
-      "& > div": {
-        "&.sticky": {
-          marginTop: 80,
-        },
-      },
-    },
-    stickyContainerMarginMobile: {
-      "& > div": {
-        "&.sticky": {
-          marginTop: 133,
+      zIndex: 10,
+      "&.sticky": {
+        boxShadow: "0px 1px 0px #f0f0f0",
+        width: "100vw",
+        paddingRight: `${scrollbarWidth}px`,
+        "& > div": {
+          backgroundColor: "#f8f8f8",
         },
       },
     },

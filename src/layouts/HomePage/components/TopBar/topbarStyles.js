@@ -3,6 +3,7 @@ import { colors } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
+    position: "relative",
     backgroundColor: theme.palette.primary.main,
     [theme.breakpoints.up("md")]: {
       boxShadow: "none",

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui/core";
@@ -22,11 +23,9 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import { getAuthToken } from "@src/utils/auth";
 import RFQForm from "@src/views/chipassist/Rfq/components/RFQForm/RFQForm";
 import { setRFQQueryUpc, rfqModalOpen, setSellerMessageData } from "@src/store/rfq/rfqActions";
-import Sticky from "react-sticky-el";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useNavigate } from "react-router-dom";
-import { fixedStickyContainerHeight } from "@src/utils/search";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
 import Tour, { ReactourStep } from "reactour";
 import img from "@src/images/Screenshot_1.png";
@@ -114,6 +113,7 @@ const SearchResults = () => {
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
+  const [isFixedFiltersBar, setIsFixedFiltersBar] = useState(false);
   const [steps] = useState<ReactourStep[]>([
     // {
     //   selector: "",
@@ -144,6 +144,23 @@ const SearchResults = () => {
       ),
     },
   ]);
+
+  useEffect(() => {
+    let fixed = false;
+    const listener = () => {
+      if (window.pageYOffset > 60) {
+        if (!fixed) {
+          fixed = true;
+          setIsFixedFiltersBar(true);
+        }
+      } else if (fixed) {
+        fixed = false;
+        setIsFixedFiltersBar(false);
+      }
+    };
+    window.addEventListener("scroll", listener);
+    return () => window.removeEventListener("scroll", listener);
+  }, []);
 
   useEffect(() => {
     if (geolocation) setShowRfqBar(allowedCountries.includes(geolocation.country_code_iso3));
@@ -266,6 +283,42 @@ const SearchResults = () => {
     localStorage.setItem("productStock", "false");
   };
 
+  const createFiltersBar = () => {
+    const filtersBar = (
+      <div
+        className={clsx(classes.stickyContainer, {
+          sticky: isFixedFiltersBar,
+        })}
+      >
+        <div className={commonClasses.filtersRow}>
+          <FiltersContainer filtersCountToCollapse={4}>
+            {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
+            <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
+            {!constants.isNewSearchPage && (
+              <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+            )}
+            {constants.isNewSearchPage && (
+              <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+            )}
+            <FilterCurrency />
+            {!isSmDown && (
+              <FilterPageSizeChoiceBar
+                storageKey={`searchShowBy`}
+                action={onChangePageSize}
+                disable={isLoadingSearchResultsInProgress}
+              />
+            )}
+          </FiltersContainer>
+        </div>
+      </div>
+    );
+    const container = document.getElementById("search-filters-bar-portal");
+    if (isFixedFiltersBar && container) {
+      return ReactDOM.createPortal(filtersBar, container);
+    }
+    return filtersBar;
+  };
+
   return (
     <Page title={t("page_title")} description={t("page_description")}>
       <Container maxWidth="xl">
@@ -302,40 +355,7 @@ const SearchResults = () => {
           <div className={classes.searchPageResults}>
             {count !== 0 && (
               <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
-                <Sticky
-                  className={clsx(classes.stickyContainer, {
-                    [classes.stickyContainerMarginDesktop]: !isSmDown,
-                    [classes.stickyContainerMarginMobile]: isSmDown,
-                  })}
-                  topOffset={0}
-                  onFixedToggle={fixedStickyContainerHeight}
-                >
-                  <div className={commonClasses.filtersRow}>
-                    <FiltersContainer filtersCountToCollapse={4}>
-                      {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
-                      <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
-                      {!constants.isNewSearchPage && (
-                        <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                      )}
-                      {constants.isNewSearchPage && (
-                        <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-                      )}
-                      <FilterCurrency />
-                      {!isSmDown && (
-                        <FilterPageSizeChoiceBar
-                          storageKey={`searchShowBy`}
-                          action={onChangePageSize}
-                          disable={isLoadingSearchResultsInProgress}
-                        />
-                      )}
-                      {/* <FilterOrderByBar */}
-                      {/*  value={orderBy} */}
-                      {/*  onChange={onOrderChange} */}
-                      {/*  disable={isLoadingSearchResultsInProgress} */}
-                      {/* /> */}
-                    </FiltersContainer>
-                  </div>
-                </Sticky>
+                {createFiltersBar()}
               </div>
             )}
             {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (

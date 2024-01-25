@@ -110,7 +110,6 @@ const HomePage = (props) => {
           [classes.home]: isHomePage && isChipAssist,
         })}
       />
-      <div id="search-filters-bar-portal"></div>
       <div className={isHomePage && isChipAssist ? classes.homeContainer : classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
