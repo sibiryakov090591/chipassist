@@ -37,6 +37,26 @@ const Footer = () => {
   const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   const { t } = useI18n("footer");
 
+  const ICSInfo = () => {
+    return (
+      <Box className={classes.navGroup} style={{ width: "69%" }}>
+        <span style={{ color: "white", fontSize: "12px" }}>
+          {"ООО 'ИНЕЛСО'"}
+          <br />
+        </span>
+        <span style={{ color: "white", fontSize: "12px" }}>
+          Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
+          <br />
+        </span>
+        <span style={{ color: "white", fontSize: "12px" }}>
+          ИНН 7813635698
+          <br />
+        </span>
+        <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
+      </Box>
+    );
+  };
+
   return (
     <div className={classes.root}>
       <footer className={isSupplierResponse ? classes.supplierFooter : classes.footer}>
@@ -274,21 +294,7 @@ const Footer = () => {
                 </div>
                 <Hidden smUp>
                   <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} textAlign={"start"}>
-                    <Box className={classes.navGroup} style={{ width: "69%" }}>
-                      <span style={{ color: "white", fontSize: "12px" }}>
-                        {"ООО 'ИНЕЛСО'"}
-                        <br />
-                      </span>
-                      <span style={{ color: "white", fontSize: "12px" }}>
-                        Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
-                        <br />
-                      </span>
-                      <span style={{ color: "white", fontSize: "12px" }}>
-                        ИНН 7813635698
-                        <br />
-                      </span>
-                      <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
-                    </Box>
+                    <ICSInfo />
                   </Box>
                 </Hidden>
               </Box>
@@ -327,21 +333,7 @@ const Footer = () => {
                   </Hidden>
                   <Hidden smDown>
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
-                      <Box className={classes.navGroup} style={{ width: "65%" }}>
-                        <span style={{ color: "white", fontSize: "12px" }}>
-                          {"ООО 'ИНЕЛСО'"}
-                          <br />
-                        </span>
-                        <span style={{ color: "white", fontSize: "12px" }}>
-                          Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
-                          <br />
-                        </span>
-                        <span style={{ color: "white", fontSize: "12px" }}>
-                          ИНН 7813635698
-                          <br />
-                        </span>
-                        <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
-                      </Box>
+                      <ICSInfo />
                     </Box>
                   </Hidden>
                 </Box>
