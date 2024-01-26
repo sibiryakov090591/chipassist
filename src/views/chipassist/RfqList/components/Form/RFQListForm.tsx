@@ -938,17 +938,19 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                   }}
                 >
                   <Box display="flex" flexDirection={"column"} ml={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="receive_updates_confirm"
-                          className={appTheme.checkbox}
-                          checked={formState.values.receive_updates_confirm}
-                          onChange={handleChange}
-                        />
-                      }
-                      label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                    />
+                    {!isICSearch && (
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            name="receive_updates_confirm"
+                            className={appTheme.checkbox}
+                            checked={formState.values.receive_updates_confirm}
+                            onChange={handleChange}
+                          />
+                        }
+                        label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                      />
+                    )}
 
                     <Box display="flex" flexDirection="column" ml={2} style={{ marginLeft: 0 }}>
                       <FormControlLabel
