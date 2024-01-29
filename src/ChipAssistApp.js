@@ -127,6 +127,7 @@ export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
 const ChipAssistApp = () => {
   const location = useLocation();
   const isRestricted = constants.closedRegistration;
+  const isICSearch = constants.id === ID_ICSEARCH;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
 
@@ -138,7 +139,7 @@ const ChipAssistApp = () => {
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
   const { geolocation } = useAppSelector((state) => state.profile);
-  console.log(geolocation, "test");
+
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
 
@@ -229,14 +230,14 @@ const ChipAssistApp = () => {
   }, [isAuthToken]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !isICSearch) {
       dispatch(getChatList(1));
     }
   }, [isAuthenticated, selectedPartner]);
 
   useEffect(() => {
     if (chatUpdatingIntervalId) clearInterval(chatUpdatingIntervalId);
-    if (isAuthenticated && loadedChatPages.length) {
+    if (isAuthenticated && loadedChatPages.length && !isICSearch) {
       const intervalId = setInterval(() => {
         const loadedPages = [...new Set(loadedChatPages)];
         loadedPages.forEach((page) => dispatch(updateChatList(page)));
@@ -249,12 +250,11 @@ const ChipAssistApp = () => {
     return <Maintenance />;
   }
 
-  if (
-    constants.id === ID_ICSEARCH &&
-    geolocation?.country_code_iso3 !== "RUS" &&
-    localStorage.getItem("open_icsearch_app_password") !== "1234"
-  )
-    return null;
+  if (isICSearch && localStorage.getItem("open_icsearch_password") !== "1234") {
+    if (!geolocation?.loaded || geolocation?.country_code_iso3 !== "RUS") {
+      return null;
+    }
+  }
 
   return (
     <div style={{ height: "100%" }}>
