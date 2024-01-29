@@ -121,6 +121,12 @@ export const setGeolocation = (countryCode: string, countryName: string, city: s
   };
 };
 
+export const setGeolocationFailure = () => {
+  return {
+    type: actionTypes.GET_GEOLOCATION_F,
+  };
+};
+
 export const getGeolocation = () => {
   return (dispatch: any) => {
     return axios
@@ -131,6 +137,7 @@ export const getGeolocation = () => {
         return data;
       })
       .catch((e: any) => {
+        dispatch(setGeolocationFailure());
         console.log("***GET_GEOLOCATION_ERROR", e);
         throw e;
       });
