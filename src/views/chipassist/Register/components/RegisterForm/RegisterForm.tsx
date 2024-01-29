@@ -96,6 +96,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       last_name: formSchema.lastName,
       ...(!isIcSearch && { policy_confirm: formSchema.policyConfirm }),
       inn: formSchema.inn,
+      policy_confirm: formSchema.policyConfirm,
     };
   }, []);
 
@@ -267,6 +268,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
               name="inn"
               label={"ИНН компании*"}
               value={formState.values.inn || ""}
+              error={hasError("inn")}
               helperText={hasError("inn") ? t(formState.errors.inn[0]) : null}
               onChange={handleChange}
               onBlur={onBlurHandler("inn")}
