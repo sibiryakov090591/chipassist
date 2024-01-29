@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   map: {
     maxWidth: 650,
     width: "100%",
-    padding: "0 3rem",
     [theme.breakpoints.down("xs")]: {
       padding: 0,
     },
