@@ -90,9 +90,9 @@ const email = {
 };
 
 const policyConfirm = {
-  ...(constants.id !== ID_ICSEARCH && {
+  ...{
     checked: { message: `^${t("errors.privacy_policy")}` },
-  }),
+  },
 };
 
 const inn = {
