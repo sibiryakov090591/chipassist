@@ -12,11 +12,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       borderRight: `1px solid ${theme.palette.app.grey200}`,
     },
     wordWrap: "break-word",
+    overflowWrap: "anywhere",
   },
   tableHeader: {
     width: "20%",
     fontWeight: 600,
     whiteSpace: "nowrap",
+    [theme.breakpoints.down("sm")]: {
+      width: "53%",
+      whiteSpace: "normal",
+    },
   },
   selected: {
     fontWeight: 600,
