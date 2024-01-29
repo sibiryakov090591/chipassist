@@ -67,6 +67,13 @@ const isShowFormExamplesPage = localStorage.getItem("show_form_example_page");
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
 );
+const PaymentAndDelivery = lazy(() =>
+  lazyLoader(() =>
+    import(
+      /* webpackChunkName: "payment_and_delivery" */ "@src/views/chipassist/StaticPages/PaymentAndDelivery/PaymentAndDelivery"
+    ),
+  ),
+);
 // const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
 const Bom = lazy(() => lazyLoader(() => import(/* webpackChunkName: "bom" */ "@src/views/chipassist/Bom/Bom")));
 const Blog = lazy(() => lazyLoader(() => import(/* webpackChunkName: "blog" */ "@src/views/chipassist/Blog/Blog")));
@@ -467,14 +474,24 @@ const ChipAssistApp = () => {
               />
             )}
             {constants.id === ID_ICSEARCH && (
-              <Route
-                path="/privacy_policy"
-                element={
-                  <Suspense fallback={<Preloader title={""} />}>
-                    <PrivacyPolicy />
-                  </Suspense>
-                }
-              />
+              <>
+                <Route
+                  path="/privacy_policy"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <PrivacyPolicy />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/payment_and_delivery"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <PaymentAndDelivery />
+                    </Suspense>
+                  }
+                />
+              </>
             )}
             {constants.id !== ID_ICSEARCH && (
               <Route
