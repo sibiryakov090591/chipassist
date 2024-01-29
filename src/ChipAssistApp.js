@@ -137,6 +137,8 @@ const ChipAssistApp = () => {
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
+  const { geolocation } = useAppSelector((state) => state.profile);
+  console.log(geolocation, "test");
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
 
@@ -246,6 +248,13 @@ const ChipAssistApp = () => {
   if (maintenance.loaded && maintenance.status === "CRITICAL") {
     return <Maintenance />;
   }
+
+  if (
+    constants.id === ID_ICSEARCH &&
+    geolocation?.country_code_iso3 !== "RUS" &&
+    localStorage.getItem("open_icsearch_app_password") !== "1234"
+  )
+    return null;
 
   return (
     <div style={{ height: "100%" }}>
