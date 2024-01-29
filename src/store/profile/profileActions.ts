@@ -111,7 +111,7 @@ export const onChangePartner = (partner: Partner | false) => {
 
 export const setGeolocation = (countryCode: string, countryName: string, city: string, country_code: string) => {
   return {
-    type: actionTypes.SET_GEOLOCATION,
+    type: actionTypes.GET_GEOLOCATION_S,
     payload: {
       country_code_iso3: countryCode,
       country_name: countryName,
