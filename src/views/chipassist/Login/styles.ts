@@ -28,6 +28,27 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         maxWidth: "420px",
       },
     },
+
+    cardICS: {
+      width: theme.breakpoints.values.md,
+      maxWidth: "100%",
+      overflow: "unset",
+      display: "flex",
+      position: "relative",
+      "& > *": {
+        flexGrow: 1,
+        flexBasis: "50%",
+        width: "50%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "auto",
+        maxWidth: "420px",
+      },
+      [theme.breakpoints.between(880, "md")]: {
+        height: "45%",
+        maxWidth: "80%",
+      },
+    },
     content: {
       padding: theme.spacing(8, 4, 3, 4),
     },
@@ -59,6 +80,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     loginForm: {
       marginTop: theme.spacing(3),
+    },
+
+    loginFormICS: {
+      marginTop: theme.spacing(3),
+      [theme.breakpoints.between(880, "md")]: {
+        height: "70%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly",
+      },
     },
     divider: {
       margin: theme.spacing(2, 0),

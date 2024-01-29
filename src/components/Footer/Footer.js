@@ -308,7 +308,7 @@ const Footer = () => {
                       <NavLink className={classes.navLink} to={"/bom/create-file"}>
                         {t("bom")}
                       </NavLink>
-                      <Hidden smDown>
+                      <Hidden xsDown>
                         <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
                           {t("rfq_list")}
                         </NavLink>
@@ -331,7 +331,7 @@ const Footer = () => {
                       </NavLink>
                     </Box>
                   </Hidden>
-                  <Hidden smDown>
+                  <Hidden xsDown>
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
                       <ICSInfo />
                     </Box>
