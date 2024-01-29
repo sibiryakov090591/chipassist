@@ -101,6 +101,7 @@ const Header = () => {
           </div>
         </Hidden>
       </Container>
+      <div id="search-filters-bar-portal" style={{ position: "absolute", top: "100%", color: "#263238" }}></div>
     </header>
   );
 };

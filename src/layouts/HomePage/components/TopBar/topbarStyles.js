@@ -3,6 +3,8 @@ import { colors } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
+    transition: "all 250ms ease",
+    position: "relative",
     backgroundColor: theme.palette.primary.main,
     [theme.breakpoints.up("md")]: {
       boxShadow: "none",
@@ -291,7 +293,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   homePageTopBar: {
     transform: "translateY(-101%)",
-    transition: "all 250ms ease",
     "&.collapse": {
       transform: "translateY(0)",
     },

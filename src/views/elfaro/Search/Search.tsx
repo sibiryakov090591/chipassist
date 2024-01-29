@@ -26,6 +26,7 @@ import { setRFQQueryUpc } from "@src/store/rfq/rfqActions";
 import Sticky from "react-sticky-el";
 import { useNavigate } from "react-router-dom";
 import { fixedStickyContainerHeight } from "@src/utils/search";
+import ReactDOM from "react-dom";
 import { useStyles } from "./styles";
 
 const Search: React.FC = () => {
@@ -62,8 +63,26 @@ const Search: React.FC = () => {
 
   const [result, setResult] = useState<Product[]>([]);
   const [rfqsHintCount, setRfqsHintCount] = useState(null);
+  const [isFixedFiltersBar, setIsFixedFiltersBar] = useState(false);
 
   useSearchLoadResults();
+
+  useEffect(() => {
+    let fixed = false;
+    const listener = () => {
+      if (window.pageYOffset > 60) {
+        if (!fixed) {
+          fixed = true;
+          setIsFixedFiltersBar(true);
+        }
+      } else if (fixed) {
+        fixed = false;
+        setIsFixedFiltersBar(false);
+      }
+    };
+    window.addEventListener("scroll", listener);
+    return () => window.removeEventListener("scroll", listener);
+  }, []);
 
   useEffect(() => {
     dispatch(setRFQQueryUpc(query));
@@ -132,6 +151,36 @@ const Search: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const createFiltersBar = () => {
+    const filtersBar = (
+      <div
+        className={clsx(searchClasses.stickyContainer, {
+          sticky: isFixedFiltersBar,
+        })}
+      >
+        <div className={commonClasses.filtersRow}>
+          <FiltersContainer>
+            {/* {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />} */}
+            <FilterResultsBar count={count} />
+            {/* <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} /> */}
+            <FilterCurrency />
+            <FilterPageSizeChoiceBar
+              storageKey={`searchShowBy`}
+              action={onChangePageSize}
+              disable={isLoadingSearchResultsInProgress}
+            />
+            {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
+          </FiltersContainer>
+        </div>
+      </div>
+    );
+    const container = document.getElementById("search-filters-bar-portal");
+    if (isFixedFiltersBar && container) {
+      return ReactDOM.createPortal(filtersBar, container);
+    }
+    return filtersBar;
+  };
+
   return (
     <Page
       title="ChipOnline - search and order electronic components"
@@ -140,26 +189,12 @@ const Search: React.FC = () => {
       <Container maxWidth="xl">
         <div>
           <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
+            {createFiltersBar()}
             <Sticky
               className={clsx(searchClasses.stickyContainer, classes.stickyContainer)}
               topOffset={0}
               onFixedToggle={fixedStickyContainerHeight}
-            >
-              <div className={commonClasses.filtersRow}>
-                <FiltersContainer>
-                  {/* {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />} */}
-                  <FilterResultsBar count={count} />
-                  {/* <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} /> */}
-                  <FilterCurrency />
-                  <FilterPageSizeChoiceBar
-                    storageKey={`searchShowBy`}
-                    action={onChangePageSize}
-                    disable={isLoadingSearchResultsInProgress}
-                  />
-                  {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
-                </FiltersContainer>
-              </div>
-            </Sticky>
+            ></Sticky>
           </div>
           {/* {isSmDown && !isLoadingSearchResultsInProgress && ( */}
           {/*  <div className={searchClasses.tableFiltersRow}> */}
