@@ -161,10 +161,16 @@ export default function profile(state = initialState, action: actionTypes.Profil
         ...state,
         isLoadingProfile: action.payload,
       };
-    case actionTypes.SET_GEOLOCATION:
+    case actionTypes.GET_GEOLOCATION_S:
       return {
         ...state,
-        geolocation: action.payload,
+        loaded: true,
+        geolocation: { ...action.payload, loaded: true },
+      };
+    case actionTypes.GET_GEOLOCATION_F:
+      return {
+        ...state,
+        geolocation: { loaded: true },
       };
     case actionTypes.GET_PARTNER_INFORMATION_R:
       return {

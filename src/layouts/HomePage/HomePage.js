@@ -86,11 +86,6 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: "initial",
     },
   },
-  home: {
-    [theme.breakpoints.up("md")]: {
-      transform: "translateY(-101%)",
-    },
-  },
 }));
 
 const HomePage = (props) => {
@@ -106,8 +101,7 @@ const HomePage = (props) => {
     <div className={classes.wrapper}>
       <TopBar
         className={clsx(!isChipAssist && isXsDown ? classes.topBarICSMobile : classes.topBar, {
-          [classes.fixedHeight]: !isHomePage || !isChipAssist,
-          [classes.home]: isHomePage && isChipAssist,
+          [classes.fixedHeight]: true,
         })}
       />
       <div className={isHomePage && isChipAssist ? classes.homeContainer : classes.container}>

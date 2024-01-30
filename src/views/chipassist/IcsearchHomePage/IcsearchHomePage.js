@@ -38,7 +38,7 @@ export const IcsearchHomePage = () => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Box className={classes.imgWrapper} display="flex" alignItems="center" justifyContent="center">
-                <img className={classes.mapImg} src={map} alt="world map" />
+                <img className={classes.mapImg} src={map} alt="Map" />
               </Box>
             </Grid>
           </Grid>

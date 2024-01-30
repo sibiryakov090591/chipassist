@@ -111,13 +111,19 @@ export const onChangePartner = (partner: Partner | false) => {
 
 export const setGeolocation = (countryCode: string, countryName: string, city: string, country_code: string) => {
   return {
-    type: actionTypes.SET_GEOLOCATION,
+    type: actionTypes.GET_GEOLOCATION_S,
     payload: {
       country_code_iso3: countryCode,
       country_name: countryName,
       city,
       country_code,
     },
+  };
+};
+
+export const setGeolocationFailure = () => {
+  return {
+    type: actionTypes.GET_GEOLOCATION_F,
   };
 };
 
@@ -131,6 +137,7 @@ export const getGeolocation = () => {
         return data;
       })
       .catch((e: any) => {
+        dispatch(setGeolocationFailure());
         console.log("***GET_GEOLOCATION_ERROR", e);
         throw e;
       });

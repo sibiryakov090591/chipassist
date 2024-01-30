@@ -51,7 +51,7 @@ const SetsModal: React.FC<Props> = ({ onConfirmHandler, onCloseHandler }) => {
               <FormControlLabel
                 name="analytic"
                 control={<Checkbox className={appTheme.checkbox} onChange={onChange} checked={isHideModal} />}
-                label={"Don't show the alert again"}
+                label={t("dont_show_again")}
               />
             </div>
             <Button

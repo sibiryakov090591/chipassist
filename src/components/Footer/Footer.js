@@ -305,15 +305,20 @@ const Footer = () => {
                       <NavLink className={classes.navLink} to={"/parts"}>
                         {t("products")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                        {t("bom")}
-                      </NavLink>
-                      <Hidden xsDown>
+                      <Hidden smDown>
+                        <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                          {t("bom")}
+                        </NavLink>
+                      </Hidden>
+                      <Hidden smDown>
                         <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
                           {t("rfq_list")}
                         </NavLink>
                         <NavLink className={classes.navLink} to={"/pcb"}>
                           {t("menu.pcb")}
+                        </NavLink>
+                        <NavLink className={classes.navLink} to={"/payment_and_delivery"}>
+                          {t("payment_and_delivery")}
                         </NavLink>
                         <NavLink className={classes.navLink} to={"/privacy_policy"}>
                           {t("privacy")}
@@ -325,6 +330,9 @@ const Footer = () => {
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
                       <NavLink className={classes.navLink} to={"/pcb"}>
                         {t("menu.pcb")}
+                      </NavLink>
+                      <NavLink className={classes.navLink} to={"/payment_and_delivery"}>
+                        {t("payment_and_delivery")}
                       </NavLink>
                       <NavLink className={classes.navLink} to={"/privacy_policy"}>
                         {t("privacy")}

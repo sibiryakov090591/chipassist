@@ -51,6 +51,14 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
   removeBotton: {
     width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "0.7em",
+    },
+  },
+  cardAction: {
+    [theme.breakpoints.down("xs")]: {
+      padding: "0 24px 16px",
+    },
   },
 }));
 
@@ -92,7 +100,7 @@ const ProfileDetails = () => {
       </CardContent>
 
       {profileInfo && profileInfo.avatar && (
-        <CardActions>
+        <CardActions className={classes.cardAction}>
           <Button className={classes.removeBotton} variant="text" disabled={isRemovingAvatar} onClick={handleRemove}>
             {isRemovingAvatar ? t("removing") : t("remove_pic")}
           </Button>

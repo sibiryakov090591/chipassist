@@ -43,7 +43,8 @@ export const ADDRESS_ITEM = "ADDRESS_ITEM";
 export const PROFILE_IS_LOADING = "PROFILE_IS_LOADING";
 export const CLEAR_ADDRESS_ITEM = "CLEAR_ADDRESS_ITEM";
 
-export const SET_GEOLOCATION = "SET_GEOLOCATION";
+export const GET_GEOLOCATION_S = "@profile/GET_GEOLOCATION_S";
+export const GET_GEOLOCATION_F = "@profile/GET_GEOLOCATION_F";
 export const UPDATE_PREV_EMAIL = "UPDATE_PREV_EMAIL";
 export const CHANGE_PARTNER = "@profile/CHANGE_PARTNER";
 
@@ -134,10 +135,11 @@ export interface ProfileResponse {
 }
 
 export interface Geolocation {
-  country_code_iso3: string;
-  country_name: string;
-  city: string;
-  country_code: string;
+  country_code_iso3?: string;
+  country_name?: string;
+  city?: string;
+  country_code?: string;
+  loaded: boolean;
 }
 
 export interface Address {
@@ -284,13 +286,17 @@ export interface ChangePartner {
 }
 
 interface SetGeolocation {
-  type: typeof SET_GEOLOCATION;
+  type: typeof GET_GEOLOCATION_S;
   payload: {
     country_code_iso3: string;
     country_name: string;
     city: string;
     country_code: string;
   };
+}
+
+interface SetGeolocationError {
+  type: typeof GET_GEOLOCATION_F;
 }
 
 interface LogoutAction {
@@ -358,6 +364,7 @@ export type ProfileActionTypes =
   | UpdatePrevEmail
   | SaveProfileInfoAction
   | SetGeolocation
+  | SetGeolocationError
   | ProfileUpdateRequestAction
   | ProfileUpdateSuccessAction
   | ProfileUpdateFailedAction

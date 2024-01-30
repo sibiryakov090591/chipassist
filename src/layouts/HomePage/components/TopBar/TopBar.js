@@ -58,6 +58,8 @@ export const partNumbers = [
 const TopBar = (props) => {
   const { className, ...rest } = props;
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
+  const homePageTopOffset = 500;
+  const topOffset = 60;
   const appTheme = useAppTheme();
   const { t } = useI18n("menu");
   const classes = useStyles();
@@ -77,27 +79,55 @@ const TopBar = (props) => {
   const isShowHint = useAppSelector((state) => state.rfqList.showHint);
 
   const [collapse, setCollapse] = useState(false);
+  const [isShowHeader, setIsShowHeader] = useState(false);
 
   useEffect(() => {
+    let hidden = false;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let showHeader = false;
+    let lastScrollTop = 0;
+
+    if (isHomePage && window.pageYOffset <= homePageTopOffset) {
+      setIsShowHeader(false);
+    }
+
+    const listener = () => {
+      const currentPosition = window.pageYOffset;
+
+      if (isHomePage && currentPosition > homePageTopOffset) {
+        showHeader = true;
+        setIsShowHeader(true);
+      } else if (isHomePage && currentPosition <= homePageTopOffset) {
+        console.log(isHomePage, isShowHeader);
+        showHeader = false;
+        setIsShowHeader(false);
+      }
+
+      if (currentPosition > (isHomePage && isChipAssist ? homePageTopOffset : topOffset)) {
+        if (!hidden && currentPosition > lastScrollTop) {
+          hidden = true;
+          setCollapse(true);
+          dispatch(showHint(false));
+        } else if (lastScrollTop - currentPosition > 5) {
+          hidden = false;
+          setCollapse(false);
+        }
+      } else if (hidden) {
+        hidden = false;
+        setCollapse(false);
+      }
+      lastScrollTop = currentPosition <= 0 ? 0 : currentPosition;
+    };
+
     if (isMdUp || isHomePage) {
+      window.removeEventListener("scroll", listener);
       window.addEventListener("scroll", listener);
     }
     return () => {
       if (isHomePage && collapse) setCollapse(false);
       window.removeEventListener("scroll", listener);
     };
-  }, [collapse, isMdUp, isHomePage]);
-
-  const listener = () => {
-    if (window.pageYOffset > (isHomePage ? 500 : 60)) {
-      if (!collapse) {
-        setCollapse(true);
-        dispatch(showHint(false));
-      }
-    } else if (collapse) {
-      setCollapse(false);
-    }
-  };
+  }, [isMdUp, isHomePage]);
 
   useEffect(() => {
     if (isShowHint) {
@@ -142,7 +172,7 @@ const TopBar = (props) => {
         {...rest}
         className={clsx({
           [classes.root]: true,
-          [classes.homePageTopBar]: isChipAssist && isMdUp && isHomePage,
+          [classes.homePageTopBar]: isChipAssist && isMdUp && isHomePage && !isShowHeader,
           [className]: true,
           collapse,
         })}
@@ -265,6 +295,7 @@ const TopBar = (props) => {
             </Collapse>
           </div>
         </Hidden>
+        <div id="search-filters-bar-portal" style={{ position: "absolute", top: "100%", color: "#263238" }}></div>
       </AppBar>
     </div>
   );

@@ -67,6 +67,13 @@ const isShowFormExamplesPage = localStorage.getItem("show_form_example_page");
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
 );
+const PaymentAndDelivery = lazy(() =>
+  lazyLoader(() =>
+    import(
+      /* webpackChunkName: "payment_and_delivery" */ "@src/views/chipassist/StaticPages/PaymentAndDelivery/PaymentAndDelivery"
+    ),
+  ),
+);
 // const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
 const Bom = lazy(() => lazyLoader(() => import(/* webpackChunkName: "bom" */ "@src/views/chipassist/Bom/Bom")));
 const Blog = lazy(() => lazyLoader(() => import(/* webpackChunkName: "blog" */ "@src/views/chipassist/Blog/Blog")));
@@ -127,6 +134,7 @@ export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
 const ChipAssistApp = () => {
   const location = useLocation();
   const isRestricted = constants.closedRegistration;
+  const isICSearch = constants.id === ID_ICSEARCH;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
 
@@ -137,6 +145,8 @@ const ChipAssistApp = () => {
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
+  const { geolocation } = useAppSelector((state) => state.profile);
+
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
 
@@ -227,14 +237,14 @@ const ChipAssistApp = () => {
   }, [isAuthToken]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !isICSearch) {
       dispatch(getChatList(1));
     }
   }, [isAuthenticated, selectedPartner]);
 
   useEffect(() => {
     if (chatUpdatingIntervalId) clearInterval(chatUpdatingIntervalId);
-    if (isAuthenticated && loadedChatPages.length) {
+    if (isAuthenticated && loadedChatPages.length && !isICSearch) {
       const intervalId = setInterval(() => {
         const loadedPages = [...new Set(loadedChatPages)];
         loadedPages.forEach((page) => dispatch(updateChatList(page)));
@@ -245,6 +255,12 @@ const ChipAssistApp = () => {
 
   if (maintenance.loaded && maintenance.status === "CRITICAL") {
     return <Maintenance />;
+  }
+
+  if (isICSearch && localStorage.getItem("open_icsearch_password") !== "1234") {
+    if (!geolocation?.loaded || geolocation?.country_code_iso3 !== "RUS") {
+      return null;
+    }
   }
 
   return (
@@ -458,14 +474,24 @@ const ChipAssistApp = () => {
               />
             )}
             {constants.id === ID_ICSEARCH && (
-              <Route
-                path="/privacy_policy"
-                element={
-                  <Suspense fallback={<Preloader title={""} />}>
-                    <PrivacyPolicy />
-                  </Suspense>
-                }
-              />
+              <>
+                <Route
+                  path="/privacy_policy"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <PrivacyPolicy />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/payment_and_delivery"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <PaymentAndDelivery />
+                    </Suspense>
+                  }
+                />
+              </>
             )}
             {constants.id !== ID_ICSEARCH && (
               <Route
