@@ -392,6 +392,9 @@ export const useStyles = makeStyles((theme) => ({
       width: 120,
     },
   },
+  amountText: {
+    textWrap: "nowrap",
+  },
 }));
 
 export default "styles";

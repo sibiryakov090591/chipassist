@@ -1524,7 +1524,7 @@
 
     "want_to_see_more": "Want to see more offers? Place your RFQ and sellers will respond to your request within 48 hours.",
     "target_price": "Target price",
-    "already_req": "You have already requested <strong>{{requestedQty}} pcs </strong> of this product",
+    "already_req": "You have already requested <strong style='text-wrap: nowrap;'>{{requestedQty}} pcs </strong> of this product",
     "requested": "Requested",
     "get_more": "Get more quotes",
     "get_additional": "Get additional quotes from connected sellers",
