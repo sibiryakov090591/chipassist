@@ -22,6 +22,7 @@ export function getAllManufacturers(page = 1, join = false) {
             }
           })
           .catch((e) => {
+            dispatch({ type: actionTypes.ITEMS_FETCHED });
             console.log("***ITEMS_FETCHING_ERROR", e);
             throw e;
           }),

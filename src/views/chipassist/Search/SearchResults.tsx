@@ -90,7 +90,7 @@ const SearchResults = () => {
     baseFilters = null;
   }
   const isSearchPage = window.location.pathname === "/search";
-  const disabledRFQForm = !!query?.startsWith("SELLER:");
+  const disabledRFQForm = !!query?.startsWith("SELLER:") || !!query?.startsWith("MANUFACTURER:");
 
   const isLoadingSearchResultsInProgress = useAppSelector((state) => state.search.isLoadingSearchResultsInProgress);
   const isExtendedSearchStarted = useAppSelector((state) => state.search.isExtendedSearchStarted);

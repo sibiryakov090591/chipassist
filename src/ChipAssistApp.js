@@ -77,6 +77,9 @@ const PaymentAndDelivery = lazy(() =>
 );
 // const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
 const Bom = lazy(() => lazyLoader(() => import(/* webpackChunkName: "bom" */ "@src/views/chipassist/Bom/Bom")));
+const Brands = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "brands" */ "@src/views/chipassist/Brands/Brands")),
+);
 const Blog = lazy(() => lazyLoader(() => import(/* webpackChunkName: "blog" */ "@src/views/chipassist/Blog/Blog")));
 const Article = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "blog" */ "@src/views/chipassist/Blog/components/Article/Article")),
@@ -434,6 +437,14 @@ const ChipAssistApp = () => {
               element={
                 <Suspense fallback={}>
                   <Pcb />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/brands"
+              element={
+                <Suspense fallback={}>
+                  <Brands />
                 </Suspense>
               }
             />
