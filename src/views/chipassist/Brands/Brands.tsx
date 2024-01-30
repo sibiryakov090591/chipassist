@@ -19,14 +19,16 @@ const Brands: React.FC = () => {
   useEffect(() => {
     if (loaded) {
       const data: { [key: string]: Items[] } = {};
-      items?.sort()?.forEach((item) => {
-        const key = item?.name?.charAt(0)?.toUpperCase();
-        if (data[key]) {
-          data[key].push(item);
-        } else {
-          data[key] = [item];
-        }
-      });
+      if (items?.length) {
+        items.sort().forEach((item) => {
+          const key = item?.name?.charAt(0)?.toUpperCase();
+          if (data[key]) {
+            data[key].push(item);
+          } else {
+            data[key] = [item];
+          }
+        });
+      }
       setNormalizedData(data);
     }
   }, [loaded]);
