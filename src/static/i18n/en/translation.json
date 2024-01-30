@@ -2876,5 +2876,12 @@
       "no_art": "The article does not exist",
       "return": "Return to blog"
     }
+  },
+  "brands": {
+    "page_title": "Manufacturers of electronic components",
+    "page_description": "Manufacturers of electronic components buy wholesale and retail with delivery",
+    "title": "Manufacturers of electronic components",
+    "loading": "Manufacturers are loading...",
+    "empty_message": "No manufacturers found"
   }
 }

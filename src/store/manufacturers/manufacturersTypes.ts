@@ -3,7 +3,7 @@ export const ITEMS_FETCHED = "@manufacturers/ITEMS_FETCHED";
 export const GET_All_ITEMS = "@manufacturers/GET_All_ITEMS";
 export const JOIN_ITEMS = "@manufacturers/JOIN_ITEMS";
 
-interface Items {
+export interface Items {
   id: number;
   code: string;
   name: string;
