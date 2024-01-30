@@ -42,11 +42,7 @@ const RequestButton: React.FC<Props> = ({ requestedQty, product, classes }) => {
 
       {!!requestedQty && isAuthenticated ? (
         <div className={classes.requestButtonHelpText}>
-          <span
-            dangerouslySetInnerHTML={{
-              __html: `${t("already_req", { requestedQty })}`,
-            }}
-          ></span>
+          <span dangerouslySetInnerHTML={{ __html: `${t("already_req", { requestedQty })}` }}></span>
         </div>
       ) : (
         <div className={classes.requestButtonHelpText}>{t("get_additional")}</div>
