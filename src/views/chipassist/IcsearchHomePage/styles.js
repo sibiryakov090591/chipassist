@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     height: "100%",
     [theme.breakpoints.down("md")]: {
-      maxWidth: 500,
+      maxWidth: 700,
       margin: "0 auto",
     },
   },
