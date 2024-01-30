@@ -1,4 +1,7 @@
 User-agent: *
+Disallow: /
+
+User-agent: Yandex
 Allow: /
 Disallow: /cart
 Disallow: /auth
