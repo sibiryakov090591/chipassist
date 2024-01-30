@@ -19,16 +19,28 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     groupWrapper: {
       marginBottom: 40,
+      backgroundColor: "#F7F7F7",
+      padding: 20,
+      [theme.breakpoints.down("sm")]: {
+        padding: 12,
+      },
+      [theme.breakpoints.down("xs")]: {
+        padding: 0,
+        backgroundColor: "#ffffff",
+      },
     },
     groupLabel: {
-      fontSize: 22,
+      fontSize: 28,
       fontWeight: "bold",
       color: "#456",
-      marginBottom: 8,
+      marginBottom: 10,
       "& > span": {
-        fontSize: 14,
+        fontSize: 15,
         color: "#a1b0c1",
-        marginLeft: 4,
+        marginLeft: 5,
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: 22,
       },
     },
     itemsWrapper: {
@@ -36,14 +48,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       [theme.breakpoints.down("lg")]: {
         columnCount: 4,
       },
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down("sm")]: {
         columnCount: 3,
       },
-      [theme.breakpoints.down("sm")]: {
-        columnCount: 2,
-      },
       [theme.breakpoints.down("xs")]: {
-        columnCount: 1,
+        columnCount: 2,
       },
     },
     link: {
