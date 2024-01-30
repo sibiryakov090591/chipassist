@@ -1477,7 +1477,7 @@
 
     "want_to_see_more": "Хотите увидеть больше предложений? ",
     "target_price": "Целевая цена",
-    "already_req": "Вы уже запросили <strong>{{requestedQty}} шт. </strong> этого продукта",
+    "already_req": "Вы уже запросили <strong style='text-wrap: nowrap;'>{{requestedQty}} шт. </strong> этого продукта",
     "requested": "Запрошено",
     "get_more": "Найти больше",
     "get_additional": "Мы запросим данный компонент на дополнительных складах",
