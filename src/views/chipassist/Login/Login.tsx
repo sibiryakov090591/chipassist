@@ -52,7 +52,7 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
 
   return (
     <Page className={classes.root} title={t("title")} description={t("description")}>
-      <Card className={classes.card}>
+      <Card className={isICSearch ? classes.cardICS : classes.card}>
         <CardContent className={classes.content}>
           <LockIcon className={classes.icon} />
           <Typography gutterBottom variant="h3">
@@ -60,9 +60,9 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
           </Typography>
           {!isICSearch && <Typography variant="subtitle2">{t("sign_in_description")}</Typography>}
           {isExample ? (
-            <LoginForm className={classes.loginForm} isExample={true} />
+            <LoginForm className={isICSearch ? classes.loginFormICS : classes.loginForm} isExample={true} />
           ) : (
-            <LoginForm className={classes.loginForm} />
+            <LoginForm className={isICSearch ? classes.loginFormICS : classes.loginForm} />
           )}
           <Divider className={classes.divider} />
           <Box display="flex" alignItems="center" justifyContent="space-between">

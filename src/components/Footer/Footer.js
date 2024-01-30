@@ -339,7 +339,7 @@ const Footer = () => {
                       </NavLink>
                     </Box>
                   </Hidden>
-                  <Hidden smDown>
+                  <Hidden xsDown>
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
                       <ICSInfo />
                     </Box>
