@@ -305,9 +305,11 @@ const Footer = () => {
                       <NavLink className={classes.navLink} to={"/parts"}>
                         {t("products")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/bom/create-file"}>
-                        {t("bom")}
-                      </NavLink>
+                      <Hidden smDown>
+                        <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                          {t("bom")}
+                        </NavLink>
+                      </Hidden>
                       <Hidden smDown>
                         <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
                           {t("rfq_list")}
