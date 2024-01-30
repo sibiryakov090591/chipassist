@@ -1421,6 +1421,7 @@
     "sets": {
       "title": "Change the number of sets",
       "text_1": "If you click “Apply” all quantities will be recalculated according to the formula: reference quantity * number of sets.",
+      "dont_show_again": "Don't show the alert again",
       "apply": "Apply",
       "cancel": "Сancel"
     },
