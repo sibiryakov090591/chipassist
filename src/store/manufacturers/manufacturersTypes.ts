@@ -5,12 +5,12 @@ export const JOIN_ITEMS = "@manufacturers/JOIN_ITEMS";
 
 export interface Items {
   id: number;
-  code: string;
+  code?: string;
   name: string;
-  users: any[];
-  url: string | null;
-  logo: any;
-  logo_url: any;
+  users?: any[];
+  url?: string | null;
+  logo?: any;
+  logo_url?: any;
 }
 
 export interface ResponseManufacturer {

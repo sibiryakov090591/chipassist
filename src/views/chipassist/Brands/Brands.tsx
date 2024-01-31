@@ -14,13 +14,13 @@ const Brands: React.FC = () => {
 
   const { items, loaded } = useAppSelector((state) => state.manufacturers);
 
-  const [normalizedData, setNormalizedData] = useState<{ [key: string]: Items[] }>(null);
+  const [groups, setGroups] = useState<{ [key: string]: Items[] }>(null);
 
   useEffect(() => {
     if (loaded) {
       const data: { [key: string]: Items[] } = {};
       if (items?.length) {
-        items.sort().forEach((item) => {
+        items.forEach((item) => {
           const key = item?.name?.charAt(0)?.toUpperCase();
           if (data[key]) {
             data[key].push(item);
@@ -29,7 +29,7 @@ const Brands: React.FC = () => {
           }
         });
       }
-      setNormalizedData(data);
+      setGroups(data);
     }
   }, [loaded]);
 
@@ -38,17 +38,15 @@ const Brands: React.FC = () => {
       <Page title={t("page_title")} description={t("page_description")}>
         <Container maxWidth="xl">
           <h1 className={classes.title}>{t("title")}</h1>
-          {!normalizedData && (
+          {!groups && (
             <div className={classes.preloader}>
               <Preloader title={t("loading")} />
             </div>
           )}
-          {normalizedData && !Object.keys(normalizedData).length && (
-            <h3 className={classes.emptyMessage}>{t("empty_message")}</h3>
-          )}
-          {normalizedData && !!Object.keys(normalizedData).length && (
+          {groups && !Object.keys(groups).length && <h3 className={classes.emptyMessage}>{t("empty_message")}</h3>}
+          {groups && !!Object.keys(groups).length && (
             <div>
-              {Object.entries(normalizedData).map(([key, group]) => {
+              {Object.entries(groups).map(([key, group]) => {
                 return (
                   <div key={key} className={classes.groupWrapper}>
                     <div className={classes.groupLabel}>

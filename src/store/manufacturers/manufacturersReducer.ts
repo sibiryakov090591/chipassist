@@ -1,8 +1,9 @@
+import manufacturers from "@src/constants/manufacturers";
 import * as actionTypes from "./manufacturersTypes";
 
 const initialState: actionTypes.ManufacturersState = {
-  items: [],
-  loaded: false,
+  items: manufacturers,
+  loaded: true,
 };
 
 export default (state = initialState, { type, payload }: any) => {
