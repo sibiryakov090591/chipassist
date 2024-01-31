@@ -2769,7 +2769,8 @@
 
     "messages": {
       "today": "Today",
-      "request_block": "Request for {{qty}}pcs {{upc}}{{price}}.",
+      "request_block": "Request for {{qty}}pcs {{upc}}",
+      "request_block_price": " at {{price}}",
       "no_messages": "You have no messages",
       "is_supplier_resp": {
         "true": "You have no chats yet. You&apos;ll see new messages here when customers click <strong>&quot;Contact seller&quot;</strong> button on",

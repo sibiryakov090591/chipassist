@@ -2334,7 +2334,8 @@
     },
     "messages": {
       "today": "Сегодня",
-      "request_block": "Запрос на {{qty}}шт {{upc}}{{price}}.",
+      "request_block": "Запрос на {{qty}}шт {{upc}}",
+      "request_block_price": " по {{price}}",
       "no_messages": "У вас нет сообщений",
       "is_supplier_resp": {
         "true": "У вас еще нет чатов. Вы увидите новые сообщения здесь, когда клиенты нажмут кнопку <strong>&quot;Связаться с продавцом&quot;</strong> на",
