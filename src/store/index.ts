@@ -30,6 +30,7 @@ import { ProfileState } from "./profile/profileTypes";
 import sellers from "./sellers/sellersReducer";
 import supplierStatistics from "./supplierStatistics/statisticsReducer";
 import { StatisticsState } from "./supplierStatistics/statisticsTypes";
+import { ManufacturersState } from "./manufacturers/manufacturersTypes";
 import manufacturers from "./manufacturers/manufacturersReducer";
 import rfq from "./rfq/rfqReducer";
 import pcb from "./pcb/pcbReducer";
@@ -98,7 +99,7 @@ export interface RootState {
   profile: ProfileState;
   sellers: SellersState;
   supplierStatistics: StatisticsState;
-  manufacturers: any;
+  manufacturers: ManufacturersState;
   rfq: RfqState;
   pcb: any;
   chart: ChartState;

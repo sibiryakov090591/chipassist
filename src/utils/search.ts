@@ -8,7 +8,9 @@ const slice = (part: string, state: string[]) => {
 
 export const splitForHighlighter = (search: string, textToHighlight = "") => {
   if (!search) return [];
-  const searchQuery = search.startsWith("SELLER:") ? search.replace(/SELLER:/, "") : search;
+  const searchQuery = ["SELLER:", "MANUFACTURER:"].includes(search)
+    ? search.replace(/^(SELLER:|MANUFACTURER:)/, "")
+    : search;
   if (searchQuery.length > 15) return simpleSplitForHighlighter(searchQuery);
 
   let res: string[] = [];

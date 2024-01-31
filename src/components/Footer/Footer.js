@@ -39,21 +39,23 @@ const Footer = () => {
 
   const ICSInfo = () => {
     return (
-      <Box className={classes.navGroup} style={{ width: "69%" }}>
-        <span style={{ color: "white", fontSize: "12px" }}>
-          {"ООО 'ИНЕЛСО'"}
-          <br />
-        </span>
-        <span style={{ color: "white", fontSize: "12px" }}>
-          Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
-          <br />
-        </span>
-        <span style={{ color: "white", fontSize: "12px" }}>
-          ИНН 7813635698
-          <br />
-        </span>
-        <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
-      </Box>
+      <noindex>
+        <Box className={classes.navGroup} style={{ width: "69%" }}>
+          <span style={{ color: "white", fontSize: "12px" }}>
+            {"ООО 'ИНЕЛСО'"}
+            <br />
+          </span>
+          <span style={{ color: "white", fontSize: "12px" }}>
+            Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
+            <br />
+          </span>
+          <span style={{ color: "white", fontSize: "12px" }}>
+            ИНН 7813635698
+            <br />
+          </span>
+          <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
+        </Box>
+      </noindex>
     );
   };
 

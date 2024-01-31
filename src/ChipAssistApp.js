@@ -58,6 +58,7 @@ import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import PrivacyPolicy from "@src/views/chipassist/StaticPages/PrivacyPolicy";
+import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -76,6 +77,9 @@ const PaymentAndDelivery = lazy(() =>
 );
 // const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
 const Bom = lazy(() => lazyLoader(() => import(/* webpackChunkName: "bom" */ "@src/views/chipassist/Bom/Bom")));
+const Brands = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "brands" */ "@src/views/chipassist/Brands/Brands")),
+);
 const Blog = lazy(() => lazyLoader(() => import(/* webpackChunkName: "blog" */ "@src/views/chipassist/Blog/Blog")));
 const Article = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "blog" */ "@src/views/chipassist/Blog/components/Article/Article")),
@@ -216,6 +220,7 @@ const ChipAssistApp = () => {
         setTimeout(() => dispatch(getCurrency(selectedCurrency)), 1000);
       });
       dispatch(getAllSellers());
+      dispatch(getAllManufacturers());
       dispatch(getGeolocation());
     });
   }, []);
@@ -432,6 +437,14 @@ const ChipAssistApp = () => {
               element={
                 <Suspense fallback={}>
                   <Pcb />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/brands"
+              element={
+                <Suspense fallback={}>
+                  <Brands />
                 </Suspense>
               }
             />

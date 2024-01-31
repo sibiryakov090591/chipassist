@@ -170,10 +170,15 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: an
       Object.entries(urlParams).reduce((acc, entry) => {
         const [key, val] = entry;
         if (key === "search") {
-          if (val.includes("SELLER:")) {
+          if (val.startsWith("SELLER:")) {
             // search seller's products
             const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
             return `${acc ? `${acc}&` : "?"}s=${encodeURIComponent(sellerName)}`;
+          }
+          if (val.startsWith("MANUFACTURER:")) {
+            // search manufacturer's products
+            const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
+            return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
           }
           return `${acc ? `${acc}&` : "?"}${key}=${encodeURIComponent(val)}`;
         }
@@ -210,10 +215,15 @@ export const extendedLoadingOfSearchResultsThunk = (searchId: number, urlParams:
         Object.entries(urlParams).reduce((acc, entry) => {
           const [key, val] = entry;
           if (key === "search") {
-            if (val.includes("SELLER:")) {
+            if (val.startsWith("SELLER:")) {
               // search seller's products
               const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
               return `${acc ? `${acc}&` : "?"}s=${encodeURIComponent(sellerName)}`;
+            }
+            if (val.startsWith("MANUFACTURER:")) {
+              // search manufacturer's products
+              const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
+              return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
             }
             return `${acc ? `${acc}&` : "?"}${key}=${encodeURIComponent(val)}`;
           }
@@ -248,10 +258,15 @@ export const extendedLoadingOfSearchResultsForCashing = (
         Object.entries(urlParams).reduce((acc, entry) => {
           const [key, val] = entry;
           if (key === "search") {
-            if (val.includes("SELLER:")) {
+            if (val.startsWith("SELLER:")) {
               // search seller's products
               const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
               return `${acc ? `${acc}&` : "?"}s=${encodeURIComponent(sellerName)}`;
+            }
+            if (val.startsWith("MANUFACTURER:")) {
+              // search manufacturer's products
+              const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
+              return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
             }
             return `${acc ? `${acc}&` : "?"}${key}=${encodeURIComponent(val)}`;
           }
@@ -434,10 +449,14 @@ export const sendFiltersValueAction = (
     Object.entries(data).forEach((entry) => {
       const [key, val] = entry;
       if (key === "search") {
-        if (val.includes("SELLER:")) {
+        if (val.startsWith("SELLER:")) {
           // search seller's products
           const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
           params += `&s=${encodeURIComponent(sellerName)}`;
+        } else if (val.startsWith("MANUFACTURER:")) {
+          // search manufacturer's products
+          const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
+          params += `&m=${encodeURIComponent(manufacturerName)}`;
         } else {
           params += `&${key}=${encodeURIComponent(val)}`;
         }
@@ -790,7 +809,7 @@ const cleanBaseFilters = (base: { [index: string]: any }) => {
 export const setQueryValue = (value: string): actionTypes.SetQueryValueAction => {
   return {
     type: actionTypes.SET_QUERY_VALUE,
-    payload: value?.includes("SELLER:") ? value : value?.toUpperCase(),
+    payload: value?.startsWith("SELLER:") || value?.startsWith("MANUFACTURER:") ? value : value?.toUpperCase(),
   };
 };
 
