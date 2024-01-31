@@ -17,6 +17,39 @@ export const IcsearchHomePage = () => {
   const appTheme = useAppTheme();
   const navigate = useNavigate();
 
+  const companyNames = [
+    "Geehy Semiconductor",
+    "GigaDevice",
+    "Jiangsu Electronic",
+    "Yageo",
+    "Amtek Technology",
+    "SMIC",
+    "Analog Devices",
+    "Rockchip",
+    "Amphenol",
+    "Microchip",
+    "Wingtech",
+    "Giga Device",
+    "NXP Semiconductors",
+    "UNISOC",
+    "ST Microelectronics",
+    "Nation Technologies",
+    "Texas Instruments",
+    "Rockchip",
+    "ON Semiconductors",
+    "Maxscend",
+    "Murata",
+    "Sanechips",
+    "Omron",
+    "CR Micro",
+    "Renesas Electronics",
+    "TE Connectivity",
+    "GoerTek",
+    "Wurth Electronics",
+    "Xilinx",
+    "SMC",
+  ];
+
   const createPcbHandler = () => {
     navigate("/pcb");
   };
@@ -136,6 +169,29 @@ export const IcsearchHomePage = () => {
               <p className={classes.paragraph}>{t("search.paragraph_2")}</p>
             </Grid>
           </Grid>
+        </Container>
+      </section>
+
+      <section className={clsx(classes.section, classes.manufacturers)}>
+        <Container maxWidth="lg">
+          <h1 className={classes.title}>{t("manufacturers.title")}</h1>
+          <p style={{ fontSize: "1.2rem" }} className={classes.paragraph}>
+            {t("manufacturers.paragraph_1")}
+          </p>
+          <div className={classes.manufacturersWrapper}>
+            {companyNames.map((manufacturer) => {
+              return (
+                <span key={manufacturer} className={classes.manufacturerName}>
+                  {manufacturer}
+                </span>
+              );
+            })}
+          </div>
+          <p className={classes.subText}>
+            {t("manufacturers.paragraph_2")}
+            <br />
+            {t("manufacturers.paragraph_3")}
+          </p>
         </Container>
       </section>
 

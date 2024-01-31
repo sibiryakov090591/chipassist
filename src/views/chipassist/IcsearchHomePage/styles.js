@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.1rem",
     },
   },
+  subText: {
+    color: "#566",
+    fontSize: "1rem",
+  },
   workTitle: {
     textAlign: "center",
     paddingBottom: "1rem",
@@ -93,6 +97,27 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "block",
     margin: "0 auto",
+  },
+  manufacturers: {
+    backgroundColor: "#fafafa",
+    textAlign: "center",
+  },
+  manufacturersWrapper: {
+    maxWidth: 600,
+    margin: " 24px auto",
+  },
+  manufacturerName: {
+    padding: "8px 16px",
+    display: "inline-block",
+    fontWeight: 600,
+    fontSize: 20,
+    whiteSpace: "nowrap",
+    cursor: "pointer",
+    color: "#818a93",
+    transition: "all 0.2s",
+    "&:hover": {
+      color: "#456",
+    },
   },
   pcb: {
     backgroundColor: "#21C483",
