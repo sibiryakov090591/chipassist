@@ -182,7 +182,7 @@ const TopBar = (props) => {
           <Collapse in={!collapse}>
             <section style={{ padding: "8px 0" }} className={homePageClasses.header}>
               <Container maxWidth="xl" className={homePageClasses.headerContainer}>
-                <div style={{ width: isChipAssist ? (is1180Down ? 145 : 250) : is1180Down ? 110 : 200 }}>
+                <div style={{ width: isChipAssist ? (is1180Down ? 145 : 250) : is1180Down ? 30 : 200 }}>
                   {isChipAssist && (
                     <NavLink to="/sell-excess-inventory" className={homePageClasses.headerButtonLink}>
                       {t("sell_on")} <span className={homePageClasses.redColor}>ChipAssist</span>
@@ -193,7 +193,7 @@ const TopBar = (props) => {
                   <TopMenu />
                 </div>
                 <div
-                  style={{ width: isChipAssist ? (is1180Down ? 145 : 250) : is1180Down ? 110 : 200, textAlign: "end" }}
+                  style={{ width: isChipAssist ? (is1180Down ? 145 : 250) : is1180Down ? 80 : 200, textAlign: "end" }}
                 >
                   <a
                     href={`mailto:${isChipAssist ? "info@chipassist.com" : "info@icsearch.ru"}`}
