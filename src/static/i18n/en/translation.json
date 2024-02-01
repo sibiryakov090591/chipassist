@@ -2534,6 +2534,14 @@
         "p4": "BOM list",
         "p5": "with up to 100 lines on a free account and up to 1000 lines on a paid account."
       }
+    },
+    "unsubscribe": {
+      "page_title": "Unsubscribe",
+      "title": "Do you really want to unsubscribe?",
+      "subtitle": "Attention, you won't be able to receive our informative emails once unsubscribed.",
+      "button": "Yes, unsubscribe",
+      "success_title": "You have successfully unsubscribed",
+      "success_subtitle": "You will not receive informative emails from us but can continue using our service!"
     }
   },
 
