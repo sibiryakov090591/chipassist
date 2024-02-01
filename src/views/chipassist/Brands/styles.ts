@@ -66,9 +66,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         color: theme.palette.app.grey500,
       },
     },
-    highlight: {
-      backgroundColor: "#f9f756",
-    },
   }),
 );
 

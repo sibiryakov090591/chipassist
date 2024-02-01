@@ -438,26 +438,11 @@ const ChipAssistApp = () => {
               }
             />
             <Route
-              path="/brands/*"
+              path="/brands"
               element={
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <Suspense fallback={}>
-                        <Brands />
-                      </Suspense>
-                    }
-                  />
-                  <Route
-                    path="/:name"
-                    element={
-                      <Suspense fallback={}>
-                        <Brands />
-                      </Suspense>
-                    }
-                  />
-                </Routes>
+                <Suspense fallback={}>
+                  <Brands />
+                </Suspense>
               }
             />
             <Route
