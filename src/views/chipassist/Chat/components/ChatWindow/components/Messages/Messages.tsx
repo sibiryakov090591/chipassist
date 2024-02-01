@@ -257,12 +257,11 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
             {t("request_block", {
               qty: `${selectedChat.rfq.quantity}`,
               upc: `${selectedChat.rfq.upc}`,
-              price: `${
-                selectedChat.rfq.price
-                  ? `at ${formatMoney(selectedChat.rfq.price)} ${selectedChat.rfq.currency === "EUR" ? "€" : "$"}`
-                  : ""
-              }`,
             })}
+            {!!selectedChat.rfq.price &&
+              t("request_block_price", {
+                price: `${selectedChat.rfq.currency === "EUR" ? "€" : "$"}${formatMoney(selectedChat.rfq.price)}`,
+              })}
           </strong>{" "}
           {date}
         </div>

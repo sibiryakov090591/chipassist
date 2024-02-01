@@ -58,7 +58,6 @@ import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import PrivacyPolicy from "@src/views/chipassist/StaticPages/PrivacyPolicy";
-import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -210,7 +209,6 @@ const ChipAssistApp = () => {
 
   useEffect(() => {
     batch(() => {
-      // dispatch(loadStockListIds());
       dispatch(loadMaintenanceThunk());
       dispatch(authCheckState());
 
@@ -220,7 +218,6 @@ const ChipAssistApp = () => {
         setTimeout(() => dispatch(getCurrency(selectedCurrency)), 1000);
       });
       dispatch(getAllSellers());
-      dispatch(getAllManufacturers());
       dispatch(getGeolocation());
     });
   }, []);
@@ -441,11 +438,26 @@ const ChipAssistApp = () => {
               }
             />
             <Route
-              path="/brands"
+              path="/brands/*"
               element={
-                <Suspense fallback={}>
-                  <Brands />
-                </Suspense>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <Suspense fallback={}>
+                        <Brands />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/:name"
+                    element={
+                      <Suspense fallback={}>
+                        <Brands />
+                      </Suspense>
+                    }
+                  />
+                </Routes>
               }
             />
             <Route

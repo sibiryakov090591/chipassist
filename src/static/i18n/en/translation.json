@@ -2749,7 +2749,7 @@
     "message_input": {
       "types": {
         "confirm": "Dear {{name}}! We have {{partNumber}} available. We can ship up to {{numInStock}}pcs at {{price}}{{symbol}} unit price{{datecode}}. If you are interested, please send us a Purchase Order (PO).",
-        "update_price": "Dear {{name}}! Unfortunately, the unit price for {{partNumber}} was updated. Now we can ship up to ${numInStock}pcs at {{price}}{{symbol}} unit price{{datecode}}. If you are interested, please send us a Purchase Order (PO).",
+        "update_price": "Dear {{name}}! Unfortunately, the unit price for {{partNumber}} was updated. Now we can ship up to {{numInStock}}pcs at {{price}}{{symbol}} unit price{{datecode}}. If you are interested, please send us a Purchase Order (PO).",
         "update_qty": "Dear {{name}}! Thank you for your request. Currently we have only {{numInStock}} units of {{partNumber}} in stock. While we don't have the full quantity you requested, we believe this partial availability might still meet your immediate requirements. The unit price for this product is {{price}}{{symbol}}. If you are interested in this stock please send us a Purchase Order (PO).",
         "out_stock": "Dear {{name}}! Thank you for your request. Unfortunately, {{partNumber}} is currently out of stock. However, we are actively working to replenish our stock and expect {{partNumber}} to be available soon.",
         "later": "Dear {{name}}! Thank you for your request. We will provide you the details a bit later. Thank you!"
@@ -2769,7 +2769,8 @@
 
     "messages": {
       "today": "Today",
-      "request_block": "Request for {{qty}}pcs {{upc}}{{price}}.",
+      "request_block": "Request for {{qty}}pcs {{upc}}",
+      "request_block_price": " at {{price}}",
       "no_messages": "You have no messages",
       "is_supplier_resp": {
         "true": "You have no chats yet. You&apos;ll see new messages here when customers click <strong>&quot;Contact seller&quot;</strong> button on",

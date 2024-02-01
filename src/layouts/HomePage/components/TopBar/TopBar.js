@@ -98,7 +98,6 @@ const TopBar = (props) => {
         showHeader = true;
         setIsShowHeader(true);
       } else if (isHomePage && currentPosition <= homePageTopOffset) {
-        console.log(isHomePage, isShowHeader);
         showHeader = false;
         setIsShowHeader(false);
       }

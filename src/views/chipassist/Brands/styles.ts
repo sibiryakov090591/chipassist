@@ -60,11 +60,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       textTransform: "capitalize",
       fontSize: 15,
       color: theme.palette.app.grey500,
-      marginBottom: 5,
+      padding: 3,
       "&:hover": {
         textDecoration: "underline",
         color: theme.palette.app.grey500,
       },
+    },
+    highlight: {
+      backgroundColor: "#f9f756",
     },
   }),
 );

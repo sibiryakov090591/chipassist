@@ -8,7 +8,7 @@ import devices from "@src/images/Homepage/icsearch/devices.png";
 import board from "@src/images/Homepage/board_aloupr.svg";
 import clsx from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useStyles from "./styles";
 
 export const IcsearchHomePage = () => {
@@ -16,6 +16,39 @@ export const IcsearchHomePage = () => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const navigate = useNavigate();
+
+  const companyNames = [
+    "Geehy Semiconductor",
+    "GigaDevice",
+    "Jiangsu Electronic",
+    "Yageo",
+    "Amtek Technology",
+    "SMIC",
+    "Analog Devices",
+    "Rockchip",
+    "Amphenol",
+    "Microchip",
+    "Wingtech",
+    "Giga Device",
+    "NXP Semiconductors",
+    "UNISOC",
+    "ST Microelectronics",
+    "Nation Technologies",
+    "Texas Instruments",
+    "Rockchip",
+    "ON Semiconductors",
+    "Maxscend",
+    "Murata",
+    "Sanechips",
+    "Omron",
+    "CR Micro",
+    "Renesas Electronics",
+    "TE Connectivity",
+    "GoerTek",
+    "Wurth Electronics",
+    "Xilinx",
+    "SMC",
+  ];
 
   const createPcbHandler = () => {
     navigate("/pcb");
@@ -136,6 +169,33 @@ export const IcsearchHomePage = () => {
               <p className={classes.paragraph}>{t("search.paragraph_2")}</p>
             </Grid>
           </Grid>
+        </Container>
+      </section>
+
+      <section className={clsx(classes.section, classes.manufacturers)}>
+        <Container maxWidth="lg">
+          <h1 className={classes.title}>{t("manufacturers.title")}</h1>
+          <p style={{ fontSize: "1.2rem" }} className={classes.paragraph}>
+            {t("manufacturers.paragraph_1")}
+          </p>
+          <div className={classes.manufacturersWrapper}>
+            {companyNames.map((manufacturer) => {
+              return (
+                <Link
+                  key={manufacturer}
+                  to={`/brands/${encodeURIComponent(manufacturer)}`}
+                  className={classes.manufacturerName}
+                >
+                  {manufacturer}
+                </Link>
+              );
+            })}
+          </div>
+          <p className={classes.subText}>
+            {t("manufacturers.paragraph_2")}
+            <br />
+            {t("manufacturers.paragraph_3")}
+          </p>
         </Container>
       </section>
 

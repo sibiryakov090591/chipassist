@@ -223,7 +223,7 @@ export const useStyles = makeStyles((theme) => ({
     minWidth: "200px",
   },
   requestButtonHelpText: {
-    maxWidth: 200,
+    maxWidth: 203,
     textAlign: "center",
     paddingTop: 5,
     color: "#456",

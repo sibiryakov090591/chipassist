@@ -1922,7 +1922,8 @@
       "placeholder": "Geben Sie eine Nachricht ein"
     },
     "messages": {
-      "request_block": "Anfrage für {{qty}}Stck {{upc}}{{price}}.",
+      "request_block": "Anfrage für {{qty}}Stck {{upc}}",
+      "request_block_price": " at {{price}}",
       "no_messages": "Du hast keine Nachrichten",
       "is_supplier_resp": {
         "true": "Sie haben noch keine Chats.  <strong></strong> Knopf an",
