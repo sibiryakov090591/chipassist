@@ -8,7 +8,7 @@ import devices from "@src/images/Homepage/icsearch/devices.png";
 import board from "@src/images/Homepage/board_aloupr.svg";
 import clsx from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useStyles from "./styles";
 
 export const IcsearchHomePage = () => {
@@ -181,9 +181,13 @@ export const IcsearchHomePage = () => {
           <div className={classes.manufacturersWrapper}>
             {companyNames.map((manufacturer) => {
               return (
-                <span key={manufacturer} className={classes.manufacturerName}>
+                <Link
+                  key={manufacturer}
+                  to={`/brands/${encodeURIComponent(manufacturer)}`}
+                  className={classes.manufacturerName}
+                >
                   {manufacturer}
-                </span>
+                </Link>
               );
             })}
           </div>

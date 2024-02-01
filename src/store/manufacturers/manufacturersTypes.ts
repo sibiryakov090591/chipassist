@@ -21,5 +21,6 @@ export interface ResponseManufacturer {
 // State
 export interface ManufacturersState {
   items: Items[];
+  groups: { [key: string]: Items[] };
   loaded: boolean;
 }
