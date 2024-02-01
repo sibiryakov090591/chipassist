@@ -58,6 +58,7 @@ import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import PrivacyPolicy from "@src/views/chipassist/StaticPages/PrivacyPolicy";
+import Unsubscribe from "@src/views/chipassist/StaticPages/Unsubscribe";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -567,6 +568,7 @@ const ChipAssistApp = () => {
               />
             )}
             {isShowFormExamplesPage && <Route path={"/dev_tools/forms"} element={<FormExamples />} />}
+            <Route path="/email-unsubscribe" element={<Unsubscribe />} />
             <Route path="/*" element={<Error404 />} />
           </Routes>
         </HomePage>
