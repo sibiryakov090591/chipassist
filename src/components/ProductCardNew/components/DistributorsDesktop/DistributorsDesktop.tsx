@@ -347,14 +347,10 @@ const DistributorsDesktop: React.FC<Props> = ({
       </thead>
       <tbody>
         {(smart_view && stockrecords && bestOfferId
-          ? stockrecords
-              .reduce(
-                (acc: SortedStockrecord[][], elem) => (elem[0].id !== bestOfferId ? [...acc, elem] : [elem, ...acc]),
-                [],
-              )
-              .filter((sRecord) => sRecord[0].num_in_stock > 0)
-          : stockrecords && smart_view
-          ? stockrecords.filter((sRecord) => sRecord[0].num_in_stock > 0)
+          ? stockrecords.reduce(
+              (acc: SortedStockrecord[][], elem) => (elem[0].id !== bestOfferId ? [...acc, elem] : [elem, ...acc]),
+              [],
+            )
           : stockrecords
         )?.map((srArray) => {
           if (!srArray) return null;

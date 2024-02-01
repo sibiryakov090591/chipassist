@@ -130,7 +130,7 @@ const ProductCardNew = (props) => {
           const partner = partners?.find((i) => i.id === sRecord.partner);
           return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
         }).length;
-
+        console.log(globalSellersAmount);
         filteredMultipleStocks =
           globalSellersAmount > 4
             ? filteredMultipleStocks.filter((sRecord) => sRecord.num_in_stock > 0)
