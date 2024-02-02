@@ -473,11 +473,12 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
       //   : billingAddress?.company_name;
       const company_name = billingAddress?.company_name;
-      let comment = `Delivery to: ${country?.printable_name};`;
-      if (phone) comment += ` Phone: ${phone};`;
-      if (company_name) comment += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
+      let comment = `${t("comment.delivery_to")}: ${country?.printable_name};`;
+      if (phone) comment += ` ${t("comment.phone")}: ${phone};`;
+      if (company_name)
+        comment += ` ${t("comment.company_name")}: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
       // if (company_type) comment += ` Company type: ${company_type};`;
-      if (formState.values.comment) comment += ` Additional: ${formState.values.comment};`;
+      if (formState.values.comment) comment += ` ${t("comment.additional")}: ${formState.values.comment};`;
 
       const sr = rfqItem?.stockrecord;
       // const srPrice = sr && getPrice(+formState.values.quantity, sr);
