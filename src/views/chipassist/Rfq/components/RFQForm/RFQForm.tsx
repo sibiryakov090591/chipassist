@@ -168,7 +168,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
   const sellersWithProductLink = useAppSelector((state) =>
     state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
   );
-  const isICSearch = constants.id === "icsearch";
+  const isICSearch = constants.id === ID_ICSEARCH;
 
   const defaultState = (profile?: any): FormState => ({
     isValid: false,
@@ -473,12 +473,12 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
       //   ? formState.values.email.match(/@(.*)\./g) && formState.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
       //   : billingAddress?.company_name;
       const company_name = billingAddress?.company_name;
-      let comment = `${t("comment.delivery_to")}: ${country?.printable_name};`;
-      if (phone) comment += ` ${t("comment.phone")}: ${phone};`;
+      let comment = isICSearch ? "" : `${t("column.country")}: ${country?.printable_name}; `;
+      if (phone) comment += `${t("column.phone_comment")}: ${phone}; `;
       if (company_name)
-        comment += ` ${t("comment.company_name")}: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
-      // if (company_type) comment += ` Company type: ${company_type};`;
-      if (formState.values.comment) comment += ` ${t("comment.additional")}: ${formState.values.comment};`;
+        comment += `${t("column.company_name")}: ${company_name[0].toUpperCase()}${company_name.slice(1)}; `;
+      // if (company_type) comment += `Company type: ${company_type}; `;
+      if (formState.values.comment) comment += `${t("column.additional")}: ${formState.values.comment};`;
 
       const sr = rfqItem?.stockrecord;
       // const srPrice = sr && getPrice(+formState.values.quantity, sr);

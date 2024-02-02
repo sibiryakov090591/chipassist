@@ -2015,6 +2015,7 @@
       "last_name": "Last name",
       "phone": "Your contact phone number",
       "company_type": "Your company type",
+      "company_name": "Company name",
       "company_other_type": "Please specify your company type",
       "distributor": "Distributor",
       "manufacturer": "Industrial manufacturer",
@@ -2022,8 +2023,10 @@
       "provider": "Supply chain services provider",
       "other": "Other",
       "country": "Delivery to",
+      "phone_comment": "Phone",
       "required": "is required",
-      "email_valid": "It doesn't look like a valid email"
+      "email_valid": "It doesn't look like a valid email",
+      "additional": "Additional"
     },
     "quick_modal": {
       "title": "Attention!",
@@ -2540,6 +2543,14 @@
         "p4": "BOM list",
         "p5": "with up to 100 lines on a free account and up to 1000 lines on a paid account."
       }
+    },
+    "unsubscribe": {
+      "page_title": "Unsubscribe",
+      "title": "Do you really want to unsubscribe?",
+      "subtitle": "Attention, you won't be able to receive our informative emails once unsubscribed.",
+      "button": "Yes, unsubscribe",
+      "success_title": "You have successfully unsubscribed",
+      "success_subtitle": "You will not receive informative emails from us but can continue using our service!"
     }
   },
 

@@ -1,35 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import Page from "@src/components/Page/Page";
 import Container from "@material-ui/core/Container/Container";
 import Preloader from "@src/components/Preloader/Preloader";
-import { Link, useParams } from "react-router-dom";
-import clsx from "clsx";
+import { Link } from "react-router-dom";
 import { useStyles } from "./styles";
 
 const Brands: React.FC = () => {
   const { t } = useI18n("brands");
   const classes = useStyles();
-  const { name } = useParams();
 
   const { groups, loaded } = useAppSelector((state) => state.manufacturers);
-
-  useEffect(() => {
-    if (groups && name) {
-      const element = document.getElementById(`${name.toLowerCase()}`);
-      if (element && window.pageYOffset === 0) {
-        const elementRect = element.getBoundingClientRect();
-        const middlePosition = elementRect.top + elementRect.height / 2;
-        setTimeout(() => {
-          window.scrollTo({
-            top: middlePosition - window.innerHeight / 2,
-            behavior: "smooth",
-          });
-        }, 600);
-      }
-    }
-  }, [name, groups]);
 
   return (
     <noindex>
@@ -55,12 +37,9 @@ const Brands: React.FC = () => {
                       {group?.map((item) => {
                         return (
                           <Link
-                            id={`${item.name.toLowerCase()}`}
                             key={item.id}
                             to={`/search?query=${encodeURIComponent(`MANUFACTURER:${item.name}`)}`}
-                            className={clsx(classes.link, {
-                              [classes.highlight]: !!name && item.name.toLowerCase() === name.toLowerCase(),
-                            })}
+                            className={classes.link}
                           >
                             {item.name}
                           </Link>

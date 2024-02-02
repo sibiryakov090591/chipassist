@@ -183,7 +183,7 @@ export const IcsearchHomePage = () => {
               return (
                 <Link
                   key={manufacturer}
-                  to={`/brands/${encodeURIComponent(manufacturer)}`}
+                  to={`/search?query=${encodeURIComponent(`MANUFACTURER:${manufacturer}`)}`}
                   className={classes.manufacturerName}
                 >
                   {manufacturer}
