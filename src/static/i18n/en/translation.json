@@ -2065,12 +2065,6 @@
       },
       "accept": "Send multiple RFQ",
       "details_title": "Add additional details into your request"
-    },
-    "comment": {
-      "delivery_to": "Delivery to",
-      "phone": "Phone",
-      "company_name": "Company name",
-      "additional": "Additional"
     }
   },
   "pcb_new": {
