@@ -304,7 +304,7 @@ const CatalogResults: React.FC = () => {
                 )}
                 {!!products.results.length && (
                   <>
-                    <h1 ref={titleRef}>{category?.name}</h1>
+                    <h1 ref={titleRef}>{t(category?.slug)}</h1>
                     <Table>
                       <TableBody className={classes.upcWrapper}>
                         {products.results.map((item: any) => {

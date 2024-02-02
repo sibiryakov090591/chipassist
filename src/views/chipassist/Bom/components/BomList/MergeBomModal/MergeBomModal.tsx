@@ -108,7 +108,7 @@ const MergeBomModal: React.FC<Props> = ({ onClose, onView, submitHandle, isExamp
                   onClick={onSubmitClick}
                   disabled={disabledBtn}
                 >
-                  {t("common.continue")}
+                  {t("common.submit")}
                 </Button>
               ) : (
                 <Button
