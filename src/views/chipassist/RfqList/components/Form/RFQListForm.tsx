@@ -272,6 +272,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
         firstName: formSchema.firstName,
         lastName: formSchema.lastName,
         policy_confirm: formSchema.policyConfirm,
+        company_name: formSchema.companyName,
       };
     }
     return sch;
@@ -870,7 +871,11 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                       value={phoneValue}
                       onChange={onChangePhoneHandler}
                       small
-                      style={{ margin: isDownKey ? "8px 0" : "13px", height: !isDownKey && "auto" }}
+                      style={{
+                        margin: isDownKey ? "8px 0" : "13px",
+                        height: !isDownKey && "auto",
+                        maxHeight: !isDownKey && "38px",
+                      }}
                     />
 
                     <TextField
