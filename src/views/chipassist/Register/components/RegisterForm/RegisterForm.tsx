@@ -176,7 +176,6 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!formState.isValid) return false;
     const errors = validate(formState.values, schema);
     if (errors) {
       return setFormState((prevState) => ({
@@ -350,7 +349,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
         </div>
         <Button
           className={clsx(classes.submitButton, appTheme.buttonCreate)}
-          disabled={!formState.isValid || isLoading}
+          disabled={isLoading}
           size="large"
           type="submit"
           variant="contained"
