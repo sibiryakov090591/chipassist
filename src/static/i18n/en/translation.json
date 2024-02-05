@@ -1739,7 +1739,6 @@
       "h": "Order & track",
       "p": " Order your product through ChipAssist and get safe and convinient purchasing and tracking."
     },
-
     "today": {
       "h": "today",
       "count_item1": "Parts in the catalog",
@@ -1748,14 +1747,12 @@
       "count_item4": "PCB manufacturers",
       "count_item5": "Countries"
     },
-
     "services": {
       "h": {
         "all": "All services ",
         "in": "in pne place"
       }
     },
-
     "connect": {
       "title": {
         "connecting": "Connecting the",
@@ -1786,7 +1783,6 @@
       "title": "Partner with",
       "subtitle": "Partner with ChipAssist for API integrations, excess data stocks, user requests, and market trends to enhance your business capabilities. Gain an edge in the market and stay ahead of the curve."
     },
-
     "pcb": {
       "title": {
         "p1": "Get your next",
@@ -1801,7 +1797,6 @@
       },
       "button": "Request PCB"
     },
-
     "title": "Welcome to {{name}}!",
     "page_description": "Global marketplace for sourcing electronic components. To compare prices and monitor inventory, shop across 180 distributors & manufacturers, and 20 000 000 parts.",
     "advanced_section": {
@@ -1828,7 +1823,6 @@
     },
     "bom_sections": {
       "title": "Working with",
-
       "paragraph_1": "Load your BOM list and find and order all the needed parts all at once - review, check and modify proposed offerings.",
       "paragraph_2": "Reduce the risks by checking the “health” of your lists, prices surges and availability timeline."
     },

@@ -191,6 +191,12 @@ export const IcsearchHomePage = () => {
               );
             })}
           </div>
+          <p style={{ fontSize: "1.2rem" }} className={classes.paragraph}>
+            {t("manufacturers.paragraph_4")}
+            <Link to={`/brands`} className={appTheme.hyperlink}>
+              {t("manufacturers.paragraph_4_link")}
+            </Link>
+          </p>
           <p className={classes.subText}>
             {t("manufacturers.paragraph_2")}
             <br />
