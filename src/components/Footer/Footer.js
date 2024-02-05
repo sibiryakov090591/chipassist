@@ -40,7 +40,7 @@ const Footer = () => {
   const ICSInfo = () => {
     return (
       <noindex>
-        <Box className={classes.navGroup} style={{ width: "69%" }}>
+        <Box className={classes.navGroup}>
           <span style={{ color: "white", fontSize: "12px" }}>
             {"ООО 'ИНЕЛСО'"}
             <br />
@@ -241,41 +241,7 @@ const Footer = () => {
             </div>
           </Container>
         ) : (
-          <Container className={classes.icsearchContainer} maxWidth="lg">
-            {/* <Grid className={classes.wrapper} container> */}
-            {/*  <Grid item md={6} xs={12}> */}
-            {/*    <Box className={classes.contactInfoBox}> */}
-            {/*      <span className={classes.titleClass}>Адес</span> */}
-            {/*      <p>Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412</p> */}
-
-            {/*      <span className={classes.titleClass}> */}
-            {/*        Реквизиты */}
-            {/*        <br /> */}
-            {/*      </span> */}
-            {/*      <span> */}
-            {/*        ИНН 7813635698 */}
-            {/*        <br /> */}
-            {/*      </span> */}
-            {/*      <span>ОГРН 1197847128478</span> */}
-            {/*    </Box> */}
-            {/*  </Grid> */}
-            {/*  <Grid item md={6} xs={12}> */}
-            {/*    <Box className={classes.contactsWrapper}> */}
-            {/*      <Box className={classes.contactsInner}> */}
-            {/*        <Box> */}
-            {/*          <img alt="Logo" className={classes.logoImg} src={logo} /> */}
-            {/*        </Box> */}
-            {/*        <Box className={classes.mail}> */}
-            {/*          <a href="mailto:info@icsearch.ru">info@icsearch.ru</a> */}
-            {/*        </Box> */}
-            {/*        <Box> */}
-            {/*          <a href="tel:+78126280016">+7 (812) 628-00-16</a> */}
-            {/*        </Box> */}
-            {/*      </Box> */}
-            {/*    </Box> */}
-            {/*  </Grid> */}
-            {/* </Grid> */}
-
+          <Container className={classes.icsearchContainer} maxWidth="xl">
             <Box className={classes.footerWrapper}>
               <Box className={classes.logo}>
                 <a href="/">
@@ -304,25 +270,33 @@ const Footer = () => {
                 <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
                   <Box display="flex" flexWrap="wrap">
                     <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLink} to={"/parts"}>
+                      <NavLink className={classes.navLinkICS} to={"/"}>
+                        {t("menu.home")}
+                      </NavLink>
+                      <NavLink className={classes.navLinkICS} to={"/parts"}>
                         {t("products")}
                       </NavLink>
                       <Hidden smDown>
-                        <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                        <NavLink className={classes.navLinkICS} to={"/bom/create-file"}>
                           {t("bom")}
                         </NavLink>
-                      </Hidden>
-                      <Hidden smDown>
-                        <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"}>
                           {t("rfq_list")}
                         </NavLink>
-                        <NavLink className={classes.navLink} to={"/pcb"}>
+                      </Hidden>
+                    </Box>
+                    <Box className={classes.navGroup}>
+                      <Hidden smDown>
+                        <NavLink className={classes.navLinkICS} to={"/pcb"}>
                           {t("menu.pcb")}
                         </NavLink>
-                        <NavLink className={classes.navLink} to={"/payment_and_delivery"}>
+                        <NavLink className={classes.navLinkICS} to={"/brands"}>
+                          {t("menu.brands")}
+                        </NavLink>
+                        <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"}>
                           {t("payment_and_delivery")}
                         </NavLink>
-                        <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                        <NavLink className={classes.navLinkICS} to={"/privacy_policy"}>
                           {t("privacy")}
                         </NavLink>
                       </Hidden>
@@ -330,19 +304,16 @@ const Footer = () => {
                   </Box>
                   <Hidden smUp>
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
-                      <NavLink className={classes.navLink} to={"/pcb"}>
-                        {t("menu.pcb")}
-                      </NavLink>
-                      <NavLink className={classes.navLink} to={"/payment_and_delivery"}>
+                      <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"}>
                         {t("payment_and_delivery")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                      <NavLink className={classes.navLinkICS} to={"/privacy_policy"}>
                         {t("privacy")}
                       </NavLink>
                     </Box>
                   </Hidden>
                   <Hidden xsDown>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"250px"}>
                       <ICSInfo />
                     </Box>
                   </Hidden>
