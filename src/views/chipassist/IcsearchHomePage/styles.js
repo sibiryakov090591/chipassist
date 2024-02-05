@@ -119,8 +119,52 @@ const useStyles = makeStyles((theme) => ({
       color: "#456",
     },
   },
+  partNumbers: {
+    backgroundColor: "#ffffff",
+    textAlign: "center",
+  },
+  partNumbersTitle: {
+    "&:after": {
+      content: "''",
+      display: "block",
+      margin: "16px auto 0",
+      width: "140px",
+      height: "3px",
+      backgroundColor: theme.palette.app.green700,
+    },
+  },
+  partNumbersWrapper: {
+    maxWidth: 1000,
+    textAlign: "start",
+    columnCount: 4,
+    margin: "24px auto",
+    [theme.breakpoints.down("sm")]: {
+      columnCount: 3,
+    },
+    [theme.breakpoints.down("xs")]: {
+      columnCount: 2,
+    },
+  },
+  partNumberName: {
+    padding: "3px 12px 3px 40px",
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 12,
+    },
+    "& > a": {
+      fontWeight: 600,
+      fontSize: 16,
+      whiteSpace: "nowrap",
+      cursor: "pointer",
+      color: "#456",
+      borderBottom: "2px solid transparent",
+      transition: "all 0.2s",
+      "&:hover": {
+        borderColor: "#456",
+      },
+    },
+  },
   pcb: {
-    backgroundColor: "#21C483",
+    backgroundColor: theme.palette.app.green700,
   },
   pcbTitle: {
     color: "#ffffff",

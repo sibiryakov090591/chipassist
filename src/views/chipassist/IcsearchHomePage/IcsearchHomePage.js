@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import { Page } from "@src/components";
 import { Box, Button, Container, Grid, Paper } from "@material-ui/core";
@@ -9,7 +9,42 @@ import board from "@src/images/Homepage/board_aloupr.svg";
 import clsx from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
 import { Link, useNavigate } from "react-router-dom";
+import useAppSelector from "@src/hooks/useAppSelector";
+import Preloader from "@src/components/Preloader/Preloader";
 import useStyles from "./styles";
+
+const companyNames = [
+  "Geehy Semiconductor",
+  "GigaDevice",
+  "Jiangsu Electronic",
+  "Yageo",
+  "Amtek Technology",
+  "SMIC",
+  "Analog Devices",
+  "Rockchip",
+  "Amphenol",
+  "Microchip",
+  "Wingtech",
+  "Giga Device",
+  "NXP Semiconductors",
+  "UNISOC",
+  "ST Microelectronics",
+  "Nation Technologies",
+  "Texas Instruments",
+  "Rockchip",
+  "ON Semiconductors",
+  "Maxscend",
+  "Murata",
+  "Sanechips",
+  "Omron",
+  "CR Micro",
+  "Renesas Electronics",
+  "TE Connectivity",
+  "GoerTek",
+  "Wurth Electronics",
+  "Xilinx",
+  "SMC",
+];
 
 export const IcsearchHomePage = () => {
   const { t } = useI18n("home");
@@ -17,38 +52,24 @@ export const IcsearchHomePage = () => {
   const appTheme = useAppTheme();
   const navigate = useNavigate();
 
-  const companyNames = [
-    "Geehy Semiconductor",
-    "GigaDevice",
-    "Jiangsu Electronic",
-    "Yageo",
-    "Amtek Technology",
-    "SMIC",
-    "Analog Devices",
-    "Rockchip",
-    "Amphenol",
-    "Microchip",
-    "Wingtech",
-    "Giga Device",
-    "NXP Semiconductors",
-    "UNISOC",
-    "ST Microelectronics",
-    "Nation Technologies",
-    "Texas Instruments",
-    "Rockchip",
-    "ON Semiconductors",
-    "Maxscend",
-    "Murata",
-    "Sanechips",
-    "Omron",
-    "CR Micro",
-    "Renesas Electronics",
-    "TE Connectivity",
-    "GoerTek",
-    "Wurth Electronics",
-    "Xilinx",
-    "SMC",
-  ];
+  const { partNumberExamples } = useAppSelector((state) => state.search);
+
+  const [randomPartNumbers, setRandomPartNumbers] = useState(null);
+
+  useEffect(() => {
+    if (partNumberExamples?.length) {
+      const partNumbers = [...partNumberExamples];
+      const result = [];
+      while (result.length < Math.min(partNumberExamples.length, 60)) {
+        const index = Math.floor(Math.random() * partNumbers.length);
+        if (partNumbers[index]?.length <= 14) {
+          result.push(partNumbers[index]);
+          partNumbers.splice(index, 1);
+        }
+      }
+      setRandomPartNumbers(result);
+    }
+  }, [partNumberExamples]);
 
   const createPcbHandler = () => {
     navigate("/pcb");
@@ -202,6 +223,26 @@ export const IcsearchHomePage = () => {
             <br />
             {t("manufacturers.paragraph_3")}
           </p>
+        </Container>
+      </section>
+
+      <section className={clsx(classes.section, classes.partNumbers)}>
+        <Container maxWidth="lg">
+          <h1 className={clsx(classes.title, classes.partNumbersTitle)}>{t("part_numbers.title")}</h1>
+          {!randomPartNumbers && (
+            <Box display="flex" alignItems="center" justifyContent="center" padding="60px 0">
+              <Preloader title={t("part_numbers.loading")} />
+            </Box>
+          )}
+          <div className={classes.partNumbersWrapper}>
+            {randomPartNumbers?.map((partNumber) => {
+              return (
+                <div key={partNumber} className={classes.partNumberName}>
+                  <Link to={`/search?query=${encodeURIComponent(partNumber)}`}>{partNumber}</Link>
+                </div>
+              );
+            })}
+          </div>
         </Container>
       </section>
 
