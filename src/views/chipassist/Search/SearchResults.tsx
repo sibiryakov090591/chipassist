@@ -313,10 +313,12 @@ const SearchResults = () => {
       </div>
     );
     const container = document.getElementById("search-filters-bar-portal");
-    if (isFixedFiltersBar && container) {
-      return ReactDOM.createPortal(filtersBar, container);
-    }
-    return filtersBar;
+    return (
+      <>
+        {filtersBar}
+        {isFixedFiltersBar && container && ReactDOM.createPortal(filtersBar, container)}
+      </>
+    );
   };
 
   return (
