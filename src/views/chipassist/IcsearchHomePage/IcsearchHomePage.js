@@ -58,14 +58,12 @@ export const IcsearchHomePage = () => {
 
   useEffect(() => {
     if (partNumberExamples?.length) {
-      const partNumbers = [...partNumberExamples];
+      const partNumbers = [...partNumberExamples].filter((i) => i.length <= 14 && i.length >= 6);
       const result = [];
-      while (result.length < Math.min(partNumberExamples.length, 60)) {
+      while (result.length < Math.min(partNumbers.length, 60)) {
         const index = Math.floor(Math.random() * partNumbers.length);
-        if (partNumbers[index]?.length <= 14) {
-          result.push(partNumbers[index]);
-          partNumbers.splice(index, 1);
-        }
+        result.push(partNumbers[index]);
+        partNumbers.splice(index, 1);
       }
       setRandomPartNumbers(result);
     }
