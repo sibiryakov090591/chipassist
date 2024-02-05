@@ -125,6 +125,21 @@ export const useStyles = makeStyles((theme) => ({
       marginBottom: 12,
     },
   },
+  navLinkICS: {
+    display: "block",
+    fontSize: 13,
+    color: "#fafafa",
+    fontWeight: "bold",
+    marginBottom: 3,
+    whiteSpace: "nowrap",
+    "&:hover": {
+      textDecoration: "underline",
+      color: "#fafafa",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 12,
+    },
+  },
   copy: {
     color: "#d8d5df",
     fontSize: 11,
