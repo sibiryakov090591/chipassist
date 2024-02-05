@@ -132,7 +132,6 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginBottom: 3,
     whiteSpace: "nowrap",
-    textDecoration: "underline",
     "&:hover": {
       textDecoration: "underline",
       color: "#fafafa",

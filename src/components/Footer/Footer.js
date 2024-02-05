@@ -40,7 +40,7 @@ const Footer = () => {
   const ICSInfo = () => {
     return (
       <noindex>
-        <Box className={classes.navGroup} style={{ width: "69%" }}>
+        <Box className={classes.navGroup}>
           <span style={{ color: "white", fontSize: "12px" }}>
             {"ООО 'ИНЕЛСО'"}
             <br />
@@ -313,7 +313,7 @@ const Footer = () => {
                     </Box>
                   </Hidden>
                   <Hidden xsDown>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"250px"}>
                       <ICSInfo />
                     </Box>
                   </Hidden>
