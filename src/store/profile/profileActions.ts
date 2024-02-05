@@ -75,6 +75,22 @@ export const updateProfileInfoThunk = (data: any = null) => {
   };
 };
 
+export const unsubscribeUser = (email: string) => {
+  return (dispatch: any) => {
+    return dispatch({
+      types: [false, false, false],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`/profile/unsubscribe/${email}`)
+          .then((res) => res.data)
+          .catch((e) => {
+            console.log("***PROFILE_UNSUBSCRIBE_ERROR", e);
+            throw e;
+          }),
+    });
+  };
+};
+
 export const saveProfileInfo = (profileInfo: actionTypes.ProfileState["profileInfo"]) => {
   return {
     type: actionTypes.SAVE_PROFILE_INFO,
