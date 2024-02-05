@@ -20,6 +20,7 @@ export const feedbackActions = {
 export function sendFeedbackMessageThunk(subject: string, data: { [key: string]: any } = {}, level = "info"): any {
   const formData = new FormData();
   formData.append("level", level);
+  formData.append("subject", subject);
 
   let message = "";
   Object.entries(data).forEach((entr) => {
