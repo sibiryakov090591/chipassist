@@ -31,7 +31,7 @@ const initialState: SearchState = {
   filtersMap: [],
   filtersValues: {},
 
-  isLoadingSearchResultsInProgress: false,
+  isLoadingSearchResultsInProgress: true,
   isLoadingProductResultsInProgress: false,
 
   currentPage: 1,
