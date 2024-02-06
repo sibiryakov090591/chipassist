@@ -35,10 +35,13 @@ const Brands: React.FC = () => {
                     </div>
                     <div className={classes.itemsWrapper}>
                       {group?.map((item) => {
+                        const name = item.name?.trim() || "";
                         return (
                           <Link
                             key={item.id}
-                            to={`/search?query=${encodeURIComponent(`MANUFACTURER:${item.name}`)}`}
+                            to={`/search?query=${encodeURIComponent(
+                              `MANUFACTURER:${name.includes(" ") ? `"${name}"` : name}`,
+                            )}`}
                             className={classes.link}
                           >
                             {item.name}
