@@ -367,7 +367,10 @@ const SearchResults = () => {
             )}
 
             {isLoadingSearchResultsInProgress ? (
-              <Skeletons />
+              <div>
+                <h2 style={{ padding: "0", margin: "10px 3px 3px" }}>{t("search", { query })}</h2>
+                <Skeletons />
+              </div>
             ) : (
               <div id={"productList"}>
                 {!isSmDown && showRfqBar && count > 0 && <RfqBar />}

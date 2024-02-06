@@ -1539,7 +1539,7 @@
     "extended_progress": "Extended search in progress...",
     "extended_search_completed": "Extended search completed",
     "not_found": "Nothing has been found",
-    "search": "Search...",
+    "search": "Search {{query}}...",
     "price": "Price",
     "min": "Min",
     "max": "Max",

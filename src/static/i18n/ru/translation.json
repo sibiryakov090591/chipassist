@@ -1493,7 +1493,7 @@
     "extended_progress": "Дополнительный поиск...",
     "extended_search_completed": "Дополнительный поиск окончен",
     "not_found": "Ничего не было найдено ",
-    "search": "Поиск...",
+    "search": "Поиск {{query}}...",
     "min": "Мин.",
     "max": "Макс.",
     "qty_in_stock": "Кол-во на складе",

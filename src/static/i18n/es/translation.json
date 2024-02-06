@@ -645,7 +645,7 @@
     "extended_progress": "Búsqueda ampliada en curso...",
     "extended_search_completed": "Búsqueda ampliada completada",
     "not_found": "No se ha encontrado nada",
-    "search": "Buscar...",
+    "search": "Buscar {{query}}...",
     "price": "Precio",
     "min": "mín.",
     "max": "máx.",
