@@ -47,34 +47,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     disabledLink: {
       color: theme.palette.app.grey500,
     },
-    categoryWrapper: {
-      backgroundColor: theme.palette.app.grey100,
-      padding: 20,
-      marginTop: 15,
-      minWidth: 200,
-      display: "inline-block",
-    },
-    categoryTitle: {
-      fontWeight: "bold",
-      fontSize: 18,
-    },
-    categoryLink: {
-      color: theme.palette.app.grey500,
-      "&:hover": {
-        textDecoration: "underline",
-        color: theme.palette.app.grey500,
-      },
-    },
-    depth2Wrapper: {
-      marginLeft: 10,
-      marginTop: 5,
-      fontSize: 16,
-    },
-    depth3Wrapper: {
-      marginLeft: 10,
-      lineHeight: "18px",
-      fontSize: 12,
-    },
   }),
 );
 
