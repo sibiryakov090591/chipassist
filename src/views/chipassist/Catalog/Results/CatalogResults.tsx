@@ -14,6 +14,7 @@ import setUrl from "@src/utils/setUrl";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { findCategory } from "@src/utils/catalog";
 import { useStyles } from "./styles";
+import { useStyles as useCatalogStyles } from "../styles";
 
 const descriptionData: { [key: string]: string } = {
   "connectors-interconnects":
@@ -117,6 +118,7 @@ const descriptionData: { [key: string]: string } = {
 const CatalogResults: React.FC = () => {
   const { t } = useI18n("catalog");
   const classes = useStyles();
+  const catalogClasses = useCatalogStyles();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -183,16 +185,20 @@ const CatalogResults: React.FC = () => {
   return (
     <Page title={t("page_title")} description={descriptionData[catalogUrl] || descriptionData.uncategorized}>
       <Container maxWidth="xl">
+        <div className={catalogClasses.titleWrapper}>
+          <h1 className={catalogClasses.title}>{t("title")}</h1>
+          <h2 className={catalogClasses.subTitle}>{t("sub_title")}</h2>
+        </div>
         {isCategoryLoading && (
           <div className={classes.preloader}>
             <Preloader title={t("results_loading")} />
           </div>
         )}
-        {!isCategoryLoading && !category && (
-          <div className={classes.categoryNotFound}>
-            <h2 className={classes.notFound}>{t("not_found")}</h2>
-          </div>
-        )}
+        {/* {!isCategoryLoading && !category && ( */}
+        {/*  <div className={classes.categoryNotFound}> */}
+        {/*    <h2 className={classes.notFound}>{t("not_found")}</h2> */}
+        {/*  </div> */}
+        {/* )} */}
         {!isCategoryLoading && category && (
           <div className={classes.wrapper}>
             <div>
@@ -208,14 +214,7 @@ const CatalogResults: React.FC = () => {
                     return (
                       <span key={uuidv4()}>
                         <NavLink className={classes.link} to={`/parts/${crumb?.url}`}>
-                          {t(
-                            crumb?.name
-                              .split(" ")
-                              .join("-")
-                              .replaceAll(/[(),/+]/g, "")
-                              .replaceAll("&", "amp")
-                              .toLowerCase(),
-                          )}
+                          {t(crumb?.slug)}
                         </NavLink>
                         {" > "}
                       </span>
