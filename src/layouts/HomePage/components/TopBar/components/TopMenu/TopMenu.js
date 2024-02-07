@@ -15,7 +15,7 @@ import { Hidden, Paper, Tooltip, Zoom } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ReceiptIcon from "@material-ui/icons/Receipt";
-import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import clsx from "clsx";
 import { logout } from "@src/store/authentication/authActions";
@@ -30,15 +30,18 @@ import LangMenu from "@src/layouts/HomePage/components/TopBar/components/LangMen
 import { MemoryOutlined } from "@material-ui/icons";
 import { useStyles } from "./topMenuStyles";
 
+const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
+const isICSearch = constants.id === ID_ICSEARCH;
 const { t: _t } = staticI18n("menu");
 export const chipAssistMenuList = [
   { name: "home", url: "/", label: _t("home") },
   { name: "parts", url: "/parts", label: _t("parts") },
   { name: "bom-create", url: "/bom/create-file", label: _t("bom") },
-  { name: "rfq", url: "/rfq-list-quotes", label: "RFQ List" },
-  { name: "messages", url: "/messages", label: _t("chat") },
+  { name: "rfq", url: "/rfq-list-quotes", label: _t("rfq_list") },
+  ...(isICSearch && { name: "pcb", url: "/pcb", label: _t("pcb") }),
+  ...(isChipAssist && { name: "messages", url: "/messages", label: _t("chat") }),
   { name: "general", url: "/profile/general", label: _t("profile") },
-  { name: "blog", url: "/blog", label: _t("blog") },
+  ...(isChipAssist && { name: "blog", url: "/blog", label: _t("blog") }),
 ];
 
 const HtmlTooltip = withStyles(() => ({
@@ -95,8 +98,6 @@ const TopMenu = ({ isMobile }) => {
       }
     }
   }, [isShowHint]);
-
-  const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 
   const reloadChatPage = () => {
     if (isXsChat) dispatch(triggerReloadPage());

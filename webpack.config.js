@@ -89,7 +89,7 @@ module.exports = {
     usedExports: true,
     splitChunks: {
       chunks: "all",
-      maxSize: 500000,
+      maxSize: 200000,
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,

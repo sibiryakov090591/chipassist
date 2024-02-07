@@ -98,7 +98,7 @@ export const Unsubscribe = () => {
   const [isSending, setIsSending] = useState(false);
 
   const topMenuList: any[] = React.useMemo(() => {
-    if (isChipAssist) {
+    if (isChipAssist || isICSearch) {
       return chipAssistMenuList.filter((i) => !!i);
     }
     if (isSupplierResponse) {
