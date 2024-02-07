@@ -276,6 +276,11 @@ const Footer = () => {
                       <NavLink className={classes.navLinkICS} to={"/parts"}>
                         {t("products")}
                       </NavLink>
+                      <Hidden smUp>
+                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"}>
+                          {t("rfq_list")}
+                        </NavLink>
+                      </Hidden>
                       <Hidden smDown>
                         <NavLink className={classes.navLinkICS} to={"/bom/create-file"}>
                           {t("bom")}
@@ -304,6 +309,9 @@ const Footer = () => {
                   </Box>
                   <Hidden smUp>
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                      <NavLink className={classes.navLinkICS} to={"/brands"}>
+                        {t("menu.brands")}
+                      </NavLink>
                       <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"}>
                         {t("payment_and_delivery")}
                       </NavLink>
