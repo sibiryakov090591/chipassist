@@ -6,7 +6,13 @@ import { Page } from "@src/components";
 import image from "@src/images/404_page/chip2_404r.png";
 import { NavLink } from "react-router-dom";
 import constants from "@src/constants/constants";
-import { ID_CHIPASSIST, ID_ELFARO, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import {
+  ID_CHIPASSIST,
+  ID_ELFARO,
+  ID_ICSEARCH,
+  ID_MASTER,
+  ID_SUPPLIER_RESPONSE,
+} from "@src/constants/server_constants";
 import { responsesMenuList } from "@src/layouts/SupplierLayout/components/TopMenu/TopMenu";
 import { chipAssistMenuList } from "@src/layouts/HomePage/components/TopBar/components/TopMenu/TopMenu";
 
@@ -48,9 +54,10 @@ const useStyles = makeStyles((theme) => ({
 const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
 const isChipOnline = constants.id === ID_ELFARO;
+const isICSearch = constants.id === ID_ICSEARCH;
 
 let topMenuList = [];
-if (isChipAssist) {
+if (isChipAssist || isICSearch) {
   topMenuList = chipAssistMenuList.filter((i) => !!i);
 }
 if (isSupplierResponse) {

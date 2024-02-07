@@ -5,9 +5,12 @@ import Footer from "@src/components/Footer/Footer";
 import { scrollbarWidth } from "@src/config";
 import { clsx } from "clsx";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import { useTheme } from "@material-ui/core";
 import { TopBar } from "./components";
+
+const isICSearch = constants.id === ID_ICSEARCH;
+const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexGrow: 1,
     width: "100vw",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: isICSearch ? 145 : 133,
+    },
   },
   homeContainer: {
     display: "flex",
@@ -93,7 +99,6 @@ const HomePage = (props) => {
 
   const isShowFooter = window.location.pathname !== "/messages";
   const isHomePage = window.location.pathname === "/";
-  const isChipAssist = constants.id !== ID_ICSEARCH;
   const theme = useTheme();
   const isXsDown = theme.breakpoints.down("xs");
 

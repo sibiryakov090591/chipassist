@@ -379,7 +379,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
     >
       {/* <td className={clsx(classes.infoColumn, { [classes.error]: !!error })}>{item.index}</td> */}
       <td className={clsx(classes.infoColumn, { [classes.error]: !!error })}>
-        <div style={{ position: "relative" }}>
+        <div className={classes.partNumber}>
           {item.part_number?.toUpperCase()}
           {!!error && (
             <Tooltip

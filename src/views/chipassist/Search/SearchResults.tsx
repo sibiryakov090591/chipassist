@@ -313,12 +313,8 @@ const SearchResults = () => {
       </div>
     );
     const container = document.getElementById("search-filters-bar-portal");
-    return (
-      <>
-        {filtersBar}
-        {isFixedFiltersBar && container && ReactDOM.createPortal(filtersBar, container)}
-      </>
-    );
+    if (isFixedFiltersBar && container) return ReactDOM.createPortal(filtersBar, container);
+    return filtersBar;
   };
 
   return (
@@ -356,7 +352,7 @@ const SearchResults = () => {
         <div className={classes.main}>
           <div className={classes.searchPageResults}>
             {count !== 0 && (
-              <div id="filters_sticky_container" style={{ padding: "12px 0 8px" }}>
+              <div id="filters_sticky_container" style={{ padding: "12px 0 8px", minHeight: 57 }}>
                 {createFiltersBar()}
               </div>
             )}

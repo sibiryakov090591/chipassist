@@ -42,7 +42,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
         onClick={isActiveArrow && toggleOpen}
       >
         <TableCell>
-          <div className={classes.strong}>{item.rfq_mpn?.toUpperCase() || "-"}</div>
+          <div className={clsx(classes.strong, classes.wordBreakAll)}>{item.rfq_mpn?.toUpperCase() || "-"}</div>
           {/* {country && ( */}
           {/*  <div className={classes.geoPin}> */}
           {/*    <span className={`fi fi-${country.code.toLowerCase()}`} /> */}
@@ -52,7 +52,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
         </TableCell>
         <TableCell>{item.rfq_quantity ? formatMoney(item.rfq_quantity, 0) : "-"}</TableCell>
         <TableCell>{item.response_quantity ? formatMoney(item.response_quantity, 0) : "-"}</TableCell>
-        <TableCell>{item.manufacturer_name || "-"}</TableCell>
+        <TableCell className={classes.wordBreakAll}>{item.manufacturer_name || "-"}</TableCell>
         <TableCell>{item.response_datecode || "-"}</TableCell>
         <TableCell>
           <div className={classes.repliedData}>
@@ -93,7 +93,7 @@ const StatisticItem: React.FC<Props> = ({ items, index }) => {
         </TableCell>
         <TableCell>
           <div
-            className={clsx(classes.position, classes.strong, {
+            className={clsx(classes.position, classes.strong, classes.wordBreakAll, {
               [classes.lowPrice]: !!item.position?.includes("-") || (!item.competitive_price && !!item.response_price),
               [classes.biggerPrice]: !!item.position?.includes("+"),
             })}

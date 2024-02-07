@@ -45,6 +45,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     backgroundColor: "#f5f5f5",
     fontWeight: "bold",
   },
+  partNumber: {
+    position: "relative",
+    wordBreak: "break-word",
+  },
   leadingOffer: {
     height: 25,
     fontWeight: "bold",
