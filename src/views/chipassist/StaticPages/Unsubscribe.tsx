@@ -97,13 +97,16 @@ export const Unsubscribe = () => {
   const [isUnsubscribed, setIsUnsubscribed] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
-  let topMenuList: any[] = [];
-  if (isChipAssist) {
-    topMenuList = chipAssistMenuList.filter((i) => !!i);
-  }
-  if (isSupplierResponse) {
-    topMenuList = responsesMenuList.filter((i) => !!i);
-  }
+  const topMenuList: any[] = React.useMemo(() => {
+    if (isChipAssist) {
+      return chipAssistMenuList.filter((i) => !!i);
+    }
+    if (isSupplierResponse) {
+      return responsesMenuList.filter((i) => !!i);
+    }
+    return [];
+  }, []);
+
   const onUnsubscribeHandler = () => {
     setIsSending(true);
     const promises = [];

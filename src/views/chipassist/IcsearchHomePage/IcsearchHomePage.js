@@ -199,10 +199,11 @@ export const IcsearchHomePage = () => {
           </p>
           <div className={classes.manufacturersWrapper}>
             {companyNames.map((manufacturer) => {
+              const name = manufacturer?.trim() || "";
               return (
                 <Link
                   key={manufacturer}
-                  to={`/search?query=${encodeURIComponent(`MANUFACTURER:${manufacturer}`)}`}
+                  to={`/search?query=${encodeURIComponent(`MANUFACTURER:${name.includes(" ") ? `"${name}"` : name}`)}`}
                   className={classes.manufacturerName}
                 >
                   {manufacturer}

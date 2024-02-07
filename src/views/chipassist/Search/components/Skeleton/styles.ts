@@ -13,7 +13,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     bottomRow: {
       display: "flex",
       justifyContent: "space-between",
-      borderTop: `1px solid ${theme.palette.app.grey300}`,
     },
     rightColumn: {
       display: "flex",
@@ -23,17 +22,18 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: "100%",
       display: "flex",
     },
-    image: {},
+    image: {
+      margin: "5px 22px 16px 3px",
+      borderRadius: 5,
+    },
     titleBlock: {
-      marginTop: "33px",
-      marginLeft: "27px",
       width: "90%",
     },
     title: {
       // marginLeft: "27px",
     },
     tableBody: {
-      paddingBottom: "17px",
+      paddingBottom: "32px",
     },
     tableBodyS: {},
     description: {

@@ -645,7 +645,7 @@
     "extended_progress": "扩展搜索正在进行中...",
     "extended_search_completed": "扩展搜索完成",
     "not_found": "没有找到任何东西",
-    "search": "搜索...",
+    "search": "搜索 {{query}}...",
     "price": "价格",
     "min": "最小",
     "max": "最大限度",

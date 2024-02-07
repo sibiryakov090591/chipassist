@@ -710,7 +710,7 @@
     "extended_progress": "Erweiterte Suche läuft...",
     "extended_search_completed": "Erweiterte Suche abgeschlossen",
     "not_found": "Es wurde nichts gefunden",
-    "search": "Suchen...",
+    "search": "Suchen {{query}}...",
     "price": "Preis",
     "min": "Mindest",
     "max": "Max",

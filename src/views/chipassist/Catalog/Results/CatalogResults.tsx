@@ -13,7 +13,9 @@ import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import setUrl from "@src/utils/setUrl";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { findCategory } from "@src/utils/catalog";
+import clsx from "clsx";
 import { useStyles } from "./styles";
+import { useStyles as useCatalogStyles } from "../styles";
 
 const descriptionData: { [key: string]: string } = {
   "connectors-interconnects":
@@ -117,6 +119,7 @@ const descriptionData: { [key: string]: string } = {
 const CatalogResults: React.FC = () => {
   const { t } = useI18n("catalog");
   const classes = useStyles();
+  const catalogClasses = useCatalogStyles();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -183,16 +186,20 @@ const CatalogResults: React.FC = () => {
   return (
     <Page title={t("page_title")} description={descriptionData[catalogUrl] || descriptionData.uncategorized}>
       <Container maxWidth="xl">
+        <div className={catalogClasses.titleWrapper}>
+          <h1 className={catalogClasses.title}>{t("title")}</h1>
+          <h2 className={catalogClasses.subTitle}>{t("sub_title")}</h2>
+        </div>
         {isCategoryLoading && (
           <div className={classes.preloader}>
             <Preloader title={t("results_loading")} />
           </div>
         )}
-        {!isCategoryLoading && !category && (
-          <div className={classes.categoryNotFound}>
-            <h2 className={classes.notFound}>{t("not_found")}</h2>
-          </div>
-        )}
+        {/* {!isCategoryLoading && !category && ( */}
+        {/*  <div className={classes.categoryNotFound}> */}
+        {/*    <h2 className={classes.notFound}>{t("not_found")}</h2> */}
+        {/*  </div> */}
+        {/* )} */}
         {!isCategoryLoading && category && (
           <div className={classes.wrapper}>
             <div>
@@ -208,83 +215,82 @@ const CatalogResults: React.FC = () => {
                     return (
                       <span key={uuidv4()}>
                         <NavLink className={classes.link} to={`/parts/${crumb?.url}`}>
-                          {t(
-                            crumb?.name
-                              .split(" ")
-                              .join("-")
-                              .replaceAll(/[(),/+]/g, "")
-                              .replaceAll("&", "amp")
-                              .toLowerCase(),
-                          )}
+                          {t(crumb?.slug)}
                         </NavLink>
                         {" > "}
                       </span>
                     );
                   })}
                   <span className={classes.disabledLink}>{t(category.slug)}</span>
-
+                  <h2>{t(category.slug)}</h2>
                   {category.children && !!category.children.length && (
-                    <div>
-                      <div className={classes.categoryWrapper}>
-                        <div className={classes.categoryTitle}>{t(category.slug)}</div>
-
-                        <div className={classes.depth2Wrapper}>
-                          {category.children.map((depth_2: any) => {
-                            return (
-                              <div key={uuidv4()}>
-                                <NavLink className={classes.categoryLink} to={`/parts/${depth_2.url}`}>
-                                  {t(depth_2.slug)}
-                                </NavLink>
-                                {depth_2.children && !!depth_2.children.length && (
-                                  <div className={classes.depth3Wrapper}>
-                                    {depth_2.children.map((depth_3: any) => {
-                                      return (
-                                        <div key={uuidv4()}>
-                                          <NavLink className={classes.categoryLink} to={`/parts/${depth_3.url}`}>
-                                            {t(depth_3.slug)}
-                                          </NavLink>
-                                          {depth_3.children && !!depth_3.children.length && (
-                                            <div className={classes.depth3Wrapper}>
-                                              {depth_3.children.map((depth_4: any) => {
-                                                return (
-                                                  <div key={uuidv4()}>
-                                                    <NavLink
-                                                      className={classes.categoryLink}
-                                                      to={`/parts/${depth_4.url}`}
-                                                    >
-                                                      {t(depth_4.slug)}
-                                                    </NavLink>
-                                                    {depth_4.children && !!depth_4.children.length && (
-                                                      <div className={classes.depth3Wrapper}>
-                                                        {depth_4.children.map((depth_5: any) => {
-                                                          return (
-                                                            <div key={uuidv4()}>
-                                                              <NavLink
-                                                                className={classes.categoryLink}
-                                                                to={`/parts/${depth_5.url}`}
-                                                              >
-                                                                {t(depth_5.slug)}
-                                                              </NavLink>
-                                                            </div>
-                                                          );
-                                                        })}
-                                                      </div>
-                                                    )}
-                                                  </div>
-                                                );
-                                              })}
-                                            </div>
-                                          )}
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                    <div className={catalogClasses.categoriesWrapper}>
+                      {category.children.map((depth_2: any) => {
+                        return (
+                          <div key={uuidv4()}>
+                            <div className={catalogClasses.categoryWrapper}>
+                              <NavLink
+                                className={clsx(catalogClasses.categoryLink, catalogClasses.depth1Name)}
+                                to={`/parts/${depth_2.url}`}
+                              >
+                                {t(depth_2.slug)}
+                              </NavLink>
+                              {depth_2.children && !!depth_2.children.length && (
+                                <div className={catalogClasses.depth2Wrapper}>
+                                  {depth_2.children.map((depth_3: any) => {
+                                    return (
+                                      <div key={uuidv4()}>
+                                        <NavLink
+                                          className={clsx({
+                                            [catalogClasses.categoryLink]: true,
+                                            [catalogClasses.depth2Name]: true,
+                                            [catalogClasses.underline]: false,
+                                          })}
+                                          to={`/parts/${depth_3.url}`}
+                                        >
+                                          {t(depth_3.slug)}
+                                        </NavLink>
+                                        {depth_3.children && !!depth_3.children.length && (
+                                          <div className={catalogClasses.depth3Wrapper}>
+                                            {depth_3.children.map((depth_4: any) => {
+                                              return (
+                                                <div key={uuidv4()}>
+                                                  <NavLink
+                                                    className={catalogClasses.categoryLink}
+                                                    to={`/parts/${depth_4.url}`}
+                                                  >
+                                                    {t(depth_4.slug)}
+                                                  </NavLink>
+                                                  {depth_4.children && !!depth_4.children.length && (
+                                                    <div className={catalogClasses.depth4Wrapper}>
+                                                      {depth_4.children.map((depth_5: any) => {
+                                                        return (
+                                                          <div key={uuidv4()}>
+                                                            <NavLink
+                                                              className={catalogClasses.categoryLink}
+                                                              to={`/parts/${depth_5.url}`}
+                                                            >
+                                                              {t(depth_5.slug)}
+                                                            </NavLink>
+                                                          </div>
+                                                        );
+                                                      })}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              );
+                                            })}
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </>
@@ -297,14 +303,13 @@ const CatalogResults: React.FC = () => {
             )}
             {!isProductsLoading && products && (
               <div className={classes.resultsWrapper}>
-                {!products.results.length && (
+                {!products.results.length && !category.children?.length && (
                   <div className={classes.categoryNotFound}>
                     <h2 className={classes.notFound}>{t("not_results")}</h2>
                   </div>
                 )}
                 {!!products.results.length && (
                   <>
-                    <h1 ref={titleRef}>{t(category?.slug)}</h1>
                     <Table>
                       <TableBody className={classes.upcWrapper}>
                         {products.results.map((item: any) => {

@@ -12,7 +12,7 @@ const Skeletons = () => {
           <div key={value}>
             <div>
               <div className={classes.table}>
-                <Skeleton className={classes.image} width={150} height={150} />
+                <Skeleton variant="rect" className={classes.image} width={150} height={90} />
                 <div className={classes.titleBlock}>
                   <Skeleton className={classes.title} width={"99%"} />
                   <Skeleton className={classes.title} width={"99%"} />

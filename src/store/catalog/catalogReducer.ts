@@ -26,19 +26,12 @@ const saveCategories = (depth: number, data: actionTypes.CatalogCategory[], stat
 };
 
 const createCategoryUrlName = (name: string, parentUrl = "", slugOnly = false) => {
-  const normalizeUrl = slugOnly
-    ? name
-        .split(" ")
-        .join("-")
-        .replaceAll(/[(),/+]/g, "")
-        .replaceAll("&", "amp")
-        .toLowerCase()
-    : name
-        .toLowerCase()
-        .replace(/&amp;/g, "")
-        .replace(/[\W_]{1,}/g, "-")
-        .replace(/^-|-$/g, "");
-  return parentUrl ? `${parentUrl}/${normalizeUrl}` : normalizeUrl;
+  const normalizeUrl = name
+    .toLowerCase()
+    .replace(/&amp;/g, "and")
+    .replace(/[\W_]{1,}/g, "-")
+    .replace(/^-|-$/g, "");
+  return parentUrl && !slugOnly ? `${parentUrl}/${normalizeUrl}` : normalizeUrl;
 };
 
 const normalizeCategoryName = (name: string) => {
@@ -47,7 +40,10 @@ const normalizeCategoryName = (name: string) => {
 
 const createNormalizeChild = (item: any, parent: any, depth: number, state: actionTypes.CatalogState) => {
   const normalizeItem: any = { ...item };
-  normalizeItem.breadcrumbs = [...parent.breadcrumbs, { id: parent.id, name: parent.name, depth, url: parent.url }];
+  normalizeItem.breadcrumbs = [
+    ...parent.breadcrumbs,
+    { id: parent.id, name: parent.name, depth, url: parent.url, slug: createCategoryUrlName(parent.name, null, true) },
+  ];
   normalizeItem.name = normalizeCategoryName(item.name);
   normalizeItem.slug = createCategoryUrlName(item.name, null, true);
   normalizeItem.url = createCategoryUrlName(item.name, parent.url);
@@ -58,6 +54,7 @@ const createNormalizeChild = (item: any, parent: any, depth: number, state: acti
     const normalizeCategory = category ? { ...category } : { ...item };
     normalizeCategory.breadcrumbs = [...normalizeItem.breadcrumbs];
     normalizeCategory.name = normalizeCategoryName(normalizeCategory.name);
+    normalizeCategory.slug = createCategoryUrlName(normalizeCategory.name, null, true);
     normalizeCategory.url = createCategoryUrlName(normalizeCategory.name, parent.url);
     normalizeItem.children =
       category && !!category.children.length
