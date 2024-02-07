@@ -49,6 +49,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   strong: {
     fontWeight: "bold",
   },
+  wordBreakAll: {
+    wordBreak: "break-word",
+  },
   position: {
     // color: "#00c430",
   },
