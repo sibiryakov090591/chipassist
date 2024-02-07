@@ -537,8 +537,8 @@ const Form: React.FC<Props> = ({ showSuccessModal }) => {
                   {t("form.and")}
                   <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                     {t("form.privacy_policy")}
-                  </Link>{" "}
-                  *
+                  </Link>
+                  <span>&nbsp;*</span>
                 </>
               }
             />

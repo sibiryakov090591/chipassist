@@ -334,8 +334,8 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
                       )}
                       <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                         {t("feedback.form.privacy_policy")}
-                      </Link>{" "}
-                      *
+                      </Link>
+                      <span>&nbsp;*</span>
                     </>
                   }
                 />
