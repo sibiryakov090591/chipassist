@@ -260,11 +260,11 @@ const ChipAssistApp = () => {
     return <Maintenance />;
   }
 
-  if (isICSearch && localStorage.getItem("open_icsearch_password") !== "1234") {
-    if (!geolocation?.loaded || geolocation?.country_code_iso3 !== "RUS") {
-      return null;
-    }
-  }
+  // if (isICSearch && localStorage.getItem("open_icsearch_password") !== "1234") {
+  //   if (!geolocation?.loaded || geolocation?.country_code_iso3 !== "RUS") {
+  //     return null;
+  //   }
+  // }
 
   return (
     <div style={{ height: "100%" }}>
