@@ -137,7 +137,9 @@ const PcbCalculator: React.FC<Props> = ({
                             [classes.checked]: formState.board_type === item.value,
                           })}
                         >
-                          {item.label}
+                          {["PANEL", "BOARD"].includes(item.value)
+                            ? t(`pcb_create.${item.value.toLowerCase()}`)
+                            : item.value}
                         </div>
                       }
                     />
@@ -220,9 +222,9 @@ const PcbCalculator: React.FC<Props> = ({
                     value={formState.panel_requirements_comment}
                     variant="outlined"
                     multiline
-                    label="comment"
+                    label={t("creaye_pcb.comment")}
                     rows={3}
-                    helperText="(e.g. Panel in 2*3, size of the break-away rail, total 5 panels=total 30 individual boards)"
+                    helperText={`(${t("pcb_create.helper_text_comment")})`}
                   />
                 </div>
               </div>
@@ -245,9 +247,10 @@ const PcbCalculator: React.FC<Props> = ({
                     select
                   >
                     {constants.route_process?.map((item, index) => {
+                      console.log(item);
                       return (
                         <MenuItem key={index} value={item.value}>
-                          {item.label}
+                          {t(`pcb_create.${item.value}`)}
                         </MenuItem>
                       );
                     })}
@@ -355,7 +358,7 @@ const PcbCalculator: React.FC<Props> = ({
                 InputProps={{
                   endAdornment: <InputAdornment position="end">mm</InputAdornment>,
                 }}
-                label="X - width"
+                label={t("pcb_create.x_width")}
                 {...errorProps("unit_x")}
               />
               <NumberInput
@@ -372,7 +375,7 @@ const PcbCalculator: React.FC<Props> = ({
                 InputProps={{
                   endAdornment: <InputAdornment position="end">mm</InputAdornment>,
                 }}
-                label="Y - height"
+                label={t("pcb_create.y_height")}
                 {...errorProps("unit_y")}
               />
               {!isSmDown && (
@@ -403,7 +406,7 @@ const PcbCalculator: React.FC<Props> = ({
                 value={formState.quantity}
                 decimalScale={0}
                 InputProps={{
-                  endAdornment: <InputAdornment position="end">pcs</InputAdornment>,
+                  endAdornment: <InputAdornment position="end">{t("pcb_create.pcs")}</InputAdornment>,
                 }}
                 {...errorProps("quantity")}
               />
@@ -601,16 +604,16 @@ const PcbCalculator: React.FC<Props> = ({
               >
                 {constants.material?.map((item, index) => {
                   let [disabled, src] = [false, fr4];
-                  if (item.label === "Aluminum") {
+                  if (item.label === t("pcb_create.aluminum")) {
                     src = aluminum;
                     if (+formState.layers > 2) disabled = true;
                   }
-                  if (item.label === "Rogers") src = rogers;
-                  if (item.label === "HDI(Buried/blind vias)") {
+                  if (item.label === t("pcb_create.rogers")) src = rogers;
+                  if (item.label === t("pcb_create.hdi")) {
                     src = hdi;
                     if (+formState.layers < 4) disabled = true;
                   }
-                  if (item.label === "Copper Base") {
+                  if (item.label === t("pcb_create.copper_base")) {
                     src = copper;
                     if (+formState.layers > 2) disabled = true;
                   }
@@ -638,7 +641,7 @@ const PcbCalculator: React.FC<Props> = ({
               </RadioGroup>
             </div>
           </div>
-          {(["FR-4", "HDI(Buried/blind vias)"].includes(formState.material) || showAllFields) && (
+          {([t("pcb_create.fr_4"), t("pcb_create.hdi")].includes(formState.material) || showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>
                 <Tooltip enterTouchDelay={1} title={<div className={classes.tooltip}>{t("fr4_tg_hint")}</div>}>
@@ -676,14 +679,13 @@ const PcbCalculator: React.FC<Props> = ({
                 </RadioGroup>
                 {(formState.fr4_tg === "TG 130-140" || showAllFields) && (
                   <span style={{ left: 12, bottom: "-40%" }} className={classes.helperText}>
-                    *The base material of 2-layer PCB is automatically upgraded to TG150 for FREE with more stable and
-                    higher quality (except for some parameters)
+                    {t("pcb_create.tg_130")}
                   </span>
                 )}
               </div>
             </div>
           )}
-          {(["Aluminum", "Copper Base"].includes(formState.material) || showAllFields) && (
+          {([t("pcb_create.aluminum"), t("pcb_create.copper_base")].includes(formState.material) || showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>
                 <Tooltip
@@ -704,8 +706,13 @@ const PcbCalculator: React.FC<Props> = ({
                 >
                   {constants.thermal_conductivity?.map((item, index) => {
                     let disabled = false;
-                    if (item.label === "1.0W/(m⋅K)" && formState.material === "Copper Base") disabled = true;
-                    if (item.label === "3.0W/(m⋅K)" && formState.material === "Aluminum" && formState.layers === "1")
+                    if (item.label === "1.0W/(m⋅K)" && formState.material === t("pcb_create.copper_base"))
+                      disabled = true;
+                    if (
+                      item.label === "3.0W/(m⋅K)" &&
+                      formState.material === t("pcb_create.aluminum") &&
+                      formState.layers === "1"
+                    )
                       disabled = true;
                     return (
                       <FormControlLabel
@@ -731,7 +738,7 @@ const PcbCalculator: React.FC<Props> = ({
               </div>
             </div>
           )}
-          {(formState.material === "Rogers" || showAllFields) && (
+          {(formState.material === t("pcb_create.rogers") || showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>
                 <Tooltip enterTouchDelay={1} title={<div className={classes.tooltip}>{t("rogers_hint")}</div>}>
@@ -770,7 +777,8 @@ const PcbCalculator: React.FC<Props> = ({
               </div>
             </div>
           )}
-          {((["Aluminum", "Copper Base"].includes(formState.material) && formState.layers === "2") ||
+          {(([t("pcb_create.aluminum"), t("pcb_create.copper_base")].includes(formState.material) &&
+            formState.layers === "2") ||
             showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>
@@ -792,7 +800,7 @@ const PcbCalculator: React.FC<Props> = ({
                 >
                   {constants.structure_of_mcpcb?.map((item, index) => {
                     let src = metal_core;
-                    if (item.label === "Metal base on the bottom side") src = metal_base;
+                    if (item.label === t("pcb_create.core_bottom")) src = metal_base;
                     return (
                       <React.Fragment key={index}>
                         {!isSmDown && <img style={{ maxHeight: 30 }} src={src} alt={item.label} />}
@@ -826,7 +834,7 @@ const PcbCalculator: React.FC<Props> = ({
               {t("thickness")}
             </div>
             <div className={classes.rowContent}>
-              {formState.material === "Rogers" && +formState.layers < 4 ? (
+              {formState.material === t("pcb_create.rogers") && +formState.layers < 4 ? (
                 <RadioGroup
                   className={classes.radioGroup}
                   row
@@ -870,10 +878,14 @@ const PcbCalculator: React.FC<Props> = ({
                     let disabled = false;
                     if (
                       item.label === "0.2" &&
-                      (+formState.layers > 2 || ["Aluminum", "Copper Base"].includes(formState.material))
+                      (+formState.layers > 2 ||
+                        [t("pcb_create.aluminum"), t("pcb_create.copper_base")].includes(formState.material))
                     )
                       disabled = true;
-                    if (item.label === "0.4" && (+formState.layers > 4 || formState.material === "Copper Base"))
+                    if (
+                      item.label === "0.4" &&
+                      (+formState.layers > 4 || formState.material === t("pcb_create.copper_base"))
+                    )
                       disabled = true;
                     if (item.label === "0.6" && +formState.layers > 4) disabled = true;
                     if (item.label === "0.8" && +formState.layers > 6) disabled = true;
@@ -882,7 +894,7 @@ const PcbCalculator: React.FC<Props> = ({
                     if (item.label === "1.6" && +formState.layers > 12) disabled = true;
                     if (
                       ["2.4", "2.6", "2.8", "3.0", "3.2"].includes(item.label) &&
-                      formState.material === "Copper Base"
+                      formState.material === t("pcb_create.copper_base")
                     )
                       disabled = true;
 
@@ -907,11 +919,11 @@ const PcbCalculator: React.FC<Props> = ({
                     );
                   })}
                   <input
-                    disabled={formState.material === "Copper Base"}
+                    disabled={formState.material === "pcb_create.copper_base"}
                     style={{ width: 70, marginRight: 5 }}
                     className={clsx(classes.input, {
                       [classes.checked]: !!formState.thickness_input,
-                      [classes.disabledInput]: formState.material === "Copper Base",
+                      [classes.disabledInput]: formState.material === t("pcb_create.copper_base"),
                       [classes.errorInput]: !!errorProps("thickness_input"),
                     })}
                     value={formState.thickness_input}
@@ -949,7 +961,7 @@ const PcbCalculator: React.FC<Props> = ({
               >
                 {constants.min_spacing?.map((item, index) => {
                   let disabled = false;
-                  if (item.label === "3/3mil" && formState.material === "Aluminum") disabled = true;
+                  if (item.label === "3/3mil" && formState.material === t("pcb_create.aluminum")) disabled = true;
                   return (
                     <FormControlLabel
                       key={index}
@@ -995,10 +1007,11 @@ const PcbCalculator: React.FC<Props> = ({
                   let disabled = false;
                   if (
                     ["0.15mm", "0.2mm", "0.25mm", "≥ 0.3mm"].includes(item.label) &&
-                    formState.material === "Aluminum"
+                    formState.material === t("pcb_create.aluminum")
                   )
                     disabled = true;
-                  if (["≥ 0.8mm", "≥ 1.0mm"].includes(item.label) && formState.material !== "Aluminum") disabled = true;
+                  if (["≥ 0.8mm", "≥ 1.0mm"].includes(item.label) && formState.material !== t("pcb_create.aluminum"))
+                    disabled = true;
                   return (
                     <FormControlLabel
                       key={index}
@@ -1042,18 +1055,20 @@ const PcbCalculator: React.FC<Props> = ({
               >
                 {constants.solder_mask_color?.map((item, index) => {
                   let background: any = {};
-                  if (item.label === "Green") background = { backgroundColor: "#017b07" };
-                  if (item.label === "Red") background = { backgroundColor: "#bb1407" };
-                  if (item.label === "Yellow") background = { backgroundColor: "#ffd200" };
-                  if (item.label === "Blue") background = { backgroundColor: "#0c4ad9" };
-                  if (item.label === "White") background = { backgroundColor: "#ffffff", border: "1px solid #cbcbcb" };
-                  if (item.label === "Black") background = { backgroundColor: "#000000" };
-                  if (item.label === "Purple") background = { backgroundColor: "linear-gradient(#cb5fc2, #a20495)" };
-                  if (item.label === "Matte black")
+                  if (item.label === t("pcb_create.green")) background = { backgroundColor: "#017b07" };
+                  if (item.label === t("pcb_create.red")) background = { backgroundColor: "#bb1407" };
+                  if (item.label === t("pcb_create.yellow")) background = { backgroundColor: "#ffd200" };
+                  if (item.label === t("pcb_create.blue")) background = { backgroundColor: "#0c4ad9" };
+                  if (item.label === t("pcb_create.white"))
+                    background = { backgroundColor: "#ffffff", border: "1px solid #cbcbcb" };
+                  if (item.label === t("pcb_create.black")) background = { backgroundColor: "#000000" };
+                  if (item.label === t("pcb_create.purple"))
+                    background = { backgroundColor: "linear-gradient(#cb5fc2, #a20495)" };
+                  if (item.label === t("pcb_create.matte_black"))
                     background = { backgroundColor: "linear-gradient(#666666, #000000)" };
-                  if (item.label === "Matte green")
+                  if (item.label === t("pcb_create.matte_green"))
                     background = { backgroundColor: "linear-gradient(#58de5f, #218626)" };
-                  if (item.label === "None")
+                  if (item.label === t("pcb_create.none"))
                     background = {
                       border: "1px solid #cbcbcb",
                       backgroundColor: "#efefef",
@@ -1100,11 +1115,11 @@ const PcbCalculator: React.FC<Props> = ({
                 {constants.silkscreen?.map((item, index) => {
                   let background: any = {};
                   let disabled = false;
-                  if (item.label === "White") {
+                  if (item.label === t("pcb_create.white")) {
                     background = { backgroundColor: "#ffffff", border: "1px solid #cbcbcb" };
                     if (formState.solder_mask_color === "WHITE") disabled = true;
                   }
-                  if (item.label === "Black") {
+                  if (item.label === t("pcb_create.black")) {
                     background = { backgroundColor: "#000000" };
                     if (
                       ["RED", "BLUE", "BLACK", "PURPLE", "MATTE BLACK", "MATTE GREEN"].includes(
@@ -1113,7 +1128,7 @@ const PcbCalculator: React.FC<Props> = ({
                     )
                       disabled = true;
                   }
-                  if (item.label === "None") {
+                  if (item.label === t("pcb_create.none")) {
                     background = {
                       border: "1px solid #cbcbcb",
                       backgroundColor: "#efefef",
@@ -1121,10 +1136,10 @@ const PcbCalculator: React.FC<Props> = ({
                       backgroundRepeat: "no-repeat",
                     };
                   }
-                  if (item.label === "Green") background = { backgroundColor: "#017b07" };
-                  if (item.label === "Red") background = { backgroundColor: "#bb1407" };
-                  if (item.label === "Yellow") background = { backgroundColor: "#ffd200" };
-                  if (item.label === "Blue") background = { backgroundColor: "#0c4ad9" };
+                  if (item.label === t("pcb_create.green")) background = { backgroundColor: "#017b07" };
+                  if (item.label === t("pcb_create.red")) background = { backgroundColor: "#bb1407" };
+                  if (item.label === t("pcb_create.yellow")) background = { backgroundColor: "#ffd200" };
+                  if (item.label === t("pcb_create.blue")) background = { backgroundColor: "#0c4ad9" };
                   return (
                     <FormControlLabel
                       key={index}
@@ -1264,14 +1279,18 @@ const PcbCalculator: React.FC<Props> = ({
                 {constants.surface_finish?.map((item, index) => {
                   let disabled = false;
                   if (
-                    item.label === "HASL with lead" &&
-                    (["Rogers", "HDI(Buried/blind vias)", "Copper Base"].includes(formState.material) ||
+                    item.label === t("pcb_create.hasl_with_lead") &&
+                    ([t("pcb_create.rogers"), t("pcb_create.hdi"), t("pcb_create.copper_base")].includes(
+                      formState.material,
+                    ) ||
                       +formState.thickness < 0.6)
                   )
                     disabled = true;
                   if (
-                    item.label === "HASL lead free" &&
-                    (["Rogers", "HDI(Buried/blind vias)", "Copper Base"].includes(formState.material) ||
+                    item.label === t("pcb_create.hasl_lead_free") &&
+                    ([t("pcb_create.rogers"), t("pcb_create.hdi"), t("pcb_create.copper_base")].includes(
+                      formState.material,
+                    ) ||
                       +formState.thickness < 0.6)
                   )
                     disabled = true;
@@ -1289,7 +1308,9 @@ const PcbCalculator: React.FC<Props> = ({
                             [classes.checked]: formState.surface_finish === item.value,
                           })}
                         >
-                          {item.label}
+                          {item.label !== "-------"
+                            ? t(`pcb_create.${item.label.split(" ").join("_").toLowerCase()}`)
+                            : item.label}
                         </div>
                       }
                     />
@@ -1298,7 +1319,7 @@ const PcbCalculator: React.FC<Props> = ({
               </RadioGroup>
             </div>
           </div>
-          {(formState.surface_finish === "Immersion gold(ENIG)" || showAllFields) && (
+          {(formState.surface_finish === t("pcb_create.immersion_gold") || showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>{t("thickness_gold")}</div>
               <div className={classes.rowContent}>
@@ -1322,7 +1343,7 @@ const PcbCalculator: React.FC<Props> = ({
                               [classes.checked]: formState.thickness_of_immersion_gold === item.value,
                             })}
                           >
-                            {item.label}
+                            {item.value}
                           </div>
                         }
                       />
@@ -1332,7 +1353,7 @@ const PcbCalculator: React.FC<Props> = ({
               </div>
             </div>
           )}
-          {(formState.surface_finish === "ENEPIG" || showAllFields) && (
+          {(formState.surface_finish === t("pcb_create.enepig") || showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>{t("thickness_ENEPIG")}</div>
               <div className={classes.rowContent}>
@@ -1366,7 +1387,7 @@ const PcbCalculator: React.FC<Props> = ({
               </div>
             </div>
           )}
-          {(formState.surface_finish === "Hard gold" || showAllFields) && (
+          {(formState.surface_finish === t("pcb_create.hard_gold") || showAllFields) && (
             <div className={classes.row}>
               <div className={classes.rowTitle}>{t("thickness_au_ni")}</div>
               <div className={classes.rowContent}>
@@ -1441,7 +1462,7 @@ const PcbCalculator: React.FC<Props> = ({
                 })}
               </RadioGroup>
               <span style={{ left: 12, bottom: "-40%" }} className={classes.helperText}>
-                *For Gerber files, this choice is useless.It will be made according to files as default.
+                {t("pcb_create.gerber_files")}
               </span>
             </div>
           </div>
@@ -1480,7 +1501,7 @@ const PcbCalculator: React.FC<Props> = ({
                   );
                 })}
                 <div style={{ marginTop: 3 }} className={classes.helperSection}>
-                  * Unit: mm
+                  {t("pcb_create.unit")}
                   <img src={finished_copper} alt="finished_copper" />
                 </div>
               </RadioGroup>

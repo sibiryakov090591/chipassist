@@ -167,29 +167,32 @@ function PcbRequest(props) {
         board_type: pcbConstants.PCBTYPE
           ? [...pcbConstants.PCBTYPE]
           : [
-              { label: "Single PCB", value: "Single PCB" },
-              { label: 'Panel by Customer"', value: "Panel by Customer" },
-              { label: "Panel by PCBWay", value: "Panel by PCBWay" },
+              { label: t("calculator.pcb_create.single_pcb"), value: t("calculator.pcb_create.single_pcb") },
+              {
+                label: t("calculator.pcb_create.panel_by_customer"),
+                value: t("calculator.pcb_create.panel_by_customer"),
+              },
+              { label: t("calculator.pcb_create.panel_by_pcbway"), value: t("calculator.pcb_create.panel_by_pcbway") },
             ],
         x_out: pcbConstants.X_OUT
           ? [...pcbConstants.X_OUT]
           : [
-              { label: "Accept", value: "Accept" },
-              { label: "Not Accept", value: "Not Accept" },
+              { label: t("calculator.pcb_create.accept"), value: t("calculator.pcb_create.accept") },
+              { label: t("calculator.pcb_create.not_accept"), value: t("calculator.pcb_create.not_accept") },
             ],
         break_away_rail: pcbConstants.BREAK_AWAY_RAIL
           ? [...pcbConstants.BREAK_AWAY_RAIL]
           : [
-              { label: "Yes", value: "Yes" },
-              { label: "No", value: "No" },
+              { label: t("calculator.pcb_create.yes"), value: t("calculator.pcb_create.yes") },
+              { label: t("calculator.pcb_create.no"), value: t("calculator.pcb_create.no") },
             ],
         route_process: pcbConstants.PROFILING
           ? [...pcbConstants.PROFILING]
           : [
-              { label: "Panel as PCBWay prefer", value: "Panel as PCBWay prefer" },
-              { label: "Panel as V-Scoring", value: "Panel as V-Scoring" },
-              { label: "Panel as Tab Route", value: "Panel as Tab Route" },
-              { label: "Both V-Scoring&Tab-routing", value: "Both V-Scoring&Tab-routing" },
+              { label: t("calculator.pcb_create.pcbway_prefer"), value: t("calculator.pcb_create.pcbway_prefer") },
+              { label: t("calculator.pcb_create.vscoring_panel"), value: t("calculator.pcb_create.vscoring_panel") },
+              { label: t("calculator.pcb_create.tab_route_panel"), value: t("calculator.pcb_create.tab_route_panel") },
+              { label: t("calculator.pcb_create.both_panels"), value: t("calculator.pcb_create.both_panels") },
             ],
         different_design: pcbConstants.DIFFERENT_DESIGN
           ? [...pcbConstants.DIFFERENT_DESIGN]
@@ -216,34 +219,34 @@ function PcbRequest(props) {
         copper_layer: pcbConstants.COPPER_LAYER
           ? [...pcbConstants.COPPER_LAYER]
           : [
-              { label: "None", value: "None" },
-              { label: "Top layer", value: "Top layer" },
-              { label: "Bottom layer", value: "Bottom layer" },
+              { label: t("calculator.pcb_create.none"), value: t("calculator.pcb_create.none") },
+              { label: t("calculator.pcb_create.top_layer"), value: t("calculator.pcb_create.top_layer") },
+              { label: t("calculator.pcb_create.bottom_layer"), value: t("calculator.pcb_create.bottom_layer") },
             ],
         solder_mask: pcbConstants.SOLDERMASK
           ? [...pcbConstants.SOLDERMASK]
           : [
-              { label: "None", value: "None" },
-              { label: "Top side", value: "Top side" },
-              { label: "Bottom side", value: "Bottom side" },
-              { label: "Both sides", value: "Both sides" },
+              { label: t("calculator.pcb_create.none"), value: t("calculator.pcb_create.none") },
+              { label: t("calculator.pcb_create.top_side"), value: t("calculator.pcb_create.top_side") },
+              { label: t("calculator.pcb_create.bottom_side"), value: t("calculator.pcb_create.bottom_side") },
+              { label: t("calculator.pcb_create.both_sides"), value: t("calculator.pcb_create.both_sides") },
             ],
         silkscreen_legend: pcbConstants.LEGEND
           ? [...pcbConstants.LEGEND]
           : [
-              { label: "None", value: "None" },
-              { label: "Top side", value: "Top side" },
-              { label: "Bottom side", value: "Bottom side" },
-              { label: "Both sides", value: "Both sides" },
+              { label: t("calculator.pcb_create.none"), value: t("calculator.pcb_create.none") },
+              { label: t("calculator.pcb_create.top_side"), value: t("calculator.pcb_create.top_side") },
+              { label: t("calculator.pcb_create.bottom_side"), value: t("calculator.pcb_create.bottom_side") },
+              { label: t("calculator.pcb_create.both_sides"), value: t("calculator.pcb_create.both_sides") },
             ],
         material: pcbConstants.MATERIAL
           ? [...pcbConstants.MATERIAL]
           : [
-              { label: "FR-4", value: "FR-4" },
-              { label: "Aluminum", value: "Aluminum" },
-              { label: "Rogers", value: "Rogers" },
-              { label: "HDI(Buried/blind vias)", value: "HDI(Buried/blind vias)" },
-              { label: "Copper Base", value: "Copper Base" },
+              { label: t("calculator.pcb_create.fr_4"), value: t("calculator.pcb_create.fr_4") },
+              { label: t("calculator.pcb_create.aluminum"), value: t("calculator.pcb_create.aluminum") },
+              { label: t("calculator.pcb_create.rogers"), value: t("calculator.pcb_create.rogers") },
+              { label: t("calculator.pcb_create.hdi"), value: t("calculator.pcb_create.hdi") },
+              { label: t("calculator.pcb_create.copper_base"), value: t("calculator.pcb_create.copper_base") },
             ],
         fr4_tg: pcbConstants.BASE
           ? [...pcbConstants.BASE]
@@ -269,8 +272,8 @@ function PcbRequest(props) {
         structure_of_mcpcb: pcbConstants.STRUCTURE_OF_MCPCB
           ? [...pcbConstants.STRUCTURE_OF_MCPCB]
           : [
-              { label: "Metal core in the middle", value: "Metal core in the middle" },
-              { label: "Metal base on the bottom side", value: "Metal base on the bottom side" },
+              { label: t("calculator.pcb_create.core_middle"), value: t("calculator.pcb_create.core_middle") },
+              { label: t("calculator.pcb_create.core_bottom"), value: t("calculator.pcb_create.core_bottom") },
             ],
         thickness: pcbConstants.THICKNESS
           ? [...pcbConstants.THICKNESS]
@@ -317,54 +320,57 @@ function PcbRequest(props) {
               { label: "≥ 0.3mm", value: ">=0.3" },
               { label: "≥ 0.8mm", value: ">=0.8" },
               { label: "≥ 1.0mm", value: ">=1.0" },
-              { label: "No Drill", value: "No Drill" },
+              { label: t("calculator.pcb_create.no_drill"), value: t("calculator.pcb_create.no_drill") },
             ],
         solder_mask_color: pcbConstants.SOLDERMASK_COLOR
           ? [...pcbConstants.SOLDERMASK_COLOR]
           : [
-              { label: "Green", value: "Green" },
-              { label: "Red", value: "Red" },
-              { label: "Yellow", value: "Yellow" },
-              { label: "Blue", value: "Blue" },
-              { label: "White", value: "White" },
-              { label: "Black", value: "Black" },
-              { label: "Purple", value: "Purple" },
-              { label: "Matte black", value: "Matte black" },
-              { label: "Matte green", value: "Matte green" },
-              { label: "None", value: "None" },
+              { label: t("calculator.pcb_create.green"), value: t("calculator.pcb_create.green") },
+              { label: t("calculator.pcb_create.red"), value: t("calculator.pcb_create.red") },
+              { label: t("calculator.pcb_create.yellow"), value: t("calculator.pcb_create.yellow") },
+              { label: t("calculator.pcb_create.blue"), value: t("calculator.pcb_create.blue") },
+              { label: t("calculator.pcb_create.white"), value: t("calculator.pcb_create.white") },
+              { label: t("calculator.pcb_create.black"), value: t("calculator.pcb_create.black") },
+              { label: t("calculator.pcb_create.purple"), value: t("calculator.pcb_create.purple") },
+              { label: t("calculator.pcb_create.matte_black"), value: t("calculator.pcb_create.matte_black") },
+              { label: t("calculator.pcb_create.matte_green"), value: t("calculator.pcb_create.matte_green") },
+              { label: t("calculator.pcb_create.none"), value: t("calculator.pcb_create.none") },
             ],
         surface_finish: pcbConstants.FINISH
           ? [...pcbConstants.FINISH]
           : [
-              { label: "HASL with lead", value: "HASL with lead" },
-              { label: "HASL lead free", value: "HASL lead free" },
-              { label: "Immersion gold(ENIG)", value: "Immersion gold(ENIG)" },
-              { label: "OSP", value: "OSP" },
-              { label: "Hard gold", value: "Hard gold" },
-              { label: "Immersion silver(Ag)", value: "Immersion silver(Ag)" },
-              { label: "ENEPIG", value: "ENEPIG" },
-              { label: "None(Plain copper)", value: "None(Plain copper)" },
+              { label: t("calculator.pcb_create.hasl_with_lead"), value: t("calculator.pcb_create.hasl_with_lead") },
+              { label: t("calculator.pcb_create.hasl_lead_free"), value: t("calculator.pcb_create.hasl_lead_free") },
+              { label: t("calculator.pcb_create.immersion_gold"), value: t("calculator.pcb_create.immersion_gold") },
+              { label: t("calculator.pcb_create.osp"), value: t("calculator.pcb_create.osp") },
+              { label: t("calculator.pcb_create.hard_gold"), value: t("calculator.pcb_create.hard_gold") },
+              {
+                label: t("calculator.pcb_create.immersion_silver"),
+                value: t("calculator.pcb_create.immmersion_silver"),
+              },
+              { label: t("calculator.pcb_create.enepig"), value: t("calculator.pcb_create.enepig") },
+              { label: t("calculator.pcb_create.plain_copper"), value: t("calculator.pcb_create.plain_copper") },
             ],
         silkscreen: pcbConstants.LEGEND_COLOR
           ? [...pcbConstants.LEGEND_COLOR]
           : [
-              { label: "White", value: "White" },
-              { label: "Black", value: "Black" },
-              { label: "None", value: "None" },
+              { label: t("calculator.pcb_create.white"), value: t("calculator.pcb_create.white") },
+              { label: t("calculator.pcb_create.black"), value: t("calculator.pcb_create.black") },
+              { label: t("calculator.pcb_create.none"), value: t("calculator.pcb_create.none") },
             ],
         edge_connector: pcbConstants.EDGE_CONNECTOR
           ? [...pcbConstants.EDGE_CONNECTOR]
           : [
-              { label: "Yes", value: "Yes" },
-              { label: "No", value: "No" },
+              { label: t("calculator.pcb_create.yes"), value: t("calculator.pcb_create.yes") },
+              { label: t("calculator.pcb_create.no"), value: t("calculator.pcb_create.no") },
             ],
         bevelling: pcbConstants.BEVELLING
           ? [...pcbConstants.BEVELLING]
           : [
-              { label: "None", value: "None" },
-              { label: "Yes (20°)", value: "20" },
-              { label: "Yes (30°)", value: "30" },
-              { label: "Yes (45°)", value: "45" },
+              { label: t("calculator.pcb_create.none"), value: t("calculator.pcb_create.none") },
+              { label: `${t("calculator.pcb_create.yes")} (20°)`, value: "20" },
+              { label: `${t("calculator.pcb_create.yes")} (30°)`, value: "30" },
+              { label: `${t("calculator.pcb_create.yes")} (45°)`, value: "45" },
             ],
         thickness_of_immersion_gold: pcbConstants.THICKNESS_OF_IMMERSION_GOLD
           ? [...pcbConstants.THICKNESS_OF_IMMERSION_GOLD]
@@ -384,14 +390,17 @@ function PcbRequest(props) {
         via_process: pcbConstants.VIA_PROCESS
           ? [...pcbConstants.VIA_PROCESS]
           : [
-              { label: "Tenting vias", value: "Tenting vias" },
-              { label: "Plugged vias", value: "Plugged vias" },
-              { label: "Vias not covered", value: "Vias not covered" },
+              { label: t("calculator.pcb_create.tenting_vias"), value: t("calculator.pcb_create.tenting_vias") },
+              { label: t("calculator.pcb_create.plugged_vias"), value: t("calculator.pcb_create.plugged_vias") },
+              {
+                label: t("calculator.pcb_create.vias_not_converted"),
+                value: t("calculator.pcb_create.vias_not_converted"),
+              },
             ],
         finished_copper: pcbConstants.COPPER
           ? [...pcbConstants.COPPER]
           : [
-              { label: "Bare board(0 oz Cu)", value: "0" },
+              { label: `${t("calculator.pcb_create.bare_board")}(0 oz Cu)`, value: "0" },
               { label: "1 oz Cu", value: "1" },
               { label: "2 oz Cu", value: "2" },
               { label: "3 oz Cu", value: "3" },
@@ -611,8 +620,12 @@ function PcbRequest(props) {
         setErrors(newState);
       }
       let surfaceFinish = "";
-      if (["HASL with lead", "HASL lead free"].includes(formState.surface_finish)) {
-        if (+value < 0.6) surfaceFinish = "Immersion gold(ENIG)";
+      if (
+        [t("calculator.pcb_create.hasl_with_lead"), t("calculator.pcb_create.hasl_lead_free")].includes(
+          formState.surface_finish,
+        )
+      ) {
+        if (+value < 0.6) surfaceFinish = t("calculator.pcb_create.immersion_gold");
       }
       return setFormState((prev) => ({
         ...prev,
@@ -642,8 +655,14 @@ function PcbRequest(props) {
         setErrors(newState);
       }
       let material = "";
-      if ((formState.material === "Aluminum" || formState.material === "Copper Base") && +value > 2) material = "FR-4";
-      if (formState.material === "HDI(Buried/blind vias)" && +value < 4) material = "FR-4";
+      if (
+        (formState.material === t("calculator.pcb_create.aluminum") ||
+          formState.material === t("calculator.pcb_create.copper_base")) &&
+        +value > 2
+      )
+        material = t("calculator.pcb_create.fr_4");
+      if (formState.material === t("calculator.pcb_create.hdi") && +value < 4)
+        material = t("calculator.pcb_create.fr_4");
       return setFormState((prev) => ({
         ...prev,
         material: material || prev.material,
@@ -668,16 +687,28 @@ function PcbRequest(props) {
         setErrors(newState);
       }
       let surfaceFinish = "";
-      if (["HASL with lead", "HASL lead free"].includes(formState.surface_finish)) {
-        if (["Rogers", "HDI(Buried/blind vias)", "Copper Base"].includes(value)) surfaceFinish = "Immersion gold(ENIG)";
+      if (
+        [t("calculator.pcb_create.hasl_with_lead"), t("calculator.pcb_create.hasl_lead_free")].includes(
+          formState.surface_finish,
+        )
+      ) {
+        if (
+          [
+            t("calculator.pcb_create.rogers"),
+            t("calculator.pcb_create.hdi"),
+            t("calculator.pcb_create.copper_base"),
+          ].includes(value)
+        )
+          surfaceFinish = t("calculator.pcb_create.immersion_gold");
       }
       return setFormState((prev) => ({
         ...prev,
         thermal_conductivity: "2.0W/(m⋅K)",
         thickness: "2.0",
         thickness_input: "",
-        min_spacing: value === "Aluminum" && prev.min_spacing === "3/3mil" ? "4/4mil" : prev.min_spacing,
-        min_hole_size: value === "Aluminum" ? "≥0.8mm" : "0.15mm",
+        min_spacing:
+          value === t("calculator.pcb_create.aluminum") && prev.min_spacing === "3/3mil" ? "4/4mil" : prev.min_spacing,
+        min_hole_size: value === t("calculator.pcb_create.aluminum") ? "≥0.8mm" : "0.15mm",
         surface_finish: surfaceFinish || prev.surface_finish,
         [name]: value,
       }));
@@ -751,7 +782,7 @@ function PcbRequest(props) {
         Object.keys(data).map((name) => {
           if (typeof data[name] !== "boolean" && !data[name]) return false;
           if (name === "x_out") {
-            formData.append("xout", data[name] === "Accept" ? 1 : 0);
+            formData.append("xout", data[name] === t("calculator.pcb_create.accept") ? 1 : 0);
             return true;
           }
           // if (name === "seller") {
