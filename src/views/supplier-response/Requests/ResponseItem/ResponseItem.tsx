@@ -23,6 +23,7 @@ import addBusinessDays from "date-fns/addBusinessDays";
 import { format, isWeekend, nextMonday } from "date-fns";
 import { NumberInput } from "@src/components/Inputs";
 import { formatMoney } from "@src/utils/formatters";
+import useCurrency from "@src/hooks/useCurrency";
 import { useStyles } from "./responseItemStyles";
 import { useStyles as useResponseStyles } from "../supplierResponseStyles";
 
@@ -43,6 +44,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
   const responseClasses = useResponseStyles();
   const commonClasses = useCommonStyles();
   const dispatch = useAppDispatch();
+  const { currency, currencyPrice } = useCurrency();
   const { t } = useI18n("supplier_response");
   const validDays = constants.validDaysForResponse || 3;
   const validHours = validDays * 24;
@@ -57,14 +59,9 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
 
   const debouncedItemValue = useDebounce(item, 200);
 
-  const { selected, currencyList } = useAppSelector((state) => state.currency);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const savedResponse = useAppSelector((state) => responseItem?.id && state.rfq.rfqResponseData[responseItem.id]);
   // const countries = useAppSelector((state) => state.checkout.countries);
-  const symbol =
-    item?.requested_price?.currency &&
-    (currencyList.find((curr) => curr.code === item.requested_price.currency)?.symbol ||
-      item?.requested_price.currency);
 
   // const country = React.useMemo(() => {
   //   let countryItem = countries?.find((i) => i.iso_3166_1_a3 === item.country);
@@ -298,7 +295,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
               [classes.inputError]: isActiveValidating && !item.price,
               [classes.bestPriseError]: !!item?.response_rfq?.summary?.best_price_other,
             })}
-            label={`Unit price (${selected?.symbol}):`}
+            label={`Unit price (${currency?.symbol}):`}
             placeholder="Your unit price"
             variant="outlined"
             size="small"
@@ -399,10 +396,11 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
         {/*    <span className={classes.countryName}>{country.printable_name}</span> */}
         {/*  </div> */}
         {/* )} */}
-        {item?.requested_price?.price && symbol && (
+        {item?.requested_price?.price && (
           <div className={classes.geoPin}>
             <span>
-              Target price: {formatMoney(item.requested_price.price)} {symbol}
+              Target price: {formatMoney(currencyPrice(item.requested_price.price, item.requested_price.currency))}{" "}
+              {currency.symbol}
             </span>
           </div>
         )}
