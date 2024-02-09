@@ -5,13 +5,22 @@ import Page from "@src/components/Page/Page";
 import Container from "@material-ui/core/Container/Container";
 import Preloader from "@src/components/Preloader/Preloader";
 import { Link } from "react-router-dom";
+import useAppDispatch from "@src/hooks/useAppDispatch";
+import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 import { useStyles } from "./styles";
 
 const Brands: React.FC = () => {
   const { t } = useI18n("brands");
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const { groups, loaded } = useAppSelector((state) => state.manufacturers);
+
+  React.useEffect(() => {
+    if (!loaded) {
+      dispatch(getAllManufacturers());
+    }
+  }, []);
 
   return (
     <noindex>

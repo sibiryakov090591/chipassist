@@ -201,7 +201,7 @@ const SupplierResponse: React.FC = () => {
         if (!selected_manufacturer && item.manufacturer?.id) {
           selected_manufacturer = responseRfq?.manufacturers?.find((i) => i.id === item.manufacturer?.id);
         }
-        if (!selected_manufacturer && item.manufacturer?.id) {
+        if (!selected_manufacturer) {
           selected_manufacturer = responseRfq?.manufacturers?.length ? responseRfq?.manufacturers[0] : null;
         }
 
