@@ -149,7 +149,7 @@ const ChipAssistApp = () => {
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
-  const { geolocation } = useAppSelector((state) => state.profile);
+  //   const { geolocation } = useAppSelector((state) => state.profile);
 
   const valueToken = useURLSearchParams("value", false, null, false);
   const [startRecord, stopRecord] = useUserActivity();
