@@ -145,7 +145,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
         (geolocation?.country_code_iso3 &&
           countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
         defaultCountry.url,
-      inn: "",
+      inn: profile?.defaultBillingAddress?.inn || "",
       email: profile?.email || "",
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
@@ -636,6 +636,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  disabled={isAuthenticated && !!formState.values.inn}
                   style={{ textAlign: "start", width: "100%" }}
                   {...errorProps("inn")}
                 ></TextField>

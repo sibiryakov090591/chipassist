@@ -180,7 +180,7 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
             countries?.find((c) => c.iso_3166_1_a3 === geolocation.country_code_iso3)?.url) ||
           defaultCountry.url
         : defaultCountry.url,
-      inn: "",
+      inn: profile?.defaultBillingAddress?.inn || "",
       quantity: profile?.quantity || "",
       price: profile?.price || "",
       // deliveryDate: getCurrentDate(),
@@ -889,13 +889,14 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
                   variant="outlined"
                   name="inn"
                   size="small"
-                  label={`ИНН компании*`}
+                  label={`ИНН компании *`}
                   value={formState.values.inn}
                   onBlur={onBlurHandler("inn")}
                   onChange={handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  disabled={isAuthenticated && !!formState.values.inn}
                   style={{ textAlign: "start", width: "100%" }}
                   {...errorProps("inn")}
                 ></TextField>
