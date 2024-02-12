@@ -79,8 +79,7 @@ export const loadSearchResultsActionThunk = (
             min: Math.ceil(parseFloat(response.min_price)),
           });
 
-          if (constants.id !== ID_ELFARO) {
-            // disable extended search for Elfaro
+          if (constants.id !== ID_ELFARO && !filters.m_id) {
             dispatch({
               type: actionTypes.SET_EXTENDED_SEARCH_ID,
               payload: { id: response.search_id, params: { page, pageSize, orderBy, filters, component, query } },
