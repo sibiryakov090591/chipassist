@@ -573,7 +573,7 @@ const ChipAssistApp = () => {
       <AlertTopRight />
       <AlertModal />
       <AddProductToListModal />
-      <CookieAlert />
+      {!isICSearch && <CookieAlert />}
     </div>
   );
 };
