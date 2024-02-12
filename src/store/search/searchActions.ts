@@ -79,8 +79,7 @@ export const loadSearchResultsActionThunk = (
             min: Math.ceil(parseFloat(response.min_price)),
           });
 
-          if (constants.id !== ID_ELFARO) {
-            // disable extended search for Elfaro
+          if (constants.id !== ID_ELFARO && !filters.m_id) {
             dispatch({
               type: actionTypes.SET_EXTENDED_SEARCH_ID,
               payload: { id: response.search_id, params: { page, pageSize, orderBy, filters, component, query } },
@@ -177,6 +176,7 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: an
           }
           if (val.startsWith("MANUFACTURER:")) {
             // search manufacturer's products
+            if (urlParams?.m_id) return acc; // search by ID if it exists
             const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
             return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
           }
@@ -222,6 +222,7 @@ export const extendedLoadingOfSearchResultsThunk = (searchId: number, urlParams:
             }
             if (val.startsWith("MANUFACTURER:")) {
               // search manufacturer's products
+              if (urlParams?.m_id) return acc; // search by ID if it exists
               const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
               return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
             }
@@ -265,6 +266,7 @@ export const extendedLoadingOfSearchResultsForCashing = (
             }
             if (val.startsWith("MANUFACTURER:")) {
               // search manufacturer's products
+              if (urlParams?.m_id) return acc; // search by ID if it exists
               const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
               return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
             }
@@ -448,6 +450,7 @@ export const sendFiltersValueAction = (
     let params = "";
     Object.entries(data).forEach((entry) => {
       const [key, val] = entry;
+      if (key === "m_id" && !val) return;
       if (key === "search") {
         if (val.startsWith("SELLER:")) {
           // search seller's products
@@ -455,6 +458,7 @@ export const sendFiltersValueAction = (
           params += `&s=${encodeURIComponent(sellerName)}`;
         } else if (val.startsWith("MANUFACTURER:")) {
           // search manufacturer's products
+          if (data?.m_id) return; // search by ID if it exists
           const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
           params += `&m=${encodeURIComponent(manufacturerName)}`;
         } else {

@@ -37,6 +37,10 @@ const Footer = () => {
   const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   const { t } = useI18n("footer");
 
+  const navigateHandler = () => {
+    window.scrollTo({ top: 0 });
+  };
+
   const ICSInfo = () => {
     return (
       <noindex>
@@ -127,16 +131,16 @@ const Footer = () => {
                 <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
                   {isSupplierResponse && (
                     <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLink} to={"/supplier-response"}>
+                      <NavLink className={classes.navLink} to={"/supplier-response"} onClick={navigateHandler}>
                         {t("requests")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/statistics"}>
+                      <NavLink className={classes.navLink} to={"/statistics"} onClick={navigateHandler}>
                         {t("statistics")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/messages"}>
+                      <NavLink className={classes.navLink} to={"/messages"} onClick={navigateHandler}>
                         {t("messages")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/help"}>
+                      <NavLink className={classes.navLink} to={"/help"} onClick={navigateHandler}>
                         {t("help")}
                       </NavLink>
                     </Box>
@@ -146,24 +150,28 @@ const Footer = () => {
                       {isDownXs ? (
                         <>
                           <Box className={classes.navGroup}>
-                            <NavLink className={classes.navLink} to={"/about_company"}>
+                            <NavLink className={classes.navLink} to={"/about_company"} onClick={navigateHandler}>
                               {t("about_us")}
                             </NavLink>
-                            <NavLink className={classes.navLink} to={"/parts"}>
+                            <NavLink className={classes.navLink} to={"/parts"} onClick={navigateHandler}>
                               {t("products")}
                             </NavLink>
                             <Hidden smDown>
-                              <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                              <NavLink className={classes.navLink} to={"/bom/create-file"} onClick={navigateHandler}>
                                 {t("menu.bom")}
                               </NavLink>
                             </Hidden>
-                            <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                            <NavLink className={classes.navLink} to={"/rfq-list-quotes"} onClick={navigateHandler}>
                               {t("rfq_list")}
                             </NavLink>
-                            <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
+                            <NavLink
+                              className={classes.navLink}
+                              to={"/sell-excess-inventory"}
+                              onClick={navigateHandler}
+                            >
                               {t("sell_on")} ChipAssist
                             </NavLink>
-                            <NavLink className={classes.navLink} to={"/pcb"}>
+                            <NavLink className={classes.navLink} to={"/pcb"} onClick={navigateHandler}>
                               {t("request")} PCB
                             </NavLink>
                           </Box>
@@ -171,26 +179,30 @@ const Footer = () => {
                       ) : (
                         <>
                           <Box className={classes.navGroup}>
-                            <NavLink className={classes.navLink} to={"/about_company"}>
+                            <NavLink className={classes.navLink} to={"/about_company"} onClick={navigateHandler}>
                               {t("about_us")}
                             </NavLink>
-                            <NavLink className={classes.navLink} to={"/parts"}>
+                            <NavLink className={classes.navLink} to={"/parts"} onClick={navigateHandler}>
                               {t("products")}
                             </NavLink>
                             <Hidden smDown>
-                              <NavLink className={classes.navLink} to={"/bom/create-file"}>
+                              <NavLink className={classes.navLink} to={"/bom/create-file"} onClick={navigateHandler}>
                                 {t("menu.bom")}
                               </NavLink>
                             </Hidden>
                           </Box>
                           <Box className={classes.navGroup}>
-                            <NavLink className={classes.navLink} to={"/rfq-list-quotes"}>
+                            <NavLink className={classes.navLink} to={"/rfq-list-quotes"} onClick={navigateHandler}>
                               {t("rfq_list")}
                             </NavLink>
-                            <NavLink className={classes.navLink} to={"/sell-excess-inventory"}>
+                            <NavLink
+                              className={classes.navLink}
+                              to={"/sell-excess-inventory"}
+                              onClick={navigateHandler}
+                            >
                               {t("sell_on")} ChipAssist
                             </NavLink>
-                            <NavLink className={classes.navLink} to={"/pcb"}>
+                            <NavLink className={classes.navLink} to={"/pcb"} onClick={navigateHandler}>
                               {t("request")} PCB
                             </NavLink>
                           </Box>
@@ -200,18 +212,18 @@ const Footer = () => {
                   )}
                   <Box display="flex" flexWrap="wrap">
                     <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLink} to={"/terms_of_services"}>
+                      <NavLink className={classes.navLink} to={"/terms_of_services"} onClick={navigateHandler}>
                         {t("terms")}
                       </NavLink>
-                      <NavLink className={classes.navLink} to={"/privacy_policy"}>
+                      <NavLink className={classes.navLink} to={"/privacy_policy"} onClick={navigateHandler}>
                         {t("privacy")}
                       </NavLink>
                       {!isSupplierResponse && (
                         <>
-                          <NavLink className={classes.navLink} to={`/blog`}>
+                          <NavLink className={classes.navLink} to={`/blog`} onClick={navigateHandler}>
                             {t("blog")}
                           </NavLink>
-                          <NavLink className={classes.navLink} to={"/FAQ"}>
+                          <NavLink className={classes.navLink} to={"/FAQ"} onClick={navigateHandler}>
                             FAQ
                           </NavLink>
                         </>
@@ -270,38 +282,38 @@ const Footer = () => {
                 <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
                   <Box display="flex" flexWrap="wrap">
                     <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLinkICS} to={"/"}>
+                      <NavLink className={classes.navLinkICS} to={"/"} onClick={navigateHandler}>
                         {t("menu.home")}
                       </NavLink>
-                      <NavLink className={classes.navLinkICS} to={"/parts"}>
+                      <NavLink className={classes.navLinkICS} to={"/parts"} onClick={navigateHandler}>
                         {t("products")}
                       </NavLink>
                       <Hidden smUp>
-                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"}>
+                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
                           {t("rfq_list")}
                         </NavLink>
                       </Hidden>
                       <Hidden smDown>
-                        <NavLink className={classes.navLinkICS} to={"/bom/create-file"}>
+                        <NavLink className={classes.navLinkICS} to={"/bom/create-file"} onClick={navigateHandler}>
                           {t("bom")}
                         </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"}>
+                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
                           {t("rfq_list")}
                         </NavLink>
                       </Hidden>
                     </Box>
                     <Box className={classes.navGroup}>
                       <Hidden smDown>
-                        <NavLink className={classes.navLinkICS} to={"/pcb"}>
+                        <NavLink className={classes.navLinkICS} to={"/pcb"} onClick={navigateHandler}>
                           {t("menu.pcb")}
                         </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/brands"}>
+                        <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
                           {t("menu.brands")}
                         </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"}>
+                        <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"} onClick={navigateHandler}>
                           {t("payment_and_delivery")}
                         </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/privacy_policy"}>
+                        <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
                           {t("privacy")}
                         </NavLink>
                       </Hidden>
@@ -309,13 +321,13 @@ const Footer = () => {
                   </Box>
                   <Hidden smUp>
                     <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
-                      <NavLink className={classes.navLinkICS} to={"/brands"}>
+                      <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
                         {t("menu.brands")}
                       </NavLink>
-                      <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"}>
+                      <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"} onClick={navigateHandler}>
                         {t("payment_and_delivery")}
                       </NavLink>
-                      <NavLink className={classes.navLinkICS} to={"/privacy_policy"}>
+                      <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
                         {t("privacy")}
                       </NavLink>
                     </Box>

@@ -50,7 +50,7 @@ const Brands: React.FC = () => {
                             key={item.id}
                             to={`/search?query=${encodeURIComponent(
                               `MANUFACTURER:${name.includes(" ") ? `"${name}"` : name}`,
-                            )}`}
+                            )}&m_id=${item.id}`}
                             className={classes.link}
                           >
                             {item.name}

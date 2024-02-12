@@ -67,6 +67,7 @@ const SearchResults = () => {
   const _pageSize = useAppSelector((state) => state.search.pageSize);
 
   const query = useURLSearchParams("query", true, "", false);
+
   // const page = useURLSearchParams("page", false, _page, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || _pageSize, false);
   const orderBy = useURLSearchParams(

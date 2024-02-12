@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop, Box, Button, useMediaQuery, useTheme, Hidden } from "@material-ui/core";
+import { Backdrop, Box, Button, useMediaQuery, useTheme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -386,31 +386,24 @@ const ProgressModal: React.FC = () => {
               )}
             </div>
           )}
-          {success || error ? (
-            <div className={classes.buttonContainer}>
-              {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
-                <Button
-                  variant="contained"
-                  className={appTheme.buttonCreate}
-                  onClick={handleSubmitResending}
-                  style={{ marginRight: "10px" }}
-                >
-                  {"Yes"}
-                </Button>
-              )}
-              <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
-                {t("close_button")}
-              </Button>
-            </div>
-          ) : (
-            <Hidden smUp>
-              <div className={commonClasses.actionsRow}>
-                <Button variant="contained" className={appTheme.buttonPrimary} onClick={handleClose}>
-                  {t("common.close")}
+          {success ||
+            (error && (
+              <div className={classes.buttonContainer}>
+                {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
+                  <Button
+                    variant="contained"
+                    className={appTheme.buttonCreate}
+                    onClick={handleSubmitResending}
+                    style={{ marginRight: "10px" }}
+                  >
+                    {"Yes"}
+                  </Button>
+                )}
+                <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
+                  {t("close_button")}
                 </Button>
               </div>
-            </Hidden>
-          )}
+            ))}
         </div>
       </Fade>
     </Modal>
