@@ -101,6 +101,11 @@ const TopMenu = ({ isMobile }) => {
 
   const reloadChatPage = () => {
     if (isXsChat) dispatch(triggerReloadPage());
+    navigateHandler();
+  };
+
+  const navigateHandler = () => {
+    window.scrollTo({ top: 0 });
   };
 
   return (
@@ -109,6 +114,7 @@ const TopMenu = ({ isMobile }) => {
         <NavLink
           className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname === "/" })}
           to={`/`}
+          onClick={navigateHandler}
         >
           {isMobile && <HomeIcon className={`${classes.topMenuItemIcon}`} />}
           {t("home")}
@@ -118,6 +124,7 @@ const TopMenu = ({ isMobile }) => {
         <NavLink
           className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/parts") })}
           to={`/parts`}
+          onClick={navigateHandler}
         >
           {isMobile && <ListAltIcon className={`${classes.topMenuItemIcon}`} />}
           {t("parts")}
@@ -128,6 +135,7 @@ const TopMenu = ({ isMobile }) => {
           <NavLink
             className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/bom/") })}
             to={`/bom/create-file`}
+            onClick={navigateHandler}
           >
             {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
             {t("bom")}
@@ -163,6 +171,7 @@ const TopMenu = ({ isMobile }) => {
               [classes.active]: window.location.pathname.includes("/rfq-list-quotes"),
             })}
             to={`/rfq-list-quotes`}
+            onClick={navigateHandler}
           >
             {isMobile && <DescriptionOutlinedIcon className={`${classes.topMenuItemIcon}`} />}
             {t("rfq_list")}
@@ -174,6 +183,7 @@ const TopMenu = ({ isMobile }) => {
           <NavLink
             className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/pcb") })}
             to={`/pcb`}
+            onClick={navigateHandler}
           >
             {isMobile && <MemoryOutlined className={`${classes.topMenuItemIcon}`} />}
             {t("pcb")}
@@ -214,6 +224,7 @@ const TopMenu = ({ isMobile }) => {
           <div className={itemClasses}>
             <NavLink
               to={`/profile/general`}
+              onClick={navigateHandler}
               className={clsx(classes.topMenuItemLink, {
                 [classes.active]: window.location.pathname.includes("/profile/"),
               })}
@@ -236,6 +247,7 @@ const TopMenu = ({ isMobile }) => {
           <NavLink
             className={clsx(classes.topMenuItemLink, { [classes.active]: window.location.pathname.includes("/blog") })}
             to={`/blog`}
+            onClick={navigateHandler}
           >
             {isMobile && <ReceiptIcon className={`${classes.topMenuItemIcon}`} />}
             {t("blog")}

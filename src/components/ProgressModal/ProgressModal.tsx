@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@material-ui/core/Modal";
-import { Backdrop, Box, Button, useMediaQuery, useTheme, Hidden } from "@material-ui/core";
+import { Backdrop, Box, Button, useMediaQuery, useTheme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppTheme from "@src/theme/useAppTheme";
