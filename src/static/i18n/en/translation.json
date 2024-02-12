@@ -2527,7 +2527,7 @@
       "api_tool": "Seamless API Integration",
       "api_tool_description": "Another key feature is our seamless API integration capability, which allows users to connect their own applications with the platform’s database of products and components, making data collection easier than ever before.",
       "paragraph": {
-        "firs": "ChipAssist is the ultimate global marketplace for sourcing electronic parts and components. Our platform provides users with easy access to stock levels and costs from hundreds of international distributors of electronics by simply entering a manufacturer component number.",
+        "first": "ChipAssist is the ultimate global marketplace for sourcing electronic parts and components. Our platform provides users with easy access to stock levels and costs from hundreds of international distributors of electronics by simply entering a manufacturer component number.",
         "second": " ChipAssist offers more than just stock data to electronics professionals looking for thorough technical component data. Our extensive part specifications, datasheets, CAD models, images, and more are displayed, allowing customers to make faster purchasing decisions while still receiving accurate pricing and inventory availability comparisons from distributors."
       },
       "footer": {
