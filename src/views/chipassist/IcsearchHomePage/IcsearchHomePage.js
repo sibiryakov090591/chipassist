@@ -13,6 +13,39 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import Preloader from "@src/components/Preloader/Preloader";
 import useStyles from "./styles";
 
+// const companyNames = {
+//   "Geehy Semiconductor": 0,
+//   GigaDevice: 4363,
+//   "Jiangsu Electronic": 3114,
+//   Yageo: 1223,
+//   "Amtek Technology": 0,
+//   SMIC: 0,
+//   "Analog Devices": 18,
+//   Raditek: 3038,
+//   Amphenol: 0,
+//   Microchip: 3231,
+//   Wingtech: 0,
+//   "Giga Device": 4363,
+//   "NXP Semiconductors": 9,
+//   UNISOC: 0,
+//   "ST Microelectronics": 7,
+//   "Nation Technologies": 0,
+//   "Texas Instruments": 3681,
+//   Rockchip: 4033,
+//   "ON Semiconductors": 0,
+//   Maxscend: 0,
+//   Murata: 945,
+//   Sanechips: 0,
+//   Omron: 943,
+//   "CR Micro": 0,
+//   "Renesas Electronics": 2,
+//   "TE Connectivity": 321,
+//   GoerTek: 0,
+//   "Wurth Electronics": 3065,
+//   Xilinx: 1957,
+//   SMC: 1874,
+// };
+
 const companyNames = [
   "Geehy Semiconductor",
   "GigaDevice",

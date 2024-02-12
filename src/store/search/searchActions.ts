@@ -177,6 +177,7 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: an
           }
           if (val.startsWith("MANUFACTURER:")) {
             // search manufacturer's products
+            if (urlParams?.m_id) return acc; // search by ID if it exists
             const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
             return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
           }
@@ -222,6 +223,7 @@ export const extendedLoadingOfSearchResultsThunk = (searchId: number, urlParams:
             }
             if (val.startsWith("MANUFACTURER:")) {
               // search manufacturer's products
+              if (urlParams?.m_id) return acc; // search by ID if it exists
               const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
               return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
             }
@@ -265,6 +267,7 @@ export const extendedLoadingOfSearchResultsForCashing = (
             }
             if (val.startsWith("MANUFACTURER:")) {
               // search manufacturer's products
+              if (urlParams?.m_id) return acc; // search by ID if it exists
               const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
               return `${acc ? `${acc}&` : "?"}m=${encodeURIComponent(manufacturerName)}`;
             }
@@ -448,6 +451,7 @@ export const sendFiltersValueAction = (
     let params = "";
     Object.entries(data).forEach((entry) => {
       const [key, val] = entry;
+      if (key === "m_id" && !val) return;
       if (key === "search") {
         if (val.startsWith("SELLER:")) {
           // search seller's products
@@ -455,6 +459,7 @@ export const sendFiltersValueAction = (
           params += `&s=${encodeURIComponent(sellerName)}`;
         } else if (val.startsWith("MANUFACTURER:")) {
           // search manufacturer's products
+          if (data?.m_id) return; // search by ID if it exists
           const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
           params += `&m=${encodeURIComponent(manufacturerName)}`;
         } else {
