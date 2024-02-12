@@ -315,7 +315,7 @@ export const sendSellerMessage = (item: { [key: string]: any }, token: string = 
     types: actionTypes.SEND_SELLER_MESSAGE_ARRAY,
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/list/${!isICSearch && `?message=true`}`, {
+        .post(`/rfqs/list/${isICSearch ? "" : `?message=true`}`, {
           data: { rfq_list: [data] },
           config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
         })
