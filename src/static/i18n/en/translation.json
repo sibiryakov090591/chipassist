@@ -2788,7 +2788,7 @@
   "chat": {
     "chat_details": {
       "statuses": {
-        "error": "The update failed!",
+        "error": "The update failed! To update the product you have to change at least one of main fields (stock, price, date code).",
         "success": "Your stock was updated successfully!"
       },
       "upd_pls": "Update stock data please!",

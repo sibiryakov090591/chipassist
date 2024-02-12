@@ -54,6 +54,7 @@ interface SellerMessageItemInterface {
   email: string;
   firstName: string;
   lastName: string;
+  inn: string;
   company_name: string;
   // company_type: string;
   // company_other_type: string;
@@ -69,6 +70,7 @@ interface SellerMessageItemTouched {
   email?: boolean;
   firstName?: boolean;
   lastName?: boolean;
+  inn?: boolean;
   company_name?: boolean;
   company_type?: boolean;
   company_other_type?: boolean;
@@ -84,6 +86,7 @@ interface SellerMessageItemErrors {
   email?: string[];
   firstName?: string[];
   lastName?: string[];
+  inn?: string[];
   company_name?: string[];
   company_type?: string[];
   company_other_type?: string[];
@@ -113,6 +116,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const { t } = useI18n("rfq");
+  const isICSearch = constants.id === ID_ICSEARCH;
 
   const { open, partNumber, sellerId, sellerName, stockrecordId, isSending } = useAppSelector(
     (state) => state.rfq.qualityCheckModal,
@@ -138,6 +142,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
       email: profile?.email || "",
       firstName: profile?.firstName || "",
       lastName: profile?.lastName || "",
+      inn: profile?.defaultBillingAddress?.inn || "",
       company_name: profile?.defaultBillingAddress?.company_name || "",
       // company_type: "Distributor",
       // company_other_type: "",
@@ -529,27 +534,45 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
             <div className={classes.phone}>
               <InputPhone label={t("column.phone")} value={phoneValue} onChange={onChangePhoneHandler} small />
             </div>
-            <TextField
-              variant="outlined"
-              name="country"
-              size="small"
-              label={`${t("form_labels.delivery_to")} *`}
-              value={formState.values.country}
-              onBlur={onBlurHandler("country")}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              select
-              style={{ textAlign: "start", width: "100%" }}
-              {...errorProps("country")}
-            >
-              {countries?.map((i: Record<string, any>) => (
-                <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                  {i.printable_name}
-                </MenuItem>
-              ))}
-            </TextField>
+            {isICSearch ? (
+              <TextField
+                variant="outlined"
+                name="inn"
+                size="small"
+                label={`ИНН компании *`}
+                value={formState.values.inn}
+                onBlur={onBlurHandler("inn")}
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={isAuthenticated && !!formState.values.inn}
+                style={{ textAlign: "start", width: "100%" }}
+                {...errorProps("inn")}
+              ></TextField>
+            ) : (
+              <TextField
+                variant="outlined"
+                name="country"
+                size="small"
+                label={`${t("form_labels.delivery_to")} *`}
+                value={formState.values.country}
+                onBlur={onBlurHandler("country")}
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                select
+                style={{ textAlign: "start", width: "100%" }}
+                {...errorProps("country")}
+              >
+                {countries?.map((i: Record<string, any>) => (
+                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                    {i.printable_name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
           </div>
           {/* {formState.values.company_type === "Other" && ( */}
           {/*  <div className={classes.formRow}> */}

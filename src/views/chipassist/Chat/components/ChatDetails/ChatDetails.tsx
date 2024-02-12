@@ -464,7 +464,7 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
                   className={appTheme.hyperlink}
                   onClick={createPriceBreak}
                 >
-                  {t("add_more")}
+                  {t("add")}
                 </span>
               </div>
             )}

@@ -923,7 +923,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
                         variant="outlined"
                         name="inn"
                         size="small"
-                        label={`ИНН компании*`}
+                        label={`ИНН компании *`}
                         value={formState.values.inn}
                         onBlur={onBlurHandler("inn")}
                         onChange={handleChange}

@@ -12,12 +12,16 @@ import { getAuthToken } from "@src/utils/auth";
 import { Stockrecord, Product } from "@src/store/products/productTypes";
 import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { shouldUpdateCard } from "@src/store/common/commonActions";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import * as actionTypes from "./rfqTypes";
 import { NewRfqItem, RfqActionTypes } from "./rfqTypes";
 
 // const apiClient = new ApiClient();
 // const { t } = staticI18n("rfq");
 const FileDownload = require("js-file-download");
+
+const isICSearch = constants.id === ID_ICSEARCH;
 
 export const exportSupplierRfqs = (all: boolean, days: number, sellerId: number) => (dispatch: Dispatch<any>) => {
   if (!sellerId) return false;
@@ -311,7 +315,7 @@ export const sendSellerMessage = (item: { [key: string]: any }, token: string = 
     types: actionTypes.SEND_SELLER_MESSAGE_ARRAY,
     promise: (client: ApiClientInterface) =>
       client
-        .post(`/rfqs/list/?message=true`, {
+        .post(`/rfqs/list/${isICSearch ? "" : `?message=true`}`, {
           data: { rfq_list: [data] },
           config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
         })
