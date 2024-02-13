@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 // import { withBaseIcon } from "react-icons-kit";
 // import { shopping_cart } from "react-icons-kit/ikons/shopping_cart";
 import clsx from "clsx";
@@ -65,6 +65,7 @@ const TopBar = (props) => {
   const classes = useStyles();
   const homePageClasses = useHomePageStyles();
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const is1180Down = useMediaQuery(theme.breakpoints.down(1180));
@@ -90,6 +91,12 @@ const TopBar = (props) => {
     if (isHomePage && window.pageYOffset <= homePageTopOffset) {
       setIsShowHeader(false);
     }
+    setTimeout(() => {
+      if (!isHomePage && window.pageYOffset <= topOffset) {
+        setIsShowHeader(true);
+        setCollapse(false);
+      }
+    }, 1);
 
     const listener = () => {
       const currentPosition = window.pageYOffset;
@@ -126,7 +133,7 @@ const TopBar = (props) => {
       if (isHomePage && collapse) setCollapse(false);
       window.removeEventListener("scroll", listener);
     };
-  }, [isMdUp]);
+  }, [isMdUp, location]);
 
   useEffect(() => {
     if (isShowHint) {
