@@ -29,8 +29,8 @@ const Page = (props) => {
   return (
     <div {...rest}>
       <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description || title} />
+        <title data-react-helmet="true">{title}</title>
+        <meta name="description" data-react-helmet="true" content={description || title} />
       </Helmet>
       {children}
     </div>
