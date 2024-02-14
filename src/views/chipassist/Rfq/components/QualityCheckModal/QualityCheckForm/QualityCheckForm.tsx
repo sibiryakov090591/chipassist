@@ -592,7 +592,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
           {/*    /> */}
           {/*  </div> */}
           {/* )} */}
-          {constants.id !== ID_ICSEARCH && !isAuthenticated && (
+          {!isAuthenticated && (
             <Box display="flex" flexDirection="column" ml={2} mt={1}>
               <FormControlLabel
                 control={

@@ -964,20 +964,17 @@ const RFQForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isAuth, clas
         {/* )} */}
         {!isAuthenticated && (
           <Box display="flex" flexDirection="column" ml={2} mb={1}>
-            {!isICSearch && (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="receive_updates_confirm"
-                    className={appTheme.checkbox}
-                    checked={formState.values.receive_updates_confirm}
-                    onChange={handleChange}
-                  />
-                }
-                label={<>{t("feedback.form.receive_updates_confirm")}</>}
-              />
-            )}
-
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="receive_updates_confirm"
+                  className={appTheme.checkbox}
+                  checked={formState.values.receive_updates_confirm}
+                  onChange={handleChange}
+                />
+              }
+              label={<>{t("feedback.form.receive_updates_confirm")}</>}
+            />
             <FormControlLabel
               control={
                 <Checkbox

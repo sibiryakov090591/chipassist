@@ -79,7 +79,7 @@ export const loadSearchResultsActionThunk = (
             min: Math.ceil(parseFloat(response.min_price)),
           });
 
-          if (constants.id !== ID_ELFARO && !filters.m_id) {
+          if (constants.id !== ID_ELFARO) {
             dispatch({
               type: actionTypes.SET_EXTENDED_SEARCH_ID,
               payload: { id: response.search_id, params: { page, pageSize, orderBy, filters, component, query } },
