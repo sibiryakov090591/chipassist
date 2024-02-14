@@ -888,7 +888,7 @@ function PcbRequest(props) {
         setShowDetails(false);
         dispatch(
           showBottomLeftMessageAlertAction({
-            text: `Details saved successfully!`,
+            text: t("details_saved_popup"),
             severity: "success",
           }),
         );
@@ -1067,7 +1067,7 @@ function PcbRequest(props) {
             </Button>
             {savedTime && (
               <div className={classes.savedTime}>
-                <div>Data successfully saved</div>
+                <div>{t("data_saved_text")}</div>
                 <div>{savedTime}</div>
               </div>
             )}

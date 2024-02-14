@@ -2111,6 +2111,9 @@
     "opening_page": "Opening page ...",
     "change_to": "Change to",
     "pcb_actions": "PCB actions",
+
+    "details_saved_popup": "Details saved successfully!",
+    "data_saved_text": "Data successfully saved",
     "column": {
       "id": "ID",
       "part_number": "Request name or number",
@@ -2212,6 +2215,7 @@
       "via_process_hint": "This parameter will be ignored if you send us a gerber file, so the PCB will be processed according to the file. Otherwise choose one of the 3 options.",
       "finished_copper": "Finished Copper:",
       "finished_copper_hint": "Weight of copper in ounces rolled out over an area of 1 square foot",
+      "eg": "e.g.",
       "pcb_create": {
         "single_pcb": "Single PCB",
         "panel_by_customer": "Panel by Customer",
@@ -2278,12 +2282,14 @@
         "immersion_tin_-_rohs": "Immersion Tin RoHS",
         "organic_solderability_preservatives_-_rohs": "Organic Solderability Preservatives-RoHS",
 
+        "panel_req": "Panel requirements",
         "comment": "Comment",
         "VSCORING": "V-Scoring",
         "TABROUTE": "Tab Route",
         "BOTH": "V-Scoring + Tab Route"
 
       }
+
     },
     "file": {
       "drag": "Drag &apos;n&apos; drop some files here, or ",

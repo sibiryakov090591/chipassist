@@ -176,7 +176,7 @@ const PcbCalculator: React.FC<Props> = ({
           {(formState.board_type === "PANEL" || showAllFields) && (
             <>
               <div style={{ padding: "0 2rem" }} className={classes.row}>
-                {!isSmDown && <div className={classes.rowTitle}>Panel requirements:</div>}
+                {!isSmDown && <div className={classes.rowTitle}>{t("pcb_create.panel_req")}:</div>}
                 <div className={classes.rowContent}>
                   <div className={classes.row}>
                     <div style={{ width: "auto" }} className={classes.rowTitle}>
@@ -222,7 +222,7 @@ const PcbCalculator: React.FC<Props> = ({
                     value={formState.panel_requirements_comment}
                     variant="outlined"
                     multiline
-                    label={t("creaye_pcb.comment")}
+                    label={t("pcb_create.comment")}
                     rows={3}
                     helperText={`(${t("pcb_create.helper_text_comment")})`}
                   />
@@ -318,7 +318,7 @@ const PcbCalculator: React.FC<Props> = ({
                       classes={{ tooltip: classes.customTooltip }}
                       title={<img style={{ width: 150 }} src={different} alt="Different design"></img>}
                     >
-                      <span className={classes.eg}>e.g.</span>
+                      <span className={classes.eg}>{t("eg")}</span>
                     </Tooltip>
                   )}
                 </Box>
@@ -793,6 +793,7 @@ const PcbCalculator: React.FC<Props> = ({
               <div className={classes.rowContent}>
                 <RadioGroup
                   className={classes.radioGroup}
+                  style={{ maxWidth: "410px" }}
                   row
                   name="structure_of_mcpcb"
                   value={formState.structure_of_mcpcb}
