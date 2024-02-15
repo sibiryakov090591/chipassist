@@ -78,6 +78,7 @@ const SearchResults = () => {
   );
   let smart_view = useAppSelector((state) => state.search.smart_view);
   smart_view = useURLSearchParams("smart_view", false, smart_view, false) === "true";
+  const manufacturerId = useURLSearchParams("m_id", false, null, false);
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
   filtersValues.base_num_in_stock = constants.isNewSearchPage
     ? 0
@@ -254,12 +255,14 @@ const SearchResults = () => {
   const onChangePageSize = (value: string) => {
     setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, baseFilters, {
       smart_view,
+      m_id: manufacturerId,
     });
   };
 
   const onPageChangeHandle = (data: any) => {
     setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, baseFilters, {
       smart_view,
+      m_id: manufacturerId,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -278,7 +281,7 @@ const SearchResults = () => {
         base_in_stock: false,
         base_num_in_stock: "",
       },
-      { smart_view },
+      { smart_view, m_id: manufacturerId },
     );
     dispatch(toggleReloadSearchFlag());
     localStorage.setItem("productStock", "false");
