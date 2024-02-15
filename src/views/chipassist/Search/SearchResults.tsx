@@ -37,6 +37,7 @@ import { ShowProductRequestHint } from "@src/store/products/productsActions";
 import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
 import RfqBar from "@src/views/chipassist/Search/components/RfqBar/RfqBar";
 import { europeCountries } from "@src/constants/countries";
+import { ru } from "date-fns/locale";
 import Skeletons from "./components/Skeleton/Skeleton";
 import { useStyles } from "./searchResultsStyles";
 import ExtendedSearchBar from "./components/ProgressBar";
@@ -58,6 +59,7 @@ const SearchResults = () => {
   const { t } = useI18n("search");
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const isICSearch = constants.id === "icsearch";
 
   // eslint-disable-next-line no-underscore-dangle
   // const _query = useAppSelector((state) => state.search.query);
@@ -458,7 +460,11 @@ const SearchResults = () => {
               <div className={classes.searchResultEmpty}>
                 {requestedRFQ && (
                   <div className={classes.requestedBlock}>
-                    {t("request_block")} {format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}
+                    {isICSearch
+                      ? `${t("request_block")} ${format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy", {
+                          locale: ru,
+                        })}`
+                      : `${t("request_block")} ${format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy")}`}
                   </div>
                 )}
                 <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
