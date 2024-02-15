@@ -28,7 +28,7 @@ const useSearchLoadResults = () => {
   let query = useAppSelector((state) => state.search.query);
   query = useURLSearchParams("query", true, "", false);
   let page = useAppSelector((state) => state.search.page);
-  page = useURLSearchParams("page", false, page, false);
+  page = useURLSearchParams("page", false, 1, false);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
   let smart_view = useAppSelector((state) => state.search.smart_view);
