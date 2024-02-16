@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
 import Tour, { ReactourStep } from "reactour";
 import img from "@src/images/Screenshot_1.png";
-import { ID_MASTER } from "@src/constants/server_constants";
+import { ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 // import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
@@ -59,7 +59,6 @@ const SearchResults = () => {
   const { t } = useI18n("search");
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
-  const isICSearch = constants.id === "icsearch";
 
   // eslint-disable-next-line no-underscore-dangle
   // const _query = useAppSelector((state) => state.search.query);
@@ -460,7 +459,7 @@ const SearchResults = () => {
               <div className={classes.searchResultEmpty}>
                 {requestedRFQ && (
                   <div className={classes.requestedBlock}>
-                    {isICSearch
+                    {constants.id === ID_ICSEARCH
                       ? `${t("request_block")} ${format(new Date(requestedRFQ.date), "HH:mm:ss, d MMMM yyyy", {
                           locale: ru,
                         })}`
