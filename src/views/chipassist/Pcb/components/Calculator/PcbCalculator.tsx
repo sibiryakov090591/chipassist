@@ -247,7 +247,6 @@ const PcbCalculator: React.FC<Props> = ({
                     select
                   >
                     {constants.route_process?.map((item, index) => {
-                      console.log(item);
                       return (
                         <MenuItem key={index} value={item.value}>
                           {t(`pcb_create.${item.value}`)}
@@ -793,7 +792,6 @@ const PcbCalculator: React.FC<Props> = ({
               <div className={classes.rowContent}>
                 <RadioGroup
                   className={classes.radioGroup}
-                  style={{ maxWidth: "410px" }}
                   row
                   name="structure_of_mcpcb"
                   value={formState.structure_of_mcpcb}
@@ -804,22 +802,32 @@ const PcbCalculator: React.FC<Props> = ({
                     if (item.label === t("pcb_create.core_bottom")) src = metal_base;
                     return (
                       <React.Fragment key={index}>
-                        {!isSmDown && <img style={{ maxHeight: 30 }} src={src} alt={item.label} />}
-                        <FormControlLabel
-                          style={{ marginRight: 12 }}
-                          value={item.value}
-                          className={classes.formControlLabel}
-                          control={<Radio style={{ display: "none" }} className={appTheme.radio} color="primary" />}
-                          label={
-                            <div
-                              className={clsx(classes.checkButton, "pcb_button", {
-                                [classes.checked]: formState.structure_of_mcpcb === item.value,
-                              })}
-                            >
-                              {item.label}
-                            </div>
-                          }
-                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                          }}
+                        >
+                          {!isSmDown && <img style={{ maxHeight: 30 }} src={src} alt={item.label} />}
+                          <FormControlLabel
+                            style={{ marginLeft: 3 }}
+                            value={item.value}
+                            className={classes.formControlLabel}
+                            control={<Radio style={{ display: "none" }} className={appTheme.radio} color="primary" />}
+                            label={
+                              <div
+                                className={clsx(classes.checkButton, "pcb_button", {
+                                  [classes.checked]: formState.structure_of_mcpcb === item.value,
+                                })}
+                                style={{ marginTop: 0 }}
+                              >
+                                {item.label}
+                              </div>
+                            }
+                          />
+                        </div>
                       </React.Fragment>
                     );
                   })}
