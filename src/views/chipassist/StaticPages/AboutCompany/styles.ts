@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     color: theme.palette.primary.main,
     marginBottom: "2.5rem",
     textAlign: "center",
+    lineHeight: "1.1em",
   },
   subTitle: {
     fontWeight: 400,

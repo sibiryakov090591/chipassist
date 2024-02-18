@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     fontSize: "2.6rem",
     fontWeight: 400,
     marginBottom: "2rem",
+    lineHeight: "1em",
   },
   sellCard: {
     padding: "1.5rem",
