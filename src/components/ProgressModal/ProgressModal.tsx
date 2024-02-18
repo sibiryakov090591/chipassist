@@ -386,24 +386,23 @@ const ProgressModal: React.FC = () => {
               )}
             </div>
           )}
-          {success ||
-            (error && (
-              <div className={classes.buttonContainer}>
-                {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
-                  <Button
-                    variant="contained"
-                    className={appTheme.buttonCreate}
-                    onClick={handleSubmitResending}
-                    style={{ marginRight: "10px" }}
-                  >
-                    {"Yes"}
-                  </Button>
-                )}
-                <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
-                  {t("close_button")}
+          {(success || error) && (
+            <div className={classes.buttonContainer}>
+              {errorMessage.includes("Incorrect partnumber") && errorMessage.includes("Example:") && (
+                <Button
+                  variant="contained"
+                  className={appTheme.buttonCreate}
+                  onClick={handleSubmitResending}
+                  style={{ marginRight: "10px" }}
+                >
+                  {"Yes"}
                 </Button>
-              </div>
-            ))}
+              )}
+              <Button variant="contained" type="reset" className={appTheme.buttonPrimary} onClick={handleClose}>
+                {t("close_button")}
+              </Button>
+            </div>
+          )}
         </div>
       </Fade>
     </Modal>
