@@ -6,13 +6,15 @@ import Button from "@material-ui/core/Button";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import ClickOutsideListener from "@src/components/ClickOutsideListener/ClickOutsideListener";
+import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { useStyles } from "./styles";
 
 interface Props {
   className?: string;
+  newCurrency?: CurrenciesAllowed;
 }
 
-const FilterCurrency: React.FC<Props> = ({ className }) => {
+const FilterCurrency: React.FC<Props> = ({ newCurrency, className }) => {
   const classes = useStyles();
   const currency = useAppSelector((state) => state.currency);
   const theme = useTheme();
@@ -26,6 +28,7 @@ const FilterCurrency: React.FC<Props> = ({ className }) => {
   return (
     <ClickOutsideListener onClickOutside={() => setClicked((prevState) => (prevState ? false : prevState))}>
       <CurrencyMenu
+        newCurrency={newCurrency}
         placement={isSmDown ? "bottom-end" : "bottom"}
         buttonComponent={
           <Button className={`${classes.currency} ${className || ""}`} onClick={handleOnClick}>

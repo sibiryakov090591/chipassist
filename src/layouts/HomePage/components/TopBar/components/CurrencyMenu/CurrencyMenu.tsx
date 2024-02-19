@@ -17,6 +17,7 @@ interface Props {
   containerClassName?: string;
   buttonComponent: JSX.Element;
   placement?: PopperPlacementType;
+  newCurrency?: CurrenciesAllowed;
 }
 
 interface SelectedCurrency {
@@ -24,7 +25,7 @@ interface SelectedCurrency {
   code: CurrenciesAllowed;
 }
 
-const CurrencyMenu: React.FC<Props> = ({ containerClassName, buttonComponent, placement }) => {
+const CurrencyMenu: React.FC<Props> = ({ newCurrency, containerClassName, buttonComponent, placement }) => {
   const appTheme = useAppTheme();
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -55,6 +56,12 @@ const CurrencyMenu: React.FC<Props> = ({ containerClassName, buttonComponent, pl
       setSelectedCurrencyList(newCurrencyItems);
     }
   }, [currency]);
+
+  useEffect(() => {
+    if (newCurrency && newCurrency !== currency.selected.code) {
+      handleChange(newCurrency);
+    }
+  }, []);
 
   const handleChange = (code: CurrenciesAllowed) => {
     if (code === currency?.selected?.code) return;

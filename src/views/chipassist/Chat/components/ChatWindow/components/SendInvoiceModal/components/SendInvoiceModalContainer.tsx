@@ -561,7 +561,7 @@ export const SendInvoiceModalContainer: React.FC<{
               <Box display="flex" justifyContent="space-between" alignItems="center" mt="16px">
                 <Box display="flex" alignItems="center">
                   <h3 style={{ margin: "0 12px 0 0" }}>{t("ord_curr")}:</h3>
-                  <FilterCurrency className={classes.currencyButton} />
+                  <FilterCurrency className={classes.currencyButton} newCurrency={rfq?.currency} />
                 </Box>
                 <span onClick={onOpenPreviewPdf} className={appTheme.hyperlink}>
                   {t("preview")}
