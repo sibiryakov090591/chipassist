@@ -23,6 +23,7 @@ import RequestButton from "@src/components/ProductCardNew/components/RequestButt
 import { useInView } from "react-intersection-observer";
 import { SetProductIntoViewport } from "@src/store/products/productsActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
@@ -264,6 +265,14 @@ const ProductCardNew = (props) => {
     setCollapseText((prev) => !prev);
   };
 
+  const getDescription = () => {
+    const descriptionInAttributes = product.attributes.find((attribute) => attribute.name === "Description");
+
+    return collapseText && isSmDown
+      ? descriptionInAttributes?.value?.slice(0, 100) || product.description?.slice(0, 100)
+      : descriptionInAttributes?.value || product.description || "";
+  };
+
   return (
     <Paper
       ref={ref}
@@ -327,7 +336,8 @@ const ProductCardNew = (props) => {
               <Highlighter
                 searchWords={searchQueryArray}
                 textToHighlight={
-                  collapseText && isSmDown ? product.description?.slice(0, 100) : product.description || ""
+                  // collapseText && isSmDown ? product.description?.slice(0, 100) : product.description || ""
+                  getDescription()
                 }
                 autoEscape={true}
               />
