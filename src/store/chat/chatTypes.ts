@@ -138,7 +138,7 @@ export interface ChatListStock {
   num_in_stock: number;
   packaging: string;
   partner_sku: string;
-  prices: { id: number; amount: number; original: number }[];
+  prices: { id: number; amount: number; original?: number; price?: number }[];
 }
 
 export interface ChatListMessage {

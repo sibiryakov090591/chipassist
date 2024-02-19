@@ -62,7 +62,7 @@ const MessageInput: React.FC<Props> = ({
   const stock = !!stocks &&
     !!stocks[0] && {
       ...stocks[0],
-      prices: stocks[0].prices?.map((i) => ({ ...i, price: i.original })),
+      prices: stocks[0].prices?.map((i) => ({ ...i, price: i.price || i.original })),
     };
 
   const [message, setMessage] = useState("");
