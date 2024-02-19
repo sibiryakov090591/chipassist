@@ -268,7 +268,7 @@ const Footer = () => {
                   </Box>
                   <Box className={classes.navLink}>
                     <a style={{ color: "white" }} href="tel:+78126280016">
-                      +7 (812) 628-00-16
+                      +7 (812) 628-00-16 доб.1125
                     </a>
                   </Box>
                 </div>

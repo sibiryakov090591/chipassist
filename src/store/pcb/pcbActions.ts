@@ -4,6 +4,8 @@ import { Dispatch } from "redux";
 import { FEEDBACK_R, FEEDBACK_S, FEEDBACK_F } from "@src/store/authentication/authTypes";
 import { progressModalError } from "@src/store/progressModal/progressModalActions";
 import { getAuthToken } from "@src/utils/auth";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import * as actionTypes from "./pcbTypes";
 
 const FileDownload = require("js-file-download");
@@ -98,10 +100,19 @@ export const savePcbModalItem = (data: any, pcbModalUpdateId: number = null, tok
                 "",
               )
             : "";
-          dispatch(progressModalError(errorMessage));
+          dispatch(
+            progressModalError(
+              err.response.status === 413
+                ? constants.id === ID_ICSEARCH
+                  ? "Размер вашего файла не должен превышать 50 мб"
+                  : "The size of your file must not exceed 50 MB."
+                : errorMessage,
+            ),
+          );
           if (err.response.status === 400) {
             dispatch({ type: actionTypes.PCB_SET_ERRORS, payload: err.response.data });
           }
+
           return Promise.reject(err);
         }),
   });
