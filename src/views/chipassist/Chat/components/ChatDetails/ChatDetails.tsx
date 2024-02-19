@@ -105,12 +105,10 @@ const ChatDetails: React.FC<Props> = ({ onCloseDetails, showDetails }) => {
 
       if (stock) {
         // update prices
-        if (stock.prices?.length && stock.prices.some((i) => !!i.original && !!i.amount)) {
+        if (stock.prices?.length && stock.prices.some((i) => !!i.price && !!i.amount)) {
           setValue(
             "prices",
-            [...stock.prices]
-              .sort((a, b) => a.amount - b.amount)
-              .map((i) => ({ id: i.id, amount: i.amount, price: i.original })),
+            [...stock.prices].sort((a, b) => a.amount - b.amount),
           );
         }
 
