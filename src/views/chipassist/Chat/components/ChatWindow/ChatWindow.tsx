@@ -12,6 +12,7 @@ import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { getChat } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import { changeCurrency } from "@src/store/currency/currencyActions";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -31,6 +32,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
 
   const { selectedChat } = useAppSelector((state) => state.chat);
   const { profileInfo, selectedPartner } = useAppSelector((state) => state.profile);
+  const { selected } = useAppSelector((state) => state.currency);
 
   useEffect(() => {
     if (!selectedChat && profileInfo) {
@@ -44,6 +46,12 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
       }
     }
   }, [profileInfo, selectedPartner]);
+
+  useEffect(() => {
+    if (selectedChat?.rfq?.currency && selectedChat.rfq.currency !== selected.code) {
+      dispatch(changeCurrency(selectedChat.rfq.currency));
+    }
+  }, [selectedChat]);
 
   const onShowChatListHandler = () => {
     if (isMdDown && !isXsDown) onShowDetails(false, false);
