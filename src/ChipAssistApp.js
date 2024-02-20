@@ -59,6 +59,7 @@ import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheck
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import PrivacyPolicy from "@src/views/chipassist/StaticPages/PrivacyPolicy";
 import Unsubscribe from "@src/views/chipassist/StaticPages/Unsubscribe";
+import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
@@ -221,6 +222,22 @@ const ChipAssistApp = () => {
       dispatch(getAllSellers());
       dispatch(getGeolocation());
     });
+  }, []);
+
+  useEffect(() => {
+    const { referrer } = document;
+    const { origin, search, href } = window.location;
+    const wasSent = sessionStorage.getItem("visit");
+    if (!wasSent && referrer && !referrer.includes(origin) && search.includes("utm_")) {
+      dispatch(
+        sendFeedbackMessageThunk("visit", {
+          href,
+          referrer,
+        }),
+      ).then(() => {
+        sessionStorage.setItem("visit", "true");
+      });
+    }
   }, []);
 
   useEffect(() => {

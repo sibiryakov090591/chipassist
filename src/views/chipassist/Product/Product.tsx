@@ -16,7 +16,6 @@ import { getAttributes, getImage } from "@src/utils/product";
 import Error404 from "@src/views/chipassist/Error404";
 import placeholderImg from "@src/images/cpu.png";
 import constants from "@src/constants/constants";
-import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { useStyles } from "./productStyles";
 
@@ -81,22 +80,6 @@ const ProductView = () => {
           dispatch(loadProductById(sr.product)).finally(() => setIsLoading(false));
         })
         .catch(() => setIsLoading(false));
-    }
-  }, []);
-
-  useEffect(() => {
-    const { referrer } = document;
-    const { origin, search, href } = window.location;
-    const wasSent = sessionStorage.getItem("visit");
-    if (!wasSent && referrer && !referrer.includes(origin) && search.includes("utm_")) {
-      dispatch(
-        sendFeedbackMessageThunk("visit", {
-          href,
-          referrer,
-        }),
-      ).then(() => {
-        sessionStorage.setItem("visit", "true");
-      });
     }
   }, []);
 
