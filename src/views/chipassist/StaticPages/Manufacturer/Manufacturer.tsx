@@ -1,8 +1,7 @@
-import { Page } from "@src/components";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { manufacturers } from "@src/constants/manufacturers";
-import { Box, Container, useMediaQuery, useTheme } from "@material-ui/core";
+import { Container, useMediaQuery, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import placeholderImg from "@src/images/cpu.png";
 import Button from "@material-ui/core/Button";
@@ -10,6 +9,15 @@ import useAppTheme from "@src/theme/useAppTheme";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    padding: "3em",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
+  },
   name: {
     fontSize: "3rem",
     [theme.breakpoints.down("sm")]: {
@@ -18,10 +26,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   imgContainer: {
-    width: "40%",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
+    width: "250px",
+    height: "250px",
+    border: "1px solid #015ED0",
+    display: "flex",
+    overflow: "hidden",
+    alignItems: "center",
+    borderRadius: "4px",
+    justifyContent: "center",
   },
   description: {
     width: "40%",
@@ -30,10 +42,21 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
     },
   },
-  box: {
-    flexDirection: "row",
+  infoContainer: {
     [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      alignItems: "center",
       flexDirection: "column",
+    },
+  },
+  descrContainer: {
+    display: "flex",
+    width: "100%",
+    alignItems: "start",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "2em",
     },
   },
 }));
@@ -54,16 +77,10 @@ export const Manufacturer = () => {
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Page>
-      <Container>
-        <h1 className={classes.name}>{currentManufacturer.name}</h1>
-        <Box
-          display={"flex"}
-          // flexDirection={isDownSm ? "column" : "row"}
-          justifyContent={"space-between"}
-          marginBottom={"3em"}
-          className={classes.box}
-        >
+    <Container maxWidth={"lg"} className={classes.root}>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+        <div className={classes.infoContainer}>
+          {isDownSm && <h1 className={classes.name}>{currentManufacturer.name}</h1>}
           <div className={classes.imgContainer}>
             <img
               alt={"Company img"}
@@ -71,15 +88,19 @@ export const Manufacturer = () => {
               onError={(e) => {
                 e.currentTarget.src = placeholderImg;
               }}
-              style={{ width: isDownSm ? "100%" : "300px" }}
             />
-            <h3>{currentManufacturer.url}</h3>
-            <h3>{currentManufacturer.address}</h3>
           </div>
-          <h3 className={classes.description}>{currentManufacturer.description}</h3>
-        </Box>
+          <div style={{ textAlign: isDownSm ? "center" : "start" }}>
+            <p style={{ fontWeight: 600, fontSize: "1.5em" }}>{currentManufacturer.url}</p>
+            <p style={{ fontWeight: 500, fontSize: "1.2em" }}>{currentManufacturer.address}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className={classes.descrContainer}>
+        {!isDownSm && <h1 className={classes.name}>{currentManufacturer.name}</h1>}
+        <p style={{ fontSize: "1.5em" }}>{currentManufacturer.description}</p>
         <Button
-          style={{ marginBottom: "2em" }}
           className={appClasses.buttonCreate}
           onClick={() => {
             window.location.href = `/search?query=${encodeURIComponent(
@@ -93,8 +114,8 @@ export const Manufacturer = () => {
         >
           СМОТРЕТЬ ПРЕДЛОЖЕНИЯ
         </Button>
-      </Container>
-    </Page>
+      </div>
+    </Container>
   );
 };
 
