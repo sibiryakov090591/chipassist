@@ -39,7 +39,7 @@ const Article: React.FC = () => {
   const nextLink = selected?.next?.slug && `/blog/${selected.next.slug}`;
 
   return (
-    <Page title="Article" description={`${selected?.intro}`}>
+    <Page title={`${selected?.title || "Article"}`} description={`${selected?.intro || ""}`}>
       <Container maxWidth="lg" className={classes.container}>
         <div className={classes.content}>
           <div className={classes.wrapper}>
