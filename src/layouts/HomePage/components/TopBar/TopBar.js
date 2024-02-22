@@ -109,7 +109,7 @@ const TopBar = (props) => {
         setIsShowHeader(false);
       }
 
-      if (currentPosition > (isHomePage && isChipAssist ? homePageTopOffset : topOffset)) {
+      if (currentPosition > (isHomePage ? homePageTopOffset : topOffset)) {
         if (!hidden && currentPosition > lastScrollTop) {
           hidden = true;
           setCollapse(true);
@@ -178,7 +178,7 @@ const TopBar = (props) => {
         {...rest}
         className={clsx({
           [classes.root]: true,
-          [classes.homePageTopBar]: isChipAssist && isMdUp && isHomePage && !isShowHeader,
+          [classes.homePageTopBar]: isMdUp && isHomePage && !isShowHeader,
           [className]: true,
           collapse,
         })}
@@ -281,7 +281,7 @@ const TopBar = (props) => {
                 {/* {cartBlock} */}
               </div>
             </div>
-            <Collapse in={isHomePage && isChipAssist ? collapse : true}>
+            <Collapse in={isHomePage ? collapse : true}>
               <div className={classes.searchContainer}>
                 <SearchSuggestion
                   searchInputClass={homePageClasses.searchInput}
@@ -290,13 +290,13 @@ const TopBar = (props) => {
                   searchClearClass={homePageClasses.clearSearchIcon}
                   isHomePageSuggestions={true}
                 />
-                {!isChipAssist && (
-                  <TrySearchPn
-                    partNumbers={partNumberExamples || partNumbers}
-                    textClassName={classes.tryP}
-                    pnClassName={classes.trySpan}
-                  />
-                )}
+                {/* {!isChipAssist && ( */}
+                {/*  <TrySearchPn */}
+                {/*    partNumbers={partNumberExamples || partNumbers} */}
+                {/*    textClassName={classes.tryP} */}
+                {/*    pnClassName={classes.trySpan} */}
+                {/*  /> */}
+                {/* )} */}
               </div>
             </Collapse>
           </div>

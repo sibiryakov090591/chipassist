@@ -8,10 +8,19 @@ import devices from "@src/images/Homepage/icsearch/devices.png";
 import board from "@src/images/Homepage/board_aloupr.svg";
 import clsx from "clsx";
 import useAppTheme from "@src/theme/useAppTheme";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAppSelector from "@src/hooks/useAppSelector";
 import Preloader from "@src/components/Preloader/Preloader";
+import { logout } from "@src/store/authentication/authActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import SearchSuggestion from "@src/layouts/HomePage/components/TopBar/components/SearchSuggestion/SearchSuggestion";
+import TrySearchPn from "@src/components/TrySearchPn/TrySearchPn";
+import { partNumbers } from "@src/layouts/HomePage/components/TopBar/TopBar";
 import useStyles from "./styles";
+
+const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 // const companyNames = {
 //   "Geehy Semiconductor": 0,
@@ -86,19 +95,26 @@ export const IcsearchHomePage = () => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const theme = useTheme();
+
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const { partNumberExamples } = useAppSelector((state) => state.search);
 
   const [randomPartNumbers, setRandomPartNumbers] = useState(null);
 
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+
   useEffect(() => {
     if (partNumberExamples?.length) {
-      const partNumbers = [...partNumberExamples].filter((i) => i.length <= 14 && i.length >= 6);
+      // eslint-disable-next-line no-underscore-dangle
+      const _partNumbers = [...partNumberExamples].filter((i) => i.length <= 14 && i.length >= 6);
       const result = [];
-      while (result.length < Math.min(partNumbers.length, 60)) {
-        const index = Math.floor(Math.random() * partNumbers.length);
-        result.push(partNumbers[index]);
-        partNumbers.splice(index, 1);
+      while (result.length < Math.min(_partNumbers.length, 60)) {
+        const index = Math.floor(Math.random() * _partNumbers.length);
+        result.push(_partNumbers[index]);
+        _partNumbers.splice(index, 1);
       }
       setRandomPartNumbers(result);
     }
@@ -108,11 +124,125 @@ export const IcsearchHomePage = () => {
     navigate("/pcb");
   };
 
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+
+  const logoLink = (
+    <div className={classes.logoCont}>
+      <Link to="/" onClick={() => window.location.pathname === "/" && navigate(0)}>
+        <img alt="Logo" className={classes.logoImg} src={logo_img} />
+      </Link>
+    </div>
+  );
+
   return (
     <Page
       title={t("page_title", { name: constants.title })}
       description={t("page_description", { name: constants.title })}
     >
+      <section className={classes.hero}>
+        {isMdUp && (
+          <div className={classes.heroMenuContainer}>
+            <Container maxWidth={"xl"}>
+              <nav className={classes.heroMenu}>
+                {logoLink}
+                <Box display={"flex"} alignItems={"center"} width={"55%"} justifyContent={"space-evenly"}>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/`}>
+                    {t("menu.home")}
+                  </NavLink>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/parts`}>
+                    {t("menu.parts")}
+                  </NavLink>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/bom/create-file`}>
+                    {t("menu.bom")}
+                  </NavLink>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/rfq-list-quotes`}>
+                    {t("menu.rfq_list")}
+                  </NavLink>
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/bom/create-file`}>
+                    {t("menu.bom")}
+                  </NavLink>
+                  {isAuthenticated && (
+                    <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
+                      {t("menu.profile")}
+                    </NavLink>
+                  )}
+                </Box>
+                <Box display="flex" alignItems="center">
+                  {!isAuthenticated ? (
+                    <>
+                      <NavLink to={"/auth/login"} style={{ marginRight: 16 }} className={classes.headerLink}>
+                        {t("menu.sign_in")}
+                      </NavLink>
+                      <Box m="0 8px" style={{ color: "white" }}>
+                        /
+                      </Box>
+                      <NavLink to={"/auth/registration"} className={classes.headerLink}>
+                        {t("menu.sign_up")}
+                      </NavLink>
+                    </>
+                  ) : (
+                    <NavLink
+                      id="profilebutton"
+                      to={"/logout"}
+                      onClick={logoutHandler}
+                      style={{ marginRight: 16 }}
+                      className={classes.headerLink}
+                    >
+                      {t("menu.logout")}
+                    </NavLink>
+                  )}
+                </Box>
+              </nav>
+            </Container>
+          </div>
+        )}
+
+        <Container maxWidth={"xl"} className={classes.heroMainContentContainer}>
+          <div>
+            <h1 className={classes.heroTitle}>
+              {t("page_title_1.slogan")} <br />
+              <span>{t("page_title_1.reinvented")}</span>
+            </h1>
+            <SearchSuggestion
+              searchInputClass={classes.searchInput}
+              searchButtonClass={clsx(classes.searchIconButton, classes.searchButtonColor)}
+              searchIconClass={classes.searchIcon}
+              searchClearClass={classes.clearSearchIcon}
+              isHomePageSuggestions={true}
+            />
+            <TrySearchPn
+              partNumbers={partNumberExamples || partNumbers}
+              textClassName={classes.tryP}
+              pnClassName={classes.trySpan}
+            />
+            <div className={classes.heroItems}>
+              <div className={classes.heroItem}>
+                <h3 className={classes.heroItemTitle}>{t("hero_item1.desktop.h")}</h3>
+                <p className={classes.heroItemText}>{t("hero_item1.desktop.p")}ChipAssist.</p>
+              </div>
+              <div className={classes.heroItem}>
+                <h3 className={classes.heroItemTitle}>{t("hero_item2.h")}</h3>
+                <p className={classes.heroItemText}>{t("hero_item2.p")}</p>
+              </div>
+              <div className={classes.heroItem}>
+                <h3 className={classes.heroItemTitle}>{t("hero_item3.h")}</h3>
+                <p className={classes.heroItemText}>{t("hero_item3.p")}</p>
+              </div>
+            </div>
+          </div>
+          {isMdUp && (
+            <div style={{ width: "80%" }}>
+              <Box className={classes.imgWrapper} display="flex" alignItems="center" justifyContent="center">
+                <img style={{ maxWidth: "100%" }} src={map} alt="Map" />
+              </Box>
+            </div>
+          )}
+        </Container>
+      </section>
+
       <section className={classes.section}>
         <Container maxWidth="lg">
           <Grid container spacing={4}>

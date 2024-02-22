@@ -109,7 +109,7 @@ const HomePage = (props) => {
           [classes.fixedHeight]: true,
         })}
       />
-      <div className={isHomePage && isChipAssist ? classes.homeContainer : classes.container}>
+      <div className={isHomePage ? classes.homeContainer : classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
       {isShowFooter && <Footer />}
