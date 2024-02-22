@@ -320,7 +320,7 @@ const Footer = () => {
                     </Box>
                   </Box>
                   <Hidden smUp>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} flexDirection={"column"}>
                       <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
                         {t("menu.brands")}
                       </NavLink>
