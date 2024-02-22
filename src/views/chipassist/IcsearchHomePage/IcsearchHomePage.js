@@ -77,6 +77,8 @@ const companyNames = [
   "Wurth Electronics",
   "Xilinx",
   "SMC",
+  "Sanken Electric Company",
+  "Sunmotion",
 ];
 
 export const IcsearchHomePage = () => {
@@ -236,7 +238,7 @@ export const IcsearchHomePage = () => {
               return (
                 <Link
                   key={manufacturer}
-                  to={`/search?query=${encodeURIComponent(`MANUFACTURER:${name.includes(" ") ? `"${name}"` : name}`)}`}
+                  to={`/manufacturers/${name.toLowerCase().split(" ").join("")}`}
                   className={classes.manufacturerName}
                 >
                   {manufacturer}
