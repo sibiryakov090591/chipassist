@@ -3,9 +3,11 @@
 import React from "react";
 import { Page } from "@src/components";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import { Grid } from "@material-ui/core";
 
 const PrivacyPolicy = () => {
   const { t } = useI18n("static_pages");
+
   return (
     <Page title="Privacy Policy" description="Privacy Policy">
       <div style={{ padding: "30px 50px" }}>
@@ -205,85 +207,60 @@ const PrivacyPolicy = () => {
           предусмотрено федеральным законом.{" "}
         </p>
         <h3>6. Цели обработки персональных данных</h3>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "column",
-          }}
-        >
-          <div
-            style={{
-              marginTop: "10px",
-              width: "50%",
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <h4 style={{ margin: 0 }}>Цель обработки</h4>
-            <ul style={{ width: "59%" }}>
-              <li>
-                предоставление доступа Пользователю к сервисам, информации и/или материалам, содержащимся на веб-сайте
-              </li>
-            </ul>
-          </div>
-          <div
-            style={{
-              marginTop: "10px",
-              width: "30%",
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <h4 style={{ margin: 0 }}>Персональные данные</h4>
-            <ul>
-              <li>электронный адрес</li>
-              <li>номера телефонов</li>
-              <li>фамилия и имя</li>
-            </ul>
-          </div>
-          <div
-            style={{
-              marginTop: "10px",
-              width: "78.7%",
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <h4 style={{ margin: 0 }}>Правовые основания</h4>
-            <ul>
-              <li>
-                Федеральный закон «Об информации, информационных технологиях и о защите информации» от 27.07.2006 N
-                149-ФЗ
-              </li>
-            </ul>
-          </div>
+        <Grid container spacing={2}>
+          <Grid item container md={12} spacing={2}>
+            <Grid item sm={12} lg={2}>
+              <h4 style={{ margin: 0 }}>Цель обработки</h4>
+            </Grid>
+            <Grid item sm={12} lg={6}>
+              <ul>
+                <li>
+                  предоставление доступа Пользователю к сервисам, информации и/или материалам, содержащимся на веб-сайте
+                </li>
+              </ul>
+            </Grid>
+          </Grid>
+          <Grid item container md={12} spacing={2}>
+            <Grid item sm={12} lg={2}>
+              <h4 style={{ margin: 0 }}>Персональные данные</h4>
+            </Grid>
+            <Grid item sm={12} lg={6}>
+              <ul>
+                <li>электронный адрес</li>
+                <li>номера телефонов</li>
+                <li>фамилия и имя</li>
+              </ul>
+            </Grid>
+          </Grid>
+          <Grid item container md={12} spacing={2}>
+            <Grid item sm={12} lg={2}>
+              <h4 style={{ margin: 0 }}>Правовые основания</h4>
+            </Grid>
+            <Grid item sm={12} lg={6}>
+              <ul>
+                <li>
+                  Федеральный закон «Об информации, информационных технологиях и о защите информации» от 27.07.2006 N
+                  149-ФЗ
+                </li>
+              </ul>
+            </Grid>
+          </Grid>
+          <Grid item container md={12} spacing={2}>
+            <Grid item sm={12} lg={2}>
+              <h4 style={{ margin: 0 }}>Виды обработки персональных данных</h4>
+            </Grid>
+            <Grid item sm={12} lg={6}>
+              {" "}
+              <ul>
+                <li>
+                  Сбор, запись, систематизация, накопление, хранение, уничтожение и обезличивание персональных данных
+                </li>
+                <li>Отправка информационных писем на адрес электронной почты</li>
+              </ul>
+            </Grid>
+          </Grid>
+        </Grid>
 
-          <div
-            style={{
-              marginTop: "10px",
-              width: "69.6%",
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <h4 style={{ margin: 0 }}>Виды обработки персональных данных</h4>
-            <ul>
-              <li>
-                Сбор, запись, систематизация, накопление, хранение, уничтожение и обезличивание персональных данных
-              </li>
-              <li>Отправка информационных писем на адрес электронной почты</li>
-            </ul>
-          </div>
-        </div>
         <h3>7. Условия обработки персональных данных</h3>
         <p>
           7.1. Обработка персональных данных осуществляется с согласия субъекта персональных данных на обработку его
