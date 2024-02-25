@@ -288,7 +288,7 @@ const Footer = () => {
                       <NavLink className={classes.navLinkICS} to={"/parts"} onClick={navigateHandler}>
                         {t("products")}
                       </NavLink>
-                      <Hidden smUp>
+                      <Hidden mdUp>
                         <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
                           {t("rfq_list")}
                         </NavLink>
@@ -303,7 +303,7 @@ const Footer = () => {
                       </Hidden>
                     </Box>
                     <Box className={classes.navGroup}>
-                      <Hidden smDown>
+                      <Hidden xsDown>
                         <NavLink className={classes.navLinkICS} to={"/pcb"} onClick={navigateHandler}>
                           {t("menu.pcb")}
                         </NavLink>
@@ -320,7 +320,7 @@ const Footer = () => {
                     </Box>
                   </Box>
                   <Hidden smUp>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"}>
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} flexDirection={"column"}>
                       <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
                         {t("menu.brands")}
                       </NavLink>
