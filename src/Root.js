@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import * as Sentry from "@sentry/react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
@@ -21,8 +21,11 @@ import {
   ID_CLOUD,
   ID_DEV,
 } from "./constants/server_constants";
-import ElfaroApp from "./ElfaroApp";
-import SupplierResponseApp from "./SupplierResponseApp";
+// import ElfaroApp from "./ElfaroApp";
+// import SupplierResponseApp from "./SupplierResponseApp";
+
+const ElfaroApp = lazy(() => import("@src/ElfaroApp"));
+const SupplierResponseApp = lazy(() => import("@src/SupplierResponseApp"));
 
 class Root extends Component {
   render() {
@@ -43,8 +46,16 @@ class Root extends Component {
                   {[ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER, ID_DEV, ID_CLOUD].includes(constants.id) && (
                     <ChipAssistApp />
                   )}
-                  {constants.id === ID_ELFARO && <ElfaroApp />}
-                  {constants.id === ID_SUPPLIER_RESPONSE && <SupplierResponseApp />}
+                  {constants.id === ID_ELFARO && (
+                    <Suspense fallback={}>
+                      <ElfaroApp />
+                    </Suspense>
+                  )}
+                  {constants.id === ID_SUPPLIER_RESPONSE && (
+                    <Suspense fallback={}>
+                      <SupplierResponseApp />
+                    </Suspense>
+                  )}
                 </HistoryRouter>
               </HelmetProvider>
             </MuiPickersUtilsProvider>

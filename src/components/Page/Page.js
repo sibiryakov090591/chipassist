@@ -2,8 +2,6 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import PropTypes from "prop-types";
-import constants from "@src/constants/constants";
-import image from "@src/images/link-preview-image.png";
 
 const { NODE_ENV } = process.env;
 const GA_MEASUREMENT_ID = process.env.REACT_APP_GA_MEASUREMENT_ID;
@@ -30,26 +28,28 @@ const Page = (props) => {
 
   return (
     <div {...rest}>
-      <Helmet>
+      <Helmet
+        onChangeClientState={() => {
+          const ogTitle = document.querySelector('meta[property="og:title"]');
+          const ogDescription = document.querySelector('meta[property="og:description"]');
+          // TODO: need different images for CA and ICSearch and for Blog articles images
+          // const ogImage = document.querySelector('meta[property="og:image"]');
+
+          if (ogTitle) ogTitle.setAttribute("content", title);
+          if (ogDescription) ogDescription.setAttribute("content", description || title);
+          // if (ogImage) ogImage.setAttribute("content", `${window.location.origin}${image}`);
+
+          const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+          const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+          // const twitterImage = document.querySelector('meta[name="twitter:image"]');
+
+          if (twitterTitle) twitterTitle.setAttribute("value", title);
+          if (twitterDescription) twitterDescription.setAttribute("value", description || title);
+          // if (twitterImage) twitterImage.setAttribute("content", `${window.location.origin}${image}`);
+        }}
+      >
         <title>{title}</title>
-        <meta name="description" data-react-helmet="true" data-rh="true" content={description || title} />
-
-        <meta property="og:type" content="website" data-react-helmet="true" data-rh="true" />
-        <meta property="og:site_name" content={`${constants?.title}`} data-react-helmet="true" data-rh="true" />
-        <meta property="og:title" content={title} data-react-helmet="true" data-rh="true" />
-        <meta property="og:description" content={description || title} data-react-helmet="true" data-rh="true" />
-        <meta property="og:image" content={image} data-react-helmet="true" data-rh="true" />
-
-        <meta name="twitter:card" content="summary_large_image" data-react-helmet="true" data-rh="true" />
-        <meta
-          name="twitter:site"
-          content={`@${constants?.title?.toLowerCase()}`}
-          data-react-helmet="true"
-          data-rh="true"
-        />
-        <meta name="twitter:title" value={title} data-react-helmet="true" data-rh="true" />
-        <meta name="twitter:description" value={description || title} data-react-helmet="true" data-rh="true" />
-        <meta name="twitter:image" content={image} data-react-helmet="true" data-rh="true" />
+        <meta name="description" content={description || title} />
       </Helmet>
       {children}
     </div>

@@ -89,14 +89,14 @@ module.exports = {
     usedExports: true,
     splitChunks: {
       chunks: "all",
-      maxSize: 200000,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
-        },
-      },
+      maxSize: 500000,
+      // cacheGroups: {
+      //   vendors: {
+      //     test: /[\\/]node_modules[\\/]/,
+      //     name: "vendors",
+      //     chunks: "all",
+      //   },
+      // },
     },
   },
   devtool: isDev ? "cheap-module-source-map" : "source-map",
