@@ -181,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hero: {
-    background: "linear-gradient(119.4deg, #21c483ff 0%, #015ed0ff 100%)",
+    background: "linear-gradient(119.4deg, #015ed0ff 0%, #21c483ff 100%)",
     padding: "20px 0 40px",
     display: "flex",
     justifyContent: "center",
