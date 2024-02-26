@@ -6,6 +6,8 @@ export const manufacturers = [
     image: "https://www.geehysemiconductor.com/logo.png",
     url: "https://www.geehysemiconductor.com",
     address: "Geehy Semiconductor Headquarters, 1234 Tech Blvd, City, Country",
+    description_ru:
+      "Geehy Semiconductor - это ведущий мировой производитель высококачественных электронных компонентов, специализирующийся на полупроводниковых продуктах, таких как интег",
   },
   {
     name: "GigaDevice",
@@ -15,6 +17,8 @@ export const manufacturers = [
     url: "https://www.gigadevice.com/",
     address:
       "GigaDevice Headquarters, Building 6, No. 333 Yecheng Road, Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai, China",
+    description_ru:
+      "GigaDevice - ведущий поставщик инновационных продуктов памяти и решений для микроконтроллеров. Компания предлагает широкий ассортимент высокоп",
   },
   {
     name: "Jiangsu Electronic",
@@ -23,6 +27,8 @@ export const manufacturers = [
     image: "https://example.com/jiangsu-electronic-logo.jpg",
     url: "https://www.jiangsuelectronic.com",
     address: "123 Electronic Ave, Jiangsu, China",
+    description_ru:
+      "Jiangsu Electronic - ведущий производитель электронных компонентов с широким ассортиментом продукции, включающим резисторы, конденсаторы, диоды и т",
   },
   {
     name: "Yageo",
@@ -31,6 +37,8 @@ export const manufacturers = [
     image: "https://www.yageo.com/img/newisolation/grid_content/667/logo_black.png",
     url: "https://www.yageo.com/",
     address: "No. 159, Yuh Kong 6th Rd., Tucheng Dist., New Taipei City, Taiwan (R.O.C.)",
+    description_ru:
+      "Корпорация Yageo является мировым лидером в индустрии электронных компонентов, предлагая широкий ассортимент инновационных продуктов, включ",
   },
   {
     name: "Amtek Technology",
@@ -39,6 +47,8 @@ export const manufacturers = [
     image: "https://www.amtek-co.com.tw/wp-content/uploads/2019/08/Logo-002.png",
     url: "https://www.amtek-technology.com",
     address: "1234 Electronics Drive, Cityville, State, Country, ZIP Code",
+    description_ru:
+      "Amtek Technology - ведущий производитель электронных компонентов, специализирующийся на производстве широкого спектра продукции, такой как коннекторы, трансформаторы",
   },
   {
     name: "SMIC (Semiconductor Manufacturing International Corporation)",
@@ -47,6 +57,8 @@ export const manufacturers = [
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/SMIC_Logo.jpg/250px-SMIC_Logo.jpg",
     url: "https://www.smics.com/",
     address: "18 Zhangjiang Road Pudong New Area, Shanghai, 201203, China",
+    description_ru:
+      "SMIC (Semiconductor Manufacturing International Corporation) - ведущая компания-основатель полупроводников, предоставляющая услуги производства интегральных схем. Основанная в 2000 году, SM",
   },
   {
     name: "Analog Devices",
@@ -55,6 +67,8 @@ export const manufacturers = [
     image: "https://www.analog.com/-/media/Images/Brands/ADI_Logo_250x120.ashx?la=en",
     url: "https://www.analog.com",
     address: "Analog Devices, Inc., Two Technology Way, Norwood, MA 02062, USA",
+    description_ru:
+      "Analog Devices - это ведущая мировая компания в области высокопроизводительных аналоговых технологий, специализирующаяся на проектировании и производстве инт",
   },
   {
     name: "Raditek",
@@ -63,6 +77,8 @@ export const manufacturers = [
     image: "https://www.raditek.com/images/logo.png",
     url: "https://www.raditek.com",
     address: "Raditek Inc., 12345 Technology Dr, San Jose, CA 95112, USA",
+    description_ru:
+      "Raditek - ведущий производитель высококачественных электронных компонентов и компонентов РЧ/микроволнового диапазона для различных отраслей, включая аэ",
   },
   {
     name: "Amphenol",
@@ -71,6 +87,8 @@ export const manufacturers = [
     image: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Amphenol_logo.svg/1200px-Amphenol_logo.svg.png",
     url: "https://www.amphenol.com/",
     address: "Amphenol Corporation\n358 Hall Avenue\nWallingford, CT 06492\nUnited States",
+    description_ru:
+      "Amphenol Corporation - крупный производитель электронных и оптоволоконных соединителей, кабелей и систем интерконнекции. Компания занимается разработкой, производств",
   },
   {
     name: "Microchip",
@@ -79,6 +97,8 @@ export const manufacturers = [
     image: "https://www.microchip.com/file.aspx?ID=/media/Images/microchip-corporate-logo.svg",
     url: "https://www.microchip.com/",
     address: "2355 W Chandler Blvd, Chandler, AZ 85224, United States",
+    description_ru:
+      "Microchip Technology Inc. является ведущим поставщиком микроконтроллеров и аналоговых полупроводников. Компания разрабатывает и производит широкий спектр",
   },
   {
     name: "Wingtech",
@@ -87,6 +107,8 @@ export const manufacturers = [
     image: "http://www.wingtech.com/images/en/wingtechlogo.jpg",
     url: "https://www.wingtech.com",
     address: "1234 Tech Street, Electronic City, Silicon Valley, USA",
+    description_ru:
+      "Wingtech - ведущий производитель электронных компонентов, специализирующийся на производстве высококачественных полупроводниковых устройств, пассивных компонентов",
   },
   {
     name: "Giga Device",
@@ -95,6 +117,8 @@ export const manufacturers = [
     image: "https://www.gigadevice.com/Public/Uploads/uploadfile/images/20221012/00000000001-201.png",
     url: "https://www.gigadevice.com/",
     address: "Giga Device Headquarters, No. 30, Guankou Road, Fuzhou, Fujian, China",
+    description_ru:
+      "Giga Device - ведущий мировой поставщик высокопроизводительных полупроводниковых продуктов для широкого спектра приложений, включая микроконтроллеры, реш",
   },
   {
     name: "NXP Semiconductors",
@@ -103,6 +127,8 @@ export const manufacturers = [
     image: "https://www.nxp.com/assets/images/en/company/Corporate-Identity/logos.nxp-logo-header.png",
     url: "https://www.nxp.com",
     address: "NXP Semiconductors\nHigh Tech Campus 60\n5656 AG Eindhoven\nNetherlands",
+    description_ru:
+      "NXP Semiconductors - это глобальный производитель полупроводников, который сосредоточен на безопасных соединениях и инфраструктуре для умного мира. Компания предостав",
   },
   {
     name: "UNISOC",
@@ -111,6 +137,8 @@ export const manufacturers = [
     image: "https://www.unisoc.com/themes/custom/unisoc/logo.svg",
     url: "https://www.unisoc.com",
     address: "UNISOC Technologies Co., Ltd., 23 Xinxi Rd, Shangjie District, Zhengzhou City, Henan Province, China",
+    description_ru:
+      "UNISOC - это ведущая компания в области производства полупроводников, которая стремится открыть новую эру проектирования чипов благодаря своей передовой технологии. К",
   },
   {
     name: "ST Microelectronics",
@@ -119,6 +147,8 @@ export const manufacturers = [
     image: "https://www.st.com/content/dam/st-com/en/st-web-ui/static/ePartner/img/logo-st.png",
     url: "https://www.st.com",
     address: "Chemin du Champ des Filles 39, Plan-les-Ouates, 1228 Geneva, Switzerland",
+    description_ru:
+      "ST Microelectronics - это глобальная компания-производитель полупроводников со штаб-квартирой в Женеве, Швейцария. Она является ведущим поставщ",
   },
   {
     name: "Nation Technologies",
@@ -127,6 +157,8 @@ export const manufacturers = [
     image: "https://www.nationtech.com/logo.png",
     url: "https://www.nationtech.com",
     address: "Nation Technologies, 1234 Electronics Avenue, Cityville, State, Zip Code",
+    description_ru:
+      "Nation Technologies - ведущий производитель высококачественных электронных компонентов, специализирующийся на широком спектре продукции, включая резисторы, конден",
   },
   {
     name: "Texas Instruments",
@@ -136,6 +168,8 @@ export const manufacturers = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Texas_Instruments_logo.svg/1200px-Texas_Instruments_logo.svg.png",
     url: "https://www.ti.com/",
     address: "Texas Instruments\n12500 TI Blvd\nDallas, TX 75243\nUnited States",
+    description_ru:
+      "Texas Instruments - это глобальная компания по проектированию и производству полупроводников, которая разрабатывает аналоговые интегральные схемы и встроенные процессоры",
   },
   {
     name: "Rockchip",
@@ -145,6 +179,8 @@ export const manufacturers = [
     url: "https://www.rock-chips.com/",
     address:
       "Rockchip Electronics Co., Ltd., Bldg 4, No. 2 Tianma Rd., Software Park, Shenzhen Hi-tech Industrial Park, Nanshan District, Shenzhen, China",
+    description_ru:
+      "Rockchip - это китайская безфабричная полупроводниковая компания, которая проектирует интегральные схемы для таких приложений, как мультимедийные планшеты,",
   },
   {
     name: "ON Semiconductor",
@@ -153,6 +189,8 @@ export const manufacturers = [
     image: "https://www.onsemi.com/~/media/Website%20Images/globalheader.jpg",
     url: "https://www.onsemi.com",
     address: "ON Semiconductor Corporation, 5005 E McDowell Rd. Phoenix, Arizona, 85008, USA",
+    description_ru:
+      "ON Semiconductor - ведущий поставщик решений в области управления питанием и сигналами, дискретной и пользовательской полупроводниковой техники. Продукция компании помогает",
   },
   {
     name: "Maxscend",
@@ -161,6 +199,8 @@ export const manufacturers = [
     image: "https://www.maxscend.com/images/logo.png",
     url: "https://www.maxscend.com",
     address: "1234 Innovation Drive, Silicon Valley, CA, USA",
+    description_ru:
+      "Maxscend - это ведущий производитель высококачественных электронных компонентов, специализирующийся на РЧ и интегрированных схемах смешанного типа",
   },
   {
     name: "Murata",
@@ -169,6 +209,8 @@ export const manufacturers = [
     image: "https://www.murata.com/at/products/logo",
     url: "https://www.murata.com/",
     address: "10-1, Higashikotari 1-chome, Nagaokakyo-shi, Kyoto 617-8555, Japan",
+    description_ru:
+      "Murata - это глобальный производитель электронных компонентов, базирующийся в Японии. Компания специализируется на проектировании, производстве и поставке",
   },
   {
     name: "Sanechips",
@@ -177,6 +219,8 @@ export const manufacturers = [
     image: "https://www.sanechips.com.cn/wwwdata/sanechips/upload/1/appLogo/1659065147415.png",
     url: "https://sanechips.com",
     address: "1234 Innovation Way, Tech City, Electronics Park, Anytown, USA",
+    description_ru:
+      "Sanechips - ведущий производитель высококачественных электронных компонентов, специализирующийся на интегральных схемах, микроконтроллерах",
   },
   {
     name: "Omron Corporation",
@@ -186,6 +230,8 @@ export const manufacturers = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Omron_Corporation_logo.svg/1200px-Omron_Corporation_logo.svg.png",
     url: "https://www.omron.com/",
     address: "Shiokoji Horikawa, Shimogyo-Ku, Kyoto 600-8530 Japan",
+    description_ru:
+      "Корпорация Omron - это японская электронная компания, которая производит широкий спектр электронных компонентов и оборудования. Основанная в 1933 г",
   },
   {
     name: "CR Micro",
@@ -194,6 +240,8 @@ export const manufacturers = [
     image: "https://www.crmicro.com/Home/image/microelectronics-logo.png?openTime=1705053139949",
     url: "https://www.crmicro.com",
     address: "123 Electronics Blvd, Cityville, State, Country",
+    description_ru:
+      "CR Micro - ведущий производитель высококачественных электронных компонентов, таких как резисторы, конденсаторы, индукторы и интегральные схемы. С",
   },
   {
     name: "Renesas Electronics",
@@ -202,6 +250,8 @@ export const manufacturers = [
     image: "https://www.renesas.com/us/en",
     url: "https://www.renesas.com/us/en",
     address: "Renesas Electronics Corporation, Mita Kokusai Building, 3-13-12 Mita, Minato-ku, Tokyo, 108-8330 Japan",
+    description_ru:
+      "Корпорация Renesas Electronics - это японский производитель полупроводников, специализирующийся на проектировании и производстве передовых полупроводников для широкого спект",
   },
   {
     name: "TE Connectivity",
@@ -211,6 +261,8 @@ export const manufacturers = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/TE_Connectivity_Logo.svg/1200px-TE_Connectivity_Logo.svg.png",
     url: "https://www.te.com/",
     address: "TE Connectivity, 1050 Westlakes Drive, Berwyn, PA 19312, USA",
+    description_ru:
+      "TE Connectivity - это глобальная технологическая компания, которая проектирует и производит широкий спектр электронных компонентов и решений для различных отраслей, в",
   },
   {
     name: "GoerTek",
@@ -219,6 +271,8 @@ export const manufacturers = [
     image: "https://www.goertek.com/en/Upload/image/20180125/20180125162400_3428.png",
     url: "https://www.goertek.com/",
     address: "GoerTek Inc., No.518 Yinhai Avenue, Yinzhou District, Ningbo, China",
+    description_ru:
+      "GoerTek является ведущим мировым производителем электронных компонентов, специализирующимся на разработке и производстве широкого ассортимента продук",
   },
   {
     name: "Wurth Electronics",
@@ -227,6 +281,8 @@ export const manufacturers = [
     image: "https://www.wurth.com/uploads/media/logo.png",
     url: "https://www.we-online.com",
     address: "Wurth Electronics Midcom Inc., 121 Airport Drive, Watertown, SD 57201, USA",
+    description_ru:
+      "Wurth Electronics - ведущий производитель электронных и электромеханических компонентов для электронной промышленности. Они предлагают широкий ассор",
   },
   {
     name: "Xilinx",
@@ -235,6 +291,8 @@ export const manufacturers = [
     image: "https://www.xilinx.com/-/media/xilinx/brand-assets/images/main/xilinx-logo.png",
     url: "https://www.xilinx.com/",
     address: "Xilinx, Inc., 2100 Logic Drive, San Jose, CA 95124, United States",
+    description_ru:
+      "Xilinx является ведущим поставщиком программируемых платформ и технологий, известным своими полевыми программируемыми матрицами (FPGA) и адаптивны",
   },
   {
     name: "SMC",
@@ -243,6 +301,8 @@ export const manufacturers = [
     image: "https://static.smc.eu/binaries/content/gallery/smc_global/logos/svg/logo.svg",
     url: "https://www.smcworld.com",
     address: "SMC Corporation Headquarters, 4-14-1, Sotokanda, Chiyoda-ku, Tokyo 101-0021, Japan",
+    description_ru:
+      "Корпорация SMC - это глобальный производитель пневматических и электрических компонентов. Компания предлагает широкий ассортимент продукции, в",
   },
   {
     name: "Sanken Electric Company",
@@ -251,6 +311,8 @@ export const manufacturers = [
     image: "https://www.sanken-ele.co.jp/corp/assets/images/common/logo_en.png",
     url: "https://www.sanken-ele.co.jp/corp/english/",
     address: "Sanken Electric Co., Ltd. 7-1, Nakazawa-cho, Hamamatsu-shi, Shizuoka 430-8650, Japan",
+    description_ru:
+      "Компания Sanken Electric Company - это японский производитель электронных компонентов, включая мощные полупроводники, интегральные схемы и другие электронные устрой",
   },
   {
     name: "Sunmotion",
@@ -259,6 +321,8 @@ export const manufacturers = [
     image: "https://www.sunmotion.com/logo.png",
     url: "https://www.sunmotion.com",
     address: "Sunmotion Headquarters, 1234 Innovation Drive, City Name, Country",
+    description_ru:
+      "Sunmotion является ведущим производителем высококачественных электронных компонентов, специализирующимся на датчиках, исполнительных механизмах и система",
   },
 ];
 
