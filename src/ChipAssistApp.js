@@ -283,12 +283,11 @@ const ChipAssistApp = () => {
 
   if (
     isICSearch &&
-    !navigator.userAgent.includes("Prerender") &&
-    localStorage.getItem("open_icsearch_password") !== "1234"
+    localStorage.getItem("open_icsearch_password") !== "1234" &&
+    geolocation?.loaded &&
+    geolocation.country_code_iso3 !== "RUS"
   ) {
-    if (!geolocation?.loaded || geolocation?.country_code_iso3 !== "RUS") {
-      return null;
-    }
+    return null;
   }
 
   return (
