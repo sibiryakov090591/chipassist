@@ -33,7 +33,7 @@ const useSearchLoadResults = () => {
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
   let smart_view = useAppSelector((state) => state.search.smart_view);
   smart_view = useURLSearchParams("smart_view", false, smart_view, false);
-  const manufacturerId = useURLSearchParams("m_id", false, null, false);
+  const manufacturerId = parseInt(useURLSearchParams("m_id", false, null, false));
   // const orderBy = useURLSearchParams(
   //   "order_by",
   //   false,
@@ -62,7 +62,7 @@ const useSearchLoadResults = () => {
     search: query,
     ignore_count: true,
     smart_view,
-    m_id: manufacturerId,
+    ...(!!manufacturerId && { m_id: manufacturerId }),
     ...baseFilters,
     ...filtersValues,
   });
@@ -74,7 +74,7 @@ const useSearchLoadResults = () => {
       dispatch(
         loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, {
           smart_view,
-          m_id: manufacturerId,
+          ...(!!manufacturerId && { m_id: manufacturerId }),
           href: encodeURIComponent(href),
           ...(isFirstRequest && { referrer: encodeURIComponent(document.referrer) }),
         }),

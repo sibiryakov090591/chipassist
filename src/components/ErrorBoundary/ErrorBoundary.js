@@ -104,17 +104,19 @@ class ErrorBoundary extends React.Component {
                 <div className={classes.imageContainer}>
                   <img className={classes.image} src={image} alt="chip icon" />
                 </div>
-                <Typography align="left" variant="h5">
-                  <br />
-                  <br />
-                  <b>Version</b>: {process.env.AWS_COMMIT_ID || COMMITHASH}
-                  <br />
-                  <b>Error</b>: {error.toString()}
-                  <br />
-                  <b>URL</b>: {window.location.href}
-                  <br />
-                  {!IS_PROD && <pre>{info.componentStack}</pre>}
-                </Typography>
+                {IS_PROD && (
+                  <Typography align="left" variant="h5">
+                    <br />
+                    <br />
+                    <b>Version</b>: {process.env.AWS_COMMIT_ID || COMMITHASH}
+                    <br />
+                    <b>Error</b>: {error.toString()}
+                    <br />
+                    <b>URL</b>: {window.location.href}
+                    <br />
+                    <pre>{info.componentStack}</pre>
+                  </Typography>
+                )}
                 <Typography align="center">
                   <br />
                   <br />
