@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { INIT_ALERTS, IS_PROD } from "@src/config";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { feedbackThunk } from "@src/store/feedback/FeedbackActions";
-import { getAuthToken } from "@src/utils/auth";
 
 const env = IS_PROD ? "PROD" : "DEV";
 const feedback_url = "register-user-feedback";
@@ -28,7 +27,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
           );
         }
 
-        if (error && error?.response?.status !== 404 && getAuthToken() && (!url || !url.includes(feedback_url))) {
+        if (error && error?.response?.status !== 404 && (!url || !url.includes(feedback_url))) {
           this.props.dispatch(
             feedbackThunk(
               `${env} APP`,

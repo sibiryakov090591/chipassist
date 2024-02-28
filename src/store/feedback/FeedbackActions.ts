@@ -94,7 +94,7 @@ export function feedbackAction(
 
   const clientData = `
     url: ${url}; 
-    email:${localStorage.getItem("email")}; 
+    email:${localStorage.getItem("email") || "not auth user"}; 
     userAgent: ${userAgent}; 
     dateTime: ${dateTime};
     ${version}; 
