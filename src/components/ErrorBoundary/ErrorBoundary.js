@@ -115,7 +115,7 @@ class ErrorBoundary extends React.Component {
                 <div className={classes.imageContainer}>
                   <img className={classes.image} src={image} alt="chip icon" />
                 </div>
-                {!IS_PROD ? (
+                {IS_PROD ? (
                   <Typography align="left" variant="h5">
                     <br />
                     <br />

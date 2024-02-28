@@ -1538,6 +1538,7 @@
     "extended_search": "Extended search",
     "extended_progress": "Extended search in progress...",
     "extended_search_completed": "Extended search completed",
+    "extended_search_no_result": "(No results)",
     "not_found": "Nothing has been found",
     "search": "Search {{query}}...",
     "price": "Price",

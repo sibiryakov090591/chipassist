@@ -11,7 +11,7 @@ interface Props {
 const ExtendedSearchBar: React.FC<Props> = ({ className }) => {
   const classes = useStyles();
   const { t } = useI18n("search");
-  const isExtendedSearchStarted = useAppSelector((state) => state.search.isExtendedSearchStarted);
+  const { isExtendedSearchStarted, extendedSearchResultsCount } = useAppSelector((state) => state.search);
 
   if (isExtendedSearchStarted) {
     return (
@@ -23,7 +23,10 @@ const ExtendedSearchBar: React.FC<Props> = ({ className }) => {
   }
   return (
     <div className={className}>
-      <div className={classes.span}>{t("extended_search_completed")}</div>
+      <div className={classes.span}>
+        {t("extended_search_completed")}
+        {extendedSearchResultsCount === 0 && t("extended_search_no_result")}
+      </div>
     </div>
   );
 };

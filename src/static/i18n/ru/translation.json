@@ -1492,6 +1492,7 @@
     "extended_search": "Дополнительный поиск",
     "extended_progress": "Дополнительный поиск...",
     "extended_search_completed": "Дополнительный поиск окончен",
+    "extended_search_no_result": "(Нет результатов)",
     "not_found": "Ничего не было найдено ",
     "search": "Поиск {{query}}...",
     "min": "Мин.",
