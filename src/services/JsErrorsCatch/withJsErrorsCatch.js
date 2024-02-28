@@ -16,7 +16,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
       // The code below fixes the bug ==================
       if (typeof Node === "function" && Node.prototype) {
         const originalRemoveChild = Node.prototype.removeChild;
-        Node.prototype.removeChild = function (child) {
+        Node.prototype.removeChild = function newRemoveChild(child) {
           if (child.parentNode !== this) {
             if (console) {
               console.error("Cannot remove a child from a different parent", child, this);
@@ -28,7 +28,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
         };
 
         const originalInsertBefore = Node.prototype.insertBefore;
-        Node.prototype.insertBefore = function (newNode, referenceNode) {
+        Node.prototype.insertBefore = function newInsertBefore(newNode, referenceNode) {
           if (referenceNode && referenceNode.parentNode !== this) {
             if (console) {
               console.error("Cannot insert before a reference node from a different parent", referenceNode, this);
