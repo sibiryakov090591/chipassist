@@ -181,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hero: {
-    background: "linear-gradient(119.4deg, #015ed0ff 0%, #21c483ff 100%)",
+    background: "linear-gradient(119.4deg, #015ed0ff 0%, #019CC7 100%)",
     padding: "20px 0 40px",
     display: "flex",
     justifyContent: "center",
@@ -249,9 +249,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     border: "2px solid #ffffff",
-    height: "41px",
+    height: "55px",
     borderRadius: "50ch",
-    width: 60,
+    width: 80,
     transition: "all 150ms ease",
     cursor: "pointer",
     position: "absolute",
@@ -267,7 +267,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchIcon: {
-    fontSize: "26px",
+    fontSize: "32px",
     color: "#ffffff",
   },
   clearSearchIcon: {
@@ -284,7 +284,7 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(255,255,255,0.66)",
     fontWeight: "normal",
     fontSize: 14,
-    paddingTop: 5,
+    paddingTop: 10,
     marginLeft: 16,
   },
   trySpan: {
@@ -295,12 +295,12 @@ const useStyles = makeStyles((theme) => ({
   },
   heroTitle: {
     color: "#f2f1f4",
-    fontSize: "2.5rem",
-    lineHeight: "4rem",
+    fontSize: "1.5rem",
+    lineHeight: "3.5rem",
     marginBottom: "3rem",
     fontWeight: 400,
     "& span": {
-      color: "#00FF99",
+      color: "#f2f1f4",
       fontWeight: 600,
       fontSize: "3rem",
     },
@@ -318,10 +318,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-end",
   },
   heroItems: {
-    marginTop: "4rem",
+    marginTop: "3rem",
     display: "flex",
     justifyContent: "space-between",
-    gap: "30px",
+    gap: "10px",
     [theme.breakpoints.down("xs")]: {
       alignItems: "center",
     },
@@ -330,6 +330,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "12px 0",
     color: "#f2f1f4",
     maxWidth: 370,
+    minWidth: 235,
     [theme.breakpoints.down("xs")]: {
       textAlign: "center",
       maxWidth: "none",
@@ -343,6 +344,14 @@ const useStyles = makeStyles((theme) => ({
   heroItemText: {
     fontSize: "1.1rem",
     color: "#f2f1f4",
+  },
+  pcb_link: {
+    color: "white",
+    textDecoration: "underline",
+    "&:hover": {
+      color: "#ecebee",
+      textDecoration: "underline",
+    },
   },
 }));
 

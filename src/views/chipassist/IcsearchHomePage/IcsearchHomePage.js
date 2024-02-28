@@ -4,6 +4,8 @@ import { Page } from "@src/components";
 import { Box, Button, Container, Grid, Paper } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import map from "@src/images/Homepage/icsearch/map.png";
+import map_not_afr from "@src/images/Homepage/icsearch/map_not_afr.svg";
+import map_afr from "@src/images/Homepage/icsearch/map_afr.svg";
 import devices from "@src/images/Homepage/icsearch/devices.png";
 import board from "@src/images/Homepage/board_aloupr.svg";
 import clsx from "clsx";
@@ -203,8 +205,8 @@ export const IcsearchHomePage = () => {
         <Container maxWidth={"xl"} className={classes.heroMainContentContainer}>
           <div>
             <h1 className={classes.heroTitle}>
-              {t("page_title_1.slogan")} <br />
-              <span>{t("page_title_1.reinvented")}</span>
+              <span>{t("page_title_1.reinvented")}</span> <br />
+              {t("page_title_1.slogan")}
             </h1>
             <SearchSuggestion
               searchInputClass={classes.searchInput}
@@ -218,25 +220,35 @@ export const IcsearchHomePage = () => {
               textClassName={classes.tryP}
               pnClassName={classes.trySpan}
             />
+            {isMdUp && (
+              <div className={classes.heroItems}>
+                <div className={classes.heroItem}>
+                  <h3 className={classes.heroItemTitle}>{t("hero_item1.desktop.h")}</h3>
+                  <p className={classes.heroItemText}>{t("hero_item1.desktop.p")}</p>
+                </div>
+                <div className={classes.heroItem}>
+                  <h3 className={classes.heroItemTitle}>{t("hero_item2.h")}</h3>
+                  <p className={classes.heroItemText}>{t("hero_item2.p")}</p>
+                </div>
+                <div className={classes.heroItem}>
+                  <h3 className={classes.heroItemTitle}>{t("hero_item3.h")}</h3>
+                  <p className={classes.heroItemText}>{t("hero_item3.p")}</p>
+                </div>
+              </div>
+            )}
             <div className={classes.heroItems}>
-              <div className={classes.heroItem}>
-                <h3 className={classes.heroItemTitle}>{t("hero_item1.desktop.h")}</h3>
-                <p className={classes.heroItemText}>{t("hero_item1.desktop.p")}ChipAssist.</p>
-              </div>
-              <div className={classes.heroItem}>
-                <h3 className={classes.heroItemTitle}>{t("hero_item2.h")}</h3>
-                <p className={classes.heroItemText}>{t("hero_item2.p")}</p>
-              </div>
-              <div className={classes.heroItem}>
-                <h3 className={classes.heroItemTitle}>{t("hero_item3.h")}</h3>
-                <p className={classes.heroItemText}>{t("hero_item3.p")}</p>
-              </div>
+              <p className={classes.heroItemTitle} style={{ textAlign: !isMdUp ? "center" : "left" }}>
+                {t("hero_item4")}{" "}
+                <Link className={classes.pcb_link} to={"/pcb"}>
+                  ссылке
+                </Link>
+              </p>
             </div>
           </div>
           {isMdUp && (
-            <div style={{ width: "80%" }}>
+            <div style={{ width: "70%" }}>
               <Box className={classes.imgWrapper} display="flex" alignItems="center" justifyContent="center">
-                <img style={{ maxWidth: "100%" }} src={map} alt="Map" />
+                <img style={{ width: "90%" }} src={map_afr} alt="Map" />
               </Box>
             </div>
           )}
@@ -306,9 +318,9 @@ export const IcsearchHomePage = () => {
             <Grid item lg={4} md={6} sm={12} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
-                  <h2 className={classes.workCardTitle}>{t("work.card_3.title")}</h2>
+                  <h2 className={classes.workCardTitle}>{t("work.card_6.title")}</h2>
                 </Box>
-                <p className={classes.workCardText}>{t("work.card_3.text")}</p>
+                <p className={classes.workCardText}>{t("work.card_6.text")}</p>
               </Paper>
             </Grid>
             <Grid item lg={4} md={6} sm={12} xs={12}>
@@ -330,9 +342,9 @@ export const IcsearchHomePage = () => {
             <Grid item lg={4} md={6} sm={12} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
-                  <h2 className={classes.workCardTitle}>{t("work.card_6.title")}</h2>
+                  <h2 className={classes.workCardTitle}>{t("work.card_3.title")}</h2>
                 </Box>
-                <p className={classes.workCardText}>{t("work.card_6.text")}</p>
+                <p className={classes.workCardText}>{t("work.card_3.text")}</p>
               </Paper>
             </Grid>
           </Grid>

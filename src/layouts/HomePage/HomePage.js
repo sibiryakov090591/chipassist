@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   topBarICSMobile: {
-    maxHeight: 145,
+    height: "auto",
     zIndex: 1000,
     position: "fixed",
     transition: "all 250ms ease",
@@ -54,12 +54,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  fixedHeight: {
-    height: 127,
-    [theme.breakpoints.down("sm")]: {
-      height: 145,
-    },
-  },
+  // fixedHeight: {
+  //   height: 127,
+  //   [theme.breakpoints.down("sm")]: {
+  //     height: 145,
+  //   },
+  // },
   container: {
     marginTop: 133,
     display: "flex",

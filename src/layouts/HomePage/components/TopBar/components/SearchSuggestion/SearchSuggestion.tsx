@@ -18,6 +18,8 @@ import { batch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import clsx from "clsx";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./searchSuggestionStyles";
 
 interface Props {
@@ -165,7 +167,8 @@ const SearchSuggestion: React.FC<Props> = ({
           cursor: "pointer",
         },
       },
-      container: "suggestion_search",
+      container:
+        isHomePageSuggestions && constants.id === ID_ICSEARCH ? "suggestion_search_ICS_home" : "suggestion_search",
       suggestionsContainer: isHomePageSuggestions ? "home_page_suggestion_container" : "suggestion_container",
       suggestion: "suggestion_item",
       suggestionHighlighted: "suggestion_highlighted",
