@@ -11,6 +11,8 @@ import useCurrency from "@src/hooks/useCurrency";
 import clsx from "clsx";
 import StatusChip from "@src/components/StatusChip/StatusChip";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -63,7 +65,6 @@ const BomTableRow: React.FC<Props> = ({
         items.map((row) => {
           const { stockrecord, unitPrice, isAvaible } = itemsData.find((itemData) => itemData.id === row.id);
           const manufacturer = row.product && row.product.manufacturer?.name;
-
           return (
             <TableRow key={row.key} className={`bom-table-row ${isEven(index) ? classes.oddRow : ""}`}>
               <TableCell className={classes.tdIndex}>{index}</TableCell>
@@ -86,7 +87,14 @@ const BomTableRow: React.FC<Props> = ({
                     className={classes.partNumberInput}
                     disabled={readonly}
                     error={!!row.errors?.length || !row.part_number}
-                    helperText={!!row.errors?.length && row.errors[0].message}
+                    helperText={
+                      !!row.errors?.length &&
+                      (constants.id === ID_ICSEARCH
+                        ? `${t(
+                            `edit.${row?.errors[0].message.split(" ")[0].toLowerCase()}`,
+                          )} ${row?.errors[0].message.split(" ").pop()}`
+                        : row.errors[0].message)
+                    }
                   />
                 </div>
               </TableCell>
