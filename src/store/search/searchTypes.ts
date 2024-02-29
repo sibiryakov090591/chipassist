@@ -23,6 +23,7 @@ export const UPDATE_ENABLED_ATTRIBUTES = "@search/UPDATE_ENABLED_ATTRIBUTES";
 
 export const SET_EXTENDED_SEARCH_STARTED = "@search/SET_EXTENDED_SEARCH_STARTED";
 export const SET_EXTENDED_SEARCH_FINISHED = "@search/SET_EXTENDED_SEARCH_FINISHED";
+export const SET_EXTENDED_SEARCH_RESULTS_COUNT = "@search/SET_EXTENDED_SEARCH_RESULTS_COUNT";
 export const SET_EXTENDED_SEARCH_ID = "@search/SET_EXTENDED_SEARCH_ID";
 
 export const CLEAR_ATTRIBUTES = "@search/CLEAR_ATTRIBUTES";
@@ -106,6 +107,7 @@ export interface SearchState {
   enabledAttributesMap: any; // TODO types
   isExtendedSearchStarted: boolean; // TODO types
   extendedSearchId: number;
+  extendedSearchResultsCount: number;
   extendedSearchParams: { [key: string]: any };
   filtersMap: any; // TODO types
   filtersValues: any; // TODO types
@@ -297,8 +299,13 @@ export interface SavePartNumberExamplesAction {
   type: typeof SAVE_PART_NUMBER_EXAMPLES;
   payload: string[];
 }
+export interface SetExtendedSearchCountAction {
+  type: typeof SET_EXTENDED_SEARCH_RESULTS_COUNT;
+  payload: number;
+}
 
 export type SearchActionTypes =
+  | SetExtendedSearchCountAction
   | ToggleSmartViewAction
   | SavePartNumberExamplesAction
   | SetQueryValueAction

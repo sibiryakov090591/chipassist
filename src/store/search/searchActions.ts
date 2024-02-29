@@ -355,6 +355,7 @@ export const saveExtendedSearch = (response: any, params: any) => {
     } else {
       dispatch(setExtendedSearchFinished());
     }
+    dispatch(setExtendedSearchResultsCount(response?.count ?? null));
   };
 };
 
@@ -764,6 +765,13 @@ export const saveFiltersValuesThunk = (response: any, query: string) => {
 export const setExtendedSearchFinished = () => {
   return {
     type: actionTypes.SET_EXTENDED_SEARCH_FINISHED,
+  };
+};
+
+export const setExtendedSearchResultsCount = (count: number) => {
+  return {
+    type: actionTypes.SET_EXTENDED_SEARCH_RESULTS_COUNT,
+    payload: count,
   };
 };
 

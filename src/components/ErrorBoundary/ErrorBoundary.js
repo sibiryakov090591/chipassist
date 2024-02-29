@@ -11,8 +11,18 @@ import Footer from "@src/components/Footer/Footer";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "redux";
 import image from "@src/images/Homepage/chip_computer_cpu.svg";
+import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
+import constants from "@src/constants/constants";
+import { ID_ELFARO, ID_ICSEARCH } from "@src/constants/server_constants";
 
+const { t } = staticI18n("error");
 const env = IS_PROD ? "PROD" : "DEV";
+const email =
+  constants.id === ID_ICSEARCH
+    ? "info@icsearch.ru"
+    : constants.id === ID_ELFARO
+    ? "info@chiponline.tech"
+    : "info@chipassist.com";
 
 const useStyles = (thm) => ({
   wrapper: {
@@ -83,6 +93,7 @@ class ErrorBoundary extends React.Component {
   render() {
     const { error, info } = this.state;
     const { classes } = this.props;
+
     if (error) {
       return (
         <ThemeProvider theme={theme}>
@@ -99,12 +110,19 @@ class ErrorBoundary extends React.Component {
             >
               <div style={{ width: "fit-content" }}>
                 <Typography align="center" variant="h3">
-                  Ooops, something went wrong!
+                  {t("error_boundary_title")}
                 </Typography>
                 <div className={classes.imageContainer}>
                   <img className={classes.image} src={image} alt="chip icon" />
                 </div>
-                {IS_PROD && (
+                {IS_PROD ? (
+                  <Typography align="left" variant="h5">
+                    <br />
+                    <br />
+                    <div dangerouslySetInnerHTML={{ __html: t("error_boundary_description", { email }) }} />
+                    <br />
+                  </Typography>
+                ) : (
                   <Typography align="left" variant="h5">
                     <br />
                     <br />
@@ -121,7 +139,7 @@ class ErrorBoundary extends React.Component {
                   <br />
                   <br />
                   <Button className={classes.button} color="primary" variant="contained" onClick={this.goHome}>
-                    Back to home
+                    {t("back")}
                   </Button>
                 </Typography>
               </div>
