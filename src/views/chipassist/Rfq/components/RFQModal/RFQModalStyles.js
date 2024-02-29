@@ -1,4 +1,8 @@
 import { makeStyles } from "@material-ui/styles";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
+
+const isICSearch = constants.id === ID_ICSEARCH;
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +25,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: theme.palette.app.red400,
+    backgroundColor: isICSearch ? theme.palette.app.blue500 : theme.palette.app.red400,
     padding: "37px 20px 20px",
     position: "sticky",
     top: 0,

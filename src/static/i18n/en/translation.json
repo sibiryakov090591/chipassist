@@ -2034,7 +2034,7 @@
       "send": "Send",
       "sending": "Sending",
       "close": "Close",
-      "back": "Back to",
+      "back": "Back to request",
       "request_quality": "Request quality check",
       "request_message": {
         "p1": "You are about to request the quality check for",

@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import { Box, Hidden } from "@material-ui/core";
-import logo from "@src/images/logo/on_red.png";
 import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
 import { useStyles } from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModalStyles";
 import { useStyles as useRegisterStyles } from "@src/views/chipassist/HomeRestricted/styles";
@@ -9,13 +8,15 @@ import { useStyles as useRfqModalStyles } from "@src/views/chipassist/Rfq/compon
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { qualityCheckModalClose } from "@src/store/rfq/rfqActions";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import QualityCheckForm from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckForm/QualityCheckForm";
+
+const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boolean }> = ({ isAuth, isExample }) => {
   const classes = useStyles();
@@ -25,6 +26,7 @@ export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boo
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
   const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
+  const isICSearch = constants.id === ID_ICSEARCH;
 
   const { open, partNumber, sellerName } = useAppSelector((state) => state.rfq.qualityCheckModal);
   let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -54,7 +56,7 @@ export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boo
         isExample ? clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container) : commonClasses.displayContents
       }
     >
-      {isChipAssist && (
+      {(isChipAssist || isICSearch) && (
         <Hidden smDown>
           <div className={rfqModalClasses.logoContainer}>
             <div className={rfqModalClasses.signIn}>
