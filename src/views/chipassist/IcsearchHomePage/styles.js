@@ -256,6 +256,10 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     position: "absolute",
     right: 0,
+    [theme.breakpoints.down("md")]: {
+      width: 60,
+      height: "41px",
+    },
   },
   searchButtonColor: {
     backgroundColor: theme.palette.app.green800,
@@ -269,6 +273,9 @@ const useStyles = makeStyles((theme) => ({
   searchIcon: {
     fontSize: "32px",
     color: "#ffffff",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "25px",
+    },
   },
   clearSearchIcon: {
     position: "absolute",
@@ -303,14 +310,22 @@ const useStyles = makeStyles((theme) => ({
       color: "#f2f1f4",
       fontWeight: 600,
       fontSize: "3rem",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "2.3rem",
+      },
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "1.9rem",
+        lineHeight: "3rem",
+      },
     },
     [theme.breakpoints.down("sm")]: {
-      fontSize: "2.3rem",
+      fontSize: "1.9rem",
       lineHeight: "3.3rem",
     },
     [theme.breakpoints.down("xs")]: {
-      fontSize: "1.8rem",
+      fontSize: "1.5rem",
       textAlign: "center",
+      lineHeight: "normal",
     },
   },
   heroMainContentContainer: {
@@ -340,6 +355,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.4rem",
     fontWeight: "bold",
     color: "#f2f1f4",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   heroItemText: {
     fontSize: "1.1rem",

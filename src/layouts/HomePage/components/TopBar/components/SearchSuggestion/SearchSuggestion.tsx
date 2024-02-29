@@ -29,6 +29,7 @@ interface Props {
   searchIconClass?: string;
   searchClearClass?: string;
   isHomePageSuggestions?: boolean;
+  isHero?: boolean;
 }
 
 const SearchSuggestion: React.FC<Props> = ({
@@ -38,6 +39,7 @@ const SearchSuggestion: React.FC<Props> = ({
   searchIconClass,
   searchClearClass,
   isHomePageSuggestions,
+  isHero,
 }) => {
   const [searchValue, setSearchValue] = useState("");
   // const [value, setValue] = useState("");
@@ -68,6 +70,9 @@ const SearchSuggestion: React.FC<Props> = ({
     }
   }, [debouncedSearchTerm]);
 
+  useEffect(() => {
+    console.log("Hero", isHero);
+  }, [isHero]);
   const onEnterFunction = useCallback(
     (event: KeyboardEvent) => {
       console.log(
@@ -168,12 +173,12 @@ const SearchSuggestion: React.FC<Props> = ({
         },
       },
       container:
-        isHomePageSuggestions && constants.id === ID_ICSEARCH ? "suggestion_search_ICS_home" : "suggestion_search",
+        isHomePageSuggestions && isHero ? "suggestion_search_ICS_home" : isHomePageSuggestions && "suggestion_search",
       suggestionsContainer: isHomePageSuggestions ? "home_page_suggestion_container" : "suggestion_container",
       suggestion: "suggestion_item",
       suggestionHighlighted: "suggestion_highlighted",
     };
-  }, []);
+  }, [isHero]);
 
   return (
     <div className={clsx("tutorial-search", classes.search)} ref={searchRef} style={style}>

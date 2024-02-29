@@ -150,7 +150,7 @@ export const IcsearchHomePage = () => {
             <Container maxWidth={"xl"}>
               <nav className={classes.heroMenu}>
                 {logoLink}
-                <Box display={"flex"} alignItems={"center"} width={"55%"} justifyContent={"space-evenly"}>
+                <Box display={"flex"} alignItems={"center"} width={"65%"} justifyContent={"space-evenly"}>
                   <NavLink className={`${classes.heroMenuLink}`} to={`/`}>
                     {t("menu.home")}
                   </NavLink>
@@ -214,6 +214,7 @@ export const IcsearchHomePage = () => {
               searchIconClass={classes.searchIcon}
               searchClearClass={classes.clearSearchIcon}
               isHomePageSuggestions={true}
+              isHero={isMdUp}
             />
             <TrySearchPn
               partNumbers={partNumberExamples || partNumbers}
