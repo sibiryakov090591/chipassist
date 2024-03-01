@@ -19,7 +19,7 @@ const { t } = staticI18n("error");
 const env = IS_PROD ? "PROD" : "DEV";
 const email =
   constants.id === ID_ICSEARCH
-    ? "info@icsearch.ru"
+    ? "support@icsearch.ru"
     : constants.id === ID_ELFARO
     ? "info@chiponline.tech"
     : "info@chipassist.com";
@@ -39,6 +39,9 @@ const useStyles = (thm) => ({
     maxWidth: 150,
     width: "100%",
     filter: "invert(15%)",
+  },
+  email: {
+    fontSize: 20,
   },
   button: {
     color: thm.palette.white,
@@ -116,10 +119,16 @@ class ErrorBoundary extends React.Component {
                   <img className={classes.image} src={image} alt="chip icon" />
                 </div>
                 {IS_PROD ? (
-                  <Typography align="left" variant="h5">
+                  <Typography align="center" variant="h4">
                     <br />
                     <br />
-                    <div dangerouslySetInnerHTML={{ __html: t("error_boundary_description", { email }) }} />
+                    <div>{t("error_boundary_text_1")}</div>
+                    <br />
+                    <div>{t("error_boundary_text_2")}</div>
+                    <br />
+                    <div className={classes.email}>
+                      <a href={`mailto:${email}`}>{email}</a>
+                    </div>
                     <br />
                   </Typography>
                 ) : (
