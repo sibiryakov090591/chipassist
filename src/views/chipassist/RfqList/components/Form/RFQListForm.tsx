@@ -191,7 +191,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
   const [prevFilledInputIndex, setPrevFilledInputIndex] = useState(0);
   const [phoneValue, setPhoneValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const isICSearch = constants.id === "icsearch";
+  const isICSearch = constants.id === ID_ICSEARCH;
 
   const addButtonClickHandler = () => {
     const newRfq: RfqItem = {
