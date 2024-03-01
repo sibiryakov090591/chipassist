@@ -2513,8 +2513,9 @@
     "404_title": "This page does not exist",
     "404_description": "We can't find the page you are looking for but you can find something useful clicking the links below.",
     "401_title": "401: We are sorry but we are not able to authenticate you.",
-    "error_boundary_title": "Ooops, something went wrong!",
-    "error_boundary_description": "We are sorry and we already work on that problem. You can email us about your concern on <a href='mailto:{{email}}'>{{email}}</a>",
+    "error_boundary_title": "Ooops, something went wrong...",
+    "error_boundary_text_1": "Unfortunately, we have encountered a problem. We are already fixing it. We apologize!",
+    "error_boundary_text_2": "You can always text to us if you have a question.",
     "register_title": "It looks like this link has expired or it has already been used",
     "register_description": "Please mind that account and request confirmation links are valid for 24 hours"
   },
