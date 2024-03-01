@@ -15,8 +15,11 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { qualityCheckModalClose } from "@src/store/rfq/rfqActions";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import QualityCheckForm from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckForm/QualityCheckForm";
+import logoCA from "@src/images/logo/on_red.png";
 
-const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
+const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
+const isICSearch = constants.id === ID_ICSEARCH;
+const logo = isChipAssist ? logoCA : `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boolean }> = ({ isAuth, isExample }) => {
   const classes = useStyles();
@@ -25,8 +28,6 @@ export const QualityCheckContainer: React.FC<{ isAuth?: boolean; isExample?: boo
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
-  const isICSearch = constants.id === ID_ICSEARCH;
 
   const { open, partNumber, sellerName } = useAppSelector((state) => state.rfq.qualityCheckModal);
   let isAuthenticated = useAppSelector((state) => state.auth.token !== null);

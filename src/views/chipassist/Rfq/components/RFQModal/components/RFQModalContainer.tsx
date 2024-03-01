@@ -12,6 +12,7 @@ import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { ThunkDispatch } from "redux-thunk";
 import { RootState } from "@src/store";
 import { AnyAction } from "redux";
+import logoCA from "@src/images/logo/on_red.png";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
@@ -22,7 +23,9 @@ import { Link as RouterLink } from "react-router-dom";
 import ResetForm from "@src/views/chipassist/Reset/components/ResetForm/ResetForm";
 import NewPasswordForm from "@src/views/chipassist/Reset/components/NewPasswordForm/NewPasswordForm";
 
-const logo = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
+const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
+const isICSearch = constants.id === ID_ICSEARCH;
+const logo = isChipAssist ? logoCA : `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boolean; isExample?: boolean }> = ({
   isAuth,
@@ -35,8 +38,6 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
   const appTheme = useAppTheme();
 
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
-  const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
-  const isICSearch = constants.id === ID_ICSEARCH;
 
   const { rfqModalOpen, rfqItem } = useAppSelector((state) => state.rfq);
   let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
