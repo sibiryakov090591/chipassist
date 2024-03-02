@@ -18,8 +18,6 @@ import { batch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import clsx from "clsx";
-import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./searchSuggestionStyles";
 
 interface Props {
@@ -70,9 +68,6 @@ const SearchSuggestion: React.FC<Props> = ({
     }
   }, [debouncedSearchTerm]);
 
-  useEffect(() => {
-    console.log("Hero", isHero);
-  }, [isHero]);
   const onEnterFunction = useCallback(
     (event: KeyboardEvent) => {
       console.log(

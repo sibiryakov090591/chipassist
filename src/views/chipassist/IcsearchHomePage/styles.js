@@ -181,13 +181,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hero: {
-    background: "linear-gradient(119.4deg, #015ed0ff 0%, #019CC7 100%)",
+    background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 100%)",
     padding: "20px 0 40px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     minHeight: "100vh",
+    [theme.breakpoints.down("xs")]: {
+      minHeight: "calc(100vh - 80px)",
+      background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 155%)",
+    },
   },
   heroMenu: {
     padding: "20px 0",
@@ -256,7 +260,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     position: "absolute",
     right: 0,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       width: 60,
       height: "41px",
     },
@@ -273,7 +277,7 @@ const useStyles = makeStyles((theme) => ({
   searchIcon: {
     fontSize: "32px",
     color: "#ffffff",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "25px",
     },
   },
@@ -300,37 +304,47 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "7px",
     cursor: "pointer",
   },
-  heroTitle: {
+  heroSubTitle: {
     color: "#f2f1f4",
-    fontSize: "1.5rem",
+    fontSize: "1.9rem",
     lineHeight: "3.5rem",
     marginBottom: "3rem",
+    display: "flex",
     fontWeight: 400,
-    "& span": {
-      color: "#f2f1f4",
-      fontWeight: 600,
-      fontSize: "3rem",
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "2.3rem",
-      },
-      [theme.breakpoints.down("xs")]: {
-        fontSize: "1.9rem",
-        lineHeight: "3rem",
-      },
-    },
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.9rem",
       lineHeight: "3.3rem",
+      textAlign: "center",
     },
+
     [theme.breakpoints.down("xs")]: {
       fontSize: "1.5rem",
       textAlign: "center",
       lineHeight: "normal",
     },
   },
+  heroTitle: {
+    color: "#f2f1f4",
+    fontWeight: 600,
+    fontSize: "3rem",
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center",
+      fontSize: "3.3rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center",
+      fontSize: "1.9rem",
+      lineHeight: "3rem",
+      marginBottom: "2rem",
+    },
+  },
   heroMainContentContainer: {
     display: "flex",
     alignItems: "flex-end",
+    justifyContent: "center",
+    [theme.breakpoints.up(1700)]: {
+      alignItems: "center",
+    },
   },
   heroItems: {
     marginTop: "3rem",
@@ -360,7 +374,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   heroItemText: {
-    fontSize: "1.1rem",
+    fontSize: "1.3rem",
     color: "#f2f1f4",
   },
   pcb_link: {

@@ -4,7 +4,6 @@ import { Page } from "@src/components";
 import { Box, Button, Container, Grid, Paper } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import map from "@src/images/Homepage/icsearch/map.png";
-import map_not_afr from "@src/images/Homepage/icsearch/map_not_afr.svg";
 import map_afr from "@src/images/Homepage/icsearch/map_afr.svg";
 import devices from "@src/images/Homepage/icsearch/devices.png";
 import board from "@src/images/Homepage/board_aloupr.svg";
@@ -101,6 +100,8 @@ export const IcsearchHomePage = () => {
   const theme = useTheme();
 
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
+  const isLgUp = useMediaQuery(theme.breakpoints.up(1700));
 
   const { partNumberExamples } = useAppSelector((state) => state.search);
 
@@ -202,12 +203,14 @@ export const IcsearchHomePage = () => {
           </div>
         )}
 
-        <Container maxWidth={"xl"} className={classes.heroMainContentContainer}>
+        <Container maxWidth={isLgUp ? "xl" : "lg"} className={classes.heroMainContentContainer}>
           <div>
-            <h1 className={classes.heroTitle}>
-              <span>{t("page_title_1.reinvented")}</span> <br />
-              {t("page_title_1.slogan")}
-            </h1>
+            <h1 className={classes.heroTitle}>{t("page_title_1.reinvented")}</h1>
+            <span className={classes.heroSubTitle}>
+              {" "}
+              {isMdUp ? t("page_title_1.slogan") : t("page_title_1.slogan_mobile")}
+            </span>
+
             <SearchSuggestion
               searchInputClass={classes.searchInput}
               searchButtonClass={clsx(classes.searchIconButton, classes.searchButtonColor)}
@@ -246,10 +249,10 @@ export const IcsearchHomePage = () => {
               </p>
             </div>
           </div>
-          {isMdUp && (
-            <div style={{ width: "70%" }}>
+          {isLgUp && (
+            <div style={{ width: "60%" }}>
               <Box className={classes.imgWrapper} display="flex" alignItems="center" justifyContent="center">
-                <img style={{ width: "90%" }} src={map_afr} alt="Map" />
+                <img style={{ width: "100%" }} src={map_afr} alt="Map" />
               </Box>
             </div>
           )}
