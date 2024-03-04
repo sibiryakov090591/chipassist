@@ -188,9 +188,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     position: "relative",
     minHeight: "100vh",
+    [theme.breakpoints.down(1700)]: {
+      background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 155%)",
+    },
     [theme.breakpoints.down("xs")]: {
       minHeight: "calc(100vh - 80px)",
-      background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 155%)",
     },
   },
   heroMenu: {
