@@ -116,7 +116,6 @@ const LoginForm = (props: { className: string; isExample?: boolean }) => {
 
     const errors = validate(formState.values, schema);
     if (errors) {
-      console.log(errors);
       return setFormState((prevState) => ({
         ...prevState,
         isValid: !errors,
