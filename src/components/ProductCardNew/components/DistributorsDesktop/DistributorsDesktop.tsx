@@ -115,18 +115,16 @@ const DistributorsDesktop: React.FC<Props> = ({
            *  Create combinedDataItem for show in collapsed group condition
            *  Contains the best values
            */
-          let minSr: SortedStockrecord = null;
           const combinedDataItem = group.reduce(
             (acc, sr) => {
               const accDate = new Date(acc.date_updated.replace(/ /g, "T"));
               const srDate = new Date(sr.date_updated.replace(/ /g, "T"));
-              if (!minSr) minSr = sr;
-              minSr = sr.moq < acc.moq ? sr : minSr;
-
+              const minSr = acc.moq < sr.moq ? acc : sr;
               return {
                 ...acc,
                 num_in_stock: Math.max(acc.num_in_stock, sr.num_in_stock),
-                moq: Math.min(acc.moq, sr.moq),
+                moq: minSr.moq,
+                mpq: minSr.mpq,
                 date_updated: accDate.getTime() < srDate.getTime() ? acc.date_updated : sr.date_updated,
                 prices: acc.prices.length ? acc.prices : sr.prices,
                 price_1: acc.price_1 ? (sr.price_1 ? Math.min(acc.price_1, sr.price_1) : acc.price_1) : sr.price_1,
@@ -154,7 +152,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             },
             { ...group[0] },
           );
-          return [{ ...combinedDataItem, mpq: minSr.mpq }, ...group];
+          return [combinedDataItem, ...group];
         });
       setStockrecords(sortFn(res, sortBy.name, sortBy.direction));
     }
