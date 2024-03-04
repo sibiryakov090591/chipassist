@@ -2392,7 +2392,9 @@
     "Username required": "Username is required",
     "Password required": "Password is required",
     "email": "Email address",
-    "password": "Password"
+    "password": "Password",
+    "incorrect_em_or_pass": "Incorrect username or password",
+    "Username is not a valid email": "Username is not a valid email"
   },
   "register": {
     "title": "Register",
