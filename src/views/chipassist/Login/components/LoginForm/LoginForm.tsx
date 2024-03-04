@@ -116,6 +116,7 @@ const LoginForm = (props: { className: string; isExample?: boolean }) => {
 
     const errors = validate(formState.values, schema);
     if (errors) {
+      console.log(errors);
       return setFormState((prevState) => ({
         ...prevState,
         isValid: !errors,
@@ -135,7 +136,7 @@ const LoginForm = (props: { className: string; isExample?: boolean }) => {
           dispatch(login(data, token, navigate, { backurl }));
         })
         .catch((err: any) => {
-          const textError = "Incorrect username or password";
+          const textError = t("incorrect_em_or_pass");
           setError(textError, textError);
           localStorage.setItem("login_failure_email", formState.values.username);
           console.log("LOGIN_ERROR 3", err);
