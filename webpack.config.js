@@ -87,11 +87,11 @@ module.exports = {
   optimization: {
     minimize: isProd,
     minimizer: [new TerserPlugin()],
-    // splitChunks: {
-    //   chunks: "all",
-    //   minSize: 10000,
-    //   maxSize: 240000,
-    // },
+    splitChunks: {
+      chunks: "all",
+      minSize: 10000,
+      maxSize: 240000,
+    },
   },
   devtool: isDev ? "cheap-module-source-map" : "source-map",
   devServer: {
