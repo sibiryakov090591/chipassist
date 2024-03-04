@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useNavigate } from "react-router-dom";
-import useURLSearchParams from "@src/components/ProductCardNew/useURLSearchParams";
+import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { setUrlGetString } from "@src/utils/useCommonFilters";
 import Preloader from "@src/components/Preloader/Preloader";
 import useAppTheme from "@src/theme/useAppTheme";

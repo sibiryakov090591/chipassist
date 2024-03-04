@@ -7,7 +7,7 @@ import constants from "@src/constants/constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { setUrlWithFilters } from "@src/utils/setUrl";
 import { toggleReloadSearchFlag, changeQueryAction, getRfqsHintCount } from "@src/store/search/searchActions";
-import { ProductCard, Page, ProductCardNew } from "@src/components";
+import { ProductCard, Page } from "@src/components";
 import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";
 import Paginate from "@src/components/Paginate";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
@@ -378,16 +378,14 @@ const SearchResults = () => {
                 <div>
                   {products?.map((product, key) => {
                     const rfq = rfqData.results.find((item) => item.id === product.id);
-                    return constants.isNewSearchPage ? (
-                      <ProductCardNew
+                    return (
+                      <ProductCard
                         key={product.id}
                         product={product}
                         rfqData={rfq}
                         searchQuery={query}
                         id={`product-item-${key}`}
                       />
-                    ) : (
-                      <ProductCard key={product.id} product={product} searchQuery={query} />
                     );
                   })}
                 </div>

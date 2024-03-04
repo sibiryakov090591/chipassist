@@ -12,6 +12,7 @@ const Dotenv = require("dotenv-webpack");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const gitRevisionPlugin = new GitRevisionPlugin();
 const CreateFileWebpack = require("create-file-webpack");
+const TerserPlugin = require("terser-webpack-plugin");
 // const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 //const DeleteSourceMapWebpackPlugin = require("delete-sourcemap-webpack-plugin");
 // const CleanTerminalPlugin = require("clean-terminal-webpack-plugin");
@@ -85,19 +86,12 @@ module.exports = {
   },
   optimization: {
     minimize: isProd,
-    sideEffects: true,
-    usedExports: true,
-    splitChunks: {
-      chunks: "all",
-      maxSize: 500000,
-      // cacheGroups: {
-      //   vendors: {
-      //     test: /[\\/]node_modules[\\/]/,
-      //     name: "vendors",
-      //     chunks: "all",
-      //   },
-      // },
-    },
+    minimizer: [new TerserPlugin()],
+    // splitChunks: {
+    //   chunks: "all",
+    //   minSize: 10000,
+    //   maxSize: 240000,
+    // },
   },
   devtool: isDev ? "cheap-module-source-map" : "source-map",
   devServer: {

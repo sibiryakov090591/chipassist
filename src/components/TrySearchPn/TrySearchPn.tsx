@@ -3,8 +3,6 @@ import "react-phone-input-2/lib/material.css";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import checkIsAuthenticated from "@src/utils/auth";
-import constants from "@src/constants/constants";
 import { Box } from "@material-ui/core";
 import { onTryClickAction, saveSearchQueryAction, setQueryValue } from "@src/store/search/searchActions";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
@@ -61,7 +59,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
   };
 
   return (
-    <Box visibility={!checkIsAuthenticated() && constants.closedRegistration ? "hidden" : "visible"}>
+    <Box>
       <p className={textClassName}>
         {isSmDown ? t("try_search_mobile") : t("try_search")}
         <span onClick={onTryHandler} className={pnClassName}>

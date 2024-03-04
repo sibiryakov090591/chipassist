@@ -200,6 +200,7 @@
     "sass-loader": "10.2.0",
     "style-loader": "1.0.0",
     "styles-loader": "3.0.0",
+    "terser-webpack-plugin": "4.2.3",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
     "url-loader": "2.2.0",

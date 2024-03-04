@@ -2,14 +2,11 @@
 /* eslint-disable import/no-named-as-default */
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { INIT_SENTRY } from "@src/config";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 // import useSentryUserData from "@src/hooks/useSentryUserData";
 import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
 import useAppSelector from "@src/hooks/useAppSelector";
 import Maintenance from "@src/views/chipassist/Maintenance";
-
-import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 
 import "@src/static/css/style.css";
@@ -57,7 +54,7 @@ import AlertBottomLeft from "./components/Alerts/AlertBottomLeft";
 import AlertTopRight from "./components/Alerts/AlertTopRight";
 import AlertModal from "./components/Alerts/AlertModal";
 
-const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
+const ProvidedErrorBoundary = ErrorBoundary;
 
 export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
   if (!isAuthenticated && !isAuthPage(window.location.pathname)) {

@@ -6,8 +6,6 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 // 'routerMiddleware': the new way of storing route changes with redux middleware since rrV4.
 import { routerMiddleware } from "react-router-redux";
-// import * as Sentry from "@sentry/react";
-import { INIT_SENTRY } from "@src/config";
 import catchAuthError from "@src/middleware/catchAuthError";
 import userActivityMiddleware from "@src/middleware/userActivityMiddleware";
 import createMiddleware from "@src/middleware/clientMiddleware";
@@ -35,13 +33,7 @@ function configureStoreProd(initialState, client) {
     checkAuth,
   ];
 
-  return createStore(
-    createRootReducer(),
-    initialState,
-    INIT_SENTRY
-      ? compose(applyMiddleware(...middlewares)) // compose(applyMiddleware(...middlewares), sentryReduxEnhancer)
-      : compose(applyMiddleware(...middlewares)),
-  );
+  return createStore(createRootReducer(), initialState, compose(applyMiddleware(...middlewares)));
 }
 
 function configureStoreDev(initialState, client) {
@@ -64,13 +56,7 @@ function configureStoreDev(initialState, client) {
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
-  const store = createStore(
-    createRootReducer(),
-    initialState,
-    INIT_SENTRY
-      ? compose(applyMiddleware(...middlewares)) // composeEnhancers(applyMiddleware(...middlewares), sentryReduxEnhancer)
-      : composeEnhancers(applyMiddleware(...middlewares)),
-  );
+  const store = createStore(createRootReducer(), initialState, composeEnhancers(applyMiddleware(...middlewares)));
 
   return store;
 }

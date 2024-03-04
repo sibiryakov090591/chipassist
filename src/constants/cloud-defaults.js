@@ -10,7 +10,6 @@ const defaults = {
   debug: false,
   searchTransport: "rest", // websocket|rest
   bomNew: false,
-  closedRegistration: false,
   currencyChanger: true,
   showCategories: false,
   userActivity: true,

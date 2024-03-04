@@ -19,7 +19,6 @@ const defaults = {
     topBannerLogo: "",
   },
   bomNew: true,
-  closedRegistration: false,
   extendedRegistration: false,
   currencyChanger: true,
   selectedCurrencyList: ["RUB", "USD", "EUR"], // ["RUB", "USD", "EUR"]

@@ -5,7 +5,6 @@ import { toggleSmartView } from "@src/store/search/searchActions";
 import React from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 // import { useNavigate } from "react-router-dom";
-// import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 // import { orderByValues } from "./FilterOrderByBar";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";

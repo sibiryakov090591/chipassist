@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { batch } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { INIT_SENTRY } from "@src/config";
 import useUserActivity from "@src/services/UserActivity/useUserActivity";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -17,7 +16,6 @@ import {
 } from "@src/store/profile/profileActions";
 import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
 import { checkUserActivityStatus } from "@src/store/common/commonActions";
-import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
 import Error404 from "@src/views/chipassist/Error404";
@@ -46,7 +44,7 @@ import About from "@src/views/supplier-response/About/About";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 
-const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
+const ProvidedErrorBoundary = ErrorBoundary;
 
 export function PrivateRoute({ children, isAuthenticated }) {
   return isAuthenticated === true ? children : <Navigate to={"/auth/login"} replace />;
