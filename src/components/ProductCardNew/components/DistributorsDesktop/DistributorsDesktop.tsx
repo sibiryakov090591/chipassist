@@ -119,12 +119,12 @@ const DistributorsDesktop: React.FC<Props> = ({
             (acc, sr) => {
               const accDate = new Date(acc.date_updated.replace(/ /g, "T"));
               const srDate = new Date(sr.date_updated.replace(/ /g, "T"));
-              const minSr = acc.moq < sr.moq ? acc : sr;
+              const srWithMinMOQ = acc.moq < sr.moq ? acc : sr;
               return {
                 ...acc,
                 num_in_stock: Math.max(acc.num_in_stock, sr.num_in_stock),
-                moq: minSr.moq,
-                mpq: minSr.mpq,
+                moq: srWithMinMOQ.moq,
+                mpq: srWithMinMOQ.mpq,
                 date_updated: accDate.getTime() < srDate.getTime() ? acc.date_updated : sr.date_updated,
                 prices: acc.prices.length ? acc.prices : sr.prices,
                 price_1: acc.price_1 ? (sr.price_1 ? Math.min(acc.price_1, sr.price_1) : acc.price_1) : sr.price_1,
