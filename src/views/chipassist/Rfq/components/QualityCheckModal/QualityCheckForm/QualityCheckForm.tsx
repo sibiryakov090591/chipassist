@@ -546,7 +546,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
                 InputLabelProps={{
                   shrink: true,
                 }}
-                disabled={isAuthenticated && !!formState.values.inn}
+                disabled={isAuthenticated && !!profileInfo?.defaultBillingAddress?.inn}
                 style={{ textAlign: "start", width: "100%" }}
                 {...errorProps("inn")}
               ></TextField>
