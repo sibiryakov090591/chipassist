@@ -151,7 +151,7 @@ export const IcsearchHomePage = () => {
             <Container maxWidth={"xl"}>
               <nav className={classes.heroMenu}>
                 {logoLink}
-                <Box display={"flex"} alignItems={"center"} width={"65%"} justifyContent={"space-evenly"}>
+                <Box display={"flex"} alignItems={"center"} width={"56%"} justifyContent={"space-evenly"}>
                   <NavLink className={`${classes.heroMenuLink}`} to={`/`}>
                     {t("menu.home")}
                   </NavLink>
@@ -173,17 +173,17 @@ export const IcsearchHomePage = () => {
                     </NavLink>
                   )}
                 </Box>
-                <Box display="flex" alignItems="center">
+                <Box display="flex" alignItems="center" className={classes.profileOptions}>
                   {!isAuthenticated ? (
                     <>
-                      <NavLink to={"/auth/login"} style={{ marginRight: 16 }} className={classes.headerLink}>
+                      <NavLink to={"/auth/login"} className={classes.headerLink}>
                         {t("menu.sign_in")}
                       </NavLink>
                       <Box m="0 8px" style={{ color: "white" }}>
                         /
                       </Box>
                       <NavLink to={"/auth/registration"} className={classes.headerLink}>
-                        {t("menu.sign_up")}
+                        Регистрация
                       </NavLink>
                     </>
                   ) : (
@@ -207,7 +207,6 @@ export const IcsearchHomePage = () => {
           <div>
             <h1 className={classes.heroTitle}>{t("page_title_1.reinvented")}</h1>
             <span className={classes.heroSubTitle}>
-              {" "}
               {isMdUp ? t("page_title_1.slogan") : t("page_title_1.slogan_mobile")}
             </span>
 

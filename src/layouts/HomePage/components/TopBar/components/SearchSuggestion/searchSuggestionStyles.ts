@@ -16,6 +16,9 @@ export const useStyles = makeStyles(() => ({
       backgroundColor: "transparent",
     },
   },
+  searchHero: {
+    maxWidth: "980px",
+  },
 }));
 
 export default "styles";

@@ -1,6 +1,7 @@
 // @import "/node_modules/flag-icons/css/flag-icons.min.css";
 // @import "./prismjs";
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500&family=Montserrat:ital@0;1&display=swap');
 * {
   box-sizing: border-box;
   margin: 0;
@@ -24,22 +25,22 @@ a {
 
 #root {
   height: 100%;
-}
 
-:not(pre) > code {
-  font-family: Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace;
-  background-color: #eeeeee;
-  padding: 2px 4px;
-  direction: ltr;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  line-height: 1.5;
-  font-size: 14px;
-}
+  :not(pre) > code {
+    font-family: Inconsolata, Montserrat, Monaco, Consolas, "Courier New", Courier, monospace;
+    background-color: #eeeeee;
+    padding: 2px 4px;
+    direction: ltr;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    line-height: 1.5;
+    font-size: 14px;
+  }
 
-// hide see password button of input[type=password] (EI and Edge)
-input::-ms-reveal,
-input::-ms-clear {
-  display: none;
+  // hide see password button of input[type=password] (EI and Edge)
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
 }

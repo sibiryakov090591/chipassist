@@ -176,7 +176,11 @@ const SearchSuggestion: React.FC<Props> = ({
   }, [isHero]);
 
   return (
-    <div className={clsx("tutorial-search", classes.search)} ref={searchRef} style={style}>
+    <div
+      className={clsx("tutorial-search", classes.search, isHero && classes.searchHero)}
+      ref={searchRef}
+      style={style}
+    >
       <Autosuggest
         onSuggestionSelected={onSuggestionSelected}
         theme={suggestTheme as any}

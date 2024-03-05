@@ -189,7 +189,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     minHeight: "100vh",
     [theme.breakpoints.down(1700)]: {
-      background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 155%)",
+      background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073cc 155%)",
     },
     [theme.breakpoints.down("xs")]: {
       minHeight: "calc(100vh - 80px)",
@@ -266,9 +266,13 @@ const useStyles = makeStyles((theme) => ({
       width: 60,
       height: "41px",
     },
+    [theme.breakpoints.down(1700)]: {
+      height: 45,
+      width: 68,
+    },
   },
   searchButtonColor: {
-    backgroundColor: theme.palette.app.green800,
+    backgroundColor: "#01cec0ff",
     "&:hover": {
       opacity: 0.8,
     },
@@ -308,13 +312,13 @@ const useStyles = makeStyles((theme) => ({
   },
   heroSubTitle: {
     color: "#f2f1f4",
-    fontSize: "1.9rem",
+    fontSize: "1.7rem",
     lineHeight: "3.5rem",
-    marginBottom: "3rem",
+    marginBottom: "1.6rem",
     display: "flex",
     fontWeight: 400,
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.9rem",
+      fontSize: "1.7rem",
       lineHeight: "3.3rem",
       textAlign: "center",
     },
@@ -326,9 +330,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   heroTitle: {
-    color: "#f2f1f4",
+    // color: "#f2f1f4",
     fontWeight: 600,
     fontSize: "3rem",
+    paddingTop: "4.5rem",
+    color: "#fff",
+    fontFamily: "Montserrat",
     [theme.breakpoints.down("sm")]: {
       textAlign: "center",
       fontSize: "3.3rem",
@@ -356,6 +363,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       alignItems: "center",
     },
+    [theme.breakpoints.down(1700)]: {
+      maxWidth: 900,
+    },
   },
   heroItem: {
     padding: "12px 0",
@@ -376,7 +386,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   heroItemText: {
-    fontSize: "1.3rem",
+    fontSize: "1.2rem",
     color: "#f2f1f4",
   },
   pcb_link: {
@@ -386,6 +396,12 @@ const useStyles = makeStyles((theme) => ({
       color: "#ecebee",
       textDecoration: "underline",
     },
+  },
+  profileOptions: {
+    border: "1px solid #fafafa",
+    borderRadius: "34px",
+    background: "#01cec0ff",
+    padding: "5px 15px 6px",
   },
 }));
 
