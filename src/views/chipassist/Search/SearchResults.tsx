@@ -347,12 +347,12 @@ const SearchResults = () => {
 
         <div className={classes.main}>
           <div className={classes.searchPageResults}>
-            {count !== 0 && (
+            {(count !== 0 || !!products?.length) && (
               <div id="filters_sticky_container" style={{ padding: "12px 0 8px", minHeight: 57 }}>
                 {createFiltersBar()}
               </div>
             )}
-            {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (
+            {(count !== 0 || !!products?.length) && isSmDown && !isLoadingSearchResultsInProgress && (
               <div style={{ padding: "0 0 4px" }}>
                 <FiltersContainer>{!isLoadingSearchResultsInProgress && <ExtendedSearchBar />}</FiltersContainer>
               </div>
@@ -390,7 +390,7 @@ const SearchResults = () => {
                 </div>
               </div>
             )}
-            {!isLoadingSearchResultsInProgress && !isExtendedSearchStarted && count === 0 && (
+            {!isLoadingSearchResultsInProgress && !isExtendedSearchStarted && count === 0 && !products?.length && (
               <div className={classes.searchResultEmpty}>
                 {requestedRFQ && (
                   <div className={classes.requestedBlock}>
