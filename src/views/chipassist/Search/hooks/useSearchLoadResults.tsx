@@ -18,8 +18,10 @@ import { batch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import constants from "@src/constants/constants";
 import { useState } from "react";
-import { ID_ELFARO } from "@src/constants/server_constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import useExtendedSearch from "./useExtendedSearch";
+
+const isICSearch = constants.id === ID_ICSEARCH;
 
 const useSearchLoadResults = () => {
   const dispatch = useAppDispatch();
@@ -42,11 +44,9 @@ const useSearchLoadResults = () => {
   // );
   const orderBy = orderByValues[0].value;
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
-  let baseFilters = useURLSearchParams("base_filters", true, null, true);
-  filtersValues.base_num_in_stock = localStorage.getItem("productStock") === "true" ? 1 : "";
-  if (constants.isNewSearchPage || constants.id === ID_ELFARO) {
+  filtersValues.base_num_in_stock = 1;
+  if (!isICSearch) {
     filtersValues = null;
-    baseFilters = null;
   }
   const reloadSearchFlag = useAppSelector((state) => state.search.reloadSearchFlag);
   const { shouldUpdateBackend, href } = useAppSelector((state) => state.common);
@@ -63,7 +63,6 @@ const useSearchLoadResults = () => {
     ignore_count: true,
     smart_view,
     ...(!!manufacturerId && { m_id: manufacturerId }),
-    ...baseFilters,
     ...filtersValues,
   });
 
@@ -72,7 +71,7 @@ const useSearchLoadResults = () => {
       if (searchTimeoutId) clearTimeout(searchTimeoutId);
       dispatch(loadBomListThunk(1, true));
       dispatch(
-        loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, baseFilters, {
+        loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, null, {
           smart_view,
           ...(!!manufacturerId && { m_id: manufacturerId }),
           href: encodeURIComponent(href),
@@ -110,7 +109,7 @@ const useSearchLoadResults = () => {
     "search",
     {
       beforeConnect: () => {
-        dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, baseFilters));
+        dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, null));
       },
       afterConnect: (socketClient) => {
         batch(() => {
@@ -122,7 +121,6 @@ const useSearchLoadResults = () => {
           socketClient.send({
             ...{ search: query },
             ...filtersValues,
-            ...baseFilters,
             page,
             page_size: pageSize,
             order_by: orderBy,

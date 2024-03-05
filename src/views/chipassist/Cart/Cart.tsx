@@ -14,9 +14,7 @@ import { ID_ELFARO } from "@src/constants/server_constants";
 import { showAlertsModalMessageAction } from "@src/store/alerts/alertsActions";
 import CartItemsVer2 from "@src/views/chipassist/Cart/components/CartItems/CartItemsVer2";
 import { useNavigate } from "react-router-dom";
-import CartItems from "./components/CartItems/CartItems";
 import { useStyles } from "./cartStyles";
-import CartSuccess from "./components/CartSuccess/CartSuccess";
 import CartCheckout from "./components/CartCheckout/CartCheckout";
 
 type OrderType = "order" | "rfq";
@@ -103,8 +101,7 @@ const Cart = () => {
     <Page title={t("title")} description={t("description")}>
       <Container maxWidth="xl">
         <Box mt={constants.id !== ID_ELFARO ? 5 : 0} mb={5}>
-          {!constants.isNewSearchPage && checkout.showSuccess && <CartSuccess />}
-          {!checkout.open && (constants.isNewSearchPage ? <CartItemsVer2 /> : <CartItems />)}
+          {!checkout.open && <CartItemsVer2 />}
           {checkout.open && (
             <div className={classes.checkoutContainer}>
               <Button onClick={handleCheckoutClose} className={classes.checkoutBack}>

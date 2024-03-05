@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { updateObject } from "@src/utils/utility";
-import constants from "@src/constants/constants";
 import { CartActionTypes, CartInfo, CartState } from "./cartTypes";
 import * as actionTypes from "./cartTypes";
 
@@ -73,7 +72,7 @@ export default function cartReducer(state = initialState, action: CartActionType
       action.payload.cartItems.forEach((line: any) => {
         const product = action.payload.products.find((prod: any) => line.product === prod.data.id);
         const stockrecord = product?.data.stockrecords.find((item: any) => item.id === line.stockrecord);
-        if ((constants.isNewSearchPage && product) || (product && stockrecord)) {
+        if (product) {
           items.push({
             id: uuidv4(),
             product: product.data,
@@ -143,10 +142,7 @@ export default function cartReducer(state = initialState, action: CartActionType
         "unauth_cart",
         JSON.stringify(
           cartItems.map((val: any) => {
-            if (
-              (constants.isNewSearchPage && val.product === item.product.id) ||
-              (val.product === item.product.id && val.stockrecord === item.stockrecord.id)
-            ) {
+            if (val.product === item.product.id) {
               return {
                 ...val,
                 price: price || val.price,
