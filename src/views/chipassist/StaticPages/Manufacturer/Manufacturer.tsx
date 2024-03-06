@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { manufacturers } from "@src/constants/manufacturers";
 import { Container, useMediaQuery, useTheme } from "@material-ui/core";
 import placeholderImg from "@src/images/cpu.png";
@@ -49,18 +49,27 @@ export const Manufacturer = () => {
 
   const classes = useStyles();
 
+  const navigate = useNavigate();
+
   const appClasses = useAppTheme();
 
   const theme = useTheme();
 
   const currentManufacturer = manufacturers.find((manufacturer) => {
     const name_string = manufacturer.name.toLowerCase().trim().split(" ");
+    console.log(name, name_string);
     return name_string.includes(name) || name === name_string.join("");
   });
 
+  console.log(currentManufacturer);
+
+  const keyForId = Object.keys(companyNames).find((key) => {
+    return currentManufacturer.name === key;
+  });
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  const id = companyNames[`${currentManufacturer.name}`];
+
+  const id = companyNames[keyForId];
 
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -94,13 +103,15 @@ export const Manufacturer = () => {
           className={appClasses.buttonCreate}
           style={{ marginTop: "20px" }}
           onClick={() => {
-            window.location.href = `/search?query=${encodeURIComponent(
-              `MANUFACTURER:${
-                currentManufacturer.name?.trim().includes(" ")
-                  ? `"${currentManufacturer.name}"`
-                  : currentManufacturer.name?.trim()
-              }`,
-            )}${id && `&m_id=${id}`}`;
+            navigate(
+              `/search?query=${encodeURIComponent(
+                `MANUFACTURER:${
+                  currentManufacturer.name?.trim().includes(" ")
+                    ? `"${currentManufacturer.name}"`
+                    : currentManufacturer.name?.trim()
+                } `,
+              )}&m_id=${id}`,
+            );
           }}
         >
           <span className="MuiButton-label" style={{ padding: "8px 10px" }}>
@@ -111,5 +122,4 @@ export const Manufacturer = () => {
     </Container>
   );
 };
-
 export default Manufacturer;
