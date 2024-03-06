@@ -82,6 +82,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
       padding: "5px",
     },
   },
+  partNumberWrapper: {
+    paddingLeft: 15,
+    position: "relative",
+    display: "inline-block",
+  },
   partNumberInput: {
     width: 220,
     "& input": {
@@ -106,6 +111,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   errorIcon: {
     color: red[500],
     fontSize: "1.2rem",
+  },
+  errorIconWrapper: {
+    cursor: "help",
+    position: "absolute",
+    display: "flex",
+    top: "50%",
+    transform: "translateY(-50%)",
+    left: "calc(100% + 3px)",
   },
   errorText: {
     position: "absolute",

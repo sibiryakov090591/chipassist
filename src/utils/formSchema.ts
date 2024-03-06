@@ -90,9 +90,7 @@ const email = {
 };
 
 const policyConfirm = {
-  ...{
-    checked: { message: `^${t("errors.privacy_policy")}` },
-  },
+  checked: { message: `^${t("errors.privacy_policy")}` },
 };
 
 const inn = {

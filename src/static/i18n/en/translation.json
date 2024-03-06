@@ -1327,7 +1327,7 @@
       "in_stock_plural": "items in stock",
       "out_stock": "Stock quantity is N/A",
       "out_stock_hint": "ChipAssist will request this product from third-party suppliers",
-      "rfq_info": "Unit price and delivery lead time are available by"
+      "rfq_info": "Unit price and delivery time are available by request"
     },
     "copy": {
       "create_copy": "Create copy",
