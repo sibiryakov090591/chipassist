@@ -4,6 +4,7 @@ import { Dispatch } from "redux";
 import axios from "@src/utils/axios";
 import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
 import { isTestAccount } from "@src/utils/auth";
+import { authSuccess } from "@src/store/authentication/authActions";
 import * as actionTypes from "./profileTypes";
 import { CREATE_ADDRESS_ARRAY, Partner, UPDATE_ADDRESS_ARRAY } from "./profileTypes";
 
@@ -48,7 +49,8 @@ export const loadProfileInfoThunk = () => {
       .catch((error: any) => {
         console.log("***LOAD_PROFILE_ERROR", error);
         throw error;
-      });
+      })
+      .finally(() => dispatch(authSuccess()));
   };
 };
 

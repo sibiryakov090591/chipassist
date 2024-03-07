@@ -10,7 +10,7 @@ import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Reset from "@src/views/chipassist/Reset/Reset";
-import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
+import checkIsAuthenticated, { getAuthToken, isAuthPage } from "@src/utils/auth";
 import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
 import { checkUserActivityStatus, saveHref, saveUtm } from "@src/store/common/commonActions";
 import ErrorBoundary from "@src/components/ErrorBoundary";
@@ -156,7 +156,7 @@ const ChipAssistApp = () => {
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
 
   const dispatch = useAppDispatch();
-  const isAuthToken = useAppSelector((state) => state.auth.token !== null);
+  const isAuthToken = !!getAuthToken();
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);

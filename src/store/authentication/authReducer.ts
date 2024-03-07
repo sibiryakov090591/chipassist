@@ -6,7 +6,7 @@ import { AuthActionTypes, AuthState } from "./authTypes";
 const initialState: AuthState = {
   token: getAuthToken() || null,
   error: null,
-  loading: false,
+  loading: !!getAuthToken(),
   email: null,
   registerData: null,
 };
@@ -33,7 +33,7 @@ const authReducer = (state = initialState, action: AuthActionTypes) => {
       });
     case actionTypes.AUTH_SUCCESS:
       return updateObject(state, {
-        token: action.token,
+        ...(!!action.token && { token: action.token }),
         error: null,
         loading: false,
         registerData: null,

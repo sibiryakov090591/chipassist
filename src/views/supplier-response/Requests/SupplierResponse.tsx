@@ -53,6 +53,7 @@ import SupplierSelect from "@src/components/SupplierSelect/SupplierSelect";
 import { format } from "date-fns";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import useCurrency from "@src/hooks/useCurrency";
+import useIsAuthenticated from "@src/hooks/useIsAuthenticated";
 import { useStyles } from "./supplierResponseStyles";
 import ResponseItem from "./ResponseItem/ResponseItem";
 
@@ -97,7 +98,7 @@ const SupplierResponse: React.FC = () => {
   const rfqs = useAppSelector((state) => state.rfq.rfqs);
   const rfqResponseData = useAppSelector((state) => state.rfq.rfqResponseData);
   const isLoading = useAppSelector((state) => state.rfq.rfqsLoading);
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const { isAuthLoaded, isAuthenticated } = useIsAuthenticated();
 
   const [items, setItems] = useState<{ [key: string]: IResponseItem[] }>(null);
   const [sending, setSending] = useState(false);
@@ -163,7 +164,7 @@ const SupplierResponse: React.FC = () => {
   }, [openPopper]);
 
   useEffect(() => {
-    if ((selectedPartner || selectedPartner === false) && filters) {
+    if (isAuthLoaded && (selectedPartner || selectedPartner === false) && filters) {
       dispatch(
         getSupplierRfqs(
           page,
@@ -437,7 +438,7 @@ const SupplierResponse: React.FC = () => {
               <div className={classes.alertTitle}>You can`t reply to requests as you are not a supplier</div>
             </Alert>
           )}
-          {!isAuthenticated && (
+          {!isAuthenticated && isAuthLoaded && (
             <Alert className={classes.alert} severity="warning">
               <div>
                 <div className={classes.alertTitle}>Please sign in to see the details and be able to respond</div>
@@ -550,7 +551,7 @@ const SupplierResponse: React.FC = () => {
               />
             </FiltersContainer>
           </div>
-          {isLoading && <Preloader title="Requests are loading..." />}
+          {(isLoading || !isAuthLoaded) && <Preloader title="Requests are loading..." />}
           {!isLoading && items && !Object.keys(items).length && (
             <div className={classes.empty}>Nothing has been found</div>
           )}
