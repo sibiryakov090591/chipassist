@@ -53,7 +53,7 @@ export default function common(state = initialState, action: actionTypes.CommonA
         selected: currencies.find((val) => val?.code === (localCurrencyCode || action.payload)) || state.selected,
       };
     case actionTypes.SET_CURRENCY_RATE: {
-      if (!action.payload.rates) return state;
+      if (!Array.isArray(action.payload.rates)) return state;
 
       const rates = action.payload.rates.map((val) => {
         const currency = state.currencyList.find((cur) => val.currency?.toUpperCase() === cur.code);
