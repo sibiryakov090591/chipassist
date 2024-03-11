@@ -30,7 +30,7 @@ const companyNames = {
   "Nation Technologies": 32055,
   "Texas Instruments": 3681,
   Rockchip: 4033,
-  "ON Semiconductors": 129,
+  "ON Semiconductor": 129,
   Maxscend: 32056,
   Murata: 945,
   Sanechips: 32057,
