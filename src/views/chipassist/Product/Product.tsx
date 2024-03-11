@@ -16,9 +16,13 @@ import { getAttributes, getImage } from "@src/utils/product";
 import Error404 from "@src/views/chipassist/Error404";
 import placeholderImg from "@src/images/cpu.png";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./productStyles";
 
 const img = require("@src/images/cpu.png");
+
+const isICSearch = constants.id === ID_ICSEARCH;
 
 const ProductView = () => {
   const { partnumber, stockrecordId } = useParams<{ partnumber: string; stockrecordId: string }>();
@@ -70,13 +74,17 @@ const ProductView = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    let params = {};
+    if (isICSearch) {
+      params = { ...params, base_num_in_stock: 1 };
+    }
     if (productId) {
-      dispatch(loadProductById(productId)).finally(() => setIsLoading(false));
+      dispatch(loadProductById(productId, params)).finally(() => setIsLoading(false));
     } else {
-      dispatch(loadStockrecordById(stockrecordId)) // At first we suppose that it is stockrecord id
+      dispatch(loadStockrecordById(stockrecordId, params)) // At first we suppose that it is stockrecord id
         .then((sr: Stockrecord) => {
           // setStockrecord(sr);
-          dispatch(loadProductById(sr.product)).finally(() => setIsLoading(false));
+          dispatch(loadProductById(sr.product, params)).finally(() => setIsLoading(false));
         })
         .catch(() => setIsLoading(false));
     }
