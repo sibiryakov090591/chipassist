@@ -183,7 +183,7 @@ export const manufacturers = [
       "Rockchip - это китайская компания-производитель полупроводников, которая разрабатывает интегральные схемы для таких приложений, как мультимедийные планшеты, смартфоны и мини-ПК. Компания была основана в 2001 году и известна своими решениями System on Chip (SoC), которые используются в широком спектре электронных устройств. Продукты Rockchip широко используются в устройствах на базе Android и приобрели популярность благодаря своей производительности и стоимостной эффективности.",
   },
   {
-    name: "ON Semiconductors",
+    name: "ON Semiconductor",
     description:
       "ON Semiconductor is a leading provider of power and signal management, discrete, and custom semiconductor solutions. The company's products help engineers solve their unique design challenges in automotive, communications, computing, consumer, industrial, medical, and military/aerospace applications.",
     image: "https://www.onsemi.com/~/media/Website%20Images/globalheader.jpg",
