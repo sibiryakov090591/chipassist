@@ -143,7 +143,13 @@ const TopBar = (props) => {
 
   const logoLink = (
     <div className={classes.logoCont}>
-      <Link to="/" onClick={() => window.location.pathname === "/" && navigate(0)}>
+      <Link
+        to="/"
+        onClick={() => {
+          window.scrollTo({ top: 0 });
+          if (window.location.pathname === "/") navigate(0);
+        }}
+      >
         <img alt="Logo" className={classes.logoImg} src={logo_img} />
       </Link>
     </div>

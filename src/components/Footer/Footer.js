@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
@@ -20,6 +20,7 @@ let build = "";
 
 const Footer = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
   try {
     if (constants.builds) {
       build = constants.builds;
@@ -63,6 +64,19 @@ const Footer = () => {
     );
   };
 
+  const logoLink = (
+    <Link
+      to="/"
+      onClick={() => {
+        window.scrollTo({ top: 0 });
+        if (window.location.pathname === "/") navigate(0);
+      }}
+    >
+      <img alt="Logo" className={classes.logoImg} src={logo} />
+      {constants.id === ID_ICSEARCH && <br />}
+    </Link>
+  );
+
   return (
     <div className={classes.root}>
       <footer className={isSupplierResponse ? classes.supplierFooter : classes.footer}>
@@ -70,9 +84,7 @@ const Footer = () => {
           <Container maxWidth="lg" className={classes.bottomCont}>
             <Box className={classes.footerWrapper}>
               <Box className={classes.logo}>
-                <a href="/">
-                  <img alt="Logo" className={classes.logoImg} src={logo} />
-                </a>
+                {logoLink}
                 {isDownSm && (
                   <Box className={clsx(classes.navGroup)} style={{ marginTop: "12px" }}>
                     <a className={classes.navLink} style={{ fontWeight: "normal" }} href="mailto:info@chipassist.com">
@@ -256,10 +268,7 @@ const Footer = () => {
           <Container className={classes.icsearchContainer} maxWidth="xl">
             <Box className={classes.footerWrapper}>
               <Box className={classes.logo}>
-                <a href="/">
-                  <img alt="Logo" className={classes.logoImg} src={logo} />
-                  <br />
-                </a>
+                {logoLink}
                 <div style={{ marginLeft: "0.7em" }}>
                   <Box className={classes.navLink}>
                     <a style={{ color: "white" }} href="mailto:info@icsearch.ru">
