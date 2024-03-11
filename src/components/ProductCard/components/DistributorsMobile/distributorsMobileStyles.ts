@@ -74,6 +74,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         paddingLeft: "12px !important",
       },
     },
+    mobileContactButton: {
+      display: "flex",
+      padding: "8px 4px 12px",
+      justifyContent: "center",
+      "& button": {
+        minWidth: 120,
+      },
+    },
     tdIcon: {
       width: 43,
       textAlign: "end",

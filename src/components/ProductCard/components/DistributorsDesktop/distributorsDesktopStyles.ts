@@ -389,7 +389,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     dateUpdated: {
       fontSize: 11,
-      lineHeight: "7px",
+      lineHeight: "11px",
       marginTop: 3,
       fontStyle: "italic",
     },

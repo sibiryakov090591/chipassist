@@ -66,7 +66,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
             <th className={classes.tdStock}>{t("distributor.stock")}</th>
             {!isXsDown && <th className={classes.tdPrice}>DC</th>}
             <th className={classes.tdPrice}>{isXsDown ? t("distributor.price") : t("distributor.moq_big")}</th>
-            <th className={classes.tdActions}></th>
+            {!isXXSDown && <th className={classes.tdActions}></th>}
             <th className={classes.tdIcon} />
           </tr>
         </thead>
@@ -80,6 +80,39 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
               const dateCode = getStockDataCode(val);
               const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
+
+              const contactButton = () => (
+                <>
+                  {isLoading ? (
+                    <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
+                      {<CircularProgress size={15} />}
+                    </td>
+                  ) : (
+                    <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
+                      {isShowProductLink ? (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={clsx(appTheme.hyperlink, classes.partnerLink)}
+                          onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
+                        >
+                          {isXXSDown ? t("sistributor.site") : t("distributor.visit")}
+                        </a>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                          onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
+                          size="small"
+                        >
+                          {isXXSDown ? t("distributor.con") : t("distributor.contact")}
+                        </Button>
+                      )}
+                    </td>
+                  )}
+                </>
+              );
 
               return (
                 <React.Fragment key={val.id}>
@@ -118,32 +151,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                         )}`) ||
                         ""}
                     </td>
-                    {isLoading ? (
-                      <td className={classes.tdActions}>{<CircularProgress size={15} />}</td>
-                    ) : (
-                      <td className={classes.tdActions}>
-                        {isShowProductLink ? (
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                            onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
-                          >
-                            {isXXSDown ? t("sistributor.site") : t("distributor.visit")}
-                          </a>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                            onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                            size="small"
-                          >
-                            {isXXSDown ? t("distributor.con") : t("distributor.contact")}
-                          </Button>
-                        )}
-                      </td>
-                    )}
+                    {!isXXSDown && contactButton()}
                     <td className={classes.tdIcon}>
                       <ExpandMoreIcon className={clsx(classes.icon, { expanded: isExpanded })} />
                     </td>
@@ -212,6 +220,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
                               </table>
                             </Box>
                           )}
+                          {isXXSDown && contactButton()}
                         </div>
                       </Collapse>
                     </td>
