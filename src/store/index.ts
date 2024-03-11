@@ -19,7 +19,6 @@ import products from "./products/productsReducer";
 import { ProductsState } from "./products/productTypes";
 import search from "./search/searchReducer";
 import { SearchState } from "./search/searchTypes";
-import { ChartState } from "./chart/chartTypes";
 import suggestions from "./suggestions/suggestionsReducer";
 import checkout from "./checkout/checkoutReducer";
 import bom from "./bom/bomReducer";
@@ -35,7 +34,6 @@ import manufacturers from "./manufacturers/manufacturersReducer";
 import rfq from "./rfq/rfqReducer";
 import pcb from "./pcb/pcbReducer";
 import adapter from "./adapter/adapterReducer";
-import chart from "./chart/chartReducer";
 import chat from "./chat/chatReducer";
 import blog from "./blog/blogReducer";
 import { BlogState } from "./blog/blogTypes";
@@ -58,7 +56,6 @@ const rootReducer = () =>
     currency,
     cart,
     checkout,
-    chart,
     manufacturers,
     orders,
     profile,
@@ -100,7 +97,6 @@ export interface RootState {
   manufacturers: ManufacturersState;
   rfq: RfqState;
   pcb: any;
-  chart: ChartState;
   progressModal: ProgressModalState;
   rfqList: any;
   sellerProfile: any;
