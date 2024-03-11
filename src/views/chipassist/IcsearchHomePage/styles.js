@@ -181,18 +181,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hero: {
-    background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 100%)",
+    background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073 155%)",
     padding: "20px 0 40px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     minHeight: "100vh",
-    [theme.breakpoints.down(1700)]: {
-      background: "linear-gradient(119.4deg, #015ed0ff 0%, #01D073cc 155%)",
-    },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       minHeight: "calc(100vh - 80px)",
+      paddingTop: 0,
     },
   },
   heroMenu: {
@@ -262,17 +260,18 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     position: "absolute",
     right: 0,
-    [theme.breakpoints.down("sm")]: {
-      width: 60,
-      height: "41px",
-    },
+
     [theme.breakpoints.down(1700)]: {
       height: 45,
       width: 68,
     },
+    [theme.breakpoints.down("sm")]: {
+      width: 60,
+      height: "41px",
+    },
   },
   searchButtonColor: {
-    backgroundColor: "#01cec0ff",
+    backgroundColor: "#16be9f",
     "&:hover": {
       opacity: 0.8,
     },
@@ -318,15 +317,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     fontWeight: 400,
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.7rem",
-      lineHeight: "3.3rem",
-      textAlign: "center",
-    },
-
-    [theme.breakpoints.down("xs")]: {
+      width: "100%",
       fontSize: "1.5rem",
       textAlign: "center",
+      justifyContent: "center",
       lineHeight: "normal",
+      marginBottom: "3rem",
     },
   },
   heroTitle: {
@@ -335,36 +331,30 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "3rem",
     paddingTop: "4.5rem",
     color: "#fff",
-    fontFamily: "Montserrat",
     [theme.breakpoints.down("sm")]: {
       textAlign: "center",
-      fontSize: "3.3rem",
-    },
-    [theme.breakpoints.down("xs")]: {
-      textAlign: "center",
-      fontSize: "1.9rem",
+      fontSize: "2.3rem",
       lineHeight: "3rem",
       marginBottom: "2rem",
+      paddingTop: 0,
+    },
+    [theme.breakpoints.up("sm")]: {
+      fontFamily: "Montserrat",
     },
   },
   heroMainContentContainer: {
     display: "flex",
     alignItems: "flex-end",
     justifyContent: "center",
-    [theme.breakpoints.up(1700)]: {
-      alignItems: "center",
-    },
   },
   heroItems: {
     marginTop: "3rem",
     display: "flex",
     justifyContent: "space-between",
     gap: "10px",
-    [theme.breakpoints.down("xs")]: {
+    maxWidth: 900,
+    [theme.breakpoints.down("sm")]: {
       alignItems: "center",
-    },
-    [theme.breakpoints.down(1700)]: {
-      maxWidth: 900,
     },
   },
   heroItem: {
@@ -372,7 +362,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#f2f1f4",
     maxWidth: 370,
     minWidth: 235,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       textAlign: "center",
       maxWidth: "none",
     },
@@ -402,6 +392,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "34px",
     background: "#01cec0ff",
     padding: "5px 15px 6px",
+  },
+  underSearchText: {
+    fontSize: "1.4rem",
+    fontWeight: "bold",
+    color: "#f2f1f4",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.3rem",
+      fontWeight: 400,
+      paddingTop: "10px",
+    },
   },
 }));
 

@@ -3,8 +3,7 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import { Page } from "@src/components";
 import { Box, Button, Container, Grid, Paper } from "@material-ui/core";
 import constants from "@src/constants/constants";
-import map from "@src/images/Homepage/icsearch/map.png";
-import map_afr from "@src/images/Homepage/icsearch/map_afr.svg";
+import map_replace from "@src/images/Homepage/icsearch/map-replace.png";
 import devices from "@src/images/Homepage/icsearch/devices.png";
 import board from "@src/images/Homepage/board_aloupr.svg";
 import clsx from "clsx";
@@ -100,6 +99,8 @@ export const IcsearchHomePage = () => {
   const theme = useTheme();
 
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const isLgUp = useMediaQuery(theme.breakpoints.up(1700));
 
@@ -205,7 +206,9 @@ export const IcsearchHomePage = () => {
 
         <Container maxWidth={isLgUp ? "xl" : "lg"} className={classes.heroMainContentContainer}>
           <div>
-            <h1 className={classes.heroTitle}>{t("page_title_1.reinvented")}</h1>
+            <h1 className={classes.heroTitle}>
+              {isSmDown ? t("page_title_1.reinvented_mobile") : t("page_title_1.reinvented")}
+            </h1>
             <span className={classes.heroSubTitle}>
               {isMdUp ? t("page_title_1.slogan") : t("page_title_1.slogan_mobile")}
             </span>
@@ -240,7 +243,7 @@ export const IcsearchHomePage = () => {
               </div>
             )}
             <div className={classes.heroItems}>
-              <p className={classes.heroItemTitle} style={{ textAlign: !isMdUp ? "center" : "left" }}>
+              <p className={classes.underSearchText} style={{ textAlign: !isMdUp ? "center" : "left" }}>
                 {t("hero_item4")}{" "}
                 <Link className={classes.pcb_link} to={"/pcb"}>
                   ссылке
@@ -248,13 +251,6 @@ export const IcsearchHomePage = () => {
               </p>
             </div>
           </div>
-          {isLgUp && (
-            <div style={{ width: "60%" }}>
-              <Box className={classes.imgWrapper} display="flex" alignItems="center" justifyContent="center">
-                <img style={{ width: "100%" }} src={map_afr} alt="Map" />
-              </Box>
-            </div>
-          )}
         </Container>
       </section>
 
@@ -270,7 +266,7 @@ export const IcsearchHomePage = () => {
             </Grid>
             <Grid item md={6} xs={12}>
               <Box className={classes.imgWrapper} display="flex" alignItems="center" justifyContent="center">
-                <img className={classes.mapImg} src={map} alt="Map" />
+                <img className={classes.mapImg} src={map_replace} alt="Map" />
               </Box>
             </Grid>
           </Grid>
