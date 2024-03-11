@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import { Box, Hidden } from "@material-ui/core";
-import logo from "@src/images/logo/on_red.png";
 import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
 import SellerMessageForm from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageForm/SellerMessageForm";
 import { useStyles } from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModalStyles";
@@ -10,12 +9,17 @@ import { useStyles as useRfqModalStyles } from "@src/views/chipassist/Rfq/compon
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { sellerMessageModalClose } from "@src/store/rfq/rfqActions";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+import logoCA from "@src/images/logo/on_red.png";
+
+const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
+const isICSearch = constants.id === ID_ICSEARCH;
+const logo = isChipAssist ? logoCA : `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: boolean }> = ({ isAuth, isExample }) => {
   const classes = useStyles();
@@ -24,7 +28,6 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
 
   const { open, partNumber } = useAppSelector((state) => state.rfq.sellerMessageModal);
   let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -54,7 +57,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
         isExample ? clsx(commonClasses.paper, "fullScreen", rfqModalClasses.container) : commonClasses.displayContents
       }
     >
-      {isChipAssist && (
+      {(isChipAssist || isICSearch) && (
         <Hidden smDown>
           <div className={rfqModalClasses.logoContainer}>
             <div className={rfqModalClasses.signIn}>
@@ -68,7 +71,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
               )}
               {!isAuthenticated && showLoginForm && (
                 <div onClick={showSignIn(false)} className={rfqModalClasses.link}>
-                  <DoubleArrowIcon /> {t("back")} RFQ
+                  <DoubleArrowIcon /> {t("back")}
                 </div>
               )}
             </div>
@@ -92,7 +95,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
           </>
         ) : (
           <Hidden smDown>
-            <h2 className={clsx(classes.header, { mobile: true })}>Sign in</h2>
+            <h2 className={clsx(classes.header, { mobile: true })}>{t("login.sign_in")}</h2>
           </Hidden>
         )}
         {!isAuthenticated && (
@@ -102,7 +105,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
               <span onClick={showSignIn(!showLoginForm)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                 {showLoginForm ? (
                   <span className={rfqModalClasses.backToRfq}>
-                    <DoubleArrowIcon /> {t("back")} RFQ
+                    <DoubleArrowIcon /> {t("back")}
                   </span>
                 ) : (
                   t("restricted.sign_in")

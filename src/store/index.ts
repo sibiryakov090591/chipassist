@@ -35,7 +35,6 @@ import manufacturers from "./manufacturers/manufacturersReducer";
 import rfq from "./rfq/rfqReducer";
 import pcb from "./pcb/pcbReducer";
 import adapter from "./adapter/adapterReducer";
-import maintenance from "./maintenance/maintenanceReducer";
 import chart from "./chart/chartReducer";
 import chat from "./chat/chatReducer";
 import blog from "./blog/blogReducer";
@@ -60,7 +59,6 @@ const rootReducer = () =>
     cart,
     checkout,
     chart,
-    maintenance,
     manufacturers,
     orders,
     profile,

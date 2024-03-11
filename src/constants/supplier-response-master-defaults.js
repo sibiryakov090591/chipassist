@@ -17,7 +17,6 @@ const defaults = {
     mainLogoLightBack: "logo_lightback.png",
     topBannerLogo: "",
   },
-  closedRegistration: false,
   extendedRegistration: true,
   currencyChanger: true,
   selectedCurrencyList: ["USD", "EUR"], // ["RUB", "USD", "EUR"]

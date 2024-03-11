@@ -250,20 +250,6 @@ export const useStyles = makeStyles((theme) => ({
   logoMobileCont: {
     display: "flex",
   },
-  maintenance: {
-    padding: "1em 4em",
-    textAlign: "center",
-    background: theme.palette.app.red400,
-    color: theme.palette.white,
-  },
-  maintenanceTitle: {
-    display: "inline-flex",
-    alignItems: "center",
-    margin: 0,
-  },
-  maintenanceIcon: {
-    marginRight: "10px",
-  },
   mobileTopBar: {
     display: "flex",
     justifyContent: "space-between",

@@ -15,7 +15,6 @@ import {
 } from "@src/store/checkout/checkoutActions";
 // import { CheckoutCardErrors } from "@src/store/checkout/checkoutTypes";
 import useAppTheme from "@src/theme/useAppTheme";
-// import { closedRegistration } from "@src/constants/defaults";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { getPrice } from "@src/utils/product";
 import { formatMoney } from "@src/utils/formatters";

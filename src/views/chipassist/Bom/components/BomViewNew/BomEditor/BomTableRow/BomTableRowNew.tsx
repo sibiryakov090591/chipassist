@@ -11,6 +11,10 @@ import useCurrency from "@src/hooks/useCurrency";
 import clsx from "clsx";
 import StatusChip from "@src/components/StatusChip/StatusChip";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import constants from "@src/constants/constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
+import validate from "validate.js";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -18,7 +22,7 @@ interface Props {
   items: Row[];
   itemsData: GroupItem[];
   readonly: boolean;
-  qtyChangeHandler: (e: ChangeEvent<HTMLInputElement>, key: string) => void;
+  qtyChangeHandler: (e: ChangeEvent<HTMLInputElement>, key: string, err: any) => void;
   partNumberChangeHandler: (e: ChangeEvent<HTMLInputElement>, key: string) => void;
   toggleRfqApproved: () => void;
 }
@@ -38,11 +42,29 @@ const BomTableRow: React.FC<Props> = ({
   const commonClasses = useCommonStyles();
   const { currency, currencyPrice } = useCurrency();
 
+  const [errors, setErrors] = React.useState<any>(null);
+
+  const schema = React.useMemo(() => {
+    return {
+      quantity: {
+        numericality: {
+          greaterThan: 0,
+          lessThanOrEqualTo: 2147000000,
+          notGreaterThan: `^${t("column.qty")} ${t("errors.not_greater_than", { count: 0 })}`,
+          notLessThan: `^${t("column.qty")} ${t("errors.not_less_than", { count: 2147000000 })}`,
+        },
+      },
+    };
+  }, []);
+
   const onChangeHandler = (rowKey: string, field: string) => (e: ChangeEvent<HTMLInputElement>) => {
     switch (field) {
-      case "quantity":
-        qtyChangeHandler(e, rowKey);
+      case "quantity": {
+        const err = validate({ quantity: e.target.value || 0 }, schema);
+        setErrors(err);
+        qtyChangeHandler(e, rowKey, err);
         break;
+      }
       case "part_number":
         e.target.value = e.target.value.toUpperCase();
         partNumberChangeHandler(e, rowKey);
@@ -63,13 +85,12 @@ const BomTableRow: React.FC<Props> = ({
         items.map((row) => {
           const { stockrecord, unitPrice, isAvaible } = itemsData.find((itemData) => itemData.id === row.id);
           const manufacturer = row.product && row.product.manufacturer?.name;
-
           return (
             <TableRow key={row.key} className={`bom-table-row ${isEven(index) ? classes.oddRow : ""}`}>
               <TableCell className={classes.tdIndex}>{index}</TableCell>
               <TableCell>
                 <div className={classes.tableQuantityRef}>{row.part_number_ref}</div>
-                <div style={{ paddingLeft: 15 }}>
+                <div className={classes.partNumberWrapper}>
                   {/* <Highlighter */}
                   {/*  searchWords={simpleSplitForHighlighter(row.part_number_ref)} */}
                   {/*  textToHighlight={row.part_number} */}
@@ -86,8 +107,27 @@ const BomTableRow: React.FC<Props> = ({
                     className={classes.partNumberInput}
                     disabled={readonly}
                     error={!!row.errors?.length || !row.part_number}
-                    helperText={!!row.errors?.length && row.errors[0].message}
                   />
+                  {!!row.errors?.length && (
+                    <Tooltip
+                      interactive
+                      enterTouchDelay={1}
+                      classes={{ tooltip: commonClasses.tooltip }}
+                      title={
+                        <div>
+                          {constants.id === ID_ICSEARCH
+                            ? `${t(
+                                `edit.${row?.errors[0].message.split(" ")[0].toLowerCase()}`,
+                              )} ${row?.errors[0].message.split(" ").pop()}`
+                            : row.errors[0].message}
+                        </div>
+                      }
+                    >
+                      <div className={classes.errorIconWrapper}>
+                        <ErrorOutlineIcon className={commonClasses.errorIcon} />
+                      </div>
+                    </Tooltip>
+                  )}
                 </div>
               </TableCell>
               <TableCell className={classes.quantityTd}>
@@ -105,8 +145,20 @@ const BomTableRow: React.FC<Props> = ({
                       onFocus={(e: any) => e.target.select()}
                       className={classes.tableQuantity}
                       disabled={readonly}
-                      error={!row.quantity}
+                      error={!!errors?.quantity}
                     />
+                    {!!errors?.quantity && (
+                      <Tooltip
+                        interactive
+                        enterTouchDelay={1}
+                        classes={{ tooltip: commonClasses.tooltip }}
+                        title={<div>{errors.quantity[0]}</div>}
+                      >
+                        <div className={classes.errorIconWrapper}>
+                          <ErrorOutlineIcon className={commonClasses.errorIcon} />
+                        </div>
+                      </Tooltip>
+                    )}
                   </div>
                 </div>
               </TableCell>
@@ -118,9 +170,7 @@ const BomTableRow: React.FC<Props> = ({
                       {t("edit.in_stock", { count: stockrecord.num_in_stock })}
                     </div>
                     {!isAvaible ? (
-                      <div className={classes.info}>
-                        {t("edit.rfq_info")} <span className={classes.strongSpan}>RFQ</span>
-                      </div>
+                      <div className={classes.info}>{t("edit.rfq_info")}</div>
                     ) : (
                       <div className={classes.info}>
                         {t("column.unit_price")}:{" "}

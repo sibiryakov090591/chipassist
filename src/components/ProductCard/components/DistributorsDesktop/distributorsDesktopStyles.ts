@@ -13,44 +13,24 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       tableLayout: "fixed",
       wordWrap: "break-word",
     },
+    divider: {
+      color: theme.palette.app.blue200,
+      margin: "0 4px 0 2px",
+    },
     trTh: {
       fontWeight: 700,
-      borderBottom: "0.5px solid #c6c6c6",
-      background: theme.palette.primary.main,
+      borderBottom: "1px solid #c6c6c6",
+      backgroundColor: theme.palette.app.blue800,
       color: theme.palette.white,
-      "& th": {
-        background: theme.palette.primary.main,
+      "& > th": {
+        backgroundColor: theme.palette.app.blue800,
       },
     },
-    trElfaro: {
+    tr: {
       fontWeight: 300,
       "&:nth-child(even)": {
         backgroundColor: theme.palette.app.grey100,
       },
-    },
-    trIcSearch: {
-      fontWeight: 300,
-      cursor: "pointer",
-      transition: "all 0.2s",
-      "&:hover": {
-        background: theme.palette.secondary.light,
-        "& $trDynamicPriceBasedOnNumInStock": {
-          backgroundColor: "transparent",
-        },
-        "& $trDynamicPriceBasedOnNumInStockError": {
-          backgroundColor: "transparent",
-        },
-      },
-      "&:nth-child(even)": {
-        backgroundColor: theme.palette.app.grey100,
-        "&:hover": {
-          background: theme.palette.secondary.light,
-        },
-      },
-    },
-    trSelected: {
-      zIndex: 2,
-      background: `${theme.palette.secondary.light} !important`,
     },
     thRate: {
       width: 32,
@@ -61,55 +41,63 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     thDistributor: {
-      width: "10%",
+      width: "215px",
       textAlign: "left",
-      padding: "7px",
-      "@media screen and (max-width: 1200px)": {
-        // display: "none",
-      },
-    },
-    thDistributorICsearch: {
-      textAlign: "center",
-      width: "7%",
-      padding: "7px",
-      "@media screen and (max-width: 1200px)": {
-        display: "none",
+      padding: "7px 7px 7px 20px",
+      whiteSpace: "nowrap",
+      [theme.breakpoints.down("md")]: {
+        width: "16%",
       },
     },
     thSku: {
-      width: "15%",
+      width: "6%",
       textAlign: "left",
       padding: "7px",
     },
     thQty: {
-      width: 70,
+      width: "6%",
       textAlign: "center",
       padding: "7px",
     },
     thStock: {
-      width: 60,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
+    },
+    thIcon: {
+      width: 15,
     },
     thLeadPeriod: {
       textAlign: "right",
       padding: "7px",
-      width: 65,
+      width: "6%",
     },
     thMoq: {
-      width: 60,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thMpq: {
-      width: 60,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thPkg: {
-      width: 60,
+      width: "6%",
       textAlign: "right",
       padding: "7px",
+      [theme.breakpoints.down("sm")]: {
+        width: "8%",
+      },
     },
     thCurrency: {
       width: 45,
@@ -117,38 +105,56 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       padding: "7px",
     },
     thPricesHint: {
-      width: 22,
+      width: 15,
       textAlign: "center",
       padding: "7px",
     },
     th1: {
-      width: 55,
-      textAlign: "right",
-      padding: "7px",
-    },
-    th10: {
-      width: 55,
-      textAlign: "right",
-      padding: "7px",
-    },
-    th100: {
-      width: 60,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
       [theme.breakpoints.down("md")]: {
-        paddingRight: 24,
+        width: "10%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "11%",
+      },
+    },
+    th10: {
+      width: "9%",
+      textAlign: "right",
+      padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        width: "10%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "11%",
+      },
+    },
+    th100: {
+      width: "9%",
+      textAlign: "right",
+      padding: "7px",
+      [theme.breakpoints.down("md")]: {
+        width: "10%",
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "11%",
       },
     },
     th1000: {
-      width: 65,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
     },
     th10000: {
-      width: 70,
+      width: "9%",
       textAlign: "right",
       padding: "7px",
-      paddingRight: 24,
+      paddingRight: 10,
+    },
+    thActions: {
+      width: 125,
     },
     starIcon: {
       color: "#f5a623",
@@ -185,16 +191,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       alignItems: "center",
     },
     trDistributor: {
-      padding: "7px",
-      "@media screen and (max-width: 1200px)": {
-        // display: "none",
-      },
+      padding: "7px 7px 7px 20px",
     },
     trDistributorICsearch: {
       textAlign: "center",
       "@media screen and (max-width: 1200px)": {
         display: "none",
       },
+    },
+    active: {
+      background: "linear-gradient(180deg, #fffbe6 98%, #eeeeee 100%)",
     },
     trSku: {
       whiteSpace: "nowrap",
@@ -211,13 +217,22 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     trStock: {
+      fontWeight: "bold",
       textAlign: "right",
       padding: "7px",
+      paddingRight: "14px",
+      whiteSpace: "nowrap",
+    },
+    trLeadTime: {
+      textAlign: "right",
+      padding: "7px",
+      paddingRight: "14px",
     },
     trMoq: {
       textAlign: "right",
       minWidth: "70px",
       padding: "7px",
+      paddingRight: "14px",
     },
     trMpq: {
       textAlign: "right",
@@ -234,14 +249,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     trPkg: {
       textAlign: "right",
       minWidth: "70px",
-      paddingRight: "7px",
       borderRight: `0.5px solid ${theme.palette.app.grey300}`,
       padding: "7px",
+      paddingRight: "14px",
     },
     trCurrency: {
       textAlign: "center",
       paddingLeft: "7px",
       padding: "7px",
+      whiteSpace: "nowrap",
     },
     trPricesHint: {
       textAlign: "center",
@@ -253,26 +269,31 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     tr1: {
       textAlign: "right",
       padding: "7px",
+      paddingRight: "14px",
     },
     tr10: {
       textAlign: "right",
       padding: "7px",
+      paddingRight: "14px",
     },
     tr100: {
       textAlign: "right",
       padding: "7px",
-      [theme.breakpoints.down("md")]: {
-        paddingRight: 24,
-      },
+      paddingRight: "14px",
     },
     tr1000: {
       textAlign: "right",
       padding: "7px",
+      paddingRight: "14px",
     },
     tr10000: {
       textAlign: "right",
       padding: "7px",
-      paddingRight: 24,
+      paddingRight: "17px",
+    },
+    trOrder: {
+      textAlign: "end",
+      padding: "7px 14px",
     },
     trDynamicPriceBasedOnNumInStock: {
       width: 70,
@@ -286,9 +307,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       padding: "7px",
       color: "red",
       backgroundColor: "#e6e6e6",
-    },
-    trDynamicPriceIsSelected: {
-      backgroundColor: "transparent",
     },
     cartIcon: {
       color: theme.palette.app.green600,
@@ -352,6 +370,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "& th": { fontSize: "0.9em", textAlign: "right", padding: "2px 5px" },
       "& td": { fontSize: "0.9em", textAlign: "right", padding: "2px 5px" },
     },
+    priceIcon: {
+      color: "#1b93c2",
+    },
     exclusiveStatus: {
       display: "flex",
       justifyContent: "center",
@@ -362,10 +383,157 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       backgroundColor: "#ffd275",
       color: "#16697a",
     },
+    partnerName: {
+      fontWeight: "bold",
+      color: "#16697a !important",
+    },
     dateUpdated: {
       fontSize: 11,
-      lineHeight: "7px",
+      lineHeight: "11px",
       marginTop: 3,
+      fontStyle: "italic",
+    },
+    statIcon: {
+      width: "9px",
+      height: "9px",
+      marginRight: "1px",
+      marginTop: "1px",
+    },
+    country: {
+      display: "flex",
+      alignItems: "center",
+      marginLeft: "-3px",
+      lineHeight: "10px",
+    },
+    orderButton: {
+      fontWeight: "bold",
+      fontSize: 12,
+      minWidth: 100,
+    },
+    paddingRight: {
+      paddingRight: 20,
+    },
+    showMore: {
+      whiteSpace: "nowrap",
+      fontWeight: "normal",
+      cursor: "pointer",
+      fontSize: 10,
+      textDecoration: "underline",
+      textUnderlineOffset: "2px",
+    },
+    showMoreIcon: {
+      backgroundColor: "#567",
+      borderRadius: "50%",
+      width: 14,
+      height: 14,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      cursor: "pointer",
+      "& > svg": {
+        color: "#ffffff",
+        fontSize: 14,
+        transition: "all 150ms ease",
+      },
+    },
+    showMoreActive: {
+      transform: "rotate(180deg)",
+    },
+    tooltip: {
+      backgroundColor: "#ffffff",
+      color: "rgba(0, 0, 0, 0.87)",
+      fontSize: "inherit",
+      border: "1px solid #cccccc",
+      borderRadius: 2,
+      maxWidth: "300px",
+      padding: "12px",
+      boxShadow: "0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)",
+    },
+    tooltipPopper: {
+      zIndex: 1200,
+    },
+    tooltipTitle: {
+      margin: "0 0 3px",
+      fontSize: 20,
+      fontWeight: "bold",
+    },
+    strong: {
+      fontWeight: "bold",
+      color: theme.palette.app.green800,
+    },
+    tdActions: {
+      position: "relative",
+      textAlign: "center",
+      padding: 7,
+    },
+    contactSellerButton: {
+      textTransform: "none",
+      fontWeight: "bold",
+    },
+    partnerLink: {
+      color: "#16697a !important",
+      textDecoration: "underline",
+    },
+    bestOffer: {
+      border: "1px solid #16BEA3",
+      borderRadius: "2px",
+      backgroundColor: "#fff",
+    },
+    bestOfferLabel: {
+      position: "absolute",
+      top: "-8px",
+      right: 10,
+      fontSize: "0.75rem",
+      background: "#16BEA3",
+      color: "#fff",
+      padding: "0 7px",
+      borderRadius: "50ch",
+      fontWeight: 600,
+      lineHeight: "1.1rem",
+    },
+    emptyStock: {
+      color: "#777",
+    },
+    qualityCheck: {
+      cursor: "help",
+      color: "#ffffff",
+      backgroundColor: theme.palette.app.blue800,
+      textAlign: "center",
+      position: "relative",
+      borderRadius: 5,
+      fontSize: 10,
+      fontWeight: "bold",
+      lineHeight: "14px",
+      padding: "2px",
+      marginLeft: 6,
+      minWidth: 110,
+      "& svg": {
+        color: "#ffffff",
+        position: "absolute",
+        top: 1,
+        right: 2,
+        fontSize: 12,
+      },
+    },
+    tooltipMaxWidth: {
+      maxWidth: 350,
+      fontSize: 14,
+      padding: "12px 16px",
+    },
+    geoPin: {
+      fontSize: "1rem",
+    },
+    sortLabel: {
+      color: "white!important",
+      transition: "opacity 0.15s ease",
+      "&:hover": {
+        opacity: "0.7!important",
+      },
+    },
+    sortLabelIcon: {
+      color: "white!important",
+      opacity: "1!important",
+      fontSize: "12px",
     },
   }),
 );

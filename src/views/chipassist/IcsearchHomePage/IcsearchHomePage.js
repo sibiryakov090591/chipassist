@@ -75,7 +75,7 @@ const companyNames = [
   "Nation Technologies",
   "Texas Instruments",
   "Rockchip",
-  "ON Semiconductors",
+  "ON Semiconductor",
   "Maxscend",
   "Murata",
   "Sanechips",

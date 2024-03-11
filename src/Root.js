@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import * as Sentry from "@sentry/react";
+import React, { Component, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -7,7 +6,6 @@ import { ThemeProvider } from "@material-ui/styles";
 import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { INIT_SENTRY } from "@src/config";
 import { I18nProvider } from "@src/services/I18nProvider/I18nProvider.tsx";
 import constants from "@src/constants/constants";
 import ChipAssistApp from "./ChipAssistApp";
@@ -21,8 +19,9 @@ import {
   ID_CLOUD,
   ID_DEV,
 } from "./constants/server_constants";
-import ElfaroApp from "./ElfaroApp";
-import SupplierResponseApp from "./SupplierResponseApp";
+
+const ElfaroApp = lazy(() => import("@src/ElfaroApp"));
+const SupplierResponseApp = lazy(() => import("@src/SupplierResponseApp"));
 
 class Root extends Component {
   render() {
@@ -43,8 +42,16 @@ class Root extends Component {
                   {[ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER, ID_DEV, ID_CLOUD].includes(constants.id) && (
                     <ChipAssistApp />
                   )}
-                  {constants.id === ID_ELFARO && <ElfaroApp />}
-                  {constants.id === ID_SUPPLIER_RESPONSE && <SupplierResponseApp />}
+                  {constants.id === ID_ELFARO && (
+                    <Suspense fallback={}>
+                      <ElfaroApp />
+                    </Suspense>
+                  )}
+                  {constants.id === ID_SUPPLIER_RESPONSE && (
+                    <Suspense fallback={}>
+                      <SupplierResponseApp />
+                    </Suspense>
+                  )}
                 </HistoryRouter>
               </HelmetProvider>
             </MuiPickersUtilsProvider>
@@ -55,7 +62,7 @@ class Root extends Component {
   }
 }
 
-export default INIT_SENTRY ? Sentry.withProfiler(Root) : Root;
+export default Root;
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,

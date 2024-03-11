@@ -168,48 +168,32 @@ const defaultRfqListState = (): RfqListFormState => ({
 export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean }> = ({ isModalMode, isExample }) => {
   const maxRfqRows = 10;
   const { t } = useI18n("rfq");
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const profileInfo = useAppSelector((state) => state.profile.profileInfo);
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const appTheme = useAppTheme();
-  const currency = useAppSelector((state) => state.currency.selected);
   const theme = useTheme();
   const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
+  const isICSearch = constants.id === ID_ICSEARCH;
+
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const profileInfo = useAppSelector((state) => state.profile.profileInfo);
+  const currency = useAppSelector((state) => state.currency.selected);
   const rfqListReduxState = useAppSelector((state) => state.rfqList.formState);
-  // const currencyField = useAppSelector((state) => state.currency);
+  const countries = useAppSelector((state) => state.checkout.countries);
+  const geolocation = useAppSelector((state) => state.profile.geolocation);
+
   const [formState, setFormState] = useState<FormState>(defaultState());
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [rfqListState, setRfqListState] = useState<RfqListFormState>(defaultRfqListState());
-  const debouncedState = useDebounce(formState, 300);
-  const debouncedRfqState = useDebounce(rfqListState, 300);
-  const countries = useAppSelector((state) => state.checkout.countries);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
   const [billingAddress, setBillingAddress] = useState(null);
   const [needToChange, setNeedToChange] = useState(false);
   const [prevFilledInputIndex, setPrevFilledInputIndex] = useState(0);
   const [phoneValue, setPhoneValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const isICSearch = constants.id === "icsearch";
 
-  const addButtonClickHandler = () => {
-    const newRfq: RfqItem = {
-      index: rfqListState.values.length,
-      isDisabled: true,
-      MPN: "",
-      manufacturer: "",
-      quantity: "",
-      price: "",
-    };
-    const lastRfq = rfqListState.values[rfqListState.values.length - 1];
-
-    if (lastRfq.MPN !== "" || lastRfq.manufacturer !== "") {
-      newRfq.isDisabled = false;
-    }
-    setRfqListState((prevState) => ({ ...prevState, values: [...prevState.values, newRfq] }));
-    return 0;
-  };
+  const debouncedState = useDebounce(formState, 300);
+  const debouncedRfqState = useDebounce(rfqListState, 300);
 
   useEffect(() => {
     setRfqListState((prevState) => ({ ...prevState, values: rfqListReduxState.values }));
@@ -359,6 +343,24 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
     }
   }, [needToChange]);
 
+  const addButtonClickHandler = () => {
+    const newRfq: RfqItem = {
+      index: rfqListState.values.length,
+      isDisabled: true,
+      MPN: "",
+      manufacturer: "",
+      quantity: "",
+      price: "",
+    };
+    const lastRfq = rfqListState.values[rfqListState.values.length - 1];
+
+    if (lastRfq.MPN !== "" || lastRfq.manufacturer !== "") {
+      newRfq.isDisabled = false;
+    }
+    setRfqListState((prevState) => ({ ...prevState, values: [...prevState.values, newRfq] }));
+    return 0;
+  };
+
   const onBlurHandler = (name: string) => () => {
     return setFormState((prevState) => ({
       ...prevState,
@@ -468,12 +470,13 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
 
   const createDataRfqList = () => {
     return rfqListState.values
-      .filter((elem) => elem.MPN !== "" && elem.quantity !== "")
+      .filter((elem) => elem.MPN && elem.quantity)
       .map((rfq) => ({
         part_number: rfq.MPN.replace(/\s/g, ""),
-        manufacturer: rfq.manufacturer,
         quantity: rfq.quantity,
-        price: rfq.price !== "" ? rfq.price : 0,
+        currency: currency.code,
+        ...(!!rfq.manufacturer && { manufacturer: rfq.manufacturer }),
+        ...(!!rfq.price && { price: rfq.price }),
       }));
   };
 

@@ -4,25 +4,18 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { batch } from "react-redux";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import ScrollUpButton from "react-scroll-up-button";
-import { INIT_SENTRY } from "@src/config";
 import constants from "@src/constants/constants";
 import useUserActivity from "@src/services/UserActivity/useUserActivity";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Reset from "@src/views/chipassist/Reset/Reset";
-import Maintenance from "@src/views/chipassist/Maintenance";
-import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
+import checkIsAuthenticated, { getAuthToken, isAuthPage } from "@src/utils/auth";
 import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
-import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
 import { checkUserActivityStatus, saveHref, saveUtm } from "@src/store/common/commonActions";
-import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
-import Error404 from "@src/views/chipassist/Error404";
 import HomePage from "@src/layouts/HomePage";
-import RegisterSuccess from "@src/views/chipassist/Register/RegisterSuccess";
-import RegisterClosedSuccess from "@src/views/chipassist/RegisterClosed/RegisterClosedSuccess";
 import Login from "@src/views/chipassist/Login/Login";
 import SearchResults from "@src/views/chipassist/Search/SearchResults";
 import "semantic-ui-css/semantic.min.css";
@@ -37,35 +30,51 @@ import AlertModal from "@src/components/Alerts/AlertModal";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import IcsearchHomePage from "@src/views/chipassist/IcsearchHomePage/IcsearchHomePage";
-import SellExcess from "@src/views/chipassist/SellExcess/SellExcess";
 import { getServiceTax } from "@src/store/checkout/checkoutActions";
 import ProgressModal from "@src/components/ProgressModal/ProgressModal";
 import { authCheckState, sendQuickRequestUnAuth } from "@src/store/authentication/authActions";
 import Preloader from "@src/components/Preloader/Preloader";
-import AddProductToListModal from "@src/components/Alerts/AddProductToListModal";
-import Register from "@src/views/chipassist/Register/Register.tsx";
 import ErrorRegister from "@src/views/chipassist/ErrorRegister/ErrorRegister";
 import { getUtm, lazyLoader } from "@src/utils/utility";
 import { loadMiscAction } from "@src/store/misc/miscActions";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
 import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
-import FAQ from "@src/views/chipassist/StaticPages/FAQ/FAQ";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
-import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
-import FormExamples from "@src/views/chipassist/FormExamples/FormExamples";
 import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
-import PrivacyPolicy from "@src/views/chipassist/StaticPages/PrivacyPolicy";
-import Unsubscribe from "@src/views/chipassist/StaticPages/Unsubscribe";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
-const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
-
+const ProvidedErrorBoundary = ErrorBoundary;
 const isShowFormExamplesPage = localStorage.getItem("show_form_example_page");
 
+const Error404 = lazy(() => lazyLoader(() => import(/* webpackChunkName: "404" */ "@src/views/chipassist/Error404")));
+const RegisterSuccess = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "register_success" */ "@src/views/chipassist/Register/RegisterSuccess")),
+);
+const Register = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "register" */ "@src/views/chipassist/Register/Register")),
+);
+const ChatPage = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "faq" */ "@src/views/chipassist/Chat/ChatPage")),
+);
+const FAQ = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "faq" */ "@src/views/chipassist/StaticPages/FAQ/FAQ")),
+);
+const FormExamples = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "form_examples" */ "@src/views/chipassist/FormExamples/FormExamples")),
+);
+const SellExcess = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "sell_excess" */ "@src/views/chipassist/SellExcess/SellExcess")),
+);
+const PrivacyPolicy = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "privacy_policy" */ "@src/views/chipassist/StaticPages/PrivacyPolicy")),
+);
+const Unsubscribe = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "unsubscribe" */ "@src/views/chipassist/StaticPages/Unsubscribe")),
+);
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
 );
@@ -142,14 +151,12 @@ export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
 
 const ChipAssistApp = () => {
   const location = useLocation();
-  const isRestricted = constants.closedRegistration;
   const isICSearch = constants.id === ID_ICSEARCH;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
 
   const dispatch = useAppDispatch();
-  const isAuthToken = useAppSelector((state) => state.auth.token !== null);
-  const maintenance = useAppSelector((state) => state.maintenance);
+  const isAuthToken = !!getAuthToken();
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
@@ -215,7 +222,6 @@ const ChipAssistApp = () => {
 
   useEffect(() => {
     batch(() => {
-      dispatch(loadMaintenanceThunk());
       dispatch(authCheckState());
 
       dispatch(getServiceTax());
@@ -277,18 +283,13 @@ const ChipAssistApp = () => {
     }
   }, [isAuthenticated, loadedChatPages]);
 
-  if (maintenance.loaded && maintenance.status === "CRITICAL") {
-    return <Maintenance />;
-  }
-
   if (
     isICSearch &&
-    !navigator.userAgent.includes("Prerender") &&
-    localStorage.getItem("open_icsearch_password") !== "1234"
+    localStorage.getItem("open_icsearch_password") !== "1234" &&
+    geolocation?.loaded &&
+    geolocation.country_code_iso3 !== "RUS"
   ) {
-    if (!geolocation?.loaded || geolocation?.country_code_iso3 !== "RUS") {
-      return null;
-    }
+    return null;
   }
 
   return (
@@ -297,14 +298,6 @@ const ChipAssistApp = () => {
         <HomePage>
           <Routes location={location}>
             <Route
-              path="/electronica2022/*"
-              element={<Navigate to={prevEmail ? "/auth/login" : "/auth/registration"} />}
-            />
-            <Route
-              path="/elec2022china/*"
-              element={<Navigate to={prevEmail ? "/auth/login" : "/auth/registration"} />}
-            />
-            <Route
               path="/Test"
               element={
                 <Suspense fallback={<Preloader title={""} />}>
@@ -312,14 +305,18 @@ const ChipAssistApp = () => {
                 </Suspense>
               }
             />
-            <Route
-              path="/messages"
-              element={
-                <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
-                  <ChatPage />
-                </PrivateRoute>
-              }
-            />
+            {!isICSearch && (
+              <Route
+                path="/messages"
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <PrivateRoute prevEmail={prevEmail} isAuthenticated={isAuthenticated}>
+                      <ChatPage />
+                    </PrivateRoute>
+                  </Suspense>
+                }
+              />
+            )}
             <Route
               path="/parts/*"
               element={
@@ -344,9 +341,25 @@ const ChipAssistApp = () => {
               }
             />
             <Route path="/" element={constants.id === ID_ICSEARCH ? <IcsearchHomePage /> : <ChipAssistHomePage />} />
-            {constants.id !== ID_ICSEARCH && <Route path="/sell-excess-inventory" element={<SellExcess />} />}
-            <Route path="/auth/registration" element={<Register />} />
-            <Route path="/registered" element={isRestricted ? <RegisterClosedSuccess /> : <RegisterSuccess />} />
+            {constants.id !== ID_ICSEARCH && (
+              <Route
+                path="/sell-excess-inventory"
+                element={
+                  <Suspense fallback={}>
+                    <SellExcess />
+                  </Suspense>
+                }
+              />
+            )}
+            <Route
+              path="/auth/registration"
+              element={
+                <Suspense fallback={}>
+                  <Register />
+                </Suspense>
+              }
+            />
+            <Route path="/registered" element={<RegisterSuccess />} />
             <Route path="/expired-link" element={<ErrorRegister />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/reset" element={<Reset />} />
@@ -585,9 +598,32 @@ const ChipAssistApp = () => {
                 }
               />
             )}
-            {isShowFormExamplesPage && <Route path={"/dev_tools/forms"} element={<FormExamples />} />}
-            <Route path="/email-unsubscribe" element={<Unsubscribe />} />
-            <Route path="/*" element={<Error404 />} />
+            {isShowFormExamplesPage && (
+              <Route
+                path={"/dev_tools/forms"}
+                element={
+                  <Suspense fallback={<Preloader title={""} />}>
+                    <FormExamples />
+                  </Suspense>
+                }
+              />
+            )}
+            <Route
+              path="/email-unsubscribe"
+              element={
+                <Suspense fallback={<Preloader title={""} />}>
+                  <Unsubscribe />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/*"
+              element={
+                <Suspense fallback={<Preloader title={""} />}>
+                  <Error404 />
+                </Suspense>
+              }
+            />
           </Routes>
         </HomePage>
         {/* <FeedbackButton /> */}
@@ -601,7 +637,7 @@ const ChipAssistApp = () => {
       <AlertBottomLeft />
       <AlertTopRight />
       <AlertModal />
-      <AddProductToListModal />
+      {/* <AddProductToListModal /> */}
       {!isICSearch && <CookieAlert />}
     </div>
   );

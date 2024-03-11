@@ -1,70 +1,109 @@
 import React, { useEffect, useState } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import clsx from "clsx";
-import { Paper, Hidden, Button } from "@material-ui/core";
-import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { addCartItem } from "@src/store/cart/cartActions";
-import { isCartEnabled } from "@src/constants/common";
+import { Paper, Hidden, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
-import {
-  getDefaultQty,
-  getDynamicMoq,
-  getImage,
-  getPrice,
-  isDuplicateStockrecord,
-  isProductAvailable,
-  validateQuantity,
-} from "@src/utils/product";
-import { rfqModalOpen } from "@src/store/rfq/rfqActions";
-import _ from "lodash";
-import { formatMoney } from "@src/utils/formatters";
+import { getDynamicMoq, getImage, getPrice, isProductAvailable } from "@src/utils/product";
+import { rfqModalOpen, setQualityCheckData, setSellerMessageData } from "@src/store/rfq/rfqActions";
 import useCurrency from "@src/hooks/useCurrency";
 import { splitForHighlighter } from "@src/utils/search";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { ID_ELFARO } from "@src/constants/server_constants";
-import constants from "@src/constants/constants";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import placeholderImg from "@src/images/cpu.png";
-// import QuickOrderModal from "@src/views/elfaro/Product/components/QuickOrderModal/QuickOrderModal";
-import AddToBomButton from "../AddToBomButton/AddToBomButton";
-import { useStyles } from "./productCardStyles";
-import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
+import moq_icon from "@src/images/search_page/moq.png";
+import suppliers_icon from "@src/images/search_page/suppliers.svg";
+import time_icon from "@src/images/search_page/time.svg";
+import usd_icon from "@src/images/search_page/usd.svg";
+import warehouse_icon from "@src/images/search_page/warehouse.svg";
+import { formatMoney } from "@src/utils/formatters";
+// import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
+import RequestButton from "@src/components/ProductCard/components/RequestButton/RequestButton";
+import { useInView } from "react-intersection-observer";
+import { SetProductIntoViewport } from "@src/store/products/productsActions";
+import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
-import { NumberInput } from "../Inputs";
-import { useStyles as useDistributorsStyles } from "./components/DistributorsDesktop/distributorsDesktopStyles";
+import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
+import { useStyles } from "./productCardStyles";
 
 const ProductCard = (props) => {
+  const { t } = useI18n("product");
   const { product, searchQuery, viewType } = props;
-  const [sortedStockrecords, setSortedStockrecords] = useState([]);
-  const [activeSearchTables, setActiveSearchTable] = useState({});
-  const [selectedStockrecords, setSelectedStockrecords] = useState([]);
-  const [quantityMap, setQuantityMap] = useState({});
-  const [inCart, setInCart] = useState(false);
-  const [cost, setCost] = useState(0);
-  const [searchQueryArray, setSearchQueryArray] = useState([]);
-  const [elfaroQtyError, setElfaroQtyError] = useState(null);
-  const [mainImage, setMainImg] = useState(null);
-  // const [openQuickOrderModal, setOpenQuickOrderModal] = useState(false);
-
   const classes = useStyles();
-  const distributorsClasses = useDistributorsStyles();
   const appTheme = useAppTheme();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const cartItems = useAppSelector((state) => state.cart.items);
-  // const [isValidSelectedStockrecord, setIsValidSelectedStockrecord] = useState(true);
-  const { t } = useI18n("product");
-  const { currency, currencyPrice } = useCurrency();
-  const navigate = useNavigate();
-  const currencyList = useAppSelector((state) => state.currency.currencyList);
-  const prevEmail = useAppSelector((state) => state.profile.prevEmail);
+  const { currencyPrice } = useCurrency();
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const isXsDown = useMediaQuery(theme.breakpoints.down(565));
+  const initialMobileCard = useMediaQuery(theme.breakpoints.down(800));
 
-  // const isAvailable = React.useMemo(() => {
-  //   if (sortedStockrecords[0]) return isProductAvailable(sortedStockrecords[0]);
-  //   return false;
-  // }, [sortedStockrecords]);
+  const smart_view = useAppSelector((state) => state.search.smart_view);
+  const partners = useAppSelector((state) => state.sellers.items);
+  // const cartItems = useAppSelector((state) => state.cart.items);
+  const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
+  const currency = useAppSelector((state) => state.currency);
+  const { isShow } = useAppSelector((state) => state.products.requestHint);
+
+  const { ref } = useInView({
+    threshold: 1,
+    skip: isSmDown || isShow || !!localStorage.getItem("product_request_hint_disabled"),
+    onChange: (inView) => {
+      if (!localStorage.getItem("product_request_hint_disabled") && inView) {
+        dispatch(SetProductIntoViewport(product.id));
+      }
+    },
+  });
+
+  const [collapseText, setCollapseText] = useState(true);
+  const [sortedStockrecords, setSortedStockrecords] = useState([]);
+  const [availableStockrecords, setAvailableStockrecords] = useState([]);
+  const [rfqStockrecords] = useState([]);
+  // const [showRfqStocks, setShowRfqStocks] = useState(false);
+  const [searchQueryArray, setSearchQueryArray] = useState([]);
+  const [mainImage, setMainImg] = useState(null);
+  const [rfq, setRfq] = useState(null);
+  // const [inCart, setInCart] = useState(false);
+  // const [inCartCount, setInCartCount] = useState(false);
+  const [requestedQty, setRequestedQty] = useState(null);
+
+  // useEffect(() => {
+  //   const cartItem = cartItems?.find((item) => item.product.id === product.id);
+  //   setInCart(!!cartItem);
+  //   setInCartCount(cartItem?.quantity || 0);
+  // }, [cartItems]);
+
+  useEffect(() => {
+    if (!rfq && rfqStockrecords.length) {
+      const data = {};
+
+      rfqStockrecords.forEach((sr) => {
+        // Price
+        sr.prices.forEach((price) => {
+          if (sr.num_in_stock && (!data.min_price || (data.min_price && data.min_price > price.price))) {
+            data.min_price = price.price;
+            data.min_price_currency = sr.price_currency;
+          }
+          if (sr.num_in_stock && (!data.max_price || (data.max_price && data.max_price < price.price))) {
+            data.max_price = price.price;
+            data.max_price_currency = sr.price_currency;
+          }
+        });
+        // Stock
+        if (!data.num_in_stock || (data.num_in_stock && data.num_in_stock < sr.num_in_stock)) {
+          data.num_in_stock = sr.num_in_stock;
+        }
+        // MOQ
+        data.min_moq = data.min_moq && sr.moq > data.min_moq ? data.min_moq : sr.moq;
+        data.max_moq = data.max_moq && sr.moq < data.max_moq ? data.max_moq : sr.moq;
+      });
+      // Suppliers
+      data.sellers = rfqStockrecords.length;
+      setRfq(data);
+    }
+  }, [rfqStockrecords]);
 
   useEffect(() => {
     if (product) {
@@ -74,431 +113,372 @@ const ProductCard = (props) => {
 
   useEffect(() => {
     if (searchQuery) {
-      setSearchQueryArray(
-        splitForHighlighter(
-          searchQuery,
-          `${product.upc} ${product.manufacturer ? product.manufacturer.name : "" || ""} ${product.description}`,
-        ),
-      );
+      setSearchQueryArray([
+        ...splitForHighlighter(searchQuery, product.upc),
+        ...splitForHighlighter(searchQuery, `${product.manufacturer?.name || ""} ${product.description || ""}`),
+      ]);
     }
   }, [searchQuery]);
 
   useEffect(() => {
-    if (sortedStockrecords.length) {
-      setSelectedStockrecords([sortedStockrecords[0]]);
-      const { num_in_stock } = sortedStockrecords[0];
-      const isAvaible = isProductAvailable(sortedStockrecords[0]);
-      const dynamicMoq = getDynamicMoq(sortedStockrecords[0]);
-      const defaultQty = isAvaible ? getDefaultQty(dynamicMoq, num_in_stock) : dynamicMoq;
-      setQuantityMap((prevState) => ({ ...prevState, [sortedStockrecords[0].id]: defaultQty }));
+    if (product.stockrecords && partners) {
+      let filteredMultipleStocks = product.stockrecords.filter((sr) => !!sr.id);
+      // .reduce((acc, val) => {
+      //   return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
+      // }, []);
+      if (smart_view) {
+        const globalSellersAmount = filteredMultipleStocks.filter((sRecord) => {
+          const partner = partners?.find((i) => i.id === sRecord.partner);
+          return partner && Object.prototype.hasOwnProperty.call(partner, "link_to_site");
+        }).length;
+        filteredMultipleStocks =
+          globalSellersAmount > 4
+            ? filteredMultipleStocks.filter((sRecord) => sRecord.num_in_stock > 0)
+            : filteredMultipleStocks;
+      }
+      const bestDateUpdated = filteredMultipleStocks.reduce((acc, sr) => {
+        const updatedTime = new Date(sr.date_updated.replace(/ /g, "T")).getTime();
+        return Math.max(acc, updatedTime);
+      }, 0);
+
+      setSortedStockrecords(
+        filteredMultipleStocks.map((val) => {
+          const isElfaroSeller = val.partner_name?.toLowerCase().includes("elfaro");
+          const dateUpdated = isElfaroSeller
+            ? Date.now() >= bestDateUpdated + 3000
+              ? new Date(bestDateUpdated + 3000).toISOString()
+              : new Date().toISOString()
+            : val.date_updated;
+          return {
+            ...val,
+            date_updated: dateUpdated,
+            delivery_sort_value: val.lead_period_str
+              ? Number(val.lead_period_str.replace(/\D/gi, ""))
+              : val.lead_period
+              ? Number(val.lead_period)
+              : 0,
+            datecode_sort_value:
+              (val.partner_sku.includes("datecode:") &&
+                val.partner_sku.match(/\d+/) &&
+                Number(val.partner_sku.match(/\d+/)[0])) ||
+              0,
+            price_1: currencyPrice(getPrice(1, val, false), val.price_currency) || 0,
+            price_10: currencyPrice(getPrice(10, val, false), val.price_currency) || 0,
+            price_100: currencyPrice(getPrice(100, val, false), val.price_currency) || 0,
+            price_1000: currencyPrice(getPrice(1000, val, false), val.price_currency) || 0,
+            price_10000: currencyPrice(getPrice(10000, val, false), val.price_currency) || 0,
+            isOnline: isProductAvailable(val) ? 1 : 0,
+            updatedTime: Date.now() - new Date(dateUpdated).getTime(),
+            moq: getDynamicMoq(val),
+          };
+        }),
+      );
+    }
+  }, [product.stockrecords, currency, smart_view, partners]);
+
+  useEffect(() => {
+    if (sortedStockrecords) {
+      // setAvailableStockrecords(sortedStockrecords.filter((sr) => isProductAvailable(sr, 1, ["No price"])));
+      // setRfqStockrecords(sortedStockrecords.filter((sr) => !isProductAvailable(sr, 1, ["No price"])));
+      setAvailableStockrecords(sortedStockrecords);
     }
   }, [sortedStockrecords]);
 
-  useEffect(() => {
-    if (cartItems && cartItems.length) {
-      // const cartStockrecords = cartItems.filter((v) => selectedStockrecords.some((sv) => sv.id === v.stockrecord?.id));
-      const allInCart =
-        !!selectedStockrecords.length &&
-        selectedStockrecords.every((v) => cartItems.some((sv) => v.id === sv.stockrecord?.id));
-      setInCart(allInCart);
-    }
-  }, [selectedStockrecords, cartItems]);
+  const sendRfqOpenModal = React.useCallback(
+    () => dispatch(rfqModalOpen(product.upc, 1, null, null, null, null, "rfq", product.id)),
+    [rfq],
+  );
+  const sellerMessageOpenModal = React.useCallback(
+    (sellerId, sellerName, stockrecordId) => (e) => {
+      e.stopPropagation();
+      return dispatch(setSellerMessageData(true, product.upc, sellerId, sellerName, stockrecordId));
+    },
+    [product],
+  );
+  const qualityCheckOpenModal = React.useCallback(
+    (sellerId, sellerName, stockrecordId) => (e) => {
+      e.stopPropagation();
+      return dispatch(setQualityCheckData(true, product.upc, sellerId, sellerName, stockrecordId));
+    },
+    [product],
+  );
 
   useEffect(() => {
-    const noDuplicatedStockrecords = product.stockrecords
-      .filter((sr) => !!sr.id)
-      .reduce((acc, val) => {
-        return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
-      }, []);
+    const requestedData = localStorage.getItem(product.id) && JSON.parse(localStorage.getItem(product.id));
+    if (requestedData) {
+      const prevDate = Number(requestedData.date);
+      const currentDate = Date.now();
+      const msInDay = 1000 * 60 * 60 * 24;
 
-    setSortedStockrecords(
-      _.orderBy(
-        noDuplicatedStockrecords.map((val) => ({
-          ...val,
-          price1: getPrice(1, val),
-          isOnline: isProductAvailable(val) ? 1 : 0,
-        })),
-        ["isOnline", "price1"],
-        ["desc", "asc"],
-      ),
-    );
-  }, [product.stockrecords]);
+      const diff = Math.floor((currentDate - prevDate) / msInDay);
 
-  useEffect(() => {
-    const res = selectedStockrecords.reduce((acc, sr) => {
-      const qty = quantityMap[sr.id];
-      return acc + Number(currencyPrice(getPrice(qty, sr), sr.price_currency)) * qty;
-    }, 0);
-
-    setCost(res);
-  }, [selectedStockrecords, quantityMap, currency, currencyList]);
-
-  useEffect(() => {
-    if (viewType === ID_ELFARO) {
-      const sr = sortedStockrecords[0];
-      if (!sr) return;
-
-      const qtyError = validateQuantity(quantityMap[sr.id], sr);
-      if (qtyError && !elfaroQtyError) setElfaroQtyError(qtyError);
-      if (!qtyError && elfaroQtyError) setElfaroQtyError(null);
-    }
-  }, [quantityMap]);
-
-  // const outOfStock =
-  //   !sortedStockrecords.length ||
-  //   !sortedStockrecords.filter((val) => {
-  //     return val.num_in_stock > 0 && !!val.prices.length && isUpdatedLessOneDay(val.date_updated);
-  //   }).length;
-
-  const isActiveTable = () =>
-    // productId
-    {
-      return true;
-      // return !!activeSearchTables[productId];
-    };
-
-  const setActiveTable = (productId) => {
-    const newActiveSearchTable = { ...activeSearchTables };
-    newActiveSearchTable[productId] = true;
-    setActiveSearchTable(newActiveSearchTable);
-  };
-
-  const removeActiveTable = (productId) => {
-    const newActiveSearchTable = { ...activeSearchTables };
-    delete newActiveSearchTable[productId];
-    setActiveSearchTable(newActiveSearchTable);
-  };
-
-  const countRowsInTable = 4;
-
-  const showAllOnclick = (productId) => {
-    setActiveTable(productId);
-  };
-
-  const hideAllOnclick = (productId) => {
-    removeActiveTable(productId);
-  };
-
-  const setSelectedStockrecordsHandler = (stockrecord) => {
-    setSelectedStockrecords((prevState) => {
-      if (prevState.some((v) => v.id === stockrecord.id)) return [...prevState.filter((v) => v.id !== stockrecord.id)];
-      return [...prevState, stockrecord];
-    });
-    const isAvaible = isProductAvailable(stockrecord);
-    const dynamicMoq = getDynamicMoq(stockrecord);
-    const { num_in_stock } = stockrecord;
-    const defaultQty = isAvaible ? getDefaultQty(dynamicMoq, num_in_stock) : dynamicMoq;
-
-    setQuantityMap((prevState) => {
-      const srQty = Object.keys(quantityMap).some((item) => +item === stockrecord.id);
-      if (srQty) {
-        const newState = prevState;
-        delete newState[stockrecord.id];
-        return newState;
+      if (diff >= 1) {
+        localStorage.removeItem(product.id);
+        setRequestedQty(null);
+      } else {
+        setRequestedQty(requestedData.value);
       }
-      return { ...prevState, [stockrecord.id]: defaultQty };
-    });
-  };
-
-  const handleAddToCart = () => {
-    if (inCart) {
-      return navigate("/cart");
     }
+  }, [shouldUpdateCard]);
 
-    if (selectedStockrecords.length) {
-      selectedStockrecords.forEach((stockrecord) => {
-        if (cartItems.some((item) => stockrecord?.id === item.stockrecord?.id)) {
-          return;
-        }
-        dispatch(addCartItem(product, stockrecord, quantityMap[stockrecord.id]));
-      });
-      // setSelectedStockrecords([]);
-    } else {
-      dispatch(addCartItem(product, sortedStockrecords[0], quantityMap[sortedStockrecords[0].id]));
-    }
-    return false;
+  // const handleAddToCart = () => {
+  //   if (inCart) {
+  //     return navigate("/cart");
+  //   }
+  //
+  //   return false;
+  //   // return dispatch(showAddToListModalAction(product));
+  // };
+
+  // const addToCartButton = (
+  //   <Button
+  //     variant="contained"
+  //     onClick={handleAddToCart}
+  //     onMouseOver={() => setHoverAddToList(true)}
+  //     onMouseOut={() => setHoverAddToList(false)}
+  //     className={clsx(classes.addToCart, "add-to-cart-button", {
+  //       [classes.inCart]: inCart,
+  //       [classes.inCartMobile]: inCart && isSmDown,
+  //     })}
+  //   >
+  //     {inCart ? (
+  //       hoverAddToList || isSmDown ? (
+  //         t("cart.in_list")
+  //       ) : (
+  //         <div className={classes.listIconWrapper}>
+  //           <img className={classes.listIcon} src={list_icon} alt="list icon" />
+  //           <span className={classes.listIconCount}>{inCartCount || 0}</span>
+  //           <span className={classes.listIconPcs}> pcs</span>
+  //         </div>
+  //       )
+  //     ) : (
+  //       t("cart.add_list")
+  //     )}
+  //   </Button>
+  // );
+
+  // const collapseRfqStocksHandler = () => {
+  //   if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
+  // };
+
+  const toggleCollapseText = () => {
+    setCollapseText((prev) => !prev);
   };
 
-  const handleAddToBomComplete = () => {
-    setSelectedStockrecords([]);
-    setQuantityMap({});
+  const getDescription = () => {
+    const descriptionInAttributes = product.attributes.find((attribute) => attribute.name === "Description");
+
+    return collapseText && isSmDown
+      ? descriptionInAttributes?.value?.slice(0, 100) || product.description?.slice(0, 100)
+      : descriptionInAttributes?.value || product.description || "";
   };
-
-  const handleOpenBomList = () => {
-    if (!isAuthenticated) {
-      navigate(prevEmail ? "/auth/login" : "/auth/registration");
-      return;
-    }
-    if (!selectedStockrecords.length && sortedStockrecords.length) {
-      const stockrecord = sortedStockrecords.find((val) => {
-        return val.num_in_stock > 0 && isUpdatedLessOneDay(val.date_updated) && !!val.prices?.length;
-      });
-      if (stockrecord) setSelectedStockrecordsHandler(stockrecord);
-    }
-  };
-
-  function isUpdatedLessOneDay(updatedDate) {
-    const msInDay = 24 * 60 * 60 * 1000;
-    return new Date().getTime() - Date.parse(updatedDate) < msInDay;
-  }
-
-  const handleSelectStockrecord = (stockrecord) => () => {
-    if (constants.id === ID_ELFARO) return; // First stockrecord will be always select
-    setSelectedStockrecordsHandler(stockrecord);
-  };
-
-  const handleChangeQty = (stockrecord) => (e) => {
-    let qty = parseInt(e.target.value);
-    if (isProductAvailable(stockrecord)) {
-      if (qty > stockrecord.num_in_stock) qty = stockrecord.num_in_stock;
-    }
-    const isSelected = selectedStockrecords.some((v) => v.id === stockrecord?.id);
-    if (!isSelected) setSelectedStockrecordsHandler(stockrecord);
-    setQuantityMap((prevState) => ({ ...prevState, [stockrecord.id]: qty }));
-  };
-
-  const sendQuickOrderOpenModal = () => {
-    const qty = quantityMap[sortedStockrecords[0]?.id];
-    return dispatch(rfqModalOpen(product.upc, qty, sortedStockrecords[0]));
-  };
-
-  const sendRfqOpenModal = () => {
-    const qty = Object.values(quantityMap).reduce((acc, item) => (acc > item ? acc : item), null);
-    dispatch(rfqModalOpen(product.upc, qty));
-  };
-
-  const addToBomButton = (
-    <AddToBomButton
-      onOpen={handleOpenBomList}
-      product={product}
-      stockrecords={selectedStockrecords}
-      quantityMap={quantityMap}
-      completeHandler={handleAddToBomComplete}
-      renderButton={(prps) => (
-        <Button
-          variant="contained"
-          className={`${clsx(appTheme.buttonAddToBom, classes.addButton)} add-to-bom-button`}
-          disabled={!selectedStockrecords.length}
-          {...prps}
-          style={{ height: 38 }}
-        >
-          <div>{t("bom.add_bom")}</div>
-        </Button>
-      )}
-    />
-  );
-
-  const quickOrderButton = (
-    <Button
-      variant="contained"
-      className={clsx(appTheme.buttonCreate)}
-      disabled={!selectedStockrecords.length}
-      onClick={sendQuickOrderOpenModal}
-      style={{ height: 38 }}
-    >
-      {isAuthenticated ? "Send request" : "Quick request"}
-    </Button>
-  );
-
-  const addToCartButton = (styles) => (
-    <Button
-      variant="contained"
-      onClick={handleAddToCart}
-      className={clsx(classes.addToCart, appTheme.buttonCreate, "add-to-cart-button", {
-        [classes.addToCartElfaro]: viewType === ID_ELFARO,
-        [classes.addedToCart]: inCart,
-      })}
-      disabled={!selectedStockrecords.length}
-      style={{ height: 38, ...styles }}
-    >
-      {inCart ? t("cart.in_cart") : t("cart.add_cart")}
-    </Button>
-  );
 
   return (
     <Paper
+      ref={ref}
       elevation={3}
-      className={clsx({
-        "product-card": true,
+      className={clsx("product-card", classes.productCard, {
         [classes.productCard]: true,
         [classes.productCardElfaro]: viewType === ID_ELFARO,
       })}
     >
-      <div className={classes.row} style={{ paddingTop: 21 }}>
-        <div className={classes.imageColumn}>
-          <Link
-            to={
-              viewType === ID_ELFARO
-                ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
-                : `/product/${encodeURIComponent(product.upc)}/${product.id}`
-            }
-            className={appTheme.hyperlink}
-          >
-            <img className={classes.image} src={mainImage} onError={() => setMainImg(placeholderImg)} />
-          </Link>
-        </div>
-        <div className={classes.titleColumn}>
-          <div name="product_name" id="product_name_id" className={classes.title}>
+      <div className={classes.row}>
+        <Box display="flex" justifyContent="space-between">
+          <div className={classes.imageColumn}>
             <Link
-              to={
-                viewType === ID_ELFARO
-                  ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
-                  : `/product/${encodeURIComponent(product.upc)}/${product.id}`
-              }
+              to={`/product/${encodeURIComponent(product.upc)}/${
+                sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
+              }`}
+              // to={
+              //   viewType === ID_ELFARO
+              //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
+              //     : `/product/${encodeURIComponent(product.upc)}/${product.id}`
+              // }
               className={appTheme.hyperlink}
             >
-              <Highlighter
-                className={classes.titlePartNumber}
-                searchWords={searchQueryArray}
-                textToHighlight={`${product.upc} `}
-                autoEscape={true}
+              <img
+                alt="Product image"
+                className={classes.image}
+                src={mainImage}
+                onError={() => setMainImg(placeholderImg)}
               />
+            </Link>
+          </div>
+          <div className={classes.titleColumn}>
+            <Link
+              to={`/product/${encodeURIComponent(product.upc)}/${
+                sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
+              }`}
+              // to={
+              //   viewType === ID_ELFARO
+              //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
+              //     : `/product/${encodeURIComponent(product.upc)}/${product.id}`
+              // }
+            >
+              <div name="product_name" id="product_name_id" className={classes.title}>
+                <Highlighter
+                  className={classes.titlePartNumber}
+                  searchWords={searchQueryArray}
+                  textToHighlight={`${product.upc}`}
+                  autoEscape={true}
+                />
+              </div>
+            </Link>
+            <div className={`${appTheme.text} ${classes.description}`}>
               <Highlighter
+                className={classes.manufacturerName}
                 searchWords={searchQueryArray}
                 textToHighlight={product.manufacturer ? product.manufacturer.name : "" || ""}
                 autoEscape={true}
               />
-            </Link>
-          </div>
-          <div className={`${appTheme.text} ${classes.description}`}>
-            <Highlighter searchWords={searchQueryArray} textToHighlight={product.description} autoEscape={true} />
-          </div>
-          {/* {viewType === ID_ELFARO && ( */}
-          {/*  <div className={classes.textStock}> */}
-          {/*    Stock: <span>{sortedStockrecords[0]?.partner_name}</span> */}
-          {/*  </div> */}
-          {/* )} */}
-        </div>
-        <Hidden smDown>
-          {viewType !== ID_ELFARO && (
-            <div>
-              <div className={classes.actionRow}>
-                {addToBomButton}
-                {isCartEnabled && addToCartButton()}
-              </div>
-              {!!sortedStockrecords.length && (
-                <div className={`${classes.total} total-cost`}>
-                  {t("cost")}:
-                  <strong style={{ marginLeft: 5 }}>
-                    {formatMoney(cost) || "0.00"} {currency?.symbol}
-                  </strong>
-                </div>
+            </div>
+            <div className={`${appTheme.text} ${classes.description}`}>
+              <Highlighter
+                searchWords={searchQueryArray}
+                textToHighlight={
+                  // collapseText && isSmDown ? product.description?.slice(0, 100) : product.description || ""
+                  getDescription()
+                }
+                autoEscape={true}
+              />
+              {isSmDown && product.description?.length > 100 && (
+                <>
+                  {" "}
+                  <span onClick={toggleCollapseText} className={appTheme.hyperlink}>
+                    {collapseText ? t("collapse_text.true") : t("collapse_text.false")}
+                  </span>
+                </>
               )}
             </div>
-          )}
-          {viewType === ID_ELFARO && (
-            <div className={classes.elfaroActions}>
-              <div>
-                <div style={{ position: "relative" }}>
-                  {!!elfaroQtyError && (
-                    <div className={distributorsClasses.errorWrapper}>
-                      <ErrorOutlineIcon className={distributorsClasses.errorIcon} />
-                      <div className={distributorsClasses.errorText}>{`${t(elfaroQtyError.i18message)} ${
-                        elfaroQtyError.amount
-                      }`}</div>
-                    </div>
-                  )}
-                  <NumberInput
-                    className={`${classes.qty}`}
-                    style={{ width: 120, visibility: inCart ? "hidden" : "initial" }}
-                    // label={t("qty_default")}
-                    variant="outlined"
-                    size="small"
-                    required
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={quantityMap[sortedStockrecords[0]?.id]}
-                    defaultValue={
-                      isProductAvailable(sortedStockrecords[0])
-                        ? getDefaultQty(getDynamicMoq(sortedStockrecords[0]), sortedStockrecords[0]?.num_in_stock)
-                        : getDynamicMoq(sortedStockrecords[0])
-                    }
-                    onChange={handleChangeQty(sortedStockrecords[0])}
-                    onFocus={(e) => e.target.select()}
-                    decimalScale={0}
-                    isAllowedZero={false}
-                  />
-                </div>
-                {isCartEnabled &&
-                sortedStockrecords &&
-                sortedStockrecords[0] &&
-                sortedStockrecords[0].prices.some((i) => !!i.price) ? (
-                  addToCartButton({ marginTop: 5, marginLeft: 0, width: "100%" })
-                ) : (
-                  <div className={classes.quickOrderButton}>{quickOrderButton}</div>
-                )}
-              </div>
+          </div>
+        </Box>
+        <Hidden xsDown>
+          <Box display="flex">
+            {/* <div>{addToBomButton}</div> */}
+            <div className={classes.actionRow}>
+              <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
+              {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
             </div>
-          )}
+          </Box>
         </Hidden>
       </div>
-      <div style={{ position: "relative" }}>
-        <Hidden smDown>
-          <DistributorsDesktop
-            product={product}
-            sortedStockrecords={sortedStockrecords}
-            cartItems={cartItems}
-            searchQuery={searchQuery}
-            handleSelectStockrecord={handleSelectStockrecord}
-            selectedStockrecords={selectedStockrecords}
-            countRowsInTable={countRowsInTable}
-            isActiveTable={isActiveTable}
-            quantityMap={quantityMap}
-            handleChangeQty={handleChangeQty}
-          />
-        </Hidden>
-        <Hidden mdUp>
-          <DistributorsMobile
-            product={product}
-            sortedStockrecords={sortedStockrecords}
-            cartItems={cartItems}
-            searchQuery={searchQuery}
-            handleSelectStockrecord={handleSelectStockrecord}
-            countRowsInTable={countRowsInTable}
-            isActiveTable={isActiveTable}
-            addToBomButton={addToBomButton}
-            addToCartButton={addToCartButton()}
-            isAuthenticated={isAuthenticated}
-            isCartEnabled={isCartEnabled}
-            quantityMap={quantityMap}
-            handleChangeQty={handleChangeQty}
-          />
-        </Hidden>
-        <div className={classes.bottomRow}>
-          {sortedStockrecords.length > countRowsInTable &&
-            (!isActiveTable(product.id) ? (
-              <div className={clsx(classes.link, appTheme.hyperlink)} onClick={showAllOnclick.bind(this, product.id)}>
-                {t("distributor.show_all")}
-              </div>
-            ) : (
-              <div className={clsx(classes.link, appTheme.hyperlink)} onClick={hideAllOnclick.bind(this, product.id)}>
-                {/* t("distributor.show_fewer") */}
-              </div>
-            ))}
-
-          {viewType !== ID_ELFARO && (
-            <Hidden smDown>
-              <div
-                className={clsx(classes.link, appTheme.hyperlink)}
-                onClick={sendRfqOpenModal}
-                style={{ paddingBottom: 16 }}
-              >
-                {t("product.send_rfq")}
-              </div>
-            </Hidden>
+      {!!availableStockrecords.length && (
+        <div style={{ position: "relative" }}>
+          {!initialMobileCard && (
+            <DistributorsDesktop
+              product={product}
+              sortedStockrecords={availableStockrecords}
+              rfqOpenModal={sendRfqOpenModal}
+              sellerMessageOpenModal={sellerMessageOpenModal}
+              qualityCheckOpenModal={qualityCheckOpenModal}
+            />
+          )}
+          {initialMobileCard && (
+            <DistributorsMobile
+              product={product}
+              sortedStockrecords={availableStockrecords}
+              sellerMessageOpenModal={sellerMessageOpenModal}
+            />
           )}
         </div>
-      </div>
+      )}
 
-      {/* {openQuickOrderModal && ( */}
-      {/*  <QuickOrderModal */}
-      {/*    product={product} */}
-      {/*    stockrecord={sortedStockrecords[0]} */}
-      {/*    qty={quantityMap[sortedStockrecords[0]?.id]} */}
-      {/*    handleClose={() => setOpenQuickOrderModal(false)} */}
-      {/*  /> */}
-      {/* )} */}
+      <Hidden smUp>
+        <div className={classes.mobileActions}>
+          <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
+          {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
+        </div>
+      </Hidden>
+
+      {!availableStockrecords.length && (
+        <>
+          <div className={classes.availableItemsHint}>{t("available_on_offline")}:</div>
+          <div className={rfq?.min_moq ? classes.iconsContainer : classes.iconsNoMoqContainer}>
+            <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+              <div className="product-card-icon-wrapper">
+                <img src={usd_icon} alt="usd" />
+              </div>
+              <div className={classes.iconValueWrapper}>
+                <div className={classes.iconValue}>
+                  {rfq?.min_price && rfq?.num_in_stock
+                    ? `${formatMoney(currencyPrice((rfq.min_price + rfq.max_price) / 2, rfq.min_price_currency))} ${
+                        currency.selected.symbol
+                      }`
+                    : t("by_req")}
+                </div>
+                {!initialMobileCard && <div>{t("avg_price")}</div>}
+              </div>
+            </Box>
+            <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+              <div className="product-card-icon-wrapper">
+                <img src={warehouse_icon} alt="stock" />
+              </div>
+              <div className={classes.iconValueWrapper}>
+                <div className={classes.iconValue}>
+                  {rfq?.num_in_stock ? formatMoney(rfq.num_in_stock, 0) : t("by_req")}
+                </div>
+                {!initialMobileCard && <div>{t("in_stock")}</div>}
+              </div>
+            </Box>
+            {!isXsDown && (
+              <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+                <div className="product-card-icon-wrapper">
+                  <img src={suppliers_icon} alt="suppliers" />
+                </div>
+                <div className={classes.iconValueWrapper}>
+                  <div className={classes.iconValue}>{rfq?.sellers ? `${rfq.sellers}+` : "1+"}</div>
+                  {!initialMobileCard && <div>{t("suppliers")}</div>}
+                </div>
+              </Box>
+            )}
+            <Box
+              display="flex"
+              alignItems="center"
+              className={rfq?.min_moq ? classes.iconWrapper : classes.iconNoMoqWrapper}
+            >
+              <div className="product-card-icon-wrapper">
+                <img src={time_icon} alt="delivery" />
+              </div>
+              <div className={classes.iconValueWrapper}>
+                <div className={classes.iconValue}>2-4 {t("weeks")}</div>
+                {!initialMobileCard && <div>{t("del_time")}</div>}
+              </div>
+            </Box>
+            {!isXsDown && rfq?.min && (
+              <Box display="flex" alignItems="center" className={classes.iconWrapper}>
+                <div className="product-card-icon-wrapper">
+                  <img src={moq_icon} alt="moq" />
+                </div>
+                <div className={classes.iconValueWrapper}>
+                  <div className={classes.iconValue}>
+                    {rfq?.min_moq ? formatMoney((rfq.min_moq + rfq.max_moq) / 2, 0) : "1"}
+                  </div>
+                  {!initialMobileCard && <div>{t("avg_qty")}</div>}
+                </div>
+              </Box>
+            )}
+          </div>
+          {/* <Collapse in={showRfqStocks}> */}
+          {/*  <div style={{ position: "relative" }}> */}
+          {/*    <Hidden smDown> */}
+          {/*      <DistributorsDesktop */}
+          {/*        product={product} */}
+          {/*        sortedStockrecords={rfqStockrecords} */}
+          {/*        rfqOpenModal={sendRfqOpenModal} */}
+          {/*        sellerMessageOpenModal={sellerMessageOpenModal} */}
+          {/*      /> */}
+          {/*    </Hidden> */}
+          {/*    <Hidden mdUp> */}
+          {/*      <DistributorsMobile */}
+          {/*        sortedStockrecords={rfqStockrecords} */}
+          {/*        sellerMessageOpenModal={sellerMessageOpenModal} */}
+          {/*      /> */}
+          {/*    </Hidden> */}
+          {/*  </div> */}
+          {/* </Collapse> */}
+        </>
+      )}
+      {!availableStockrecords.length && <div className={classes.rfqHint}>{t("prod_on_offline")}</div>}
     </Paper>
   );
 };

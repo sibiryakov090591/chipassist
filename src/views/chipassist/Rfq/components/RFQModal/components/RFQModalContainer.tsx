@@ -1,7 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
 import { Box, Divider, Hidden, Link } from "@material-ui/core";
-import logo from "@src/images/logo/on_red.png";
 import LoginForm from "@src/views/chipassist/Login/components/LoginForm/LoginForm";
 import RFQForm from "@src/views/chipassist/Rfq/components/RFQForm/RFQForm";
 import { useStyles } from "@src/views/chipassist/Rfq/components/RFQModal/RFQModalStyles";
@@ -13,8 +12,9 @@ import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { ThunkDispatch } from "redux-thunk";
 import { RootState } from "@src/store";
 import { AnyAction } from "redux";
+import logoCA from "@src/images/logo/on_red.png";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { batch } from "react-redux";
@@ -22,6 +22,10 @@ import { clearRfqItem, rfqModalClose } from "@src/store/rfq/rfqActions";
 import { Link as RouterLink } from "react-router-dom";
 import ResetForm from "@src/views/chipassist/Reset/components/ResetForm/ResetForm";
 import NewPasswordForm from "@src/views/chipassist/Reset/components/NewPasswordForm/NewPasswordForm";
+
+const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
+const isICSearch = constants.id === ID_ICSEARCH;
+const logo = isChipAssist ? logoCA : `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
 export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boolean; isExample?: boolean }> = ({
   isAuth,
@@ -34,7 +38,6 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
   const appTheme = useAppTheme();
 
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
-  const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
 
   const { rfqModalOpen, rfqItem } = useAppSelector((state) => state.rfq);
   let isAuthenticated = useAppSelector((state) => state.auth.token !== null);
@@ -87,7 +90,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
     <div
       className={isExample ? clsx(commonClasses.paper, "fullScreen", classes.container) : commonClasses.displayContents}
     >
-      {isChipAssist && (
+      {(isChipAssist || isICSearch) && (
         <Hidden smDown>
           <div className={classes.logoContainer}>
             <div className={classes.signIn}>
@@ -101,7 +104,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
               )}
               {!isAuthenticated && showLoginForm && (
                 <div onClick={showSignIn(false)} className={classes.link}>
-                  <DoubleArrowIcon /> {t("seller_message.back")} RFQ
+                  <DoubleArrowIcon /> {t("seller_message.back")}
                 </div>
               )}
             </div>
@@ -135,7 +138,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
           </>
         ) : (
           <Hidden smDown>
-            <h2 className={clsx(classes.header, { mobile: true })}>Sign in</h2>
+            <h2 className={clsx(classes.header, { mobile: true })}>{t("login.sign_in")}</h2>
           </Hidden>
         )}
         {!isAuthenticated && (
@@ -145,7 +148,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
               <span onClick={showSignIn(!showLoginForm)} className={`${appTheme.hyperlink} ${registerClasses.link}`}>
                 {showLoginForm ? (
                   <span className={classes.backToRfq}>
-                    <DoubleArrowIcon /> {t("seller_message.back")} RFQ
+                    <DoubleArrowIcon /> {t("seller_message.back")}
                   </span>
                 ) : (
                   t("restricted.sign_in")

@@ -11,8 +11,18 @@ import Footer from "@src/components/Footer/Footer";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "redux";
 import image from "@src/images/Homepage/chip_computer_cpu.svg";
+import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
+import constants from "@src/constants/constants";
+import { ID_ELFARO, ID_ICSEARCH } from "@src/constants/server_constants";
 
+const { t } = staticI18n("error");
 const env = IS_PROD ? "PROD" : "DEV";
+const email =
+  constants.id === ID_ICSEARCH
+    ? "support@icsearch.ru"
+    : constants.id === ID_ELFARO
+    ? "info@chiponline.tech"
+    : "info@chipassist.com";
 
 const useStyles = (thm) => ({
   wrapper: {
@@ -29,6 +39,9 @@ const useStyles = (thm) => ({
     maxWidth: 150,
     width: "100%",
     filter: "invert(15%)",
+  },
+  email: {
+    fontSize: 20,
   },
   button: {
     color: thm.palette.white,
@@ -83,6 +96,7 @@ class ErrorBoundary extends React.Component {
   render() {
     const { error, info } = this.state;
     const { classes } = this.props;
+
     if (error) {
       return (
         <ThemeProvider theme={theme}>
@@ -99,27 +113,42 @@ class ErrorBoundary extends React.Component {
             >
               <div style={{ width: "fit-content" }}>
                 <Typography align="center" variant="h3">
-                  Ooops, something went wrong!
+                  {t("error_boundary_title")}
                 </Typography>
                 <div className={classes.imageContainer}>
                   <img className={classes.image} src={image} alt="chip icon" />
                 </div>
-                <Typography align="left" variant="h5">
-                  <br />
-                  <br />
-                  <b>Version</b>: {process.env.AWS_COMMIT_ID || COMMITHASH}
-                  <br />
-                  <b>Error</b>: {error.toString()}
-                  <br />
-                  <b>URL</b>: {window.location.href}
-                  <br />
-                  {!IS_PROD && <pre>{info.componentStack}</pre>}
-                </Typography>
+                {IS_PROD ? (
+                  <Typography align="center" variant="h4">
+                    <br />
+                    <br />
+                    <div>{t("error_boundary_text_1")}</div>
+                    <br />
+                    <div>{t("error_boundary_text_2")}</div>
+                    <br />
+                    <div className={classes.email}>
+                      <a href={`mailto:${email}`}>{email}</a>
+                    </div>
+                    <br />
+                  </Typography>
+                ) : (
+                  <Typography align="left" variant="h5">
+                    <br />
+                    <br />
+                    <b>Version</b>: {process.env.AWS_COMMIT_ID || COMMITHASH}
+                    <br />
+                    <b>Error</b>: {error.toString()}
+                    <br />
+                    <b>URL</b>: {window.location.href}
+                    <br />
+                    <pre>{info.componentStack}</pre>
+                  </Typography>
+                )}
                 <Typography align="center">
                   <br />
                   <br />
                   <Button className={classes.button} color="primary" variant="contained" onClick={this.goHome}>
-                    Back to home
+                    {t("back")}
                   </Button>
                 </Typography>
               </div>

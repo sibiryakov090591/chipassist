@@ -27,6 +27,7 @@ const initialState: SearchState = {
   isExtendedSearchStarted: false,
   extendedSearchId: null,
   extendedSearchParams: null,
+  extendedSearchResultsCount: null,
 
   filtersMap: [],
   filtersValues: {},
@@ -153,6 +154,9 @@ export default function search(state = initialState, action: actionTypes.SearchA
       if (action.payload && action.payload !== state.extendedSearchId) return state;
       return updateObject(state, { isExtendedSearchStarted: false });
 
+    case actionTypes.SET_EXTENDED_SEARCH_RESULTS_COUNT:
+      return updateObject(state, { extendedSearchResultsCount: action.payload });
+
     case actionTypes.SET_EXTENDED_SEARCH_ID:
       return { ...state, extendedSearchId: action.payload.id, extendedSearchParams: action.payload.params };
 
@@ -192,7 +196,7 @@ export default function search(state = initialState, action: actionTypes.SearchA
       });
 
     case actionTypes.SEND_FILTERS_VALUES_R:
-      return updateObject(state, { isLoadingSearchResultsInProgress: true });
+      return updateObject(state, { isLoadingSearchResultsInProgress: true, extendedSearchResultsCount: null });
 
     case actionTypes.SEND_FILTERS_VALUES_S:
       return updateSearchResult(state, action, true);

@@ -1,23 +1,19 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { batch } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { INIT_SENTRY } from "@src/config";
 import useUserActivity from "@src/services/UserActivity/useUserActivity";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Reset from "@src/views/chipassist/Reset/Reset.tsx";
-import Maintenance from "@src/views/chipassist/Maintenance";
-import checkIsAuthenticated from "@src/utils/auth";
+import checkIsAuthenticated, { getAuthToken } from "@src/utils/auth";
 import {
   getGeolocation,
   getPartnerInfo,
   loadProfileInfoThunk,
   onChangePartner,
 } from "@src/store/profile/profileActions";
-import loadMaintenanceThunk from "@src/store/maintenance/maintenanceActions";
 import { checkUserActivityStatus } from "@src/store/common/commonActions";
-import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
 import Error404 from "@src/views/chipassist/Error404";
@@ -46,7 +42,7 @@ import About from "@src/views/supplier-response/About/About";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 
-const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
+const ProvidedErrorBoundary = ErrorBoundary;
 
 export function PrivateRoute({ children, isAuthenticated }) {
   return isAuthenticated === true ? children : <Navigate to={"/auth/login"} replace />;
@@ -61,8 +57,7 @@ const SupplierResponseApp = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const [chatUpdatingIntervalId, setChatUpdatingIntervalId] = useState(null);
 
-  const isAuthToken = useAppSelector((state) => state.auth.token !== null);
-  const maintenance = useAppSelector((state) => state.maintenance);
+  const isAuthToken = !!getAuthToken();
   const partners = useAppSelector((state) => state.profile.profileInfo?.partners);
   const selectedPartner = useAppSelector((state) => state.profile.selectedPartner);
   const loadedChatPages = useAppSelector((state) => state.chat.chatList.loadedPages);
@@ -79,7 +74,6 @@ const SupplierResponseApp = () => {
 
   useEffect(() => {
     batch(() => {
-      dispatch(loadMaintenanceThunk());
       dispatch(getDefaultServiceCurrency());
       dispatch(getCurrency(selectedCurrency)).catch(() => {
         setTimeout(() => dispatch(getCurrency(selectedCurrency)), 1000);
@@ -132,10 +126,6 @@ const SupplierResponseApp = () => {
     }
     dispatch(onChangePartner(partner));
   }, [partners, isAuthenticated]);
-
-  if (maintenance.loaded && maintenance.status === "CRITICAL") {
-    return <Maintenance />;
-  }
 
   return (
     <div style={{ height: "100%" }}>

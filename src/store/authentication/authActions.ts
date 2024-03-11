@@ -56,7 +56,7 @@ export const saveRegisterData = (data: any): AuthActionTypes => {
   };
 };
 
-export const authSuccess = (token: string): AuthActionTypes => {
+export const authSuccess = (token: string = null): AuthActionTypes => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token,

@@ -636,7 +636,7 @@ const SellerMessageForm: React.FC<Props> = ({ onCloseModalHandler, isExample, is
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  disabled={isAuthenticated && !!formState.values.inn}
+                  disabled={isAuthenticated && !!profileInfo?.defaultBillingAddress?.inn}
                   style={{ textAlign: "start", width: "100%" }}
                   {...errorProps("inn")}
                 ></TextField>

@@ -6,15 +6,15 @@ import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui
 import constants from "@src/constants/constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { setUrlWithFilters } from "@src/utils/setUrl";
-import { toggleReloadSearchFlag, changeQueryAction, getRfqsHintCount } from "@src/store/search/searchActions";
-import { ProductCard, Page, ProductCardNew } from "@src/components";
+import { changeQueryAction } from "@src/store/search/searchActions";
+import { ProductCard, Page } from "@src/components";
 import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";
 import Paginate from "@src/components/Paginate";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import FiltersContainer, {
   FilterPageSizeChoiceBar,
   FilterResultsBar,
-  FilterStockBar,
+  // FilterStockBar,
   // FilterOrderByBar,
 } from "@src/components/FiltersBar";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -50,6 +50,8 @@ const allowedCountries = [
   "AUS", // Australia
 ];
 
+const isICSearch = constants.id === ID_ICSEARCH;
+
 const SearchResults = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -79,20 +81,13 @@ const SearchResults = () => {
   );
   let smart_view = useAppSelector((state) => state.search.smart_view);
   smart_view = useURLSearchParams("smart_view", false, smart_view, false) === "true";
-  const manufacturerId = useURLSearchParams("m_id", false, null, false);
+  const manufacturerId = parseInt(useURLSearchParams("m_id", false, null, false));
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
-  filtersValues.base_num_in_stock = constants.isNewSearchPage
-    ? 0
-    : localStorage.getItem("productStock") === "false"
-    ? ""
-    : 1;
-  let baseFilters = useURLSearchParams("base_filters", true, {}, true);
-  baseFilters.base_in_stock = localStorage.getItem("productStock") === "true";
-  if (constants.isNewSearchPage) {
+  filtersValues.base_num_in_stock = 1;
+  if (!isICSearch) {
     filtersValues = null;
-    baseFilters = null;
   }
-  const isSearchPage = window.location.pathname === "/search";
+  // const isSearchPage = window.location.pathname === "/search";
   const disabledRFQForm = !!query?.startsWith("SELLER:") || !!query?.startsWith("MANUFACTURER:");
 
   const isLoadingSearchResultsInProgress = useAppSelector((state) => state.search.isLoadingSearchResultsInProgress);
@@ -113,7 +108,7 @@ const SearchResults = () => {
 
   const [requestedRFQ, setRequestedRFQ] = useState<any>(null);
   const [showRfqBar, setShowRfqBar] = useState(false);
-  const [rfqsHintCount, setRfqsHintCount] = useState(null);
+  // const [rfqsHintCount, setRfqsHintCount] = useState(null);
   const [open, setOpen] = useState(false);
   const [isOpenTour, setIsOpenTour] = useState(false);
   const [isFixedFiltersBar, setIsFixedFiltersBar] = useState(false);
@@ -218,14 +213,14 @@ const SearchResults = () => {
     }, 10000);
   }, []);
 
-  useEffect(() => {
-    if (query && baseFilters?.base_in_stock) {
-      dispatch(getRfqsHintCount(query, 1)).then((res: any) => {
-        setRfqsHintCount(res?.count);
-        console.log("RFQs_COUNT_RESPONSE: ", res?.count);
-      });
-    }
-  }, [query, baseFilters?.base_in_stock]);
+  // useEffect(() => {
+  //   if (query && baseFilters?.base_in_stock) {
+  //     dispatch(getRfqsHintCount(query, 1)).then((res: any) => {
+  //       setRfqsHintCount(res?.count);
+  //       console.log("RFQs_COUNT_RESPONSE: ", res?.count);
+  //     });
+  //   }
+  // }, [query, baseFilters?.base_in_stock]);
 
   useEffect(() => {
     dispatch(setRFQQueryUpc(query));
@@ -254,39 +249,39 @@ const SearchResults = () => {
   };
 
   const onChangePageSize = (value: string) => {
-    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, baseFilters, {
+    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, {
       smart_view,
-      m_id: manufacturerId,
+      ...(!!manufacturerId && { m_id: manufacturerId }),
     });
   };
 
   const onPageChangeHandle = (data: any) => {
-    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, baseFilters, {
+    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, {
       smart_view,
-      m_id: manufacturerId,
+      ...(!!manufacturerId && { m_id: manufacturerId }),
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const onChangeInStock = () => {
-    setUrlWithFilters(
-      window.location.pathname,
-      navigate,
-      isSearchPage ? query : "",
-      1,
-      pageSize,
-      orderBy,
-      null,
-      {
-        ...baseFilters,
-        base_in_stock: false,
-        base_num_in_stock: "",
-      },
-      { smart_view, m_id: manufacturerId },
-    );
-    dispatch(toggleReloadSearchFlag());
-    localStorage.setItem("productStock", "false");
-  };
+  // const onChangeInStock = () => {
+  //   setUrlWithFilters(
+  //     window.location.pathname,
+  //     navigate,
+  //     isSearchPage ? query : "",
+  //     1,
+  //     pageSize,
+  //     orderBy,
+  //     null,
+  //     {
+  //       ...baseFilters,
+  //       base_in_stock: false,
+  //       base_num_in_stock: "",
+  //     },
+  //     { smart_view, ...(!!manufacturerId && { m_id: manufacturerId }) },
+  //   );
+  //   dispatch(toggleReloadSearchFlag());
+  //   localStorage.setItem("productStock", "false");
+  // };
 
   const createFiltersBar = () => {
     const filtersBar = (
@@ -298,13 +293,9 @@ const SearchResults = () => {
         <div className={commonClasses.filtersRow}>
           <FiltersContainer filtersCountToCollapse={4}>
             {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
-            <FilterResultsBar count={constants.isNewSearchPage ? count || rfqData.count : count} />
-            {!constants.isNewSearchPage && (
-              <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-            )}
-            {constants.isNewSearchPage && (
-              <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
-            )}
+            <FilterResultsBar count={count} />
+            {/* <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} /> */}
+            <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
             <FilterCurrency />
             {!isSmDown && (
               <FilterPageSizeChoiceBar
@@ -356,12 +347,12 @@ const SearchResults = () => {
 
         <div className={classes.main}>
           <div className={classes.searchPageResults}>
-            {count !== 0 && (
+            {(count !== 0 || !!products?.length) && (
               <div id="filters_sticky_container" style={{ padding: "12px 0 8px", minHeight: 57 }}>
                 {createFiltersBar()}
               </div>
             )}
-            {count !== 0 && isSmDown && !isLoadingSearchResultsInProgress && (
+            {(count !== 0 || !!products?.length) && isSmDown && !isLoadingSearchResultsInProgress && (
               <div style={{ padding: "0 0 4px" }}>
                 <FiltersContainer>{!isLoadingSearchResultsInProgress && <ExtendedSearchBar />}</FiltersContainer>
               </div>
@@ -378,37 +369,20 @@ const SearchResults = () => {
                 <div>
                   {products?.map((product, key) => {
                     const rfq = rfqData.results.find((item) => item.id === product.id);
-                    return constants.isNewSearchPage ? (
-                      <ProductCardNew
+                    return (
+                      <ProductCard
                         key={product.id}
                         product={product}
                         rfqData={rfq}
                         searchQuery={query}
                         id={`product-item-${key}`}
                       />
-                    ) : (
-                      <ProductCard key={product.id} product={product} searchQuery={query} />
                     );
                   })}
                 </div>
-                {!constants.isNewSearchPage &&
-                  (baseFilters?.base_in_stock || filtersValues?.base_num_in_stock) &&
-                  count > 0 &&
-                  !!rfqsHintCount && (
-                    <div style={{ marginTop: 30, textAlign: "center" }}>
-                      <div className={classes.hintText_1}>{t("in_stock_hint_5")}</div>
-                      <div className={classes.hintText_2}>
-                        {t("in_stock_hint_2")}
-                        <span className={clsx(appTheme.hyperlink, classes.link)} onClick={onChangeInStock}>
-                          {t("in_stock_hint_3")}
-                        </span>
-                        {t("in_stock_hint_4")}
-                      </div>
-                    </div>
-                  )}
               </div>
             )}
-            {isExtendedSearchStarted && count === 0 && (constants.isNewSearchPage ? rfqData.count === 0 : true) && (
+            {isExtendedSearchStarted && count === 0 && rfqData.count === 0 && (
               <div className={classes.searchResultEmpty}>
                 <h2>{t("extended_progress")}</h2>
                 <div style={{ maxWidth: "320px", margin: "auto" }}>
@@ -416,46 +390,7 @@ const SearchResults = () => {
                 </div>
               </div>
             )}
-            {!constants.isNewSearchPage &&
-              !isLoadingSearchResultsInProgress &&
-              !isExtendedSearchStarted &&
-              count === 0 && (
-                <div className={classes.searchResultEmpty}>
-                  <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
-
-                  {baseFilters?.base_in_stock || (filtersValues.base_num_in_stock && !!rfqsHintCount) ? (
-                    <div style={{ marginBottom: 20 }}>
-                      <div className={classes.hintText_1}>{t("in_stock_hint_1")}</div>
-                      <div className={classes.hintText_2}>
-                        {t("in_stock_hint_2")}
-                        <span className={clsx(appTheme.hyperlink, classes.link)} onClick={onChangeInStock}>
-                          {t("in_stock_hint_3")}
-                        </span>
-                        {t("in_stock_hint_4")}
-                      </div>
-                      <div style={{ fontSize: "1.2rem" }} className={classes.hintText_1}>
-                        {t("in_stock_hint_6")}
-                      </div>
-                    </div>
-                  ) : (
-                    <h3
-                      className={classes.rfqHeader}
-                      dangerouslySetInnerHTML={{
-                        __html: t("rfq.modal_header", {
-                          interpolation: { escapeValue: false },
-                          partNumber: rfqItem.partNumber,
-                          title: t("rfq.request"),
-                        }),
-                      }}
-                      style={{ marginBottom: 20 }}
-                    />
-                  )}
-                  <div style={{ maxWidth: 500, margin: "0 auto" }}>
-                    <RFQForm />
-                  </div>
-                </div>
-              )}
-            {constants.isNewSearchPage && !isLoadingSearchResultsInProgress && !isExtendedSearchStarted && count === 0 && (
+            {!isLoadingSearchResultsInProgress && !isExtendedSearchStarted && count === 0 && !products?.length && (
               <div className={classes.searchResultEmpty}>
                 {requestedRFQ && (
                   <div className={classes.requestedBlock}>

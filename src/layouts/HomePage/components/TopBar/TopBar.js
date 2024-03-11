@@ -6,7 +6,6 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 // import { shopping_cart } from "react-icons-kit/ikons/shopping_cart";
 import clsx from "clsx";
 import { AppBar, Collapse, Container, Hidden, Toolbar } from "@material-ui/core";
-import InfoIcon from "@material-ui/icons/Info";
 // import list_icon from "@src/images/Icons/list.svg";
 // import checkIsAuthenticated from "@src/utils/auth";
 import constants from "@src/constants/constants";
@@ -72,7 +71,6 @@ const TopBar = (props) => {
   const dispatch = useAppDispatch();
   const isHomePage = window.location.pathname === "/";
   // const Icon = withBaseIcon();
-  const maintenance = useAppSelector((state) => state.maintenance);
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
   const { partNumberExamples } = useAppSelector((state) => state.search);
   // const cart = useAppSelector((state) => state.cart);
@@ -145,7 +143,13 @@ const TopBar = (props) => {
 
   const logoLink = (
     <div className={classes.logoCont}>
-      <Link to="/" onClick={() => window.location.pathname === "/" && navigate(0)}>
+      <Link
+        to="/"
+        onClick={() => {
+          window.scrollTo({ top: 0 });
+          if (window.location.pathname === "/") navigate(0);
+        }}
+      >
         <img alt="Logo" className={classes.logoImg} src={logo_img} />
       </Link>
     </div>
@@ -166,14 +170,6 @@ const TopBar = (props) => {
 
   return (
     <div>
-      {maintenance.loaded && maintenance.status === "MAINTENANCE" && (
-        <div className={classes.maintenance}>
-          <h3 className={classes.maintenanceTitle}>
-            <InfoIcon className={classes.maintenanceIcon} /> Website maintenance in progress
-          </h3>
-          {maintenance.message && <div dangerouslySetInnerHTML={{ __html: maintenance.message }} />}
-        </div>
-      )}
       <AppBar
         {...rest}
         className={clsx({

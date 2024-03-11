@@ -2,14 +2,10 @@
 /* eslint-disable import/no-named-as-default */
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { INIT_SENTRY } from "@src/config";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 // import useSentryUserData from "@src/hooks/useSentryUserData";
-import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
+import checkIsAuthenticated, { getAuthToken, isAuthPage } from "@src/utils/auth";
 import useAppSelector from "@src/hooks/useAppSelector";
-import Maintenance from "@src/views/chipassist/Maintenance";
-
-import ErrorAppCrushSentry from "@src/components/ErrorAppCrushSentry";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 
 import "@src/static/css/style.css";
@@ -50,14 +46,13 @@ import Policy from "./views/elfaro/StaticPages/Policy";
 import Terms from "./views/elfaro/StaticPages/Terms";
 import { getGeolocation, loadProfileInfoThunk } from "./store/profile/profileActions";
 import { authCheckState, sendQuickRequestUnAuth } from "./store/authentication/authActions";
-import loadMaintenanceThunk from "./store/maintenance/maintenanceActions";
 import LogOut from "./components/LogOut/LogOut";
 import Cart from "./views/chipassist/Cart/Cart";
 import AlertBottomLeft from "./components/Alerts/AlertBottomLeft";
 import AlertTopRight from "./components/Alerts/AlertTopRight";
 import AlertModal from "./components/Alerts/AlertModal";
 
-const ProvidedErrorBoundary = INIT_SENTRY ? ErrorAppCrushSentry : ErrorBoundary;
+const ProvidedErrorBoundary = ErrorBoundary;
 
 export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
   if (!isAuthenticated && !isAuthPage(window.location.pathname)) {
@@ -76,8 +71,8 @@ const ElfaroApp = () => {
   const background = location.state && location.state.background;
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
   const dispatch = useAppDispatch();
-  const isAuthToken = useAppSelector((state) => state.auth.token !== null);
-  const maintenance = useAppSelector((state) => state.maintenance);
+  const isAuthToken = !!getAuthToken();
+
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
   const isShowQuickButton = useAppSelector((state) => state.common.isShowQuickButton);
   const valueToken = useURLSearchParams("value", false, null, false);
@@ -115,7 +110,6 @@ const ElfaroApp = () => {
 
   useEffect(() => {
     batch(() => {
-      dispatch(loadMaintenanceThunk());
       dispatch(authCheckState());
       dispatch(getDefaultServiceCurrency());
       dispatch(getServiceTax());
@@ -165,10 +159,6 @@ const ElfaroApp = () => {
       stopRecord();
     }
   }, [isAuthToken]);
-
-  if (maintenance.loaded && maintenance.status === "CRITICAL") {
-    return <Maintenance />;
-  }
 
   return (
     <div style={{ minHeight: "100vh" }}>

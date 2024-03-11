@@ -45,6 +45,7 @@ import { useStyles as useRegisterStyles } from "@src/views/chipassist/HomeRestri
 import { useLocation, Link } from "react-router-dom";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
+import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
 import { useStyles } from "./PcbRequestStyles";
 // import { Physical, Technical } from "./Fields";
 import PcbModalConfirm from "../components/PcbModalConfirm/PcbModalConfirm";
@@ -106,6 +107,7 @@ const defaultRegisterState = () => ({
     email: "",
     company: "",
     country: "",
+    inn: "",
     policy_confirm: false,
     receiveUpdatesConfirm: false,
   },
@@ -127,8 +129,12 @@ function PcbRequest(props) {
   const dispatch = useAppDispatch();
   const { t } = useI18n("pcb");
   const location = useLocation();
+  const isICSearch = constants.id === ID_ICSEARCH;
+  const isDownKey = useMediaQuery(theme.breakpoints.down(460));
+
   // const [item, setItem] = useState(pcbInitialState.pcbModalItem);
   const [registerItem, setRegisterItem] = useState(defaultRegisterState());
+  const [phoneValue, setPhoneValue] = useState("");
   const debouncedState = useDebounce(registerItem, 300);
   const [savedTime, setSavedTime] = useState(null);
   const [maxSizeError, setMaxSizeError] = useState(false);
@@ -498,6 +504,7 @@ function PcbRequest(props) {
       lastName: formSchema.lastName,
       company: formSchema.companyName,
       policy_confirm: formSchema.policyConfirm,
+      ...(isICSearch && { inn: formSchema.inn }),
     };
   }, []);
 
@@ -568,6 +575,10 @@ function PcbRequest(props) {
   const handleFilesDrop = (files) => {
     if (maxSizeError) return;
     setFormState((prevState) => ({ ...prevState, file: [...files] }));
+  };
+
+  const onChangePhoneHandler = (e) => {
+    return setPhoneValue(e);
   };
 
   const handleRemoveFile = (id) => {
@@ -1212,8 +1223,22 @@ function PcbRequest(props) {
                 onBlur={onBlurHandler("email")}
                 {...errorRegister("email")}
               />
+              <PhoneInputWrapper
+                label={t("form_labels.phone")}
+                value={phoneValue}
+                onChange={onChangePhoneHandler}
+                small
+                style={{
+                  width: "100%",
+                  margin: "8px 0 8px 8px",
+                  height: !isDownKey && "auto",
+                  maxHeight: !isDownKey && "38px",
+                }}
+              />
+            </div>
+            <div className={classes.formRow}>
               <TextField
-                style={{ width: "100%", margin: "8px 0 8px 8px" }}
+                style={{ width: "100%", margin: "8px 8px 8px 0" }}
                 disabled={isAuthenticated}
                 name="company"
                 label={`${t("form_labels.company_name")} *`}
@@ -1227,26 +1252,41 @@ function PcbRequest(props) {
                 onBlur={onBlurHandler("company")}
                 {...errorRegister("company")}
               />
-            </div>
-            <div className={classes.formRow}>
-              <TextField
-                disabled={isAuthenticated}
-                variant="outlined"
-                name="country"
-                size="small"
-                label={t("form_labels.delivery_to")}
-                value={registerItem.values.country}
-                onChange={handleChangeRegData}
-                onBlur={onBlurHandler("country")}
-                select
-                style={{ textAlign: "start", width: "100%", margin: "8px 0" }}
-              >
-                {countries.map((i) => (
-                  <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                    {i.printable_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              {isICSearch ? (
+                <TextField
+                  style={{ width: "100%", margin: "8px 0 8px 8px" }}
+                  variant="outlined"
+                  name="inn"
+                  size="small"
+                  label={`ИНН компании *`}
+                  value={registerItem.values.inn}
+                  onBlur={onBlurHandler("inn")}
+                  onChange={handleChangeRegData}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...errorRegister("inn")}
+                />
+              ) : (
+                <TextField
+                  disabled={isAuthenticated}
+                  variant="outlined"
+                  name="country"
+                  size="small"
+                  label={t("form_labels.delivery_to")}
+                  value={registerItem.values.country}
+                  onChange={handleChangeRegData}
+                  onBlur={onBlurHandler("country")}
+                  select
+                  style={{ textAlign: "start", width: "100%", margin: "8px 0 8px 8px" }}
+                >
+                  {countries.map((i) => (
+                    <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
+                      {i.printable_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
             </div>
             <Box display="flex" flexDirection="column" ml={2}>
               <FormControlLabel

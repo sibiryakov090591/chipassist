@@ -6,16 +6,14 @@ import { getBaseFiltersInitialState } from "@src/store/search/searchReducer";
 import { saveProducts, clearProducts } from "@src/store/products/productsActions";
 import { loadMiscAction, saveMiscAction, updateMiscAction } from "@src/store/misc/miscActions";
 import constants from "@src/constants/constants";
-
-import { ID_CHIPASSIST, ID_ELFARO, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
+import { ID_ELFARO } from "@src/constants/server_constants";
 import { NavigateFunction } from "react-router-dom";
 import { Dispatch } from "redux";
 import * as actionTypes from "./searchTypes";
 
-export const API_PATH = [ID_CHIPASSIST, ID_MASTER, ID_ELFARO].includes(constants.id) ? "apiv2" : "api";
-export const SEARCH_URL =
-  constants.id === ID_ELFARO ? "/search/" : constants.id === ID_ICSEARCH ? "/search-byparams/" : "/search/"; // for elfaro was "/searches/"
-export const SEARCH_URL_EXTENDED = constants.id === ID_ELFARO ? "/search_result/" : "/search_result/"; // for elfaro was "/search_results/"
+export const API_PATH = "apiv2";
+export const SEARCH_URL = "/search/";
+export const SEARCH_URL_EXTENDED = "/search_result/";
 
 const apiClient = new ApiClient();
 
@@ -355,6 +353,7 @@ export const saveExtendedSearch = (response: any, params: any) => {
     } else {
       dispatch(setExtendedSearchFinished());
     }
+    dispatch(setExtendedSearchResultsCount(response?.count ?? null));
   };
 };
 
@@ -764,6 +763,13 @@ export const saveFiltersValuesThunk = (response: any, query: string) => {
 export const setExtendedSearchFinished = () => {
   return {
     type: actionTypes.SET_EXTENDED_SEARCH_FINISHED,
+  };
+};
+
+export const setExtendedSearchResultsCount = (count: number) => {
+  return {
+    type: actionTypes.SET_EXTENDED_SEARCH_RESULTS_COUNT,
+    payload: count,
   };
 };
 

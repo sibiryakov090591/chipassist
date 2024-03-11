@@ -381,10 +381,11 @@ const BomEditor: React.FC<Props> = (props) => {
     dispatch(createBomCopy(id, name));
   };
 
-  const qtyChangeHandler = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+  const qtyChangeHandler = (e: ChangeEvent<HTMLInputElement>, key: string, err: any) => {
     e.persist();
 
     onChangeBomField(key, "quantity")(e, true);
+    if (err) return false;
     if (qtyDebounce) clearTimeout(qtyDebounce);
     const timeoutID = setTimeout(() => onChangeBomField(key, "quantity")(e, false), 800);
     setQtyDebounce(timeoutID);
@@ -394,6 +395,7 @@ const BomEditor: React.FC<Props> = (props) => {
     if (item.approved) {
       setBomFieldValue(key, "approved", false, false);
     }
+    return true;
   };
 
   const partNumberChangeHandler = (e: ChangeEvent<HTMLInputElement>, key: string) => {

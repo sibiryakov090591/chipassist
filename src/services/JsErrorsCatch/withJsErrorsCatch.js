@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { INIT_ALERTS, IS_PROD } from "@src/config";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
 import { feedbackThunk } from "@src/store/feedback/FeedbackActions";
-import { getAuthToken } from "@src/utils/auth";
 
 const env = IS_PROD ? "PROD" : "DEV";
 const feedback_url = "register-user-feedback";
@@ -13,6 +12,35 @@ const block_messages = ["request_cancelled"];
 const withJsErrorsCatch = (WrappedComponent) => {
   class JsErrorsCatch extends React.Component {
     componentDidMount() {
+      // Google translate causes a bug in React v16 (Failed to execute 'insertBefore' on 'Node')
+      // The code below fixes the bug ==================
+      if (typeof Node === "function" && Node.prototype) {
+        const originalRemoveChild = Node.prototype.removeChild;
+        Node.prototype.removeChild = function newRemoveChild(child) {
+          if (child.parentNode !== this) {
+            if (console) {
+              console.error("Cannot remove a child from a different parent", child, this);
+            }
+            return child;
+          }
+          // eslint-disable-next-line prefer-rest-params
+          return originalRemoveChild.apply(this, arguments);
+        };
+
+        const originalInsertBefore = Node.prototype.insertBefore;
+        Node.prototype.insertBefore = function newInsertBefore(newNode, referenceNode) {
+          if (referenceNode && referenceNode.parentNode !== this) {
+            if (console) {
+              console.error("Cannot insert before a reference node from a different parent", referenceNode, this);
+            }
+            return newNode;
+          }
+          // eslint-disable-next-line prefer-rest-params
+          return originalInsertBefore.apply(this, arguments);
+        };
+      }
+      // ===============================================
+
       window.onerror = (message, url, line, column, error) => {
         if (block_messages.includes(message)) {
           console.log("BLOCKED: ", message);
@@ -28,7 +56,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
           );
         }
 
-        if (error && error?.response?.status !== 404 && getAuthToken() && (!url || !url.includes(feedback_url))) {
+        if (error && error?.response?.status !== 404 && (!url || !url.includes(feedback_url))) {
           this.props.dispatch(
             feedbackThunk(
               `${env} APP`,

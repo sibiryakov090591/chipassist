@@ -19,7 +19,6 @@ const defaults = {
     topBannerLogo: "",
   },
   bomNew: true,
-  closedRegistration: false,
   extendedRegistration: false,
   currencyChanger: true,
   selectedCurrencyList: ["RUB", "USD", "EUR"], // ["RUB", "USD", "EUR"]
@@ -43,7 +42,6 @@ const defaults = {
   showNewBillingAddress: true,
   isPossibleCardPay: false,
   CART_ITEM_PERIOD_OF_RELEVANCE: 72, // hours
-  isNewSearchPage: true,
   activateCorporateEmailValidation: false,
   bannedEmailServices: ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "qq.com"], // for activateCorporateEmailValidation: true
 };

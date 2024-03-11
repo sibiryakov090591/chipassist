@@ -35,7 +35,7 @@ const lastName = {
 const companyName = {
   presence: { allowEmpty: false, message: `^${t("form_labels.company_name")} ${t("errors.required")}` },
   format: {
-    pattern: `[\x00-\x7F ${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""}]*`,
+    pattern: `[\x00-\x7F«» ${constants.id === ID_ICSEARCH ? "а-яА-ЯёЁ" : ""}]*`,
     flags: "i",
     message: `^${t("form_labels.company_name")} ${t("errors.only_letters_and_digits_and_symbols")}`,
   },
@@ -90,9 +90,7 @@ const email = {
 };
 
 const policyConfirm = {
-  ...{
-    checked: { message: `^${t("errors.privacy_policy")}` },
-  },
+  checked: { message: `^${t("errors.privacy_policy")}` },
 };
 
 const inn = {

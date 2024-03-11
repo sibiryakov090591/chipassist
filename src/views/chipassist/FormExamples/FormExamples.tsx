@@ -5,14 +5,11 @@ import { Grid } from "@material-ui/core";
 import useStyles from "@src/views/chipassist/FormExamples/FormExamplesStyle";
 import RFQModalContainer from "@src/views/chipassist/Rfq/components/RFQModal/components/RFQModalContainer";
 import Switch from "@material-ui/core/Switch";
-
 import SellExcessForm from "@src/views/chipassist/SellExcess/components/SellExcessForm";
 import PcbRequest from "@src/views/chipassist/Pcb/PcbRequest/PcbRequest";
 import { GeneralSettings } from "@src/views/chipassist/Profile/components/General/components";
-import { GeneralSettings as SupplierGeneralSettings } from "@src/views/supplier-response/Profile/components/General/components";
 import AddressForm from "@src/views/chipassist/Profile/components/CompanyAddress/components/AddressForm/AddressForm";
 import Login from "@src/views/chipassist/Login/Login";
-
 import Register from "@src/views/chipassist/Register/Register";
 import SellerMessageContainer from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageForm/SellerMessageContainer";
 import SendOrderModalContainer from "@src/views/chipassist/Chat/components/ChatWindow/components/SendOrderModal/components/SendOrderModalContainer";
@@ -175,16 +172,6 @@ export const FormExamples = () => {
                   stock={null}
                   pageNum={2}
                 />
-              </Grid>
-            </Grid>
-          </fieldset>
-        </Grid>
-        <Grid item md={12} lg={12}>
-          <fieldset className={classes.gridItem}>
-            <legend className={classes.legendText}>Supplier general setting</legend>
-            <Grid container spacing={3}>
-              <Grid item md={12} lg={8}>
-                <SupplierGeneralSettings isExample={true} />
               </Grid>
             </Grid>
           </fieldset>

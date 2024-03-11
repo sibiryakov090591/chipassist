@@ -1327,7 +1327,7 @@
       "in_stock_plural": "items in stock",
       "out_stock": "Stock quantity is N/A",
       "out_stock_hint": "ChipAssist will request this product from third-party suppliers",
-      "rfq_info": "Unit price and delivery lead time are available by"
+      "rfq_info": "Unit price and delivery time are available by request"
     },
     "copy": {
       "create_copy": "Create copy",
@@ -1538,6 +1538,7 @@
     "extended_search": "Extended search",
     "extended_progress": "Extended search in progress...",
     "extended_search_completed": "Extended search completed",
+    "extended_search_no_result": "(No results)",
     "not_found": "Nothing has been found",
     "search": "Search {{query}}...",
     "price": "Price",
@@ -1982,6 +1983,7 @@
     "positions": "Positions",
     "open_button": "Expand",
     "close_button": "Collapse",
+    "quality_check_message": "I'd like to know more about the quality check for this product...",
     "column": {
       "id": "ID",
       "part_number": "Part number",
@@ -2033,7 +2035,7 @@
       "send": "Send",
       "sending": "Sending",
       "close": "Close",
-      "back": "Back to",
+      "back": "Back to request",
       "request_quality": "Request quality check",
       "request_message": {
         "p1": "You are about to request the quality check for",
@@ -2391,7 +2393,9 @@
     "Username required": "Username is required",
     "Password required": "Password is required",
     "email": "Email address",
-    "password": "Password"
+    "password": "Password",
+    "incorrect_em_or_pass": "Incorrect username or password",
+    "Username is not a valid email": "Username is not a valid email"
   },
   "register": {
     "title": "Register",
@@ -2512,6 +2516,9 @@
     "404_title": "This page does not exist",
     "404_description": "We can't find the page you are looking for but you can find something useful clicking the links below.",
     "401_title": "401: We are sorry but we are not able to authenticate you.",
+    "error_boundary_title": "Ooops, something went wrong...",
+    "error_boundary_text_1": "Unfortunately, we have encountered a problem. We are already fixing it. We apologize!",
+    "error_boundary_text_2": "You can always text to us if you have a question.",
     "register_title": "It looks like this link has expired or it has already been used",
     "register_description": "Please mind that account and request confirmation links are valid for 24 hours"
   },
@@ -2620,7 +2627,6 @@
       "success_subtitle": "You will not receive informative emails from us but can continue using our service!"
     }
   },
-
   "footer": {
     "follow_us": "Follow us",
     "requests": "Requests",
@@ -2638,7 +2644,6 @@
     "blog": "Blog",
     "contact_us": "Contact us"
   },
-
   "partner_terms": {
     "h1": {
       "p1": "Terms and conditions",
@@ -2665,26 +2670,21 @@
         "li3": "store and transport Components (materials) according to the corresponding requirements of an original manufacturer.",
         "li4": "inform the Service Provider regarding all possible issues related to the quality and condition of Components (materials), e.g. unreadable or unavailable marking and/or labelling, damaged or non-original packaging, storage conditions violation, etc."
       },
-
       "li3": "In relation to Components (materials) price",
       "li3_subtitles": {
         "li1": "to provide a price for Components (materials) in order of priority: through API, in a stock file, on a request from the Service Provider.",
         "li2": "to fix the price for 72 hours after the moment of provision, unless otherwise separately agreed between the Supplier and the Service Provider."
       },
-
       "li4": "In relation to warranty",
       "li4_subtitles": {
         "li1": "inform explicitly about warranty period and conditions.",
         "li2": "return any payments made by the Service Provider for the Components (materials) of inadequate quality or, in cases agreed with an end customer, provide a replacement. Transportation of Components (materials) and corresponding replacement the Supplier performs at own expense."
       },
-
       "li5": "In relation to confidentiality",
       "li5_subtitles": "use and share with third parties information received from the Service Provider or retrieved from the ChipAssist.com site exclusively for the purpose of a) Components (materials) sales and b) promotion of the Service Provider’s platform.",
       "footer": "The Supplier acknowledges that the Service Provider can change these Terms and Conditions without separate notification to improve customers’ and own interests protection."
     }
-
   },
-
   "policy": {
     "h1": "Privacy Policy for",
     "p1": {
@@ -2743,7 +2743,6 @@
     "p25": "The right to data portability – You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.",
     "p26": "If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us."
   },
-
   "terms": {
     "h": "TERMS AND CONDITIONS",
     "last_updated": "Last updated January 01, 2021",
@@ -2850,7 +2849,6 @@
       },
       "placeholder": "Type a message"
     },
-
     "messages": {
       "today": "Today",
       "request_block": "Request for {{qty}}pcs {{upc}}",
@@ -2883,7 +2881,6 @@
       "notes": "Notes",
       "view_invoice": "View Invoice in PDF"
     },
-
     "send_invoice": {
       "exw": "Ex-Works",
       "fca": "Free to Carrier",
