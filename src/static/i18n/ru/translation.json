@@ -1854,6 +1854,7 @@
     "positions": "Позиций",
     "open_button": "Развернуть",
     "close_button": "Свернуть",
+    "quality_check_message": "Хотелось бы узнать подробнее о проверке качества этого продукта...",
     "column": {
       "id": "ID",
       "part_number": "Партномер",

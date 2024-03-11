@@ -132,7 +132,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
     values: {
       quantity: 1,
       price: null,
-      message: "I'd like to know more about the quality check for this product...",
+      message: t("quality_check_message"),
       country:
         (profile?.defaultBillingAddress?.country &&
           countries?.find((c) => c.url.includes(profile?.defaultBillingAddress?.country?.split("/api/")[1]))?.url) ||
@@ -432,7 +432,7 @@ const QualityCheckForm: React.FC<Props> = ({ onCloseModalHandler, isExample, isA
         <TextField
           style={{ width: "100%" }}
           name="message"
-          label={`Comment *`}
+          label={`${t("column.comment")} *`}
           multiline
           rows={isAuthenticated ? 4 : 2}
           variant="outlined"

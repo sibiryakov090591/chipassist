@@ -1983,6 +1983,7 @@
     "positions": "Positions",
     "open_button": "Expand",
     "close_button": "Collapse",
+    "quality_check_message": "I'd like to know more about the quality check for this product...",
     "column": {
       "id": "ID",
       "part_number": "Part number",
