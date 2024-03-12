@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import debounce from "lodash/debounce";
 import { Button } from "@material-ui/core";
 import AsyncSelect from "react-select/async";
 import Dropdown from "@src/components/FiltersSelect/dropdown";
@@ -25,7 +25,7 @@ function AutocompleteDropdown({ defaultLabel, value, placeholder = "Search...", 
   };
 
   const debounceQuery = useCallback(
-    _.debounce((val, cb) => loadAction(val, cb), 500),
+    debounce((val, cb) => loadAction(val, cb), 500),
     [],
   );
 

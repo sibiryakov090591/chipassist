@@ -44,7 +44,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { invokeRestTransport, invokeWebsocketTransport } from "@src/services/useTransport";
 import ConfirmButton from "@src/components/ConfirmButton/ConfirmButton";
 import { bomCost, isShowBetterPriceHint } from "@src/utils/bom";
-import _ from "lodash";
+import findLastIndex from "lodash/findLastIndex";
 import clsx from "clsx";
 import { getCostAndQuantity, getDynamicMoq, isProductAvailable, validateQuantity } from "@src/utils/product";
 import { Paginate } from "@src/components";
@@ -525,7 +525,7 @@ const BomEditor: React.FC<Props> = (props) => {
       };
     });
 
-    const lastGroupItemIndex = _.findLastIndex(
+    const lastGroupItemIndex = findLastIndex(
       Object.entries(bomItems),
       (v) => v[1].part_number_ref === items[0].part_number,
     );
@@ -653,7 +653,7 @@ const BomEditor: React.FC<Props> = (props) => {
         return true;
       });
 
-    const lastGroupItemIndex = _.findLastIndex(
+    const lastGroupItemIndex = findLastIndex(
       Object.entries(bomItems),
       (v) => v[1].part_number_ref === items[0].partNumber,
     );

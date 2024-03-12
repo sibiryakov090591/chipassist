@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import orderBy from "lodash/orderBy";
 import constants from "@src/constants/constants";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -51,7 +51,7 @@ const Search: React.FC = () => {
   let pageSize = useAppSelector((state) => state.search.pageSize);
   const rfqItem = useAppSelector((state) => state.rfq.rfqItem);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
-  const orderBy = useURLSearchParams(
+  const orderByValue = useURLSearchParams(
     "order_by",
     false,
     localStorage.getItem("mainOrderBy") || orderByValues[0].value,
@@ -108,7 +108,7 @@ const Search: React.FC = () => {
           return isDuplicateStockrecord(acc, val) ? acc : [...acc, val];
         }, []);
 
-      stockrecords = _.orderBy(
+      stockrecords = orderBy(
         stockrecords.map((val) => ({
           ...val,
           price1: getPrice(1, val),
@@ -127,11 +127,20 @@ const Search: React.FC = () => {
   }, [products]);
 
   const onChangePageSize = (value: string) => {
-    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, baseFilters);
+    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderByValue, filtersValues, baseFilters);
   };
 
   const onPageChangeHandle = (data: any) => {
-    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, baseFilters);
+    setUrlWithFilters(
+      "/search",
+      navigate,
+      query,
+      data.selected + 1,
+      pageSize,
+      orderByValue,
+      filtersValues,
+      baseFilters,
+    );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -141,7 +150,7 @@ const Search: React.FC = () => {
   // };
 
   const onChangeInStock = () => {
-    setUrlWithFilters(window.location.pathname, navigate, query || "", 1, pageSize, orderBy, null, {
+    setUrlWithFilters(window.location.pathname, navigate, query || "", 1, pageSize, orderByValue, null, {
       ...baseFilters,
       base_in_stock: false,
       base_num_in_stock: "",
@@ -169,7 +178,7 @@ const Search: React.FC = () => {
               action={onChangePageSize}
               disable={isLoadingSearchResultsInProgress}
             />
-            {/* <FilterOrderByBar value={orderBy} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
+            {/* <FilterOrderByBar value={orderByValue} onChange={onOrderChange} disable={isLoadingSearchResultsInProgress} /> */}
           </FiltersContainer>
         </div>
       </div>

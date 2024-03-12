@@ -13,6 +13,8 @@ const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const gitRevisionPlugin = new GitRevisionPlugin();
 const CreateFileWebpack = require("create-file-webpack");
 const TerserPlugin = require("terser-webpack-plugin");
+// const CompressionPlugin = require("compression-webpack-plugin");
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 // const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 //const DeleteSourceMapWebpackPlugin = require("delete-sourcemap-webpack-plugin");
 // const CleanTerminalPlugin = require("clean-terminal-webpack-plugin");
@@ -20,6 +22,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 //const UnusedWebpackPlugin = require("unused-webpack-plugin");
 
 const isDevServer = !!process.env.DEV_SERVER;
+// const withReport = process.env.npm_config_withReport;
 let node_env = "production";
 console.log("AWS_BRANCH", process.env.AWS_BRANCH);
 
@@ -95,6 +98,7 @@ module.exports = {
   },
   devtool: isDev ? "cheap-module-source-map" : "source-map",
   devServer: {
+    // compress: true,
     port: 3000,
     hot: isDev,
     historyApiFallback: true,
@@ -108,19 +112,12 @@ module.exports = {
     },
   },
   plugins: [
-    // new CleanTerminalPlugin({ message: `Build in progress...` }),
-    //...(!isProd ? [] : [new DeleteSourceMapWebpackPlugin()]),
-    // ...(!isProd
-    //   ? []
-    //   : [
-    //       new SentryWebpackPlugin({
-    //         authToken: "db9b5c37cccb45989f8736761da42cf8003ae78f86694460b2d261188ffe3057",
-    //         org: "spaceone",
-    //         project: "spaceone",
-    //         include: "./dist",
-    //         release: 2,
-    //       }),
-    //     ]),
+    // withReport ? new BundleAnalyzerPlugin() : null, // activate to check bundle size and run "npm run report"
+    // new CompressionPlugin({
+    //   filename: "[path].gz[query]",
+    //   algorithm: "gzip",
+    //   test: /\.(js|css|html)$/,
+    // }),
     new CreateFileWebpack({
       path: path.resolve(__dirname, "dist"),
       fileName: "version.txt",

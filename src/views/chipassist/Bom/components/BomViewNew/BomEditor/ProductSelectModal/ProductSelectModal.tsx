@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { batch } from "react-redux";
-import _, { uniqueId } from "lodash";
+import uniqueId from "lodash/uniqueId";
+import orderBy from "lodash/orderBy";
 import Icon from "react-icons-kit";
 import { ic_check } from "react-icons-kit/md/ic_check";
 import Highlighter from "react-highlight-words";
@@ -304,8 +305,8 @@ const ProductSelectModal: React.FC<Props> = ({
       }
     }
 
-    results = _.orderBy(results, [sortBy.name], [sortBy.direction]);
-    selectedResults = _.orderBy(selectedResults, [sortBy.name], [sortBy.direction]);
+    results = orderBy(results, [sortBy.name], [sortBy.direction]);
+    selectedResults = orderBy(selectedResults, [sortBy.name], [sortBy.direction]);
 
     setProducts(
       [...selectedResults, ...results].filter((i) => {
@@ -327,9 +328,9 @@ const ProductSelectModal: React.FC<Props> = ({
     );
 
     batch(() => {
-      setManufacturers(_.orderBy(manufacturers_arr, ["name"]));
-      setPartnumbers(_.orderBy(partnumbers_arr, ["name"]));
-      setDistributors(_.orderBy(distributors_arr, ["name"]));
+      setManufacturers(orderBy(manufacturers_arr, ["name"]));
+      setPartnumbers(orderBy(partnumbers_arr, ["name"]));
+      setDistributors(orderBy(distributors_arr, ["name"]));
     });
   }, [cashProducts, sortBy, filterValues]);
 

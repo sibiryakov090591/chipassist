@@ -20,7 +20,7 @@ import { Seller } from "@src/store/sellers/sellersTypes";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import Star from "@src/images/search_page/star.png";
-import { toInteger } from "lodash";
+import toInteger from "lodash/toInteger";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import { correctUrl } from "@src/utils/transformUrl";

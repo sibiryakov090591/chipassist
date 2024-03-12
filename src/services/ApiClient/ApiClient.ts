@@ -3,7 +3,7 @@
 /* eslint-disable no-return-assign */
 import axios, { CancelTokenSource, AxiosRequestConfig, Method, AxiosPromise } from "axios";
 import Cookies from "cookies-js";
-import _ from "lodash";
+import merge from "lodash/merge";
 import { staticI18n } from "@src/services/I18nProvider/I18nProvider";
 import { isUrl } from "@src/utils/validation";
 import { schema, apiHost, apiPath } from "@src/constants/defaults";
@@ -120,7 +120,7 @@ class _ApiClient extends autoImplement<ApiClientInterface>() {
             if (cancelId) cancelTokens[cancelId] = { cancel: c };
           });
 
-          return axios(_.merge(axios_config, config) as AxiosRequestConfig);
+          return axios(merge(axios_config, config) as AxiosRequestConfig);
 
           // Informational responses (100–199),
           // Successful responses (200–299),

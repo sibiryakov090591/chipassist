@@ -1,4 +1,4 @@
-import _ from "lodash";
+import isEqual from "lodash/isEqual";
 import { Product, ProductStateItem, Stockrecord } from "@src/store/products/productTypes";
 import { RfqItem } from "@src/store/rfq/rfqTypes";
 import { addApiUrl } from "@src/utils/transformUrl";
@@ -239,7 +239,7 @@ export const isDuplicateStockrecord = (haystack: Stockrecord[], needle: Stockrec
   return filteredHeystack.some((val) => {
     // const template = isProductAvailable(needle) && isProductAvailable(val) ? templateOnline : templateRfq;
     const template = templateOnline;
-    return _.isEqual(template(needle), template(val));
+    return isEqual(template(needle), template(val));
   });
 };
 

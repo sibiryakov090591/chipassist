@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Papa, { ParseResult } from "papaparse";
-import XLSX from "xlsx";
+import { read, utils } from "xlsx";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
@@ -136,8 +136,8 @@ const FileViewer: React.FC<Props> = ({
     reader.onload = (e: ProgressEvent<any>) => {
       // eslint-disable-next-line no-shadow
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+      const workbook = read(data, { type: "array" });
+      const rows = utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
       const json: ParseData[] = JSON.parse(JSON.stringify(rows, [2], 2));
       setData({
         columnsNames: getColumnsNames(json),

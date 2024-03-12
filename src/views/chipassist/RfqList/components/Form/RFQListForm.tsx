@@ -15,7 +15,8 @@ import {
 import useAppSelector from "@src/hooks/useAppSelector";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import _, { findLastIndex } from "lodash";
+import isEmpty from "lodash/isEmpty";
+import findLastIndex from "lodash/findLastIndex";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useDebounce from "@src/hooks/useDebounce";
 import validate from "validate.js";
@@ -393,7 +394,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
     if (type === "checkbox") {
       return setFormState((prevState) => ({
         ...prevState,
-        isValid: _.isEmpty(errors),
+        isValid: isEmpty(errors),
         values: { ...prevState.values, [name]: checked },
         touched: {
           ...prevState.touched,
@@ -405,7 +406,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
 
     return setFormState((prevState) => ({
       ...prevState,
-      isValid: _.isEmpty(errors),
+      isValid: isEmpty(errors),
       values: {
         ...prevState.values,
         [name]: name === "email" ? value?.replace(/ /g, "") : name === "inn" ? value?.replace(/\D/g, "") : value,
@@ -428,7 +429,7 @@ export const RFQListForm: React.FC<{ isModalMode?: boolean; isExample?: boolean 
     if (errors[index]) if (errors[index][name]) delete errors[index][name];
     setNeedToChange((prevState) => !prevState);
 
-    const isErrorsOccurred = errors.filter((elem) => elem !== undefined && !_.isEmpty(elem));
+    const isErrorsOccurred = errors.filter((elem) => elem !== undefined && !isEmpty(elem));
     return setRfqListState((prevState) => ({
       ...prevState,
       isValid: isErrorsOccurred.length === 0,

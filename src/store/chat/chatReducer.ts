@@ -1,5 +1,5 @@
 import { getPartnerName } from "@src/utils/chat";
-import _ from "lodash";
+import isEqual from "lodash/isEqual";
 import * as actionTypes from "./chatTypes";
 import { ChatListItem, ChatListMessage } from "./chatTypes";
 
@@ -125,7 +125,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           updatedChat &&
           ((Number(updatedChat.unread_messages) > 0 &&
             Number(updatedChat.unread_messages) !== Number(chat.unread_messages)) ||
-            !_.isEqual((chat.stocks && chat.stocks[0]) || {}, (updatedChat.stocks && updatedChat.stocks[0]) || {}))
+            !isEqual((chat.stocks && chat.stocks[0]) || {}, (updatedChat.stocks && updatedChat.stocks[0]) || {}))
         ) {
           updatedChats.push({ ...updatedChat, partner_name: getPartnerName(updatedChat.partner) });
           if (updatedChat.id === state.selectedChat?.id) {
@@ -145,7 +145,7 @@ const chatReducer = (state = initialState, action: actionTypes.ChatActionTypes) 
           unread_total,
         },
         ...((unreadCountSelectedChat > 0 ||
-          !_.isEqual(
+          !isEqual(
             (updatedSelectedChat?.stocks && updatedSelectedChat.stocks[0]) || {},
             (state.selectedChat?.stocks && state.selectedChat.stocks[0]) || {},
           )) && {

@@ -9,19 +9,16 @@ import useUserActivity from "@src/services/UserActivity/useUserActivity";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import Reset from "@src/views/chipassist/Reset/Reset";
 import checkIsAuthenticated, { getAuthToken, isAuthPage } from "@src/utils/auth";
 import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
 import { checkUserActivityStatus, saveHref, saveUtm } from "@src/store/common/commonActions";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
 import HomePage from "@src/layouts/HomePage";
-import Login from "@src/views/chipassist/Login/Login";
 import SearchResults from "@src/views/chipassist/Search/SearchResults";
 import "semantic-ui-css/semantic.min.css";
 import "./mixins/moment";
 import "./mixins/validate";
-import RFQModal from "@src/views/chipassist/Rfq/components/RFQModal";
 import "@src/assets/scss/index.scss";
 import LogOut from "@src/components/LogOut/LogOut";
 import AlertBottomLeft from "@src/components/Alerts/AlertBottomLeft";
@@ -31,18 +28,14 @@ import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import IcsearchHomePage from "@src/views/chipassist/IcsearchHomePage/IcsearchHomePage";
 import { getServiceTax } from "@src/store/checkout/checkoutActions";
-import ProgressModal from "@src/components/ProgressModal/ProgressModal";
 import { authCheckState, sendQuickRequestUnAuth } from "@src/store/authentication/authActions";
 import Preloader from "@src/components/Preloader/Preloader";
-import ErrorRegister from "@src/views/chipassist/ErrorRegister/ErrorRegister";
 import { getUtm, lazyLoader } from "@src/utils/utility";
 import { loadMiscAction } from "@src/store/misc/miscActions";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
-import SellerMessageModal from "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
-import QualityCheckModal from "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
@@ -50,7 +43,33 @@ import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_consta
 const ProvidedErrorBoundary = ErrorBoundary;
 const isShowFormExamplesPage = localStorage.getItem("show_form_example_page");
 
+const ErrorRegister = lazy(() =>
+  lazyLoader(() =>
+    import(/* webpackChunkName: "error_register" */ "@src/views/chipassist/ErrorRegister/ErrorRegister"),
+  ),
+);
 const Error404 = lazy(() => lazyLoader(() => import(/* webpackChunkName: "404" */ "@src/views/chipassist/Error404")));
+const RFQModal = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "rfq_modal" */ "@src/views/chipassist/Rfq/components/RFQModal")),
+);
+const QualityCheckModal = lazy(() =>
+  lazyLoader(() =>
+    import(
+      /* webpackChunkName: "quality_check_modal" */ "@src/views/chipassist/Rfq/components/QualityCheckModal/QualityCheckModal"
+    ),
+  ),
+);
+const SellerMessageModal = lazy(() =>
+  lazyLoader(() =>
+    import(
+      /* webpackChunkName: "seller_message_modal" */ "@src/views/chipassist/Rfq/components/SellerMessageModal/SellerMessageModal"
+    ),
+  ),
+);
+const ProgressModal = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "progress_modal" */ "@src/components/ProgressModal/ProgressModal")),
+);
+const Reset = lazy(() => lazyLoader(() => import(/* webpackChunkName: "reset" */ "@src/views/chipassist/Reset/Reset")));
 const RegisterSuccess = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "register_success" */ "@src/views/chipassist/Register/RegisterSuccess")),
 );
@@ -120,6 +139,7 @@ const Profile = lazy(() =>
 const LoginAs = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "loginAs" */ "@src/views/chipassist/LoginAs/LoginAs")),
 );
+const Login = lazy(() => lazyLoader(() => import(/* webpackChunkName: "login" */ "@src/views/chipassist/Login/Login")));
 const Test = lazy(() => lazyLoader(() => import(/* webpackChunkName: "test" */ "@src/views/chipassist/Test/Test")));
 const Catalog = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "catalog" */ "@src/views/chipassist/Catalog/Catalog")),
@@ -359,12 +379,54 @@ const ChipAssistApp = () => {
                 </Suspense>
               }
             />
-            <Route path="/registered" element={<RegisterSuccess />} />
-            <Route path="/expired-link" element={<ErrorRegister />} />
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/reset" element={<Reset />} />
-            <Route path="/auth/reset/:token" element={<Reset />} />
-            <Route path="/password/request/:token" element={<Reset />} />
+            <Route
+              path="/registered"
+              element={
+                <Suspense fallback={}>
+                  <RegisterSuccess />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/expired-link"
+              element={
+                <Suspense fallback={}>
+                  <ErrorRegister />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/auth/login"
+              element={
+                <Suspense fallback={}>
+                  <Login />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/auth/reset"
+              element={
+                <Suspense fallback={}>
+                  <Reset />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/auth/reset/:token"
+              element={
+                <Suspense fallback={}>
+                  <Reset />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/password/request/:token"
+              element={
+                <Suspense fallback={}>
+                  <Reset />
+                </Suspense>
+              }
+            />
             <Route
               path="/product/:partnumber/:stockrecordId"
               element={
@@ -628,10 +690,19 @@ const ChipAssistApp = () => {
         </HomePage>
         {/* <FeedbackButton /> */}
         {window.location.pathname !== "/messages" && <ScrollUpButton />}
-        <RFQModal />
-        <SellerMessageModal />
-        <QualityCheckModal />
-        <ProgressModal />
+
+        <Suspense fallback={}>
+          <RFQModal />
+        </Suspense>
+        <Suspense fallback={}>
+          <SellerMessageModal />
+        </Suspense>
+        <Suspense fallback={}>
+          <QualityCheckModal />
+        </Suspense>
+        <Suspense fallback={}>
+          <ProgressModal />
+        </Suspense>
       </ProvidedErrorBoundary>
 
       <AlertBottomLeft />

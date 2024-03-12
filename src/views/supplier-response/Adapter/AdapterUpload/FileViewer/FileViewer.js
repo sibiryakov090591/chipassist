@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
-import XLSX from "xlsx";
+import { read, utils } from "xlsx";
 import { batch, useDispatch } from "react-redux";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
@@ -136,10 +136,10 @@ const FileViewer = ({
     reader.onload = (e) => {
       // eslint-disable-next-line no-shadow
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
+      const workbook = read(data, { type: "array" });
       const newSheetNames = [...workbook.Workbook.Sheets].filter((v) => !v.Hidden).map((v) => v.name);
       const tabName = name || newSheetNames[0] || workbook.SheetNames[0];
-      const jsonRows = XLSX.utils.sheet_to_json(workbook.Sheets[tabName], { header: 1 });
+      const jsonRows = utils.sheet_to_json(workbook.Sheets[tabName], { header: 1 });
       const rows = JSON.parse(JSON.stringify(jsonRows, 2, 2));
       batch(() => {
         setSelectedSheet(tabName);

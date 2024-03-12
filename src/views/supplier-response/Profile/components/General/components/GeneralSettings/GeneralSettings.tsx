@@ -25,7 +25,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { clsx } from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import validate from "validate.js";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import formSchema from "@src/utils/formSchema";
 
 const useStyles = makeStyles((theme: Theme & AppTheme) => ({
@@ -209,7 +209,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
 
   const onSubmit = () => {
     if (!isExample) {
-      if (_.isEmpty(formState.errors)) {
+      if (isEmpty(formState.errors)) {
         if (formState.values.logoURL !== "") dispatch(uploadNewAvatar(formState.values.logoURL));
         if (profile.selectedPartner) {
           dispatch(saveNewPartnerInfo(profile.selectedPartner.id, formState.values));
