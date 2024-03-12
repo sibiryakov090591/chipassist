@@ -1456,6 +1456,7 @@
     "show_more_stocks_0": "{{count}} предложение",
     "show_more_stocks_1": "{{count}} предложения",
     "show_more_stocks_2": "{{count}} предложений",
+    "not_specified": "Производитель не указан",
     "product_view": {
       "title": "Детали продукта",
       "description": "Описание",
