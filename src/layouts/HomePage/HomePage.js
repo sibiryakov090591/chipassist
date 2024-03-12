@@ -54,12 +54,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  // fixedHeight: {
-  //   height: 127,
-  //   [theme.breakpoints.down("sm")]: {
-  //     height: 145,
-  //   },
-  // },
+  fixedHeight: {
+    height: 127,
+    [theme.breakpoints.down("sm")]: {
+      height: "auto",
+    },
+  },
   container: {
     marginTop: 133,
     display: "flex",
