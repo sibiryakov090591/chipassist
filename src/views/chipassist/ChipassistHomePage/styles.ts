@@ -709,7 +709,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
   },
   mobileTopBar: {
-    height: 75,
+    height: "auto",
     position: "fixed",
     top: 0,
     width: "100%",

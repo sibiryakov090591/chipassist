@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   topBarICSMobile: {
-    maxHeight: 145,
+    height: "auto",
     zIndex: 1000,
     position: "fixed",
     transition: "all 250ms ease",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 127,
     [theme.breakpoints.down("sm")]: {
-      height: 145,
+      height: "auto",
     },
   },
   container: {
@@ -109,7 +109,7 @@ const HomePage = (props) => {
           [classes.fixedHeight]: true,
         })}
       />
-      <div className={isHomePage && isChipAssist ? classes.homeContainer : classes.container}>
+      <div className={isHomePage ? classes.homeContainer : classes.container}>
         <main className={classes.content}>{props.children}</main>
       </div>
       {isShowFooter && <Footer />}
