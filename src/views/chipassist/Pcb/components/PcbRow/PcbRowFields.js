@@ -4,17 +4,15 @@ import { TableCell, MenuList, MenuItem, ClickAwayListener, Grow, Paper, Popper }
 import CheckIcon from "@material-ui/icons/Check";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Button from "@material-ui/core/Button";
-import moment from "moment";
-
 import green from "@material-ui/core/colors/green";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
-import { DATE_FORMAT } from "@src/config";
 import { units, STATUS_CHOICES } from "@src/store/pcb/pcbTypes";
 import { updatePcbStatus } from "@src/store/pcb/pcbActions";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
+import { format } from "date-fns";
 import { PCB_TYPE_PARTNERS } from "../../Pcb";
 import { useStyles } from "./styles";
 import { useStyles as usePcbStyles } from "../../style";
@@ -234,10 +232,10 @@ const PcbRowFields = (props) => {
             );
             break;
           case "created":
-            FieldRender = <span className="text">{moment(pcb.created).format(DATE_FORMAT)}</span>;
+            FieldRender = <span className="text">{format(new Date(pcb.created), "dd.MM.yyyy")}</span>;
             break;
           case "valid_date":
-            FieldRender = <span className="text">{moment(pcb.valid_date).format(DATE_FORMAT)}</span>;
+            FieldRender = <span className="text">{format(new Date(pcb.valid_date), "dd.MM.yyyy")}</span>;
             break;
           case "files_pcb":
             FieldRender = (

@@ -11,10 +11,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TableBody from "@material-ui/core/TableBody";
 import Paper from "@material-ui/core/Paper";
 import { DatePicker } from "@material-ui/pickers";
-import moment from "moment";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
-import { DATE_FORMAT } from "@src/config";
 import { useStyles as RfqModalStyles } from "@src/views/chipassist/Rfq/components/RFQModal/RFQModalStyles";
 import { rfqResponse } from "@src/store/rfq/rfqActions";
 import useAppTheme from "@src/theme/useAppTheme";
@@ -39,12 +37,11 @@ function RfqMakeResponse(props: RfqMakeResponseProps) {
   const rfqModalClasses = RfqModalStyles();
   const [price, setPrice] = useState(rfq.price || "");
   const [partner, setPartner] = useState("");
-  const [date, setDate] = useState(
-    moment
-      .utc(rfq.delivery_date ? rfq.valid_date : {})
-      .format()
-      .slice(0, 19),
-  );
+  const [date, setDate] = useState();
+  // moment
+  //   .utc(rfq.delivery_date ? rfq.valid_date : {})
+  //   .format()
+  //   .slice(0, 19),
   const rfqResponseStatus = useAppSelector((state) => state.rfq.rfqResponse);
   const { currency, currencyPrice } = useCurrency();
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
@@ -171,7 +168,7 @@ function RfqMakeResponse(props: RfqMakeResponseProps) {
               required
               disableToolbar
               autoOk={true}
-              format={DATE_FORMAT}
+              format={"DD/MM/YYYY"}
               fullWidth
               label={t("column.date")}
               value={date}

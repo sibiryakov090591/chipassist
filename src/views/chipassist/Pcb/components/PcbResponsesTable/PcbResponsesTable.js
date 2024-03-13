@@ -4,12 +4,11 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import CheckIcon from "@material-ui/icons/Check";
 import clsx from "clsx";
 import red from "@material-ui/core/colors/red";
-import moment from "moment";
 import useCurrency from "@src/hooks/useCurrency";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
-import { DATE_FORMAT } from "@src/config";
 import { approveResponse } from "@src/store/pcb/pcbActions";
 import useAppTheme from "@src/theme/useAppTheme";
+import { format } from "date-fns";
 import { useStyles } from "./style.js";
 
 function PcbResponsesTable(props) {
@@ -54,7 +53,7 @@ function PcbResponsesTable(props) {
                     </TableCell>
                     <TableCell>
                       {response.valid_date && (
-                        <span style={{ color: red[600] }}>{moment(response.valid_date).format(DATE_FORMAT)}</span>
+                        <span style={{ color: red[600] }}>{format(new Date(response.valid_date), "dd.MM.yyyy")}</span>
                       )}
                     </TableCell>
                     <TableCell align="right" className="test-pcb-row-approve">

@@ -17,7 +17,7 @@ import "@src/static/css/style.css";
 import HomePage from "@src/layouts/HomePage";
 import SearchResults from "@src/views/chipassist/Search/SearchResults";
 import "semantic-ui-css/semantic.min.css";
-import "./mixins/moment";
+// import "./mixins/moment";
 import "./mixins/validate";
 import "@src/assets/scss/index.scss";
 import LogOut from "@src/components/LogOut/LogOut";

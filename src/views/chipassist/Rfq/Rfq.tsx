@@ -5,14 +5,12 @@ import clsx from "clsx";
 import { Box, Card, Accordion, AccordionSummary, AccordionDetails, Button, Collapse } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { loadRfq, clearRfqResponse, deleteRfqFromStore } from "@src/store/rfq/rfqActions";
+import { loadRfq } from "@src/store/rfq/rfqActions";
 import setUrl from "@src/utils/setUrl";
 import { Page } from "@src/components";
 import Preloader from "@src/components/Preloader/Preloader";
 import Paginate from "@src/components/Paginate";
 // import useAppTheme from "@src/theme/useAppTheme";
-import moment from "moment";
-import { DATE_FORMAT } from "@src/config";
 import FiltersContainer, {
   // FilterGroupBar,
   FilterPageSizeChoiceBar,
@@ -25,10 +23,9 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { isEven } from "@src/utils/bom";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import { useStyles } from "./style";
 import RfqCommentModal from "./components/RfqCommentModal/RfqCommentModal";
-import RfqMakeResponse from "./components/RfqMakeResponse/RfqMakeResponse";
-import RfqResponses from "./components/RfqResponses/RfqResponses";
 import RfqRow from "./components/RfqRow/RfqRow";
 
 export const RFQ_TYPE_YOUR = "RFQ_TYPE_YOUR";
@@ -130,8 +127,8 @@ function Rfq(props: Record<string, any>) {
   const appTheme = useAppTheme();
   const navigate = useNavigate();
 
-  const [openedResponses, setOpenedResponses] = useState(null);
-  const [makeResponse, setMakeResponse] = useState(null);
+  // const [openedResponses, setOpenedResponses] = useState(null);
+  // const [makeResponse, setMakeResponse] = useState(null);
   const [openCommentModal, setOpenCommentModal] = useState(null);
   const [rfqType, setRfqType] = useState(RFQ_TYPE_YOUR);
   const [showAll, setShowAll] = useState(false);
@@ -144,7 +141,7 @@ function Rfq(props: Record<string, any>) {
   const isRfqsLoading = useAppSelector((state) => state.rfq.rfqsLoading);
   const rfqsNeedUpdate = useAppSelector((state) => state.rfq.rfqsNeedUpdate);
   const rfqs = useAppSelector((state) => state.rfq.rfqs);
-  const profile = useAppSelector((state) => state.profile.profileInfo);
+  // const profile = useAppSelector((state) => state.profile.profileInfo);
   const shouldUpdateBackend = useAppSelector((state) => state.common.shouldUpdateBackend);
 
   const storageKey = "rfqListShowBy";
@@ -248,36 +245,36 @@ function Rfq(props: Record<string, any>) {
     }
   };
 
-  const onOpenResponses = (id: number) => () => {
-    setOpenedResponses(id);
-  };
+  // const onOpenResponses = (id: number) => () => {
+  //   setOpenedResponses(id);
+  // };
 
-  const onCloseResponses = () => {
-    setOpenedResponses(null);
-  };
+  // const onCloseResponses = () => {
+  //   setOpenedResponses(null);
+  // };
 
-  const onOpenMakeResponse = (id: number) => () => {
-    setMakeResponse(id);
-  };
+  // const onOpenMakeResponse = (id: number) => () => {
+  //   setMakeResponse(id);
+  // };
 
   const onOpenCommentModal = (id: number) => () => {
     setOpenCommentModal(id);
   };
 
-  const onCloseMakeResponse = () => {
-    setMakeResponse(null);
-    dispatch(clearRfqResponse());
-  };
+  // const onCloseMakeResponse = () => {
+  //   setMakeResponse(null);
+  //   dispatch(clearRfqResponse());
+  // };
 
   const onCloseCommentModal = () => {
     setOpenCommentModal(null);
   };
 
-  const onDeleteRfqFromStore = (id: number) => {
-    if (rfqType === RFQ_TYPE_PARTNERS && !showAll) {
-      dispatch(deleteRfqFromStore(id));
-    }
-  };
+  // const onDeleteRfqFromStore = (id: number) => {
+  //   if (rfqType === RFQ_TYPE_PARTNERS && !showAll) {
+  //     dispatch(deleteRfqFromStore(id));
+  //   }
+  // };
 
   const getRfqById = (id: number) => {
     return rfqs.results.filter((item) => item.id === id)[0];
@@ -424,7 +421,7 @@ function Rfq(props: Record<string, any>) {
           {!isRfqsLoading && !!Object.keys(rfqsGroups).length && (
             <div>
               {Object.keys(rfqsGroups).map((key) => {
-                const requestDate = moment(rfqsGroups[key][0].created).format(DATE_FORMAT);
+                const requestDate = format(new Date(rfqsGroups[key][0].created), "dd.MM.yyyy");
                 const positionsQty = rfqsGroups[key].length;
 
                 return (
@@ -491,8 +488,8 @@ function Rfq(props: Record<string, any>) {
                                         rfq={item}
                                         isPartner={isPartner}
                                         rfqType={rfqType}
-                                        onOpenResponses={onOpenResponses(item.id)}
-                                        onMakeResponse={onOpenMakeResponse(item.id)}
+                                        // onOpenResponses={onOpenResponses(item.id)}
+                                        // onMakeResponse={onOpenMakeResponse(item.id)}
                                         onCommentClick={onOpenCommentModal(item.id)}
                                       />
                                     );
@@ -519,8 +516,8 @@ function Rfq(props: Record<string, any>) {
                                           rfq={item}
                                           isPartner={isPartner}
                                           rfqType={rfqType}
-                                          onOpenResponses={onOpenResponses(item.id)}
-                                          onMakeResponse={onOpenMakeResponse(item.id)}
+                                          // onOpenResponses={onOpenResponses(item.id)}
+                                          // onMakeResponse={onOpenMakeResponse(item.id)}
                                           onCommentClick={onOpenCommentModal(item.id)}
                                         />
                                       );
@@ -616,15 +613,15 @@ function Rfq(props: Record<string, any>) {
         </Card>
       </Box>
 
-      {!!openedResponses && <RfqResponses onClose={onCloseResponses} rfq={getRfqById(openedResponses)} />}
-      {!!makeResponse && (
-        <RfqMakeResponse
-          onClose={onCloseMakeResponse}
-          onDeleteRfqFromStore={onDeleteRfqFromStore}
-          rfq={getRfqById(makeResponse)}
-          profile={profile}
-        />
-      )}
+      {/* {!!openedResponses && <RfqResponses onClose={onCloseResponses} rfq={getRfqById(openedResponses)} />} */}
+      {/* {!!makeResponse && ( */}
+      {/*  <RfqMakeResponse */}
+      {/*    onClose={onCloseMakeResponse} */}
+      {/*    onDeleteRfqFromStore={onDeleteRfqFromStore} */}
+      {/*    rfq={getRfqById(makeResponse)} */}
+      {/*    profile={profile} */}
+      {/*  /> */}
+      {/* )} */}
       {!!openCommentModal && <RfqCommentModal onClose={onCloseCommentModal} rfq={getRfqById(openCommentModal)} />}
     </Page>
   );

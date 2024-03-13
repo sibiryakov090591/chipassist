@@ -20,7 +20,7 @@ import Error404 from "@src/views/chipassist/Error404";
 import SupplierLayout from "@src/layouts/SupplierLayout/SupplierLayout";
 import Login from "@src/views/chipassist/Login/Login.tsx";
 import "semantic-ui-css/semantic.min.css";
-import "./mixins/moment";
+// import "./mixins/moment";
 import "./mixins/validate";
 import "@src/assets/scss/index.scss";
 import LogOut from "@src/components/LogOut/LogOut";

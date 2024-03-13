@@ -12,11 +12,9 @@ import {
   Paper,
 } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { DatePicker } from "@material-ui/pickers";
-import moment from "moment";
-import { DATE_FORMAT } from "@src/config";
+// import { DatePicker } from "@material-ui/pickers";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
-import { useStyles as PcbModalStyles } from "@src/views/chipassist/Pcb/components/PcbModal/PcbModalStyles";
+// import { useStyles as PcbModalStyles } from "@src/views/chipassist/Pcb/components/PcbModal/PcbModalStyles";
 import { pcbResponse } from "@src/store/pcb/pcbActions";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -27,18 +25,18 @@ function PcbMakeResponse(props) {
   const { onClose, onDeletePcbFromStore, pcb, profile, isEditInstance } = props;
   const classes = useStyles();
   const appTheme = useAppTheme();
-  const pcbModalClasses = PcbModalStyles();
+  // const pcbModalClasses = PcbModalStyles();
   const [updateId, setUpdateId] = useState(null);
   const [price, setPrice] = useState(pcb ? pcb.price || "" : "");
   const [partner, setPartner] = useState("");
   // const [lead, setLead] = useState("");
   const [comment, setComment] = useState("");
-  const [date, setDate] = useState(
-    moment
-      .utc(pcb && pcb.valid_date ? pcb.valid_date : {})
-      .format()
-      .slice(0, 19),
-  );
+  // const [date, setDate] = useState(
+  //   moment
+  //     .utc(pcb && pcb.valid_date ? pcb.valid_date : {})
+  //     .format()
+  //     .slice(0, 19),
+  // );
   const pcbResponseStatus = useAppSelector((state) => state.pcb.pcbResponse);
   const dispatch = useAppDispatch();
   const { t } = useI18n("pcb");
@@ -49,16 +47,16 @@ function PcbMakeResponse(props) {
     setUpdateId(item.id);
     setPrice(item.price);
     setPartner(item.seller.id);
-    setDate(item.valid_date);
+    // setDate(item.valid_date);
     setComment(item.comment);
   };
   const onChangePrice = useCallback((e) => {
     setPrice(e.target.value);
   }, []);
-  const onChangeDate = useCallback((moment_date) => {
-    const new_date = moment_date.format().slice(0, 19);
-    setDate(new_date);
-  }, []);
+  // const onChangeDate = useCallback((moment_date) => {
+  //   const new_date = moment_date.format().slice(0, 19);
+  //   setDate(new_date);
+  // }, []);
   const onChangePartner = useCallback((e) => {
     setPartner(e.target.value);
   }, []);
@@ -74,7 +72,7 @@ function PcbMakeResponse(props) {
       e.preventDefault();
       const status = e.currentTarget.value;
 
-      const data = { price, valid_date: date, seller: partner, status, comment };
+      const data = { price, seller: partner, status, comment };
 
       dispatch(pcbResponse(pcb.id, data, updateId)).then(() => {
         setUpdateId(null);
@@ -84,7 +82,7 @@ function PcbMakeResponse(props) {
         }
       });
     },
-    [price, date, partner, comment],
+    [price, partner, comment],
   );
 
   const partners = useMemo(() => {
@@ -144,18 +142,18 @@ function PcbMakeResponse(props) {
                 size="small"
                 required
               />
-              <DatePicker
-                className={pcbModalClasses.pcbDatePicker}
-                name="date"
-                required
-                disableToolbar
-                autoOk={true}
-                format={DATE_FORMAT}
-                fullWidth
-                label={t("column.valid_date_response")}
-                value={date}
-                onChange={onChangeDate}
-              />
+              {/* <DatePicker */}
+              {/*  className={pcbModalClasses.pcbDatePicker} */}
+              {/*  name="date" */}
+              {/*  required */}
+              {/*  disableToolbar */}
+              {/*  autoOk={true} */}
+              {/*  format={DATE_FORMAT} */}
+              {/*  fullWidth */}
+              {/*  label={t("column.valid_date_response")} */}
+              {/*  value={date} */}
+              {/*  onChange={onChangeDate} */}
+              {/* /> */}
               <TextField
                 id="partner"
                 select

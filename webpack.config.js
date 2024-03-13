@@ -22,7 +22,6 @@ const TerserPlugin = require("terser-webpack-plugin");
 //const UnusedWebpackPlugin = require("unused-webpack-plugin");
 
 const isDevServer = !!process.env.DEV_SERVER;
-// const withReport = process.env.npm_config_withReport;
 let node_env = "production";
 console.log("AWS_BRANCH", process.env.AWS_BRANCH);
 
@@ -112,7 +111,7 @@ module.exports = {
     },
   },
   plugins: [
-    // withReport ? new BundleAnalyzerPlugin() : null, // activate to check bundle size and run "npm run report"
+    // new BundleAnalyzerPlugin(), // activate to check bundle size and run "npm run report"
     // new CompressionPlugin({
     //   filename: "[path].gz[query]",
     //   algorithm: "gzip",

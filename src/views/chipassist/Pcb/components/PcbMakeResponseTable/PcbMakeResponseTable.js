@@ -1,9 +1,8 @@
 import React from "react";
 import { Table, TableCell, TableHead, TableBody, TableRow, Button } from "@material-ui/core";
-import moment from "moment";
 import useCurrency from "@src/hooks/useCurrency";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
-import { DATE_FORMAT } from "@src/config";
+import { format } from "date-fns";
 import { useStyles } from "./style.js";
 
 function PcbMakeResponseTable(props) {
@@ -50,9 +49,9 @@ function PcbMakeResponseTable(props) {
               </TableCell>
               <TableCell>
                 {item.response_pcb[0].valid_date
-                  ? moment(item.response_pcb[0].valid_date).format(DATE_FORMAT)
+                  ? format(new Date(item.response_pcb[0].valid_date), "dd.MM.yyyy")
                   : item.valid_date
-                  ? moment(item.valid_date).format(DATE_FORMAT)
+                  ? format(new Date(item.valid_date), "dd.MM.yyyy")
                   : ""}
               </TableCell>
               <TableCell>{getAnswerPartnerName()}</TableCell>

@@ -12,12 +12,11 @@ import CheckIcon from "@material-ui/icons/Check";
 import clsx from "clsx";
 import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
-import moment from "moment";
 import useCurrency from "@src/hooks/useCurrency";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { DATE_FORMAT } from "@src/config";
 import { approveResponse } from "@src/store/rfq/rfqActions";
 import { RfqItem } from "@src/store/rfq/rfqTypes";
+import { format } from "date-fns";
 import { useStyles } from "./style.js";
 
 function RfqResponses(props: { rfq: RfqItem; onClose: any }) {
@@ -67,10 +66,10 @@ function RfqResponses(props: { rfq: RfqItem; onClose: any }) {
                       <TableCell>
                         {response["delivery-date"] ? (
                           <span style={{ color: red[600] }}>
-                            {moment(response["delivery-date"]).format(DATE_FORMAT)}
+                            {format(new Date(response["delivery-date"]), "dd.MM.yyyy")}
                           </span>
                         ) : (
-                          <span style={{ color: green[600] }}>{moment(rfq.delivery_date).format(DATE_FORMAT)}</span>
+                          <span style={{ color: green[600] }}>{format(new Date(rfq.delivery_date), "dd.MM.yyyy")}</span>
                         )}
                       </TableCell>
                       <TableCell align="right">
