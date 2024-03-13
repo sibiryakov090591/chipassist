@@ -61,7 +61,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       width: "15%",
       textAlign: "end",
       [theme.breakpoints.down(500)]: {
-        width: "18%",
+        width: "22%",
       },
     },
     tdActions: {
