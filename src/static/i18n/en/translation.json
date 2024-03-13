@@ -1501,6 +1501,7 @@
     "exclusive_tooltip": "You can request this product and we will find out the price for you",
     "show_more_stocks": "{{count}} stock",
     "show_more_stocks_plural": "{{count}} stocks",
+    "not_specified": "Manufacturer not specified",
     "product_view": {
       "title": "Product details",
       "description": "Description",

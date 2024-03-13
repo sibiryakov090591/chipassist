@@ -328,7 +328,13 @@ const ProductCard = (props) => {
               <Highlighter
                 className={classes.manufacturerName}
                 searchWords={searchQueryArray}
-                textToHighlight={product.manufacturer ? product.manufacturer.name : "" || ""}
+                textToHighlight={
+                  product.manufacturer
+                    ? product.manufacturer.name === "Not Specified"
+                      ? t("not_specified")
+                      : product.manufacturer.name
+                    : t("not_specified") || t("not_specified")
+                }
                 autoEscape={true}
               />
             </div>
