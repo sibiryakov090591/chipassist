@@ -1,7 +1,7 @@
 export const manufacturers = [
   {
     name: "Geehy Semiconductor",
-    id: "",
+    id: 32062,
     description:
       "Geehy Semiconductor is a leading global manufacturer of high-quality electronic components, specializing in semiconductor products such as integrated circuits, diodes, transistors, and sensors. With a commitment to innovation and technological advancement, Geehy Semiconductor has built a strong reputation for reliability, performance, and customer satisfaction. The company's products are used in a wide range of applications across industries including telecommunications, automotive, consumer electronics, and industrial automation.",
     image: "https://www.geehysemiconductor.com/logo.png",
@@ -46,7 +46,7 @@ export const manufacturers = [
   },
   {
     name: "Amtek Technology",
-    id: "",
+    id: 32061,
     description:
       "Amtek Technology is a leading manufacturer of electronic components specializing in producing a wide range of products such as connectors, transformers, and sensors for various industries including automotive, consumer electronics, and industrial applications. With a strong focus on innovation and quality, Amtek Technology has established itself as a trusted supplier known for its reliable and high-performance components. The company's commitment to customer satisfaction and continuous improvement has enabled them to build long-term partnerships with clients worldwide.",
     image: "https://www.amtek-co.com.tw/wp-content/uploads/2019/08/Logo-002.png",
@@ -57,7 +57,7 @@ export const manufacturers = [
   },
   {
     name: "SMIC (Semiconductor Manufacturing International Corporation)",
-    id: "",
+    id: 32063,
     description:
       "SMIC (Semiconductor Manufacturing International Corporation) is a leading semiconductor foundry company providing integrated circuit manufacturing services. Established in 2000, SMIC is headquartered in Shanghai, China, and has several offices and fabs across the country. The company offers a wide range of advanced technologies and solutions for various applications, including consumer electronics, automotive, IoT, and more. SMIC is known for its expertise in semiconductor manufacturing and its commitment to innovation and quality.",
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/SMIC_Logo.jpg/250px-SMIC_Logo.jpg",
