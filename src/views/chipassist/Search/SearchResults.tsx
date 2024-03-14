@@ -386,7 +386,7 @@ const SearchResults = () => {
               <div className={classes.searchResultEmpty}>
                 <h2>{t("extended_progress")}</h2>
                 <div style={{ maxWidth: "320px", margin: "auto" }}>
-                  <Progress />
+                  <Progress isExtendSearchPage={true} />
                 </div>
               </div>
             )}
