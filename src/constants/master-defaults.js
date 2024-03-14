@@ -21,7 +21,7 @@ const defaults = {
   bomNew: true,
   extendedRegistration: true,
   currencyChanger: true,
-  selectedCurrencyList: ["USD", "EUR"], // ["RUB", "USD", "EUR"]
+  selectedCurrencyList: ["USD", "EUR", "HKD", "CNY"], // ["RUB", "USD", "EUR"]
   showCategories: false,
   builds: "AWS",
   userActivity: true, // set false for local development
