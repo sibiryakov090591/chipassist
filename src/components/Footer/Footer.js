@@ -325,6 +325,9 @@ const Footer = () => {
                         <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
                           {t("privacy")}
                         </NavLink>
+                        <a className={classes.navLinkICS} style={{ color: "white" }} href="mailto:info@icsearch.ru">
+                          Сообщить об ошибке
+                        </a>
                       </Hidden>
                     </Box>
                   </Box>
@@ -339,6 +342,9 @@ const Footer = () => {
                       <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
                         {t("privacy")}
                       </NavLink>
+                      <a className={classes.navLinkICS} style={{ color: "white" }} href="mailto:info@icsearch.ru">
+                        Сообщить об ошибке
+                      </a>
                     </Box>
                   </Hidden>
                   <Hidden xsDown>
