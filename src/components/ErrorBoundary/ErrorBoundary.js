@@ -79,7 +79,7 @@ class ErrorBoundary extends React.Component {
     // а на дев сервере всплытие работает, такая вот философия от реакта.
     if (IS_BUILD && getAuthToken()) {
       this.props.dispatch(
-        feedbackThunk(`${env} APP`, `${error.name}: ${error.message} ${info.componentStack}`, "error"),
+        feedbackThunk(`ERROR - ${env} APP`, `${error.name}: ${error.message} ${info.componentStack}`, "error"),
       );
     }
   }

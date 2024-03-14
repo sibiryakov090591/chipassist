@@ -56,10 +56,10 @@ const withJsErrorsCatch = (WrappedComponent) => {
           );
         }
 
-        if (error && error?.response?.status !== 404 && (!url || !url.includes(feedback_url))) {
+        if (error && [401, 404].includes(error?.response?.status) && (!url || !url.includes(feedback_url))) {
           this.props.dispatch(
             feedbackThunk(
-              `${env} APP`,
+              `ERROR - ${env} APP`,
               `${message?.replace(/<\/?[^>]+(>|$)/g, "")} ${
                 error.response?.data ? JSON.stringify(error.response?.data) : ""
               } ${error.stack}`,
