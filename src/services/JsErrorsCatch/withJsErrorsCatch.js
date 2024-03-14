@@ -56,7 +56,11 @@ const withJsErrorsCatch = (WrappedComponent) => {
           );
         }
 
-        if (error && [401, 404].includes(error?.response?.status) && (!url || !url.includes(feedback_url))) {
+        if (
+          error?.response?.status &&
+          ![401, 404].includes(error?.response?.status) &&
+          (!url || !url.includes(feedback_url))
+        ) {
           this.props.dispatch(
             feedbackThunk(
               `ERROR - ${env} APP`,

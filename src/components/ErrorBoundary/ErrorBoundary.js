@@ -6,7 +6,6 @@ import { withJsErrorsCatch } from "@src/services/JsErrorsCatch";
 import { TopBarEmpty } from "@src/layouts/HomePage/components/TopBar";
 import { IS_BUILD, IS_PROD } from "@src/config";
 import { feedbackThunk } from "@src/store/feedback/FeedbackActions";
-import { getAuthToken } from "@src/utils/auth";
 import Footer from "@src/components/Footer/Footer";
 import { withStyles } from "@material-ui/core/styles";
 import { compose } from "redux";
@@ -77,7 +76,7 @@ class ErrorBoundary extends React.Component {
     this.setState({ error, info });
     // в билде реакт проекта всплытие ошибки не работает, поэтому error listener в withJsErrorsCatch не срабатывает,
     // а на дев сервере всплытие работает, такая вот философия от реакта.
-    if (IS_BUILD && getAuthToken()) {
+    if (IS_BUILD) {
       this.props.dispatch(
         feedbackThunk(`ERROR - ${env} APP`, `${error.name}: ${error.message} ${info.componentStack}`, "error"),
       );
