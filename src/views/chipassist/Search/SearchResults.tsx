@@ -256,7 +256,6 @@ const SearchResults = () => {
   };
 
   const onPageChangeHandle = (data: any) => {
-    console.log("manufacturerId: ", manufacturerId);
     setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, null, {
       smart_view,
       ...(!!manufacturerId && { m_id: manufacturerId }),
