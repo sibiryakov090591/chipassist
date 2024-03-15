@@ -21,7 +21,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE, TITLE_PCBONLINE } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
 
@@ -32,6 +32,7 @@ const Authorized = () => {
   const theme = useTheme();
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
   const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isPCBOnline = constants.title === TITLE_PCBONLINE;
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(localStorage.getItem("email"));
@@ -62,7 +63,7 @@ const Authorized = () => {
   };
 
   const profileItems = React.useMemo(() => {
-    if (isSupplierResponse) return [];
+    if (isSupplierResponse || isPCBOnline) return [];
 
     return [
       { to: `/profile/general`, title: t("general") },
@@ -74,6 +75,7 @@ const Authorized = () => {
   }, []);
 
   const listItems = React.useMemo(() => {
+    if (isPCBOnline) return [];
     if (isSupplierResponse) {
       return [
         { to: `/about`, title: "About" },

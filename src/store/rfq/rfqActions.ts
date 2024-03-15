@@ -13,7 +13,7 @@ import { Stockrecord, Product } from "@src/store/products/productTypes";
 import { CurrenciesAllowed } from "@src/store/currency/currencyTypes";
 import { shouldUpdateCard } from "@src/store/common/commonActions";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
+import { ID_ICSEARCH, TITLE_PCBONLINE } from "@src/constants/server_constants";
 import * as actionTypes from "./rfqTypes";
 import { NewRfqItem, RfqActionTypes } from "./rfqTypes";
 
@@ -22,6 +22,7 @@ import { NewRfqItem, RfqActionTypes } from "./rfqTypes";
 const FileDownload = require("js-file-download");
 
 const isICSearch = constants.id === ID_ICSEARCH;
+const isPCBOnline = constants.title === TITLE_PCBONLINE;
 
 export const exportSupplierRfqs = (all: boolean, days: number, sellerId: number) => (dispatch: Dispatch<any>) => {
   if (!sellerId) return false;
@@ -38,7 +39,7 @@ export const exportSupplierRfqs = (all: boolean, days: number, sellerId: number)
           },
         )
         .then((res) => {
-          FileDownload(res.data, `ChipAssist_RFQs.xls`);
+          FileDownload(res.data, `${isPCBOnline ? "PCBOnline" : "ChipAssist"}_RFQs.xls`);
         })
         .catch((e) => {
           console.log("***EXPORT_SUPPLIER_REQUESTS_ERROR", e);

@@ -41,6 +41,8 @@ import Adapter from "@src/views/supplier-response/Adapter/Adapter";
 import About from "@src/views/supplier-response/About/About";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
+import constants from "@src/constants/constants";
+import { TITLE_PCBONLINE } from "@src/constants/server_constants";
 
 const ProvidedErrorBoundary = ErrorBoundary;
 
@@ -52,6 +54,7 @@ const SupplierResponseApp = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const [startRecord, stopRecord] = useUserActivity();
+  const isPCBOnline = constants.title === TITLE_PCBONLINE;
   useConsoleLogSave();
 
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
@@ -134,23 +137,6 @@ const SupplierResponseApp = () => {
           <Routes location={location}>
             <Route path="/" element={<Navigate to="/supplier-response" />} />
             <Route path="/supplier-response/*" element={<SupplierResponse />} />
-            <Route path="/statistics" element={<Statistics />} />
-            <Route
-              path="/messages"
-              element={
-                <PrivateRoute isAuthenticated={isAuthenticated}>
-                  <ChatPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile/*"
-              element={
-                <PrivateRoute isAuthenticated={isAuthenticated}>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
             <Route path="/auth/login" element={<Login />} />
             <Route
               path="/logout"
@@ -171,17 +157,38 @@ const SupplierResponseApp = () => {
                 </PrivateRoute>
               }
             />
-            <Route
-              path="/adapter/*"
-              element={
-                <PrivateRoute isAuthenticated={isAuthenticated}>
-                  <Adapter />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/about" element={<About />} />
-            <Route path="/privacy_policy" element={<Policy />} />
-            <Route path="/terms_of_services" element={<Terms />} />
+            {!isPCBOnline && (
+              <>
+                <Route path="/statistics" element={<Statistics />} />
+                <Route
+                  path="/messages"
+                  element={
+                    <PrivateRoute isAuthenticated={isAuthenticated}>
+                      <ChatPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile/*"
+                  element={
+                    <PrivateRoute isAuthenticated={isAuthenticated}>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/adapter/*"
+                  element={
+                    <PrivateRoute isAuthenticated={isAuthenticated}>
+                      <Adapter />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="/about" element={<About />} />
+                <Route path="/privacy_policy" element={<Policy />} />
+                <Route path="/terms_of_services" element={<Terms />} />
+              </>
+            )}
             <Route path="/*" element={<Error404 />} />
           </Routes>
         </SupplierLayout>

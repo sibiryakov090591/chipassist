@@ -10,15 +10,18 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
+import constants from "@src/constants/constants";
+import { TITLE_PCBONLINE } from "@src/constants/server_constants";
 import { useStyles } from "./suppliersRegisterModalStyles";
 
 const RegisterModal = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const isPCBOnline = constants.title === TITLE_PCBONLINE;
   // const { t } = useI18n("progress_modal");
   const dispatch = useAppDispatch();
   const appTheme = useAppTheme();
-
+  const email = isPCBOnline ? "sales@pcboline.spb.ru" : "connect@chipassist.com";
   const showedMessageAlert = useAppSelector((state) => state.alerts.showRegisterModal);
 
   const handleClose = () => {
@@ -43,8 +46,7 @@ const RegisterModal = () => {
           <div className={commonClasses.paper}>
             <h1>Register</h1>
             <p className={classes.description}>
-              То register as a supplier please send us a mail to{" "}
-              <a href="mailto:connect@chipassist.com">connect@chipassist.com</a>
+              То register as a supplier please send us a mail to <a href={`mailto:${email}`}>{email}</a>
             </p>
             <br />
             <Box display="flex" justifyContent="flex-end">

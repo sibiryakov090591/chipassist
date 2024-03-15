@@ -12,9 +12,11 @@ import {
   ID_ICSEARCH,
   ID_MASTER,
   ID_SUPPLIER_RESPONSE,
+  TITLE_PCBONLINE,
 } from "@src/constants/server_constants";
 import { responsesMenuList } from "@src/layouts/SupplierLayout/components/TopMenu/TopMenu";
 import { chipAssistMenuList } from "@src/layouts/HomePage/components/TopBar/components/TopMenu/TopMenu";
+import HomeIcon from "@material-ui/icons/HomeOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
 const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+const isPCBOnline = constants.title === TITLE_PCBONLINE;
 const isChipOnline = constants.id === ID_ELFARO;
 const isICSearch = constants.id === ID_ICSEARCH;
 
@@ -60,8 +63,18 @@ let topMenuList = [];
 if (isChipAssist || isICSearch) {
   topMenuList = chipAssistMenuList.filter((i) => !!i);
 }
-if (isSupplierResponse) {
+if (isSupplierResponse && !isPCBOnline) {
   topMenuList = responsesMenuList.filter((i) => !!i);
+}
+if (isPCBOnline) {
+  topMenuList = [
+    {
+      name: "requests",
+      url: "/supplier-response",
+      label: "Requests",
+      getIcon: (className) => <HomeIcon className={className} />,
+    },
+  ];
 }
 
 const Error404 = () => {
