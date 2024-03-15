@@ -58,9 +58,10 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: 450,
       margin: "0 auto",
     },
+    textAlign: "center",
   },
   heroCardTitle: {
-    color: "#21C483",
+    color: "#16be9f",
     fontSize: "3rem",
     fontWeight: "bold",
     padding: "30px 0 25px 0",
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   workCardTitle: {
-    backgroundColor: "#21C483",
+    backgroundColor: "#16be9f",
     color: "#ffffff",
     fontWeight: "bold",
     padding: "0.75rem 1rem",
@@ -164,7 +165,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   pcb: {
-    backgroundColor: theme.palette.app.green700,
+    backgroundColor: "#16be9f",
   },
   pcbTitle: {
     color: "#ffffff",
@@ -222,8 +223,18 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "underline",
       color: "#fff",
     },
+    [theme.breakpoints.down(1300)]: {
+      fontSize: 15,
+      marginRight: 10,
+    },
     [theme.breakpoints.down(1000)]: {
-      marginRight: 20,
+      marginRight: 8,
+    },
+  },
+  heroMenuElementsContainer: {
+    width: "56%",
+    [theme.breakpoints.down(1460)]: {
+      width: "66%",
     },
   },
   headerLink: {
