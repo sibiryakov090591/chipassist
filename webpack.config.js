@@ -38,12 +38,16 @@ const isProd = node_env === "production";
 const isDev = !isProd;
 console.log(node_env, "PROD:", isProd);
 
-const favicon =
-  id === "elfaro"
-    ? "src/images/favicons/elfaro-favicon.ico"
-    : id === "icsearch"
-    ? "src/images/favicons/favicon_icsearch.ico"
-    : "src/images/favicons/favicon_chipassist.ico";
+let favicon = "src/images/favicons/favicon_chipassist.ico";
+if (id === "elfaro") {
+  favicon = "src/images/favicons/elfaro-favicon.ico";
+}
+if (id === "icsearch") {
+  favicon = "src/images/favicons/favicon_icsearch.ico";
+}
+if (title === "PCBOnline") {
+  favicon = "src/images/favicons/favicon_pcbonline.ico";
+}
 
 const filename = (ext) => (isDevServer ? `[name].${ext}` : `[name].[hash].${ext}`);
 

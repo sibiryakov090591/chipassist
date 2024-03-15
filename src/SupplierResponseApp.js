@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { batch } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import useUserActivity from "@src/services/UserActivity/useUserActivity";
 import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -29,26 +29,43 @@ import AlertTopRight from "@src/components/Alerts/AlertTopRight";
 import AlertModal from "@src/components/Alerts/AlertModal";
 import LoginAs from "@src/views/chipassist/LoginAs/LoginAs.tsx";
 import SupplierResponse from "@src/views/supplier-response/Requests/SupplierResponse";
-import Policy from "@src/views/chipassist/StaticPages/Policy";
-import Terms from "@src/views/chipassist/StaticPages/Terms";
 import SupplierResponseRegisterModal from "@src/components/Alerts/SupplierResponseRegisterModal";
 import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
-import Statistics from "@src/views/supplier-response/Statistics/Statistics";
-import ChatPage from "@src/views/chipassist/Chat/ChatPage";
 import { getChatList, updateChatList } from "@src/store/chat/chatActions";
-import Profile from "@src/views/supplier-response/Profile/Profile";
-import Adapter from "@src/views/supplier-response/Adapter/Adapter";
-import About from "@src/views/supplier-response/About/About";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import constants from "@src/constants/constants";
 import { TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { lazyLoader } from "@src/utils/utility";
+import Preloader from "@src/components/Preloader/Preloader";
 
 const ProvidedErrorBoundary = ErrorBoundary;
 
 export function PrivateRoute({ children, isAuthenticated }) {
   return isAuthenticated === true ? children : <Navigate to={"/auth/login"} replace />;
 }
+
+const Profile = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "profile" */ "@src/views/supplier-response/Profile/Profile")),
+);
+const About = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "about" */ "@src/views/supplier-response/About/About")),
+);
+const ChatPage = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "chat" */ "@src/views/chipassist/Chat/ChatPage")),
+);
+const Statistics = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "statistics" */ "@src/views/supplier-response/Statistics/Statistics")),
+);
+const Policy = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "policy" */ "@src/views/chipassist/StaticPages/Policy")),
+);
+const Terms = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "terms" */ "@src/views/chipassist/StaticPages/Terms")),
+);
+const Adapter = lazy(() =>
+  lazyLoader(() => import(/* webpackChunkName: "adapter" */ "@src/views/supplier-response/Adapter/Adapter")),
+);
 
 const SupplierResponseApp = () => {
   const location = useLocation();
@@ -159,12 +176,21 @@ const SupplierResponseApp = () => {
             />
             {!isPCBOnline && (
               <>
-                <Route path="/statistics" element={<Statistics />} />
+                <Route
+                  path="/statistics"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <Statistics />
+                    </Suspense>
+                  }
+                />
                 <Route
                   path="/messages"
                   element={
                     <PrivateRoute isAuthenticated={isAuthenticated}>
-                      <ChatPage />
+                      <Suspense fallback={<Preloader title={""} />}>
+                        <ChatPage />
+                      </Suspense>
                     </PrivateRoute>
                   }
                 />
@@ -172,7 +198,9 @@ const SupplierResponseApp = () => {
                   path="/profile/*"
                   element={
                     <PrivateRoute isAuthenticated={isAuthenticated}>
-                      <Profile />
+                      <Suspense fallback={<Preloader title={""} />}>
+                        <Profile />
+                      </Suspense>
                     </PrivateRoute>
                   }
                 />
@@ -180,13 +208,36 @@ const SupplierResponseApp = () => {
                   path="/adapter/*"
                   element={
                     <PrivateRoute isAuthenticated={isAuthenticated}>
-                      <Adapter />
+                      <Suspense fallback={<Preloader title={""} />}>
+                        <Adapter />
+                      </Suspense>
                     </PrivateRoute>
                   }
                 />
-                <Route path="/about" element={<About />} />
-                <Route path="/privacy_policy" element={<Policy />} />
-                <Route path="/terms_of_services" element={<Terms />} />
+                <Route
+                  path="/about"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <About />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/privacy_policy"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <Policy />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/terms_of_services"
+                  element={
+                    <Suspense fallback={<Preloader title={""} />}>
+                      <Terms />
+                    </Suspense>
+                  }
+                />
               </>
             )}
             <Route path="/*" element={<Error404 />} />
