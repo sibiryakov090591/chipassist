@@ -58,7 +58,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
 
         if (
           error?.response?.status &&
-          ![401, 404].includes(error?.response?.status) &&
+          ![401, 404, 429].includes(error?.response?.status) &&
           (!url || !url.includes(feedback_url))
         ) {
           this.props.dispatch(
