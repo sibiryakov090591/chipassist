@@ -26,6 +26,7 @@ import clsx from "clsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import Preloader from "@src/components/Preloader/Preloader";
+import { showAlertsModalMessageAction } from "@src/store/alerts/alertsActions";
 import FileViewer from "../FileViewer/FileViewer";
 import { useStyles } from "./style";
 
@@ -82,6 +83,7 @@ const BomUpload: React.FC = () => {
   const location = useLocation();
   const dropzoneRef = React.useRef(null);
   const fileViewerRef = React.useRef(null);
+  const isICSearch = constants.id === ID_ICSEARCH;
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
@@ -102,6 +104,8 @@ const BomUpload: React.FC = () => {
   const [startingRow, setStartingRow] = useState(1);
   const [storageFile, setStorageFile] = useState<{ name: string }>(null);
   const [selectErrors, setSelectErrors] = useState<{ [key: string]: boolean }>({});
+
+  const isActivatedDropzone = isAuthenticated && !isICSearch;
 
   useEffect(() => {
     if (storageFile) {
@@ -262,6 +266,16 @@ const BomUpload: React.FC = () => {
         state: { background: location.state?.background || location },
       });
     }
+    if (isICSearch) {
+      dispatch(
+        showAlertsModalMessageAction({
+          title: "",
+          description:
+            "В данный момент производится обновление модуля загрузки списков. <br /> Новая версия будет доступна в ближайшее время.",
+          severity: "warning",
+        }),
+      );
+    }
   };
 
   const scrollToFileViewer = async () => {
@@ -327,7 +341,7 @@ const BomUpload: React.FC = () => {
               >
                 {({ getRootProps, getInputProps }) => (
                   <div {...getRootProps()} className={`${classes.uploadFrame} ${hasFocus && "has-focus"}`}>
-                    {isAuthenticated && <input {...getInputProps()} name="file" />}
+                    {isActivatedDropzone && <input {...getInputProps()} name="file" />}
                     <div className={`${classes.uploadDefaultState} ${hasFocus && "has-focus"}`}>
                       <img src={xls_icon} alt="xls_icon" className={classes.uploadIcon} />
                       <div className={classes.uploadFrameText}>
