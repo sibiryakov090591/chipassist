@@ -249,14 +249,15 @@ const SearchResults = () => {
   };
 
   const onChangePageSize = (value: string) => {
-    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, {
+    setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, null, {
       smart_view,
       ...(!!manufacturerId && { m_id: manufacturerId }),
     });
   };
 
   const onPageChangeHandle = (data: any) => {
-    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, {
+    console.log("manufacturerId: ", manufacturerId);
+    setUrlWithFilters("/search", navigate, query, data.selected + 1, pageSize, orderBy, filtersValues, null, {
       smart_view,
       ...(!!manufacturerId && { m_id: manufacturerId }),
     });
