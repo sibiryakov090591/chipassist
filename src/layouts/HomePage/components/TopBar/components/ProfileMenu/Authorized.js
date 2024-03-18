@@ -21,7 +21,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { logout } from "@src/store/authentication/authActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE, TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_MASTER, ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import { useStyles } from "./styles";
 
@@ -31,8 +31,8 @@ const Authorized = () => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
-  const isPCBOnline = constants.title === TITLE_PCBONLINE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
+  const isPCBOnline = constants.id === ID_PCBONLINE;
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(localStorage.getItem("email"));

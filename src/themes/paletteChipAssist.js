@@ -1,8 +1,8 @@
 import { colors } from "@material-ui/core";
 import constants from "@src/constants/constants";
-import { TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
 
-const isPCBOnline = constants.title === TITLE_PCBONLINE;
+const isPCBOnline = constants.id === ID_PCBONLINE;
 
 const white = "#FFFFFF";
 const black = "#000000";

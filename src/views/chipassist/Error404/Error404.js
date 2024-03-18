@@ -11,8 +11,8 @@ import {
   ID_ELFARO,
   ID_ICSEARCH,
   ID_MASTER,
+  ID_PCBONLINE,
   ID_SUPPLIER_RESPONSE,
-  TITLE_PCBONLINE,
 } from "@src/constants/server_constants";
 import { responsesMenuList } from "@src/layouts/SupplierLayout/components/TopMenu/TopMenu";
 import { chipAssistMenuList } from "@src/layouts/HomePage/components/TopBar/components/TopMenu/TopMenu";
@@ -54,8 +54,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
-const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
-const isPCBOnline = constants.title === TITLE_PCBONLINE;
+const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
+const isPCBOnline = constants.id === ID_PCBONLINE;
 const isChipOnline = constants.id === ID_ELFARO;
 const isICSearch = constants.id === ID_ICSEARCH;
 

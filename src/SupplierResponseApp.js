@@ -35,7 +35,7 @@ import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import { getInitialCurrency } from "@src/utils/getInitials";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import constants from "@src/constants/constants";
-import { TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
 import { lazyLoader } from "@src/utils/utility";
 import Preloader from "@src/components/Preloader/Preloader";
 
@@ -71,7 +71,7 @@ const SupplierResponseApp = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const [startRecord, stopRecord] = useUserActivity();
-  const isPCBOnline = constants.title === TITLE_PCBONLINE;
+  const isPCBOnline = constants.id === ID_PCBONLINE;
   useConsoleLogSave();
 
   const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());

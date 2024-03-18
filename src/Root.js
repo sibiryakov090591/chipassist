@@ -14,6 +14,7 @@ import {
   ID_ELFARO,
   ID_ICSEARCH,
   ID_SUPPLIER_RESPONSE,
+  ID_PCBONLINE,
   ID_CHIPASSIST,
   ID_MASTER,
   ID_CLOUD,
@@ -45,7 +46,7 @@ class Root extends Component {
                     <ElfaroApp />
                   </Suspense>
                 )}
-                {constants.id === ID_SUPPLIER_RESPONSE && (
+                {[ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id) && (
                   <Suspense fallback={}>
                     <SupplierResponseApp />
                   </Suspense>

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE, TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { ID_ICSEARCH, ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import InstagramIcon from "@material-ui/icons/Instagram";
@@ -33,8 +33,8 @@ const Footer = () => {
   }
 
   const theme = useTheme();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
-  const isPCBOnline = constants.title === TITLE_PCBONLINE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
+  const isPCBOnline = constants.id === ID_PCBONLINE;
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
 

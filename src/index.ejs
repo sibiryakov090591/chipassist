@@ -74,6 +74,24 @@
       <meta data-react-helmet="true" data-rh="true" name="twitter:image" content="https://chipassist.com/link-preview-image.png" />
     <% } %>
 
+    <% if (["pcbonline"].includes(defaults.id)) { %>
+      <meta data-react-helmet="true" data-rh="true" property="og:type" content="website" />
+      <meta data-react-helmet="true" data-rh="true" property="og:site_name" content="PCB Online" />
+      <meta data-react-helmet="true" data-rh="true" property="og:title" content="Search electronic parts, components prices|Datasheets & inventory-PCBOnline" />
+      <meta data-react-helmet="true" data-rh="true"
+            property="og:description"
+            content="Global marketplace for sourcing electronic components. To compare prices and monitor inventory, shop across 180 distributors, manufacturers and 20 000 000 parts."
+      />
+
+      <meta data-react-helmet="true" data-rh="true" name="twitter:card" content="summary_large_image" />
+      <meta data-react-helmet="true" data-rh="true" name="twitter:site" content="@pcbonline" />
+      <meta data-react-helmet="true" data-rh="true" name="twitter:title" value="Search electronic parts, components prices|Datasheets & inventory-PCBOnline" />
+      <meta data-react-helmet="true" data-rh="true"
+            name="twitter:description"
+            value="Global marketplace for sourcing electronic components. To compare prices and monitor inventory, shop across 180 distributors, manufacturers and 20 000 000 parts."
+      />
+    <% } %>
+
     <% if (defaults.id === "elfaro") { %>
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="ChipOnline" />

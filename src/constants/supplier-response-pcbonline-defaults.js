@@ -1,6 +1,6 @@
 const defaults = {
   title: "PCBOnline",
-  id: "supplier_response",
+  id: "pcbonline",
   apiPath: "/api",
   apiHost: "api.pcbonline.spb.ru",
   schema: "https",
@@ -19,7 +19,7 @@ const defaults = {
   },
   extendedRegistration: true,
   currencyChanger: true,
-  selectedCurrencyList: ["USD", "EUR"], // ["RUB", "USD", "EUR"]
+  selectedCurrencyList: ["USD", "EUR", "RUB"], // ["RUB", "USD", "EUR"]
   builds: "AWS",
   userActivity: true,
   userActivityPing: 3, // minutes

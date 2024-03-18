@@ -5,7 +5,7 @@ import { AppBar, Box, Container, Toolbar, Hidden } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 // import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
 import MobileMenu from "./MobileMenu/MobileMenu";
 import { useStyles } from "./topbarStyles";
 // import CurrencyMenu from "../../HomePage/components/TopBar/components/CurrencyMenu/CurrencyMenu";
@@ -23,7 +23,7 @@ interface Props {
 const TopBar: React.FC<Props> = ({ className }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const isPCBOnline = constants.title === TITLE_PCBONLINE;
+  const isPCBOnline = constants.id === ID_PCBONLINE;
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
   // const currency = useAppSelector((state) => state.currency);

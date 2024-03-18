@@ -11,6 +11,7 @@ import {
   ID_ELFARO,
   ID_ICSEARCH,
   ID_MASTER,
+  ID_PCBONLINE,
   ID_SUPPLIER_RESPONSE,
 } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
@@ -91,7 +92,7 @@ export const Unsubscribe = () => {
   const email = useURLSearchParams("email", false, null, false);
   const isICSearch = constants.id === ID_ICSEARCH;
   const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
   const isChipOnline = constants.id === ID_ELFARO;
 
   const [isUnsubscribed, setIsUnsubscribed] = useState(false);

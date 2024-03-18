@@ -21,7 +21,7 @@ import xls_icon from "@src/images/files_icons/xls_icon.png";
 import { ChatListMessage } from "@src/store/chat/chatTypes";
 import chatIcon from "@src/images/Icons/chat-icon.png";
 import constants from "@src/constants/constants";
-import { ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_CHIPASSIST, ID_MASTER, ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Paper, Grid, useTheme, useMediaQuery } from "@material-ui/core";
 import { format } from "date-fns";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -43,7 +43,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
 
   const messagesWindowRef = useRef(null);
   const unreadLabelRef = useRef(null);

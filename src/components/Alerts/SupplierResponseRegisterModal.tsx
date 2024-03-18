@@ -11,13 +11,13 @@ import useAppTheme from "@src/theme/useAppTheme";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import constants from "@src/constants/constants";
-import { TITLE_PCBONLINE } from "@src/constants/server_constants";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
 import { useStyles } from "./suppliersRegisterModalStyles";
 
 const RegisterModal = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const isPCBOnline = constants.title === TITLE_PCBONLINE;
+  const isPCBOnline = constants.id === ID_PCBONLINE;
   // const { t } = useI18n("progress_modal");
   const dispatch = useAppDispatch();
   const appTheme = useAppTheme();

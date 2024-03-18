@@ -10,7 +10,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
 import useAppTheme from "@src/theme/useAppTheme";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -24,7 +24,7 @@ const NotAuthorized = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
 
   const navigate = useNavigate();
   const { t } = useI18n("menu");
@@ -39,7 +39,7 @@ const NotAuthorized = () => {
   };
 
   const handleSignUp = () => {
-    if (constants.id === ID_SUPPLIER_RESPONSE) {
+    if ([ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id)) {
       dispatch(showRegisterModalAction());
     } else {
       setOpen(false);
