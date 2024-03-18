@@ -265,6 +265,37 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: "#123",
       borderRadius: 4,
     },
+    cyrillicHint: {
+      border: "1px solid #345",
+      borderRadius: 3,
+      background: "#fafafa",
+      textAlign: "center",
+      padding: 15,
+      marginTop: 15,
+      lineHeight: "1.6rem",
+      fontSize: "1.2rem",
+    },
+    cyrillicHintHighlight: {
+      backgroundColor: "rgba(229, 89, 114, 0.8)",
+    },
+    cyrillicHintHighlightLink: {
+      cursor: "pointer",
+      fontWeight: "bold",
+      color: `#4183c4 !important`,
+      textDecoration: "underline",
+      "&:hover": {
+        color: `#4183c4 !important`,
+        textDecoration: "none",
+      },
+      "&:active": {
+        color: `#4183c4 !important`,
+        textDecoration: "none",
+      },
+      "&:focus": {
+        color: `#4183c4 !important`,
+        textDecoration: "none",
+      },
+    },
   }),
 );
 
