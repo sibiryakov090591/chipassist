@@ -44,13 +44,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "auto",
         maxWidth: "420px",
       },
-      [theme.breakpoints.between(880, "md")]: {
+      [theme.breakpoints.between(880, "sm")]: {
         height: "45%",
         maxWidth: "80%",
       },
     },
     content: {
-      padding: theme.spacing(8, 4, 3, 4),
+      padding: theme.spacing(8, 4, 4, 4),
     },
     media: {
       borderTopRightRadius: 4,
