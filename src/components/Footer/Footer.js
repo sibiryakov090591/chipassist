@@ -42,27 +42,27 @@ const Footer = () => {
     window.scrollTo({ top: 0 });
   };
 
-  const ICSInfo = () => {
-    return (
-      <noindex>
-        <Box className={classes.navGroup}>
-          <span style={{ color: "white", fontSize: "12px" }}>
-            {"ООО 'ИНЕЛСО'"}
-            <br />
-          </span>
-          <span style={{ color: "white", fontSize: "12px" }}>
-            Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
-            <br />
-          </span>
-          <span style={{ color: "white", fontSize: "12px" }}>
-            ИНН 7813635698
-            <br />
-          </span>
-          <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
-        </Box>
-      </noindex>
-    );
-  };
+  // const ICSInfo = () => {
+  //   return (
+  //     <noindex>
+  //       <Box className={classes.navGroup}>
+  //         <span style={{ color: "white", fontSize: "12px" }}>
+  //           {"ООО 'ИНЕЛСО'"}
+  //           <br />
+  //         </span>
+  //         <span style={{ color: "white", fontSize: "12px" }}>
+  //           Санкт-Петербург, ул. Гельсингфорсская, дом 3, литера З, оф. 412
+  //           <br />
+  //         </span>
+  //         <span style={{ color: "white", fontSize: "12px" }}>
+  //           ИНН 7813635698
+  //           <br />
+  //         </span>
+  //         <span style={{ color: "white", fontSize: "12px" }}>ОГРН 1197847128478</span>
+  //       </Box>
+  //     </noindex>
+  //   );
+  // };
 
   const logoLink = (
     <Link
@@ -301,17 +301,17 @@ const Footer = () => {
                       info@icsearch.ru
                     </a>
                   </Box>
-                  <Box className={classes.navLink}>
-                    <a style={{ color: "white" }} href="tel:+78126280016">
-                      +7 (812) 628-00-16 доб.1125
-                    </a>
-                  </Box>
+                  {/* <Box className={classes.navLink}> */}
+                  {/*  <a style={{ color: "white" }} href="tel:+78126280016"> */}
+                  {/*    +7 (812) 628-00-16 доб.1125 */}
+                  {/*  </a> */}
+                  {/* </Box> */}
                 </div>
-                <Hidden smUp>
-                  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} textAlign={"start"}>
-                    <ICSInfo />
-                  </Box>
-                </Hidden>
+                {/* <Hidden smUp> */}
+                {/*  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} textAlign={"start"}> */}
+                {/*    <ICSInfo /> */}
+                {/*  </Box> */}
+                {/* </Hidden> */}
               </Box>
               <Box display="flex" className={classes.nav}>
                 <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
@@ -374,8 +374,8 @@ const Footer = () => {
                     </Box>
                   </Hidden>
                   <Hidden xsDown>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"250px"}>
-                      <ICSInfo />
+                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"150px"}>
+                      {/* <ICSInfo /> */}
                     </Box>
                   </Hidden>
                 </Box>
