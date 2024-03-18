@@ -300,7 +300,7 @@ export const checkFileParsingState = (searchId: number, bomId: number) => {
           }
           default: {
             dispatch(setUploadState({ uploading: false, error: "", selected: false }));
-            dispatch(push(`/bom/${bomId}`));
+            dispatch(push(bomId ? `/bom/${bomId}` : `/bom/bom-list`));
             dispatch(
               showBottomLeftMessageAlertAction({
                 text: t("file_uploaded"),
