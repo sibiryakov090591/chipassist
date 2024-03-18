@@ -3,8 +3,6 @@ import React from "react";
 // import CheckIcon from "@material-ui/icons/Check";
 import Button from "@material-ui/core/Button";
 import clsx from "clsx";
-import moment from "moment";
-import { DATE_FORMAT } from "@src/config";
 // import green from "@material-ui/core/colors/green";
 // import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 // import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -16,6 +14,7 @@ import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { RfqItem } from "@src/store/rfq/rfqTypes";
 import { DataField, DataLabel, DataRow, DataValue } from "@src/components/DataTable/DataTable";
 // import useAppSelector from "@src/hooks/useAppSelector";
+import { format } from "date-fns";
 import { RFQ_TYPE_PARTNERS } from "../../Rfq";
 import { useStyles } from "./styles";
 
@@ -25,8 +24,8 @@ interface RfqRowProps {
   rfq: RfqItem;
   isPartner: boolean;
   rfqType: string;
-  onOpenResponses: (e: React.SyntheticEvent) => void;
-  onMakeResponse: (e: React.SyntheticEvent) => void;
+  onOpenResponses?: (e: React.SyntheticEvent) => void;
+  onMakeResponse?: (e: React.SyntheticEvent) => void;
   onCommentClick: (e: React.SyntheticEvent) => void;
 }
 
@@ -41,7 +40,7 @@ const RfqRow = (props: RfqRowProps) => {
   const { t } = useI18n("rfq");
   // const { currencyPrice } = useCurrency();
   // const deliveryDate = moment(rfq.delivery_date).format(DATE_FORMAT);
-  const createdDate = moment(rfq.created).format(DATE_FORMAT);
+  const createdDate = format(new Date(rfq.created), "dd.MM.yyyy");
   const commentLength = 100;
 
   const hasResponse = isPartner && rfq.response_rfq && rfq.response_rfq.length && rfqType === RFQ_TYPE_PARTNERS;

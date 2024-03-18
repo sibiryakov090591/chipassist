@@ -10,7 +10,7 @@ import ErrorBoundary from "@src/components/ErrorBoundary";
 
 import "@src/static/css/style.css";
 import "semantic-ui-css/semantic.min.css";
-import "./mixins/moment";
+// import "./mixins/moment";
 import "./mixins/validate";
 import "@src/assets/scss/index.scss";
 import { batch } from "react-redux";

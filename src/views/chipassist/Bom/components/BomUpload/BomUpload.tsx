@@ -23,7 +23,6 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
 import clsx from "clsx";
-
 import { useLocation, useNavigate } from "react-router-dom";
 import Preloader from "@src/components/Preloader/Preloader";
 import FileViewer from "../FileViewer/FileViewer";
@@ -102,6 +101,9 @@ const BomUpload: React.FC = () => {
   const [startingRow, setStartingRow] = useState(1);
   const [storageFile, setStorageFile] = useState<{ name: string }>(null);
   const [selectErrors, setSelectErrors] = useState<{ [key: string]: boolean }>({});
+
+  const isActivatedDropzone = isAuthenticated;
+  const acceptedFileTypes = `.csv, text/csv, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, .xls, .xlsx, application/vnd.ms-excel`;
 
   useEffect(() => {
     if (storageFile) {
@@ -262,6 +264,16 @@ const BomUpload: React.FC = () => {
         state: { background: location.state?.background || location },
       });
     }
+    // if (isICSearch) {
+    //   dispatch(
+    //     showAlertsModalMessageAction({
+    //       title: "",
+    //       description:
+    //         "В данный момент производится обновление модуля загрузки списков. <br /> Новая версия будет доступна в ближайшее время.",
+    //       severity: "warning",
+    //     }),
+    //   );
+    // }
   };
 
   const scrollToFileViewer = async () => {
@@ -314,7 +326,7 @@ const BomUpload: React.FC = () => {
             <div onClick={onCheckIsAuthenticated}>
               <Dropzone
                 ref={dropzoneRef}
-                accept=".csv, text/csv, application/vnd.ms-excel, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                accept={acceptedFileTypes}
                 onDrop={onFileAccept}
                 onDragEnter={onFocus}
                 onDragLeave={onBlur}
@@ -327,7 +339,7 @@ const BomUpload: React.FC = () => {
               >
                 {({ getRootProps, getInputProps }) => (
                   <div {...getRootProps()} className={`${classes.uploadFrame} ${hasFocus && "has-focus"}`}>
-                    {isAuthenticated && <input {...getInputProps()} name="file" />}
+                    {isActivatedDropzone && <input {...getInputProps()} name="file" />}
                     <div className={`${classes.uploadDefaultState} ${hasFocus && "has-focus"}`}>
                       <img src={xls_icon} alt="xls_icon" className={classes.uploadIcon} />
                       <div className={classes.uploadFrameText}>

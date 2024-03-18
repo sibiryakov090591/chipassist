@@ -22,39 +22,6 @@ import useStyles from "./styles";
 
 const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBack}`;
 
-// const companyNames = {
-//   "Geehy Semiconductor": 0,
-//   GigaDevice: 4363,
-//   "Jiangsu Electronic": 3114,
-//   Yageo: 1223,
-//   "Amtek Technology": 0,
-//   SMIC: 0,
-//   "Analog Devices": 18,
-//   Raditek: 3038,
-//   Amphenol: 0,
-//   Microchip: 3231,
-//   Wingtech: 0,
-//   "Giga Device": 4363,
-//   "NXP Semiconductors": 9,
-//   UNISOC: 0,
-//   "ST Microelectronics": 7,
-//   "Nation Technologies": 0,
-//   "Texas Instruments": 3681,
-//   Rockchip: 4033,
-//   "ON Semiconductors": 0,
-//   Maxscend: 0,
-//   Murata: 945,
-//   Sanechips: 0,
-//   Omron: 943,
-//   "CR Micro": 0,
-//   "Renesas Electronics": 2,
-//   "TE Connectivity": 321,
-//   GoerTek: 0,
-//   "Wurth Electronics": 3065,
-//   Xilinx: 1957,
-//   SMC: 1874,
-// };
-
 const companyNames = [
   "Geehy Semiconductor",
   "GigaDevice",
@@ -63,7 +30,6 @@ const companyNames = [
   "Amtek Technology",
   "SMIC",
   "Analog Devices",
-  "Rockchip",
   "Amphenol",
   "Microchip",
   "Wingtech",
@@ -152,7 +118,12 @@ export const IcsearchHomePage = () => {
             <Container maxWidth={"xl"}>
               <nav className={classes.heroMenu}>
                 {logoLink}
-                <Box display={"flex"} alignItems={"center"} width={"56%"} justifyContent={"space-evenly"}>
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  className={classes.heroMenuElementsContainer}
+                  justifyContent={"space-evenly"}
+                >
                   <NavLink className={`${classes.heroMenuLink}`} to={`/`}>
                     {t("menu.home")}
                   </NavLink>
@@ -165,8 +136,8 @@ export const IcsearchHomePage = () => {
                   <NavLink className={`${classes.heroMenuLink}`} to={`/rfq-list-quotes`}>
                     {t("menu.rfq_list")}
                   </NavLink>
-                  <NavLink className={`${classes.heroMenuLink}`} to={`/bom/create-file`}>
-                    {t("menu.bom")}
+                  <NavLink className={`${classes.heroMenuLink}`} to={`/pcb`}>
+                    {t("menu.pcb")}
                   </NavLink>
                   {isAuthenticated && (
                     <NavLink className={`${classes.heroMenuLink}`} to={`/profile/general`}>
@@ -192,7 +163,7 @@ export const IcsearchHomePage = () => {
                       id="profilebutton"
                       to={"/logout"}
                       onClick={logoutHandler}
-                      style={{ marginRight: 16 }}
+                      style={{ marginRight: 16, marginLeft: 16 }}
                       className={classes.headerLink}
                     >
                       {t("menu.logout")}
@@ -298,7 +269,7 @@ export const IcsearchHomePage = () => {
           <h1 className={clsx(classes.title, classes.workTitle)}>{t("work.title")}</h1>
           <p className={clsx(classes.paragraph, classes.workText)}>{t("work.paragraph")}</p>
           <Grid container spacing={4}>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
                   <h2 className={classes.workCardTitle}>{t("work.card_1.title")}</h2>
@@ -306,7 +277,7 @@ export const IcsearchHomePage = () => {
                 <p className={classes.workCardText}>{t("work.card_1.text")}</p>
               </Paper>
             </Grid>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
                   <h2 className={classes.workCardTitle}>{t("work.card_2.title")}</h2>
@@ -314,7 +285,7 @@ export const IcsearchHomePage = () => {
                 <p className={classes.workCardText}>{t("work.card_2.text")}</p>
               </Paper>
             </Grid>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
                   <h2 className={classes.workCardTitle}>{t("work.card_6.title")}</h2>
@@ -322,7 +293,7 @@ export const IcsearchHomePage = () => {
                 <p className={classes.workCardText}>{t("work.card_6.text")}</p>
               </Paper>
             </Grid>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
                   <h2 className={classes.workCardTitle}>{t("work.card_4.title")}</h2>
@@ -330,7 +301,7 @@ export const IcsearchHomePage = () => {
                 <p className={classes.workCardText}>{t("work.card_4.text")}</p>
               </Paper>
             </Grid>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
                   <h2 className={classes.workCardTitle}>{t("work.card_5.title")}</h2>
@@ -338,7 +309,7 @@ export const IcsearchHomePage = () => {
                 <p className={classes.workCardText}>{t("work.card_5.text")}</p>
               </Paper>
             </Grid>
-            <Grid item lg={4} md={6} sm={12} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Paper className={classes.workCard} elevation={3}>
                 <Box>
                   <h2 className={classes.workCardTitle}>{t("work.card_3.title")}</h2>
@@ -358,7 +329,7 @@ export const IcsearchHomePage = () => {
                 <img className={classes.devicesImg} src={devices} alt="devices" />
               </Box>
             </Grid>
-            <Grid item md={6} sm={12}>
+            <Grid item md={6} sm={12} style={{ textAlign: isSmDown ? "center" : "left" }}>
               <h1 className={classes.title}>{t("search.title")}</h1>
               <p className={classes.paragraph}>{t("search.paragraph_1")}</p>
               <p className={classes.paragraph}>{t("search.paragraph_2")}</p>

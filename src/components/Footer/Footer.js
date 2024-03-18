@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_ICSEARCH, ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { Box, Container, Grid, Hidden } from "@material-ui/core";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import InstagramIcon from "@material-ui/icons/Instagram";
@@ -21,6 +21,7 @@ let build = "";
 const Footer = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { t } = useI18n("footer");
   try {
     if (constants.builds) {
       build = constants.builds;
@@ -32,11 +33,10 @@ const Footer = () => {
   }
 
   const theme = useTheme();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
+  const isPCBOnline = constants.id === ID_PCBONLINE;
   const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
-
   const isDownXs = useMediaQuery(theme.breakpoints.down("xs"));
-  const { t } = useI18n("footer");
 
   const navigateHandler = () => {
     window.scrollTo({ top: 0 });
@@ -77,6 +77,32 @@ const Footer = () => {
     </Link>
   );
 
+  const pcbOnlineFooter = () => {
+    return (
+      <div className={classes.root}>
+        <footer className={classes.supplierFooter}>
+          <Container maxWidth="lg" className={classes.bottomCont}>
+            <Box className={classes.footerWrapper}>
+              <Box className={classes.logo}>
+                {logoLink}
+                <div className={classes.copy}>Copyright © {new Date().toISOString().slice(0, 4)} PCB Online</div>
+              </Box>
+              <Box display="flex" flexDirection="column" alignItems="flex-end" flexGrow="1" className={classes.nav}>
+                <div>
+                  <div className={classes.titleClass}>Contact us:</div>
+                  <a className={classes.navLink} href="mailto:sales@pcbonline.spb.ru">
+                    sales@pcbonline.spb.ru
+                  </a>
+                </div>
+              </Box>
+            </Box>
+          </Container>
+        </footer>
+      </div>
+    );
+  };
+
+  if (isPCBOnline) return pcbOnlineFooter();
   return (
     <div className={classes.root}>
       <footer className={isSupplierResponse ? classes.supplierFooter : classes.footer}>
@@ -325,6 +351,9 @@ const Footer = () => {
                         <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
                           {t("privacy")}
                         </NavLink>
+                        <a className={classes.navLinkICS} style={{ color: "white" }} href="mailto:info@icsearch.ru">
+                          Сообщить об ошибке
+                        </a>
                       </Hidden>
                     </Box>
                   </Box>
@@ -339,6 +368,9 @@ const Footer = () => {
                       <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
                         {t("privacy")}
                       </NavLink>
+                      <a className={classes.navLinkICS} style={{ color: "white" }} href="mailto:info@icsearch.ru">
+                        Сообщить об ошибке
+                      </a>
                     </Box>
                   </Hidden>
                   <Hidden xsDown>

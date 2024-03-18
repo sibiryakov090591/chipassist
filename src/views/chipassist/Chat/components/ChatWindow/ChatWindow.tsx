@@ -8,7 +8,7 @@ import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import SwipeWrapper from "@src/components/SwipeWrapper/SwipeWrapper";
 import { getChat } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -28,7 +28,7 @@ const ChatWindow: React.FC<Props> = ({ showList, showDetails, onShowList, onShow
   const dispatch = useAppDispatch();
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
   const isXsDown = useMediaQuery(theme.breakpoints.down(880));
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
 
   const { selectedChat } = useAppSelector((state) => state.chat);
   const { profileInfo, selectedPartner } = useAppSelector((state) => state.profile);

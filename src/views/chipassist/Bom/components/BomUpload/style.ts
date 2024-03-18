@@ -31,7 +31,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     paddingLeft: 50,
   },
   selectButton: {
-    width: "100%",
+    minWidth: 240,
     marginTop: 10,
   },
   uploadFrame: {

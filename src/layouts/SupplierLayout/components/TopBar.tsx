@@ -5,6 +5,7 @@ import { AppBar, Box, Container, Toolbar, Hidden } from "@material-ui/core";
 import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 // import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
 import MobileMenu from "./MobileMenu/MobileMenu";
 import { useStyles } from "./topbarStyles";
 // import CurrencyMenu from "../../HomePage/components/TopBar/components/CurrencyMenu/CurrencyMenu";
@@ -22,6 +23,8 @@ interface Props {
 const TopBar: React.FC<Props> = ({ className }) => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const isPCBOnline = constants.id === ID_PCBONLINE;
+
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
   // const currency = useAppSelector((state) => state.currency);
 
@@ -38,7 +41,7 @@ const TopBar: React.FC<Props> = ({ className }) => {
           <Hidden smDown>
             <Toolbar className={classes.toolbar}>
               {logoLink}
-              <TopMenu isMobile={false} />
+              {!isPCBOnline && <TopMenu isMobile={false} />}
               <Box display="flex">
                 {/* {constants.currencyChanger && !!constants.selectedCurrencyList?.length && ( */}
                 {/*  <Box> */}
@@ -66,7 +69,7 @@ const TopBar: React.FC<Props> = ({ className }) => {
             <div className={classes.toolbar}>
               <div className={classes.mobileTopBar}>
                 <div style={{ display: "flex", alignSelf: "center" }}>
-                  <MobileMenu logo={logo_img} />
+                  {!isPCBOnline && <MobileMenu logo={logo_img} />}
                 </div>
                 <div style={{ display: "flex", alignSelf: "center" }}>{logoLink}</div>
                 <div style={{ display: "flex", alignSelf: "center" }}>

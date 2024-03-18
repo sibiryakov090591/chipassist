@@ -7,7 +7,7 @@ import checkIsAuthenticated from "@src/utils/auth";
 import { title } from "@src/constants/defaults";
 import { Page } from "@src/components";
 import constants from "@src/constants/constants";
-import { ID_ELFARO, ID_ICSEARCH, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_ELFARO, ID_ICSEARCH, ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import useAppTheme from "@src/theme/useAppTheme";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
@@ -41,7 +41,7 @@ const Reset = () => {
   }, []);
 
   const onSignUpHandler = (e: any) => {
-    if (constants.id === ID_SUPPLIER_RESPONSE) {
+    if ([ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id)) {
       e.preventDefault();
       dispatch(showRegisterModalAction());
     }

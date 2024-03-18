@@ -7,7 +7,7 @@ import { clsx } from "clsx";
 import constants from "@src/constants/constants";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
 import { useTheme } from "@material-ui/core";
-import { TopBar } from "./components";
+import TopBar from "./components";
 
 const isICSearch = constants.id === ID_ICSEARCH;
 const isChipAssist = [ID_CHIPASSIST, ID_MASTER].includes(constants.id);

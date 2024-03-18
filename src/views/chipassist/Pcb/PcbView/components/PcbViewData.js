@@ -1,11 +1,10 @@
 import React from "react";
 import { Table, TableBody, TableRow, TableCell } from "@material-ui/core";
-import moment from "moment";
 import useCurrency from "@src/hooks/useCurrency";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider.tsx";
-import { DATE_FORMAT } from "@src/config";
 import { units, STATUS_CHOICES } from "@src/store/pcb/pcbTypes";
 import useAppSelector from "@src/hooks/useAppSelector";
+import { format } from "date-fns";
 import { useStyles } from "./PcbViewDataStyles";
 import { useStyles as usePcbStyles } from "../../style";
 
@@ -174,7 +173,7 @@ function PcbData(props) {
         </TableRow>
         <TableRow>
           <TableCell>{t("column.valid_date")}</TableCell>
-          <TableCell>{moment(item.valid_date).format(DATE_FORMAT)}</TableCell>
+          <TableCell>{format(new Date(item.valid_date), "dd.MM.yyyy")}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>{t("column.price")}</TableCell>
@@ -207,7 +206,7 @@ function PcbData(props) {
         </TableRow>
         <TableRow>
           <TableCell>{t("column.created")}</TableCell>
-          <TableCell>{moment(item.created).format(DATE_FORMAT)}</TableCell>
+          <TableCell>{format(new Date(item.created), "dd.MM.yyyy")}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

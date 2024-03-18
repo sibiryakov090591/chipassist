@@ -1,4 +1,8 @@
 import { colors } from "@material-ui/core";
+import constants from "@src/constants/constants";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
+
+const isPCBOnline = constants.id === ID_PCBONLINE;
 
 const white = "#FFFFFF";
 const black = "#000000";
@@ -9,7 +13,7 @@ export default {
   primary: {
     contrastText: white,
     dark: "#0D52A1",
-    main: "#271C3F",
+    main: isPCBOnline ? "#123" : "#271C3F",
     light: "#0074BC",
   },
   secondary: {
@@ -38,7 +42,7 @@ export default {
   filtersButton: {
     background: "rgb(0, 59, 93)",
   },
-  tableHeader: "#3F7CAC",
+  tableHeader: isPCBOnline ? "#345" : "#3F7CAC",
   tableEvenRow: "#f7f7f7",
   divider: colors.grey[200],
   colors,

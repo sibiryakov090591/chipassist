@@ -22,7 +22,6 @@ const TerserPlugin = require("terser-webpack-plugin");
 //const UnusedWebpackPlugin = require("unused-webpack-plugin");
 
 const isDevServer = !!process.env.DEV_SERVER;
-// const withReport = process.env.npm_config_withReport;
 let node_env = "production";
 console.log("AWS_BRANCH", process.env.AWS_BRANCH);
 
@@ -39,12 +38,16 @@ const isProd = node_env === "production";
 const isDev = !isProd;
 console.log(node_env, "PROD:", isProd);
 
-const favicon =
-  id === "elfaro"
-    ? "src/images/favicons/elfaro-favicon.ico"
-    : id === "icsearch"
-    ? "src/images/favicons/favicon_icsearch.ico"
-    : "src/images/favicons/favicon_chipassist.ico";
+let favicon = "src/images/favicons/favicon_chipassist.ico";
+if (id === "elfaro") {
+  favicon = "src/images/favicons/elfaro-favicon.ico";
+}
+if (id === "icsearch") {
+  favicon = "src/images/favicons/favicon_icsearch.ico";
+}
+if (title === "PCBOnline") {
+  favicon = "src/images/favicons/favicon_pcbonline.ico";
+}
 
 const filename = (ext) => (isDevServer ? `[name].${ext}` : `[name].[hash].${ext}`);
 
@@ -112,7 +115,7 @@ module.exports = {
     },
   },
   plugins: [
-    // withReport ? new BundleAnalyzerPlugin() : null, // activate to check bundle size and run "npm run report"
+    // new BundleAnalyzerPlugin(), // activate to check bundle size and run "npm run report"
     // new CompressionPlugin({
     //   filename: "[path].gz[query]",
     //   algorithm: "gzip",

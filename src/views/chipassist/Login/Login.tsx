@@ -8,7 +8,7 @@ import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
 import useAppTheme from "@src/theme/useAppTheme";
 import { title } from "@src/constants/defaults";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH, ID_ELFARO, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_ICSEARCH, ID_ELFARO, ID_SUPPLIER_RESPONSE, ID_PCBONLINE } from "@src/constants/server_constants";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
@@ -43,7 +43,7 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
 
   const onSignUpHandler = (e: any) => {
     if (!isExample) {
-      if (constants.id === ID_SUPPLIER_RESPONSE) {
+      if ([ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id)) {
         e.preventDefault();
         dispatch(showRegisterModalAction());
       }

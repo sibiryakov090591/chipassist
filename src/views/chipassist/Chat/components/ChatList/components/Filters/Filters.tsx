@@ -7,7 +7,7 @@ import { Box, FormControl, InputLabel, MenuItem, Select } from "@material-ui/cor
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import CloseIcon from "@material-ui/icons/Close";
 import constants from "@src/constants/constants";
-import { ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
+import { ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useStyles } from "./styles";
 
@@ -20,7 +20,7 @@ const Filters: React.FC = () => {
   const { t } = useI18n("chat.chat_list.filters");
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const isSupplierResponse = constants.id === ID_SUPPLIER_RESPONSE;
+  const isSupplierResponse = [ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id);
   const partnerLabel = isSupplierResponse ? "User" : "Seller";
 
   const filters = useAppSelector((state) => state.chat.filters);
