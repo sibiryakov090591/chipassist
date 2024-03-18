@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import microchip_animated_icon from "@src/images/microchip_animated_icon.svg";
 import { useStyles } from "./styles";
 
 const Progress: React.FC<{ isExtendSearchPage?: boolean }> = ({ isExtendSearchPage }) => {
@@ -45,14 +46,21 @@ const Progress: React.FC<{ isExtendSearchPage?: boolean }> = ({ isExtendSearchPa
 
   return (
     <div className={classes.root}>
-      <LinearProgress
-        className={classes.progress}
-        variant="buffer"
-        value={completed}
-        valueBuffer={buffer}
-        color="secondary"
-      />
-      {isExtendSearchPage && <p>{phrasesForExtendedSearch[currentPhraseIndex]}</p>}
+      {!isExtendSearchPage && (
+        <LinearProgress
+          className={classes.progress}
+          variant="buffer"
+          value={completed}
+          valueBuffer={buffer}
+          color="secondary"
+        />
+      )}
+      {isExtendSearchPage && (
+        <div>
+          <object type={"image/svg+xml"} data={microchip_animated_icon} style={{ width: 150 }} />
+          <p style={{ fontSize: "1.5em" }}>{phrasesForExtendedSearch[currentPhraseIndex]}</p>
+        </div>
+      )}
     </div>
   );
 };
