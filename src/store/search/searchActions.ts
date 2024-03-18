@@ -817,9 +817,13 @@ const cleanBaseFilters = (base: { [index: string]: any }) => {
 };
 
 export const setQueryValue = (value: string): actionTypes.SetQueryValueAction => {
+  let res = value?.startsWith("SELLER:") || value?.startsWith("MANUFACTURER:") ? value : value?.toUpperCase();
+  if (!res.includes('"')) {
+    res = res.replace(/ /gi, "");
+  }
   return {
     type: actionTypes.SET_QUERY_VALUE,
-    payload: value?.startsWith("SELLER:") || value?.startsWith("MANUFACTURER:") ? value : value?.toUpperCase(),
+    payload: res,
   };
 };
 
