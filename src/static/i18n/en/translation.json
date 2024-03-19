@@ -1478,7 +1478,8 @@
       "title": "No appropriate offers?",
       "description": "Click this button and request the quotes."
     },
-    "smart_view": "Smart View"
+    "smart_view": "Smart View",
+    "smart_view_info": "Smart view shows the best price and best offer at the top of the list of offers."
   },
   "product": {
     "cost": "Total price",

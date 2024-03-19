@@ -1,4 +1,4 @@
-import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { FormControlLabel, Checkbox, Tooltip, Box } from "@material-ui/core";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { toggleSmartView } from "@src/store/search/searchActions";
 // import { setUrlWithFilters } from "@src/utils/setUrl";
@@ -7,6 +7,8 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 // import { useNavigate } from "react-router-dom";
 // import { orderByValues } from "./FilterOrderByBar";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import HelpIcon from "@material-ui/icons/Help";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -15,6 +17,7 @@ interface Props {
 
 const SmartView: React.FC<Props> = ({ disable }) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const dispatch = useAppDispatch();
   const { t } = useI18n("distributor");
   // const navigate = useNavigate();
@@ -52,7 +55,18 @@ const SmartView: React.FC<Props> = ({ disable }) => {
           disabled={disable}
         />
       }
-      label={t("smart_view")}
+      label={
+        <Box display="flex" alignItems="center">
+          {t("smart_view")}
+          <Tooltip
+            enterTouchDelay={1}
+            classes={{ tooltip: commonClasses.tooltip }}
+            title={<div>{t("smart_view_info")}</div>}
+          >
+            <HelpIcon className={classes.helpIcon} />
+          </Tooltip>
+        </Box>
+      }
     />
   );
 };
