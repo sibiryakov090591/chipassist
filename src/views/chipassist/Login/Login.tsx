@@ -23,7 +23,8 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { t } = useI18n("login");
-  const isICSearch = constants.id === "icsearch";
+  const isICSearch = constants.id === ID_ICSEARCH;
+  const isPCBOnline = constants.id === ID_PCBONLINE;
   useEffect(() => {
     if (!isExample) {
       if (checkIsAuthenticated()) {
@@ -64,32 +65,36 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
           ) : (
             <LoginForm className={isICSearch ? classes.loginFormICS : classes.loginForm} />
           )}
-          <Divider className={classes.divider} />
-          <Box display="flex" alignItems="center" justifyContent="space-between">
-            <Link
-              onClick={onSignUpHandler}
-              align="center"
-              component={RouterLink}
-              to={"/auth/registration"}
-              state={{ background: location.state?.background || location }}
-              underline="always"
-              variant="subtitle2"
-              className={appTheme.hyperlink}
-            >
-              {t("dont_have_account")}
-            </Link>
-            <Link
-              align="center"
-              component={RouterLink}
-              to={"/auth/reset"}
-              state={{ background: location.state?.background || location }}
-              underline="always"
-              variant="subtitle2"
-              className={appTheme.hyperlink}
-            >
-              {t("forgot_password")}
-            </Link>
-          </Box>
+          {!isPCBOnline && (
+            <>
+              <Divider className={classes.divider} />
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Link
+                  onClick={onSignUpHandler}
+                  align="center"
+                  component={RouterLink}
+                  to={"/auth/registration"}
+                  state={{ background: location.state?.background || location }}
+                  underline="always"
+                  variant="subtitle2"
+                  className={appTheme.hyperlink}
+                >
+                  {t("dont_have_account")}
+                </Link>
+                <Link
+                  align="center"
+                  component={RouterLink}
+                  to={"/auth/reset"}
+                  state={{ background: location.state?.background || location }}
+                  underline="always"
+                  variant="subtitle2"
+                  className={appTheme.hyperlink}
+                >
+                  {t("forgot_password")}
+                </Link>
+              </Box>
+            </>
+          )}
         </CardContent>
         <CardMedia
           className={classes.media}
