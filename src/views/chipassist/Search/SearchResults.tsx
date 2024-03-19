@@ -383,8 +383,8 @@ const SearchResults = () => {
               </div>
             )}
             {isExtendedSearchStarted && count === 0 && rfqData.count === 0 && (
-              <div className={classes.searchResultEmpty}>
-                <h2>{t("extended_progress")}</h2>
+              <div className={classes.searchResultEmpty} style={{ marginTop: "25%" }}>
+                <h1 style={{ marginBottom: "25px" }}>{t("extended_progress")}</h1>
                 <div style={{ maxWidth: "320px", margin: "auto" }}>
                   <Progress isExtendSearchPage={true} />
                 </div>
