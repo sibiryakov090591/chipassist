@@ -44,13 +44,13 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "auto",
         maxWidth: "420px",
       },
-      [theme.breakpoints.between(880, "sm")]: {
+      [theme.breakpoints.between(1000, "sm")]: {
         height: "45%",
         maxWidth: "80%",
       },
     },
     content: {
-      padding: theme.spacing(8, 4, 4, 4),
+      padding: theme.spacing(8, 4, 2, 4),
     },
     media: {
       borderTopRightRadius: 4,
@@ -85,7 +85,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     loginFormICS: {
       marginTop: theme.spacing(3),
       [theme.breakpoints.between(880, "md")]: {
-        height: "70%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-evenly",
