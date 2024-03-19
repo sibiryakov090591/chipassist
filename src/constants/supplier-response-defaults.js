@@ -21,14 +21,14 @@ const defaults = {
   currencyChanger: true,
   selectedCurrencyList: ["USD", "EUR"], // ["RUB", "USD", "EUR"]
   builds: "AWS",
-  userActivity: true,
+  userActivity: false,
   userActivityPing: 3, // minutes
   userActivitySessionDelay: 0.5, // minutes
   userActivitySessionMinimumDuration: 0.5, // minutes
   userActivitySessionWhitespace: 0.2, // minutes
   jivoChat: false,
-  YM: true,
-  GA: true,
+  YM: false,
+  GA: false,
   checkSiteVersion: true,
   checkSiteVersionPing: 6, // minutes
   validDaysForResponse: 3,

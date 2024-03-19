@@ -39,14 +39,14 @@ class Root extends Component {
                 </Helmet>
               )}
               <HistoryRouter history={history}>
-                {[ID_CHIPASSIST, ID_MASTER].includes(constants.id) && <BlockPage />}
+                {[ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE].includes(constants.id) && <BlockPage />}
                 {[ID_ICSEARCH].includes(constants.id) && <ChipAssistApp />}
                 {constants.id === ID_ELFARO && (
                   <Suspense fallback={}>
                     <ElfaroApp />
                   </Suspense>
                 )}
-                {[ID_SUPPLIER_RESPONSE, ID_PCBONLINE].includes(constants.id) && (
+                {[ID_PCBONLINE].includes(constants.id) && (
                   <Suspense fallback={}>
                     <SupplierResponseApp />
                   </Suspense>
