@@ -696,7 +696,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                   </React.Fragment>
                 )}
                 <td className={classes.tdActions}>
-                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>Best offer</div>}
+                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>{t("best_offer")}</div>}
                   <div>
                     {isShowProductLink ? (
                       <a

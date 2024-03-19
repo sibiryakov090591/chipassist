@@ -1479,7 +1479,7 @@
     "del_time": "Срок поставки",
     "avg_qty": "Среднее количество",
     "prod_on_offline": "Товары на дополнительных складах доступны по запросу",
-
+    "best_offer": "Лучшая цена",
     "want_to_see_more": "Хотите увидеть больше предложений? ",
     "target_price": "Желаемая цена",
     "already_req": "Вы уже запросили <strong style='text-wrap: nowrap;'>{{requestedQty}} шт. </strong> этого продукта",
