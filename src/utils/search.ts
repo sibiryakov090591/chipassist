@@ -45,6 +45,80 @@ export const simpleSplitForHighlighter = (searchQuery: string) => {
   return res;
 };
 
+export const splitCyrillicLetters = (searchQuery: string) => {
+  const res: string[] = [];
+  if (!searchQuery) return res;
+
+  const letters = searchQuery.split("");
+  letters.forEach((letter) => {
+    if (/[А-ЯЁ]/.test(letter)) {
+      res.push(letter);
+    }
+  });
+
+  return res;
+};
+
+export const getSuggestionsFromCyrillic = (searchQuery: string) => {
+  if (!searchQuery) return [];
+
+  const cyrillicToLatinMapping: any = {
+    А: "A",
+    Б: "B",
+    В: ["V", "B"],
+    Г: "G",
+    Д: "D",
+    Е: "E",
+    Ё: "E",
+    Ж: "ZH",
+    З: "Z",
+    И: "I",
+    Й: "I",
+    К: "K",
+    Л: "L",
+    М: "M",
+    Н: "N",
+    О: "O",
+    П: "P",
+    Р: ["R", "P"],
+    С: ["S", "C"],
+    Т: "T",
+    У: "U",
+    Ф: "F",
+    Х: "H",
+    Ц: "TS",
+    Ч: "CH",
+    Ш: "SH",
+    Щ: "SHCH",
+    Ъ: "",
+    Ы: "Y",
+    Ь: "",
+    Э: "A",
+    Ю: "YU",
+    Я: "YA",
+  };
+  const queryLetters = searchQuery.split("");
+  const countOfSuggestions = /В|Р|С/.test(searchQuery) ? 2 : 1; // max of options if query contains a letter with multiply options
+  const res = new Array(countOfSuggestions).fill(queryLetters).map((i) => [...i]); // fill doesn't create new arrays
+
+  queryLetters.forEach((queryLetter, queryLetterIndex) => {
+    if (cyrillicToLatinMapping[queryLetter]) {
+      if (Array.isArray(cyrillicToLatinMapping[queryLetter])) {
+        cyrillicToLatinMapping[queryLetter].forEach((mappingLetter: string, mappingLetterIndex: number) => {
+          res[mappingLetterIndex][queryLetterIndex] = mappingLetter;
+        });
+      } else {
+        res.forEach((suggestionArray) => {
+          // eslint-disable-next-line no-param-reassign
+          suggestionArray[queryLetterIndex] = cyrillicToLatinMapping[queryLetter];
+        });
+      }
+    }
+  });
+
+  return res.map((arr: any) => arr.join(""));
+};
+
 export const fixedStickyContainerHeight = (open: boolean) => {
   const stickyContainer = document.querySelector("#filters_sticky_container") as HTMLElement | null;
   if (!stickyContainer) return false;

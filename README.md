@@ -3,6 +3,8 @@
 
 [requests.chipassist.com](https://requests.chipassist.com) — Prod requests
 
+[pcbonline.spb.ru](https://pcbonline.spb.ru) — Prod PCB Online requests
+
 [camaster.site](https://camaster.site) — Dev
 
 [requests.camaster.site](https://requests.camaster.site) — Dev requests
@@ -61,6 +63,11 @@ To get the token you can log in to your CA prod account using `static.164.7.9.5.
 - POST url: `https://api.icsearch.ru/api/zip_upload/`
 
 - folder: `www`
+
+#### PCB Online:
+- POST url: `https://api.pcbonline.spb.ru/api/zip_upload/`
+
+- folder: `pcbonline`
 
 ### Additional:
 

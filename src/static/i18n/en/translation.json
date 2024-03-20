@@ -1478,7 +1478,8 @@
       "title": "No appropriate offers?",
       "description": "Click this button and request the quotes."
     },
-    "smart_view": "Smart View"
+    "smart_view": "Smart View",
+    "smart_view_info": "Smart view shows the best price and best offer at the top of the list of offers."
   },
   "product": {
     "cost": "Total price",
@@ -1523,7 +1524,7 @@
     "del_time": "Delivery time",
     "avg_qty": "Average quantity",
     "prod_on_offline": "Products on offline stocks are available by request",
-
+    "best_offer": "Best offer",
     "want_to_see_more": "Want to see more offers? Place your RFQ and sellers will respond to your request within 48 hours.",
     "target_price": "Target price",
     "already_req": "You have already requested <strong style='text-wrap: nowrap;'>{{requestedQty}} pcs </strong> of this product",
@@ -1973,7 +1974,8 @@
     "order": "Order",
     "request": "Request",
     "modal_header": "{{title}} <span>{{partNumber}}</span> component",
-    "modal_text": "We'll request the quotation for <strong>{{partNumber}}</strong> from all connected sellers. You'll get the responses in your mailbox.",
+    "modal_text_1": "We'll request the quotation for ",
+    "modal_text_2": " from all connected sellers. You'll get the responses in your mailbox.",
     "sellers_responses": "Sellers responses",
     "show_less": "Show less",
     "show_more": "Show more",

@@ -149,6 +149,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       cursor: "pointer",
       display: "flex",
     },
+    helpIcon: {
+      color: theme.palette.app.green800,
+      marginLeft: 5,
+      fontSize: 16,
+      cursor: "help",
+    },
   }),
 );
 

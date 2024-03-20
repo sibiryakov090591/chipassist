@@ -389,6 +389,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             const url = isShowProductLink && correctUrl(val.product_url || partner.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
+            const isCombinedRow = isShowMoreButton && !isShowMoreActive;
             const isShowQualityCheck =
               !isMdDown && partner && Object.prototype.hasOwnProperty.call(partner, "quality_check");
             const MOQ = val.moq;
@@ -399,12 +400,14 @@ const DistributorsDesktop: React.FC<Props> = ({
                 ? checkout?.countries?.find((i) => i.iso_3166_1_a3 === partner.country)?.printable_name
                 : null;
             let isShowPricesHint = false;
-            sortedPrices.forEach((price) => {
-              if (isShowPricesHint) return;
-              const priceBreaks = isMdDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
-              isShowPricesHint = !priceBreaks.includes(price.amount);
-            });
-            isShowPricesHint = isShowPricesHint || isSmDown;
+            if (!isCombinedRow) {
+              sortedPrices.forEach((price) => {
+                if (isShowPricesHint) return;
+                const priceBreaks = isMdDown ? [1, 10, 100] : [1, 10, 100, 1000, 10000];
+                isShowPricesHint = !priceBreaks.includes(price.amount);
+              });
+              isShowPricesHint = isShowPricesHint || isSmDown;
+            }
 
             const {
               price: dynamicPriceBasedOnNumInStock,
@@ -693,7 +696,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                   </React.Fragment>
                 )}
                 <td className={classes.tdActions}>
-                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>Best offer</div>}
+                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>{t("best_offer")}</div>}
                   <div>
                     {isShowProductLink ? (
                       <a

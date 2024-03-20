@@ -163,9 +163,6 @@ const SupplierResponseApp = () => {
                 </PrivateRoute>
               }
             />
-            <Route path="/auth/reset" element={<Reset />} />
-            <Route path="/auth/reset/:token" element={<Reset />} />
-            <Route path="/password/request/:token" element={<Reset />} />
             <Route
               path="/login-as"
               element={
@@ -176,6 +173,9 @@ const SupplierResponseApp = () => {
             />
             {!isPCBOnline && (
               <>
+                <Route path="/auth/reset" element={<Reset />} />
+                <Route path="/auth/reset/:token" element={<Reset />} />
+                <Route path="/password/request/:token" element={<Reset />} />
                 <Route
                   path="/statistics"
                   element={

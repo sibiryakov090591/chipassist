@@ -162,11 +162,11 @@ const ProductCard = (props) => {
                 val.partner_sku.match(/\d+/) &&
                 Number(val.partner_sku.match(/\d+/)[0])) ||
               0,
-            price_1: currencyPrice(getPrice(1, val, false), val.price_currency) || 0,
-            price_10: currencyPrice(getPrice(10, val, false), val.price_currency) || 0,
-            price_100: currencyPrice(getPrice(100, val, false), val.price_currency) || 0,
-            price_1000: currencyPrice(getPrice(1000, val, false), val.price_currency) || 0,
-            price_10000: currencyPrice(getPrice(10000, val, false), val.price_currency) || 0,
+            price_1: val.price_currency ? currencyPrice(getPrice(1, val, false), val.price_currency) || 0 : 0,
+            price_10: val.price_currency ? currencyPrice(getPrice(10, val, false), val.price_currency) || 0 : 0,
+            price_100: val.price_currency ? currencyPrice(getPrice(100, val, false), val.price_currency) || 0 : 0,
+            price_1000: val.price_currency ? currencyPrice(getPrice(1000, val, false), val.price_currency) || 0 : 0,
+            price_10000: val.price_currency ? currencyPrice(getPrice(10000, val, false), val.price_currency) || 0 : 0,
             isOnline: isProductAvailable(val) ? 1 : 0,
             updatedTime: Date.now() - new Date(dateUpdated).getTime(),
             moq: getDynamicMoq(val),

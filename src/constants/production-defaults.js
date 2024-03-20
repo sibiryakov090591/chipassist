@@ -24,7 +24,7 @@ const defaults = {
   selectedCurrencyList: ["USD", "EUR", "HKD", "CNY"], // ["RUB", "USD", "EUR"]
   showCategories: false,
   builds: "AWS",
-  userActivity: true,
+  userActivity: false,
   userActivityPing: 3, // minutes
   userActivitySessionDelay: 0.5, // minutes
   userActivitySessionMinimumDuration: 0.5, // minutes
@@ -33,7 +33,7 @@ const defaults = {
   STOCK_RECORD_PERIOD_OF_RELEVANCE: 72, // hours
   jivoChat: false,
   YM: false,
-  GA: true,
+  GA: false,
   checkSiteVersion: true,
   checkSiteVersionPing: 6, // minutes
   showInn: true,
