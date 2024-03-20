@@ -1389,9 +1389,12 @@ export const createBomCopy = (id: number, name: string) => {
           .then((res) => res.data)
           .then((response) => {
             const bomId = response?.id;
-            return response?.task_id && bomId
-              ? dispatch(checkCopyParsingState(response.task_id, bomId))
-              : dispatch(setCreateBomCopyError());
+            if (response?.task_id && bomId) {
+              dispatch(checkCopyParsingState(response.task_id, bomId));
+              return true;
+            }
+            dispatch(setCreateBomCopyError());
+            return false;
           })
           .catch((e) => {
             dispatch(setCreateBomCopyError());

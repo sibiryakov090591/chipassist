@@ -126,15 +126,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
                 }),
               }}
             />
-            <p
-              className={classes.text}
-              dangerouslySetInnerHTML={{
-                __html: t("modal_text", {
-                  interpolation: { escapeValue: false },
-                  partNumber: rfqItem.prevPartNumber || rfqItem.partNumber,
-                }),
-              }}
-            >
+            <p className={classes.text}>
               {t("modal_text_1")}
               <strong>{rfqItem.prevPartNumber || rfqItem.partNumber}</strong>
               {t("modal_text_2")}

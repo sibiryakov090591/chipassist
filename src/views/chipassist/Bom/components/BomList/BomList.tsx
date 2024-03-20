@@ -208,7 +208,9 @@ const BomList: React.FC = () => {
   };
 
   const createCopy = (id: number, name: string) => () => {
-    dispatch(createBomCopy(id, name));
+    dispatch(createBomCopy(id, name)).then((willBeRedirectedToNewBom: boolean) => {
+      if (!willBeRedirectedToNewBom) dispatch(loadBomListThunk(1, true, pageSize, orderBy));
+    });
   };
 
   const onMergeSelect = (lines: number[]) => () => {

@@ -21,6 +21,7 @@ import {
   createBomCopy,
   exportBomThunk,
   saveBomNameThunk,
+  loadBomListThunk,
 } from "@src/store/bom/bomActions";
 import useCurrency from "@src/hooks/useCurrency";
 import { formatMoney } from "@src/utils/formatters";
@@ -378,7 +379,9 @@ const BomEditor: React.FC<Props> = (props) => {
   };
 
   const createCopy = (id: number, name: string) => () => {
-    dispatch(createBomCopy(id, name));
+    dispatch(createBomCopy(id, name)).then((willBeRedirectedToNewBom: boolean) => {
+      if (!willBeRedirectedToNewBom) dispatch(loadBomListThunk(1, true, pageSize, orderBy));
+    });
   };
 
   const qtyChangeHandler = (e: ChangeEvent<HTMLInputElement>, key: string, err: any) => {
