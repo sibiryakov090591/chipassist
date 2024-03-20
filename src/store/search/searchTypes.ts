@@ -14,6 +14,7 @@ export const LOAD_ATTRIBUTES_RESULTS_ARRAY = [
 ];
 
 export const CHANGE_QUERY = "@search/CHANGE_QUERY";
+export const CHANGE_MANUFACTURER = "@search/CHANGE_MANUFACTURER";
 export const CHANGE_PAGE = "@search/CHANGE_PAGE";
 export const CHANGE_PAGE_SIZE = "@search/CHANGE_PAGE_SIZE";
 
@@ -102,6 +103,7 @@ export interface SearchState {
   pageSize: number;
   query: string;
   queryValue: string;
+  manufacturer: any;
   attributes: { [index: string]: { id: string; code: string; name: string; type: string; values: any } }[];
   attributesMap: string[];
   enabledAttributesMap: any; // TODO types
@@ -154,6 +156,11 @@ export interface LoadAttributesResultFailedAction {
 export interface ChangeQueryAction {
   type: typeof CHANGE_QUERY;
   payload: string;
+}
+
+export interface ChangeManufacturerAction {
+  type: typeof CHANGE_MANUFACTURER;
+  payload: any;
 }
 
 export interface ChangePageAction {
@@ -305,6 +312,7 @@ export interface SetExtendedSearchCountAction {
 }
 
 export type SearchActionTypes =
+  | ChangeManufacturerAction
   | SetExtendedSearchCountAction
   | ToggleSmartViewAction
   | SavePartNumberExamplesAction

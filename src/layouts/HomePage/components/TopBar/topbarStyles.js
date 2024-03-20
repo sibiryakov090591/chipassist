@@ -154,6 +154,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   searchRow: {
     display: "flex",
+    justifyContent: "space-between",
   },
   cartBlock: {
     display: "flex",

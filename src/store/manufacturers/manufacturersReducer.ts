@@ -15,17 +15,16 @@ export default (state = initialState, { type, payload }: any) => {
       return { ...state, items: [...state.items, ...payload.results] };
     case actionTypes.ITEMS_FETCHED: {
       const data: { [key: string]: Items[] } = {};
-      [...state.items]
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .forEach((item) => {
-          const key = item?.name?.charAt(0)?.toUpperCase();
-          if (data[key]) {
-            data[key].push(item);
-          } else {
-            data[key] = [item];
-          }
-        });
-      return { ...state, groups: data, loaded: true };
+      const sortedItems = [...state.items].sort((a, b) => a.name.localeCompare(b.name));
+      sortedItems.forEach((item) => {
+        const key = item?.name?.charAt(0)?.toUpperCase();
+        if (data[key]) {
+          data[key].push(item);
+        } else {
+          data[key] = [item];
+        }
+      });
+      return { ...state, groups: data, items: sortedItems, loaded: true };
     }
     default:
       return state;

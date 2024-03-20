@@ -30,11 +30,11 @@ export default class Dropdown extends React.Component {
   }
 
   render() {
-    const { children, isOpen, target, onClose } = this.props;
+    const { children, isOpen, target, onClose, style } = this.props;
     return (
       <div ref={this.setWrapperRef} style={{ position: "relative" }}>
         {target}
-        {isOpen ? <Menu>{children}</Menu> : null}
+        {isOpen ? <Menu style={style || {}}>{children}</Menu> : null}
         {isOpen ? <Blanket onClick={onClose} /> : null}
       </div>
     );

@@ -20,6 +20,8 @@ import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { showHint } from "@src/store/rfqList/rfqListActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import ManufacturerSearchSelect from "@src/layouts/HomePage/components/TopBar/components/ManufacturerSearchSelect/ManufacturerSearchSelect";
+import Box from "@material-ui/core/Box";
 import { useStyles } from "./topbarStyles";
 // import LangMenu from "./components/LangMenu/LangMenu";
 import ProfileMenu from "./components/ProfileMenu";
@@ -240,25 +242,30 @@ const TopBar = (props) => {
 
             <div className={classes.leftCenter}>
               <div className={classes.searchRow}>
-                <SearchSuggestion
-                  searchInputClass={homePageClasses.searchInput}
-                  searchButtonClass={clsx(homePageClasses.searchIconButton, appTheme.topBarSearchButton)}
-                  searchIconClass={homePageClasses.searchIcon}
-                  searchClearClass={homePageClasses.clearSearchIcon}
-                  isHomePageSuggestions={true}
-                />
+                <div style={{ flexGrow: 1 }}>
+                  <SearchSuggestion
+                    searchInputClass={homePageClasses.searchInput}
+                    searchButtonClass={clsx(homePageClasses.searchIconButton, appTheme.topBarSearchButton)}
+                    searchIconClass={homePageClasses.searchIcon}
+                    searchClearClass={homePageClasses.clearSearchIcon}
+                    isHomePageSuggestions={true}
+                  />
+                  <Collapse in={true}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <TrySearchPn
+                        partNumbers={partNumberExamples || partNumbers}
+                        textClassName={classes.tryP}
+                        pnClassName={classes.trySpan}
+                      />
+                      <ManufacturerSearchSelect />
+                    </Box>
+                  </Collapse>
+                </div>
                 {/* {locales.length > 1 && <LangMenu />} */}
                 <ProfileMenu>{isAuthenticated ? <Authorized /> : <NotAuthorized />}</ProfileMenu>
                 {/* {isCartShow && cartBlock} */}
                 {/* <CartBlock /> */}
               </div>
-              <Collapse in={!collapse}>
-                <TrySearchPn
-                  partNumbers={partNumberExamples || partNumbers}
-                  textClassName={classes.tryP}
-                  pnClassName={classes.trySpan}
-                />
-              </Collapse>
             </div>
           </Toolbar>
         </Hidden>

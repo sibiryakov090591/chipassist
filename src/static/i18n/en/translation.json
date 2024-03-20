@@ -1564,6 +1564,10 @@
     "in_stock_hint_4": " to see all alternatives",
     "in_stock_hint_5": "Additional products available by RFQ",
     "in_stock_hint_6": "Or send us a request:",
+    "manufacturer_select": {
+      "non_selected": "Select manufacturer",
+      "selected": "Manufacturer: {{name}}"
+    },
     "tutorial": {
       "dialog": {
         "greetings": {
