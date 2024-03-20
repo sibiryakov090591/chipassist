@@ -134,7 +134,11 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
                   partNumber: rfqItem.prevPartNumber || rfqItem.partNumber,
                 }),
               }}
-            />
+            >
+              {t("modal_text_1")}
+              <strong>{rfqItem.prevPartNumber || rfqItem.partNumber}</strong>
+              {t("modal_text_2")}
+            </p>
           </>
         ) : (
           <Hidden smDown>
