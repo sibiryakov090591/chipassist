@@ -110,51 +110,54 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       padding: "7px",
     },
     th1: {
-      width: "9%",
+      width: "6%",
       textAlign: "right",
       padding: "7px",
       [theme.breakpoints.down("md")]: {
         width: "10%",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "11%",
+        width: "7%",
       },
     },
     th10: {
-      width: "9%",
+      width: "6%",
       textAlign: "right",
       padding: "7px",
       [theme.breakpoints.down("md")]: {
         width: "10%",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "11%",
+        width: "7%",
       },
     },
     th100: {
-      width: "9%",
+      width: "6%",
       textAlign: "right",
       padding: "7px",
       [theme.breakpoints.down("md")]: {
         width: "10%",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "11%",
+        width: "7%",
       },
     },
     th1000: {
-      width: "9%",
+      width: "7%",
       textAlign: "right",
       padding: "7px",
     },
     th10000: {
-      width: "9%",
+      width: "7%",
       textAlign: "right",
       padding: "7px",
       paddingRight: 10,
     },
     thActions: {
       width: 125,
+      [theme.breakpoints.down("sm")]: {
+        width: 105,
+      },
     },
     starIcon: {
       color: "#f5a623",
