@@ -11,7 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useStyles } from "./styles";
 import CustomOption from "./CustomOption";
 
-const ManufacturerSearchSelect: React.FC = () => {
+const ManufacturerSearchSelect: React.FC<{ setSelectIsOpen: any }> = ({ setSelectIsOpen }) => {
   const { t } = useI18n("search.manufacturer_select");
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -27,6 +27,10 @@ const ManufacturerSearchSelect: React.FC = () => {
       setOptions(items.map((i) => ({ label: i.name, value: i.id })));
     }
   }, [loaded]);
+
+  React.useEffect(() => {
+    setSelectIsOpen(isOpen);
+  }, [isOpen]);
 
   useEffect(() => {
     const escHandler = (event: any) => {
@@ -96,4 +100,4 @@ const ManufacturerSearchSelect: React.FC = () => {
   );
 };
 
-export default ManufacturerSearchSelect;
+export default React.memo(ManufacturerSearchSelect, () => true);

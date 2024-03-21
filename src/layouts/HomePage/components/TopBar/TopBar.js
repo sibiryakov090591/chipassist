@@ -71,6 +71,7 @@ const TopBar = (props) => {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const is1180Down = useMediaQuery(theme.breakpoints.down(1180));
   const dispatch = useAppDispatch();
+  const preventCollapseRef = React.useRef(false);
   const isHomePage = window.location.pathname === "/";
   // const Icon = withBaseIcon();
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
@@ -111,8 +112,8 @@ const TopBar = (props) => {
 
       if (currentPosition > (isHomePage ? homePageTopOffset : topOffset)) {
         if (!hidden && currentPosition > lastScrollTop) {
-          hidden = true;
-          setCollapse(true);
+          hidden = !preventCollapseRef.current; // true is !preventCollapse
+          setCollapse(!preventCollapseRef.current); // true is !preventCollapse
           dispatch(showHint(false));
         } else if (lastScrollTop - currentPosition > 5) {
           hidden = false;
@@ -169,6 +170,10 @@ const TopBar = (props) => {
   //     </div>
   //   </Link>
   // );
+
+  const setPreventHeaderCollapse = (isPrevent) => {
+    preventCollapseRef.current = isPrevent;
+  };
 
   return (
     <div>
@@ -250,14 +255,14 @@ const TopBar = (props) => {
                     searchClearClass={homePageClasses.clearSearchIcon}
                     isHomePageSuggestions={true}
                   />
-                  <Collapse in={true}>
+                  <Collapse in={!collapse}>
                     <Box display="flex" alignItems="center" justifyContent="space-between">
                       <TrySearchPn
                         partNumbers={partNumberExamples || partNumbers}
                         textClassName={classes.tryP}
                         pnClassName={classes.trySpan}
                       />
-                      <ManufacturerSearchSelect />
+                      <ManufacturerSearchSelect setSelectIsOpen={setPreventHeaderCollapse} />
                     </Box>
                   </Collapse>
                 </div>
