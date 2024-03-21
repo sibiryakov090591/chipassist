@@ -53,7 +53,7 @@ const companyNames = [
   "Xilinx",
   "SMC",
   "Sanken Electric Company",
-  "Sunmotion",
+  "Sanmotion",
 ];
 
 export const IcsearchHomePage = () => {

@@ -346,15 +346,15 @@ export const manufacturers = [
       "Компания Sanken Electric - это японский производитель электронных компонентов, включая мощные полупроводники, интегральные схемы и другие электронные устройства. Компания имеет сильную репутацию по производству высококачественных и надежных компонентов, которые используются в широком диапазоне приложений, от потребительской электроники до промышленного оборудования. Имея историю, охватывающую несколько десятилетий, компания Sanken Electric установила себя как ключевого игрока в глобальной электронной индустрии, известного своими инновационными технологиями и приверженностью устойчивости.",
   },
   {
-    name: "Sunmotion",
+    name: "Sanmotion",
     id: 3493,
     description:
-      "Sunmotion is a leading manufacturer of high-quality electronic components, specializing in sensors, actuators, and control systems for various industries such as automotive, industrial automation, and consumer electronics. With a reputation for innovation and reliability, Sunmotion products are designed to meet the demanding requirements of modern technology applications.",
-    image: "https://www.sunmotion.com/logo.png",
-    url: "https://www.sunmotion.com",
-    address: "Sunmotion Headquarters, 1234 Innovation Drive, City Name, Country",
+      "Sanmotion is a leading manufacturer of high-quality electronic components, specializing in sensors, actuators, and control systems for various industries such as automotive, industrial automation, and consumer electronics. With a reputation for innovation and reliability, Sanmotion products are designed to meet the demanding requirements of modern technology applications.",
+    image: "https://products.sanyodenki.com/static/image/common/img-logo-sm.png",
+    url: "https://products.sanyodenki.com/en/sanmotion/",
+    address: " SANYO DENKI EUROPE S.A., ul. Wodociągowa 56, 30-205 Kraków, Polska",
     description_ru:
-      "Sunmotion - ведущий производитель высококачественных электронных компонентов, специализирующийся на датчиках, исполнительных механизмах и системах управления для различных отраслей, таких как автомобильная, промышленная автоматизация и потребительская электроника. Благодаря репутации инновационности и надежности, продукция Sunmotion разработана для удовлетворения требовательных требований современных технологических приложений.",
+      "Sanmotion - ведущий производитель высококачественных электронных компонентов, специализирующийся на датчиках, исполнительных механизмах и системах управления для различных отраслей, таких как автомобильная, промышленная автоматизация и потребительская электроника. Благодаря репутации инновационности и надежности, продукция Sanmotion разработана для удовлетворения требовательных требований современных технологических приложений.",
   },
 ];
 

@@ -1,11 +1,21 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import microchip_animated_icon from "@src/images/microchip_animated_icon.svg";
+import toInteger from "lodash/toInteger";
 import { useStyles } from "./styles";
 
-const Progress = () => {
+const Progress: React.FC<{ isExtendSearchPage?: boolean }> = ({ isExtendSearchPage }) => {
+  const phrasesForExtendedSearch: string[] = [
+    "Запрашиваем склады . . .",
+    "Получаем информацию . . .",
+    "Ищем лучшие варианты . . .",
+    "Подготавливаем результаты . . .",
+  ];
   const classes = useStyles();
   const [completed, setCompleted] = useState(0);
   const [buffer, setBuffer] = useState(10);
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [isHidden, setIsHidden] = useState(false);
 
   const progress = useRef<() => void>();
   React.useEffect(() => {
@@ -27,21 +37,46 @@ const Progress = () => {
       progress.current();
     }
     const timer = setInterval(tick, 500);
-
+    const phraseTimer = setInterval(() => {
+      setIsHidden(true);
+      setTimeout(
+        () =>
+          setCurrentPhraseIndex((prevState) => (prevState !== phrasesForExtendedSearch.length - 1 ? prevState + 1 : 0)),
+        300,
+      );
+    }, 4000);
     return () => {
       clearInterval(timer);
+      clearInterval(phraseTimer);
     };
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => setIsHidden(false), 300);
+  }, [currentPhraseIndex]);
+
   return (
     <div className={classes.root}>
-      <LinearProgress
-        className={classes.progress}
-        variant="buffer"
-        value={completed}
-        valueBuffer={buffer}
-        color="secondary"
-      />
+      {!isExtendSearchPage && (
+        <LinearProgress
+          className={classes.progress}
+          variant="buffer"
+          value={completed}
+          valueBuffer={buffer}
+          color="secondary"
+        />
+      )}
+      {isExtendSearchPage && (
+        <div>
+          <object type={"image/svg+xml"} data={microchip_animated_icon} style={{ width: 150 }} />
+          <p
+            className={classes.loadingTextAnimation}
+            style={{ fontSize: "1.5em", transition: "opacity 300ms ease", opacity: toInteger(!isHidden) }}
+          >
+            {phrasesForExtendedSearch[currentPhraseIndex]}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -23,6 +23,18 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       whiteSpace: "nowrap",
       color: theme.palette.grey[700],
     },
+    loadingTextAnimation: {
+      display: "inline-block",
+      fontSize: "30px",
+      clipPath: "inset(0 1ch 0 0)",
+      animation: `$l 1s steps(4) infinite`,
+      paddingTop: "17px",
+    },
+    "@keyframes l": {
+      to: {
+        clipPath: "inset(0 -1ch 0 0)",
+      },
+    },
   }),
 );
 
