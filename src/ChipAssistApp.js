@@ -38,6 +38,7 @@ import { getChatList, updateChatList } from "@src/store/chat/chatActions";
 import { getAllSellers } from "@src/store/sellers/sellersActions";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
 import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
+import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = ErrorBoundary;
@@ -243,7 +244,7 @@ const ChipAssistApp = () => {
   useEffect(() => {
     batch(() => {
       dispatch(authCheckState());
-
+      dispatch(getAllManufacturers());
       dispatch(getServiceTax());
       dispatch(getDefaultServiceCurrency());
       dispatch(getCurrency(selectedCurrency)).catch(() => {

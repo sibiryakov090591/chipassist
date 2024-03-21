@@ -4,7 +4,6 @@ import Select, { createFilter } from "react-select";
 import { selectStyles } from "@src/views/chipassist/Orders/components/OrderStatus/styles";
 import Dropdown from "@src/components/FiltersSelect/dropdown";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { changeManufacturer } from "@src/store/search/searchActions";
 import Box from "@material-ui/core/Box";
@@ -24,9 +23,7 @@ const ManufacturerSearchSelect: React.FC = () => {
   const [options, setOptions] = useState([]);
 
   React.useEffect(() => {
-    if (!loaded) {
-      dispatch(getAllManufacturers());
-    } else {
+    if (loaded) {
       setOptions(items.map((i) => ({ label: i.name, value: i.id })));
     }
   }, [loaded]);
