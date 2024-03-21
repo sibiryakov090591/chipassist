@@ -99,6 +99,11 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "8%",
       },
     },
+    thDeliveryTime: {
+      width: "11%",
+      textAlign: "right",
+      padding: "7px",
+    },
     thCurrency: {
       width: 45,
       textAlign: "center",
@@ -256,6 +261,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       padding: "7px",
       paddingRight: "14px",
     },
+
     trCurrency: {
       textAlign: "center",
       paddingLeft: "7px",
