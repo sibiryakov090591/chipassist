@@ -28,6 +28,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       fontSize: "30px",
       clipPath: "inset(0 1ch 0 0)",
       animation: `$l 1s steps(4) infinite`,
+      paddingTop: "17px",
     },
     "@keyframes l": {
       to: {

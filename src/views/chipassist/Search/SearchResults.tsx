@@ -422,7 +422,10 @@ const SearchResults = () => {
               </div>
             )}
             {isExtendedSearchStarted && count === 0 && rfqData.count === 0 && (
-              <div className={classes.searchResultEmpty} style={{ marginTop: "20%" }}>
+              <div
+                className={classes.searchResultEmpty}
+                style={{ marginTop: "max(calc(50vh - 127px - (295px)/2), 5%)" }}
+              >
                 <h1 style={{ marginBottom: "25px" }}>{t("extended_progress")}</h1>
                 <div style={{ maxWidth: "320px", margin: "auto" }}>
                   <Progress isExtendSearchPage={true} />
