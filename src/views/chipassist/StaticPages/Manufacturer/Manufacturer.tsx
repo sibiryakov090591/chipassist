@@ -82,6 +82,7 @@ export const Manufacturer = () => {
               <div className={classes.imgContainer}>
                 <img
                   alt={"Company img"}
+                  style={{ width: "100%" }}
                   src={currentManufacturer?.image}
                   onError={(e) => {
                     e.currentTarget.src = placeholderImg;
