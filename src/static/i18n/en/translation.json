@@ -1479,7 +1479,7 @@
       "description": "Click this button and request the quotes."
     },
     "smart_view": "Smart View",
-    "smart_view_info": "Smart view shows the best price and best offer at the top of the list of offers."
+    "smart_view_info": "Smart sorting identifies the best offer and shows it at the top of the list."
   },
   "product": {
     "cost": "Total price",
