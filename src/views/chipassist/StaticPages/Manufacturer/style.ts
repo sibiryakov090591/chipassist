@@ -27,6 +27,7 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     borderRadius: "4px",
     justifyContent: "center",
+    marginLeft: "12.5%",
   },
   description: {
     width: "40%",

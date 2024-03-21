@@ -332,19 +332,23 @@ const Footer = () => {
                         <NavLink className={classes.navLinkICS} to={"/bom/create-file"} onClick={navigateHandler}>
                           {t("bom")}
                         </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
-                          {t("rfq_list")}
-                        </NavLink>
                       </Hidden>
                     </Box>
                     <Box className={classes.navGroup}>
                       <Hidden xsDown>
+                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
+                          {t("rfq_list")}
+                        </NavLink>
                         <NavLink className={classes.navLinkICS} to={"/pcb"} onClick={navigateHandler}>
                           {t("menu.pcb")}
                         </NavLink>
                         <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
                           {t("menu.brands")}
                         </NavLink>
+                      </Hidden>
+                    </Box>
+                    <Box className={classes.navGroup}>
+                      <Hidden xsDown>
                         <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"} onClick={navigateHandler}>
                           {t("payment_and_delivery")}
                         </NavLink>
@@ -373,11 +377,11 @@ const Footer = () => {
                       </a>
                     </Box>
                   </Hidden>
-                  <Hidden xsDown>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"150px"}>
-                      {/* <ICSInfo /> */}
-                    </Box>
-                  </Hidden>
+                  {/* <Hidden xsDown> */}
+                  {/*  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"150px"}> */}
+                  {/*    /!* <ICSInfo /> *!/ */}
+                  {/*  </Box> */}
+                  {/* </Hidden> */}
                 </Box>
               </Box>
             </Box>
