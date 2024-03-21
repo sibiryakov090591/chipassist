@@ -285,6 +285,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               </TableSortLabel>
             </th>
           )}
+          <th className={classes.thDeliveryTime}>Срок доставки</th>
           <th className={classes.thCurrency}></th>
           <th className={classes.thPricesHint}></th>
           {!!baseFilters?.base_num_in_stock &&
@@ -564,10 +565,10 @@ const DistributorsDesktop: React.FC<Props> = ({
                 </td>
                 <td className={`${classes.trMpq} product-card-mpq`}>{val.mpq}</td>
                 <Hidden smDown>
-                  <td className={`${!showDC ? classes.trPkg : classes.trPkgWithoutBorder}`}>{val.packaging || "-"}</td>
+                  <td className={`${classes.trPkgWithoutBorder}`}>{val.packaging || "-"}</td>
                 </Hidden>
                 {showDC && (
-                  <td className={`${classes.trPkg}`}>
+                  <td className={`${classes.trPkgWithoutBorder}`}>
                     {dateCode ? (
                       dateCode.length > 10 ? (
                         <Tooltip
@@ -585,6 +586,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                     )}
                   </td>
                 )}
+                <td className={classes.trPkg}>5-6 нед.</td>
                 <td className={classes.trCurrency}>{currency?.code}</td>
                 <td className={classes.trPricesHint}>
                   {isShowPricesHint && (
