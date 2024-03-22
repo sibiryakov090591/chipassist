@@ -369,7 +369,7 @@ export const changeQueryAction = (query: string) => {
   };
 };
 
-export const changeManufacturer = (value: any) => {
+export const changeManufacturer = (value: { id: number; name: string }) => {
   return {
     type: actionTypes.CHANGE_MANUFACTURER,
     payload: value,

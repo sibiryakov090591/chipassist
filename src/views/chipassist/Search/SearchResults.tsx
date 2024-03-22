@@ -6,7 +6,7 @@ import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui
 import constants from "@src/constants/constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { setUrlWithFilters } from "@src/utils/setUrl";
-import { changeQueryAction } from "@src/store/search/searchActions";
+import { changeManufacturer, changeQueryAction } from "@src/store/search/searchActions";
 import { ProductCard, Page } from "@src/components";
 import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";
 import Paginate from "@src/components/Paginate";
@@ -83,6 +83,7 @@ const SearchResults = () => {
   );
   let smart_view = useAppSelector((state) => state.search.smart_view);
   smart_view = useURLSearchParams("smart_view", false, smart_view, false) === "true";
+  const manufacturer = useAppSelector((state) => state.search.manufacturer);
   const manufacturerId = parseInt(useURLSearchParams("m_id", false, null, false));
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
   filtersValues.base_num_in_stock = 1;
@@ -90,7 +91,7 @@ const SearchResults = () => {
     filtersValues = null;
   }
   // const isSearchPage = window.location.pathname === "/search";
-  const disabledRFQForm = !!query?.startsWith("SELLER:") || !!query?.startsWith("MANUFACTURER:");
+  const disabledRFQForm = !!query?.startsWith("SELLER:") || !!query?.startsWith("MANUFACTURER:") || !query;
 
   const isLoadingSearchResultsInProgress = useAppSelector((state) => state.search.isLoadingSearchResultsInProgress);
   const isExtendedSearchStarted = useAppSelector((state) => state.search.isExtendedSearchStarted);
@@ -259,6 +260,13 @@ const SearchResults = () => {
     setUrlWithFilters(window.location.pathname, navigate, query, 1, value, orderBy, filtersValues, null, {
       smart_view,
       ...(!!manufacturerId && { m_id: manufacturerId }),
+    });
+  };
+
+  const onRemoveManufacturerFilter = () => {
+    dispatch(changeManufacturer(null));
+    setUrlWithFilters(window.location.pathname, navigate, query, 1, pageSize, orderBy, filtersValues, null, {
+      smart_view,
     });
   };
 
@@ -444,6 +452,17 @@ const SearchResults = () => {
                   </div>
                 )}
                 <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
+                {!!manufacturerId && (
+                  <p style={{ marginBottom: 20 }}>
+                    Вы искали продукты производителя <strong>{manufacturer.name}</strong>. Чтобы увидеть больше
+                    результатов - попробуйте{" "}
+                    <strong className={appTheme.hyperlink} onClick={onRemoveManufacturerFilter}>
+                      Отключить
+                    </strong>{" "}
+                    данный фильтр.
+                  </p>
+                )}
+
                 {disabledRFQForm && <h3 className={classes.rfqHeader}>{t("rfq_header")}</h3>}
                 {!disabledRFQForm && (
                   <>

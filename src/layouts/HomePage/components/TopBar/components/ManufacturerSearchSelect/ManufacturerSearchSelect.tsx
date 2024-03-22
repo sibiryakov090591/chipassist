@@ -48,9 +48,9 @@ const ManufacturerSearchSelect: React.FC<{ setSelectIsOpen: any }> = ({ setSelec
     setIsOpen(!isOpen);
   };
 
-  const onSelectChange = (value: any) => {
+  const onSelectChange = (item: any) => {
     toggleOpen();
-    dispatch(changeManufacturer(value));
+    dispatch(changeManufacturer({ id: item.value, name: item.label }));
   };
 
   const removeManufacturer = () => {
@@ -69,7 +69,7 @@ const ManufacturerSearchSelect: React.FC<{ setSelectIsOpen: any }> = ({ setSelec
       target={
         <Box display="flex" alignItems="center" mr="30px">
           <div className={classes.value} onClick={toggleOpen}>
-            <span>{manufacturer ? t("selected", { name: manufacturer?.label }) : t("non_selected")}</span>
+            <span>{manufacturer ? t("selected", { name: manufacturer?.name }) : t("non_selected")}</span>
           </div>
           {!!manufacturer && (
             <div className={classes.removeButton} onClick={removeManufacturer}>

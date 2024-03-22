@@ -5,13 +5,21 @@ import Page from "@src/components/Page/Page";
 import Container from "@material-ui/core/Container/Container";
 import Preloader from "@src/components/Preloader/Preloader";
 import { Link } from "react-router-dom";
+import { changeManufacturer, setQueryValue } from "@src/store/search/searchActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useStyles } from "./styles";
 
 const Brands: React.FC = () => {
   const { t } = useI18n("brands");
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const { groups, loaded } = useAppSelector((state) => state.manufacturers);
+
+  const setManufacturer = (item: any) => () => {
+    dispatch(changeManufacturer({ id: item.id, name: item.name?.trim() }));
+    dispatch(setQueryValue(""));
+  };
 
   return (
     <noindex>
@@ -35,13 +43,11 @@ const Brands: React.FC = () => {
                     </div>
                     <div className={classes.itemsWrapper}>
                       {group?.map((item) => {
-                        const name = item.name?.trim() || "";
                         return (
                           <Link
                             key={item.id}
-                            to={`/search?query=${encodeURIComponent(
-                              `MANUFACTURER:${name.includes(" ") ? `"${name}"` : name}`,
-                            )}&m_id=${item.id}`}
+                            to={`/search?query=&m_id=${item.id}`}
+                            onClick={setManufacturer(item)}
                             className={classes.link}
                           >
                             {item.name}

@@ -35,7 +35,7 @@ const useSearchLoadResults = () => {
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
   let smart_view = useAppSelector((state) => state.search.smart_view);
   smart_view = useURLSearchParams("smart_view", false, smart_view, false);
-  let manufacturerId = useAppSelector((state) => state.search.manufacturer?.value);
+  let manufacturerId = useAppSelector((state) => state.search.manufacturer?.id);
   manufacturerId = parseInt(useURLSearchParams("m_id", false, manufacturerId, false));
   // const orderBy = useURLSearchParams(
   //   "order_by",

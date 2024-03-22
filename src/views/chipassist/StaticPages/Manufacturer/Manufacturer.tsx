@@ -8,45 +8,12 @@ import useAppTheme from "@src/theme/useAppTheme";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "@src/views/chipassist/StaticPages/Manufacturer/style";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-// const companyNames = {
-//   "Chilisin Electronics": 16728,
-// GigaDevice: 4363,
-// "Jiangsu Electronic": 3114,
-// Yageo: 1223,
-// "Sanken Electric Company": 17854,
-// Sunmotion: 3493,
-// "Analog Devices": 18,
-// Raditek: 3038,
-// Amphenol: 2677,
-// Microchip: 3231,
-// Wingtech: 32053,
-// "Giga Device": 4363,
-// "NXP Semiconductors": 9,
-// UNISOC: 32054,
-// "ST Microelectronics": 7,
-// "Nation Technologies": 32055,
-// "Texas Instruments": 3681,
-// Rockchip: 4033,
-// "ON Semiconductor": 129,
-// Maxscend: 32056,
-// Murata: 945,
-// Sanechips: 32057,
-// Omron: 943,
-// "CR Micro": 32058,
-// "Renesas Electronics": 2,
-// "TE Connectivity": 321,
-// GoerTek: 32059,
-// "Wurth Electronics": 3065,
-// Xilinx: 1957,
-// SMC: 1874,
-// };
+import { changeManufacturer, setQueryValue } from "@src/store/search/searchActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 
 export const Manufacturer = () => {
   const { name } = useParams();
-
+  const dispatch = useAppDispatch();
   const classes = useStyles();
 
   const navigate = useNavigate();
@@ -105,15 +72,9 @@ export const Manufacturer = () => {
               className={appClasses.buttonCreate}
               style={{ marginTop: "20px" }}
               onClick={() => {
-                navigate(
-                  `/search?query=${encodeURIComponent(
-                    `MANUFACTURER:${
-                      currentManufacturer.name?.trim().includes(" ")
-                        ? `"${currentManufacturer?.name}"`
-                        : currentManufacturer.name?.trim()
-                    } `,
-                  )}&m_id=${currentManufacturer.id}`,
-                );
+                dispatch(changeManufacturer({ id: currentManufacturer.id, name: currentManufacturer.name?.trim() }));
+                dispatch(setQueryValue(""));
+                navigate(`/search?query=&m_id=${currentManufacturer.id}`);
               }}
             >
               <span className="MuiButton-label" style={{ padding: "8px 10px" }}>

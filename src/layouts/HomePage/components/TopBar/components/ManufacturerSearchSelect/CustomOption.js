@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { components } from "react-select";
 
 const CustomOption = ({ children, ...props }) => {
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
   const newProps = { ...props, innerProps: rest };
   return <components.Option {...newProps}>{children}</components.Option>;

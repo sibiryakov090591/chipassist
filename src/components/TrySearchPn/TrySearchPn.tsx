@@ -29,7 +29,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const reloadSearchFlag = useAppSelector((state) => state.search.reloadSearchFlag);
-  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.value);
+  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.id);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
   const [partNumbersArray, setPartNumbersArray] = useState([]);

@@ -50,7 +50,7 @@ const SearchSuggestion: React.FC<Props> = ({
   page = useURLSearchParams("page", false, page, false);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
-  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.value);
+  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.id);
 
   const searchRef = useRef(null);
   const debouncedSearchTerm = useDebounce(searchValue, 400);

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 export const useStyles = makeStyles(() => ({
   value: {
     textDecoration: "underline",
+    fontWeight: "bold",
     cursor: "pointer",
     "&:hover": {
       textDecoration: "auto",

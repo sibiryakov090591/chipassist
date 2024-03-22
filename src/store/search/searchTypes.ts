@@ -103,7 +103,7 @@ export interface SearchState {
   pageSize: number;
   query: string;
   queryValue: string;
-  manufacturer: any;
+  manufacturer: { id: number; name: string };
   attributes: { [index: string]: { id: string; code: string; name: string; type: string; values: any } }[];
   attributesMap: string[];
   enabledAttributesMap: any; // TODO types
