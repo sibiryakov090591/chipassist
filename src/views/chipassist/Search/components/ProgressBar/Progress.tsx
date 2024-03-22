@@ -58,13 +58,7 @@ const Progress: React.FC<{ isExtendSearchPage?: boolean }> = ({ isExtendSearchPa
   return (
     <div className={classes.root}>
       {!isExtendSearchPage && (
-        <LinearProgress
-          className={classes.progress}
-          variant="buffer"
-          value={completed}
-          valueBuffer={buffer}
-          color="secondary"
-        />
+        <LinearProgress className={classes.progress} variant="buffer" value={completed} valueBuffer={buffer} />
       )}
       {isExtendSearchPage && (
         <div>
