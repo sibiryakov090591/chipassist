@@ -32,7 +32,7 @@ import {
   loadMergeItemsThunk,
   setMergeItemMultiplier,
   loadBomListStart,
-  createBomCopy,
+  // createBomCopy,
 } from "@src/store/bom/bomActions";
 
 import Paginate from "@src/components/Paginate";
@@ -207,11 +207,11 @@ const BomList: React.FC = () => {
     }
   };
 
-  const createCopy = (id: number, name: string) => () => {
-    dispatch(createBomCopy(id, name)).then((willBeRedirectedToNewBom: boolean) => {
-      if (!willBeRedirectedToNewBom) dispatch(loadBomListThunk(1, true, pageSize, orderBy));
-    });
-  };
+  // const createCopy = (id: number, name: string) => () => {
+  //   dispatch(createBomCopy(id, name)).then((willBeRedirectedToNewBom: boolean) => {
+  //     if (!willBeRedirectedToNewBom) dispatch(loadBomListThunk(1, true, pageSize, orderBy));
+  //   });
+  // };
 
   const onMergeSelect = (lines: number[]) => () => {
     if (!mergeEnabled) {
@@ -523,16 +523,16 @@ const BomList: React.FC = () => {
                                 readonly={item.readonly}
                               />
                             </div>
-                            <Button
-                              onClick={createCopy(item.id, item.name)}
-                              variant="contained"
-                              color="primary"
-                              className={`${clsx(classes.copyButton, appTheme.buttonPrimary)} col-menu`}
-                              size="small"
-                              style={{ marginRight: 15 }}
-                            >
-                              {t("bom.column.new_order_btn")}
-                            </Button>
+                            {/* <Button */}
+                            {/*  onClick={createCopy(item.id, item.name)} */}
+                            {/*  variant="contained" */}
+                            {/*  color="primary" */}
+                            {/*  className={`${clsx(classes.copyButton, appTheme.buttonPrimary)} col-menu`} */}
+                            {/*  size="small" */}
+                            {/*  style={{ marginRight: 15 }} */}
+                            {/* > */}
+                            {/*  {t("bom.column.new_order_btn")} */}
+                            {/* </Button> */}
                             <div className={classes.deleteButton}>
                               {!mergeEnabled && selectedLines.length < 2 && (
                                 <ConfirmButton

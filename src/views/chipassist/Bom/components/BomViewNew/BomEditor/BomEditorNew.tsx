@@ -14,26 +14,23 @@ import {
 } from "@material-ui/core";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-
 import {
   deleteBomThunk,
   updateBomLineThunk,
-  createBomCopy,
+  // createBomCopy,
   exportBomThunk,
   saveBomNameThunk,
-  loadBomListThunk,
+  // loadBomListThunk,
 } from "@src/store/bom/bomActions";
 import useCurrency from "@src/hooks/useCurrency";
 import { formatMoney } from "@src/utils/formatters";
 import useHiddenColumns from "@src/components/Table/HiddenColumns/useHiddenColumns";
 import useAppTheme from "@src/theme/useAppTheme";
 import ConfirmButton from "@src/components/ConfirmButton/ConfirmButton";
-
 import clsx from "clsx";
 import { getCostAndQuantity, isProductAvailable } from "@src/utils/product";
 import { Paginate } from "@src/components";
 import Preloader from "@src/components/Preloader/Preloader";
-import useAppSelector from "@src/hooks/useAppSelector";
 import { BomFields, EditorBomData, Row, Groups, BomGroup } from "@src/store/bom/bomTypes";
 import SetsModal from "@src/views/chipassist/Bom/components/BomViewNew/BomEditor/SetsModal/SetsModal";
 import Sticky from "react-sticky-el";
@@ -160,7 +157,7 @@ const BomEditor: React.FC<Props> = (props) => {
   const [disabledCheckbox, setDisabledCheckbox] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [bomName, setBomName] = useState<string>(props.bom.name);
-  const isCoping = useAppSelector((state) => state.bom.copy?.copying);
+  // const isCoping = useAppSelector((state) => state.bom.copy?.copying);
 
   const hiddenDefault = tableHeadLabels.reduce((acc, val) => {
     if (!val.isShowDefault) return { ...acc, [val.label]: true };
@@ -378,11 +375,11 @@ const BomEditor: React.FC<Props> = (props) => {
     dispatch(deleteBomThunk([bom.id]));
   };
 
-  const createCopy = (id: number, name: string) => () => {
-    dispatch(createBomCopy(id, name)).then((willBeRedirectedToNewBom: boolean) => {
-      if (!willBeRedirectedToNewBom) dispatch(loadBomListThunk(1, true, pageSize, orderBy));
-    });
-  };
+  // const createCopy = (id: number, name: string) => () => {
+  //   dispatch(createBomCopy(id, name)).then((willBeRedirectedToNewBom: boolean) => {
+  //     if (!willBeRedirectedToNewBom) dispatch(loadBomListThunk(1, true, pageSize, orderBy));
+  //   });
+  // };
 
   const qtyChangeHandler = (e: ChangeEvent<HTMLInputElement>, key: string, err: any) => {
     e.persist();
@@ -560,20 +557,19 @@ const BomEditor: React.FC<Props> = (props) => {
                   )}
                 </Box>
                 <Box className={classes.headerActions}>
-                  {bom.readonly ? (
-                    <Button
-                      onClick={createCopy(bom.id, bom.name)}
-                      variant="contained"
-                      color="primary"
-                      className={`${classes.yellowBtn} ${classes.topBtn}`}
-                      style={{ marginRight: 0 }}
-                      size="small"
-                      disabled={isCoping}
-                    >
-                      {isCoping && <CircularProgress className={commonClasses.progressCircle} size="1.5em" />}
-                      {t("bom.column.new_order_btn")}
-                    </Button>
-                  ) : (
+                  {!bom.readonly && (
+                    // <Button
+                    //   onClick={createCopy(bom.id, bom.name)}
+                    //   variant="contained"
+                    //   color="primary"
+                    //   className={`${classes.yellowBtn} ${classes.topBtn}`}
+                    //   style={{ marginRight: 0 }}
+                    //   size="small"
+                    //   disabled={isCoping}
+                    // >
+                    //   {isCoping && <CircularProgress className={commonClasses.progressCircle} size="1.5em" />}
+                    //   {t("bom.column.new_order_btn")}
+                    // </Button>
                     <Button
                       style={{ marginRight: 0 }}
                       variant="contained"
