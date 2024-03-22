@@ -285,7 +285,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               </TableSortLabel>
             </th>
           )}
-          <th className={classes.thDeliveryTime}>Срок доставки</th>
+          <th className={classes.thDeliveryTime}>Срок поставки</th>
           <th className={classes.thCurrency}></th>
           <th className={classes.thPricesHint}></th>
           {!!baseFilters?.base_num_in_stock &&
