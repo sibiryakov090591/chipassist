@@ -369,10 +369,25 @@ export const changeQueryAction = (query: string) => {
   };
 };
 
-export const redirectToSearchPage = (navigate: NavigateFunction, query: string, page: number, pageSize: number) => {
+export const changeManufacturer = (value: any) => {
+  return {
+    type: actionTypes.CHANGE_MANUFACTURER,
+    payload: value,
+  };
+};
+
+export const redirectToSearchPage = (
+  navigate: NavigateFunction,
+  query: string,
+  page: number,
+  pageSize: number,
+  manufacturerId: number | string = null,
+) => {
   navigate({
     pathname: "/search",
-    search: `?query=${encodeURIComponent(query)}&page=${page}&page_size=${pageSize}`,
+    search: `?query=${encodeURIComponent(query)}&page=${page}&page_size=${pageSize}${
+      manufacturerId ? `&m_id=${manufacturerId}` : ""
+    }`,
   });
 };
 
@@ -381,12 +396,13 @@ export const onTryClickAction = (
   query: string,
   page: number,
   pageSize: number,
+  manufacturerId: number | string = null,
   dispatch: any,
 ) => {
   const currentLocation = window.location.pathname;
 
   dispatch({ type: actionTypes.CLEAR_ATTRIBUTES });
-  redirectToSearchPage(navigate, query, page, pageSize);
+  redirectToSearchPage(navigate, query, page, pageSize, manufacturerId);
 
   if (currentLocation === "/search") {
     dispatch(toggleReloadSearchFlag());

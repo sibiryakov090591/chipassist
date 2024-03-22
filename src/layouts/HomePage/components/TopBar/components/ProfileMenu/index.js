@@ -35,7 +35,7 @@ const ProfileMenu = (props) => {
   }, [timeoutId]);
 
   return (
-    <Box className={classes.showBy} display="flex">
+    <Box className={classes.showBy} display="flex" height="41px">
       {children}
     </Box>
   );

@@ -1479,7 +1479,7 @@
       "description": "Click this button and request the quotes."
     },
     "smart_view": "Smart View",
-    "smart_view_info": "Smart view shows the best price and best offer at the top of the list of offers."
+    "smart_view_info": "Smart sorting identifies the best offer and shows it at the top of the list."
   },
   "product": {
     "cost": "Total price",
@@ -1564,6 +1564,10 @@
     "in_stock_hint_4": " to see all alternatives",
     "in_stock_hint_5": "Additional products available by RFQ",
     "in_stock_hint_6": "Or send us a request:",
+    "manufacturer_select": {
+      "non_selected": "Select manufacturer",
+      "selected": "Manufacturer: {{name}}"
+    },
     "tutorial": {
       "dialog": {
         "greetings": {

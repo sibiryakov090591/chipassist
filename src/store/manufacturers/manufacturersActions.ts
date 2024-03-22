@@ -8,8 +8,8 @@ export function getAllManufacturers(page = 1, join = false) {
       types: actionTypes.ITEMS_FETCHING,
       promise: (client: ApiClientInterface) =>
         client
-          .get(`manufacturers/?page=${page}&page_size=900`)
-          .then((res) => res.data) // костыль пока жду этот список в search-byparams
+          .get(`manufacturers/main/?page=${page}&page_size=900`)
+          .then((res) => res.data)
           .then((res: any) => {
             dispatch(
               join ? { type: actionTypes.JOIN_ITEMS, payload: res } : { type: actionTypes.GET_All_ITEMS, payload: res },

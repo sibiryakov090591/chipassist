@@ -29,6 +29,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const reloadSearchFlag = useAppSelector((state) => state.search.reloadSearchFlag);
+  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.value);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
   const [partNumbersArray, setPartNumbersArray] = useState([]);
@@ -54,7 +55,7 @@ const TrySearchPn: React.FC<Props> = ({ textClassName, pnClassName, partNumbers 
     const val = randomPartNumber;
     dispatch(saveSearchQueryAction(val));
     dispatch(setQueryValue(val));
-    onTryClickAction(navigate, val, 1, pageSize, dispatch);
+    onTryClickAction(navigate, val, 1, pageSize, manufacturerId, dispatch);
     if (partNumbers?.length > 2) setPartNumbersArray((prevState) => prevState.filter((el) => el !== randomPartNumber));
   };
 

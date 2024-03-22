@@ -2,6 +2,7 @@ import React from "react";
 
 export const Menu = (props) => {
   const shadow = "hsla(218, 50%, 10%, 0.1)";
+  const { style, ...rest } = props;
   return (
     <div
       style={{
@@ -11,8 +12,9 @@ export const Menu = (props) => {
         marginTop: 8,
         position: "absolute",
         zIndex: 2,
+        ...style,
       }}
-      {...props}
+      {...rest}
     />
   );
 };

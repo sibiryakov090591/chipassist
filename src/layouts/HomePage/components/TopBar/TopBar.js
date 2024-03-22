@@ -20,6 +20,8 @@ import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { showHint } from "@src/store/rfqList/rfqListActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import ManufacturerSearchSelect from "@src/layouts/HomePage/components/TopBar/components/ManufacturerSearchSelect/ManufacturerSearchSelect";
+import Box from "@material-ui/core/Box";
 import { useStyles } from "./topbarStyles";
 // import LangMenu from "./components/LangMenu/LangMenu";
 import ProfileMenu from "./components/ProfileMenu";
@@ -69,6 +71,7 @@ const TopBar = (props) => {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const is1180Down = useMediaQuery(theme.breakpoints.down(1180));
   const dispatch = useAppDispatch();
+  const preventCollapseRef = React.useRef(false);
   const isHomePage = window.location.pathname === "/";
   // const Icon = withBaseIcon();
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null && !state.auth.loading);
@@ -109,8 +112,8 @@ const TopBar = (props) => {
 
       if (currentPosition > (isHomePage ? homePageTopOffset : topOffset)) {
         if (!hidden && currentPosition > lastScrollTop) {
-          hidden = true;
-          setCollapse(true);
+          hidden = !preventCollapseRef.current; // true is !preventCollapse
+          setCollapse(!preventCollapseRef.current); // true is !preventCollapse
           dispatch(showHint(false));
         } else if (lastScrollTop - currentPosition > 5) {
           hidden = false;
@@ -167,6 +170,10 @@ const TopBar = (props) => {
   //     </div>
   //   </Link>
   // );
+
+  const setPreventHeaderCollapse = (isPrevent) => {
+    preventCollapseRef.current = isPrevent;
+  };
 
   return (
     <div>
@@ -240,25 +247,30 @@ const TopBar = (props) => {
 
             <div className={classes.leftCenter}>
               <div className={classes.searchRow}>
-                <SearchSuggestion
-                  searchInputClass={homePageClasses.searchInput}
-                  searchButtonClass={clsx(homePageClasses.searchIconButton, appTheme.topBarSearchButton)}
-                  searchIconClass={homePageClasses.searchIcon}
-                  searchClearClass={homePageClasses.clearSearchIcon}
-                  isHomePageSuggestions={true}
-                />
+                <div style={{ flexGrow: 1 }}>
+                  <SearchSuggestion
+                    searchInputClass={homePageClasses.searchInput}
+                    searchButtonClass={clsx(homePageClasses.searchIconButton, appTheme.topBarSearchButton)}
+                    searchIconClass={homePageClasses.searchIcon}
+                    searchClearClass={homePageClasses.clearSearchIcon}
+                    isHomePageSuggestions={true}
+                  />
+                  <Collapse in={!collapse}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <TrySearchPn
+                        partNumbers={partNumberExamples || partNumbers}
+                        textClassName={classes.tryP}
+                        pnClassName={classes.trySpan}
+                      />
+                      <ManufacturerSearchSelect setSelectIsOpen={setPreventHeaderCollapse} />
+                    </Box>
+                  </Collapse>
+                </div>
                 {/* {locales.length > 1 && <LangMenu />} */}
                 <ProfileMenu>{isAuthenticated ? <Authorized /> : <NotAuthorized />}</ProfileMenu>
                 {/* {isCartShow && cartBlock} */}
                 {/* <CartBlock /> */}
               </div>
-              <Collapse in={!collapse}>
-                <TrySearchPn
-                  partNumbers={partNumberExamples || partNumbers}
-                  textClassName={classes.tryP}
-                  pnClassName={classes.trySpan}
-                />
-              </Collapse>
             </div>
           </Toolbar>
         </Hidden>

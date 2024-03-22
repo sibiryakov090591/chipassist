@@ -19,6 +19,7 @@ const initialState: SearchState = {
   pageSize: 15,
   query: "",
   queryValue: "",
+  manufacturer: null,
 
   attributes: [],
   attributesMap: [],
@@ -122,6 +123,9 @@ export default function search(state = initialState, action: actionTypes.SearchA
 
     case actionTypes.CHANGE_QUERY:
       return updateObject(state, { query: action.payload });
+
+    case actionTypes.CHANGE_MANUFACTURER:
+      return updateObject(state, { manufacturer: action.payload });
 
     case actionTypes.CHANGE_PAGE:
       return updateObject(state, { page: action.payload });

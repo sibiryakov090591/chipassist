@@ -50,6 +50,7 @@ const SearchSuggestion: React.FC<Props> = ({
   page = useURLSearchParams("page", false, page, false);
   let pageSize = useAppSelector((state) => state.search.pageSize);
   pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || pageSize, false);
+  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.value);
 
   const searchRef = useRef(null);
   const debouncedSearchTerm = useDebounce(searchValue, 400);
@@ -82,15 +83,16 @@ const SearchSuggestion: React.FC<Props> = ({
           dispatch(setQueryValue(query));
           setSearchValue(query);
           if (query !== value) {
-            redirectToSearchPage(navigate, value, 1, pageSize);
+            redirectToSearchPage(navigate, value, 1, pageSize, manufacturerId);
           } else {
+            redirectToSearchPage(navigate, value, 1, pageSize, manufacturerId);
             dispatch(toggleReloadSearchFlag());
           }
         }
       }
       // eslint-disable-next-line
     },
-    [navigate, value, dispatch, query, page, pageSize],
+    [navigate, value, dispatch, query, page, pageSize, manufacturerId],
   );
 
   useEffect(() => {
@@ -106,7 +108,7 @@ const SearchSuggestion: React.FC<Props> = ({
     return () => {
       document.removeEventListener("keydown", onEnterFunction, false);
     };
-  }, [onEnterFunction, debouncedSearchTerm, navigate, setSearchValue, query, page, pageSize]);
+  }, [onEnterFunction, debouncedSearchTerm, navigate, setSearchValue, query, page, pageSize, manufacturerId]);
 
   function onSuggestionSelected(event: any, { suggestionValue }: { suggestionValue: any }) {
     setSearchValue(suggestionValue);
@@ -147,8 +149,9 @@ const SearchSuggestion: React.FC<Props> = ({
 
   const searchClickHandler = () => {
     if (query !== value || location.pathname !== search_pathname) {
-      redirectToSearchPage(navigate, value, 1, pageSize);
+      redirectToSearchPage(navigate, value, 1, pageSize, manufacturerId);
     } else {
+      redirectToSearchPage(navigate, value, 1, pageSize, manufacturerId);
       dispatch(toggleReloadSearchFlag());
     }
   };

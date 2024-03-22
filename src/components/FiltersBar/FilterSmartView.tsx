@@ -56,16 +56,16 @@ const SmartView: React.FC<Props> = ({ disable }) => {
         />
       }
       label={
-        <Box display="flex" alignItems="center">
-          {t("smart_view")}
-          <Tooltip
-            enterTouchDelay={1}
-            classes={{ tooltip: commonClasses.tooltip }}
-            title={<div>{t("smart_view_info")}</div>}
-          >
+        <Tooltip
+          enterTouchDelay={1}
+          classes={{ tooltip: commonClasses.tooltip }}
+          title={<div>{t("smart_view_info")}</div>}
+        >
+          <Box display="flex" alignItems="center">
+            {t("smart_view")}
             <HelpIcon className={classes.helpIcon} />
-          </Tooltip>
-        </Box>
+          </Box>
+        </Tooltip>
       }
     />
   );
