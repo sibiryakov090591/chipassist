@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { manufacturers } from "@src/constants/manufacturers";
 import { Container, useMediaQuery, useTheme } from "@material-ui/core";
@@ -28,6 +28,10 @@ export const Manufacturer = () => {
   });
   console.log(currentManufacturer.name);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   // const keyForId = Object.keys(companyNames).find((key) => {
   //   return currentManufacturer?.name === key || currentManufacturer.name.includes(key);
   // });
@@ -49,7 +53,7 @@ export const Manufacturer = () => {
               <div className={classes.imgContainer}>
                 <img
                   alt={"Company img"}
-                  style={{ width: "100%" }}
+                  className={classes.img}
                   src={currentManufacturer?.image}
                   onError={(e) => {
                     e.currentTarget.src = placeholderImg;

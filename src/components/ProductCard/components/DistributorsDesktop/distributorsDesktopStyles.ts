@@ -122,7 +122,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "10%",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "7%",
+        width: "10%",
       },
     },
     th10: {
@@ -133,7 +133,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "10%",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "7%",
+        width: "10%",
       },
     },
     th100: {
@@ -144,7 +144,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         width: "10%",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "7%",
+        width: "10%",
       },
     },
     th1000: {
