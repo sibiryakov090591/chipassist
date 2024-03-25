@@ -3,6 +3,8 @@ import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
 import { Product, Stockrecord } from "@src/store/products/productTypes";
+import orderBy from "lodash/orderBy";
+import { v4 as uuidv4 } from "uuid";
 import { getCostAndQuantity, getNextBiggerPriceBreak, getStockDataCode } from "@src/utils/product";
 import clsx from "clsx";
 import Price from "@src/components/Price/Price";
@@ -27,6 +29,7 @@ import { correctUrl } from "@src/utils/transformUrl";
 import constants from "@src/constants/constants";
 // import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { ru, enUS } from "date-fns/locale";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -96,7 +99,7 @@ const DistributorsDesktop: React.FC<Props> = ({
     direction: "asc",
   });
 
-  const isICSearch = constants.id === "icsearch";
+  const isICSearch = constants.id === ID_ICSEARCH;
 
   useEffect(() => {
     if (sortedStockrecords) {
@@ -116,6 +119,8 @@ const DistributorsDesktop: React.FC<Props> = ({
            *  Contains the best values
            */
           const combinedDataItem = group.reduce(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             (acc, sr) => {
               const accDate = new Date(acc.date_updated.replace(/ /g, "T"));
               const srDate = new Date(sr.date_updated.replace(/ /g, "T"));
@@ -123,6 +128,7 @@ const DistributorsDesktop: React.FC<Props> = ({
 
               return {
                 ...acc,
+                id: uuidv4(),
                 num_in_stock: Math.max(acc.num_in_stock, sr.num_in_stock),
                 moq: srWithMinMOQ.moq,
                 mpq: srWithMinMOQ.mpq,
@@ -153,23 +159,26 @@ const DistributorsDesktop: React.FC<Props> = ({
             },
             { ...group[0] },
           );
-          return [combinedDataItem, ...group];
+          const restStocks = group.some((i) => i.id === bestOfferId)
+            ? [group.find((i) => i.id === bestOfferId), ...group.filter((i) => i.id !== bestOfferId)]
+            : group;
+          return [combinedDataItem, ...restStocks];
         });
       setStockrecords(sortFn(res, sortBy.name, sortBy.direction));
     }
-  }, [sortedStockrecords, sortBy]);
+  }, [sortedStockrecords, sortBy, bestOfferId]);
 
   useEffect(() => {
-    if (stockrecords && smart_view) {
-      const sortedStocks = sortFn(stockrecords, "price_1", "asc");
-      const bestOffer = sortedStocks.find((sRecord) => sRecord[0].price_1 > 0 && sRecord[0].num_in_stock > 0);
+    if (sortedStockrecords && smart_view) {
+      const sortedStocks = orderBy(sortedStockrecords, "price_1", "asc");
+      const bestOffer = sortedStocks.find((i) => i.price_1 > 0 && i.num_in_stock > 0);
       if (bestOffer) {
-        if (sortedStocks.length >= 2) {
-          setBestOfferId(bestOffer[0].id);
+        if (sortedStocks.length > 1) {
+          setBestOfferId(bestOffer.id);
         }
       }
     } else if (setBestOfferId) setBestOfferId(null);
-  }, [stockrecords, smart_view]);
+  }, [sortedStockrecords, smart_view]);
 
   function getBasedOnNumInStockPriceData(targetProduct: Product, stockrecord: Stockrecord) {
     let price = null;
@@ -369,6 +378,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             price_1000: { price: srArray[0].price_1000, stock_id: 0 },
             price_10000: { price: srArray[0].price_10000, stock_id: 0 },
           };
+          const isBestOfferGroup = srArray.some((i) => i.id === bestOfferId);
           srArray.forEach((sr, index) => {
             if (index > 0) {
               ["price_1", "price_10", "price_100", "price_1000", "price_10000"].forEach((amount) => {
@@ -434,7 +444,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 key={val.id}
                 className={clsx(classes.tr, {
                   [classes.active]: isShowMoreActive,
-                  [classes.bestOffer]: bestOfferId === val.id,
+                  [classes.bestOffer]: isShowMoreActive ? bestOfferId === val.id : isBestOfferGroup,
                   [classes.emptyStock]: val.num_in_stock === 0,
                 })}
               >
@@ -706,7 +716,9 @@ const DistributorsDesktop: React.FC<Props> = ({
                   </React.Fragment>
                 )}
                 <td className={classes.tdActions}>
-                  {val.id === bestOfferId && <div className={classes.bestOfferLabel}>{t("best_offer")}</div>}
+                  {(isShowMoreActive ? bestOfferId === val.id : isBestOfferGroup) && (
+                    <div className={classes.bestOfferLabel}>{t("best_offer")}</div>
+                  )}
                   <div>
                     {isShowProductLink ? (
                       <a

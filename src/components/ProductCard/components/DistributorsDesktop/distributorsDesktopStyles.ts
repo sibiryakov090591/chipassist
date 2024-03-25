@@ -485,7 +485,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     bestOffer: {
       borderBottom: "1px solid #ddd",
-      backgroundColor: "rgba(255, 224, 138,.4)",
+      background: "rgba(255, 224, 138,.4) !important",
     },
     bestOfferLabel: {
       position: "absolute",
