@@ -19,7 +19,6 @@ import usd_icon from "@src/images/search_page/usd.svg";
 import warehouse_icon from "@src/images/search_page/warehouse.svg";
 import { formatMoney } from "@src/utils/formatters";
 import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
-import RequestButton from "@src/components/ProductCard/components/RequestButton/RequestButton";
 import { useInView } from "react-intersection-observer";
 import { SetProductIntoViewport } from "@src/store/products/productsActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";

@@ -25,7 +25,6 @@ import {
   progressModalSetPartNumber,
   saveRequestToLocalStorage,
 } from "@src/store/progressModal/progressModalActions";
-import MenuItem from "@material-ui/core/MenuItem";
 import validate from "validate.js";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { clearCartItems } from "@src/store/cart/cartActions";
@@ -396,10 +395,10 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
                     label={
                       <>
                         {t("feedback.form.policy_agree")}
-                        <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                          {t("feedback.form.terms_of_services")}
-                        </Link>
-                        {t("feedback.form.and")}
+                        {/* <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank"> */}
+                        {/*  {t("feedback.form.terms_of_services")} */}
+                        {/* </Link> */}
+                        {/* {t("feedback.form.and")} */}
                         <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
                           {t("feedback.form.privacy_policy")}
                         </Link>

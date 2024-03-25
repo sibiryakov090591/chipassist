@@ -40,6 +40,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       position: "absolute",
       right: 0,
       top: "115%",
+      zIndex: 100,
       "&:before": {
         content: "''",
         display: "block",
