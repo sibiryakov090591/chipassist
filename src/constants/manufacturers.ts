@@ -339,7 +339,8 @@ export const manufacturers = [
     id: 17854,
     description:
       "Sanken Electric Company is a Japanese manufacturer of electronic components, including power semiconductors, integrated circuits, and other electronic devices. The company has a strong reputation for producing high-quality and reliable components that are used in a wide range of applications, from consumer electronics to industrial equipment. With a history spanning several decades, Sanken Electric Company has established itself as a key player in the global electronics industry, known for its innovative technologies and commitment to sustainability.",
-    image: "https://www.sanken-ele.co.jp/corp/assets/images/common/logo_en.png",
+    // image: "https://www.sanken-ele.co.jp/corp/assets/images/common/logo_en.png",
+    image: "https://powersuppliesdistributors.com/wp-content/uploads/2015/07/Sanken-Electric-Co.-Ltd-distributor.jpg",
     url: "https://www.sanken-ele.co.jp/corp/english/",
     address: "Sanken Electric Co., Ltd. 7-1, Nakazawa-cho, Hamamatsu-shi, Shizuoka 430-8650, Japan",
     description_ru:

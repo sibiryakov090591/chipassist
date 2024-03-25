@@ -34,10 +34,6 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     borderRadius: "4px",
     justifyContent: "center",
-    marginLeft: "12.5%",
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: 0,
-    },
   },
   img: {
     width: "100%",
