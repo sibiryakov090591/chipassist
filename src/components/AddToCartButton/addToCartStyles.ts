@@ -9,6 +9,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       maxWidth: 155,
     },
     addToCart: {
+      minWidth: 180,
       fontSize: 12,
       fontWeight: "bold",
       marginTop: 8,
@@ -47,11 +48,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       height: 26,
       filter: "invert(42%) sepia(96%) saturate(453%) hue-rotate(151deg) brightness(96%) contrast(86%)",
     },
-    listIconCount: {
-      fontSize: 16,
-    },
     listIconPcs: {
-      paddingTop: 4,
       paddingLeft: 3,
       fontSize: 11,
     },
@@ -76,6 +73,16 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     qty: {
       "& input": {
         textAlign: "right",
+      },
+    },
+    requestButtonHelpText: {
+      maxWidth: 203,
+      textAlign: "center",
+      paddingTop: 5,
+      color: "#456",
+      fontSize: "0.95rem",
+      [theme.breakpoints.down("xs")]: {
+        maxWidth: "none",
       },
     },
   }),

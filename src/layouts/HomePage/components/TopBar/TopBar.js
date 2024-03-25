@@ -15,7 +15,7 @@ import TrySearchPn from "@src/components/TrySearchPn/TrySearchPn";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles as useHomePageStyles } from "@src/views/chipassist/ChipassistHomePage/styles";
 import { useTheme } from "@material-ui/core/styles";
-// import CartBlock from "@src/components/CartBlock/CartBlock";
+import CartBlock from "@src/components/CartBlock/CartBlock";
 import { ID_CHIPASSIST, ID_MASTER } from "@src/constants/server_constants";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { showHint } from "@src/store/rfqList/rfqListActions";
@@ -269,7 +269,7 @@ const TopBar = (props) => {
                 {/* {locales.length > 1 && <LangMenu />} */}
                 <ProfileMenu>{isAuthenticated ? <Authorized /> : <NotAuthorized />}</ProfileMenu>
                 {/* {isCartShow && cartBlock} */}
-                {/* <CartBlock /> */}
+                <CartBlock />
               </div>
             </div>
           </Toolbar>

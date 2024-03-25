@@ -6,6 +6,7 @@ import constants from "@src/constants/constants";
 import { ID_ELFARO } from "@src/constants/server_constants";
 import { progressModalError, progressModalSuccess } from "@src/store/progressModal/progressModalActions";
 import { savePartNumberExamples } from "@src/store/search/searchActions";
+import { getAuthToken } from "@src/utils/auth";
 import * as actionTypes from "./checkoutTypes";
 import { clearCart, clearCartItems, getCart } from "../cart/cartActions";
 import ApiClient, { ApiClientInterface } from "../../services/ApiClient";
@@ -171,7 +172,7 @@ export const quickOrderCheckoutThunk = (token = "") => {
   };
 };
 
-export const sendRequestThunk = (rfqList: any[], isQuickRequest = false) => {
+export const sendRequestThunk = (rfqList: any[], isQuickRequest = false, token: string = null) => {
   return (dispatch: any, getState: () => RootState) => {
     const cartItems = getState().cart.items;
 
@@ -183,7 +184,10 @@ export const sendRequestThunk = (rfqList: any[], isQuickRequest = false) => {
       types: [actionTypes.CHECKOUT_START, actionTypes.CHECKOUT_PAY, actionTypes.CHECKOUT_ERROR],
       promise: (client: ApiClientInterface) =>
         client
-          .post(`/rfqs/list/${params}`, { data: { rfq_list: rfqList } })
+          .post(`/rfqs/list/${params}`, {
+            data: { rfq_list: rfqList },
+            config: { headers: { Authorization: `Token ${token || getAuthToken()}` } },
+          })
           .then(async (res) => {
             rfqList.forEach((i) => {
               localStorage.setItem(i.part_number, JSON.stringify({ date: Date.now(), value: i.quantity }));

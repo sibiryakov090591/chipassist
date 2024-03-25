@@ -14,6 +14,7 @@ import useAppTheme from "@src/theme/useAppTheme";
 import { Product } from "@src/store/products/productTypes";
 import { addProductToCartBlock } from "@src/store/common/commonActions";
 import { useNavigate } from "react-router-dom";
+import useAppSelector from "@src/hooks/useAppSelector";
 import { useStyles } from "./addToCartStyles";
 
 interface Props {
@@ -21,15 +22,18 @@ interface Props {
   inCartCount: number;
   product: any;
   isSmDown: boolean;
+  requestedQty?: number;
 }
 
-const AddToCartButton: React.FC<Props> = ({ inCart, inCartCount, product, isSmDown }) => {
+const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, inCartCount, product, isSmDown }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const anchorRef = React.useRef(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useI18n("product");
+
+  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
 
   const [hoverAddToList, setHoverAddToList] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -90,14 +94,21 @@ const AddToCartButton: React.FC<Props> = ({ inCart, inCartCount, product, isSmDo
             ) : (
               <div className={classes.listIconWrapper}>
                 <img className={classes.listIcon} src={list_icon} alt="list icon" />
-                <span className={classes.listIconCount}>{inCartCount || 0}</span>
-                <span className={classes.listIconPcs}> pcs</span>
+                <span>
+                  Добавлено {inCartCount || 0}
+                  <span className={classes.listIconPcs}> pcs</span>
+                </span>
               </div>
             )
           ) : (
             t("cart.add_list")
           )}
         </Button>
+        {!!requestedQty && isAuthenticated && (
+          <div className={classes.requestButtonHelpText}>
+            <span dangerouslySetInnerHTML={{ __html: `${t("already_req", { requestedQty })}` }}></span>
+          </div>
+        )}
       </div>
       <Popper
         open={open}
@@ -134,7 +145,7 @@ const AddToCartButton: React.FC<Props> = ({ inCart, inCartCount, product, isSmDo
                     onClick={handleAdd}
                     disabled={!quantity}
                   >
-                    Add to list
+                    {t("common.add")}
                   </Button>
                 </div>
               </ClickAwayListener>

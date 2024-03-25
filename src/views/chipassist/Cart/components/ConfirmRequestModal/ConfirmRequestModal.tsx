@@ -41,10 +41,9 @@ interface FormStateValues {
   email?: string;
   first_name?: string;
   last_name?: string;
-  country?: string;
+  inn?: string;
   policy_confirm?: boolean;
-  company_type?: string;
-  company_other_type?: string;
+  company_name?: string;
   receive_updates_confirm?: boolean;
 }
 
@@ -52,10 +51,9 @@ interface FormStateErrors {
   email?: string[];
   first_name?: string[];
   last_name?: string[];
-  country?: string[];
+  inn?: string[];
   policy_confirm?: string[];
-  company_type?: string[];
-  company_other_type?: string[];
+  company_name?: string[];
   [key: string]: string[];
   receive_updates_confirm?: string[];
 }
@@ -64,10 +62,9 @@ interface FormStateTouched {
   email?: boolean;
   first_name?: boolean;
   last_name?: boolean;
-  country?: boolean;
+  inn?: boolean;
   policy_confirm?: boolean;
-  company_type?: boolean;
-  company_other_type?: boolean;
+  company_name?: boolean;
   receive_updates_confirm?: boolean;
 }
 
@@ -100,7 +97,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
   const [phoneValue, setPhoneValue] = useState("");
   const [item, setItem] = useState<FormState>({
     isValid: false,
-    values: { company_type: "Distributor" },
+    values: {},
     touched: {},
     errors: {},
   });
@@ -113,13 +110,10 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
       policy_confirm: formSchema.policyConfirm,
-      ...(item.values.company_type === "Other" && {
-        company_other_type: {
-          presence: { allowEmpty: false, message: `^${t("rfq.column.company_other_type")} ${t("column.required")}` },
-        },
-      }),
+      company_name: formSchema.companyName,
+      inn: formSchema.inn,
     };
-  }, [isAuthenticated, item.values.company_type]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (profileInfo) {
@@ -208,30 +202,13 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
       }
     }
 
-    const country =
-      countries?.find((c) => c.url === item.values.country) ||
-      (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-      defaultCountry;
     const phone = !isAuthenticated && phoneValue ? `+${phoneValue}` : billingAddress?.phone_number_str;
-    let company_type: string;
-    try {
-      company_type = !isAuthenticated
-        ? item.values.company_type === "Other"
-          ? item.values.company_other_type
-          : item.values.company_type
-        : billingAddress?.notes.match(/company_variant: (.+)/) &&
-          billingAddress.notes.match(/company_variant: (.+)/)[0].split("company_variant: ")[1];
-    } catch {
-      company_type = null;
-    }
     // const company_name = !isAuthenticated
     //   ? item.values.email.match(/@(.*)\./g) && item.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
     //   : billingAddress?.company_name;
-    const company_name = billingAddress?.company_name;
-    let comment = `Delivery to: ${country?.printable_name};`;
+    const { company_name } = item.values;
+    let comment = `Company name: ${company_name};`;
     if (phone) comment += ` Phone: ${phone};`;
-    if (company_name) comment += ` Company name: ${company_name[0].toUpperCase()}${company_name.slice(1)};`;
-    if (company_type) comment += ` Company type: ${company_type};`;
 
     const rfqList = cartItems.map((i) => {
       return {
@@ -261,10 +238,6 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
         ...defaultRegisterData,
         ...item.values,
         ...(phoneValue && { phone_number_str: `+${phoneValue}` }),
-        company_name: company_name ? `${company_name[0].toUpperCase()}${company_name.slice(1)}` : "",
-        company_variant:
-          item.values.company_type === "Other" ? item.values.company_other_type : item.values.company_type,
-        country: country?.iso_3166_1_a3,
       };
       setIsLoading(true);
       dispatch(authSignup(registerData, { subj: "order" }))
@@ -306,7 +279,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
           <h2>{t("confirm_modal.title")}</h2>
           <p style={{ fontSize: 16 }}>{t("confirm_modal.sub_title")}</p>
           {!isAuthenticated && (
-            <form style={{ maxWidth: 430, margin: "24px 0 8px" }} autoComplete="on" onSubmit={onSubmit}>
+            <form style={{ maxWidth: 530, margin: "24px 0 8px" }} autoComplete="on" onSubmit={onSubmit}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -369,108 +342,75 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    style={{ textAlign: "start", width: "100%" }}
-                    name="company_type"
-                    label={`${t("rfq.column.company_type")} *`}
+                    fullWidth
+                    name="company_name"
+                    label={`${t("form_labels.company_name")} *`}
                     variant="outlined"
                     size="small"
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    value={item.values.company_type}
-                    select
+                    value={item.values.company_name}
+                    onBlur={onBlurHandler("company_name")}
                     onChange={handleChange}
-                  >
-                    <MenuItem value="Distributor">{t("rfq.column.distributor")}</MenuItem>
-                    <MenuItem value="Industrial manufacturer">{t("rfq.column.manufacturer")}</MenuItem>
-                    <MenuItem value="Design organization">{t("rfq.column.design")}</MenuItem>
-                    <MenuItem value="Supply chain services provider">{t("rfq.column.provider")}</MenuItem>
-                    <MenuItem value="Other">{t("rfq.column.other")}</MenuItem>
-                  </TextField>
+                    {...errorProps("company_name")}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    style={{ textAlign: "start" }}
                     fullWidth
                     variant="outlined"
-                    name="country"
+                    name="inn"
                     size="small"
-                    label={t("form_labels.delivery_to")}
-                    value={item.values.country || ""}
+                    label={`ИНН компании *`}
+                    value={item.values.inn}
+                    onBlur={onBlurHandler("inn")}
                     onChange={handleChange}
-                    onBlur={onBlurHandler("country")}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    select
-                  >
-                    {countries.map((i: Record<string, any>) => (
-                      <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>
-                        {i.printable_name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                    {...errorProps("inn")}
+                  ></TextField>
                 </Grid>
-                {item.values.company_type === "Other" && (
-                  <Grid item xs={12}>
-                    <TextField
-                      style={{ width: "100%" }}
-                      name="company_other_type"
-                      label={`${t("rfq.column.company_other_type")} *`}
-                      variant="outlined"
-                      size="small"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      value={item.values.company_other_type}
-                      onChange={handleChange}
-                      onBlur={onBlurHandler("company_other_type")}
-                      {...errorProps("company_other_type")}
-                    />
-                  </Grid>
-                )}
-
-                {constants.id !== ID_ICSEARCH && (
-                  <Box display="flex" flexDirection="column" ml={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="receive_updates_confirm"
-                          className={appTheme.checkbox}
-                          checked={item.values.receive_updates_confirm || false}
-                          onChange={handleChange}
-                        />
-                      }
-                      label={<>{t("feedback.form.receive_updates_confirm")}</>}
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="policy_confirm"
-                          className={appTheme.checkbox}
-                          checked={item.values.policy_confirm || false}
-                          onChange={handleChange}
-                        />
-                      }
-                      label={
-                        <>
-                          {t("feedback.form.policy_agree")}
-                          <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
-                            {t("feedback.form.terms_of_services")}
-                          </Link>
-                          {t("feedback.form.and")}
-                          <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
-                            {t("feedback.form.privacy_policy")}
-                          </Link>
-                          <span>&nbsp;*</span>
-                        </>
-                      }
-                    />
-                    {item.touched.policy_confirm && !!item.errors.policy_confirm && item.errors.policy_confirm[0] && (
-                      <FormHelperText error>{item.errors.policy_confirm[0]}</FormHelperText>
-                    )}
-                  </Box>
-                )}
+                <Box display="flex" flexDirection="column" ml={2}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="receive_updates_confirm"
+                        className={appTheme.checkbox}
+                        checked={item.values.receive_updates_confirm || false}
+                        onChange={handleChange}
+                      />
+                    }
+                    label={<>{t("feedback.form.receive_updates_confirm")}</>}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="policy_confirm"
+                        className={appTheme.checkbox}
+                        checked={item.values.policy_confirm || false}
+                        onChange={handleChange}
+                      />
+                    }
+                    label={
+                      <>
+                        {t("feedback.form.policy_agree")}
+                        <Link className={appTheme.hyperlink} href={"/terms_of_services"} target="_blank">
+                          {t("feedback.form.terms_of_services")}
+                        </Link>
+                        {t("feedback.form.and")}
+                        <Link className={appTheme.hyperlink} href={"/privacy_policy"} target="_blank">
+                          {t("feedback.form.privacy_policy")}
+                        </Link>
+                        <span>&nbsp;*</span>
+                      </>
+                    }
+                  />
+                  {item.touched.policy_confirm && !!item.errors.policy_confirm && item.errors.policy_confirm[0] && (
+                    <FormHelperText error>{item.errors.policy_confirm[0]}</FormHelperText>
+                  )}
+                </Box>
               </Grid>
             </form>
           )}
