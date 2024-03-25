@@ -9,6 +9,9 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
     },
+    [theme.breakpoints.down("xs")]: {
+      padding: "1.5em",
+    },
   },
   name: {
     fontSize: "3rem",
@@ -16,6 +19,10 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       width: "100%",
       textAlign: "center",
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "2em",
+      paddingTop: 0,
     },
   },
   imgContainer: {
@@ -28,6 +35,15 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
     justifyContent: "center",
     marginLeft: "12.5%",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 0,
+    },
+  },
+  img: {
+    width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      width: "80%",
+    },
   },
   description: {
     width: "40%",
@@ -51,6 +67,9 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     [theme.breakpoints.down("sm")]: {
       marginTop: "2em",
+    },
+    [theme.breakpoints.down("xs")]: {
+      alignItems: "center",
     },
   },
 }));

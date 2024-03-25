@@ -286,8 +286,12 @@ const DistributorsDesktop: React.FC<Props> = ({
             </th>
           )}
           <th className={classes.thDeliveryTime}>Срок поставки</th>
-          <th className={classes.thCurrency}></th>
-          <th className={classes.thPricesHint}></th>
+          {!isSmDown && (
+            <>
+              <th className={classes.thCurrency}></th>
+              <th className={classes.thPricesHint}></th>
+            </>
+          )}
           {!!baseFilters?.base_num_in_stock &&
             !!baseFilters?.base_in_stock &&
             ![1, 10, 100, 1000, 10000].includes(baseFilters.base_num_in_stock) && (
@@ -587,49 +591,53 @@ const DistributorsDesktop: React.FC<Props> = ({
                   </td>
                 )}
                 <td className={classes.trPkg}>5-6 нед.</td>
-                <td className={classes.trCurrency}>{currency?.code}</td>
-                <td className={classes.trPricesHint}>
-                  {isShowPricesHint && (
-                    <Tooltip
-                      enterTouchDelay={1}
-                      classes={{ tooltip: commonClasses.tooltip }}
-                      title={
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                          <table className={classes.priceTooltipTable}>
-                            <tbody>
-                              <tr>
-                                <td style={{ fontWeight: 600 }}>{t("product.qty")}:</td>
-                                {sortedPrices.map((v) => (
-                                  <td key={v.id}>{formatMoney(v.amount, 0, ".", "`")}</td>
-                                ))}
-                              </tr>
-                              <tr>
-                                <td style={{ fontWeight: 600 }}>
-                                  {t("product.price")} {currency?.symbol}:
-                                </td>
-                                {sortedPrices.map((v) => (
-                                  <td key={`price_${v.id}`}>
-                                    {formatMoney(currencyPrice(v.price, val.price_currency))}
-                                  </td>
-                                ))}
-                              </tr>
-                              {isSmDown && (
-                                <tr>
-                                  <td style={{ fontWeight: 600 }}>Pkg:</td>
-                                  <td>{val.packaging || "-"}</td>
-                                </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      }
-                    >
-                      <div style={{ display: "flex", justifyContent: "center", cursor: "help" }}>
-                        <InfoIcon className={classes.priceIcon} />
-                      </div>
-                    </Tooltip>
-                  )}
-                </td>
+                {!isSmDown && (
+                  <>
+                    <td className={classes.trCurrency}>{currency?.code}</td>
+                    <td className={classes.trPricesHint}>
+                      {isShowPricesHint && (
+                        <Tooltip
+                          enterTouchDelay={1}
+                          classes={{ tooltip: commonClasses.tooltip }}
+                          title={
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                              <table className={classes.priceTooltipTable}>
+                                <tbody>
+                                  <tr>
+                                    <td style={{ fontWeight: 600 }}>{t("product.qty")}:</td>
+                                    {sortedPrices.map((v) => (
+                                      <td key={v.id}>{formatMoney(v.amount, 0, ".", "`")}</td>
+                                    ))}
+                                  </tr>
+                                  <tr>
+                                    <td style={{ fontWeight: 600 }}>
+                                      {t("product.price")} {currency?.symbol}:
+                                    </td>
+                                    {sortedPrices.map((v) => (
+                                      <td key={`price_${v.id}`}>
+                                        {formatMoney(currencyPrice(v.price, val.price_currency))}
+                                      </td>
+                                    ))}
+                                  </tr>
+                                  {isSmDown && (
+                                    <tr>
+                                      <td style={{ fontWeight: 600 }}>Pkg:</td>
+                                      <td>{val.packaging || "-"}</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          }
+                        >
+                          <div style={{ display: "flex", justifyContent: "center", cursor: "help" }}>
+                            <InfoIcon className={classes.priceIcon} />
+                          </div>
+                        </Tooltip>
+                      )}
+                    </td>
+                  </>
+                )}
                 {!!baseFilters?.base_num_in_stock &&
                   !!baseFilters?.base_in_stock &&
                   ![1, 10, 100, 1000, 10000].includes(baseFilters.base_num_in_stock) && (

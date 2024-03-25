@@ -30,7 +30,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
 
     cardICS: {
-      width: theme.breakpoints.values.md,
+      // width: theme.breakpoints.values.md,
       maxWidth: "100%",
       overflow: "unset",
       display: "flex",
