@@ -286,7 +286,7 @@ const TopBar = (props) => {
                 style={{ display: "flex", alignSelf: "center", justifyContent: "flex-end" }}
               >
                 <ProfileMenu>{!isAuthenticated && <NotAuthorized />}</ProfileMenu>
-                {/* {cartBlock} */}
+                <CartBlock />
               </div>
             </div>
             <Collapse in={isHomePage ? collapse : true}>

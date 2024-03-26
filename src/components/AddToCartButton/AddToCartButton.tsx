@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import clsx from "clsx";
-import list_icon from "@src/images/Icons/list-1.svg";
+// import list_icon from "@src/images/Icons/list-1.svg";
 import { Button } from "@material-ui/core";
 import { addCartItem } from "@src/store/cart/cartActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -25,7 +25,7 @@ interface Props {
   requestedQty?: number;
 }
 
-const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, inCartCount, product, isSmDown }) => {
+const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, product, isSmDown }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const anchorRef = React.useRef(null);
@@ -51,12 +51,20 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, inCartCount, p
     setQuantity(qty);
   };
 
-  const handleToggle = () => {
+  const handleToggle = (e: any) => {
+    e.stopPropagation();
     if (inCart) {
       return navigate("/cart");
     }
     return setOpen((prevOpen) => !prevOpen);
   };
+
+  // TODO: Make a remove product and go to cart buttons into popup window instead just current navigate
+  // const removeProduct = () => {
+  //   dispatch(removeCartItem(cart?.info?.id, addedProduct?.lineId));
+  //   setOpen(false);
+  //   dispatch(deleteProductCartBlock());
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -80,6 +88,7 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, inCartCount, p
           variant="contained"
           ref={anchorRef}
           aria-haspopup="true"
+          size="small"
           onClick={handleToggle}
           onMouseOver={() => setHoverAddToList(true)}
           onMouseOut={() => setHoverAddToList(false)}
@@ -88,21 +97,7 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, inCartCount, p
             [classes.inCartMobile]: inCart && isSmDown,
           })}
         >
-          {inCart ? (
-            hoverAddToList || isSmDown ? (
-              t("cart.in_list")
-            ) : (
-              <div className={classes.listIconWrapper}>
-                <img className={classes.listIcon} src={list_icon} alt="list icon" />
-                <span>
-                  Добавлено {inCartCount || 0}
-                  <span className={classes.listIconPcs}> pcs</span>
-                </span>
-              </div>
-            )
-          ) : (
-            t("cart.add_list")
-          )}
+          {inCart ? hoverAddToList || isSmDown ? t("cart.in_list") : <span>В корзине</span> : t("cart.add_list")}
         </Button>
         {!!requestedQty && isAuthenticated && (
           <div className={classes.requestButtonHelpText}>

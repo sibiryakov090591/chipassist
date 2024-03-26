@@ -18,10 +18,12 @@ import time_icon from "@src/images/search_page/time.svg";
 import usd_icon from "@src/images/search_page/usd.svg";
 import warehouse_icon from "@src/images/search_page/warehouse.svg";
 import { formatMoney } from "@src/utils/formatters";
-import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
+// import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import { useInView } from "react-intersection-observer";
 import { SetProductIntoViewport } from "@src/store/products/productsActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
+import RequestButton from "@src/components/ProductCard/components/RequestButton/RequestButton";
+import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
@@ -324,8 +326,8 @@ const ProductCard = (props) => {
           <Box display="flex">
             {/* <div>{addToBomButton}</div> */}
             <div className={classes.actionRow}>
-              {/* <RequestButton product={product} classes={classes} requestedQty={requestedQty} /> */}
-              <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} />
+              <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
+              {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
             </div>
           </Box>
         </Hidden>
@@ -339,6 +341,9 @@ const ProductCard = (props) => {
               rfqOpenModal={sendRfqOpenModal}
               sellerMessageOpenModal={sellerMessageOpenModal}
               qualityCheckOpenModal={qualityCheckOpenModal}
+              addToCartComponent={
+                <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} />
+              }
             />
           )}
           {initialMobileCard && (
@@ -346,6 +351,9 @@ const ProductCard = (props) => {
               product={product}
               sortedStockrecords={availableStockrecords}
               sellerMessageOpenModal={sellerMessageOpenModal}
+              addToCartComponent={
+                <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} />
+              }
             />
           )}
         </div>
@@ -353,14 +361,14 @@ const ProductCard = (props) => {
 
       <Hidden smUp>
         <div className={classes.mobileActions}>
-          {/* <RequestButton product={product} classes={classes} requestedQty={requestedQty} /> */}
-          <AddToCartButton
-            inCart={inCart}
-            inCartCount={inCartCount}
-            product={product}
-            isSmDown={isSmDown}
-            requestedQty={requestedQty}
-          />
+          <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
+          {/* <AddToCartButton */}
+          {/*  inCart={inCart} */}
+          {/*  inCartCount={inCartCount} */}
+          {/*  product={product} */}
+          {/*  isSmDown={isSmDown} */}
+          {/*  requestedQty={requestedQty} */}
+          {/* /> */}
         </div>
       </Hidden>
 

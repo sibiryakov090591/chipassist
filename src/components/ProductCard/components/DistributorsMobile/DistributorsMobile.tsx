@@ -1,7 +1,11 @@
 import React from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Tooltip, Button, Box, Collapse, CircularProgress } from "@material-ui/core";
-import useAppTheme from "@src/theme/useAppTheme";
+import {
+  Tooltip,
+  Box,
+  Collapse,
+  // CircularProgress
+} from "@material-ui/core";
 import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
@@ -9,53 +13,53 @@ import { Stockrecord } from "@src/store/products/productTypes";
 import { getDynamicMoq, getPrice, getStockDataCode } from "@src/utils/product";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
-import useAppDispatch from "@src/hooks/useAppDispatch";
-import { Seller } from "@src/store/sellers/sellersTypes";
-import useAppSelector from "@src/hooks/useAppSelector";
-import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
+// import { Seller } from "@src/store/sellers/sellersTypes";
+// import useAppSelector from "@src/hooks/useAppSelector";
+// import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { correctUrl } from "@src/utils/transformUrl";
+// import { correctUrl } from "@src/utils/transformUrl";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
   sortedStockrecords: Stockrecord[];
   sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
+  addToCartComponent: any;
 }
 
-const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessageOpenModal }) => {
+const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, addToCartComponent }) => {
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
 
   const { t } = useI18n("product");
   const { currency, currencyPrice } = useCurrency();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const appTheme = useAppTheme();
-  const dispatch = useAppDispatch();
+  // const appTheme = useAppTheme();
+  // const dispatch = useAppDispatch();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down(670));
   const isXXSDown = useMediaQuery(theme.breakpoints.down(500));
 
-  const isLoading = useAppSelector((state) => state.sellers.isLoading);
+  // const isLoading = useAppSelector((state) => state.sellers.isLoading);
 
-  const sellersWithProductLink = useAppSelector((state) =>
-    state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
-  );
+  // const sellersWithProductLink = useAppSelector((state) =>
+  //   state.sellers.items.filter((i) => Object.prototype.hasOwnProperty.call(i, "link_to_site")),
+  // );
 
   const handleChange = (id: number) => () => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const visitSellerHandler = (seller: Seller, url: string) => (e: React.ChangeEvent<any>) => {
-    e.stopPropagation();
-    dispatch(
-      sendFeedbackMessageThunk("seller_site", {
-        seller,
-        url,
-        date: new Date().toISOString(),
-      }),
-    );
-  };
+  // const visitSellerHandler = (seller: Seller, url: string) => (e: React.ChangeEvent<any>) => {
+  //   e.stopPropagation();
+  //   dispatch(
+  //     sendFeedbackMessageThunk("seller_site", {
+  //       seller,
+  //       url,
+  //       date: new Date().toISOString(),
+  //     }),
+  //   );
+  // };
 
   return (
     <React.Fragment>
@@ -74,44 +78,47 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, sellerMessage
           {sortedStockrecords &&
             sortedStockrecords.map((val, index) => {
               const dynamicMoq = getDynamicMoq(val);
-              const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
-              const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
-              const url = isShowProductLink && correctUrl(val.product_url || seller?.url);
+              // const seller = sellersWithProductLink?.find((i) => i.id === val.partner);
+              // const isShowProductLink = seller && (!!val.product_url || !!seller?.url);
+              // const url = isShowProductLink && correctUrl(val.product_url || seller?.url);
               const dateCode = getStockDataCode(val);
               const sortedPrices = [...val?.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price);
               const isExpanded = !!expanded[val.id];
 
               const contactButton = () => (
-                <>
-                  {isLoading ? (
-                    <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
-                      {<CircularProgress size={15} />}
-                    </td>
-                  ) : (
-                    <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
-                      {isShowProductLink ? (
-                        <a
-                          href={url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                          onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
-                        >
-                          {isXXSDown ? t("sistributor.site") : t("distributor.visit")}
-                        </a>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                          onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                          size="small"
-                        >
-                          {isXXSDown ? t("distributor.con") : t("distributor.contact")}
-                        </Button>
-                      )}
-                    </td>
-                  )}
-                </>
+                // <>
+                //   {isLoading ? (
+                //     <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
+                //       {<CircularProgress size={15} />}
+                //     </td>
+                //   ) : (
+                //     <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
+                //        {isShowProductLink ? (
+                //         <a
+                //           href={url}
+                //           target="_blank"
+                //           rel="noreferrer"
+                //           className={clsx(appTheme.hyperlink, classes.partnerLink)}
+                //           onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
+                //         >
+                //           {isXXSDown ? t("sistributor.site") : t("distributor.visit")}
+                //         </a>
+                //        ) : (
+                //         <Button
+                //           variant="contained"
+                //           className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
+                //           onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
+                //           size="small"
+                //         >
+                //           {isXXSDown ? t("distributor.con") : t("distributor.contact")}
+                //         </Button>
+                //        )}
+                //     </td>
+                // )}
+                // </>
+                <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
+                  {addToCartComponent}
+                </td>
               );
 
               return (
