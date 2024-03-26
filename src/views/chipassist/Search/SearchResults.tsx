@@ -84,6 +84,7 @@ const SearchResults = () => {
   let smart_view = useAppSelector((state) => state.search.smart_view);
   smart_view = useURLSearchParams("smart_view", false, smart_view, false) === "true";
   const manufacturer = useAppSelector((state) => state.search.manufacturer);
+  const manufacturersLoaded = useAppSelector((state) => state.manufacturers.loaded);
   const manufacturerId = parseInt(useURLSearchParams("m_id", false, null, false));
   let filtersValues = useURLSearchParams("filters_values", true, {}, true);
   filtersValues.base_num_in_stock = 1;
@@ -216,6 +217,12 @@ const SearchResults = () => {
       }
     }, 10000);
   }, []);
+
+  useEffect(() => {
+    if (manufacturerId && !manufacturer && manufacturersLoaded) {
+      dispatch(changeManufacturer(manufacturerId));
+    }
+  }, [manufacturerId, manufacturersLoaded]);
 
   // useEffect(() => {
   //   if (query && baseFilters?.base_in_stock) {
@@ -452,7 +459,7 @@ const SearchResults = () => {
                   </div>
                 )}
                 <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
-                {!!manufacturerId && (
+                {!!manufacturerId && manufacturer && (
                   <p style={{ marginBottom: 20 }}>
                     Вы искали продукты производителя <strong>{manufacturer.name}</strong>. Чтобы увидеть больше
                     результатов - попробуйте{" "}

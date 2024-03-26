@@ -215,7 +215,7 @@ const CartItemsVer2 = () => {
                   </DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="price">
-                  <DataValue>Цены</DataValue>
+                  <DataValue>Диапазон цен</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="qty">
                   <DataValue>{t("column.qty")}</DataValue>

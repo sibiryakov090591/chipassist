@@ -369,10 +369,19 @@ export const changeQueryAction = (query: string) => {
   };
 };
 
-export const changeManufacturer = (value: { id: number; name: string }) => {
-  return {
-    type: actionTypes.CHANGE_MANUFACTURER,
-    payload: value,
+export const changeManufacturer = (value: { id: number; name: string } | number) => {
+  return (dispatch: Dispatch<any>, getState: () => RootState) => {
+    let manufacturerItem = value || null;
+    if (typeof value !== "object") {
+      const manufacturer = getState().manufacturers.items?.find((i) => i.id === value);
+      if (manufacturer) {
+        manufacturerItem = { id: manufacturer.id, name: manufacturer.name };
+      }
+    }
+    return dispatch({
+      type: actionTypes.CHANGE_MANUFACTURER,
+      payload: manufacturerItem,
+    });
   };
 };
 
