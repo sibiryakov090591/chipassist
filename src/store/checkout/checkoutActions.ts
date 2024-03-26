@@ -192,15 +192,15 @@ export const sendRequestThunk = (rfqList: any[], isQuickRequest = false, token: 
             rfqList.forEach((i) => {
               localStorage.setItem(i.part_number, JSON.stringify({ date: Date.now(), value: i.quantity }));
             });
+            dispatch(clearCartItems());
             const promises: any = [];
             if (!isQuickRequest) {
               cartItems.forEach((item) => {
                 promises.push(apiClient.delete(`/baskets/${getState().cart.info.id}/lines/${item.id}/`));
               });
-              dispatch(clearCartItems());
               await Promise.all(promises);
             }
-            dispatch(showSuccess());
+            // dispatch(showSuccess());
             return res.data;
           })
           .catch((e) => {

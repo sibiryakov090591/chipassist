@@ -27,7 +27,7 @@ import {
 } from "@src/store/progressModal/progressModalActions";
 import validate from "validate.js";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
-import { clearCartItems } from "@src/store/cart/cartActions";
+// import { clearCartItems } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
@@ -243,8 +243,8 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
         .then(() => {
           localStorage.setItem("registered_email", item.values.email);
           localStorage.removeItem("unauth_cart");
-          dispatch(clearCartItems());
-          dispatch(progressModalSetPartNumber("-", "order"));
+          // dispatch(clearCartItems());
+          dispatch(progressModalSetPartNumber("order", "order"));
           dispatch(progressModalOpen());
           onClose();
         })

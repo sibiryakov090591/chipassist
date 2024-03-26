@@ -339,8 +339,9 @@ export const sendQuickRequestUnAuth = (item: any, token: string, email: string) 
       }
       case "order": {
         dispatch(progressModalOpen());
-        dispatch(sendRequestThunk(item?.data?.rfqList, true, token)).then(() => {
+        dispatch(sendRequestThunk(item.rfqList, true, token)).then(() => {
           dispatch(deleteMiscAction("not_activated_request", email));
+
           localStorage.removeItem("progress_modal_data");
         });
         break;
