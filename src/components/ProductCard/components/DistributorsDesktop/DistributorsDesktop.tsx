@@ -365,7 +365,8 @@ const DistributorsDesktop: React.FC<Props> = ({
       <tbody>
         {(smart_view && stockrecords && bestOfferId
           ? stockrecords.reduce(
-              (acc: SortedStockrecord[][], elem) => (elem[0].id !== bestOfferId ? [...acc, elem] : [elem, ...acc]),
+              (acc: SortedStockrecord[][], group) =>
+                group.some((i) => i.id === bestOfferId) ? [group, ...acc] : [...acc, group],
               [],
             )
           : stockrecords
