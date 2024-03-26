@@ -19,11 +19,11 @@ import usd_icon from "@src/images/search_page/usd.svg";
 import warehouse_icon from "@src/images/search_page/warehouse.svg";
 import { formatMoney } from "@src/utils/formatters";
 // import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
-import RequestButton from "@src/components/ProductCard/components/RequestButton/RequestButton";
 import { useInView } from "react-intersection-observer";
 import { SetProductIntoViewport } from "@src/store/products/productsActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-
+import RequestButton from "@src/components/ProductCard/components/RequestButton/RequestButton";
+import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
@@ -42,7 +42,7 @@ const ProductCard = (props) => {
 
   const smart_view = useAppSelector((state) => state.search.smart_view);
   const partners = useAppSelector((state) => state.sellers.items);
-  // const cartItems = useAppSelector((state) => state.cart.items);
+  const cartItems = useAppSelector((state) => state.cart.items);
   const shouldUpdateCard = useAppSelector((state) => state.common.shouldUpdateCard);
   const currency = useAppSelector((state) => state.currency);
   const { isShow } = useAppSelector((state) => state.products.requestHint);
@@ -65,15 +65,15 @@ const ProductCard = (props) => {
   const [searchQueryArray, setSearchQueryArray] = useState([]);
   const [mainImage, setMainImg] = useState(null);
   const [rfq, setRfq] = useState(null);
-  // const [inCart, setInCart] = useState(false);
-  // const [inCartCount, setInCartCount] = useState(false);
+  const [inCart, setInCart] = useState(false);
+  const [inCartCount, setInCartCount] = useState(false);
   const [requestedQty, setRequestedQty] = useState(null);
 
-  // useEffect(() => {
-  //   const cartItem = cartItems?.find((item) => item.product.id === product.id);
-  //   setInCart(!!cartItem);
-  //   setInCartCount(cartItem?.quantity || 0);
-  // }, [cartItems]);
+  useEffect(() => {
+    const cartItem = cartItems?.find((item) => item.product.id === product.id);
+    setInCart(!!cartItem);
+    setInCartCount(cartItem?.quantity || 0);
+  }, [cartItems]);
 
   useEffect(() => {
     if (!rfq && rfqStockrecords.length) {
@@ -221,42 +221,6 @@ const ProductCard = (props) => {
     }
   }, [shouldUpdateCard]);
 
-  // const handleAddToCart = () => {
-  //   if (inCart) {
-  //     return navigate("/cart");
-  //   }
-  //
-  //   return false;
-  //   // return dispatch(showAddToListModalAction(product));
-  // };
-
-  // const addToCartButton = (
-  //   <Button
-  //     variant="contained"
-  //     onClick={handleAddToCart}
-  //     onMouseOver={() => setHoverAddToList(true)}
-  //     onMouseOut={() => setHoverAddToList(false)}
-  //     className={clsx(classes.addToCart, "add-to-cart-button", {
-  //       [classes.inCart]: inCart,
-  //       [classes.inCartMobile]: inCart && isSmDown,
-  //     })}
-  //   >
-  //     {inCart ? (
-  //       hoverAddToList || isSmDown ? (
-  //         t("cart.in_list")
-  //       ) : (
-  //         <div className={classes.listIconWrapper}>
-  //           <img className={classes.listIcon} src={list_icon} alt="list icon" />
-  //           <span className={classes.listIconCount}>{inCartCount || 0}</span>
-  //           <span className={classes.listIconPcs}> pcs</span>
-  //         </div>
-  //       )
-  //     ) : (
-  //       t("cart.add_list")
-  //     )}
-  //   </Button>
-  // );
-
   // const collapseRfqStocksHandler = () => {
   //   if (rfqStockrecords.length) setShowRfqStocks((prev) => !prev);
   // };
@@ -377,6 +341,9 @@ const ProductCard = (props) => {
               rfqOpenModal={sendRfqOpenModal}
               sellerMessageOpenModal={sellerMessageOpenModal}
               qualityCheckOpenModal={qualityCheckOpenModal}
+              addToCartComponent={
+                <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} />
+              }
             />
           )}
           {initialMobileCard && (
@@ -384,6 +351,9 @@ const ProductCard = (props) => {
               product={product}
               sortedStockrecords={availableStockrecords}
               sellerMessageOpenModal={sellerMessageOpenModal}
+              addToCartComponent={
+                <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} />
+              }
             />
           )}
         </div>
@@ -392,7 +362,13 @@ const ProductCard = (props) => {
       <Hidden smUp>
         <div className={classes.mobileActions}>
           <RequestButton product={product} classes={classes} requestedQty={requestedQty} />
-          {/* <AddToCartButton inCart={inCart} inCartCount={inCartCount} product={product} isSmDown={isSmDown} /> */}
+          {/* <AddToCartButton */}
+          {/*  inCart={inCart} */}
+          {/*  inCartCount={inCartCount} */}
+          {/*  product={product} */}
+          {/*  isSmDown={isSmDown} */}
+          {/*  requestedQty={requestedQty} */}
+          {/* /> */}
         </div>
       </Hidden>
 

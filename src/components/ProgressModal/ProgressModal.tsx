@@ -98,7 +98,10 @@ const ProgressModal: React.FC = () => {
           setToken(codeRes.token);
           dispatch(loadMiscAction("not_activated_request", email)).then((res: any) => {
             const data = res?.data?.data || res?.data;
-            if (data && ["rfq", "pcb", "sellerMessage", "rfq_list", "qualityCheck"].includes(data.requestType)) {
+            if (
+              data &&
+              ["rfq", "pcb", "sellerMessage", "rfq_list", "qualityCheck", "order"].includes(data.requestType)
+            ) {
               setSending(true);
               dispatch(sendQuickRequestUnAuth(res.data, codeRes.token, email)).then(() => {
                 if (!codeRes?.code) dispatch(login({ email }, codeRes.token, navigate, null));

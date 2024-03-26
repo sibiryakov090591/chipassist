@@ -11,6 +11,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "&:hover": {
         cursor: "pointer",
       },
+      [theme.breakpoints.down("sm")]: {
+        paddingLeft: "16px",
+      },
     },
     cartImageCont: {
       display: "flex",
@@ -40,6 +43,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       position: "absolute",
       right: 0,
       top: "115%",
+      zIndex: 100,
       "&:before": {
         content: "''",
         display: "block",

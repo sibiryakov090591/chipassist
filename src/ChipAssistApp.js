@@ -105,7 +105,7 @@ const PaymentAndDelivery = lazy(() =>
     ),
   ),
 );
-// const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
+const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
 const Bom = lazy(() => lazyLoader(() => import(/* webpackChunkName: "bom" */ "@src/views/chipassist/Bom/Bom")));
 const Brands = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "brands" */ "@src/views/chipassist/Brands/Brands")),
@@ -445,14 +445,14 @@ const ChipAssistApp = () => {
               }
             />
             <Route path="/search" element={<SearchResults />} />
-            {/* <Route */}
-            {/*  path="/cart" */}
-            {/*  element={ */}
-            {/*    <Suspense fallback={}> */}
-            {/*      <Cart /> */}
-            {/*    </Suspense> */}
-            {/*  } */}
-            {/* /> */}
+            <Route
+              path="/cart"
+              element={
+                <Suspense fallback={}>
+                  <Cart />
+                </Suspense>
+              }
+            />
             <Route
               path="/bom/*"
               element={

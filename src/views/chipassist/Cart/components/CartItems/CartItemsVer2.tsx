@@ -191,22 +191,22 @@ const CartItemsVer2 = () => {
                   <DataValue>{t("column.product")}</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="manufacturer">
-                  <DataValue>Manufacturer(s)</DataValue>
+                  <DataValue>Производители</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="stock">
-                  <DataValue>In stock</DataValue>
+                  <DataValue>На складе</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="sellers">
                   <DataValue>
                     <Box display="flex" alignItems="center">
-                      Sellers
+                      Продавцы
                       <Tooltip
                         enterTouchDelay={1}
                         classes={{ tooltip: commonClasses.tooltip }}
                         title={
                           <div>{`${
-                            constants.title || "ChipAssist"
-                          } will automatically request quotations for this product from all connected suppliers`}</div>
+                            constants.title || "ICSearch"
+                          } автоматически запросит цены на этот продукт у всех подключенных поставщиков`}</div>
                         }
                       >
                         <HelpIcon style={{ marginLeft: 5, fontSize: 16 }} />
@@ -215,7 +215,7 @@ const CartItemsVer2 = () => {
                   </DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="price">
-                  <DataValue>Market pricing</DataValue>
+                  <DataValue>Диапазон цен</DataValue>
                 </DataField>
                 <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="qty">
                   <DataValue>{t("column.qty")}</DataValue>

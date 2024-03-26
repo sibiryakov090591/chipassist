@@ -18,14 +18,14 @@ import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import useAppTheme from "@src/theme/useAppTheme";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 // import { Rating } from "@material-ui/lab";
-import { Seller } from "@src/store/sellers/sellersTypes";
-import useAppDispatch from "@src/hooks/useAppDispatch";
-import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
+// import { Seller } from "@src/store/sellers/sellersTypes";
+// import useAppDispatch from "@src/hooks/useAppDispatch";
+// import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
 import Star from "@src/images/search_page/star.png";
 import toInteger from "lodash/toInteger";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
-import { correctUrl } from "@src/utils/transformUrl";
+// import { correctUrl } from "@src/utils/transformUrl";
 import constants from "@src/constants/constants";
 // import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { ru, enUS } from "date-fns/locale";
@@ -38,6 +38,7 @@ interface Props {
   rfqOpenModal: () => void;
   sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
   qualityCheckOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
+  addToCartComponent: any;
 }
 
 interface SortedStockrecord extends Stockrecord {
@@ -71,8 +72,9 @@ const DistributorsDesktop: React.FC<Props> = ({
   product,
   sortedStockrecords,
   rfqOpenModal,
-  sellerMessageOpenModal,
+  // sellerMessageOpenModal,
   qualityCheckOpenModal,
+  addToCartComponent,
 }) => {
   const { t } = useI18n("product");
   const { currency, currencyPrice } = useCurrency();
@@ -82,7 +84,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const appTheme = useAppTheme();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const showSellerTooltip = false;
   const lastPriceBreak = isMdDown ? 100 : 10000;
 
@@ -211,15 +213,15 @@ const DistributorsDesktop: React.FC<Props> = ({
     });
   };
 
-  const visitSellerHandler = (seller: Seller, url: string) => () => {
-    dispatch(
-      sendFeedbackMessageThunk("seller_site", {
-        seller,
-        url,
-        date: new Date().toISOString(),
-      }),
-    );
-  };
+  // const visitSellerHandler = (seller: Seller, url: string) => () => {
+  //   dispatch(
+  //     sendFeedbackMessageThunk("seller_site", {
+  //       seller,
+  //       url,
+  //       date: new Date().toISOString(),
+  //     }),
+  //   );
+  // };
 
   return (
     <table className={classes.table}>
@@ -365,7 +367,8 @@ const DistributorsDesktop: React.FC<Props> = ({
       <tbody>
         {(smart_view && stockrecords && bestOfferId
           ? stockrecords.reduce(
-              (acc: SortedStockrecord[][], elem) => (elem[0].id !== bestOfferId ? [...acc, elem] : [elem, ...acc]),
+              (acc: SortedStockrecord[][], group) =>
+                group.some((i) => i.id === bestOfferId) ? [group, ...acc] : [...acc, group],
               [],
             )
           : stockrecords
@@ -397,11 +400,11 @@ const DistributorsDesktop: React.FC<Props> = ({
             const partnerName = val.partner_name;
 
             const partner = partners?.find((i: any) => i.id === val.partner);
-            const isShowProductLink =
-              partner &&
-              Object.prototype.hasOwnProperty.call(partner, "link_to_site") &&
-              (!!val.product_url || !!partner.url);
-            const url = isShowProductLink && correctUrl(val.product_url || partner.url);
+            // const isShowProductLink =
+            //   partner &&
+            //   Object.prototype.hasOwnProperty.call(partner, "link_to_site") &&
+            //   (!!val.product_url || !!partner.url);
+            // const url = isShowProductLink && correctUrl(val.product_url || partner.url);
             const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const isCombinedRow = isShowMoreButton && !isShowMoreActive;
@@ -720,26 +723,27 @@ const DistributorsDesktop: React.FC<Props> = ({
                     <div className={classes.bestOfferLabel}>{t("best_offer")}</div>
                   )}
                   <div>
-                    {isShowProductLink ? (
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={clsx(appTheme.hyperlink, classes.partnerLink)}
-                        onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)}
-                      >
-                        {t("distributor.visit")}
-                      </a>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        size="small"
-                        className={clsx(appTheme.buttonCreate, classes.contactSellerButton)}
-                        onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)}
-                      >
-                        {t("distributor.contact")}
-                      </Button>
-                    )}
+                    {/* {isShowProductLink ? ( */}
+                    {/*  <a */}
+                    {/*    href={url} */}
+                    {/*    target="_blank" */}
+                    {/*    rel="noreferrer" */}
+                    {/*    className={clsx(appTheme.hyperlink, classes.partnerLink)} */}
+                    {/*    onClick={visitSellerHandler({ id: val.partner, name: val.partner_name }, url)} */}
+                    {/*  > */}
+                    {/*    {t("distributor.visit")} */}
+                    {/*  </a> */}
+                    {/* ) : ( */}
+                    {/*  <Button */}
+                    {/*    variant="contained" */}
+                    {/*    size="small" */}
+                    {/*    className={clsx(appTheme.buttonCreate, classes.contactSellerButton)} */}
+                    {/*    onClick={sellerMessageOpenModal(val.partner, val.partner_name, val.id)} */}
+                    {/*  > */}
+                    {/*    {t("distributor.contact")} */}
+                    {/*  </Button> */}
+                    {/* )} */}
+                    {addToCartComponent}
                   </div>
                 </td>
               </tr>

@@ -337,6 +337,15 @@ export const sendQuickRequestUnAuth = (item: any, token: string, email: string) 
           localStorage.removeItem("progress_modal_data");
         });
       }
+      case "order": {
+        dispatch(progressModalOpen());
+        dispatch(sendRequestThunk(item.rfqList, true, token)).then(() => {
+          dispatch(deleteMiscAction("not_activated_request", email));
+
+          localStorage.removeItem("progress_modal_data");
+        });
+        break;
+      }
       case "sellerMessage": {
         dispatch(progressModalOpen());
         return dispatch(sendSellerMessage(item, token)).then(() => {
