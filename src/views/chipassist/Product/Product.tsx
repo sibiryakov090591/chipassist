@@ -64,7 +64,7 @@ const ProductView = () => {
 
   useEffect(() => {
     if (!isLoading && (!productData || productData.upc !== decodeURIComponent(partnumber))) {
-      navigate(`/search?query=${partnumber}`, { state: { background: location } });
+      navigate(`/search?query=${partnumber}`, { replace: true, state: { background: location } });
     }
   }, [productData, isLoading]);
 
