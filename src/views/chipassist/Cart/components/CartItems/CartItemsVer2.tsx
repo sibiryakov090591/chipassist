@@ -78,8 +78,8 @@ const CartItemsVer2 = () => {
         img: getImage(item.product),
         quantity: item.quantity,
         url: `/product/${encodeURIComponent(item.product.upc)}/${
-          constants.id === ID_ELFARO ? item.stockrecord?.id : item.product.id
-        }/`,
+          item.product.stockrecords[0]?.id ? item.product.stockrecords[0]?.id : `?productId=${item.product.id}`
+        }`,
         upc: item.product.upc,
         stockrecord: item.stockrecord,
         numInStock: item.product.stockrecords?.reduce((acc, sr) => acc + sr.num_in_stock, 0),
