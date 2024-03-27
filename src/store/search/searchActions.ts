@@ -66,6 +66,7 @@ export const loadSearchResultsActionThunk = (
     if (otherParams) filters = { ...filters, ...otherParams };
     if (isFirstRequest) filters = { ...filters, query: window };
     // await dispatch(loadProductsRfqData(query, page, pageSize, orderBy));
+    // const fastSearchResult = await dispatch(loadFastSearchResults())
     return dispatch(sendFiltersValueAction(page, pageSize, orderBy, filters, component, true, removeAuth))
       .then((response: any) => {
         batch(() => {
@@ -469,7 +470,7 @@ export const sendFiltersValueAction = (
   showProggress = true,
   removeAuth = false,
 ) => {
-  return (dispatch: any) => {
+  return async (dispatch: any) => {
     const orderParam = orderBy ? `&order_by=${orderBy}` : "";
     let params = "";
     Object.entries(data).forEach((entry) => {
@@ -493,23 +494,55 @@ export const sendFiltersValueAction = (
       }
     });
 
+    const startMainSearch = () => {
+      return dispatch({
+        types: !showProggress
+          ? actionTypes.SEND_FILTERS_VALUES_S
+          : component === "search"
+          ? actionTypes.SEND_FILTERS_VALUES_ARRAY
+          : actionTypes.SEND_FILTERS_VALUES_PRODUCTS_ARRAY,
+        promise: (client: ApiClientInterface) =>
+          client
+            .get(`${API_PATH}${SEARCH_URL}?&page_size=${pageSize}&page=${page}${orderParam}${params}`, {
+              cancelId: "get_search_list",
+              config: removeAuth ? { headers: { Authorization: null } } : null,
+              noapi: true,
+            })
+            .then((res) => res.data)
+            .catch((e: any) => {
+              console.log("***SEND_FILTERS_VALUES_ERROR", e);
+              throw e;
+            }),
+      });
+    };
+
+    // start with fast search request and then if we didn't get results we'll start main search action
     return dispatch({
-      types: !showProggress
-        ? actionTypes.SEND_FILTERS_VALUES_S
-        : component === "search"
-        ? actionTypes.SEND_FILTERS_VALUES_ARRAY
-        : actionTypes.SEND_FILTERS_VALUES_PRODUCTS_ARRAY,
+      types: [actionTypes.SEND_FILTERS_VALUES_R, null, null],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`${API_PATH}${SEARCH_URL}?&page_size=${pageSize}&page=${page}${orderParam}${params}`, {
+          .get(`${API_PATH}/fastsearch/?&page_size=${pageSize}&page=${page}${orderParam}${params}`, {
             cancelId: "get_search_list",
             config: removeAuth ? { headers: { Authorization: null } } : null,
             noapi: true,
           })
-          .then((res) => res.data)
+          .then((res) => {
+            console.log(res.data.results);
+            if (res.data.results?.length > 0) return res.data;
+            return false; // to start main search
+          })
           .catch((e: any) => {
             console.log("***SEND_FILTERS_VALUES_ERROR", e);
-            throw e;
+            return false; // to start main search anyway
+          })
+          .then((res) => {
+            if (!res) return startMainSearch();
+            console.log("SKIP MAIN SEARCH AND SET PREV RES");
+            dispatch({
+              type: actionTypes.SEND_FILTERS_VALUES_S,
+              response: res,
+            });
+            return res;
           }),
     });
   };

@@ -3,7 +3,7 @@ import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { useRestTransport, useWebsocketTransport } from "@src/services/useTransport";
-import { loadBomListThunk } from "@src/store/bom/bomActions";
+// import { loadBomListThunk } from "@src/store/bom/bomActions";
 import {
   beforeSearchRequest,
   loadSearchResultsActionThunk,
@@ -70,7 +70,7 @@ const useSearchLoadResults = () => {
   useRestTransport(() => {
     batch(() => {
       if (searchTimeoutId) clearTimeout(searchTimeoutId);
-      dispatch(loadBomListThunk(1, true));
+      // dispatch(loadBomListThunk(1, true));
       dispatch(
         loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, null, {
           smart_view,
@@ -80,9 +80,11 @@ const useSearchLoadResults = () => {
         }),
       )
         .then((res: any) => {
-          setIsFirstRequest(false);
-          setSearchTimeoutId(null);
-          setStartReloadingTime(null);
+          batch(() => {
+            setIsFirstRequest(false);
+            setSearchTimeoutId(null);
+            setStartReloadingTime(null);
+          });
           return res;
         })
         .catch((e: any) => {
@@ -114,7 +116,7 @@ const useSearchLoadResults = () => {
       },
       afterConnect: (socketClient) => {
         batch(() => {
-          dispatch(loadBomListThunk(1, true));
+          // dispatch(loadBomListThunk(1, true));
           socketClient.onMessage((data: any) => {
             dispatch(socketSearchResult(data, query));
           });
