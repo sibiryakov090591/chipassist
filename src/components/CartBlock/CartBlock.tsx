@@ -11,7 +11,7 @@ import useAppSelector from "@src/hooks/useAppSelector";
 // @ts-ignore
 import { withBaseIcon } from "react-icons-kit";
 // import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import { Paper, Box, Fade } from "@material-ui/core";
+import { Paper, Box, Fade, Hidden } from "@material-ui/core";
 import { getImage } from "@src/utils/product";
 import placeholderImg from "@src/images/cpu.png";
 // import IconButton from "@material-ui/core/IconButton";
@@ -96,10 +96,17 @@ const CartBlock: React.FC = () => {
                 <div className={clsx(classes.manufacturer, "added-to-cart-alert")}>
                   {item?.product?.manufacturer?.name}
                 </div>
-                <div className={classes.description}>{item?.product?.description}</div>
+                <div className={classes.description}>
+                  {item?.product?.description}
+                  <Hidden smUp>
+                    <div> {item?.quantity} шт.</div>
+                  </Hidden>
+                </div>
               </div>
             </Box>
-            <div className={classes.pcs}>{item?.quantity} шт.</div>
+            <Hidden xsDown>
+              <div className={classes.pcs}>{item?.quantity} шт.</div>
+            </Hidden>
             {/* <div> */}
             {/*  <IconButton onClick={removeProduct} size="small" aria-label="delete" color="inherit"> */}
             {/*    <DeleteOutlineIcon fontSize="default" /> */}

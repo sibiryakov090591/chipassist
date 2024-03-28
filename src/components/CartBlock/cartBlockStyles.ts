@@ -43,7 +43,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       position: "absolute",
       right: 0,
       top: "115%",
-      zIndex: 100,
+      zIndex: 1000,
       "&:before": {
         content: "''",
         display: "block",
@@ -58,6 +58,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     paper: {
+      zIndex: 100,
       padding: 12,
       width: "max-content",
       maxWidth: 600,
@@ -67,6 +68,12 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       alignItems: "center",
       justifyContent: "space-between",
       backgroundColor: "#ffffff",
+      [theme.breakpoints.down("xs")]: {
+        minWidth: "50vw",
+        maxWidth: "80vw",
+        alignItems: "flex-start",
+        flexDirection: "column",
+      },
     },
     imageColumn: {
       marginRight: "12px",
