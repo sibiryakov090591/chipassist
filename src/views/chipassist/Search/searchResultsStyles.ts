@@ -296,6 +296,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         textDecoration: "none",
       },
     },
+    manufacturerHint: {
+      background: "#f8f8f8",
+      width: "fit-content",
+      margin: "0 auto 20px",
+      padding: "8px 49px",
+      border: "1px solid #e5e5e5",
+      borderRadius: 10,
+    },
   }),
 );
 

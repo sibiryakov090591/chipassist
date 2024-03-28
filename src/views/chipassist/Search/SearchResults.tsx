@@ -460,8 +460,8 @@ const SearchResults = () => {
                 )}
                 <h2 style={{ marginBottom: 20 }}>{t("not_found")}</h2>
                 {!!manufacturerId && manufacturer && (
-                  <p style={{ marginBottom: 20 }}>
-                    Вы искали продукты производителя <strong>{manufacturer.name}</strong>. Чтобы увидеть больше
+                  <p className={classes.manufacturerHint}>
+                    Вы искали продукты от производителя <strong>{manufacturer.name}</strong>. Чтобы увидеть больше
                     результатов - попробуйте{" "}
                     <strong className={appTheme.hyperlink} onClick={onRemoveManufacturerFilter}>
                       Отключить
