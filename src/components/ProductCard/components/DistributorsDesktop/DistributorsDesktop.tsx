@@ -438,8 +438,11 @@ const DistributorsDesktop: React.FC<Props> = ({
             try {
               // Date constructor expects another date format in iOS Safari browser
               dateUpdated = val.date_updated && new Date(val.date_updated.replace(/ /g, "T"));
+              if (Date.now() - dateUpdated.getTime() < 1000) {
+                dateUpdated = Date.now() - 3000;
+              }
             } catch {
-              dateUpdated = null;
+              dateUpdated = Date.now() - 3000;
             }
 
             return (
