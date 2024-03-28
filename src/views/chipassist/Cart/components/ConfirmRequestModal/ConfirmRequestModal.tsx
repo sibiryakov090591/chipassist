@@ -265,7 +265,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      className={clsx(commonClasses.modal, "fullScreen")}
+      className={clsx(commonClasses.modal, !isAuthenticated ? "fullScreen" : "")}
       open={true}
       onClose={onClose}
       closeAfterTransition
@@ -275,7 +275,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
       }}
     >
       <Fade in={true}>
-        <div className={clsx(commonClasses.paper, "fullScreen")}>
+        <div className={clsx(commonClasses.paper, !isAuthenticated ? "fullScreen" : "")}>
           <h2>{t("confirm_modal.title")}</h2>
           <p style={{ fontSize: 16 }}>{t("confirm_modal.sub_title")}</p>
           {!isAuthenticated && (
