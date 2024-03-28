@@ -146,10 +146,8 @@ const CartItemsVer2 = () => {
           <img className={classes.listIcon} src={list_icon} alt="List icon" />
         </Hidden>
         <div>
-          <h1 style={{ marginBottom: 5 }} className={commonClasses.pageTitle}>
-            {t("header")}
-          </h1>
-          <div className={classes.description}>{t("header_description")}</div>
+          <h1 className={commonClasses.pageTitle}>{t("header")}</h1>
+          {!!cartItems.length && <div className={classes.description}>{t("header_description")}</div>}
         </div>
       </Box>
       {!!cartItems.length && (

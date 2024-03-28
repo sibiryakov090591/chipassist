@@ -223,7 +223,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         gridTemplateAreas: `
           "product product product "
           "manufacturer stock sellers"
-          "price qty ."
+          "price . qty"
           "actions actions actions"
         `,
       },
@@ -269,6 +269,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       marginRight: 10,
     },
     description: {
+      marginTop: 5,
       fontSize: 14,
       [theme.breakpoints.down("sm")]: {
         fontSize: 16,

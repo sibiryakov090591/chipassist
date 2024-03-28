@@ -119,7 +119,7 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
         </DataValue>
       </DataField>
       <DataField gridArea="manufacturer" className={cartItemsClasses.alignCenter}>
-        <DataLabel>Manufacturer(s)</DataLabel>
+        <DataLabel className={classes.alignCenter}>Manufacturer(s)</DataLabel>
         <DataValue
           className={clsx(
             classes.alignCenter,
@@ -133,7 +133,7 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
         </DataValue>
       </DataField>
       <DataField gridArea="stock" className={cartItemsClasses.alignCenter}>
-        <DataLabel>In stock</DataLabel>
+        <DataLabel className={classes.alignCenter}>In stock</DataLabel>
         <DataValue
           className={clsx(classes.alignCenter, classes.price, { [classes.contentDisabled]: isUpdating || isRemoving })}
         >
@@ -145,7 +145,7 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
         </DataValue>
       </DataField>
       <DataField gridArea="sellers" className={cartItemsClasses.alignCenter}>
-        <DataLabel>Available from</DataLabel>
+        <DataLabel className={classes.alignCenter}>Available from</DataLabel>
         <DataValue
           className={clsx(classes.alignCenter, classes.price, { [classes.contentDisabled]: isUpdating || isRemoving })}
         >
@@ -153,7 +153,7 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
         </DataValue>
       </DataField>
       <DataField gridArea="price" className={cartItemsClasses.alignCenter}>
-        <DataLabel>Market pricing</DataLabel>
+        <DataLabel className={classes.alignCenter}>Market pricing</DataLabel>
         <DataValue className={clsx(classes.alignCenter, { [classes.contentDisabled]: isUpdating || isRemoving })}>
           {!priceRange.from && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
           {!!priceRange.from && (
@@ -170,7 +170,7 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
         </DataValue>
       </DataField>
       <DataField gridArea="qty" className={cartItemsClasses.alignCenter}>
-        <DataLabel>{t("column.qty")}</DataLabel>
+        <DataLabel className={classes.alignCenter}>{t("column.qty")}</DataLabel>
         <DataValue className={clsx(classes.alignCenter, { [classes.contentDisabled]: isUpdating || isRemoving })}>
           <div className={classes.qtyColumn}>
             <NumberInput
@@ -198,14 +198,16 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
             <HighlightOffIcon className={clsx(classes.remove, "cart-delete-button")} onClick={onDeleteClick} />
           </Hidden>
           <Hidden mdUp>
-            <Button
-              className={clsx(appTheme.buttonPrimary, classes.removeButton)}
-              size="small"
-              variant="contained"
-              onClick={onDeleteClick}
-            >
-              {t("common.remove")}
-            </Button>
+            <div className={classes.removeButtonWrapper}>
+              <Button
+                className={clsx(appTheme.buttonPrimary, classes.removeButton)}
+                size="small"
+                variant="contained"
+                onClick={onDeleteClick}
+              >
+                {t("common.remove")}
+              </Button>
+            </div>
           </Hidden>
         </DataValue>
       </DataField>

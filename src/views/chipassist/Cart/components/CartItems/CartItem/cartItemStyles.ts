@@ -302,7 +302,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     qtyColumn: {
       position: "relative",
-      width: "min-content",
+      // width: "min-content",
     },
     errorMessage: {
       position: "absolute",
@@ -325,14 +325,20 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       },
     },
     alignCenter: {
-      [theme.breakpoints.up("md")]: {
+      [theme.breakpoints.up("sm")]: {
         textAlign: "center",
       },
+    },
+    removeButtonWrapper: {
+      padding: 13,
     },
     removeButton: {
       fontSize: 13,
       fontWeight: "bold",
-      margin: 13,
+      minWidth: 200,
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
     helpIcon: {
       cursor: "help",
