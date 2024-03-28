@@ -93,6 +93,7 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, product, isSmD
           onMouseOver={() => setHoverAddToList(true)}
           onMouseOut={() => setHoverAddToList(false)}
           className={clsx(classes.addToCart, "add-to-cart-button", {
+            [appTheme.buttonCreate]: !inCart,
             [classes.inCart]: inCart,
             [classes.inCartMobile]: inCart && isSmDown,
           })}

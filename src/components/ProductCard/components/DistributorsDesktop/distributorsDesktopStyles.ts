@@ -159,7 +159,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       paddingRight: 10,
     },
     thActions: {
-      width: 130,
+      width: 115,
       [theme.breakpoints.down("sm")]: {
         width: 105,
       },
