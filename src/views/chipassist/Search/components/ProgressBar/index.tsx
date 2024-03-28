@@ -1,6 +1,7 @@
 import React from "react";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useAppSelector from "@src/hooks/useAppSelector";
+import { clsx } from "clsx";
 import { useStyles } from "./styles";
 import Progress from "./Progress";
 
@@ -17,7 +18,7 @@ const ExtendedSearchBar: React.FC<Props> = ({ className }) => {
     return (
       <div className={`${classes.main} ${className}`}>
         <Progress />
-        <div className={classes.span}>{t("extended_search")}</div>
+        <div className={clsx(classes.span, classes.pulse)}>{t("extended_search")}</div>
       </div>
     );
   }
