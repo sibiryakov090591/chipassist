@@ -205,8 +205,9 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
     // const company_name = !isAuthenticated
     //   ? item.values.email.match(/@(.*)\./g) && item.values.email.match(/@(.*)\./g)[0].replace(/[@.]/g, "")
     //   : billingAddress?.company_name;
-    const { company_name } = item.values;
-    let comment = `Company name: ${company_name};`;
+    const company_name = isAuthenticated ? billingAddress?.company_name : item.values.company_name;
+    let comment = "";
+    if (company_name) comment += `Company name: ${company_name};`;
     if (phone) comment += ` Phone: ${phone};`;
 
     const rfqList = cartItems.map((i) => {
