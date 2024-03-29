@@ -10,7 +10,8 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     addToCart: {
       whiteSpace: "nowrap",
-      width: 85,
+      width: 80,
+      fontSize: 10,
       fontWeight: "bold",
     },
     inCart: {
