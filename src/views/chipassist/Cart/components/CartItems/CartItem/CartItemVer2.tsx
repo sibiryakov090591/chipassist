@@ -129,7 +129,6 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
           )}
         >
           {manufacture.name}
-          <div className={classes.manufactureOther}>И доступные альтернативы</div>
         </DataValue>
       </DataField>
       <DataField gridArea="stock" className={cartItemsClasses.alignCenter}>

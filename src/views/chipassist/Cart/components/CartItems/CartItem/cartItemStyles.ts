@@ -317,13 +317,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       color: "#345",
       fontWeight: "bold",
     },
-    manufactureOther: {
-      fontSize: 11,
-      fontWeight: "normal",
-      [theme.breakpoints.down("sm")]: {
-        fontSize: 13,
-      },
-    },
     alignCenter: {
       [theme.breakpoints.up("sm")]: {
         textAlign: "center",

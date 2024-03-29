@@ -30,6 +30,7 @@ import constants from "@src/constants/constants";
 // import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { ru, enUS } from "date-fns/locale";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
+import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import { useStyles } from "./distributorsDesktopStyles";
 
 interface Props {
@@ -38,7 +39,6 @@ interface Props {
   rfqOpenModal: () => void;
   sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
   qualityCheckOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
-  addToCartComponent: any;
 }
 
 interface SortedStockrecord extends Stockrecord {
@@ -74,7 +74,6 @@ const DistributorsDesktop: React.FC<Props> = ({
   rfqOpenModal,
   // sellerMessageOpenModal,
   qualityCheckOpenModal,
-  addToCartComponent,
 }) => {
   const { t } = useI18n("product");
   const { currency, currencyPrice } = useCurrency();
@@ -746,7 +745,11 @@ const DistributorsDesktop: React.FC<Props> = ({
                     {/*    {t("distributor.contact")} */}
                     {/*  </Button> */}
                     {/* )} */}
-                    {addToCartComponent}
+                    <AddToCartButton
+                      product={product}
+                      sr={isCombinedRow ? srArray[index + 1] : val}
+                      isSmDown={isSmDown}
+                    />
                   </div>
                 </td>
               </tr>

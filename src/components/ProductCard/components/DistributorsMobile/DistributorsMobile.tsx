@@ -9,7 +9,7 @@ import {
 import { formatMoney } from "@src/utils/formatters";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import useCurrency from "@src/hooks/useCurrency";
-import { Stockrecord } from "@src/store/products/productTypes";
+import { Product, Stockrecord } from "@src/store/products/productTypes";
 import { getDynamicMoq, getPrice, getStockDataCode } from "@src/utils/product";
 import clsx from "clsx";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
@@ -19,15 +19,16 @@ import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import { correctUrl } from "@src/utils/transformUrl";
+import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import { useStyles } from "./distributorsMobileStyles";
 
 interface Props {
+  product: Product;
   sortedStockrecords: Stockrecord[];
   sellerMessageOpenModal: (sellerId: number, sellerName: string, stockrecordId: number) => () => void;
-  addToCartComponent: any;
 }
 
-const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, addToCartComponent }) => {
+const DistributorsMobile: React.FC<Props> = ({ product, sortedStockrecords }) => {
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
 
   const { t } = useI18n("product");
@@ -117,7 +118,7 @@ const DistributorsMobile: React.FC<Props> = ({ sortedStockrecords, addToCartComp
                 // )}
                 // </>
                 <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
-                  {addToCartComponent}
+                  <AddToCartButton product={product} sr={val} isSmDown={true} />
                 </td>
               );
 

@@ -18,14 +18,13 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import { useStyles } from "./addToCartStyles";
 
 interface Props {
-  inCart: boolean;
-  inCartCount: number;
   product: any;
+  sr: any;
   isSmDown: boolean;
   requestedQty?: number;
 }
 
-const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, product, isSmDown }) => {
+const AddToCartButton: React.FC<Props> = ({ requestedQty, product, sr, isSmDown }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const anchorRef = React.useRef(null);
@@ -34,13 +33,22 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, inCart, product, isSmD
   const { t } = useI18n("product");
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
+  const cartItems = useAppSelector((state) => state.cart.items);
 
   const [hoverAddToList, setHoverAddToList] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [inCart, setInCart] = useState(false);
+  // const [inCartCount, setInCartCount] = useState(0);
+
+  useEffect(() => {
+    const cartItem = cartItems?.find((item) => item.stockrecord.id === sr.id);
+    setInCart(!!cartItem);
+    // setInCartCount(cartItem?.quantity || 0);
+  }, [cartItems]);
 
   const handleAdd = () => {
-    dispatch(addCartItem(product, null, quantity, null, true)).then((res: Product) => {
+    dispatch(addCartItem(product, sr, quantity, null, true)).then((res: Product) => {
       dispatch(addProductToCartBlock(product, quantity, res.id));
     });
     handleClose();
