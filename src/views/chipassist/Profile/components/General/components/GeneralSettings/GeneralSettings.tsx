@@ -67,7 +67,8 @@ const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   },
 }));
 
-const helpEmail = constants.id === ID_ICSEARCH ? "help@icsearch.ru" : "help@chipassist.com";
+const isICSearch = constants.id === ID_ICSEARCH;
+const helpEmail = isICSearch ? "help@icsearch.ru" : "help@chipassist.com";
 
 const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const appTheme = useAppTheme();
@@ -104,8 +105,8 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
       setAddressData({
         ...billingAddress,
         country:
-          (billingAddress?.country &&
-            checkout?.countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
+          // (billingAddress?.country &&
+          //   checkout?.countries?.find((c) => c.url.includes(billingAddress?.country?.split("/api/")[1]))?.url) ||
           defaultCountry.url,
       });
       setPhoneValue(billingAddress.phone_number_str);
@@ -351,6 +352,7 @@ const GeneralSettings: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
                 onChange={handleChange}
                 value={addressData?.country || ""}
                 size={isXsDown ? "small" : "medium"}
+                disabled={isICSearch}
               >
                 {checkout?.countries?.map((item: Record<string, any>) => (
                   <MenuItem className={appTheme.selectMenuItem} key={item.url} value={item.url}>
