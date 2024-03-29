@@ -128,7 +128,7 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
             "cart-distributor",
           )}
         >
-          {manufacture.name}
+          {manufacture.name === "Not Specified" ? "Производитель не указан" : manufacture.name}
         </DataValue>
       </DataField>
       <DataField gridArea="stock" className={cartItemsClasses.alignCenter}>
@@ -158,11 +158,11 @@ const CartItemVer2 = (props: { data: ExistingCartItem; socketClient: any }) => {
           {!!priceRange.from && (
             <span className={classes.price}>
               <span>
-                {formatMoney(currencyPrice(priceRange.from, priceRange.fromCurrency))} <b>{currency.symbol}</b>
+                {formatMoney(currencyPrice(priceRange.from, priceRange.fromCurrency))} {currency.symbol}
               </span>{" "}
               -{" "}
               <span>
-                {formatMoney(currencyPrice(priceRange.to, priceRange.toCurrency))} <b>{currency.symbol}</b>
+                {formatMoney(currencyPrice(priceRange.to, priceRange.toCurrency))} {currency.symbol}
               </span>
             </span>
           )}
