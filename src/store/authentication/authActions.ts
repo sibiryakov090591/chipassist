@@ -511,20 +511,23 @@ export const login = (
     dispatch(sendQuickRequest());
   });
 
-  batch(() => {
-    if (checkIsAuthenticated()) {
-      if (location?.backurl) {
-        navigate(location?.backurl);
-      } else if (localStorage.getItem("previousLocation")) {
-        navigate(localStorage.getItem("previousLocation"));
+  if (window.location.pathname !== "/cart") {
+    batch(() => {
+      if (checkIsAuthenticated()) {
+        if (location?.backurl) {
+          navigate(location?.backurl);
+        } else if (localStorage.getItem("previousLocation")) {
+          navigate(localStorage.getItem("previousLocation"));
+        } else {
+          navigate("/");
+        }
       } else {
         navigate("/");
       }
-    } else {
-      navigate("/");
-    }
-  });
+    });
+  }
 
   localStorage.removeItem("registered_email");
   localStorage.removeItem("reset_email");
+  return Promise.resolve(true);
 };

@@ -50,8 +50,8 @@ interface FormState {
   loginError: string | null;
 }
 
-const LoginForm = (props: { className: string; isExample?: boolean }) => {
-  const { className, isExample, ...rest } = props;
+const LoginForm = (props: { className: string; isExample?: boolean; callback?: any }) => {
+  const { className, isExample, callback, ...rest } = props;
   const navigate = useNavigate();
   const classes = useStyles();
   const appTheme = useAppTheme();
@@ -132,7 +132,9 @@ const LoginForm = (props: { className: string; isExample?: boolean }) => {
       return dispatch(authLoginAction(data))
         .then((res: any) => {
           const { token } = res;
-          dispatch(login(data, token, navigate, { backurl }));
+          dispatch(login(data, token, navigate, { backurl })).then(() => {
+            if (callback) callback();
+          });
         })
         .catch((err: any) => {
           const textError = t("incorrect_em_or_pass");

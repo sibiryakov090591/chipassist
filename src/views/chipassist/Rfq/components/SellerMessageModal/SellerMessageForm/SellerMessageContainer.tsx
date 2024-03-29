@@ -75,7 +75,7 @@ export const SellerMessageContainer: React.FC<{ isAuth?: boolean; isExample?: bo
                 </div>
               )}
             </div>
-            <img className={rfqModalClasses.logo} src={logo} alt="chipassist logo" />
+            <img className={rfqModalClasses.logo} src={logo} alt="logo" />
           </div>
         </Hidden>
       )}

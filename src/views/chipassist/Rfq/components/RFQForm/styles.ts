@@ -33,7 +33,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     },
     "& .MuiTextField-root": {
       margin: 13,
-      width: "25ch",
+      // width: "25ch",
     },
   },
   header: {

@@ -108,7 +108,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
                 </div>
               )}
             </div>
-            <img className={classes.logo} src={logo} alt="chipassist logo" />
+            <img className={classes.logo} src={logo} alt="logo" />
           </div>
         </Hidden>
       )}
