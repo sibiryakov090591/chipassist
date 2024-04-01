@@ -308,7 +308,8 @@ const ChipAssistApp = () => {
     isICSearch &&
     localStorage.getItem("open_icsearch_password") !== "1234" &&
     geolocation?.loaded &&
-    geolocation.country_code_iso3 !== "RUS"
+    !!geolocation?.country_code_iso3 &&
+    geolocation?.country_code_iso3 !== "RUS"
   ) {
     return null;
   }
