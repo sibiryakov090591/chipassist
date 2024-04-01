@@ -14,6 +14,8 @@ import { ID_PCBONLINE, ID_SUPPLIER_RESPONSE } from "@src/constants/server_consta
 import constants from "@src/constants/constants";
 import { showRegisterModalAction } from "@src/store/alerts/alertsActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import Hidden from "@material-ui/core/Hidden";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { useStyles } from "./styles";
 
 const NotAuthorized = () => {
@@ -78,18 +80,28 @@ const NotAuthorized = () => {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          <div style={{ display: "flex" }}>
-            <div>
-              <span className={isSupplierResponse ? classes.supplierAccSpan1 : classes.accountSpan1}>{t("hello")}</span>
-              <br />
-              <span className={isSupplierResponse ? classes.supplierAccSpan2 : classes.accountSpan2}>
-                {t("account")}
-              </span>
+          <Hidden xsDown>
+            <div style={{ display: "flex" }}>
+              <div>
+                <span className={isSupplierResponse ? classes.supplierAccSpan1 : classes.accountSpan1}>
+                  {t("hello")}
+                </span>
+                <br />
+                <span className={isSupplierResponse ? classes.supplierAccSpan2 : classes.accountSpan2}>
+                  {t("account")}
+                </span>
+              </div>
+              <div>
+                <ArrowDropDownIcon className={classes.dropIcon} />
+              </div>
             </div>
-            <div>
+          </Hidden>
+          <Hidden smUp>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <AccountCircleIcon style={{ fontSize: 30, color: "#dadada" }} />
               <ArrowDropDownIcon className={classes.dropIcon} />
             </div>
-          </div>
+          </Hidden>
         </Button>
         <Popper
           open={open}

@@ -1,6 +1,12 @@
 import { makeStyles } from "@material-ui/styles";
 
 export const useStyles = makeStyles((theme) => ({
+  showBy: {
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
   dropIcon: {
     // width: "17px",
     // height: "17px",
