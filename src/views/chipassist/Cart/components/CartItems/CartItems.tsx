@@ -109,7 +109,9 @@ const CartItems = () => {
         img: getImage(item.product),
         quantity: item.quantity,
         attribute: (!!item.attributes?.length && item.attributes[0].value) || null,
-        url: `/product/${encodeURIComponent(item.product.upc)}/${item.stockrecord?.id}/`,
+        url: `/product/${encodeURIComponent(item.product.upc)}/${
+          item.stockrecord?.id || item.product?.stockrecords[0]?.id || item.product?.id
+        }/`,
         upc: item.product.upc,
         stockrecord: item.stockrecord,
         isDuplicate: !!duplicateItem[0],

@@ -150,7 +150,7 @@ const CartItem = (props: {
   const onChangeQty = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = parseInt(e.target.value);
     if (!rfq && isProductAvailable(stockrecord)) {
-      val = val > stockrecord.num_in_stock ? stockrecord.num_in_stock : val;
+      val = val > stockrecord?.num_in_stock ? stockrecord?.num_in_stock : val;
     }
     val = parseInt(val.toString().replace(/^0+/, ""));
     const qtyError = validateQuantity(val, stockrecord);
@@ -240,9 +240,9 @@ const CartItem = (props: {
             "cart-distributor",
           )}
         >
-          {stockrecord.manufacturer?.name === "Not Specified"
+          {stockrecord?.manufacturer?.name === "Not Specified"
             ? "Производитель не указан"
-            : stockrecord.manufacturer?.name || "-"}
+            : stockrecord?.manufacturer?.name || "-"}
         </DataValue>
       </DataField>
       <DataField gridArea="sellers" className={cartItemsClasses.alignCenter}>
@@ -252,7 +252,7 @@ const CartItem = (props: {
             [classes.contentDisabled]: isUpdating || isRemoving,
           })}
         >
-          {stockrecord.partner_name || "-"}
+          {stockrecord?.partner_name || "-"}
         </DataValue>
       </DataField>
       <DataField gridArea="stock" className={cartItemsClasses.alignCenter}>
