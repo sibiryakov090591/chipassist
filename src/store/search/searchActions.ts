@@ -537,7 +537,6 @@ export const sendFiltersValueAction = (
           })
           .then((res) => {
             if (!res) return startMainSearch();
-            console.log("SKIP MAIN SEARCH AND SET PREV RES");
             dispatch({
               type: actionTypes.SEND_FILTERS_VALUES_S,
               response: res,

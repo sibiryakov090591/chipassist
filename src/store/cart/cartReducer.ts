@@ -87,7 +87,7 @@ export default function cartReducer(state = initialState, action: CartActionType
           localStorage.setItem(
             "unauth_cart",
             JSON.stringify(
-              cartItems.filter((val: any) => val.product !== line.product && val.stockrecord !== line.stockrecord),
+              cartItems?.filter((val: any) => val.product !== line.product && val.stockrecord !== line.stockrecord),
             ),
           );
         }
@@ -141,7 +141,7 @@ export default function cartReducer(state = initialState, action: CartActionType
       localStorage.setItem(
         "unauth_cart",
         JSON.stringify(
-          cartItems.map((val: any) => {
+          cartItems?.map((val: any) => {
             if (val.product === item.product.id) {
               return {
                 ...val,
@@ -208,7 +208,7 @@ export default function cartReducer(state = initialState, action: CartActionType
       localStorage.setItem(
         "unauth_cart",
         JSON.stringify(
-          cartItems.filter((val: any) => val.product !== item.product.id && val.stockrecord !== item.stockrecord?.id),
+          cartItems?.filter((val: any) => val.product !== item.product.id && val.stockrecord !== item.stockrecord?.id),
         ),
       );
       return updateObject(state, {

@@ -57,6 +57,7 @@ const withJsErrorsCatch = (WrappedComponent) => {
         }
 
         if (
+          IS_PROD &&
           error?.response?.status &&
           ![401, 404, 429].includes(error?.response?.status) &&
           (!url || !url.includes(feedback_url))
