@@ -5,24 +5,24 @@ import useAppDispatch from "@src/hooks/useAppDispatch";
 import clsx from "clsx";
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import { Tooltip, CircularProgress, Hidden } from "@material-ui/core";
+import { Tooltip, CircularProgress, Hidden, Box, Button } from "@material-ui/core";
 import useCurrency from "@src/hooks/useCurrency";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { getDateLag } from "@src/utils/date";
-import { invokeRestTransport, invokeWebsocketTransport } from "@src/services/useTransport";
+// import { getDateLag } from "@src/utils/date";
+// import { invokeRestTransport, invokeWebsocketTransport } from "@src/services/useTransport";
 import { NumberInput } from "@src/components/Inputs";
 // import Dropdown from "@src/components/FiltersSelect/dropdown";
 import { ExistingCartItem } from "@src/store/cart/cartTypes";
 import {
   updateCartItem,
-  updateAuthCartItem,
+  // updateAuthCartItem,
   removeCartItem,
-  productUpdateStart,
-  productUpdateSave,
-  productUpdateThunk,
+  // productUpdateStart,
+  // productUpdateSave,
+  // productUpdateThunk,
 } from "@src/store/cart/cartActions";
 import useAppTheme from "@src/theme/useAppTheme";
-import { getCostAndQuantity, getDynamicMoq, getPrice, isProductAvailable, validateQuantity } from "@src/utils/product";
+import { getCostAndQuantity, getPrice, isProductAvailable, validateQuantity } from "@src/utils/product";
 import useDebounce from "@src/hooks/useDebounce";
 import { formatMoney } from "@src/utils/formatters";
 import { Stockrecord } from "@src/store/products/productTypes";
@@ -30,10 +30,11 @@ import InfoIcon from "@src/components/Icons/InfoIcon";
 import { DataField, DataLabel, DataRow, DataValue } from "@src/components/DataTable/DataTable";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import placeholderImg from "@src/images/cpu.png";
-import useAppSelector from "@src/hooks/useAppSelector";
+// import useAppSelector from "@src/hooks/useAppSelector";
+import { useStyles as useCartItemsStyles } from "@src/views/chipassist/Cart/components/CartItems/cartItemsStyles";
 import { useStyles } from "./cartItemStyles";
-import ItemErrors from "./components/ItemErrros";
-import ItemValid from "./components/ItemValid";
+// import ItemErrors from "./components/ItemErrros";
+// import ItemValid from "./components/ItemValid";
 
 const CartItem = (props: {
   data: ExistingCartItem;
@@ -44,41 +45,42 @@ const CartItem = (props: {
 }) => {
   const appTheme = useAppTheme();
   const classes = useStyles();
-  const { socketClient } = props;
+  const cartItemsClasses = useCartItemsStyles();
+  // const { socketClient } = props;
   const {
     basket_id,
     lineId,
     img,
-    name,
-    manufacture,
+    // name,
+    // manufacture,
     stockrecord,
     description,
-    attribute,
+    // attribute,
     url,
     upc,
     quantity,
     isUpdating,
     isRemoving,
-    isDuplicate,
-    numInStock,
+    // isDuplicate,
+    // numInStock,
     errors,
     handleSetErrors,
-    isAuthenticated,
+    // isAuthenticated,
     rfq,
-    dateUpdated,
+    // dateUpdated,
   } = props.data;
   const dispatch = useAppDispatch();
   const { t } = useI18n("cart");
   const { currency, currencyPrice } = useCurrency();
 
-  const sellers = useAppSelector((state) => state.sellers.items);
-  const countries = useAppSelector((state) => state.checkout.countries);
+  // const sellers = useAppSelector((state) => state.sellers.items);
+  // const countries = useAppSelector((state) => state.checkout.countries);
 
-  const [dynamicMoq, setDynamicMoq] = useState(0);
+  // const [dynamicMoq, setDynamicMoq] = useState(0);
   const [mainImg, setMainImg] = useState(img);
   const [quantityValue, setQuantityValue] = useState(quantity);
   const [sortedPrices, setSortedPrices] = useState<Stockrecord["prices"]>([]);
-  const [sellerData, setSellerData] = useState<{ [key: string]: any }>(null);
+  // const [sellerData, setSellerData] = useState<{ [key: string]: any }>(null);
 
   const debouncedQuantityValue = useDebounce(quantityValue, 500);
 
@@ -106,35 +108,35 @@ const CartItem = (props: {
     }
   }, [debouncedQuantityValue]);
 
-  useEffect(() => {
-    if (sellers?.length && stockrecord) {
-      const seller = sellers.find((i) => i.id === stockrecord.partner);
-      const country = seller && countries.find((i) => i.iso_3166_1_a3 === seller.country);
-      if (seller) {
-        setSellerData({ ...seller, ...(country && { country }) });
-      }
-    }
-  }, [sellers, stockrecord]);
+  // useEffect(() => {
+  //   if (sellers?.length && stockrecord) {
+  //     const seller = sellers.find((i) => i.id === stockrecord.partner);
+  //     const country = seller && countries.find((i) => i.iso_3166_1_a3 === seller.country);
+  //     if (seller) {
+  //       setSellerData({ ...seller, ...(country && { country }) });
+  //     }
+  //   }
+  // }, [sellers, stockrecord]);
 
   useEffect(() => {
     if (stockrecord) {
-      const errorText = stockrecord.num_in_stock > 0 ? null : t("distributor.out_stock");
-
-      if (errorText && !rfq) {
-        handleSetErrors(lineId, "out_of_stock", errorText, rfq);
-      } else {
-        handleSetErrors(lineId, "out_of_stock", null, rfq, true);
-      }
-
-      if (stockrecord.errors?.length && !rfq) {
-        handleSetErrors(lineId, "no_prices", t("distributor.no_prices"), rfq);
-      } else {
-        handleSetErrors(lineId, "no_prices", null, rfq, true);
-      }
-
-      setDynamicMoq(getDynamicMoq(stockrecord));
-      const qtyError = validateQuantity(quantityValue, stockrecord);
-      if (qtyError) handleSetErrors(lineId, "quantity", `${t(qtyError.i18message)} ${qtyError.amount}`, rfq);
+      // const errorText = stockrecord.num_in_stock > 0 ? null : t("distributor.out_stock");
+      //
+      // if (errorText && !rfq) {
+      //   handleSetErrors(lineId, "out_of_stock", errorText, rfq);
+      // } else {
+      //   handleSetErrors(lineId, "out_of_stock", null, rfq, true);
+      // }
+      //
+      // if (stockrecord.errors?.length && !rfq) {
+      //   handleSetErrors(lineId, "no_prices", t("distributor.no_prices"), rfq);
+      // } else {
+      //   handleSetErrors(lineId, "no_prices", null, rfq, true);
+      // }
+      //
+      // setDynamicMoq(getDynamicMoq(stockrecord));
+      // const qtyError = validateQuantity(quantityValue, stockrecord);
+      // if (qtyError) handleSetErrors(lineId, "quantity", `${t(qtyError.i18message)} ${qtyError.amount}`, rfq);
       setSortedPrices([...stockrecord.prices].sort((a, b) => a.amount - b.amount).filter((v) => v.price));
     }
   }, [stockrecord]);
@@ -171,50 +173,51 @@ const CartItem = (props: {
     dispatch(removeCartItem(basket_id, lineId));
   };
 
-  const onUpdateProductClick = () => {
-    invokeWebsocketTransport(() => {
-      dispatch(productUpdateStart(lineId));
-      socketClient.onMessage((data: any) => {
-        dispatch(productUpdateSave(data, lineId));
-      });
-      socketClient.send({ upc: [upc], page_size: 700 });
-    });
+  // const onUpdateProductClick = () => {
+  //   invokeWebsocketTransport(() => {
+  //     dispatch(productUpdateStart(lineId));
+  //     socketClient.onMessage((data: any) => {
+  //       dispatch(productUpdateSave(data, lineId));
+  //     });
+  //     socketClient.send({ upc: [upc], page_size: 700 });
+  //   });
+  //
+  //   invokeRestTransport(() => {
+  //     dispatch(productUpdateThunk(lineId));
+  //   });
+  // };
 
-    invokeRestTransport(() => {
-      dispatch(productUpdateThunk(lineId));
-    });
-  };
-
-  const onUpdatePriceClick = () => {
-    const { price } = getCostAndQuantity(quantityValue, stockrecord);
-    dispatch(updateAuthCartItem(basket_id, lineId, { price: price.id }));
-  };
+  // const onUpdatePriceClick = () => {
+  //   const { price } = getCostAndQuantity(quantityValue, stockrecord);
+  //   dispatch(updateAuthCartItem(basket_id, lineId, { price: price.id }));
+  // };
 
   return (
     <DataRow
       className={clsx({ [classes.rowDisabled]: isUpdating || isRemoving, [classes.bordered]: true })}
       style={{ verticalAlign: "top" }}
     >
-      <DataField style={{ paddingBottom: 10 }} gridArea="product">
+      <DataField
+        style={{ paddingBottom: 10, justifyContent: "flex-start" }}
+        className={cartItemsClasses.alignCenter}
+        gridArea="product"
+      >
         <DataValue style={{ position: "relative" }}>
-          <div className={clsx({ [classes.productAreas]: true, [classes.contentDisabled]: isUpdating || isRemoving })}>
-            <div className={classes.imageColumn}>
+          <Box
+            display="flex"
+            alignItems="center"
+            className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}
+          >
+            <Link to={url} className={classes.imageColumnVer2}>
               <img className={classes.img} src={mainImg} alt="Photo" onError={() => setMainImg(placeholderImg)} />
-            </div>
-            <div className={classes.descriptionColumn}>
-              <Link className={[classes.name, classes.link].join(" ")} to={url}>
-                {name}
+            </Link>
+            <div>
+              <Link className={clsx(classes.nameVer2, "cart-item-upc")} to={url}>
+                {upc}
               </Link>
-              <div className={classes.manufacture}>{manufacture}</div>
-              <div className={classes.description}>
-                {description}
-                <br /> {attribute && `BOM: ${attribute}`}
-              </div>
-              {/* <div> */}
-              {/*  <StatusChip isRfq={!!rfq} /> */}
-              {/* </div> */}
+              <div>{description}</div>
             </div>
-          </div>
+          </Box>
           {isUpdating && (
             <div className={`${classes.rowUpdating} cart-item-updating`}>
               <CircularProgress size="1em" style={{ marginRight: "7px" }} /> <b>{t("updating")}</b>
@@ -227,35 +230,51 @@ const CartItem = (props: {
           )}
         </DataValue>
       </DataField>
-      <DataField gridArea="distributor">
-        <DataLabel>{t("distributor.location")}</DataLabel>
-        <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving }, "cart-distributor")}>
-          {sellerData?.country?.printable_name || "-"}
+      <DataField gridArea="manufacturer" className={cartItemsClasses.alignCenter}>
+        <DataLabel className={classes.alignCenter}>Производитель</DataLabel>
+        <DataValue
+          className={clsx(
+            classes.alignCenter,
+            classes.manufactureVer2,
+            { [classes.contentDisabled]: isUpdating || isRemoving },
+            "cart-distributor",
+          )}
+        >
+          {stockrecord.manufacturer?.name === "Not Specified"
+            ? "Производитель не указан"
+            : stockrecord.manufacturer?.name || "-"}
         </DataValue>
       </DataField>
-      <DataField gridArea="moq">
-        <DataLabel>{t("distributor.moq")}</DataLabel>
-        <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          {formatMoney(dynamicMoq || 0, 0)}
+      <DataField gridArea="sellers" className={cartItemsClasses.alignCenter}>
+        <DataLabel className={classes.alignCenter}>Поставщик</DataLabel>
+        <DataValue
+          className={clsx(classes.alignCenter, classes.manufactureVer2, {
+            [classes.contentDisabled]: isUpdating || isRemoving,
+          })}
+        >
+          {stockrecord.partner_name || "-"}
         </DataValue>
       </DataField>
-      <DataField gridArea="stock">
-        <DataLabel>{t("column.stock")}</DataLabel>
-        <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          {formatMoney(numInStock, 0)}
-          {!rfq && getError("out_of_stock") && <div className={classes.error}>{getError("out_of_stock")}</div>}
+      <DataField gridArea="stock" className={cartItemsClasses.alignCenter}>
+        <DataLabel className={classes.alignCenter}>{t("column.stock")}</DataLabel>
+        <DataValue
+          className={clsx(classes.alignCenter, classes.price, { [classes.contentDisabled]: isUpdating || isRemoving })}
+        >
+          {stockrecord?.num_in_stock ? (
+            `${formatMoney(stockrecord.num_in_stock, 0)}`
+          ) : (
+            <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>
+          )}
         </DataValue>
       </DataField>
-      <DataField gridArea="price">
-        <DataLabel>{t("column.price")}</DataLabel>
-        <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          {/* {(!!rfq || !!stockrecord.low_stock_threshold) && ( */}
+      <DataField gridArea="price" className={cartItemsClasses.alignCenter}>
+        <DataLabel className={classes.alignCenter}>Цены за ед.</DataLabel>
+        <DataValue className={clsx(classes.alignCenter, { [classes.contentDisabled]: isUpdating || isRemoving })}>
           {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
-          {/* {!rfq && !stockrecord.low_stock_threshold && ( */}
           {!!sortedPrices?.length && (
             <React.Fragment>
-              <div style={{ display: "flex", whiteSpace: "nowrap" }}>
-                <span>
+              <div className={classes.priceMobile}>
+                <span className={classes.price}>
                   {currency.symbol}
                   {formatMoney(currencyPrice(getPrice(quantityValue, stockrecord), stockrecord?.price_currency)) || 0}
                 </span>
@@ -292,75 +311,86 @@ const CartItem = (props: {
                     placement="bottom"
                   >
                     <div style={{ cursor: "help", marginLeft: "5px" }}>
-                      <Hidden smDown>
-                        <InfoIcon className={classes.priceTooltipIcon} />
-                      </Hidden>
+                      <InfoIcon className={classes.priceTooltipIcon} />
                     </div>
                   </Tooltip>
                 )}
               </div>
-              <Hidden smDown>
-                <div className={classes.distributorUpdated}>
-                  <div>
-                    {!!stockrecord?.date_updated && (
-                      <React.Fragment>
-                        {t("distributor.updated")}: {getDateLag(new Date(), new Date(stockrecord?.date_updated))}
-                      </React.Fragment>
-                    )}
-                  </div>
-                </div>
-              </Hidden>
+              {/* <Hidden smDown> */}
+              {/*  <div className={classes.distributorUpdated}> */}
+              {/*    <div> */}
+              {/*      {!!stockrecord?.date_updated && ( */}
+              {/*        <React.Fragment> */}
+              {/*          {t("distributor.updated")}: {getDateLag(new Date(), new Date(stockrecord?.date_updated))} */}
+              {/*        </React.Fragment> */}
+              {/*      )} */}
+              {/*    </div> */}
+              {/*  </div> */}
+              {/* </Hidden> */}
             </React.Fragment>
           )}
-          {!rfq && getError("no_prices") && <div className={classes.error}>{getError("no_prices")}</div>}
+          {/* {!rfq && getError("no_prices") && <div className={classes.error}>{getError("no_prices")}</div>} */}
         </DataValue>
       </DataField>
-      <DataField gridArea="qty">
-        <DataLabel>{t("column.qty")}</DataLabel>
-        <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          <NumberInput
-            className={classes.qty}
-            name="quantity"
-            variant="outlined"
-            size="small"
-            required
-            onChange={onChangeQty}
-            onFocus={(e: any) => e.target.select()}
-            value={quantityValue}
-            decimalScale={0}
-            {...getError("quantity", false)}
-          />
+      <DataField gridArea="qty" className={cartItemsClasses.alignCenter}>
+        <DataLabel className={classes.alignCenter}>{t("column.qty")}</DataLabel>
+        <DataValue className={clsx(classes.alignCenter, { [classes.contentDisabled]: isUpdating || isRemoving })}>
+          <div className={classes.qtyColumn}>
+            <NumberInput
+              className={classes.qty}
+              name="quantity"
+              variant="outlined"
+              size="small"
+              required
+              onChange={onChangeQty}
+              onFocus={(e: any) => e.target.select()}
+              value={quantityValue}
+              decimalScale={0}
+              error={!!getError("quantity")}
+            />
+            {!!getError("quantity") && <div className={classes.errorMessage}>{getError("quantity")}</div>}
+          </div>
         </DataValue>
       </DataField>
-      <DataField gridArea="total">
-        <DataLabel>{t("column.total")}</DataLabel>
-        <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
-          {/* {(!!rfq || !!stockrecord.low_stock_threshold) && ( */}
-          {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
-          {/* {!rfq && !stockrecord.low_stock_threshold && ( */}
-          {!!sortedPrices?.length && (
-            <span style={{ paddingTop: 10.5, paddingBottom: 10.5 }}>
-              <b>
-                {currency.symbol}
-                {quantityValue
-                  ? formatMoney(
-                      currencyPrice(quantityValue * getPrice(quantityValue, stockrecord), stockrecord?.price_currency),
-                    )
-                  : 0}
-              </b>
-            </span>
-          )}
-        </DataValue>
-      </DataField>
-      <DataField gridArea="actions" className={classes.columnActions}>
+      {/* <DataField gridArea="total"> */}
+      {/*  <DataLabel>{t("column.total")}</DataLabel> */}
+      {/*  <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}> */}
+      {/*    /!* {(!!rfq || !!stockrecord.low_stock_threshold) && ( *!/ */}
+      {/*    {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>} */}
+      {/*    /!* {!rfq && !stockrecord.low_stock_threshold && ( *!/ */}
+      {/*    {!!sortedPrices?.length && ( */}
+      {/*      <span style={{ paddingTop: 10.5, paddingBottom: 10.5 }}> */}
+      {/*        <b> */}
+      {/*          {currency.symbol} */}
+      {/*          {quantityValue */}
+      {/*            ? formatMoney( */}
+      {/*                currencyPrice(quantityValue * getPrice(quantityValue, stockrecord), stockrecord?.price_currency), */}
+      {/*              ) */}
+      {/*            : 0} */}
+      {/*        </b> */}
+      {/*      </span> */}
+      {/*    )} */}
+      {/*  </DataValue> */}
+      {/* </DataField> */}
+      <DataField
+        gridArea="actions"
+        className={clsx(classes.columnActions, cartItemsClasses.alignCenter, cartItemsClasses.justifyContentStart)}
+      >
         <DataValue className={clsx({ [classes.contentDisabled]: isUpdating || isRemoving })}>
           <Hidden smDown>
             <HighlightOffIcon className={clsx(classes.remove, "cart-delete-button")} onClick={onDeleteClick} />
           </Hidden>
           <Hidden mdUp>
-            <span className={appTheme.hyperlink} onClick={onDeleteClick}>
-              {t("common.remove")}
-            </span>
+            <div className={classes.removeButtonWrapper}>
+              <Button
+                className={clsx(appTheme.buttonPrimary, classes.removeButton)}
+                size="small"
+                variant="contained"
+                onClick={onDeleteClick}
+              >
+                {t("common.remove")}
+              </Button>
+            </div>
           </Hidden>
         </DataValue>
       </DataField>
@@ -378,30 +408,30 @@ const CartItem = (props: {
           showUpdateButton={props.showUpdateButton}
         />
       </DataField> */}
-      <ItemErrors
-        stockrecord={stockrecord}
-        rfq={rfq}
-        quantity={quantity}
-        dateUpdated={dateUpdated}
-        isUpdating={isUpdating}
-        isAuthenticated={isAuthenticated}
-        onUpdatePriceClick={onUpdatePriceClick}
-        onUpdateProductClick={onUpdateProductClick}
-        onMoveToRfqClick={() => props.moveToRfqHandler(props.data)}
-        onMoveToOrderClick={() => props.moveToOrderHandler(props.data)}
-        showUpdateButton={props.showUpdateButton}
-      />
+      {/* <ItemErrors */}
+      {/*  stockrecord={stockrecord} */}
+      {/*  rfq={rfq} */}
+      {/*  quantity={quantity} */}
+      {/*  dateUpdated={dateUpdated} */}
+      {/*  isUpdating={isUpdating} */}
+      {/*  isAuthenticated={isAuthenticated} */}
+      {/*  onUpdatePriceClick={onUpdatePriceClick} */}
+      {/*  onUpdateProductClick={onUpdateProductClick} */}
+      {/*  onMoveToRfqClick={() => props.moveToRfqHandler(props.data)} */}
+      {/*  onMoveToOrderClick={() => props.moveToOrderHandler(props.data)} */}
+      {/*  showUpdateButton={props.showUpdateButton} */}
+      {/* /> */}
       {/* {!isDuplicate && !stockrecord.low_stock_threshold && ( */}
-      {!isDuplicate && (
-        <ItemValid
-          stockrecord={stockrecord}
-          rfq={rfq}
-          quantity={quantityValue}
-          sortedPrices={sortedPrices}
-          isUpdating={isUpdating}
-          onMoveToOrderClick={() => props.moveToOrderHandler(props.data)}
-        />
-      )}
+      {/* {!isDuplicate && ( */}
+      {/*  <ItemValid */}
+      {/*    stockrecord={stockrecord} */}
+      {/*    rfq={rfq} */}
+      {/*    quantity={quantityValue} */}
+      {/*    sortedPrices={sortedPrices} */}
+      {/*    isUpdating={isUpdating} */}
+      {/*    onMoveToOrderClick={() => props.moveToOrderHandler(props.data)} */}
+      {/*  /> */}
+      {/* )} */}
     </DataRow>
   );
 };

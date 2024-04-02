@@ -12,8 +12,8 @@ import useAppSelector from "@src/hooks/useAppSelector";
 import constants from "@src/constants/constants";
 import { ID_ELFARO } from "@src/constants/server_constants";
 import { showAlertsModalMessageAction } from "@src/store/alerts/alertsActions";
-import CartItemsVer2 from "@src/views/chipassist/Cart/components/CartItems/CartItemsVer2";
 import { useNavigate } from "react-router-dom";
+import CartItems from "@src/views/chipassist/Cart/components/CartItems/CartItems";
 import { useStyles } from "./cartStyles";
 import CartCheckout from "./components/CartCheckout/CartCheckout";
 
@@ -101,7 +101,8 @@ const Cart = () => {
     <Page title={t("title")} description={t("description")}>
       <Container maxWidth="xl">
         <Box mt={constants.id !== ID_ELFARO ? 5 : 0} mb={5}>
-          {!checkout.open && <CartItemsVer2 />}
+          {/* {!checkout.open && <CartItemsVer2 />} */}
+          {!checkout.open && <CartItems />}
           {checkout.open && (
             <div className={classes.checkoutContainer}>
               <Button onClick={handleCheckoutClose} className={classes.checkoutBack}>

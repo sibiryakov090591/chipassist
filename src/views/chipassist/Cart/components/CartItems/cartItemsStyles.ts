@@ -182,27 +182,21 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     },
     itemsGrid: {
       display: "grid !important",
-      gridTemplateColumns: "3fr 1.3fr 1fr 1fr 1fr 1fr 1fr 50px",
-      gridTemplateAreas: `
-        "product distributor moq stock price qty total actions"
-        "product-errors product-errors product-errors product-errors product-errors product-errors product-errors product-errors product-errors"
-      `,
+      gridTemplateColumns: "2fr 1.5fr 1.5fr 1fr 1fr 1fr 50px",
       [theme.breakpoints.down("sm")]: {
         gridTemplateColumns: "repeat(5, 1fr) max-content",
         gridTemplateAreas: `
-          "product product product product product product"
-          "distributor moq stock price qty total"
-          "product-errors product-errors product-errors product-errors product-errors product-errors"
-          "actions actions actions actions actions actions "
+          "product product product product product"
+          "manufacturer sellers stock price qty"
+          "actions actions actions actions actions "
         `,
       },
       [theme.breakpoints.down("xs")]: {
         gridTemplateColumns: "repeat(2, 1fr) max-content",
         gridTemplateAreas: `
           "product product product "
-          "distributor stock price"
-          "moq qty total"
-          "product-errors product-errors product-errors"
+          "manufacturer sellers stock"
+          "price . qty"
           "actions actions actions"
         `,
       },

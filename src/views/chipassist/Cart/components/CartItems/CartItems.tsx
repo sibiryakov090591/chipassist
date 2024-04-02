@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Button, Box, CircularProgress } from "@material-ui/core";
+import { Button, Box, CircularProgress, Tooltip, Hidden } from "@material-ui/core";
 import Sticky from "react-sticky-el";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Link } from "react-router-dom";
@@ -24,6 +24,8 @@ import constants from "@src/constants/constants";
 import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
 import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import ConfirmRequestModal from "@src/views/chipassist/Cart/components/ConfirmRequestModal/ConfirmRequestModal";
+import HelpIcon from "@material-ui/icons/Help";
+import list_icon from "@src/images/Icons/list-1.svg";
 import CartItem from "./CartItem/CartItem";
 // import { useStyles as useCartPayStyles } from "../CartPay/cartPayStyles";
 import { useStyles } from "./cartItemsStyles";
@@ -68,10 +70,10 @@ const CartItems = () => {
   const [cost, setCost] = useState<number>(null);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   // const [isShowMinCostHint, setIsShowMinCostHint] = useState(false);
-  const showCost = useMemo(() => {
-    if (!cartItems) return false;
-    return cartItems.some((i) => !i.rfq);
-  }, [cartItems]);
+  // const showCost = useMemo(() => {
+  //   if (!cartItems) return false;
+  //   return cartItems.some((i) => !i.rfq);
+  // }, [cartItems]);
 
   // const isShowMinTax = useMemo(() => [ID_MASTER, ID_CHIPASSIST, ID_ELFARO].includes(constants.id), []);
   // const isShowMinCost = useMemo(() => [ID_MASTER, ID_CHIPASSIST, ID_ELFARO].includes(constants.id), []);
@@ -107,9 +109,7 @@ const CartItems = () => {
         img: getImage(item.product),
         quantity: item.quantity,
         attribute: (!!item.attributes?.length && item.attributes[0].value) || null,
-        url: `/product/${encodeURIComponent(item.product.upc)}/${
-          constants.id === ID_ELFARO ? item.stockrecord?.id : item.product.id
-        }/`,
+        url: `/product/${encodeURIComponent(item.product.upc)}/${item.stockrecord?.id}/`,
         upc: item.product.upc,
         stockrecord: item.stockrecord,
         isDuplicate: !!duplicateItem[0],
@@ -243,14 +243,21 @@ const CartItems = () => {
       }
     >
       {inProgress && <CircularProgress className={commonClasses.progressCircle} size="1.5em" />}
-      {t("checkout")}
+      Отправить запрос
     </Button>
   );
 
   return (
     <>
-      <h1 className={commonClasses.pageTitle}>{t("header")}</h1>
-      <div>{t("header_description")}</div>
+      <Box display="flex" alignItems="center">
+        <Hidden xsDown>
+          <img className={classes.listIcon} src={list_icon} alt="List icon" />
+        </Hidden>
+        <div>
+          <h1 className={commonClasses.pageTitle}>{t("header")}</h1>
+          {!!cartItems.length && <div className={classes.description}>{t("header_description")}</div>}
+        </div>
+      </Box>
       <div className={clsx(commonClasses.filtersRow, commonClasses.filtersRowMargin)}>
         <FiltersContainer>
           <FilterResultsBar count={cart?.count || 0} />
@@ -331,28 +338,43 @@ const CartItems = () => {
           >
             <DataHeader>
               <DataRow>
-                <DataField className={`${classes.headerProduct}`} gridArea="product">
+                <DataField
+                  className={`${classes.headerProduct} ${classes.alignCenter} ${classes.justifyContentStart}`}
+                  gridArea="product"
+                >
                   <DataValue>{t("column.product")}</DataValue>
                 </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="distributor">
-                  <DataValue>{t("column.location")}</DataValue>
+                <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="manufacturer">
+                  <DataValue>Производитель</DataValue>
                 </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="moq">
-                  <DataValue>{t("distributor.moq")}</DataValue>
+                <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="sellers">
+                  <DataValue>
+                    <Box display="flex" alignItems="center">
+                      Поставщик
+                      <Tooltip
+                        enterTouchDelay={1}
+                        classes={{ tooltip: commonClasses.tooltip }}
+                        title={
+                          <div>{`${
+                            constants.title || "ICSearch"
+                          } автоматически запросит цены на этот продукт у всех подключенных поставщиков`}</div>
+                        }
+                      >
+                        <HelpIcon style={{ marginLeft: 5, fontSize: 16 }} />
+                      </Tooltip>
+                    </Box>
+                  </DataValue>
                 </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="stock">
-                  <DataValue>{t("column.stock")}</DataValue>
+                <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="stock">
+                  <DataValue>На складе</DataValue>
                 </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="price">
-                  <DataValue>{t("column.price")}</DataValue>
+                <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="price">
+                  <DataValue>Цены за ед.</DataValue>
                 </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="qty">
+                <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="qty">
                   <DataValue>{t("column.qty")}</DataValue>
                 </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="total">
-                  <DataValue>{t("column.total")}</DataValue>
-                </DataField>
-                <DataField className={`${classes.headerProduct}`} gridArea="actions" />
+                <DataField className={`${classes.headerProduct} ${classes.alignCenter}`} gridArea="actions" />
               </DataRow>
             </DataHeader>
 
@@ -375,41 +397,41 @@ const CartItems = () => {
               )}
             </DataBody>
           </DataTable>
-          <div className={classes.estRow}>
-            <div></div>
-            {showCost && (
-              <div className={classes.estC}>
-                {/* {!!serviceTax && ( */}
-                {/*  <div className={classes.estTax}> */}
-                {/*    {t("order.service_fee", { tax: serviceTax })} */}
-                {/*    {isShowMinTax && <span>{` (min ${formatMoney(currencyPrice(20, "EUR"))}${currency.symbol})`}</span>} */}
-                {/*    :{" "} */}
-                {/*    <strong> */}
-                {/*      {formatMoney(getTotalPrices(cost, serviceTax, currencyPrice).tax || 0)} {currency.symbol} */}
-                {/*    </strong> */}
-                {/*  </div> */}
-                {/* )} */}
-                <div className={classes.estTotal}>
-                  {t("column.total")}:{" "}
-                  <strong>
-                    {currency.symbol}
-                    {formatMoney(cost || 0)}
-                  </strong>
-                  {/* {!!serviceTax && <span> {t("column.service_fee")}</span>} */}
-                </div>
-                {/* {isShowMinCostHint && ( */}
-                {/*  <div className={clsx(cartPayClasses.minCost, classes.estTotal)}> */}
-                {/*    {t("min_cost")} */}
-                {/*    <strong>100€</strong> */}
-                {/*  </div> */}
-                {/* )} */}
-                <ul className={classes.estTotalHint}>
-                  {/* {!!serviceTax && <li>{t("total_hint_1", { num: serviceTax })}</li>} */}
-                  <li>{t("total_hint_2")}</li>
-                </ul>
-              </div>
-            )}
-          </div>
+          {/* <div className={classes.estRow}> */}
+          {/*  <div></div> */}
+          {/*  {showCost && ( */}
+          {/*    <div className={classes.estC}> */}
+          {/*      /!* {!!serviceTax && ( *!/ */}
+          {/*      /!*  <div className={classes.estTax}> *!/ */}
+          {/*      /!*    {t("order.service_fee", { tax: serviceTax })} *!/ */}
+          {/*      /!*    {isShowMinTax && <span>{` (min ${formatMoney(currencyPrice(20, "EUR"))}${currency.symbol})`}</span>} *!/ */}
+          {/*      /!*    :{" "} *!/ */}
+          {/*      /!*    <strong> *!/ */}
+          {/*      /!*      {formatMoney(getTotalPrices(cost, serviceTax, currencyPrice).tax || 0)} {currency.symbol} *!/ */}
+          {/*      /!*    </strong> *!/ */}
+          {/*      /!*  </div> *!/ */}
+          {/*      /!* )} *!/ */}
+          {/*      <div className={classes.estTotal}> */}
+          {/*        {t("column.total")}:{" "} */}
+          {/*        <strong> */}
+          {/*          {currency.symbol} */}
+          {/*          {formatMoney(cost || 0)} */}
+          {/*        </strong> */}
+          {/*        /!* {!!serviceTax && <span> {t("column.service_fee")}</span>} *!/ */}
+          {/*      </div> */}
+          {/*      /!* {isShowMinCostHint && ( *!/ */}
+          {/*      /!*  <div className={clsx(cartPayClasses.minCost, classes.estTotal)}> *!/ */}
+          {/*      /!*    {t("min_cost")} *!/ */}
+          {/*      /!*    <strong>100€</strong> *!/ */}
+          {/*      /!*  </div> *!/ */}
+          {/*      /!* )} *!/ */}
+          {/*      <ul className={classes.estTotalHint}> */}
+          {/*        /!* {!!serviceTax && <li>{t("total_hint_1", { num: serviceTax })}</li>} *!/ */}
+          {/*        <li>{t("total_hint_2")}</li> */}
+          {/*      </ul> */}
+          {/*    </div> */}
+          {/*  )} */}
+          {/* </div> */}
         </React.Fragment>
       )}
 

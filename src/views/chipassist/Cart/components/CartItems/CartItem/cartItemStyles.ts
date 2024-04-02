@@ -226,6 +226,14 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         whiteSpace: "nowrap",
       },
     },
+    priceMobile: {
+      display: "flex",
+      justifyContent: "center",
+      whiteSpace: "nowrap",
+      [theme.breakpoints.down("xs")]: {
+        justifyContent: "flex-start",
+      },
+    },
     rfqPrice: {
       color: "#2292a4",
       fontSize: "0.9rem",
