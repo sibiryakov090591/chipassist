@@ -42,7 +42,7 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, product, sr, isSmDown 
   // const [inCartCount, setInCartCount] = useState(0);
 
   useEffect(() => {
-    const cartItem = cartItems?.find((item) => item.stockrecord.id === sr.id);
+    const cartItem = cartItems?.find((item) => item.stockrecord?.id === sr?.id);
     setInCart(!!cartItem);
     // setInCartCount(cartItem?.quantity || 0);
   }, [cartItems]);
