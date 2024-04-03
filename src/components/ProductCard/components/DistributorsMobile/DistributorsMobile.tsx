@@ -118,7 +118,7 @@ const DistributorsMobile: React.FC<Props> = ({ product, sortedStockrecords }) =>
                 // )}
                 // </>
                 <td className={clsx(classes.tdActions, { [classes.mobileContactButton]: isXXSDown })}>
-                  <AddToCartButton product={product} sr={val} isSmDown={true} />
+                  <AddToCartButton product={product} sr={val} isSmDown={true} isXXSDown={isXXSDown} />
                 </td>
               );
 

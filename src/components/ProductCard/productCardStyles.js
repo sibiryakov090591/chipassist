@@ -221,6 +221,9 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     height: 38,
     minWidth: "200px",
+    [theme.breakpoints.down(500)]: {
+      width: "100%",
+    },
   },
   requestButtonHelpText: {
     maxWidth: 203,
