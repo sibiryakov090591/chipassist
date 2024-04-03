@@ -38,7 +38,8 @@ function AddressData({ item }: any) {
         </TableRow>
         <TableRow>
           <TableCell className={classes.tableHeader}>{t("cart.address.country")}</TableCell>
-          <TableCell>{countries && countries.find((i) => i.url === item.country)?.printable_name}</TableCell>
+          {/* <TableCell>{countries?.find((i) => i.url === item.country)?.printable_name}</TableCell> */}
+          <TableCell>{countries?.find((i) => i.code === "RU")?.printable_name || ""}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell className={classes.tableHeader}>{t("cart.address.line4")}</TableCell>

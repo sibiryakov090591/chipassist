@@ -26,10 +26,8 @@ import {
   showUpdateSuccess,
   updateCompanyAddress,
 } from "@src/store/profile/profileActions";
-import constants from "@src/constants/constants";
 import useAppSelector from "@src/hooks/useAppSelector";
 import clsx from "clsx";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
 import validate from "validate.js";
 import { defaultCountry } from "@src/constants/countries";
 import formSchema from "@src/utils/formSchema";
@@ -66,7 +64,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
 
   const checkout = useAppSelector((state) => state.checkout);
   const addressErrors = useAppSelector((state) => state.profile.profileInfo?.addressErrors);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
+  // const geolocation = useAppSelector((state) => state.profile.geolocation);
 
   const [pendingMode, setPendingMode] = useState(false);
   const [phoneValue, setPhoneValue] = useState(updateData?.phone_number || updateData?.phone_number_str || "");
@@ -112,11 +110,13 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
     if (phoneValue) data.phone_number_str = `+${phoneValue.replace(/\+/g, "")}`;
     if (!data.country) {
       // eslint-disable-next-line no-param-reassign
-      data.country =
-        updateData?.country ||
-        (constants?.id !== ID_ICSEARCH &&
-          checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url) ||
-        defaultCountry.url;
+      // data.country =
+      //   updateData?.country ||
+      //   (constants?.id !== ID_ICSEARCH &&
+      //     checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url) ||
+      //   defaultCountry.url;
+      // eslint-disable-next-line no-param-reassign
+      data.country = defaultCountry.url;
     }
 
     const validErrors = validate(data, schema);
@@ -242,12 +242,14 @@ const AddressForm: React.FC<AddressFormProps> = ({ onClose, changeCurrentPage, u
                 }}
                 name="country"
                 label={t("form_labels.country")}
-                defaultValue={
-                  updateData?.country ||
-                  (constants?.id !== ID_ICSEARCH &&
-                    checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url) ||
-                  defaultCountry.url
-                }
+                // defaultValue={
+                //   updateData?.country ||
+                //   (constants?.id !== ID_ICSEARCH &&
+                //     checkout?.countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)?.url) ||
+                //   defaultCountry.url
+                // }
+                disabled={true}
+                defaultValue={defaultCountry.url}
                 fullWidth
                 select
                 {...register("country")}
