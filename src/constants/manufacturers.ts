@@ -148,7 +148,7 @@ export const manufacturers = [
     id: 32054,
     description:
       "UNISOC is a leading fabless semiconductor company committed to pioneering a new era of chip design with its advanced technology. The company focuses on the research and development of mobile communication and IoT chipsets, providing innovative solutions for global partners. With a strong emphasis on technology innovation and quality production, UNISOC has become a trusted partner for various mobile device manufacturers and service providers.",
-    image: "https://www.unisoc.com/themes/custom/unisoc/logo.svg",
+    image: "https://www.unisoc.com/en_us/_nuxt/img/z_logo.ea586b9.jpg",
     url: "https://www.unisoc.com",
     address: "UNISOC Technologies Co., Ltd., 23 Xinxi Rd, Shangjie District, Zhengzhou City, Henan Province, China",
     description_ru:
@@ -170,8 +170,8 @@ export const manufacturers = [
     id: 32055,
     description:
       "Nation Technologies is a leading manufacturer of high-quality electronic components, specializing in a wide range of products including resistors, capacitors, diodes, and integrated circuits. With a focus on innovation, reliability, and customer satisfaction, Nation Technologies has established itself as a trusted supplier in the electronics industry. The company's commitment to excellence is reflected in its state-of-the-art manufacturing facilities and stringent quality control processes. Nation Technologies is known for its dedication to research and development, continuously striving to introduce cutting-edge solutions that meet the evolving needs of the market.",
-    image: "https://www.nationtech.com/logo.png",
-    url: "https://www.nationtech.com",
+    image: "https://www.nationstech.com/uploadfile/2019/0402/20190402033405214.png",
+    url: "https://www.nationstech.com",
     address: "Nation Technologies, 1234 Electronics Avenue, Cityville, State, Zip Code",
     description_ru:
       "Компания Nation Technologies является ведущим производителем высококачественных электронных компонентов, специализирующимся на широком ассортименте продукции, включая резисторы, конденсаторы, диоды и интегральные схемы. С акцентом на инновации, надежность и удовлетворение потребностей клиентов, Nation Technologies установила себя как надежного поставщика в электронной промышленности. Обязательство компании к совершенству отражается в ее передовых производственных объектах и строгих процессах контроля качества. Nation Technologies известна своей преданностью исследованиям и разработкам, постоянно стремясь внедрять передовые решения, отвечающие меняющимся потребностям рынка.",
@@ -328,7 +328,7 @@ export const manufacturers = [
     id: 1874,
     description:
       "SMC Corporation is a global manufacturer of pneumatic and electric components. The company offers a wide range of products including actuators, valves, fittings, and air dryers for automation and industrial applications. SMC is known for its high-quality products, innovative solutions, and reliable performance. With a strong focus on research and development, SMC continues to introduce new technologies to meet the evolving needs of its customers worldwide. The company is committed to sustainability and environmental responsibility in its manufacturing processes.",
-    image: "https://static.smc.eu/binaries/content/gallery/smc_global/logos/svg/logo.svg",
+    image: "https://www.smcworld.com/assets/smc_img/common/smc_logo.png",
     url: "https://www.smcworld.com",
     address: "SMC Corporation Headquarters, 4-14-1, Sotokanda, Chiyoda-ku, Tokyo 101-0021, Japan",
     description_ru:
