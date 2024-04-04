@@ -171,7 +171,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   }, [sortedStockrecords, sortBy, bestOfferId]);
 
   useEffect(() => {
-    if (sortedStockrecords) {
+    if (sortedStockrecords?.length > 1) {
       const data: any = {
         price_1: { id: 0, price: null },
         price_10: { id: 0, price: null },
@@ -184,24 +184,40 @@ const DistributorsDesktop: React.FC<Props> = ({
           const srPrice = sr[key as keyof SortedStockrecord];
           const currentBestPrice = data[key].price;
           if (srPrice && (!currentBestPrice || srPrice < currentBestPrice)) {
-            data[key] = { id: sr.id, price: srPrice };
+            data[key] = { id: sr?.id, price: srPrice };
           }
         });
       });
       setBestPrices(Object.keys(data).reduce((acc, key) => ({ ...acc, [key]: data[key].price }), {}));
     }
   }, [sortedStockrecords]);
-  console.log(sortedStockrecords?.filter((i) => i.id === 21443824));
 
   useEffect(() => {
-    if (sortedStockrecords && smart_view) {
-      const sortedStocks = orderBy(sortedStockrecords, "price_1", "asc");
-      const bestOffer = sortedStocks.find((i) => i.price_1 > 0 && i.num_in_stock > 0);
-      if (bestOffer) {
-        if (sortedStocks.length > 1) {
-          setBestOfferId(bestOffer.id);
-        }
-      }
+    if (sortedStockrecords?.length > 1 && smart_view) {
+      const averagePricesData: any = [];
+
+      // Calculating average prices of all stocks
+      sortedStockrecords.forEach((sr) => {
+        const priceBreaks = ["price_1", "price_10", "price_100", "price_1000", "price_10000"];
+        const averagePriceData = priceBreaks.reduce(
+          (acc, priceBreak) => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            const srPrice: number = sr[priceBreak];
+            if (srPrice) {
+              return { count: acc.count + 1, sum: acc.sum + srPrice };
+            }
+            return acc;
+          },
+          { count: 0, sum: 0 },
+        );
+        if (averagePriceData.sum)
+          averagePricesData.push({ stockId: sr?.id, averageSum: averagePriceData.sum / averagePriceData.count });
+      });
+
+      // Definition the best stock
+      const bestOffer = orderBy(averagePricesData, "averageSum", "asc")[0];
+      if (bestOffer) setBestOfferId(bestOffer.stockId);
     } else if (setBestOfferId) setBestOfferId(null);
   }, [sortedStockrecords, smart_view]);
 
