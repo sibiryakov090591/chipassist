@@ -52,7 +52,7 @@ const CartItem = (props: {
     lineId,
     img,
     // name,
-    // manufacture,
+    manufacturer,
     stockrecord,
     description,
     // attribute,
@@ -240,9 +240,7 @@ const CartItem = (props: {
             "cart-distributor",
           )}
         >
-          {stockrecord?.manufacturer?.name === "Not Specified"
-            ? "Производитель не указан"
-            : stockrecord?.manufacturer?.name || "-"}
+          {manufacturer?.name === "Not Specified" ? "Производитель не указан" : manufacturer?.name || "-"}
         </DataValue>
       </DataField>
       <DataField gridArea="sellers" className={cartItemsClasses.alignCenter}>
