@@ -95,6 +95,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const [stockrecords, setStockrecords] = useState<SortedStockrecord[][]>(null);
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
   const [bestOfferId, setBestOfferId] = useState<number>(null);
+  const [bestPrices, setBestPrices] = useState<{ [key: string]: number }>({});
   const [sortBy, setSortBy] = useState<{ name: string; direction: "desc" | "asc" }>({
     name: "updatedTime",
     direction: "asc",
@@ -168,6 +169,29 @@ const DistributorsDesktop: React.FC<Props> = ({
       setStockrecords(sortFn(res, sortBy.name, sortBy.direction));
     }
   }, [sortedStockrecords, sortBy, bestOfferId]);
+
+  useEffect(() => {
+    if (sortedStockrecords) {
+      const data: any = {
+        price_1: { id: 0, price: null },
+        price_10: { id: 0, price: null },
+        price_100: { id: 0, price: null },
+        price_1000: { id: 0, price: null },
+        price_10000: { id: 0, price: null },
+      };
+      sortedStockrecords.forEach((sr) => {
+        ["price_1", "price_10", "price_100", "price_1000", "price_10000"].forEach((key) => {
+          const srPrice = sr[key as keyof SortedStockrecord];
+          const currentBestPrice = data[key].price;
+          if (srPrice && (!currentBestPrice || srPrice < currentBestPrice)) {
+            data[key] = { id: sr.id, price: srPrice };
+          }
+        });
+      });
+      setBestPrices(Object.keys(data).reduce((acc, key) => ({ ...acc, [key]: data[key].price }), {}));
+    }
+  }, [sortedStockrecords]);
+  console.log(sortedStockrecords?.filter((i) => i.id === 21443824));
 
   useEffect(() => {
     if (sortedStockrecords && smart_view) {
@@ -373,23 +397,24 @@ const DistributorsDesktop: React.FC<Props> = ({
           : stockrecords
         )?.map((srArray) => {
           if (!srArray) return null;
-          const minPrices: any = {
-            price_1: { price: srArray[0].price_1, stock_id: 0 },
-            price_10: { price: srArray[0].price_10, stock_id: 0 },
-            price_100: { price: srArray[0].price_100, stock_id: 0 },
-            price_1000: { price: srArray[0].price_1000, stock_id: 0 },
-            price_10000: { price: srArray[0].price_10000, stock_id: 0 },
-          };
+          // const minPrices: any = {
+          //   price_1: { price: srArray[0].price_1, stock_id: 0 },
+          //   price_10: { price: srArray[0].price_10, stock_id: 0 },
+          //   price_100: { price: srArray[0].price_100, stock_id: 0 },
+          //   price_1000: { price: srArray[0].price_1000, stock_id: 0 },
+          //   price_10000: { price: srArray[0].price_10000, stock_id: 0 },
+          // };
+          // srArray.forEach((sr, index) => {
+          //   if (index > 0) {
+          //     ["price_1", "price_10", "price_100", "price_1000", "price_10000"].forEach((amount) => {
+          //       if (sr[amount as keyof SortedStockrecord] === minPrices[amount].price && !minPrices[amount].stock_id) {
+          //         minPrices[amount].stock_id = sr.id;
+          //       }
+          //     });
+          //   }
+          // });
+
           const isBestOfferGroup = srArray.some((i) => i.id === bestOfferId);
-          srArray.forEach((sr, index) => {
-            if (index > 0) {
-              ["price_1", "price_10", "price_100", "price_1000", "price_10000"].forEach((amount) => {
-                if (sr[amount as keyof SortedStockrecord] === minPrices[amount].price && !minPrices[amount].stock_id) {
-                  minPrices[amount].stock_id = sr.id;
-                }
-              });
-            }
-          });
 
           return srArray.map((val, index) => {
             if (!val) return null;
@@ -682,21 +707,21 @@ const DistributorsDesktop: React.FC<Props> = ({
                   <React.Fragment>
                     <td
                       className={clsx(classes.trPrice, classes.tr1, {
-                        [classes.strong]: isShowMoreActive && MOQ <= 1 && minPrices.price_1.stock_id === val.id,
+                        [classes.strong]: MOQ <= 1 && bestPrices.price_1 && bestPrices.price_1 === val.price_1,
                       })}
                     >
                       <Price>{MOQ <= 1 && val.price_1 ? formatMoney(val.price_1) : "-"}</Price>
                     </td>
                     <td
                       className={clsx(classes.trPrice, classes.tr10, {
-                        [classes.strong]: isShowMoreActive && MOQ <= 10 && minPrices.price_10.stock_id === val.id,
+                        [classes.strong]: MOQ <= 10 && bestPrices.price_10 && bestPrices.price_10 === val.price_10,
                       })}
                     >
                       <Price>{MOQ <= 10 && val.price_10 ? formatMoney(val.price_10) : "-"}</Price>
                     </td>
                     <td
                       className={clsx(classes.trPrice, classes.tr100, {
-                        [classes.strong]: isShowMoreActive && MOQ <= 100 && minPrices.price_100.stock_id === val.id,
+                        [classes.strong]: MOQ <= 100 && bestPrices.price_100 && bestPrices.price_100 === val.price_100,
                       })}
                     >
                       <Price>{MOQ <= 100 && val.price_100 ? formatMoney(val.price_100) : "-"}</Price>
@@ -704,7 +729,8 @@ const DistributorsDesktop: React.FC<Props> = ({
                     <Hidden mdDown>
                       <td
                         className={clsx(classes.trPrice, classes.tr1000, {
-                          [classes.strong]: isShowMoreActive && MOQ <= 1000 && minPrices.price_1000.stock_id === val.id,
+                          [classes.strong]:
+                            MOQ <= 1000 && bestPrices.price_1000 && bestPrices.price_1000 === val.price_1000,
                         })}
                       >
                         <Price>{MOQ <= 1000 && val.price_1000 ? formatMoney(val.price_1000) : "-"}</Price>
@@ -712,7 +738,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                       <td
                         className={clsx(classes.trPrice, classes.tr10000, {
                           [classes.strong]:
-                            isShowMoreActive && MOQ <= 10000 && minPrices.price_10000.stock_id === val.id,
+                            MOQ <= 10000 && bestPrices.price_10000 && bestPrices.price_10000 === val.price_10000,
                         })}
                       >
                         <Price>{MOQ <= 10000 && val.price_10000 ? formatMoney(val.price_10000) : "-"}</Price>
