@@ -71,7 +71,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       paddingRight: "0 !important",
       [theme.breakpoints.down(500)]: {
         width: "auto",
-        paddingLeft: "12px !important",
+        padding: "12px !important",
       },
     },
     mobileContactButton: {
@@ -80,6 +80,15 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       justifyContent: "center",
       "& button": {
         minWidth: 120,
+        [theme.breakpoints.down(500)]: {
+          minWidth: "auto",
+          width: "100%",
+          height: 36,
+          fontSize: 14,
+        },
+      },
+      [theme.breakpoints.down(500)]: {
+        display: "block",
       },
     },
     tdIcon: {

@@ -94,28 +94,27 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       email: formSchema.email,
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
-      ...(!isIcSearch && { policy_confirm: formSchema.policyConfirm }),
       inn: formSchema.inn,
       policy_confirm: formSchema.policyConfirm,
     };
   }, []);
 
-  useEffect(() => {
-    const country =
-      (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-      defaultCountry;
-    if (country) {
-      setFormState((prevState) => {
-        return {
-          ...prevState,
-          values: {
-            ...prevState.values,
-            country: country.url || "",
-          },
-        };
-      });
-    }
-  }, [geolocation, countries]);
+  // useEffect(() => {
+  //   const country =
+  //     (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
+  //     defaultCountry;
+  //   if (country) {
+  //     setFormState((prevState) => {
+  //       return {
+  //         ...prevState,
+  //         values: {
+  //           ...prevState.values,
+  //           country: country.url || "",
+  //         },
+  //       };
+  //     });
+  //   }
+  // }, [geolocation, countries]);
 
   useEffect(() => {
     const errors = validate(formState.values, schema);

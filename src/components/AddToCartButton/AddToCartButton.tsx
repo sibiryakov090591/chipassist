@@ -21,10 +21,11 @@ interface Props {
   product: any;
   sr: any;
   isSmDown: boolean;
+  isXXSDown?: boolean;
   requestedQty?: number;
 }
 
-const AddToCartButton: React.FC<Props> = ({ requestedQty, product, sr, isSmDown }) => {
+const AddToCartButton: React.FC<Props> = ({ requestedQty, product, sr, isSmDown, isXXSDown }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const anchorRef = React.useRef(null);
@@ -106,7 +107,21 @@ const AddToCartButton: React.FC<Props> = ({ requestedQty, product, sr, isSmDown 
             [classes.inCartMobile]: inCart && isSmDown,
           })}
         >
-          {inCart ? hoverAddToList || isSmDown ? t("cart.in_list") : <span>В корзине</span> : t("cart.add_list")}
+          {inCart ? (
+            hoverAddToList || isSmDown ? (
+              isXXSDown ? (
+                "Перейти в корзину"
+              ) : (
+                t("cart.in_list")
+              )
+            ) : (
+              <span>В корзине</span>
+            )
+          ) : isXXSDown ? (
+            "Добавить в корзину"
+          ) : (
+            t("cart.add_list")
+          )}
         </Button>
         {!!requestedQty && isAuthenticated && (
           <div className={classes.requestButtonHelpText}>

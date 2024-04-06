@@ -106,6 +106,7 @@ const CartItems = () => {
         lineId: item.id,
         name: `${item.product.manufacturer ? item.product.manufacturer.name : "" || ""} ${item.product.upc}`,
         description: item.product.description,
+        manufacturer: item.product?.manufacturer,
         img: getImage(item.product),
         quantity: item.quantity,
         attribute: (!!item.attributes?.length && item.attributes[0].value) || null,

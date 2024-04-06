@@ -9,7 +9,7 @@ export const onSuggestionsFetchRequested = (value: string) => {
         types: actionTypes.LOAD_SUGGESTIONS_ARRAY,
         promise: (client: ApiClientInterface) =>
           client
-            .get(`/search_ac/?search=${encodeURIComponent(value)}`, { cancelId: "search_ac" })
+            .get(`apiv2/search_ac/?search=${encodeURIComponent(value)}`, { cancelId: "search_ac", noapi: true })
             .then((res) => res.data)
             .catch((e: any) => {
               console.log("***LOAD_SUGGESTIONS_ERROR", e);

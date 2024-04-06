@@ -186,12 +186,12 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: an
     "";
 
   return {
-    types: [false, actionTypes.SEND_FILTERS_VALUES_S, actionTypes.SEND_FILTERS_VALUES_F],
+    types: [false, actionTypes.SEND_FILTERS_VALUES_S, null],
     promise: (client: ApiClientInterface) =>
       client
         .get(`${API_PATH}${SEARCH_URL}${params}`, {
           cancelId: "get_search_list",
-          config: { headers: { "Cache-Control": "no-cache" } },
+          // config: { headers: { "Cache-Control": "no-cache" } },
           noapi: true,
         })
         .then((res) => res.data)
@@ -527,7 +527,6 @@ export const sendFiltersValueAction = (
             noapi: true,
           })
           .then((res) => {
-            console.log(res.data.results);
             if (res.data.results?.length > 0) return res.data;
             return false; // to start main search
           })

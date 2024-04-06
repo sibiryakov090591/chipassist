@@ -69,7 +69,7 @@ export interface ExistingCartItem {
   description?: string;
   perItem?: string;
   img?: string;
-  manufacture?: { id: number; name: string };
+  manufacturer?: { id: number; name: string };
   stockrecords?: Stockrecord[];
   stockrecord?: Stockrecord;
   isDuplicate?: boolean;
