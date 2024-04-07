@@ -70,7 +70,15 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
             });
         } else if (response.status && response.status === "DONE") {
           dispatch(saveDataAction(response, extendedSearchParams));
-          dispatch(finishedStateAction(extendedSearchParams));
+          setTimeout(() => {
+            dispatch(extendedPreloadingOfSearchResults(queryParams))
+              .then((res) => {
+                dispatch(saveFiltersValuesThunk(res, query));
+              })
+              .finally(() => {
+                dispatch(finishedStateAction(extendedSearchParams));
+              });
+          }, pollingTimeout);
         } else {
           dispatch(finishedStateAction(extendedSearchParams));
         }
