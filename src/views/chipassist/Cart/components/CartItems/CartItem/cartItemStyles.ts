@@ -330,6 +330,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
         textAlign: "center",
       },
     },
+    label: {
+      whiteSpace: "nowrap",
+    },
     removeButtonWrapper: {
       padding: 13,
     },

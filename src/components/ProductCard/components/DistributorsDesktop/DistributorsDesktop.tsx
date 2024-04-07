@@ -87,8 +87,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   const showSellerTooltip = false;
   const lastPriceBreak = isMdDown ? 100 : 10000;
   const combinedStockItemId = React.useRef(uuidv4());
-  if (sortedStockrecords[0].partner_name === "Партнерский склад №3" && product.upc === "MAX3232")
-    console.log(combinedStockItemId);
+
   const smart_view = useAppSelector((state) => state.search.smart_view);
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
   const partners = useAppSelector((state) => state.sellers.items);

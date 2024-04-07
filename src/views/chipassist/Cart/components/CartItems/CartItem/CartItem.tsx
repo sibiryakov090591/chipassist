@@ -231,7 +231,7 @@ const CartItem = (props: {
         </DataValue>
       </DataField>
       <DataField gridArea="manufacturer" className={cartItemsClasses.alignCenter}>
-        <DataLabel className={classes.alignCenter}>Производитель</DataLabel>
+        <DataLabel className={clsx(classes.alignCenter, classes.label)}>Производитель</DataLabel>
         <DataValue
           className={clsx(
             classes.alignCenter,
@@ -244,7 +244,7 @@ const CartItem = (props: {
         </DataValue>
       </DataField>
       <DataField gridArea="sellers" className={cartItemsClasses.alignCenter}>
-        <DataLabel className={classes.alignCenter}>Поставщик</DataLabel>
+        <DataLabel className={clsx(classes.alignCenter, classes.label)}>Поставщик</DataLabel>
         <DataValue
           className={clsx(classes.alignCenter, classes.manufactureVer2, {
             [classes.contentDisabled]: isUpdating || isRemoving,
@@ -254,7 +254,7 @@ const CartItem = (props: {
         </DataValue>
       </DataField>
       <DataField gridArea="stock" className={cartItemsClasses.alignCenter}>
-        <DataLabel className={classes.alignCenter}>{t("column.stock")}</DataLabel>
+        <DataLabel className={clsx(classes.alignCenter, classes.label)}>{t("column.stock")}</DataLabel>
         <DataValue
           className={clsx(classes.alignCenter, classes.price, { [classes.contentDisabled]: isUpdating || isRemoving })}
         >
@@ -266,7 +266,7 @@ const CartItem = (props: {
         </DataValue>
       </DataField>
       <DataField gridArea="price" className={cartItemsClasses.alignCenter}>
-        <DataLabel className={classes.alignCenter}>Цены за ед.</DataLabel>
+        <DataLabel className={clsx(classes.alignCenter, classes.label)}>Цены за ед.</DataLabel>
         <DataValue className={clsx(classes.alignCenter, { [classes.contentDisabled]: isUpdating || isRemoving })}>
           {!sortedPrices?.length && <span className={classes.rfqPrice}>{t("distributor.price_by_request")}</span>}
           {!!sortedPrices?.length && (
@@ -331,7 +331,7 @@ const CartItem = (props: {
         </DataValue>
       </DataField>
       <DataField gridArea="qty" className={cartItemsClasses.alignCenter}>
-        <DataLabel className={classes.alignCenter}>{t("column.qty")}</DataLabel>
+        <DataLabel className={clsx(classes.alignCenter, classes.label)}>{t("column.qty")}</DataLabel>
         <DataValue className={clsx(classes.alignCenter, { [classes.contentDisabled]: isUpdating || isRemoving })}>
           <div className={classes.qtyColumn}>
             <NumberInput
