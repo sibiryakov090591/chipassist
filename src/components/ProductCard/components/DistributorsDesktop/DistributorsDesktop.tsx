@@ -86,6 +86,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   // const dispatch = useAppDispatch();
   const showSellerTooltip = false;
   const lastPriceBreak = isMdDown ? 100 : 10000;
+  const combinedStockItemId = React.useRef(uuidv4());
 
   const smart_view = useAppSelector((state) => state.search.smart_view);
   const baseFilters = useAppSelector((state) => state.search.baseFilters);
@@ -130,7 +131,7 @@ const DistributorsDesktop: React.FC<Props> = ({
 
               return {
                 ...acc,
-                id: uuidv4(),
+                id: combinedStockItemId,
                 num_in_stock: Math.max(acc.num_in_stock, sr.num_in_stock),
                 moq: srWithMinMOQ.moq,
                 mpq: srWithMinMOQ.mpq,
