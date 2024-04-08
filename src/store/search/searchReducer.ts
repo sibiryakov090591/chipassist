@@ -1,4 +1,5 @@
 import { normalizeAttributeData, uniqueFromTwoArrays, updateObject } from "@src/utils/utility";
+import isEqual from "lodash/isEqual";
 import * as actionTypes from "./searchTypes";
 import { SearchState, BaseFilters } from "./searchTypes";
 
@@ -46,6 +47,10 @@ const initialState: SearchState = {
   searchResultsSellers: [],
   searchResultsMaxPrice: null,
   searchResultsMinPrice: null,
+  searchResultsToComparePrevAndNextData: {
+    data: null,
+    isDifferent: false,
+  },
 
   partNumberExamples: null,
 
@@ -101,6 +106,26 @@ export default function search(state = initialState, action: actionTypes.SearchA
         totalPages: action.payload.totalPages,
         isLoadingSearchResultsInProgress: false,
       });
+
+    case actionTypes.SAVE_RESULT_TO_COMPARE:
+      return updateObject(state, {
+        searchResultsToComparePrevAndNextData: {
+          data: action.payload,
+          isDifferent: false,
+        },
+      });
+
+    case actionTypes.COMPARE_SEARCH_RESULTS: {
+      if (!action.payload || !state.searchResultsToComparePrevAndNextData.data) return state;
+
+      const isEqualResult = isEqual(state.searchResultsToComparePrevAndNextData.data, action.payload);
+      return updateObject(state, {
+        searchResultsToComparePrevAndNextData: {
+          ...state.searchResultsToComparePrevAndNextData,
+          isDifferent: !isEqualResult,
+        },
+      });
+    }
 
     case actionTypes.CLEAR_RESULT:
       return updateObject(state, {

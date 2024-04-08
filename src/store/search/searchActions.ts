@@ -807,11 +807,30 @@ const getEnabledAttributes = (getState: () => RootState, attributes: string[]) =
 export const saveFiltersValuesThunk = (response: any, query: string) => {
   return (dispatch: any) => {
     batch(() => {
+      dispatch(saveSearchDataToCompare(response.results));
       dispatch(saveProducts(response.results));
       dispatch({
         type: actionTypes.SAVE_RESULT,
         payload: { query, count: response.count, totalPages: response.total_pages },
       });
+    });
+  };
+};
+
+export const saveSearchDataToCompare = (response: any) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: actionTypes.SAVE_RESULT_TO_COMPARE,
+      payload: response,
+    });
+  };
+};
+
+export const compareSearchResults = (newResponse: any) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: actionTypes.COMPARE_SEARCH_RESULTS,
+      payload: newResponse,
     });
   };
 };
