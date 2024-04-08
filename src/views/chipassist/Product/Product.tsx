@@ -18,6 +18,10 @@ import placeholderImg from "@src/images/cpu.png";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import constants from "@src/constants/constants";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
+import FiltersContainer from "@src/components/FiltersBar";
+import FilterSmartView from "@src/components/FiltersBar/FilterSmartView";
+import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import { useStyles as useCommonStyles } from "@src/views/chipassist/commonStyles";
 import { useStyles } from "./productStyles";
 
 const img = require("@src/images/cpu.png");
@@ -27,6 +31,7 @@ const isICSearch = constants.id === ID_ICSEARCH;
 const ProductView = () => {
   const { partnumber, stockrecordId } = useParams<{ partnumber: string; stockrecordId: string }>();
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
   const { t } = useI18n("product.product_view");
   const dispatch = useAppDispatch();
@@ -224,7 +229,17 @@ const ProductView = () => {
                   </Box>
                 </Box>
 
-                {!!productData && <ProductCard product={productData} />}
+                {!!productData && (
+                  <>
+                    <Box mb="12px" className={commonClasses.filtersRow}>
+                      <FiltersContainer filtersCountToCollapse={4}>
+                        <FilterSmartView disable={false} />
+                        <FilterCurrency />
+                      </FiltersContainer>
+                    </Box>
+                    <ProductCard product={productData} />
+                  </>
+                )}
               </div>
             </div>
           )}
