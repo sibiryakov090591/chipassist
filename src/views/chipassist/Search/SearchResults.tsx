@@ -6,7 +6,7 @@ import { useMediaQuery, useTheme, Container, Dialog, Button } from "@material-ui
 import constants from "@src/constants/constants";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { setUrlWithFilters } from "@src/utils/setUrl";
-import { changeManufacturer, changeQueryAction } from "@src/store/search/searchActions";
+import { changeManufacturer, changeQueryAction, toggleReloadSearchFlag } from "@src/store/search/searchActions";
 import { ProductCard, Page } from "@src/components";
 import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";
 import Paginate from "@src/components/Paginate";
@@ -101,6 +101,9 @@ const SearchResults = () => {
   const count = useAppSelector((state) => state.search.count);
   const currentPage = useAppSelector((state) => state.search.currentPage);
   const totalPages = useAppSelector((state) => state.search.totalPages);
+  const isDifferentNewSearchResult = useAppSelector(
+    (state) => state.search.searchResultsToComparePrevAndNextData.isDifferent,
+  );
   const rfqItem = useAppSelector((state) => state.rfq.rfqItem);
   const isNeedRfqModalOpenAgain = useAppSelector((state) => state.rfq.isNeedRfqModalOpenAgain);
   const geolocation = useAppSelector((state) => state.profile.geolocation);
@@ -335,6 +338,8 @@ const SearchResults = () => {
     return filtersBar;
   };
 
+  const reloadPage = () => dispatch(toggleReloadSearchFlag());
+
   return (
     <Page title={t("page_title")} description={t("page_description")}>
       <Container maxWidth="xl">
@@ -399,6 +404,15 @@ const SearchResults = () => {
                     </span>
                   );
                 })}
+              </div>
+            )}
+            {isDifferentNewSearchResult && !isLoadingSearchResultsInProgress && (
+              <div className={classes.cyrillicHint}>
+                По вашему запросу появились новые результаты.{" "}
+                <span onClick={reloadPage} className={appTheme.hyperlink}>
+                  Обновить результаты
+                </span>
+                .
               </div>
             )}
             {(count !== 0 || !!products?.length) && (

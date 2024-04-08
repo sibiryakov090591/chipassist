@@ -6,6 +6,7 @@ import {
   cancelExtendedSearch,
   extendedPreloadingOfSearchResults,
   saveFiltersValuesThunk,
+  compareSearchResults,
 } from "@src/store/search/searchActions";
 import { useRestTransport } from "@src/services/useTransport";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -73,7 +74,8 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
           setTimeout(() => {
             dispatch(extendedPreloadingOfSearchResults(queryParams))
               .then((res) => {
-                dispatch(saveFiltersValuesThunk(res, query));
+                // dispatch(saveFiltersValuesThunk(res, query));
+                dispatch(compareSearchResults(res?.results));
               })
               .finally(() => {
                 dispatch(finishedStateAction(extendedSearchParams));

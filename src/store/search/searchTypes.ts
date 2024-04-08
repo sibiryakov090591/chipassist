@@ -1,6 +1,8 @@
 export const SET_QUERY_VALUE = "@search/SET_QUERY_VALUE";
 
 export const SAVE_RESULT = "@search/SAVE_RESULT";
+export const SAVE_RESULT_TO_COMPARE = "@search/SAVE_RESULT_TO_COMPARE";
+export const COMPARE_SEARCH_RESULTS = "@search/COMPARE_SEARCH_RESULTS";
 export const CLEAR_RESULT = "@search/CLEAR_RESULT";
 
 export const LOAD_ATTRIBUTES_RESULTS_R = "@search/LOAD_ATTRIBUTES_RESULTS_R";
@@ -124,6 +126,7 @@ export interface SearchState {
   searchResultsSellers: []; // TODO types
   searchResultsMaxPrice: number;
   searchResultsMinPrice: number;
+  searchResultsToComparePrevAndNextData: { data: any; isDifferent: boolean };
   partNumberExamples: string[];
   filterSize: number;
   filterInc: number;
@@ -134,6 +137,16 @@ export interface SearchState {
 export interface SaveResultAction {
   type: typeof SAVE_RESULT;
   payload: { count: number; totalPages: number };
+}
+
+export interface SaveResultToCompareAction {
+  type: typeof SAVE_RESULT_TO_COMPARE;
+  payload: any;
+}
+
+export interface CompareSearchResultsAction {
+  type: typeof COMPARE_SEARCH_RESULTS;
+  payload: any;
 }
 
 export interface ClearResultAction {
@@ -312,6 +325,8 @@ export interface SetExtendedSearchCountAction {
 }
 
 export type SearchActionTypes =
+  | CompareSearchResultsAction
+  | SaveResultToCompareAction
   | ChangeManufacturerAction
   | SetExtendedSearchCountAction
   | ToggleSmartViewAction
