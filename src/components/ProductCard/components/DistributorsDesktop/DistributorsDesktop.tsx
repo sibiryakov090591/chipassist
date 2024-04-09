@@ -194,12 +194,12 @@ const DistributorsDesktop: React.FC<Props> = ({
   }, [sortedStockrecords]);
 
   useEffect(() => {
-    if (sortedStockrecords?.length > 1 && smart_view) {
+    if (sortedStockrecords?.length > 1 && smart_view && Object.keys(bestPrices)?.length) {
+      const priceBreaks = ["price_1", "price_10", "price_100", "price_1000", "price_10000"];
       const averagePricesData: any = [];
 
       // Calculating average prices of all stocks
       sortedStockrecords.forEach((sr) => {
-        const priceBreaks = ["price_1", "price_10", "price_100", "price_1000", "price_10000"];
         const averagePriceData = priceBreaks.reduce(
           (acc, priceBreak) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -213,14 +213,16 @@ const DistributorsDesktop: React.FC<Props> = ({
           { count: 0, sum: 0 },
         );
         if (averagePriceData.sum)
-          averagePricesData.push({ stockId: sr?.id, averageSum: averagePriceData.sum / averagePriceData.count });
+          averagePricesData.push({ stock: sr, averageSum: averagePriceData.sum / averagePriceData.count });
       });
 
       // Definition the best stock
-      const bestOffer = orderBy(averagePricesData, "averageSum", "asc")[0];
-      if (bestOffer) setBestOfferId(bestOffer.stockId);
+      const bestOffer = orderBy(averagePricesData, "averageSum", "asc")?.find((dataItem: any) => {
+        return priceBreaks.some((priceKey) => dataItem.stock[priceKey] === bestPrices[priceKey]);
+      });
+      if (bestOffer) setBestOfferId(bestOffer.stock?.id);
     } else if (setBestOfferId) setBestOfferId(null);
-  }, [sortedStockrecords, smart_view]);
+  }, [sortedStockrecords, smart_view, bestPrices]);
 
   function getBasedOnNumInStockPriceData(targetProduct: Product, stockrecord: Stockrecord) {
     let price = null;
