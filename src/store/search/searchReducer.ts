@@ -225,7 +225,14 @@ export default function search(state = initialState, action: actionTypes.SearchA
       });
 
     case actionTypes.SEND_FILTERS_VALUES_R:
-      return updateObject(state, { isLoadingSearchResultsInProgress: true, extendedSearchResultsCount: null });
+      return updateObject(state, {
+        isLoadingSearchResultsInProgress: true,
+        extendedSearchResultsCount: null,
+        searchResultsToComparePrevAndNextData: {
+          data: null,
+          isDifferent: false,
+        },
+      });
 
     case actionTypes.SEND_FILTERS_VALUES_S:
       return updateSearchResult(state, action, true);

@@ -406,7 +406,7 @@ const SearchResults = () => {
                 })}
               </div>
             )}
-            {isDifferentNewSearchResult && !isLoadingSearchResultsInProgress && (
+            {isDifferentNewSearchResult && !isLoadingSearchResultsInProgress && !isExtendedSearchStarted && (
               <div className={classes.cyrillicHint}>
                 По вашему запросу появились новые результаты.{" "}
                 <span onClick={reloadPage} className={appTheme.hyperlink}>
