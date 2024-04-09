@@ -40,6 +40,7 @@ const SearchSuggestion: React.FC<Props> = ({
   isHero,
 }) => {
   const [searchValue, setSearchValue] = useState("");
+  const [preventRequest, setPreventRequest] = useState(false);
   // const [value, setValue] = useState("");
 
   const value = useAppSelector((state) => state.search.queryValue);
@@ -53,7 +54,7 @@ const SearchSuggestion: React.FC<Props> = ({
   const manufacturerId = useAppSelector((state) => state.search.manufacturer?.id);
 
   const searchRef = useRef(null);
-  const debouncedSearchTerm = useDebounce(searchValue, 400);
+  const debouncedSearchTerm = useDebounce(searchValue, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useI18n("menu");
@@ -61,13 +62,13 @@ const SearchSuggestion: React.FC<Props> = ({
   const classes = useStyles();
 
   useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (debouncedSearchTerm && !preventRequest) {
       batch(() => {
         dispatch(onSuggestionsFetchRequested(debouncedSearchTerm));
         dispatch(saveSearchQueryAction(debouncedSearchTerm));
       });
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, preventRequest]);
 
   const onEnterFunction = useCallback(
     (event: KeyboardEvent) => {
@@ -89,6 +90,7 @@ const SearchSuggestion: React.FC<Props> = ({
             dispatch(toggleReloadSearchFlag());
           }
         }
+        setPreventRequest(true);
         dispatch(onSuggestionsClearRequested());
       }
       // eslint-disable-next-line
@@ -113,6 +115,7 @@ const SearchSuggestion: React.FC<Props> = ({
   }, [onEnterFunction, debouncedSearchTerm, navigate, setSearchValue, query, page, pageSize, manufacturerId]);
 
   function onSuggestionSelected(event: any, { suggestionValue }: { suggestionValue: any }) {
+    setPreventRequest(true);
     setSearchValue(suggestionValue);
     redirectToSearchPage(navigate, suggestionValue, 1, pageSize);
   }
@@ -135,10 +138,12 @@ const SearchSuggestion: React.FC<Props> = ({
   }
 
   function onChange(event: any, { newValue, method }: any) {
+    console.log("ONCHANGE", method);
     const acValue = newValue;
     if (value !== acValue) {
       dispatch(setQueryValue(acValue));
       if (!["up", "down"].includes(method)) setSearchValue(acValue);
+      if (preventRequest && method !== "click") setPreventRequest(false);
     }
     return true;
   }
@@ -150,6 +155,7 @@ const SearchSuggestion: React.FC<Props> = ({
   };
 
   const searchClickHandler = () => {
+    setPreventRequest(true);
     if (query !== value || location.pathname !== search_pathname) {
       redirectToSearchPage(navigate, value, 1, pageSize, manufacturerId);
     } else {
