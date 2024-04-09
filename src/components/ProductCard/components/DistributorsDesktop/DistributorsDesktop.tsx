@@ -76,7 +76,7 @@ const DistributorsDesktop: React.FC<Props> = ({
   qualityCheckOpenModal,
 }) => {
   const { t } = useI18n("product");
-  const { currency, currencyPrice } = useCurrency();
+  const { currency, currencyPrice, getCorrectCurrency } = useCurrency();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const theme = useTheme();
@@ -652,7 +652,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                 <td className={classes.trPkg}>5-6 нед.</td>
                 {!isSmDown && (
                   <>
-                    <td className={classes.trCurrency}>{currency?.code}</td>
+                    <td className={classes.trCurrency}>{getCorrectCurrency(val.price_currency)}</td>
                     <td className={classes.trPricesHint}>
                       {isShowPricesHint && (
                         <Tooltip
