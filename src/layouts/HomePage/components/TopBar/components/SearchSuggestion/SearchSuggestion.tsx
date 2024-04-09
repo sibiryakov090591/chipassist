@@ -89,6 +89,7 @@ const SearchSuggestion: React.FC<Props> = ({
             dispatch(toggleReloadSearchFlag());
           }
         }
+        dispatch(onSuggestionsClearRequested());
       }
       // eslint-disable-next-line
     },
@@ -104,6 +105,7 @@ const SearchSuggestion: React.FC<Props> = ({
   }, [query, setSearchValue, dispatch]);
 
   useEffect(() => {
+    document.removeEventListener("keydown", onEnterFunction, false);
     document.addEventListener("keydown", onEnterFunction, false);
     return () => {
       document.removeEventListener("keydown", onEnterFunction, false);
