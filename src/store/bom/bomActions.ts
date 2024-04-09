@@ -343,7 +343,7 @@ export const loadBomLineSearchThunk = (key: string, query: string, defaultValue 
     const pageSize = 25;
     const filters = { search: query, base_num_in_stock: defaultValue, sim: "bom", search_type: "bom" };
 
-    return dispatch(sendFiltersValueAction(page, pageSize, null, filters))
+    return dispatch(sendFiltersValueAction({ page, page_size: pageSize, ...filters }, null))
       .then((response: any) => {
         if (response.search_id && getState().auth.token !== null) {
           dispatch(setExtendedSearchFinished());

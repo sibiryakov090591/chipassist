@@ -2,14 +2,12 @@ import { orderByValues } from "@src/components/FiltersBar/FilterOrderByBar";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { useRestTransport, useWebsocketTransport } from "@src/services/useTransport";
+import { useRestTransport } from "@src/services/useTransport";
 // import { loadBomListThunk } from "@src/store/bom/bomActions";
 import {
-  beforeSearchRequest,
   loadSearchResultsActionThunk,
   saveExtendedSearch,
   setExtendedSearchFinished,
-  socketSearchResult,
   toggleReloadSearchFlag,
   setSearchFinished,
 } from "@src/store/search/searchActions";
@@ -50,13 +48,13 @@ const useSearchLoadResults = () => {
     filtersValues = null;
   }
   const reloadSearchFlag = useAppSelector((state) => state.search.reloadSearchFlag);
-  const { shouldUpdateBackend, href } = useAppSelector((state) => state.common);
+  const { shouldUpdateBackend } = useAppSelector((state) => state.common);
 
   const [isFirstRequest, setIsFirstRequest] = useState(true);
   const [searchTimeoutId, setSearchTimeoutId] = useState<any>(null);
   const [startReloadingTime, setStartReloadingTime] = useState<number>(null);
 
-  useExtendedSearch("query", saveExtendedSearch, setExtendedSearchFinished, {
+  const commonParams = {
     page,
     page_size: pageSize,
     order_by: orderBy,
@@ -65,20 +63,17 @@ const useSearchLoadResults = () => {
     smart_view,
     ...(!!manufacturerId && { m_id: manufacturerId }),
     ...filtersValues,
-  });
+    href: encodeURIComponent(window.location.href),
+    ...(isFirstRequest && { referrer: encodeURIComponent(document.referrer) }),
+  };
+
+  useExtendedSearch("query", saveExtendedSearch, setExtendedSearchFinished, commonParams);
 
   useRestTransport(() => {
     batch(() => {
       if (searchTimeoutId) clearTimeout(searchTimeoutId);
       // dispatch(loadBomListThunk(1, true));
-      dispatch(
-        loadSearchResultsActionThunk(query, page, pageSize, orderBy, filtersValues, null, {
-          smart_view,
-          ...(!!manufacturerId && { m_id: manufacturerId }),
-          href: encodeURIComponent(href),
-          ...(isFirstRequest && { referrer: encodeURIComponent(document.referrer) }),
-        }),
-      )
+      dispatch(loadSearchResultsActionThunk(commonParams))
         .then((res: any) => {
           batch(() => {
             setIsFirstRequest(false);
@@ -108,32 +103,32 @@ const useSearchLoadResults = () => {
     });
   }, [location.search, reloadSearchFlag, shouldUpdateBackend]);
 
-  useWebsocketTransport(
-    "search",
-    {
-      beforeConnect: () => {
-        dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, null));
-      },
-      afterConnect: (socketClient) => {
-        batch(() => {
-          // dispatch(loadBomListThunk(1, true));
-          socketClient.onMessage((data: any) => {
-            dispatch(socketSearchResult(data, query));
-          });
-          // order_by проверить
-          socketClient.send({
-            ...{ search: query },
-            ...filtersValues,
-            page,
-            page_size: pageSize,
-            order_by: orderBy,
-          });
-        });
-        return true;
-      },
-    },
-    [location.search, reloadSearchFlag, shouldUpdateBackend],
-  );
+  // useWebsocketTransport(
+  //   "search",
+  //   {
+  //     beforeConnect: () => {
+  //       dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, null));
+  //     },
+  //     afterConnect: (socketClient) => {
+  //       batch(() => {
+  //         // dispatch(loadBomListThunk(1, true));
+  //         socketClient.onMessage((data: any) => {
+  //           dispatch(socketSearchResult(data, query));
+  //         });
+  //         // order_by проверить
+  //         socketClient.send({
+  //           ...{ search: query },
+  //           ...filtersValues,
+  //           page,
+  //           page_size: pageSize,
+  //           order_by: orderBy,
+  //         });
+  //       });
+  //       return true;
+  //     },
+  //   },
+  //   [location.search, reloadSearchFlag, shouldUpdateBackend],
+  // );
 
   return true;
 };

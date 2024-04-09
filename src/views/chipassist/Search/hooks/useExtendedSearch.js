@@ -5,7 +5,6 @@ import {
   extendedLoadingOfSearchResultsThunk,
   cancelExtendedSearch,
   extendedPreloadingOfSearchResults,
-  saveFiltersValuesThunk,
   compareSearchResults,
 } from "@src/store/search/searchActions";
 import { useRestTransport } from "@src/services/useTransport";
@@ -60,16 +59,9 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
     return dispatch(extendedLoadingOfSearchResultsThunk(searchId, queryParams))
       .then((response) => {
         setStartReloadingTimeByError(null);
-        if (response.status && response.status === "PENDING") {
-          console.log(query, localStorage.getItem(watchedParam));
-          dispatch(extendedPreloadingOfSearchResults(queryParams))
-            .then((res) => {
-              dispatch(saveFiltersValuesThunk(res, query));
-            })
-            .finally(() => {
-              repeater(searchId, query);
-            });
-        } else if (response.status && response.status === "DONE") {
+        if (response?.status === "PENDING") {
+          repeater(searchId, query);
+        } else if (response?.status === "DONE") {
           dispatch(saveDataAction(response, extendedSearchParams));
           setTimeout(() => {
             dispatch(extendedPreloadingOfSearchResults(queryParams))
