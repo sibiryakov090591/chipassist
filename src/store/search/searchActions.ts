@@ -134,7 +134,7 @@ export const extendedPreloadingOfSearchResults = (urlParams: { [key: string]: an
     "";
 
   return {
-    types: [false, actionTypes.SEND_FILTERS_VALUES_S, null],
+    types: [false, false, false],
     promise: (client: ApiClientInterface) =>
       client
         .get(`${API_PATH}${SEARCH_URL}${params}`, {
