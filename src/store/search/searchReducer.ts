@@ -131,7 +131,6 @@ export default function search(state = initialState, action: actionTypes.SearchA
         }),
         { products: 0, stocks: 0 },
       );
-      console.log(prevState, newState);
       const isEqualResult = isEqual(prevState, newState);
       return updateObject(state, {
         searchResultsToComparePrevAndNextData: {
