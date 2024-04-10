@@ -325,7 +325,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
             {!showLoginForm ? (
               <>
                 <h2 className={rfqModalClasses.header}>{t("confirm_modal.title")}</h2>
-                <p className={rfqModalClasses.text}>{t("confirm_modal.sub_title")}</p>
+                {isAuthenticated && <p className={rfqModalClasses.text}>{t("confirm_modal.sub_title")}</p>}
               </>
             ) : (
               <Hidden smDown>
