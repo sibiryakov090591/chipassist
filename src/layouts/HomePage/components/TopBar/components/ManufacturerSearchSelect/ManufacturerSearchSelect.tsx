@@ -24,7 +24,9 @@ const ManufacturerSearchSelect: React.FC<{ setSelectIsOpen: any }> = ({ setSelec
 
   React.useEffect(() => {
     if (loaded) {
-      setOptions(items.map((i) => ({ label: i.name, value: i.id })));
+      setOptions(
+        items.map((i) => ({ label: i.name === "Not Specified" ? "Производитель не указан" : i.name, value: i.id })),
+      );
     }
   }, [loaded]);
 
