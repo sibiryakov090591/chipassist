@@ -71,6 +71,7 @@ export const IcsearchHomePage = () => {
   const isLgUp = useMediaQuery(theme.breakpoints.up(1700));
 
   const { partNumberExamples } = useAppSelector((state) => state.search);
+  const manufacturerId = useAppSelector((state) => state.search.manufacturer?.id);
 
   const [randomPartNumbers, setRandomPartNumbers] = useState(null);
 
@@ -384,7 +385,13 @@ export const IcsearchHomePage = () => {
             {randomPartNumbers?.map((partNumber) => {
               return (
                 <div key={partNumber} className={classes.partNumberName}>
-                  <Link to={`/search?query=${encodeURIComponent(partNumber)}`}>{partNumber}</Link>
+                  <Link
+                    to={`/search?query=${encodeURIComponent(partNumber)}${
+                      manufacturerId ? `&m_id=${manufacturerId}` : ""
+                    }`}
+                  >
+                    {partNumber}
+                  </Link>
                 </div>
               );
             })}

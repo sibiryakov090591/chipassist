@@ -117,8 +117,22 @@ export default function search(state = initialState, action: actionTypes.SearchA
 
     case actionTypes.COMPARE_SEARCH_RESULTS: {
       if (!action.payload || !state.searchResultsToComparePrevAndNextData.data) return state;
-
-      const isEqualResult = isEqual(state.searchResultsToComparePrevAndNextData.data, action.payload);
+      const prevState = state.searchResultsToComparePrevAndNextData.data?.reduce(
+        (acc: any, prod: any) => ({
+          products: acc.products + 1,
+          stocks: acc.stocks + (prod.stockrecords?.length || 0),
+        }),
+        { products: 0, stocks: 0 },
+      );
+      const newState = action.payload?.reduce(
+        (acc: any, prod: any) => ({
+          products: acc.products + 1,
+          stocks: acc.stocks + (prod.stockrecords?.length || 0),
+        }),
+        { products: 0, stocks: 0 },
+      );
+      console.log(prevState, newState);
+      const isEqualResult = isEqual(prevState, newState);
       return updateObject(state, {
         searchResultsToComparePrevAndNextData: {
           ...state.searchResultsToComparePrevAndNextData,

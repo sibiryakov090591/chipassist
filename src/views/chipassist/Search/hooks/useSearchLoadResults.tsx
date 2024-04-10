@@ -64,7 +64,7 @@ const useSearchLoadResults = () => {
     ...(!!manufacturerId && { m_id: manufacturerId }),
     ...filtersValues,
     href: encodeURIComponent(window.location.href),
-    ...(isFirstRequest && { referrer: encodeURIComponent(document.referrer) }),
+    ...(isFirstRequest && !!document.referrer && { referrer: encodeURIComponent(document.referrer) }),
   };
 
   useExtendedSearch("query", saveExtendedSearch, setExtendedSearchFinished, commonParams);
