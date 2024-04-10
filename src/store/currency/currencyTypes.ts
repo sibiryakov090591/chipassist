@@ -17,6 +17,8 @@ export type Currency = {
 
 export type CurrencyPrice = (val: number, stockrecordCurrency: CurrenciesAllowed) => number;
 
+export type GetCorrectCurrency = (stockrecordCurrency: CurrenciesAllowed) => string;
+
 export interface CurrencyState {
   currencyList: Currency[];
   initial: Currency;

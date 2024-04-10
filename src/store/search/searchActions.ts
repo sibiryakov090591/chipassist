@@ -47,30 +47,21 @@ export const loadAttributesResultsAction = (attributes: any, pageSize: number) =
 };
 
 export const loadSearchResultsActionThunk = (
-  query: string,
-  page: number,
-  pageSize: number,
-  orderBy: string,
-  filtersValues: { [index: string]: number | string },
-  baseFilters: { [index: string]: any },
-  otherParams: { [index: string]: any } = null,
+  params: { [index: string]: any } = null,
   component = "search",
   removeAuth = false,
-  isFirstRequest = false,
 ) => {
   return async (dispatch: any) => {
-    let filters = dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, baseFilters, component));
+    dispatch(beforeSearchRequest(params));
     // if (constants.id === ID_ELFARO) {
     //   filters = { ...filters, rfq: localStorage.getItem("productStock") === "true" ? 0 : 1 };
     // }
-    if (otherParams) filters = { ...filters, ...otherParams };
-    if (isFirstRequest) filters = { ...filters, query: window };
     // await dispatch(loadProductsRfqData(query, page, pageSize, orderBy));
     // const fastSearchResult = await dispatch(loadFastSearchResults())
-    return dispatch(sendFiltersValueAction(page, pageSize, orderBy, filters, component, true, removeAuth))
+    return dispatch(sendFiltersValueAction(params, component, true, removeAuth))
       .then((response: any) => {
         batch(() => {
-          dispatch(saveFiltersValuesThunk(response, query));
+          dispatch(saveFiltersValuesThunk(response, params.search));
           dispatch(getCategoriesAttributesThunk());
           dispatch({
             type: actionTypes.SAVE_SEARCH_RESULTS_MAX_PRICE,
@@ -81,7 +72,7 @@ export const loadSearchResultsActionThunk = (
           if (constants.id !== ID_ELFARO) {
             dispatch({
               type: actionTypes.SET_EXTENDED_SEARCH_ID,
-              payload: { id: response.search_id, params: { page, pageSize, orderBy, filters, component, query } },
+              payload: { id: response.search_id, params },
             });
           }
         });
@@ -89,76 +80,33 @@ export const loadSearchResultsActionThunk = (
       .catch((e: any) => {
         dispatch(cancelExtendedSearch());
         if (e?.response?.status === 401) {
-          return dispatch(
-            loadSearchResultsActionThunk(
-              query,
-              page,
-              pageSize,
-              orderBy,
-              filtersValues,
-              baseFilters,
-              otherParams,
-              component,
-              true,
-            ),
-          );
+          return dispatch(loadSearchResultsActionThunk(params, component, true));
         }
         throw e;
       });
   };
 };
 
-export const beforeSearchRequest = (
-  query: string,
-  page: number,
-  pageSize: number,
-  filtersValues: { [index: string]: number | string },
-  baseFilters: { [index: string]: any },
-  component = "search",
-) => {
+export const beforeSearchRequest = (params: { [index: string]: any }) => {
   return (dispatch: any, getState: () => RootState) => {
-    let filters = { search: query };
-
-    const action =
-      component === "search"
-        ? actionTypes.SEND_FILTERS_VALUES_ARRAY[0]
-        : actionTypes.SEND_FILTERS_VALUES_PRODUCTS_ARRAY[0];
-
     batch(() => {
       dispatch({
         type: actionTypes.SET_EXTENDED_SEARCH_ID,
         payload: { id: null, params: null },
       });
       dispatch(setExtendedSearchFinished());
+      dispatch({ type: actionTypes.SEND_FILTERS_VALUES_ARRAY[0] });
 
-      dispatch({ type: action });
-      if (filtersValues !== null) {
-        filters = { ...filters, ...filtersValues };
-        dispatch(setFiltersValues(filtersValues));
-      } else {
-        dispatch(resetFiltersValues());
-      }
-
-      if (baseFilters !== null) {
-        const base = cleanBaseFilters({ ...baseFilters });
-        filters = { ...filters, ...base };
-        console.log(filters, "filters", filtersValues);
-        dispatch(saveBaseFilters(baseFilters));
-      } else {
-        dispatch(resetBaseFilters());
-      }
-
-      if (!!getState().search.query && getState().search.query !== query) {
+      if (!!getState().search.query && getState().search.query !== params.search) {
         dispatch(resetBaseFilters());
         dispatch({ type: actionTypes.CLEAR_RESULT });
         dispatch(clearProducts());
       }
 
-      dispatch(changeQueryAction(query));
-      dispatch({ type: actionTypes.CHANGE_PAGE, payload: page });
-      dispatch({ type: actionTypes.CHANGE_PAGE_SIZE, payload: pageSize });
+      dispatch(changeQueryAction(params.search));
+      dispatch({ type: actionTypes.CHANGE_PAGE, payload: params.page });
+      dispatch({ type: actionTypes.CHANGE_PAGE_SIZE, payload: params.page_size });
     });
-    return filters;
   };
 };
 
@@ -462,16 +410,12 @@ export const addFilterCategoryFields = (categoryIds: number[]) => {
 };
 
 export const sendFiltersValueAction = (
-  page: number,
-  pageSize: number,
-  orderBy: string = null,
   data: { [key: string]: any },
   component: string = null,
   showProggress = true,
   removeAuth = false,
 ) => {
   return async (dispatch: any) => {
-    const orderParam = orderBy ? `&order_by=${orderBy}` : "";
     let params = "";
     Object.entries(data).forEach((entry) => {
       const [key, val] = entry;
@@ -490,7 +434,7 @@ export const sendFiltersValueAction = (
           params += `&${key}=${encodeURIComponent(val)}`;
         }
       } else {
-        params += `&${key}=${val}`;
+        params += `${params ? "&" : "?"}${key}=${val}`;
       }
     });
 
@@ -503,7 +447,7 @@ export const sendFiltersValueAction = (
           : actionTypes.SEND_FILTERS_VALUES_PRODUCTS_ARRAY,
         promise: (client: ApiClientInterface) =>
           client
-            .get(`${API_PATH}${SEARCH_URL}?&page_size=${pageSize}&page=${page}${orderParam}${params}`, {
+            .get(`${API_PATH}${SEARCH_URL}${params}`, {
               cancelId: "get_search_list",
               config: removeAuth ? { headers: { Authorization: null } } : null,
               noapi: true,
@@ -521,7 +465,7 @@ export const sendFiltersValueAction = (
       types: [actionTypes.SEND_FILTERS_VALUES_R, null, null],
       promise: (client: ApiClientInterface) =>
         client
-          .get(`${API_PATH}/fastsearch/?&page_size=${pageSize}&page=${page}${orderParam}${params}`, {
+          .get(`${API_PATH}/fastsearch/${params}`, {
             cancelId: "get_search_list",
             config: removeAuth ? { headers: { Authorization: null } } : null,
             noapi: true,
@@ -875,21 +819,21 @@ export const saveSearchResultsMaxPrice = (maxPrice: number, minPrice: number) =>
   };
 };
 
-const cleanBaseFilters = (base: { [index: string]: any }) => {
-  const baseFilters = { ...base };
-
-  baseFilters.base_num_in_stock = baseFilters.base_in_stock ? baseFilters.base_num_in_stock || 1 : "";
-  delete baseFilters.base_in_stock;
-
-  if (baseFilters.base_price_min && (baseFilters.base_price_min === "0" || baseFilters.base_price_min === 0)) {
-    delete baseFilters.base_price_min;
-  }
-  if (baseFilters.base_price_max && (baseFilters.base_price_max === "0" || baseFilters.base_price_max === 0)) {
-    delete baseFilters.base_price_max;
-  }
-
-  return baseFilters;
-};
+// const cleanBaseFilters = (base: { [index: string]: any }) => {
+//   const baseFilters = { ...base };
+//
+//   baseFilters.base_num_in_stock = baseFilters.base_in_stock ? baseFilters.base_num_in_stock || 1 : "";
+//   delete baseFilters.base_in_stock;
+//
+//   if (baseFilters.base_price_min && (baseFilters.base_price_min === "0" || baseFilters.base_price_min === 0)) {
+//     delete baseFilters.base_price_min;
+//   }
+//   if (baseFilters.base_price_max && (baseFilters.base_price_max === "0" || baseFilters.base_price_max === 0)) {
+//     delete baseFilters.base_price_max;
+//   }
+//
+//   return baseFilters;
+// };
 
 export const setQueryValue = (value: string): actionTypes.SetQueryValueAction => {
   let res = value?.startsWith("SELLER:") || value?.startsWith("MANUFACTURER:") ? value : value?.toUpperCase();
