@@ -29,7 +29,6 @@ import validate from "validate.js";
 import { authSignup, defaultRegisterData } from "@src/store/authentication/authActions";
 import { clearCartItems } from "@src/store/cart/cartActions";
 import constants from "@src/constants/constants";
-import { ID_ICSEARCH } from "@src/constants/server_constants";
 import { defaultCountry } from "@src/constants/countries";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
@@ -99,8 +98,6 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
   const isDownKey = useMediaQuery(theme.breakpoints.down(460));
 
   const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const countries = useAppSelector((state) => state.checkout.countries);
-  const geolocation = useAppSelector((state) => state.profile.geolocation);
   const cartItems = useAppSelector((state) => state.cart.items);
   const utm = useAppSelector((state) => state.common.utm);
   const profileInfo = useAppSelector((state) => state.profile.profileInfo);
@@ -143,23 +140,6 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
       errors: formErrors || {},
     }));
   }, [debouncedState.values]);
-
-  useEffect(() => {
-    const country =
-      (constants?.id !== ID_ICSEARCH && countries?.find((c) => c.iso_3166_1_a3 === geolocation?.country_code_iso3)) ||
-      defaultCountry;
-    if (country) {
-      setItem((prevState) => {
-        return {
-          ...prevState,
-          values: {
-            ...prevState.values,
-            country: country.url || "",
-          },
-        };
-      });
-    }
-  }, [geolocation, countries]);
 
   const onBlurHandler = (name: string) => () => {
     return setItem((prevState) => ({
@@ -253,6 +233,7 @@ const ConfirmRequestModal: React.FC<Props> = ({ onClose }) => {
         ...defaultRegisterData,
         ...item.values,
         ...(phoneValue && { phone_number_str: `+${phoneValue}` }),
+        country: defaultCountry.iso_3166_1_a3,
       };
       setIsLoading(true);
       dispatch(authSignup(registerData, { subj: "order" }))
