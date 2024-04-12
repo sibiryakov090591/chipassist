@@ -1,5 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { scrollbarWidth } from "@src/config";
+import constants from "@src/constants/constants";
+import { ID_PCBONLINE } from "@src/constants/server_constants";
+
+const isPCBOnline = constants.id === ID_PCBONLINE;
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,8 +22,9 @@ export const useStyles = makeStyles((theme) => ({
   footerWrapper: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     [theme.breakpoints.down("xs")]: {
-      flexDirection: "column-reverse",
+      flexDirection: isPCBOnline ? "row" : "column-reverse",
     },
   },
   topCont: {
@@ -82,11 +87,10 @@ export const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   logo: {
-    width: "40%",
     [theme.breakpoints.down("xs")]: {
       width: "100%",
       textAlign: "center",
-      marginTop: 26,
+      marginTop: isPCBOnline ? 0 : 26,
     },
   },
   logoImg: {
@@ -107,8 +111,46 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   navGroup: {
+    display: "grid",
+    gridColumnGap: 16,
+    // gridTemplateColumns: "repeat(3, auto)",
+    gridTemplateAreas: `
+          "home rfq terms"
+          "products pcb privacy"
+          "bom brands report"
+        `,
     marginRight: 10,
     marginLeft: 10,
+    [theme.breakpoints.down("sm")]: {
+      // gridTemplateAreas: `
+      //     "home brands"
+      //     "products terms"
+      //     "rfq privacy"
+      //     "pcb report"
+      //   `,
+      gridTemplateAreas: `
+          "home rfq terms"
+          "products pcb privacy"
+          "brands report ."
+        `,
+    },
+    [theme.breakpoints.down(780)]: {
+      gridTemplateAreas: `
+          "home pcb"
+          "products terms"
+          "brands privacy"
+          "rfq report"
+        `,
+    },
+    [theme.breakpoints.down("xs")]: {
+      gridTemplateColumns: "1fr 1fr",
+      gridTemplateAreas: `
+          "home pcb"
+          "products terms"
+          "brands privacy"
+          "rfq report"
+        `,
+    },
   },
   navLink: {
     display: "block",

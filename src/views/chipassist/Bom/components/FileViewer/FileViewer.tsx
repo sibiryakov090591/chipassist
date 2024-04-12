@@ -9,7 +9,6 @@ import { CustomSelect } from "@src/components/index";
 import Alert from "@material-ui/lab/Alert";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import clsx from "clsx";
-import { markBomAsInvalid } from "@src/store/bom/bomActions";
 import { useStyles } from "./style";
 
 const csvFormats = ["csv"];

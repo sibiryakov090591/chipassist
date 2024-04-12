@@ -19,6 +19,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { t } = useI18n("profile");
   const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   const classes = useStyles();
@@ -61,7 +62,7 @@ const Profile = () => {
         >
           {tabs.map((val) => {
             if (!val) return null;
-            if (val.value === "/profile/bom-list" && isXsDown) return null;
+            if (val.value === "/profile/bom-list" && isSmDown) return null;
             return (
               <Tab
                 key={val.value}

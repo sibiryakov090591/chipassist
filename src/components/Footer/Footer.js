@@ -313,70 +313,83 @@ const Footer = () => {
                 {/*  </Box> */}
                 {/* </Hidden> */}
               </Box>
-              <Box display="flex" className={classes.nav}>
+              <Box display="flex">
                 <Box display={"flex"} className={classes.containerForFunctions} style={{ flexDirection: "initial" }}>
-                  <Box display="flex" flexWrap="wrap">
-                    <Box className={classes.navGroup}>
-                      <NavLink className={classes.navLinkICS} to={"/"} onClick={navigateHandler}>
-                        {t("menu.home")}
+                  <Box className={classes.navGroup}>
+                    <NavLink
+                      style={{ gridArea: "home" }}
+                      className={classes.navLinkICS}
+                      to={"/"}
+                      onClick={navigateHandler}
+                    >
+                      {t("menu.home")}
+                    </NavLink>
+                    <NavLink
+                      style={{ gridArea: "products" }}
+                      className={classes.navLinkICS}
+                      to={"/parts"}
+                      onClick={navigateHandler}
+                    >
+                      {t("products")}
+                    </NavLink>
+                    <Hidden smDown>
+                      <NavLink
+                        style={{ gridArea: "bom" }}
+                        className={classes.navLinkICS}
+                        to={"/bom/create-file"}
+                        onClick={navigateHandler}
+                      >
+                        {t("bom")}
                       </NavLink>
-                      <NavLink className={classes.navLinkICS} to={"/parts"} onClick={navigateHandler}>
-                        {t("products")}
-                      </NavLink>
-                      <Hidden mdUp>
-                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
-                          {t("rfq_list")}
-                        </NavLink>
-                      </Hidden>
-                      <Hidden smDown>
-                        <NavLink className={classes.navLinkICS} to={"/bom/create-file"} onClick={navigateHandler}>
-                          {t("bom")}
-                        </NavLink>
-                      </Hidden>
-                    </Box>
-                    <Box className={classes.navGroup}>
-                      <Hidden xsDown>
-                        <NavLink className={classes.navLinkICS} to={"/rfq-list-quotes"} onClick={navigateHandler}>
-                          {t("rfq_list")}
-                        </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/pcb"} onClick={navigateHandler}>
-                          {t("menu.pcb")}
-                        </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
-                          {t("menu.brands")}
-                        </NavLink>
-                      </Hidden>
-                    </Box>
-                    <Box className={classes.navGroup}>
-                      <Hidden xsDown>
-                        <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"} onClick={navigateHandler}>
-                          {t("payment_and_delivery")}
-                        </NavLink>
-                        <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
-                          {t("privacy")}
-                        </NavLink>
-                        <a className={classes.navLinkICS} style={{ color: "white" }} href="mailto:info@icsearch.ru">
-                          Сообщить об ошибке
-                        </a>
-                      </Hidden>
-                    </Box>
+                    </Hidden>
+                    <NavLink
+                      style={{ gridArea: "rfq" }}
+                      className={classes.navLinkICS}
+                      to={"/rfq-list-quotes"}
+                      onClick={navigateHandler}
+                    >
+                      {t("rfq_list")}
+                    </NavLink>
+                    <NavLink
+                      style={{ gridArea: "pcb" }}
+                      className={classes.navLinkICS}
+                      to={"/pcb"}
+                      onClick={navigateHandler}
+                    >
+                      {t("menu.pcb")}
+                    </NavLink>
+                    <NavLink
+                      style={{ gridArea: "brands" }}
+                      className={classes.navLinkICS}
+                      to={"/brands"}
+                      onClick={navigateHandler}
+                    >
+                      {t("menu.brands")}
+                    </NavLink>
+                    <NavLink
+                      style={{ gridArea: "terms" }}
+                      className={classes.navLinkICS}
+                      to={"/payment_and_delivery"}
+                      onClick={navigateHandler}
+                    >
+                      {t("payment_and_delivery")}
+                    </NavLink>
+                    <NavLink
+                      style={{ gridArea: "privacy" }}
+                      className={classes.navLinkICS}
+                      to={"/privacy_policy"}
+                      onClick={navigateHandler}
+                    >
+                      {t("privacy")}
+                    </NavLink>
+                    <a
+                      style={{ gridArea: "report", color: "white" }}
+                      className={classes.navLinkICS}
+                      href="mailto:info@icsearch.ru"
+                    >
+                      Сообщить об ошибке
+                    </a>
                   </Box>
-                  <Hidden smUp>
-                    <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} flexDirection={"column"}>
-                      <NavLink className={classes.navLinkICS} to={"/brands"} onClick={navigateHandler}>
-                        {t("menu.brands")}
-                      </NavLink>
-                      <NavLink className={classes.navLinkICS} to={"/payment_and_delivery"} onClick={navigateHandler}>
-                        {t("payment_and_delivery")}
-                      </NavLink>
-                      <NavLink className={classes.navLinkICS} to={"/privacy_policy"} onClick={navigateHandler}>
-                        {t("privacy")}
-                      </NavLink>
-                      <a className={classes.navLinkICS} style={{ color: "white" }} href="mailto:info@icsearch.ru">
-                        Сообщить об ошибке
-                      </a>
-                    </Box>
-                  </Hidden>
                   {/* <Hidden xsDown> */}
                   {/*  <Box display="flex" flexWrap="wrap" justifyContent={"flex-end"} width={"150px"}> */}
                   {/*    /!* <ICSInfo /> *!/ */}
