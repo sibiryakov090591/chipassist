@@ -196,6 +196,7 @@ export const uploadFileThunk = (
   returnRes = false,
   fullexport = false,
   noHeaderRow = false,
+  delimiter: string = null,
 ) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -205,6 +206,7 @@ export const uploadFileThunk = (
   formData.append("desc_col", columns.description);
   formData.append("attrs_col", columns.attributes);
   formData.append("extid_col", columns.external_id);
+  if (delimiter) formData.append("delimiter", `${delimiter}`);
   if (fullexport) formData.append("fullexport", `${fullexport}`);
   if (noHeaderRow) formData.append("noheader_row", `${noHeaderRow}`);
 

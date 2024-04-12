@@ -27,6 +27,7 @@ interface Props {
   selectErrors: { [key: string]: boolean };
   scrollToFileViewer: () => void;
   setIsFileParsing: React.Dispatch<React.SetStateAction<boolean>>;
+  delimiterRef: any;
   isFileParsing: boolean;
 }
 
@@ -47,9 +48,9 @@ const FileViewer: React.FC<Props> = ({
   scrollToFileViewer,
   setIsFileParsing,
   isFileParsing,
+  delimiterRef,
 }) => {
   const [data, setData] = useState<Data>({ columnsNames: [], rows: [] });
-
   const [selectedColumn, setSelectedColumn] = useState(null);
   // const [isHeader, setIsHeader] = useState(true);
   const [timer, setTimer] = useState(null);
@@ -111,15 +112,17 @@ const FileViewer: React.FC<Props> = ({
 
   const saveCsvFormatData = () => {
     Papa.parse(file, {
-      delimiter: ";",
+      // delimiter: ";",
       complete(results: ParseResult<ParseData>) {
         const filteredRows = results.data?.filter((elem) => elem.length !== 0);
         setData({
           columnsNames: getColumnsNames(results.data),
           rows: filteredRows,
         });
-        if (!filteredRows || !filteredRows.length || !filteredRows[0].length || filteredRows[0].length < 2) {
-          console.log("Check CSV file delimeter, ';' required", filteredRows[0].length);
+        // eslint-disable-next-line no-param-reassign
+        delimiterRef.current = results.meta.delimiter; // set a delimiter for request
+        if (!filteredRows || !filteredRows?.length || !filteredRows[0]?.length || filteredRows[0]?.length < 2) {
+          console.log("Check CSV file delimeter, ';' required", filteredRows[0]?.length);
           dispatch(
             showBottomLeftMessageAlertAction({
               text: `${t("file.check")}`,

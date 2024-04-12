@@ -101,6 +101,7 @@ const BomUpload: React.FC = () => {
   const [startingRow, setStartingRow] = useState(1);
   const [storageFile, setStorageFile] = useState<{ name: string }>(null);
   const [selectErrors, setSelectErrors] = useState<{ [key: string]: boolean }>({});
+  const delimiterRef = React.useRef(null);
 
   const isActivatedDropzone = isAuthenticated;
   const acceptedFileTypes = `.csv, text/csv, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, .xls, .xlsx, application/vnd.ms-excel`;
@@ -202,7 +203,7 @@ const BomUpload: React.FC = () => {
     if (!isColumnsSelected) return;
 
     invokeRestTransport(() => {
-      dispatch(uploadFileThunk(file, columnsIndexes, startingRow - 1, false));
+      dispatch(uploadFileThunk(file, columnsIndexes, startingRow - 1, false, false, false, delimiterRef.current));
     });
 
     invokeWebsocketTransport(() => {
@@ -446,6 +447,7 @@ const BomUpload: React.FC = () => {
             scrollToFileViewer={scrollToFileViewer}
             isFileParsing={isFileParsing}
             setIsFileParsing={setIsFileParsing}
+            delimiterRef={delimiterRef}
           />
         )}
       </Box>
