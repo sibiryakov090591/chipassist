@@ -239,7 +239,7 @@ const FileViewer: React.FC<Props> = ({
     if (!!data.columnsNames.length || !!data.rows.length) {
       scrollToFileViewer();
       setIsFileParsing(false);
-      dispatch(markBomAsInvalid(data.rows.length > 100));
+      // dispatch(markBomAsInvalid(data.rows.length > 100));
     }
   }, [data]);
 
@@ -364,7 +364,7 @@ const FileViewer: React.FC<Props> = ({
                   ))}
                 </tr>
               )}
-              {data.rows.slice(0, 100).map((row, index) => (
+              {data.rows.map((row, index) => (
                 <tr
                   key={index}
                   className={clsx({
@@ -388,13 +388,13 @@ const FileViewer: React.FC<Props> = ({
                   ))}
                 </tr>
               ))}
-              {data.rows.length > 100 && (
-                <tr>
-                  <td style={{ pointerEvents: "none" }} colSpan={data.columnsNames.length + 1}>
-                    100 of <strong>{data.rows.length}</strong> rows...
-                  </td>
-                </tr>
-              )}
+              {/* {data.rows.length > 100 && ( */}
+              {/*  <tr> */}
+              {/*    <td style={{ pointerEvents: "none" }} colSpan={data.columnsNames.length + 1}> */}
+              {/*      100 of <strong>{data.rows.length}</strong> rows... */}
+              {/*    </td> */}
+              {/*  </tr> */}
+              {/* )} */}
             </tbody>
           </table>
         </div>
