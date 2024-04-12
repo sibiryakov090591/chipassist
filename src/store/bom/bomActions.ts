@@ -226,7 +226,7 @@ export const uploadFileThunk = (
           .then((response: any) => {
             if (response.status === 200) {
               const searchId = response.data.search_id;
-              const bomId = response.data.id;
+              const bomId = response.data.id || response.data.bom_id;
               if (returnRes) {
                 return response.data;
               }
