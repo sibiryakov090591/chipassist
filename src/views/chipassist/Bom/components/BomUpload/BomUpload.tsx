@@ -292,13 +292,16 @@ const BomUpload: React.FC = () => {
             {constants.id === ID_ICSEARCH ? (
               <>
                 <Box className={classes.sectionTitle}>
-                  <Typography variant="h4" component="h4">
+                  <Typography style={{ fontWeight: 600, fontSize: 24 }} variant="h2" component="h2">
                     {file === null ? t("upload.title") : t("file.title")}
                   </Typography>
+                  <h3 style={{ marginTop: 10 }}>{t("upload.sub_title")}</h3>
                 </Box>
                 {file === null ? (
                   <Box className={classes.sectionTitle}>
                     <p>- {t("upload.hint_1")}</p>
+                    <p>- {t("upload.hint_2")}</p>
+                    <p>- {t("upload.hint_3")}</p>
                   </Box>
                 ) : (
                   <Box className={classes.sectionTitle}>
