@@ -2467,8 +2467,8 @@
   "supplier_response": {
     "offer": " offer",
     "offer_plural": " offers",
-    "circular_progress_tooltip": "{{count}} hour left to reply. Responses to the request are accepted within {{validTime}} hours.",
-    "circular_progress_tooltip_plural": "{{count}} hours left to reply. Responses to the request are accepted within {{validTime}} hours.",
+    "circular_progress_tooltip": "{{count}} hour left to reply. Responses to the request are accepted within 3 business days.",
+    "circular_progress_tooltip_plural": "{{count}} hours left to reply. Responses to the request are accepted within 3 business days.",
     "about": {
       "top_elem": {
         "title": "New way of working with RFQs",

@@ -79,7 +79,8 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       const startDate = getStartDate(new Date(item.created));
       const endDate = addBusinessDays(startDate, validDays);
       const hoursLeft = Math.trunc((endDate.getTime() - Date.now()) / 1000 / 60 / 60);
-      setValidHoursLeft(hoursLeft > 0 ? (hoursLeft > validHours ? validHours : hoursLeft) : 0);
+      // setValidHoursLeft(hoursLeft > 0 ? (hoursLeft > validHours ? validHours : hoursLeft) : 0);
+      setValidHoursLeft(hoursLeft > 0 ? hoursLeft : 0);
     }
   }, []);
 
@@ -574,7 +575,7 @@ const ResponseItem: React.FC<Props> = ({ responseItem, selectedPartner, isSmDown
       </td>
       <td>
         <CircularProgress
-          value={validHoursLeft / ((constants.validDaysForResponse * 24) / 100)}
+          value={validHoursLeft / (((constants.validDaysForResponse + 2) * 24) / 100)}
           label={`${validHoursLeft}h`}
           tooltip={!!validHoursLeft && t("circular_progress_tooltip", { count: validHoursLeft, validTime: validHours })}
         />
