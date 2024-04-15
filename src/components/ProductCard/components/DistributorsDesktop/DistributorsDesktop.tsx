@@ -649,7 +649,7 @@ const DistributorsDesktop: React.FC<Props> = ({
                     )}
                   </td>
                 )}
-                <td className={classes.trPkg}>5-6 нед.</td>
+                <td className={classes.trPkg}>{val.lead_period_str || "5-6 нед."}</td>
                 {!isSmDown && (
                   <>
                     <td className={classes.trCurrency}>{getCorrectCurrency(val.price_currency)}</td>
