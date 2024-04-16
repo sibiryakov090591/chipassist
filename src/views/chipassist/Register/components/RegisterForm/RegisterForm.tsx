@@ -31,6 +31,7 @@ interface FormStateValues {
   first_name?: string;
   last_name?: string;
   country?: string;
+  company_name?: string;
   inn?: string;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
@@ -41,6 +42,7 @@ interface FormStateErrors {
   first_name?: string[];
   last_name?: string[];
   country?: string[];
+  company_name?: string[];
   inn?: string[];
   policy_confirm?: string[];
   receive_updates_confirm?: string[];
@@ -52,6 +54,7 @@ interface FormStateTouched {
   first_name?: boolean;
   last_name?: boolean;
   country?: boolean;
+  company_name?: boolean;
   inn?: boolean;
   policy_confirm?: boolean;
   receive_updates_confirm?: boolean;
@@ -95,6 +98,7 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
       first_name: formSchema.firstName,
       last_name: formSchema.lastName,
       inn: formSchema.inn,
+      company_name: formSchema.companyName,
       policy_confirm: formSchema.policyConfirm,
     };
   }, []);
@@ -257,6 +261,17 @@ const RegisterForm = (props: { className: string; isExample?: boolean; [x: strin
             onChange={handleChange}
             onBlur={onBlurHandler("email")}
             value={formState.values.email || ""}
+            variant="outlined"
+          />
+          <TextField
+            error={hasError("company_name")}
+            fullWidth
+            helperText={hasError("company_name") ? t(formState.errors.company_name[0]) : null}
+            label={`${t("form_labels.company_name")} *`}
+            name="company_name"
+            onChange={handleChange}
+            onBlur={onBlurHandler("company_name")}
+            value={formState.values.company_name || ""}
             variant="outlined"
           />
           {isIcSearch ? (
