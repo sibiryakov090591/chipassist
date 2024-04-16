@@ -18,6 +18,8 @@ import { batch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import clsx from "clsx";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStyles } from "./searchSuggestionStyles";
 
 interface Props {
@@ -60,6 +62,9 @@ const SearchSuggestion: React.FC<Props> = ({
   const { t } = useI18n("menu");
   const location = useLocation();
   const classes = useStyles();
+
+  const theme = useTheme();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
   useEffect(() => {
     if (debouncedSearchTerm && !preventRequest) {
@@ -149,7 +154,7 @@ const SearchSuggestion: React.FC<Props> = ({
   }
 
   const inputProps = {
-    placeholder: t("search_placeholder"),
+    placeholder: isXsDown ? t("search_placeholder_mobile") : t("search_placeholder"),
     value,
     onChange,
   };

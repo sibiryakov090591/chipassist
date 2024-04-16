@@ -44,7 +44,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       position: "relative",
       display: "flex",
       justifyContent: "space-between",
-      [theme.breakpoints.down("sm")]: { width: "100%", padding: "5px 0" },
+      [theme.breakpoints.down("sm")]: {
+        width: "100%",
+        padding: "5px 0",
+      },
     },
     child: {
       marginTop: 15,

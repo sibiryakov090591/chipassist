@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import React, { useState, useMemo, PropsWithChildren } from "react";
-import { useMediaQuery, useTheme, IconButton, Box } from "@material-ui/core";
+import { useMediaQuery, useTheme, Box } from "@material-ui/core";
 import three_dots from "@src/images/Icons/three-dots.svg";
+import IconButton from "@material-ui/core/IconButton";
 import { useStyles } from "./styles";
 
 interface Props {

@@ -225,6 +225,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       "& > span": {
         whiteSpace: "nowrap",
       },
+      [theme.breakpoints.down("xs")]: {
+        fontWeight: "normal",
+      },
     },
     priceMobile: {
       display: "flex",
@@ -324,6 +327,9 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     manufactureVer2: {
       color: "#345",
       fontWeight: "bold",
+      [theme.breakpoints.down("xs")]: {
+        fontWeight: "normal",
+      },
     },
     alignCenter: {
       [theme.breakpoints.up("sm")]: {

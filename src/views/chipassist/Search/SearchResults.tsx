@@ -320,7 +320,7 @@ const SearchResults = () => {
             {!isSmDown && !isLoadingSearchResultsInProgress && <ExtendedSearchBar />}
             <FilterResultsBar count={count} />
             {/* <FilterStockBar disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} /> */}
-            <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />
+            {!isSmDown && <FilterSmartView disable={isLoadingSearchResultsInProgress || isExtendedSearchStarted} />}
             <FilterCurrency />
             {!isSmDown && (
               <FilterPageSizeChoiceBar

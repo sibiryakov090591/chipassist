@@ -197,6 +197,7 @@
     "bom": "Загрузить список",
     "cart": "Корзина",
     "search_placeholder": "Пожалуйста введите партномер (артикул)",
+    "search_placeholder_mobile": "Введите партномер (артикул)",
     "try_search": "Например:",
     "try_search_mobile": "Например:",
     "hello": "Войдите в",
