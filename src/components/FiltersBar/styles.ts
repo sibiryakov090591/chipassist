@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
     rightControls: {
       display: "flex",
       alignItems: "center",
-      justifyContent: "flex-end",
+      justifyContent: "center",
       flex: "1 0 auto",
       flexWrap: "wrap",
       [theme.breakpoints.down("sm")]: { flexDirection: "column", flex: "1 1 auto" },
@@ -45,6 +45,10 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       display: "flex",
       justifyContent: "space-between",
       [theme.breakpoints.down("sm")]: { width: "100%", padding: "5px 0" },
+      "&  > :first-child": {
+        display: "flex",
+        alignItems: "center",
+      },
     },
     child: {
       marginTop: 15,

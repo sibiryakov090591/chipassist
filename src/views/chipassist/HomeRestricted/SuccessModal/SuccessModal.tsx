@@ -39,6 +39,8 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register", handle
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down("xs"));
 
+  const is300Down = useMediaQuery(theme.breakpoints.down(332));
+
   const registerData = useAppSelector((state) => state.auth.registerData);
   const email = localStorage.getItem(type === "reset" ? "reset_email" : "registered_email");
 
@@ -99,7 +101,7 @@ const SuccessModal: React.FC<Props> = ({ onCloseModal, type = "register", handle
 
   return (
     <Dialog open={true} onClose={onCloseModal}>
-      <Box p={2} style={{ textAlign: "center" }}>
+      <Box p={2} style={{ textAlign: "center", padding: is300Down ? "10px" : null }}>
         <DialogTitle className={classes.dialog}>
           {confirmed ? (
             <span style={{ fontSize: "1.6rem", fontWeight: 600 }}>{t("confirmed.title")}</span>
