@@ -47,10 +47,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) =>
       [theme.breakpoints.down("sm")]: {
         width: "100%",
         padding: "5px 0",
-        "&  > :first-child": {
-          display: "flex",
-          alignItems: "center",
-        },
       },
     },
     child: {
