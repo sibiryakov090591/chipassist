@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import React, { useState, useMemo, PropsWithChildren } from "react";
 import { useMediaQuery, useTheme, Box } from "@material-ui/core";
-// import three_dots from "@src/images/Icons/three-dots.svg";
-import FilterCurrency from "@src/components/FiltersBar/FilterCurrency";
+import three_dots from "@src/images/Icons/three-dots.svg";
+import IconButton from "@material-ui/core/IconButton";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -30,7 +30,7 @@ const FiltersContainer: React.FC<PropsWithChildren<Props>> = ({ filtersCountToCo
       <div
         className={clsx(classes.rightControls, {
           [classes.rightControlsTwoItems]: isSmDown && !isShowCollapseIcon,
-          // [classes.rightControlsOpened]: showFilters,
+          [classes.rightControlsOpened]: showFilters,
         })}
       >
         {React.Children.toArray(children)
@@ -40,10 +40,9 @@ const FiltersContainer: React.FC<PropsWithChildren<Props>> = ({ filtersCountToCo
               return (
                 <div key={i} className={classes.firstChild}>
                   {child}
-                  <FilterCurrency />
-                  {/* <IconButton className={classes.filtersIcon} onClick={toggleShowFilters}> */}
-                  {/*  <img src={three_dots} alt="Filters" /> */}
-                  {/* </IconButton> */}
+                  <IconButton className={classes.filtersIcon} onClick={toggleShowFilters}>
+                    <img src={three_dots} alt="Filters" />
+                  </IconButton>
                 </div>
               );
             }
