@@ -8,8 +8,8 @@ import PublishIcon from "@material-ui/icons/Publish";
 import DataUsageIcon from "@material-ui/icons/DataUsage";
 import DoneIcon from "@material-ui/icons/Done";
 import Dropzone from "react-dropzone";
-import { Icon } from "react-icons-kit";
-import { timesOutline } from "react-icons-kit/typicons/timesOutline";
+// import { Icon } from "react-icons-kit";
+// import { timesOutline } from "react-icons-kit/typicons/timesOutline";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { FILE_SIZE } from "@src/config";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -284,6 +284,58 @@ const BomUpload: React.FC = () => {
     }
   };
 
+  const uploadButtonComponent = () => {
+    if (!file || isFileParsing) return null;
+    return (
+      <div className={classes.file}>
+        {upload.uploading && (
+          <div className={classes.fileUploadingWindow}>
+            <div className={classes.fileUploadingWindowHeader}>
+              <DataUsageIcon className={classes.fileUploading} />
+              <span className="uploading-bom-file-message">{t("upload.uploading")}</span>
+            </div>
+            <div className={classes.fileUploadingWindowDesc}>
+              <span>{t("upload.uploading_description")}</span>
+            </div>
+          </div>
+        )}
+        {!!upload.error && (
+          <Alert severity="error">
+            <span className={classes.fileUploadError}>{upload.error}</span>
+          </Alert>
+        )}
+        <Box display="flex" flexDirection="column" alignItems="flex-end">
+          <Box display="flex" alignItems="center">
+            <button
+              className={`${appTheme.buttonCreate} ${classes.fileUpload2} bom-upload-file-button`}
+              onClick={onUpload}
+              disabled={!valid || upload.uploading}
+            >
+              {constants.id !== ID_ICSEARCH && (
+                <>
+                  <PublishIcon className={classes.fileUploadIc} />{" "}
+                </>
+              )}
+              {t("upload.upload")}
+            </button>
+            <button
+              disabled={upload.uploading}
+              className={`${appTheme.buttonPrimary} ${classes.fileUpload2}`}
+              onClick={onFileRemove}
+            >
+              {t("upload.remove")}
+            </button>
+            {/* <Icon className={classes.fileRemove} onClick={onFileRemove} icon={timesOutline} /> */}
+          </Box>
+          <div ref={fileViewerRef} className={classes.fileName}>
+            <AttachFileIcon className={classes.fileIc} />
+            {file.name}
+          </div>
+        </Box>
+      </div>
+    );
+  };
+
   return (
     <Box>
       <Box>
@@ -388,43 +440,6 @@ const BomUpload: React.FC = () => {
         ))}
         {file !== null && !isFileParsing && (
           <Box mt={2}>
-            <div className={classes.file}>
-              <div ref={fileViewerRef} className={classes.fileName}>
-                <AttachFileIcon className={classes.fileIc} />
-                {file.name}
-              </div>
-              {upload.uploading && (
-                <div className={classes.fileUploadingWindow}>
-                  <div className={classes.fileUploadingWindowHeader}>
-                    <DataUsageIcon className={classes.fileUploading} />
-                    <span className="uploading-bom-file-message">{t("upload.uploading")}</span>
-                  </div>
-                  <div className={classes.fileUploadingWindowDesc}>
-                    <span>{t("upload.uploading_description")}</span>
-                  </div>
-                </div>
-              )}
-              {!!upload.error && (
-                <Alert severity="error">
-                  <span className={classes.fileUploadError}>{upload.error}</span>
-                </Alert>
-              )}
-              {
-                <button
-                  className={`${appTheme.buttonCreate} ${classes.fileUpload2} bom-upload-file-button`}
-                  onClick={onUpload}
-                  disabled={!valid || upload.uploading}
-                >
-                  {constants.id !== ID_ICSEARCH && (
-                    <>
-                      <PublishIcon className={classes.fileUploadIc} />{" "}
-                    </>
-                  )}
-                  {t("upload.process")}
-                </button>
-              }
-              <Icon className={classes.fileRemove} onClick={onFileRemove} icon={timesOutline} />
-            </div>
             {!valid && (
               <Alert severity="warning" style={{ marginTop: "15px" }}>
                 <span className={classes.fileUploadError}>{t("upload.errors.file-too-much-rows-1")}</span>
@@ -451,6 +466,7 @@ const BomUpload: React.FC = () => {
             isFileParsing={isFileParsing}
             setIsFileParsing={setIsFileParsing}
             delimiterRef={delimiterRef}
+            uploadButtonComponent={uploadButtonComponent()}
           />
         )}
       </Box>

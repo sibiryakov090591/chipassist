@@ -4,7 +4,7 @@ import { read, utils } from "xlsx";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { showBottomLeftMessageAlertAction } from "@src/store/alerts/alertsActions";
-import { Typography } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import { CustomSelect } from "@src/components/index";
 import Alert from "@material-ui/lab/Alert";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
@@ -28,6 +28,7 @@ interface Props {
   setIsFileParsing: React.Dispatch<React.SetStateAction<boolean>>;
   delimiterRef: any;
   isFileParsing: boolean;
+  uploadButtonComponent: any;
 }
 
 type ParseData = Array<string | number | null>;
@@ -48,6 +49,7 @@ const FileViewer: React.FC<Props> = ({
   setIsFileParsing,
   isFileParsing,
   delimiterRef,
+  uploadButtonComponent,
 }) => {
   const [data, setData] = useState<Data>({ columnsNames: [], rows: [] });
   const [selectedColumn, setSelectedColumn] = useState(null);
@@ -246,101 +248,106 @@ const FileViewer: React.FC<Props> = ({
   return (
     <div className={classes.fileView}>
       {!!data.columnsNames.length && (
-        <div>
-          <Typography className={classes.title}>{t("file.choose_columns")}</Typography>
-          <div className={`${classes.selectors} bom-upload-file-columns`}>
-            <div>
-              <Typography variant="caption" display="block" gutterBottom>
-                {t("column.part_number")}
-                <span>*</span>
-              </Typography>
-              <CustomSelect
-                error={selectErrors.part_number && classes.selectError}
-                id="partnumber_select"
-                placeholder={t("file.choose_column")}
-                value={columns.part_number}
-                options={getColumnsSelectOptions("part_number")}
-                onChange={onColumnSelect("part_number")}
-                onClear={onColumnSelectClear("part_number")}
-              />
-              {selectErrors.part_number && (
-                <div className={classes.helperText}>{`${t("column.part_number")} ${t("feedback.form.required")}`}</div>
-              )}
-            </div>
-            <div>
-              <Typography variant="caption" display="block" gutterBottom>
-                {t("column.qty")}
-                <span>*</span>
-              </Typography>
-              <CustomSelect
-                error={selectErrors.quantity && classes.selectError}
-                id="quantity_select"
-                placeholder={t("file.choose_column")}
-                value={columns.quantity}
-                options={getColumnsSelectOptions("quantity")}
-                onChange={onColumnSelect("quantity")}
-                onClear={onColumnSelectClear("quantity")}
-              />
-              {selectErrors.quantity && (
-                <div className={classes.helperText}>{`${t("column.qty")} ${t("feedback.form.required")}`}</div>
-              )}
-            </div>
-            <div>
-              {/* <Typography variant="caption" display="block" gutterBottom> */}
-              {/*  {t("column.description")} */}
-              {/* </Typography> */}
-              {/* <CustomSelect */}
-              {/*  id="description_select" */}
-              {/*  placeholder={t("file.choose_column")} */}
-              {/*  value={columns.description} */}
-              {/*  options={getColumnsSelectOptions("description")} */}
-              {/*  onChange={onColumnSelect("description")} */}
-              {/*  onClear={onColumnSelectClear("description")} */}
-              {/* /> */}
-            </div>
-            <div>
-              {/* <Typography variant="caption" display="block" gutterBottom> */}
-              {/*  {t("column.attributes")} */}
-              {/* </Typography> */}
-              {/* <CustomSelect */}
-              {/*  id="attributes_select" */}
-              {/*  placeholder={t("file.choose_column")} */}
-              {/*  value={columns.attributes} */}
-              {/*  options={getColumnsSelectOptions("attributes")} */}
-              {/*  onChange={onColumnSelect("attributes")} */}
-              {/*  onClear={onColumnSelectClear("attributes")} */}
-              {/* /> */}
-            </div>
-            <div>
-              {/* <Typography variant="caption" display="block" gutterBottom> */}
-              {/*  {t("column.external_id")} */}
-              {/* </Typography> */}
-              {/* <CustomSelect */}
-              {/*  id="external_id" */}
-              {/*  placeholder={t("file.choose_column")} */}
-              {/*  value={columns.external_id} */}
-              {/*  options={getColumnsSelectOptions("external_id")} */}
-              {/*  onChange={onColumnSelect("external_id")} */}
-              {/*  onClear={onColumnSelectClear("external_id")} */}
-              {/* /> */}
-            </div>
-          </div>
-          <div className={classes.startingRowInfo}>
-            <Alert icon={<ErrorOutlineIcon />} severity="success">
+        <Box display="flex" justifyContent="space-between">
+          <div>
+            <Typography className={classes.title}>{t("file.choose_columns")}</Typography>
+            <div className={`${classes.selectors} bom-upload-file-columns`}>
               <div>
-                <span>
-                  <i>{startingRow}</i> —{" "}
-                </span>
-                <span style={{ fontWeight: 600 }}>{t("file.hint")}</span>
+                <Typography variant="caption" display="block" gutterBottom>
+                  {t("column.part_number")}
+                  <span>*</span>
+                </Typography>
+                <CustomSelect
+                  error={selectErrors.part_number && classes.selectError}
+                  id="partnumber_select"
+                  placeholder={t("file.choose_column")}
+                  value={columns.part_number}
+                  options={getColumnsSelectOptions("part_number")}
+                  onChange={onColumnSelect("part_number")}
+                  onClear={onColumnSelectClear("part_number")}
+                />
+                {selectErrors.part_number && (
+                  <div className={classes.helperText}>{`${t("column.part_number")} ${t(
+                    "feedback.form.required",
+                  )}`}</div>
+                )}
               </div>
-            </Alert>
+              <div>
+                <Typography variant="caption" display="block" gutterBottom>
+                  {t("column.qty")}
+                  <span>*</span>
+                </Typography>
+                <CustomSelect
+                  error={selectErrors.quantity && classes.selectError}
+                  id="quantity_select"
+                  placeholder={t("file.choose_column")}
+                  value={columns.quantity}
+                  options={getColumnsSelectOptions("quantity")}
+                  onChange={onColumnSelect("quantity")}
+                  onClear={onColumnSelectClear("quantity")}
+                />
+                {selectErrors.quantity && (
+                  <div className={classes.helperText}>{`${t("column.qty")} ${t("feedback.form.required")}`}</div>
+                )}
+              </div>
+              <div>
+                {/* <Typography variant="caption" display="block" gutterBottom> */}
+                {/*  {t("column.description")} */}
+                {/* </Typography> */}
+                {/* <CustomSelect */}
+                {/*  id="description_select" */}
+                {/*  placeholder={t("file.choose_column")} */}
+                {/*  value={columns.description} */}
+                {/*  options={getColumnsSelectOptions("description")} */}
+                {/*  onChange={onColumnSelect("description")} */}
+                {/*  onClear={onColumnSelectClear("description")} */}
+                {/* /> */}
+              </div>
+              <div>
+                {/* <Typography variant="caption" display="block" gutterBottom> */}
+                {/*  {t("column.attributes")} */}
+                {/* </Typography> */}
+                {/* <CustomSelect */}
+                {/*  id="attributes_select" */}
+                {/*  placeholder={t("file.choose_column")} */}
+                {/*  value={columns.attributes} */}
+                {/*  options={getColumnsSelectOptions("attributes")} */}
+                {/*  onChange={onColumnSelect("attributes")} */}
+                {/*  onClear={onColumnSelectClear("attributes")} */}
+                {/* /> */}
+              </div>
+              <div>
+                {/* <Typography variant="caption" display="block" gutterBottom> */}
+                {/*  {t("column.external_id")} */}
+                {/* </Typography> */}
+                {/* <CustomSelect */}
+                {/*  id="external_id" */}
+                {/*  placeholder={t("file.choose_column")} */}
+                {/*  value={columns.external_id} */}
+                {/*  options={getColumnsSelectOptions("external_id")} */}
+                {/*  onChange={onColumnSelect("external_id")} */}
+                {/*  onClear={onColumnSelectClear("external_id")} */}
+                {/* /> */}
+              </div>
+            </div>
+            <div className={classes.startingRowInfo}>
+              <Alert icon={<ErrorOutlineIcon />} severity="success">
+                <div>
+                  <span>
+                    <i>{startingRow}</i> —{" "}
+                  </span>
+                  <span style={{ fontWeight: 600 }}>{t("file.hint")}</span>
+                </div>
+              </Alert>
+            </div>
+            {/* {!isHeader && ( */}
+            {/*  <div className={classes.startingRowInfo}> */}
+            {/*    <Alert severity="warning">{t("file.hint_start_row")}</Alert> */}
+            {/*  </div> */}
+            {/* )} */}
           </div>
-          {/* {!isHeader && ( */}
-          {/*  <div className={classes.startingRowInfo}> */}
-          {/*    <Alert severity="warning">{t("file.hint_start_row")}</Alert> */}
-          {/*  </div> */}
-          {/* )} */}
-        </div>
+          <div>{uploadButtonComponent}</div>
+        </Box>
       )}
       {(!!data.columnsNames.length || !!data.rows.length) && (
         <div className={classes.tableScroll}>

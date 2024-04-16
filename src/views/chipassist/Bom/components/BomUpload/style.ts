@@ -116,10 +116,6 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
     display: "flex",
     alignItems: "center",
     padding: "10px 10px 10px 20px",
-    borderRadius: 5,
-    background: "#fff",
-    border: "1px solid #efefef",
-    boxShadow: "0 0 30px 0 rgba(0,0,0,0.03)",
   },
   fileUploaded: {
     background: "#f4fbf4",
@@ -134,7 +130,7 @@ export const useStyles = makeStyles((theme: Theme & AppTheme) => ({
   fileName: {
     display: "flex",
     alignItems: "center",
-    marginRight: "auto",
+    marginTop: "8px",
   },
   fileUploadError: {
     marginRight: 5,

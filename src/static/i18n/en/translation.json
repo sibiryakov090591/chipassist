@@ -1375,6 +1375,7 @@
       "uploading_description": "Finding electronic parts may take some time. You don't have to wait until finish and can work with the service as usual. We will send you an email notification when BOM list will be fully imported.",
       "process": "PROCESS BOM",
       "upload": "Upload BOM",
+      "remove": "Cancel",
       "drag": "Drag &apos;n&apos; drop <strong>XLS</strong><br /> or <strong>CSV</strong> (semicolon as delimeter) or ",
       "click_select": "click to select files",
       "select_button": "Select file",
