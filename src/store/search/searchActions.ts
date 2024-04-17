@@ -460,35 +460,35 @@ export const sendFiltersValueAction = (
       });
     };
 
-    return startMainSearch();
+    // return startMainSearch();
 
     // start with fast search request and then if we didn't get results we'll start main search action
-    // return dispatch({
-    //   types: [actionTypes.SEND_FILTERS_VALUES_R, null, null],
-    //   promise: (client: ApiClientInterface) =>
-    //     client
-    //       .get(`${API_PATH}/fastsearch/${params}`, {
-    //         cancelId: "get_search_list",
-    //         config: removeAuth ? { headers: { Authorization: null } } : null,
-    //         noapi: true,
-    //       })
-    //       .then((res) => {
-    //         if (res.data.results?.length > 0) return res.data;
-    //         return false; // to start main search
-    //       })
-    //       .catch((e: any) => {
-    //         console.log("***SEND_FILTERS_VALUES_ERROR", e);
-    //         return false; // to start main search anyway
-    //       })
-    //       .then((res) => {
-    //         if (!res) return startMainSearch();
-    //         dispatch({
-    //           type: actionTypes.SEND_FILTERS_VALUES_S,
-    //           response: res,
-    //         });
-    //         return res;
-    //       }),
-    // });
+    return dispatch({
+      types: [actionTypes.SEND_FILTERS_VALUES_R, null, null],
+      promise: (client: ApiClientInterface) =>
+        client
+          .get(`${API_PATH}/fastsearch/${params}`, {
+            cancelId: "get_search_list",
+            config: removeAuth ? { headers: { Authorization: null } } : null,
+            noapi: true,
+          })
+          .then((res) => {
+            if (res.data.results?.length > 0) return res.data;
+            return false; // to start main search
+          })
+          .catch((e: any) => {
+            console.log("***SEND_FILTERS_VALUES_ERROR", e);
+            return false; // to start main search anyway
+          })
+          .then((res) => {
+            if (!res) return startMainSearch();
+            dispatch({
+              type: actionTypes.SEND_FILTERS_VALUES_S,
+              response: res,
+            });
+            return res;
+          }),
+    });
   };
 };
 
