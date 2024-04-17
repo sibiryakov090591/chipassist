@@ -46,6 +46,7 @@ import { useLocation, Link } from "react-router-dom";
 import useDebounce from "@src/hooks/useDebounce";
 import formSchema from "@src/utils/formSchema";
 import PhoneInputWrapper from "@src/components/PhoneInputWrapper/PhoneInputWrapper";
+import { useStyles as useRfqFormStyles } from "@src/views/chipassist/Rfq/components/RFQForm/styles";
 import { useStyles } from "./PcbRequestStyles";
 // import { Physical, Technical } from "./Fields";
 import PcbModalConfirm from "../components/PcbModalConfirm/PcbModalConfirm";
@@ -123,6 +124,7 @@ function PcbRequest(props) {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const registerClasses = useRegisterStyles();
+  const rfqFormClasses = useRfqFormStyles();
   const appTheme = useAppTheme();
   const theme = useTheme();
   const isXsDown = useMediaQuery(theme.breakpoints.down(480));
@@ -1175,9 +1177,9 @@ function PcbRequest(props) {
               </Link>
               {". "}
             </div>
-            <div className={classes.formRow}>
+            <div className={rfqFormClasses.formRow}>
               <TextField
-                style={{ width: "100%", margin: "8px 8px 8px 0" }}
+                style={{ width: "100%" }}
                 disabled={isAuthenticated}
                 name="firstName"
                 label={`${t("form_labels.first_name")}*`}
@@ -1192,7 +1194,7 @@ function PcbRequest(props) {
                 {...errorRegister("firstName")}
               />
               <TextField
-                style={{ width: "100%", margin: "8px 0 8px 8px" }}
+                style={{ width: "100%" }}
                 disabled={isAuthenticated}
                 name="lastName"
                 label={`${t("form_labels.last_name")}*`}
@@ -1207,9 +1209,9 @@ function PcbRequest(props) {
                 {...errorRegister("lastName")}
               />
             </div>
-            <div className={classes.formRow}>
+            <div className={rfqFormClasses.formRow}>
               <TextField
-                style={{ width: "100%", margin: "8px 8px 8px 0" }}
+                style={{ width: "100%" }}
                 disabled={isAuthenticated}
                 name="email"
                 label={`${t("form_labels.email")}*`}
@@ -1230,15 +1232,15 @@ function PcbRequest(props) {
                 small
                 style={{
                   width: "100%",
-                  margin: "8px 0 8px 8px",
+                  margin: isDownKey ? "8px 0" : "13px",
                   height: !isDownKey && "auto",
                   maxHeight: !isDownKey && "38px",
                 }}
               />
             </div>
-            <div className={classes.formRow}>
+            <div className={rfqFormClasses.formRow}>
               <TextField
-                style={{ width: "100%", margin: "8px 8px 8px 0" }}
+                style={{ width: "100%" }}
                 disabled={isAuthenticated}
                 name="company"
                 label={`${t("form_labels.company_name")} *`}
@@ -1254,7 +1256,7 @@ function PcbRequest(props) {
               />
               {isICSearch ? (
                 <TextField
-                  style={{ width: "100%", margin: "8px 0 8px 8px" }}
+                  style={{ width: "100%" }}
                   variant="outlined"
                   name="inn"
                   size="small"
@@ -1278,7 +1280,7 @@ function PcbRequest(props) {
                   onChange={handleChangeRegData}
                   onBlur={onBlurHandler("country")}
                   select
-                  style={{ textAlign: "start", width: "100%", margin: "8px 0 8px 8px" }}
+                  style={{ textAlign: "start", width: "100%" }}
                 >
                   {countries.map((i) => (
                     <MenuItem className={appTheme.selectMenuItem} key={i.url} value={i.url}>

@@ -84,8 +84,9 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     "& > *": {
       minWidth: 400,
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down(450)]: {
         minWidth: "auto",
+        width: "100%",
       },
     },
   },
@@ -344,6 +345,9 @@ export const useStyles = makeStyles((theme) => ({
     margin: "8px 0 12px",
     width: 360,
     lineHeight: "24px",
+    [theme.breakpoints.down("xs")]: {
+      width: "auto",
+    },
   },
   detailsTitle: {
     fontSize: "1.3rem",
@@ -397,6 +401,12 @@ export const useStyles = makeStyles((theme) => ({
   },
   registerForm: {
     width: 500,
+    "& .MuiTextField-root": {
+      margin: 13,
+      [theme.breakpoints.down(460)]: {
+        margin: "8px 0",
+      },
+    },
     [theme.breakpoints.down("sm")]: {
       width: "auto",
     },
