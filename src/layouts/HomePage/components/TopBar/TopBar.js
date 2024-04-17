@@ -266,10 +266,12 @@ const TopBar = (props) => {
                     </Box>
                   </Collapse>
                 </div>
-                {/* {locales.length > 1 && <LangMenu />} */}
-                <ProfileMenu>{isAuthenticated ? <Authorized /> : <NotAuthorized />}</ProfileMenu>
-                {/* {isCartShow && cartBlock} */}
-                <CartBlock />
+                <Box display="flex" style={{ transition: "250ms all ease", marginTop: collapse ? 0 : -6 }}>
+                  {/* {locales.length > 1 && <LangMenu />} */}
+                  <ProfileMenu>{isAuthenticated ? <Authorized /> : <NotAuthorized />}</ProfileMenu>
+                  {/* {isCartShow && cartBlock} */}
+                  <CartBlock />
+                </Box>
               </div>
             </div>
           </Toolbar>
