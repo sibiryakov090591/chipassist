@@ -8,8 +8,8 @@ import PublishIcon from "@material-ui/icons/Publish";
 import DataUsageIcon from "@material-ui/icons/DataUsage";
 import DoneIcon from "@material-ui/icons/Done";
 import Dropzone from "react-dropzone";
-// import { Icon } from "react-icons-kit";
-// import { timesOutline } from "react-icons-kit/typicons/timesOutline";
+import { Icon } from "react-icons-kit";
+import { timesOutline } from "react-icons-kit/typicons/timesOutline";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { FILE_SIZE } from "@src/config";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
@@ -287,7 +287,7 @@ const BomUpload: React.FC = () => {
   const uploadButtonComponent = () => {
     if (!file || isFileParsing) return null;
     return (
-      <div className={classes.file}>
+      <div ref={fileViewerRef} className={classes.file}>
         {upload.uploading && (
           <div className={classes.fileUploadingWindow}>
             <div className={classes.fileUploadingWindowHeader}>
@@ -318,18 +318,18 @@ const BomUpload: React.FC = () => {
               )}
               {t("upload.upload")}
             </button>
-            <button
-              disabled={upload.uploading}
-              className={`${appTheme.buttonPrimary} ${classes.fileUpload2}`}
-              onClick={onFileRemove}
-            >
-              {t("upload.remove")}
-            </button>
-            {/* <Icon className={classes.fileRemove} onClick={onFileRemove} icon={timesOutline} /> */}
+            {/* <button */}
+            {/*  disabled={upload.uploading} */}
+            {/*  className={`${appTheme.buttonPrimary} ${classes.fileUpload2}`} */}
+            {/*  onClick={onFileRemove} */}
+            {/* > */}
+            {/*  {t("upload.remove")} */}
+            {/* </button> */}
           </Box>
-          <div ref={fileViewerRef} className={classes.fileName}>
+          <div className={classes.fileName}>
             <AttachFileIcon className={classes.fileIc} />
             {file.name}
+            <Icon className={classes.fileRemove} onClick={onFileRemove} icon={timesOutline} />
           </div>
         </Box>
       </div>
