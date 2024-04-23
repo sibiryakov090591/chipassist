@@ -360,7 +360,7 @@ export const addCartItem = (
   attribute: string = null,
   bomEditMode = false,
   notifications = true,
-  isRfq = 0,
+  isRfq = 1,
 ) => {
   return (dispatch: any, getState: () => RootState) => {
     // if (!sr && bomEditMode) {
