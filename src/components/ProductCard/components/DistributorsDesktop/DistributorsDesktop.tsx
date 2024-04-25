@@ -437,8 +437,9 @@ const DistributorsDesktop: React.FC<Props> = ({
 
           return srArray.map((val, index) => {
             if (!val) return null;
-            if (!showMore[val.partner] && index > 0) return null;
-            if (showMore[val.partner] && index === 0) return null; // Do not show combined item
+            if (smart_view && !showMore[val.partner] && index > 0) return null;
+            if (smart_view && showMore[val.partner] && index === 0) return null; // Do not show combined item
+            if (!smart_view && srArray?.length > 1 && index === 0) return null; // Do not show combined item
             // const partnerName = constants.id === ID_ICSEARCH ? "Импорт + таможня" : val.partner_name;
             const partnerName = val.partner_name;
 
@@ -448,7 +449,7 @@ const DistributorsDesktop: React.FC<Props> = ({
             //   Object.prototype.hasOwnProperty.call(partner, "link_to_site") &&
             //   (!!val.product_url || !!partner.url);
             // const url = isShowProductLink && correctUrl(val.product_url || partner.url);
-            const isShowMoreButton = srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
+            const isShowMoreButton = smart_view && srArray.length > 1 && index === (showMore[val.partner] ? 1 : 0);
             const isShowMoreActive = !!showMore[val.partner];
             const isCombinedRow = isShowMoreButton && !isShowMoreActive;
             const isShowQualityCheck =
@@ -492,7 +493,7 @@ const DistributorsDesktop: React.FC<Props> = ({
               <tr
                 key={val.id}
                 className={clsx(classes.tr, {
-                  [classes.active]: isShowMoreActive,
+                  [classes.active]: smart_view && isShowMoreActive,
                   [classes.bestOffer]: isShowMoreActive ? bestOfferId === val.id : isBestOfferGroup,
                   [classes.emptyStock]: val.num_in_stock === 0,
                 })}
