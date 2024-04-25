@@ -14,6 +14,7 @@ import { getAuthToken } from "@src/utils/auth";
 export default function useExtendedSearch(watchedParam, saveDataAction, finishedStateAction, queryParams = null) {
   const pollingTimeout = 3000;
   const [timeoutId, setTimeoutId] = useState(null);
+  const [compareRequestTimeoutId, setCompareRequestTimeoutId] = useState(null);
   const [startReloadingTimeByError, setStartReloadingTimeByError] = useState(null); // try to search after 429 error for 30 seconds
   const dispatch = useAppDispatch();
   const extendedSearchId = useAppSelector((state) => state.search.extendedSearchId);
@@ -40,6 +41,7 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
     };
 
     if (extendedSearchId && prevExtendedSearchId !== extendedSearchId) {
+      if (compareRequestTimeoutId) clearTimeout(compareRequestTimeoutId);
       if (timeoutId) clearTimeout(timeoutId);
       dispatch(cancelExtendedSearch());
       extendedSearchRequest(extendedSearchId, query, pollingExtendedSearch);
@@ -63,7 +65,7 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
           repeater(searchId, query);
         } else if (response?.status === "DONE") {
           dispatch(saveDataAction(response, extendedSearchParams));
-          setTimeout(() => {
+          const compareRequestToken = setTimeout(() => {
             dispatch(extendedPreloadingOfSearchResults(queryParams))
               .then((res) => {
                 // dispatch(saveFiltersValuesThunk(res, query));
@@ -73,6 +75,7 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
                 dispatch(finishedStateAction(extendedSearchParams));
               });
           }, pollingTimeout);
+          setCompareRequestTimeoutId(compareRequestToken);
         } else {
           dispatch(finishedStateAction(extendedSearchParams));
         }
