@@ -29,6 +29,7 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
         `SEARCH. Extended search. search_result_ID: ${id} request_query: ${request_query} actual_query: ${query}. Token: ${getAuthToken()}`,
       );
       if (!isActualQuery(query, watchedParam)) {
+        if (compareRequestTimeoutId) clearTimeout(compareRequestTimeoutId);
         if (timeoutId) clearTimeout(timeoutId);
         dispatch(cancelExtendedSearch());
         return false;
@@ -66,7 +67,10 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
         } else if (response?.status === "DONE") {
           dispatch(saveDataAction(response, extendedSearchParams));
           const compareRequestToken = setTimeout(() => {
-            dispatch(extendedPreloadingOfSearchResults(queryParams))
+            if (!isActualQuery(query, watchedParam)) {
+              return false;
+            }
+            return dispatch(extendedPreloadingOfSearchResults(queryParams))
               .then((res) => {
                 // dispatch(saveFiltersValuesThunk(res, query));
                 dispatch(compareSearchResults(res?.results));
