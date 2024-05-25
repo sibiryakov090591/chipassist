@@ -35,7 +35,7 @@ const defaults = {
   YM: false,
   GA: false,
   checkSiteVersion: true,
-  checkSiteVersionPing: 6, // minutes
+  checkSiteVersionPing: 6, // minutess
   showInn: true,
   cashBomModalProducts: true,
   cashBomModalTime: 60, // minutes
