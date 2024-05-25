@@ -65,15 +65,10 @@ const SearchResults = () => {
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   // eslint-disable-next-line no-underscore-dangle
-  // const _query = useAppSelector((state) => state.search.query);
-  // eslint-disable-next-line no-underscore-dangle
-  // const _page = useAppSelector((state) => state.search.page);
-  // eslint-disable-next-line no-underscore-dangle
   const _pageSize = useAppSelector((state) => state.search.pageSize);
 
   const query = useURLSearchParams("query", true, "", false);
 
-  // const page = useURLSearchParams("page", false, _page, false);
   const pageSize = useURLSearchParams("page_size", false, localStorage.getItem("searchShowBy") || _pageSize, false);
   const orderBy = useURLSearchParams(
     "order_by",
@@ -99,7 +94,7 @@ const SearchResults = () => {
   const products = useAppSelector((state) => state.products.products);
   const rfqData = useAppSelector((state) => state.products.rfqData);
   const count = useAppSelector((state) => state.search.count);
-  const currentPage = useAppSelector((state) => state.search.currentPage);
+  const currentPage = useURLSearchParams("page", false, 1, false);
   const totalPages = useAppSelector((state) => state.search.totalPages);
   const isDifferentNewSearchResult = useAppSelector(
     (state) => state.search.searchResultsToComparePrevAndNextData.isDifferent,
@@ -182,12 +177,7 @@ const SearchResults = () => {
   }, [shouldUpdateCard, rfqItem]);
 
   useEffect(() => {
-    if (
-      constants.id === ID_MASTER &&
-      !localStorage.getItem("tutorialCompleted") &&
-      !isLoadingSearchResultsInProgress &&
-      products?.length
-    ) {
+    if (!localStorage.getItem("tutorialCompleted") && !isLoadingSearchResultsInProgress && products?.length) {
       setOpen(true);
     }
   }, [isLoadingSearchResultsInProgress, products]);
@@ -226,15 +216,6 @@ const SearchResults = () => {
       dispatch(changeManufacturer(manufacturerId));
     }
   }, [manufacturerId, manufacturersLoaded]);
-
-  // useEffect(() => {
-  //   if (query && baseFilters?.base_in_stock) {
-  //     dispatch(getRfqsHintCount(query, 1)).then((res: any) => {
-  //       setRfqsHintCount(res?.count);
-  //       console.log("RFQs_COUNT_RESPONSE: ", res?.count);
-  //     });
-  //   }
-  // }, [query, baseFilters?.base_in_stock]);
 
   useEffect(() => {
     dispatch(setRFQQueryUpc(query));

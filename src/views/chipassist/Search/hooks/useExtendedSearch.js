@@ -23,29 +23,10 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
 
   useRestTransport(() => {
     const query = localStorage.getItem(watchedParam);
-
-    const pollingExtendedSearch = (id, request_query, timeout = null) => {
-      console.log(
-        `SEARCH. Extended search. search_result_ID: ${id} request_query: ${request_query} actual_query: ${query}. Token: ${getAuthToken()}`,
-      );
-      if (!isActualQuery(query, watchedParam)) {
-        if (compareRequestTimeoutId) clearTimeout(compareRequestTimeoutId);
-        if (timeoutId) clearTimeout(timeoutId);
-        dispatch(cancelExtendedSearch());
-        return false;
-      }
-      const timeoutToken = setTimeout(() => {
-        extendedSearchRequest(id, request_query, pollingExtendedSearch);
-      }, timeout || pollingTimeout);
-      setTimeoutId(timeoutToken);
-      return true;
-    };
-
     if (extendedSearchId && prevExtendedSearchId !== extendedSearchId) {
-      if (compareRequestTimeoutId) clearTimeout(compareRequestTimeoutId);
-      if (timeoutId) clearTimeout(timeoutId);
-      dispatch(cancelExtendedSearch());
-      extendedSearchRequest(extendedSearchId, query, pollingExtendedSearch);
+      setTimeout(() => {
+        extendedSearchRequest(extendedSearchId, query);
+      }, 5000);
     }
   }, [extendedSearchId, timeoutId]);
 
@@ -55,53 +36,50 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
     };
   }, [watchedParam]);
 
-  const extendedSearchRequest = (searchId, query, repeater) => {
+  const extendedSearchRequest = (searchId, query) => {
     if (!isActualQuery(query, watchedParam)) {
       return dispatch(cancelExtendedSearch());
     }
-    return dispatch(extendedLoadingOfSearchResultsThunk(searchId, queryParams))
-      .then((response) => {
-        setStartReloadingTimeByError(null);
-        if (response?.status === "PENDING") {
-          repeater(searchId, query);
-        } else if (response?.status === "DONE") {
-          dispatch(saveDataAction(response, extendedSearchParams));
-          const compareRequestToken = setTimeout(() => {
-            if (!isActualQuery(query, watchedParam)) {
-              return false;
-            }
-            return dispatch(extendedPreloadingOfSearchResults(queryParams))
-              .then((res) => {
-                // dispatch(saveFiltersValuesThunk(res, query));
-                dispatch(compareSearchResults(res?.results));
-              })
-              .finally(() => {
-                dispatch(finishedStateAction(extendedSearchParams));
-              });
-          }, pollingTimeout);
-          setCompareRequestTimeoutId(compareRequestToken);
-        } else {
-          dispatch(finishedStateAction(extendedSearchParams));
-        }
-      })
-      .catch((e) => {
-        if (
-          e.response.status === 429 &&
-          (!startReloadingTimeByError || Date.now() - startReloadingTimeByError < 30000)
-        ) {
-          if (!startReloadingTimeByError) setStartReloadingTimeByError(Date.now());
-          dispatch(extendedPreloadingOfSearchResults(queryParams))
-            .then((res) => {
-              saveDataAction(res, extendedSearchParams);
-            })
-            .finally(() => {
-              repeater(searchId, query, 9000);
-            });
-        } else {
-          dispatch(finishedStateAction(extendedSearchParams));
-          setStartReloadingTimeByError(null);
-        }
-      });
+    dispatch(
+      saveDataAction(
+        {
+          count: 45,
+          total_pages: 3,
+          results: [...Array(15)].map((_, index) => ({
+            id: index + 1,
+            attributes: [],
+            date_created: "2022-04-01T08:00:30.227196+02:00",
+            date_updated: "2024-05-25T20:22:34.029196+02:00",
+            description: "Cap Tant Wet 150uF 10V 10% (5.56 X 13.08mm) Axial 125°C",
+            manufacturer: { id: 576, name: "Vishay Intertechnology" },
+            stockrecords: [
+              {
+                id: index + 10,
+                date_created: "2022-04-01T08:00:30.227196+02:00",
+                date_updated: new Date(Date.now() - (index + 1) * 100000).toISOString(),
+                errors: [],
+                lead_period: "",
+                lead_period_str: "",
+                low_stock_threshold: 0,
+                moq: 1,
+                mpq: 1,
+                num_in_stock: 100,
+                packaging: "Each",
+                partner: 16,
+                partner_name: "Newark",
+                partner_sku: "61AC0858",
+                price_currency: "USD",
+                prices: [{ amount: 1, id: 56527900, price: 50.06 }],
+                product_url: "",
+              },
+            ],
+          })),
+        },
+        extendedSearchParams,
+      ),
+    );
+    dispatch(finishedStateAction(extendedSearchParams));
+    return true;
   };
 
   return true;

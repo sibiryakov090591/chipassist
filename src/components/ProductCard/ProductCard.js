@@ -17,12 +17,14 @@ import suppliers_icon from "@src/images/search_page/suppliers.svg";
 import time_icon from "@src/images/search_page/time.svg";
 import usd_icon from "@src/images/search_page/usd.svg";
 import warehouse_icon from "@src/images/search_page/warehouse.svg";
+import mainImage from "@src/images/pcb1.png";
 import { formatMoney } from "@src/utils/formatters";
 // import AddToCartButton from "@src/components/AddToCartButton/AddToCartButton";
 import { useInView } from "react-intersection-observer";
 import { SetProductIntoViewport } from "@src/store/products/productsActions";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import RequestButton from "@src/components/ProductCard/components/RequestButton/RequestButton";
+import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import DistributorsMobile from "./components/DistributorsMobile/DistributorsMobile";
 import DistributorsDesktop from "./components/DistributorsDesktop/DistributorsDesktop";
 import { useStyles } from "./productCardStyles";
@@ -38,6 +40,8 @@ const ProductCard = (props) => {
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
   const isXsDown = useMediaQuery(theme.breakpoints.down(565));
   const initialMobileCard = useMediaQuery(theme.breakpoints.down(800));
+
+  const query = useURLSearchParams("query", true, "", false);
 
   const smart_view = useAppSelector((state) => state.search.smart_view);
   const partners = useAppSelector((state) => state.sellers.items);
@@ -61,7 +65,7 @@ const ProductCard = (props) => {
   const [rfqStockrecords] = useState([]);
   // const [showRfqStocks, setShowRfqStocks] = useState(false);
   const [searchQueryArray, setSearchQueryArray] = useState([]);
-  const [mainImage, setMainImg] = useState(null);
+  const [_, setMainImg] = useState(null);
   const [rfq, setRfq] = useState(null);
   const [requestedQty, setRequestedQty] = useState(null);
 
@@ -263,17 +267,12 @@ const ProductCard = (props) => {
               to={`/product/${encodeURIComponent(product.upc)}/${
                 sortedStockrecords[0]?.id ? sortedStockrecords[0]?.id : `?productId=${product.id}`
               }`}
-              // to={
-              //   viewType === ID_ELFARO
-              //     ? `/product/${encodeURIComponent(product.upc)}/${sortedStockrecords[0]?.id}`
-              //     : `/product/${encodeURIComponent(product.upc)}/${product.id}`
-              // }
             >
               <div name="product_name" id="product_name_id" className={classes.title}>
                 <Highlighter
                   className={classes.titlePartNumber}
                   searchWords={searchQueryArray}
-                  textToHighlight={`${product.upc}`}
+                  textToHighlight={query || "MAX32"}
                   autoEscape={true}
                 />
               </div>
