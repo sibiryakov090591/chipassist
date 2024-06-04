@@ -8,10 +8,7 @@ import {
   loadSearchResultsActionThunk,
   saveExtendedSearch,
   setExtendedSearchFinished,
-  toggleReloadSearchFlag,
-  setSearchFinished,
 } from "@src/store/search/searchActions";
-import { getAuthToken } from "@src/utils/auth";
 import { batch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import constants from "@src/constants/constants";
@@ -73,62 +70,16 @@ const useSearchLoadResults = () => {
     batch(() => {
       if (searchTimeoutId) clearTimeout(searchTimeoutId);
       // dispatch(loadBomListThunk(1, true));
-      dispatch(loadSearchResultsActionThunk(commonParams))
-        .then((res: any) => {
-          batch(() => {
-            setIsFirstRequest(false);
-            setSearchTimeoutId(null);
-            setStartReloadingTime(null);
-          });
-          return res;
-        })
-        .catch((e: any) => {
-          if (e.response?.status === 429) {
-            if (!startReloadingTime || Date.now() - startReloadingTime < 30000) {
-              const timeoutId = setTimeout(() => {
-                dispatch(toggleReloadSearchFlag());
-              }, 9000);
-              if (!startReloadingTime) setStartReloadingTime(Date.now());
-              return setSearchTimeoutId(timeoutId);
-            }
-            return dispatch(setSearchFinished());
-          }
-          throw e;
+      dispatch(loadSearchResultsActionThunk(commonParams)).then((res: any) => {
+        batch(() => {
+          setIsFirstRequest(false);
+          setSearchTimeoutId(null);
+          setStartReloadingTime(null);
         });
-      console.log(
-        `SEARCH. Load search. location.search: ${
-          location.search
-        } reloadSearchFlag: ${reloadSearchFlag} shouldUpdateBackend: ${shouldUpdateBackend}. Token: ${getAuthToken()}`,
-      );
+        return res;
+      });
     });
   }, [location.search, reloadSearchFlag, shouldUpdateBackend]);
-
-  // useWebsocketTransport(
-  //   "search",
-  //   {
-  //     beforeConnect: () => {
-  //       dispatch(beforeSearchRequest(query, page, pageSize, filtersValues, null));
-  //     },
-  //     afterConnect: (socketClient) => {
-  //       batch(() => {
-  //         // dispatch(loadBomListThunk(1, true));
-  //         socketClient.onMessage((data: any) => {
-  //           dispatch(socketSearchResult(data, query));
-  //         });
-  //         // order_by проверить
-  //         socketClient.send({
-  //           ...{ search: query },
-  //           ...filtersValues,
-  //           page,
-  //           page_size: pageSize,
-  //           order_by: orderBy,
-  //         });
-  //       });
-  //       return true;
-  //     },
-  //   },
-  //   [location.search, reloadSearchFlag, shouldUpdateBackend],
-  // );
 
   return true;
 };

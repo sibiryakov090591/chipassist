@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Button, Checkbox, FormControlLabel, Container } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
-import useAppDispatch from "@src/hooks/useAppDispatch";
-import { saveMiscAction, loadMiscAction } from "@src/store/misc/miscActions";
 import clsx from "clsx";
 import { useStyles } from "./cookieAlertStyles";
 
@@ -11,7 +9,6 @@ const CookieAlert = () => {
   const classes = useStyles();
   const appTheme = useAppTheme();
   const { t } = useI18n("cookie");
-  const dispatch = useAppDispatch();
 
   const [open, setOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -23,13 +20,7 @@ const CookieAlert = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("cookie_accepted")) {
-      dispatch(loadMiscAction("cookie")).then((res: any) => {
-        // console.log(res.data);
-        if (!res.data) {
-          console.log("open");
-          setOpen(true);
-        }
-      });
+      setOpen(true);
     }
   }, []);
 
@@ -45,7 +36,6 @@ const CookieAlert = () => {
 
   const onSubmit = () => {
     localStorage.setItem("cookie_accepted", "true");
-    dispatch(saveMiscAction("cookie", formState));
     setOpen(false);
   };
 

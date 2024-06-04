@@ -8,7 +8,6 @@ import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 // import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { I18nProvider } from "@src/services/I18nProvider/I18nProvider.tsx";
 import constants from "@src/constants/constants";
-import BlockPage from "@src/views/chipassist/BlockPage/BlockPage";
 import ChipAssistApp from "./ChipAssistApp";
 import theme from "./themes";
 import {
@@ -39,14 +38,13 @@ class Root extends Component {
                 </Helmet>
               )}
               <HistoryRouter history={history}>
-                {[ID_CHIPASSIST, ID_MASTER, ID_SUPPLIER_RESPONSE].includes(constants.id) && <BlockPage />}
-                {[ID_ICSEARCH].includes(constants.id) && <ChipAssistApp />}
+                {[ID_CHIPASSIST, ID_MASTER, ID_ICSEARCH].includes(constants.id) && <ChipAssistApp />}
                 {constants.id === ID_ELFARO && (
                   <Suspense fallback={}>
                     <ElfaroApp />
                   </Suspense>
                 )}
-                {[ID_PCBONLINE].includes(constants.id) && (
+                {[ID_PCBONLINE, ID_SUPPLIER_RESPONSE].includes(constants.id) && (
                   <Suspense fallback={}>
                     <SupplierResponseApp />
                   </Suspense>

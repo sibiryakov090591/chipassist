@@ -22,6 +22,7 @@ import { clearRfqItem, rfqModalClose } from "@src/store/rfq/rfqActions";
 import { Link as RouterLink } from "react-router-dom";
 import ResetForm from "@src/views/chipassist/Reset/components/ResetForm/ResetForm";
 import NewPasswordForm from "@src/views/chipassist/Reset/components/NewPasswordForm/NewPasswordForm";
+import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 
 const isChipAssist = [ID_MASTER, ID_CHIPASSIST].includes(constants.id);
 const isICSearch = constants.id === ID_ICSEARCH;
@@ -37,6 +38,8 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
   const commonClasses = useCommonStyles();
   const appTheme = useAppTheme();
 
+  const query = useURLSearchParams("query", true, "", false);
+
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useAppDispatch();
 
   const { rfqModalOpen, rfqItem } = useAppSelector((state) => state.rfq);
@@ -45,7 +48,7 @@ export const RFQModalContainer: React.FC<{ isAuth?: boolean; isLoginForm?: boole
   isAuthenticated = isExample ? isAuth : isAuthenticated;
 
   const { t } = useI18n("rfq");
-  const partNumber = rfqItem.prevPartNumber || rfqItem.partNumber || "00000000000000";
+  const partNumber = rfqItem.prevPartNumber || rfqItem.partNumber || query;
 
   const [showLoginForm, setShowLoginForm] = React.useState(isLoginForm);
   const [showResetForm, setShowResetForm] = React.useState(false);

@@ -270,11 +270,8 @@ export const authCheckState = () => {
         dispatch(authSuccess(token));
         console.log("saveEmailAction", getState().auth.email);
         dispatch(saveEmailAction(localStorage.getItem("email")));
-
-        dispatch(getUserAddressThunk());
       }
     }
-    if (isCartEnabled) dispatch(getCart());
   };
 };
 
@@ -481,15 +478,7 @@ export const login = (
   navigate: NavigateFunction,
   location: { [key: string]: string } = null,
   // currencyPrice: CurrencyPrice,
-) => async (dispatch: any) => {
-  const misc = await dispatch(loadMiscAction("not_activated_request", data.email));
-  if (misc.data) {
-    saveRequestToLocalStorage(misc.data, misc.data.part_number || misc.data.partNumber, misc.data.requestType);
-    await dispatch(deleteMiscAction("not_activated_request", data.email));
-  } else {
-    localStorage.removeItem("progress_modal_data");
-  }
-
+) => (dispatch: any) => {
   const expirationDate = new Date(new Date().getTime() + 3600 * 1000 * 100);
   const prev_user_email = localStorage.getItem("prev_user_email");
   if (prev_user_email !== data.email) {
@@ -498,17 +487,14 @@ export const login = (
     localStorage.removeItem("email");
     localStorage.removeItem("prev_user_email");
   }
-  setAuthToken(token);
+  setAuthToken(token || "1234");
   localStorage.setItem("expirationDate", expirationDate.toString());
   localStorage.setItem("email", data.email);
   dispatch(updatePrevEmail(data.email));
 
   batch(() => {
     dispatch(saveEmailAction(data.email));
-    dispatch(getUserAddressThunk());
-    dispatch(getCart());
     dispatch(authSuccess(token));
-    dispatch(sendQuickRequest());
   });
 
   if (window.location.pathname !== "/cart") {

@@ -112,7 +112,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   navGroup: {
     display: "grid",
-    gridColumnGap: 16,
+    gridColumnGap: 24,
     // gridTemplateColumns: "repeat(3, auto)",
     gridTemplateAreas: `
           "home rfq terms"
@@ -169,7 +169,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   navLinkICS: {
     display: "block",
-    fontSize: 13,
+    fontSize: 14,
     color: "#fafafa",
     fontWeight: "bold",
     marginBottom: 3,

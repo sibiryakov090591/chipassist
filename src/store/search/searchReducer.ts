@@ -200,7 +200,12 @@ export default function search(state = initialState, action: actionTypes.SearchA
       return updateObject(state, { extendedSearchResultsCount: action.payload });
 
     case actionTypes.SET_EXTENDED_SEARCH_ID:
-      return { ...state, extendedSearchId: action.payload.id, extendedSearchParams: action.payload.params };
+      return {
+        ...state,
+        isExtendedSearchStarted: true,
+        extendedSearchId: action.payload.id,
+        extendedSearchParams: action.payload.params,
+      };
 
     case actionTypes.CLEAR_ATTRIBUTES:
       return updateObject(state, { attributesMap: [], attributes: {} });

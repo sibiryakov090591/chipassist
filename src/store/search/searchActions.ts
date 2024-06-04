@@ -53,35 +53,20 @@ export const loadSearchResultsActionThunk = (
 ) => {
   return async (dispatch: any) => {
     dispatch(beforeSearchRequest(params));
-    // if (constants.id === ID_ELFARO) {
-    //   filters = { ...filters, rfq: localStorage.getItem("productStock") === "true" ? 0 : 1 };
-    // }
-    // await dispatch(loadProductsRfqData(query, page, pageSize, orderBy));
-    // const fastSearchResult = await dispatch(loadFastSearchResults())
-    return dispatch(sendFiltersValueAction(params, component, true, removeAuth))
+    return dispatch(sendFiltersValueAction(params))
       .then((response: any) => {
         batch(() => {
           dispatch(saveFiltersValuesThunk(response, params.search));
-          dispatch(getCategoriesAttributesThunk());
-          dispatch({
-            type: actionTypes.SAVE_SEARCH_RESULTS_MAX_PRICE,
-            payload: Math.ceil(parseFloat(response.max_price)),
-            min: Math.ceil(parseFloat(response.min_price)),
-          });
 
-          if (constants.id !== ID_ELFARO) {
+          if (Number(params?.page) === 1) {
             dispatch({
               type: actionTypes.SET_EXTENDED_SEARCH_ID,
-              payload: { id: response.search_id, params },
+              payload: { id: 1, params },
             });
           }
         });
       })
       .catch((e: any) => {
-        dispatch(cancelExtendedSearch());
-        if (e?.response?.status === 401) {
-          return dispatch(loadSearchResultsActionThunk(params, component, true));
-        }
         throw e;
       });
   };
@@ -416,78 +401,50 @@ export const sendFiltersValueAction = (
   removeAuth = false,
 ) => {
   return async (dispatch: any) => {
-    let params = "";
-    Object.entries(data).forEach((entry) => {
-      const [key, val] = entry;
-      if (key === "m_id" && !val) return;
-      if (key === "search") {
-        if (val.startsWith("SELLER:")) {
-          // search seller's products
-          const sellerName = val.replace(/^SELLER:\s*/i, "")?.trim();
-          params += `&s=${encodeURIComponent(sellerName)}`;
-        } else if (val.startsWith("MANUFACTURER:")) {
-          // search manufacturer's products
-          if (data?.m_id) return; // search by ID if it exists
-          const manufacturerName = val.replace(/^MANUFACTURER:\s*/i, "")?.trim();
-          params += `&m=${encodeURIComponent(manufacturerName)}`;
-        } else {
-          params += `&${key}=${encodeURIComponent(val)}`;
-        }
-      } else {
-        params += `${params ? "&" : "?"}${key}=${val}`;
-      }
-    });
-
-    const startMainSearch = () => {
-      return dispatch({
-        types: !showProggress
-          ? actionTypes.SEND_FILTERS_VALUES_S
-          : component === "search"
-          ? actionTypes.SEND_FILTERS_VALUES_ARRAY
-          : actionTypes.SEND_FILTERS_VALUES_PRODUCTS_ARRAY,
-        promise: (client: ApiClientInterface) =>
-          client
-            .get(`${API_PATH}${SEARCH_URL}${params}`, {
-              cancelId: "get_search_list",
-              config: removeAuth ? { headers: { Authorization: null } } : null,
-              noapi: true,
-            })
-            .then((res) => res.data)
-            .catch((e: any) => {
-              console.log("***SEND_FILTERS_VALUES_ERROR", e);
-              throw e;
-            }),
-      });
-    };
-
-    // return startMainSearch();
-
-    // start with fast search request and then if we didn't get results we'll start main search action
     return dispatch({
-      types: [actionTypes.SEND_FILTERS_VALUES_R, null, null],
-      promise: (client: ApiClientInterface) =>
-        client
-          .get(`${API_PATH}/fastsearch/${params}`, {
-            cancelId: "get_search_list",
-            config: removeAuth ? { headers: { Authorization: null } } : null,
-            noapi: true,
-          })
-          .then((res) => {
-            if (res.data.results?.length > 0) return res.data;
-            return false; // to start main search
-          })
-          .catch((e: any) => {
-            console.log("***SEND_FILTERS_VALUES_ERROR", e);
-            return false; // to start main search anyway
-          })
-          .then((res) => {
-            if (!res) return startMainSearch();
-            dispatch({
-              type: actionTypes.SEND_FILTERS_VALUES_S,
-              response: res,
-            });
-            return res;
-          }),
+      types: [actionTypes.SEND_FILTERS_VALUES_ARRAY],
+      promise: () => {
+        return new Promise((resolve) => {
+          setTimeout(
+            () =>
+              resolve({
+                count: +data.page === 1 ? 2 : 45,
+                total_pages: +data.page === 1 ? 1 : 3,
+                page: +data.page || 1,
+                results: [...Array(+data.page === 1 ? 2 : 15)].map((_, index) => ({
+                  id: index + 1,
+                  attributes: [],
+                  date_created: "2022-04-01T08:00:30.227196+02:00",
+                  date_updated: "2024-05-25T20:22:34.029196+02:00",
+                  description: "Cap Tant Wet 150uF 10V 10% (5.56 X 13.08mm) Axial 125°C",
+                  manufacturer: { id: 576, name: "Vishay Intertechnology" },
+                  stockrecords: [
+                    {
+                      id: index + 10,
+                      date_created: "2022-04-01T08:00:30.227196+02:00",
+                      date_updated: new Date(Date.now() - (index + 1) * 100000).toISOString(),
+                      errors: [],
+                      lead_period: "",
+                      lead_period_str: "",
+                      low_stock_threshold: 0,
+                      moq: 1,
+                      mpq: 1,
+                      num_in_stock: 100,
+                      packaging: "Each",
+                      partner: 16,
+                      partner_name: "Newark",
+                      partner_sku: "61AC0858",
+                      price_currency: "USD",
+                      prices: [{ amount: 1, id: 56527900, price: 50.06 }],
+                      product_url: "",
+                    },
+                  ],
+                })),
+              }),
+            3000,
+          );
+        });
+      },
     });
   };
 };
@@ -757,7 +714,7 @@ export const saveFiltersValuesThunk = (response: any, query: string) => {
       dispatch(saveProducts(response.results));
       dispatch({
         type: actionTypes.SAVE_RESULT,
-        payload: { query, count: response.count, totalPages: response.total_pages },
+        payload: { query, count: response.count, totalPages: response.total_pages, currentPage: response.page },
       });
     });
   };
