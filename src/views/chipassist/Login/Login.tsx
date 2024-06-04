@@ -25,18 +25,6 @@ const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const { t } = useI18n("login");
   const isICSearch = constants.id === ID_ICSEARCH;
   const isPCBOnline = constants.id === ID_PCBONLINE;
-  useEffect(() => {
-    if (!isExample) {
-      if (checkIsAuthenticated()) {
-        const previousLocation = localStorage.getItem("previousLocation");
-        if (previousLocation && !isAuthPage(previousLocation)) {
-          navigate(previousLocation);
-        } else {
-          navigate("/");
-        }
-      }
-    }
-  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });

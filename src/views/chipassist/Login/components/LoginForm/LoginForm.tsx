@@ -129,19 +129,9 @@ const LoginForm = (props: { className: string; isExample?: boolean; callback?: a
       const data: { email: string } & FormStateValues = { ...formState.values, email: "" };
       data.email = data.username;
 
-      return dispatch(authLoginAction(data))
-        .then((res: any) => {
-          const { token } = res;
-          dispatch(login(data, token, navigate, { backurl })).then(() => {
-            if (callback) callback();
-          });
-        })
-        .catch((err: any) => {
-          const textError = t("incorrect_em_or_pass");
-          setError(textError, textError);
-          localStorage.setItem("login_failure_email", formState.values.username);
-          console.log("LOGIN_ERROR 3", err);
-        });
+      return dispatch(login(data, null, navigate, { backurl })).then(() => {
+        if (callback) callback();
+      });
     }
     return false;
   };

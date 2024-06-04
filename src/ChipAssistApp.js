@@ -1,20 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-named-as-default */
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { batch } from "react-redux";
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useState, Suspense, lazy, useEffect } from "react";
 import ScrollUpButton from "react-scroll-up-button";
 import constants from "@src/constants/constants";
-import useUserActivity from "@src/services/UserActivity/useUserActivity";
-import useConsoleLogSave from "@src/hooks/useConsoleLogSave";
 import useAppSelector from "@src/hooks/useAppSelector";
-import useAppDispatch from "@src/hooks/useAppDispatch";
 import checkIsAuthenticated, { getAuthToken, isAuthPage } from "@src/utils/auth";
-import { getGeolocation, loadProfileInfoThunk, onChangePartner } from "@src/store/profile/profileActions";
-import { checkUserActivityStatus, saveHref, saveUtm } from "@src/store/common/commonActions";
 import ErrorBoundary from "@src/components/ErrorBoundary";
 import "@src/static/css/style.css";
-import HomePage from "@src/layouts/HomePage";
 import SearchResults from "@src/views/chipassist/Search/SearchResults";
 import "semantic-ui-css/semantic.min.css";
 // import "./mixins/moment";
@@ -24,31 +17,18 @@ import LogOut from "@src/components/LogOut/LogOut";
 import AlertBottomLeft from "@src/components/Alerts/AlertBottomLeft";
 import AlertTopRight from "@src/components/Alerts/AlertTopRight";
 import AlertModal from "@src/components/Alerts/AlertModal";
-import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
-import { getInitialCurrency } from "@src/utils/getInitials";
 import IcsearchHomePage from "@src/views/chipassist/IcsearchHomePage/IcsearchHomePage";
-import { getServiceTax } from "@src/store/checkout/checkoutActions";
-import { authCheckState, sendQuickRequestUnAuth } from "@src/store/authentication/authActions";
 import Preloader from "@src/components/Preloader/Preloader";
-import { getUtm, lazyLoader } from "@src/utils/utility";
-import { loadMiscAction } from "@src/store/misc/miscActions";
 import CookieAlert from "@src/components/CookieAlert/CookieAlert";
-import { getCurrency, getDefaultServiceCurrency } from "@src/store/currency/currencyActions";
-import { getChatList, updateChatList } from "@src/store/chat/chatActions";
-import { getAllSellers } from "@src/store/sellers/sellersActions";
 import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/ChipassistHomePage";
-import { sendFeedbackMessageThunk } from "@src/store/feedback/FeedbackActions";
-import { getAllManufacturers } from "@src/store/manufacturers/manufacturersActions";
+import HomePage from "@src/layouts/HomePage";
+import { lazyLoader } from "@src/utils/utility";
+import { loadProfileInfoThunk } from "@src/store/profile/profileActions";
+import { checkUserActivityStatus } from "@src/store/common/commonActions";
+import useAppDispatch from "@src/hooks/useAppDispatch";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = ErrorBoundary;
-const isShowFormExamplesPage = localStorage.getItem("show_form_example_page");
-
-const ErrorRegister = lazy(() =>
-  lazyLoader(() =>
-    import(/* webpackChunkName: "error_register" */ "@src/views/chipassist/ErrorRegister/ErrorRegister"),
-  ),
-);
 const Error404 = lazy(() => lazyLoader(() => import(/* webpackChunkName: "404" */ "@src/views/chipassist/Error404")));
 const RFQModal = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "rfq_modal" */ "@src/views/chipassist/Rfq/components/RFQModal")),
@@ -71,9 +51,6 @@ const ProgressModal = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "progress_modal" */ "@src/components/ProgressModal/ProgressModal")),
 );
 const Reset = lazy(() => lazyLoader(() => import(/* webpackChunkName: "reset" */ "@src/views/chipassist/Reset/Reset")));
-const RegisterSuccess = lazy(() =>
-  lazyLoader(() => import(/* webpackChunkName: "register_success" */ "@src/views/chipassist/Register/RegisterSuccess")),
-);
 const Register = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "register" */ "@src/views/chipassist/Register/Register")),
 );
@@ -83,14 +60,8 @@ const ChatPage = lazy(() =>
 const FAQ = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "faq" */ "@src/views/chipassist/StaticPages/FAQ/FAQ")),
 );
-const FormExamples = lazy(() =>
-  lazyLoader(() => import(/* webpackChunkName: "form_examples" */ "@src/views/chipassist/FormExamples/FormExamples")),
-);
 const PrivacyPolicy = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "privacy_policy" */ "@src/views/chipassist/StaticPages/PrivacyPolicy")),
-);
-const Unsubscribe = lazy(() =>
-  lazyLoader(() => import(/* webpackChunkName: "unsubscribe" */ "@src/views/chipassist/StaticPages/Unsubscribe")),
 );
 const ProductView = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "product" */ "@src/views/chipassist/Product/Product")),
@@ -104,9 +75,6 @@ const PaymentAndDelivery = lazy(() =>
 );
 const Cart = lazy(() => lazyLoader(() => import(/* webpackChunkName: "cart" */ "@src/views/chipassist/Cart/Cart")));
 const Bom = lazy(() => lazyLoader(() => import(/* webpackChunkName: "bom" */ "@src/views/chipassist/Bom/Bom")));
-const Brands = lazy(() =>
-  lazyLoader(() => import(/* webpackChunkName: "brands" */ "@src/views/chipassist/Brands/Brands")),
-);
 const Pcb = lazy(() => lazyLoader(() => import(/* webpackChunkName: "pcb" */ "@src/views/chipassist/PcbNew/Pcb")));
 const Policy = lazy(() =>
   lazyLoader(() => import(/* webpackChunkName: "policy" */ "@src/views/chipassist/StaticPages/Policy")),
@@ -149,10 +117,18 @@ export function PrivateRoute({ children, isAuthenticated, prevEmail }) {
 
 const ChipAssistApp = () => {
   const location = useLocation();
+  const dispatch = useAppDispatch();
   const isICSearch = constants.id === ID_ICSEARCH;
-  const [isAuthenticated] = useState(checkIsAuthenticated());
-
+  const [isAuthenticated, setIsAuthenticated] = useState(checkIsAuthenticated());
+  const isAuthToken = !!getAuthToken();
   const prevEmail = useAppSelector((state) => state.profile.prevEmail);
+
+  useEffect(() => {
+    if (isAuthToken) {
+      dispatch(loadProfileInfoThunk());
+    }
+    setIsAuthenticated(isAuthToken);
+  }, [isAuthToken]);
 
   return (
     <div style={{ height: "100%" }}>

@@ -3,7 +3,6 @@ import { ApiClientInterface } from "@src/services/ApiClient";
 import { Dispatch } from "redux";
 import axios from "@src/utils/axios";
 import { saveBillingAddress } from "@src/store/checkout/checkoutActions";
-import { isTestAccount } from "@src/utils/auth";
 import { authSuccess } from "@src/store/authentication/authActions";
 import * as actionTypes from "./profileTypes";
 import { CREATE_ADDRESS_ARRAY, Partner, UPDATE_ADDRESS_ARRAY } from "./profileTypes";
@@ -20,26 +19,32 @@ export const loadProfileInfoThunk = () => {
     dispatch(isLoadingProfile(true));
     return dispatch({
       types: actionTypes.LOAD_PROFILE_INFO,
-      promise: (client: ApiClientInterface) =>
-        client.get("/profile/0/", { cancelId: "get_profile" }).then((res) => res.data),
+      promise: () => {
+        return new Promise((res) => {
+          setTimeout(
+            () =>
+              res({
+                id: 1,
+                firstName: "Test firstname",
+                lastName: "Test lastname",
+                email: "test@test.ru",
+                isTestAccount: true,
+                canSkip: false,
+                partners: [],
+                avatar: "https://andrew-sib.com/static/media/my_photo2.63ecbc26.jpg",
+                addressErrors: null,
+                addresses: [],
+                defaultBillingAddress: {},
+                defaultShippingAddress: {},
+                addressViewItem: {},
+              }),
+            2000,
+          );
+        });
+      },
     })
       .then((response: actionTypes.ProfileResponse) => {
-        const addresses = response?.address?.sort((a, b) => b.id - a.id);
-        const profileInfo: any = {
-          id: response.id,
-          firstName: response.first_name,
-          lastName: response.last_name,
-          email: response.email,
-          isTestAccount: isTestAccount([response.first_name, response.last_name, response.email]),
-          canSkip: response.can_skip,
-          partners: response.partners,
-          avatar: response.photo,
-          addressErrors: null,
-          addresses,
-          defaultBillingAddress: addresses?.find((address) => address.is_default_for_billing) || addresses[0] || {},
-          defaultShippingAddress: addresses?.find((address) => address.is_default_for_shipping) || addresses[0] || {},
-          addressViewItem: {},
-        };
+        const profileInfo: any = response;
         if (profileInfo.defaultBillingAddress) {
           dispatch(saveBillingAddress(profileInfo.defaultBillingAddress));
         }
@@ -60,19 +65,17 @@ export const updateProfileInfoThunk = (data: any = null) => {
 
     return dispatch({
       types: data ? [false, false, false] : actionTypes.PROFILE_UPDATE_ARRAY,
-      promise: (client: ApiClientInterface) =>
-        client
-          .patch(`/profile/0/`, {
-            data: data || {
-              first_name: profileInfo.firstName,
-              last_name: profileInfo.lastName,
-            },
-          })
-          .then((res) => res.data)
-          .catch((e) => {
-            console.log("***PROFILE_UPDATE_ERROR", e);
-            throw e;
-          }),
+      promise: () =>
+        new Promise((res) => {
+          setTimeout(
+            () =>
+              res({
+                first_name: profileInfo.firstName,
+                last_name: profileInfo.lastName,
+              }),
+            2000,
+          );
+        }).then((res) => res),
     });
   };
 };
