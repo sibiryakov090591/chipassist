@@ -37,7 +37,6 @@ import {
 
 import Paginate from "@src/components/Paginate";
 import { formatMoney } from "@src/utils/formatters";
-import { authUserProfile } from "@src/store/authentication/authActions";
 import ConfirmButton from "@src/components/ConfirmButton/ConfirmButton";
 import useAppTheme from "@src/theme/useAppTheme";
 import { v4 as uuidv4 } from "uuid";
@@ -243,8 +242,8 @@ const BomList: React.FC = () => {
 
   useEffect(() => {
     if (!isListLoading) {
-      dispatch(authUserProfile());
-      dispatch(loadBomListThunk(page, true, pageSize, orderBy));
+      // dispatch(authUserProfile());
+      // dispatch(loadBomListThunk(page, true, pageSize, orderBy));
     }
     // eslint-disable-next-line
   }, [shouldUpdateBackend]);

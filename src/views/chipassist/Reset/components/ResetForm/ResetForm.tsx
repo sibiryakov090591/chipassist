@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import { Button, FormHelperText, TextField, CircularProgress } from "@material-ui/core";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { clearResetPasswordState, resetPasswordRequestThunk } from "@src/store/profile/profileActions";
+import { clearResetPasswordState } from "@src/store/profile/profileActions";
 import Alert from "@material-ui/lab/Alert";
 import useAppTheme from "@src/theme/useAppTheme";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -98,11 +98,9 @@ const ResetForm = (props: { className: string; handler?: any }) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!status.isLoading) {
-      dispatch(resetPasswordRequestThunk(formState.values.username)).then(() => {
-        localStorage.setItem("reset_email", formState.values.username);
-        localStorage.removeItem("login_failure_email");
-        setSuccessModalOpen(true);
-      });
+      localStorage.setItem("reset_email", formState.values.username);
+      localStorage.removeItem("login_failure_email");
+      setSuccessModalOpen(true);
     }
   };
 

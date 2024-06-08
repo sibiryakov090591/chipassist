@@ -8,6 +8,50 @@ import { ChatListMessage } from "./chatTypes";
 
 const isUser = constants.id !== "supplier_response";
 
+const createChatMock = (id: any): any => {
+  return {
+    id,
+    created: new Date().toISOString(),
+    partner: {
+      first_name: "Alex",
+      last_name: "Smith",
+      company_name: "Google",
+    },
+    partner_name: "Alex",
+    title: "MAX3232",
+    details: {
+      quantity: 100,
+      price: 25,
+    },
+    rfq: {
+      id: uuidv4(),
+      upc: "MAX3232",
+      quantity: 100,
+      price: 25,
+      currency: "USD",
+      delivery_time: "1 week",
+      moq: 1,
+      mpq: 1,
+      num_in_stock: 1000,
+    },
+    unread_messages: 3,
+    messages: [
+      {
+        id: id + 1,
+        sender: "Alex",
+        read: false,
+        read_by_partner: true,
+        text: "Hello, this is test message text from Alex...",
+        created: new Date().toISOString(),
+        message_files: [],
+        starter: 1,
+        representatives: [],
+      },
+    ],
+    stocks: [],
+  };
+};
+
 export const getChatList = (page = 1, filters: any = {}, join = false) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
@@ -18,20 +62,30 @@ export const getChatList = (page = 1, filters: any = {}, join = false) => {
     Object.entries(filters).forEach((v) => {
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
+    console.log(params);
     return dispatch({
       types: [
         actionTypes.LOAD_CHAT_LIST_R,
         join ? actionTypes.LOAD_MORE_CHAT_LIST_S : actionTypes.LOAD_CHAT_LIST_S,
         actionTypes.LOAD_CHAT_LIST_F,
       ],
-      promise: (client: ApiClientInterface) =>
-        client
-          .get(`/chats/${params}`, { cancelId: "get_chat_list" })
-          .then((res) => res.data)
-          .catch((e) => {
-            console.log("***LOAD_CHAT_LIST_ERROR", e);
-            throw e;
-          }),
+      promise: () =>
+        new Promise((res) =>
+          setTimeout(
+            () =>
+              res({
+                page: 1,
+                total_pages: 1,
+                results: Array(5)
+                  .fill(1)
+                  .map((_, i) => createChatMock(i + 1)),
+              }),
+            2000,
+          ),
+        ).catch((e) => {
+          console.log("***LOAD_CHAT_LIST_ERROR", e);
+          throw e;
+        }),
     });
   };
 };
@@ -40,13 +94,13 @@ export const getChat = (id: number | string) => {
   return (dispatch: Dispatch<any>, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
+    console.log(id, params);
     return dispatch({
       types: [false, false, false],
-      promise: (client: ApiClientInterface) =>
-        client
-          .get(`/chats/${id}/${params}`, { cancelId: "get_chat" })
+      promise: () =>
+        new Promise((res) => setTimeout(() => res(createChatMock(id)), 2000))
           .then((res) => {
-            dispatch(selectChat(res.data));
+            dispatch(selectChat(res));
           })
           .catch((e) => {
             console.log("***LOAD_CHAT_ERROR", e);
@@ -70,17 +124,25 @@ export const updateChatList = (page: number) => {
     Object.entries(filters).forEach((v) => {
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
-
+    console.log(params);
     return dispatch({
       types: [false, actionTypes.UPDATE_CHAT_LIST_S, false],
-      promise: (client: ApiClientInterface) =>
-        client
-          .get(`/chats/${params}`)
-          .then((res) => res.data)
-          .catch((e) => {
-            console.log("***UPDATE_CHAT_LIST_ERROR", e);
-            throw e;
-          }),
+      promise: () =>
+        new Promise((res) =>
+          setTimeout(
+            () =>
+              res({
+                results: Array(5)
+                  .fill(1)
+                  .map((_, i) => createChatMock(i + 1)),
+                unread_total: 5,
+              }),
+            1000,
+          ),
+        ).catch((e) => {
+          console.log("***UPDATE_CHAT_LIST_ERROR", e);
+          throw e;
+        }),
     });
   };
 };
@@ -95,12 +157,24 @@ export const getMessages = (chatId: number, filters: { [key: string]: any } = {}
     Object.entries(filters).forEach((v) => {
       if (typeof v[1] === "boolean" || v[1]) params += `&${v[0]}=${v[1]}`;
     });
+    console.log(params);
     return dispatch({
       types: [actionTypes.LOAD_MESSAGES_R, false, actionTypes.LOAD_MESSAGES_F],
-      promise: (client: ApiClientInterface) =>
-        client
-          .get(`/chats/${chatId}/messages/${params}`, { cancelId: "get_chat_messages" })
-          .then(async (res) => {
+      promise: () =>
+        new Promise((res) =>
+          setTimeout(
+            () =>
+              res({
+                data: {
+                  results: Array(6)
+                    .fill(1)
+                    .map((_, i) => createChatMock(i + 1).messages[0]),
+                },
+              }),
+            2000,
+          ),
+        )
+          .then(async (res: any) => {
             // download images
             const files: any = {};
             const filesPromises: any = [];
@@ -210,17 +284,12 @@ export const sendMessage = (chatId: number, message: string, orderData: any = nu
   return (dispatch: any, getState: () => RootState) => {
     const partner = getState().profile.selectedPartner;
     const params = `?user=${isUser}${!isUser && partner ? `&seller=${partner.id}` : ""}`;
+    console.log(params, orderData, type);
     return dispatch({
       types: actionTypes.SEND_MESSAGE_ARRAY,
-      promise: (client: ApiClientInterface) =>
-        client
-          .post(`/chats/${chatId}/messages/${params}`, {
-            data: {
-              text: message?.trim(),
-              ...(!!orderData && (type === "invoice" ? { invoice: orderData } : { po: orderData })),
-            },
-          })
-          .then(async (res) => {
+      promise: () =>
+        new Promise((resolve) => setTimeout(() => resolve({ data: {} }), 1000))
+          .then(async (res: any) => {
             const newMessage = {
               id: res.data.id || uuidv4(),
               text: message,

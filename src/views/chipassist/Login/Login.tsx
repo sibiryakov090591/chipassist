@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Card, CardContent, CardMedia, Typography, Divider, Link, Box } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Page } from "@src/components";
-import checkIsAuthenticated, { isAuthPage } from "@src/utils/auth";
 import useAppTheme from "@src/theme/useAppTheme";
 import { title } from "@src/constants/defaults";
 import constants from "@src/constants/constants";
@@ -19,7 +18,6 @@ const logo_img = `/${constants.logos.distPath}/${constants.logos.mainLogoDarkBac
 const Login: React.FC<{ isExample?: boolean }> = ({ isExample }) => {
   const classes = useStyles();
   const appTheme = useAppTheme();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { t } = useI18n("login");

@@ -24,8 +24,8 @@ import ChipAssistHomePage from "@src/views/chipassist/ChipassistHomePage/Chipass
 import HomePage from "@src/layouts/HomePage";
 import { lazyLoader } from "@src/utils/utility";
 import { loadProfileInfoThunk } from "@src/store/profile/profileActions";
-import { checkUserActivityStatus } from "@src/store/common/commonActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
+import { getChatList } from "@src/store/chat/chatActions";
 import { ID_CHIPASSIST, ID_ICSEARCH, ID_MASTER } from "./constants/server_constants";
 
 const ProvidedErrorBoundary = ErrorBoundary;
@@ -126,6 +126,7 @@ const ChipAssistApp = () => {
   useEffect(() => {
     if (isAuthToken) {
       dispatch(loadProfileInfoThunk());
+      dispatch(getChatList(1));
     }
     setIsAuthenticated(isAuthToken);
   }, [isAuthToken]);

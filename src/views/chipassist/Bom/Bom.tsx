@@ -1,14 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Container from "@material-ui/core/Container";
 import { Box, Tabs, Tab, Paper } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
 import FileCopy from "@material-ui/icons/FileCopy";
-import useAppDispatch from "@src/hooks/useAppDispatch";
 import { useParams, useNavigate } from "react-router-dom";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { Page } from "@src/components";
-import { getAttributesThunk } from "@src/store/bom/bomActions";
-import useAppSelector from "@src/hooks/useAppSelector";
 import constants from "@src/constants/constants";
 import BomList from "./components/BomList/BomList";
 import { useStyles } from "./style";
@@ -17,21 +14,19 @@ import BomEdit from "./components/BomViewNew/BomEdit";
 
 const Bom: React.FC = () => {
   const classes = useStyles();
-  const dispatch = useAppDispatch();
   const { t } = useI18n("bom");
   const { bomId } = useParams();
   const path = window.location.pathname;
   const navigate = useNavigate();
-  const shouldUpdateBackend = useAppSelector((state) => state.common.shouldUpdateBackend);
 
   let tab = path;
   if (tab !== "/bom/create" && tab !== "/bom/create-file") {
     tab = "/bom/bom-list";
   }
 
-  useEffect(() => {
-    dispatch(getAttributesThunk());
-  }, [shouldUpdateBackend]);
+  // useEffect(() => {
+  //   dispatch(getAttributesThunk());
+  // }, [shouldUpdateBackend]);
 
   const onChangeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     return navigate(newValue);

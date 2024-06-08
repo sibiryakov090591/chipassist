@@ -5,13 +5,12 @@ import Highlighter from "react-highlight-words";
 import clsx from "clsx";
 import { Paper, Hidden, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useAppTheme from "@src/theme/useAppTheme";
-import { getDynamicMoq, getImage, getPrice, isProductAvailable } from "@src/utils/product";
+import { getDynamicMoq, getPrice, isProductAvailable } from "@src/utils/product";
 import { rfqModalOpen, setQualityCheckData, setSellerMessageData } from "@src/store/rfq/rfqActions";
 import useCurrency from "@src/hooks/useCurrency";
 import { splitForHighlighter } from "@src/utils/search";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { ID_ELFARO } from "@src/constants/server_constants";
-import placeholderImg from "@src/images/cpu.png";
 import moq_icon from "@src/images/search_page/moq.png";
 import suppliers_icon from "@src/images/search_page/suppliers.svg";
 import time_icon from "@src/images/search_page/time.svg";
@@ -65,7 +64,6 @@ const ProductCard = (props) => {
   const [rfqStockrecords] = useState([]);
   // const [showRfqStocks, setShowRfqStocks] = useState(false);
   const [searchQueryArray, setSearchQueryArray] = useState([]);
-  const [_, setMainImg] = useState(null);
   const [rfq, setRfq] = useState(null);
   const [requestedQty, setRequestedQty] = useState(null);
 
@@ -98,12 +96,6 @@ const ProductCard = (props) => {
       setRfq(data);
     }
   }, [rfqStockrecords]);
-
-  useEffect(() => {
-    if (product) {
-      setMainImg(getImage(product));
-    }
-  }, [product]);
 
   useEffect(() => {
     if (searchQuery) {
@@ -254,12 +246,7 @@ const ProductCard = (props) => {
               // }
               className={appTheme.hyperlink}
             >
-              <img
-                alt="Product image"
-                className={classes.image}
-                src={mainImage}
-                onError={() => setMainImg(placeholderImg)}
-              />
+              <img alt="Product image" className={classes.image} src={mainImage} />
             </Link>
           </div>
           <div className={classes.titleColumn}>

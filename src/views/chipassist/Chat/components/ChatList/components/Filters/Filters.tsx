@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
-import { clearChat, getChatList, getFilters, onChangeFiltersValues } from "@src/store/chat/chatActions";
+import { clearChat, getChatList, onChangeFiltersValues } from "@src/store/chat/chatActions";
 import useAppSelector from "@src/hooks/useAppSelector";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 // import SearchIcon from "@material-ui/icons/Search";
@@ -31,9 +31,9 @@ const Filters: React.FC = () => {
     partner: null,
   });
 
-  useEffect(() => {
-    dispatch(getFilters());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getFilters());
+  // }, []);
 
   const onChangeHandler = (e: React.ChangeEvent<{ name?: string; value: any }>) => {
     const { name, value } = e.target;

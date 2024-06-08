@@ -6,7 +6,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Button, CircularProgress, FormHelperText, TextField } from "@material-ui/core";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
-import { authFail, authLoginAction, authStart, login } from "@src/store/authentication/authActions";
+import { authStart, login } from "@src/store/authentication/authActions";
 import useAppTheme from "@src/theme/useAppTheme";
 import useURLSearchParams from "@src/components/ProductCard/useURLSearchParams";
 import useAppSelector from "@src/hooks/useAppSelector";
@@ -134,14 +134,6 @@ const LoginForm = (props: { className: string; isExample?: boolean; callback?: a
       });
     }
     return false;
-  };
-
-  const setError = (text: string, error: any) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      loginError: text,
-    }));
-    dispatch(authFail(error));
   };
 
   const hasError = (field: keyof FormStateTouched) => !!(formState.touched[field] && formState.errors[field]);

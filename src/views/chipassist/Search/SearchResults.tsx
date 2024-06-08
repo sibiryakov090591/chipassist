@@ -29,7 +29,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Progress from "@src/views/chipassist/Search/components/ProgressBar/Progress";
 import Tour, { ReactourStep } from "reactour";
 import img from "@src/images/Screenshot_1.png";
-import { ID_ICSEARCH, ID_MASTER } from "@src/constants/server_constants";
+import { ID_ICSEARCH } from "@src/constants/server_constants";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 // import BeforeUnloadModal from "@src/components/Alerts/BeforeUnloadModal";
