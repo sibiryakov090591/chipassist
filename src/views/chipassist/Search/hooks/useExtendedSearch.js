@@ -1,21 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import usePrevious from "@src/hooks/usePrevious";
-import {
-  extendedLoadingOfSearchResultsThunk,
-  cancelExtendedSearch,
-  extendedPreloadingOfSearchResults,
-  compareSearchResults,
-} from "@src/store/search/searchActions";
+import { cancelExtendedSearch } from "@src/store/search/searchActions";
 import { useRestTransport } from "@src/services/useTransport";
 import useAppSelector from "@src/hooks/useAppSelector";
-import { getAuthToken } from "@src/utils/auth";
 
-export default function useExtendedSearch(watchedParam, saveDataAction, finishedStateAction, queryParams = null) {
-  const pollingTimeout = 3000;
-  const [timeoutId, setTimeoutId] = useState(null);
-  const [compareRequestTimeoutId, setCompareRequestTimeoutId] = useState(null);
-  const [startReloadingTimeByError, setStartReloadingTimeByError] = useState(null); // try to search after 429 error for 30 seconds
+export default function useExtendedSearch(watchedParam, saveDataAction, finishedStateAction) {
   const dispatch = useAppDispatch();
   const extendedSearchId = useAppSelector((state) => state.search.extendedSearchId);
   const extendedSearchParams = useAppSelector((state) => state.search.extendedSearchParams);
@@ -28,7 +18,7 @@ export default function useExtendedSearch(watchedParam, saveDataAction, finished
         extendedSearchRequest(extendedSearchId, query);
       }, 5000);
     }
-  }, [extendedSearchId, timeoutId]);
+  }, [extendedSearchId]);
 
   useEffect(() => {
     return () => {

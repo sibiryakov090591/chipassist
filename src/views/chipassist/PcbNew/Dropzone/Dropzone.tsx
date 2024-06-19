@@ -6,8 +6,6 @@ import AttachmentIcon from "@material-ui/icons/Attachment";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { useDropzone } from "react-dropzone";
 import { v1 } from "uuid";
-import useAppSelector from "@src/hooks/useAppSelector";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useStyles } from "./styles";
 
 interface Props {
@@ -18,14 +16,9 @@ interface Props {
   formState: any;
 }
 
-const Dropzone: React.FC<Props> = ({ files, setFiles, onDeleteFile, maxSizeError, formState }) => {
+const Dropzone: React.FC<Props> = ({ files, setFiles, onDeleteFile, maxSizeError }) => {
   const { t } = useI18n("feedback");
   const classes = useStyles();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const isAuthenticated = useAppSelector((state) => state.auth.token !== null);
-  const prevEmail = useAppSelector((state) => state.profile.prevEmail);
 
   const { fileRejections, getRootProps, getInputProps } = useDropzone({
     disabled: maxSizeError,
@@ -69,23 +62,22 @@ const Dropzone: React.FC<Props> = ({ files, setFiles, onDeleteFile, maxSizeError
   const uploadFrameClassName = `${classes.uploadFrame} ${maxSizeError && classes.disabledFrame}`;
 
   const notAuthHandler = () => {
-    if (isAuthenticated) return false;
-
-    const data = Object.keys(formState).reduce((acc, curr) => {
-      if (formState[curr] !== "null") return { ...acc, [curr]: formState[curr] };
-      return acc;
-    }, {});
-
-    localStorage.setItem("pcb_calculator_data", JSON.stringify(data));
-    return navigate(prevEmail ? "/auth/login" : "/auth/registration", {
-      state: { background: location.state?.background || location },
-    });
+    // if (isAuthenticated) return false;
+    // const data = Object.keys(formState).reduce((acc, curr) => {
+    //   if (formState[curr] !== "null") return { ...acc, [curr]: formState[curr] };
+    //   return acc;
+    // }, {});
+    //
+    // localStorage.setItem("pcb_calculator_data", JSON.stringify(data));
+    // return navigate(prevEmail ? "/auth/login" : "/auth/registration", {
+    //   state: { background: location.state?.background || location },
+    // });
   };
 
   return (
     <div onClick={notAuthHandler}>
       <div {...getRootProps()} className={uploadFrameClassName}>
-        {isAuthenticated && <input {...getInputProps()} />}
+        <input {...getInputProps()} />
         <CloudUploadIcon className={classes.uploadIcon} />
         <span className={classes.uploadFrameText}>{t("form.dropzone_pcb")}</span>
         <div>{t("pcb.file.max_size", { size: 50 })}</div>

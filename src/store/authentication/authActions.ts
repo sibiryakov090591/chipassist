@@ -1,7 +1,5 @@
 import { batch } from "react-redux";
-import { isCartEnabled } from "@src/constants/common";
-import { getCart } from "@src/store/cart/cartActions";
-import { getUserAddressThunk, saveCanSkip, sendRequestThunk } from "@src/store/checkout/checkoutActions";
+import { saveCanSkip, sendRequestThunk } from "@src/store/checkout/checkoutActions";
 import { ApiClientInterface } from "@src/services/ApiClient";
 import { RootState } from "@src/store";
 import { Dispatch } from "redux";
@@ -13,12 +11,11 @@ import {
   progressModalOpen,
   progressModalSetPartNumber,
   progressModalSuccess,
-  saveRequestToLocalStorage,
   progressModalClose,
 } from "@src/store/progressModal/progressModalActions";
 import { LocalStorageItem } from "@src/store/progressModal/progressModalTypes";
 import { savePcbModalItem } from "@src/store/pcb/pcbActions";
-import { loadMiscAction, deleteMiscAction } from "@src/store/misc/miscActions";
+import { deleteMiscAction } from "@src/store/misc/miscActions";
 import { NavigateFunction } from "react-router-dom";
 import * as actionTypes from "./authTypes";
 import * as cartActionTypes from "../cart/cartTypes";
@@ -232,14 +229,11 @@ export function authSignupAction(data: any, requestParams: { [key: string]: any 
   }
   return {
     types: [actionTypes.AUTH_SIGNUP_R, actionTypes.AUTH_SIGNUP_S, actionTypes.AUTH_SIGNUP_F],
-    promise: (client: ApiClientInterface) =>
-      client
-        .post(`/auth_register/${params}`, { data })
-        .then((res) => res.data)
-        .catch((err) => {
-          console.log("***AUTH_SIGNUP_ERROR", err);
-          return err.response;
-        }),
+    promise: () =>
+      new Promise((res) => setTimeout(() => res(data), 2000)).catch((err) => {
+        console.log("***AUTH_SIGNUP_ERROR", err);
+        return err.response;
+      }),
   };
 }
 
@@ -508,6 +502,7 @@ export const login = (
           navigate("/");
         }
       } else {
+        console.log("NAV else");
         navigate("/");
       }
     });

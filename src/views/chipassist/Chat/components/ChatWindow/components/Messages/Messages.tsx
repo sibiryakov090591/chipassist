@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import useAppSelector from "@src/hooks/useAppSelector";
 import MessageInput from "@src/views/chipassist/Chat/components/ChatWindow/components/MessageInput/MessageInput";
-import {
-  deductReadMessages,
-  downloadFile,
-  getMessages,
-  readMessage,
-  updateMessages,
-} from "@src/store/chat/chatActions";
+import { deductReadMessages, downloadFile, getMessages, updateMessages } from "@src/store/chat/chatActions";
 import useAppDispatch from "@src/hooks/useAppDispatch";
 import Box from "@material-ui/core/Box";
 import ScheduleRoundedIcon from "@material-ui/icons/ScheduleRounded";
@@ -165,9 +159,7 @@ const Messages: React.FC<Props> = ({ onShowDetails }) => {
     // if (messagesIdsWasRead.includes(messageId)) return Promise.reject();
 
     setMessagesIdsWasRead((prev) => [...prev, messageId]);
-    return dispatch(readMessage(messageId)).then(() => {
-      dispatch(deductReadMessages(selectedChat.id, 1));
-    });
+    return new Promise((res) => setTimeout(() => res(dispatch(deductReadMessages(selectedChat.id, 1))), 300));
   };
 
   const loadOnTheTopSide = async () => {

@@ -5,8 +5,6 @@ import { normalizeAttributeData, uniqueFromTwoArrays } from "@src/utils/utility"
 import { getBaseFiltersInitialState } from "@src/store/search/searchReducer";
 import { saveProducts, clearProducts } from "@src/store/products/productsActions";
 import { loadMiscAction, saveMiscAction, updateMiscAction } from "@src/store/misc/miscActions";
-import constants from "@src/constants/constants";
-import { ID_ELFARO } from "@src/constants/server_constants";
 import { NavigateFunction } from "react-router-dom";
 import { Dispatch } from "redux";
 import * as actionTypes from "./searchTypes";
@@ -46,11 +44,7 @@ export const loadAttributesResultsAction = (attributes: any, pageSize: number) =
   };
 };
 
-export const loadSearchResultsActionThunk = (
-  params: { [index: string]: any } = null,
-  component = "search",
-  removeAuth = false,
-) => {
+export const loadSearchResultsActionThunk = (params: { [index: string]: any } = null) => {
   return async (dispatch: any) => {
     dispatch(beforeSearchRequest(params));
     return dispatch(sendFiltersValueAction(params))
@@ -394,12 +388,7 @@ export const addFilterCategoryFields = (categoryIds: number[]) => {
   };
 };
 
-export const sendFiltersValueAction = (
-  data: { [key: string]: any },
-  component: string = null,
-  showProggress = true,
-  removeAuth = false,
-) => {
+export const sendFiltersValueAction = (data: { [key: string]: any }) => {
   return async (dispatch: any) => {
     return dispatch({
       types: [actionTypes.SEND_FILTERS_VALUES_ARRAY],

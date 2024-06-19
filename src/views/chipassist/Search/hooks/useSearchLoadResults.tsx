@@ -49,7 +49,6 @@ const useSearchLoadResults = () => {
 
   const [isFirstRequest, setIsFirstRequest] = useState(true);
   const [searchTimeoutId, setSearchTimeoutId] = useState<any>(null);
-  const [startReloadingTime, setStartReloadingTime] = useState<number>(null);
 
   const commonParams = {
     page,
@@ -64,7 +63,7 @@ const useSearchLoadResults = () => {
     ...(isFirstRequest && !!document.referrer && { referrer: encodeURIComponent(document.referrer) }),
   };
 
-  useExtendedSearch("query", saveExtendedSearch, setExtendedSearchFinished, commonParams);
+  useExtendedSearch("query", saveExtendedSearch, setExtendedSearchFinished);
 
   useRestTransport(() => {
     batch(() => {
@@ -74,7 +73,6 @@ const useSearchLoadResults = () => {
         batch(() => {
           setIsFirstRequest(false);
           setSearchTimeoutId(null);
-          setStartReloadingTime(null);
         });
         return res;
       });
