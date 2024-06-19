@@ -1,22 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Page } from "@src/components";
 import { Container, Box } from "@material-ui/core";
 import { useI18n } from "@src/services/I18nProvider/I18nProvider";
 import { ID_ICSEARCH } from "@src/constants/server_constants";
 import constants from "@src/constants/constants";
-import { getConstants } from "@src/store/pcb/pcbActions";
-import useAppDispatch from "@src/hooks/useAppDispatch";
 import PcbRequest from "../Pcb/PcbRequest/PcbRequest";
 import { useStyles } from "./styles";
 
 const Pcb: React.FC = () => {
   const classes = useStyles();
-  const dispatch = useAppDispatch();
   const { t } = useI18n("pcb_new");
-
-  useEffect(() => {
-    dispatch(getConstants());
-  }, []);
 
   return (
     <Page title={t("page_title", { name: constants.title })} description={t("page_description")}>
